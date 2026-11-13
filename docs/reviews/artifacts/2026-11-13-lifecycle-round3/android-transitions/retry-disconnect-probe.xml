@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.blent.connection.RetryDisconnectProbe" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-13T18:48:52" hostname="morpheus" time="3.403">
+  <properties/>
+  <testcase name="retryBackoffHasNoEnabledDisconnectControl[27]" classname="com.blent.connection.RetryDisconnectProbe" time="1.783"/>
+  <testcase name="retryBackoffHasNoEnabledDisconnectControl" classname="com.blent.connection.RetryDisconnectProbe" time="1.615"/>
+  <system-out><![CDATA[Confirmed: pending retry at2000ms, Disconnect disabled; retry starts; direct disconnect cancels next6000ms retry
+Confirmed: pending retry at2000ms, Disconnect disabled; retry starts; direct disconnect cancels next6000ms retry
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

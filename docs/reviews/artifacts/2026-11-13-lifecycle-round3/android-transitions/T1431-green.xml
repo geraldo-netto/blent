@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.blent.connection.ConnectionRetryControlsTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-13T18:55:07" hostname="morpheus" time="2.831">
+  <properties/>
+  <testcase name="t1431DisconnectCancelsInitialRememberedBackoff[27]" classname="com.blent.connection.ConnectionRetryControlsTest" time="1.179"/>
+  <testcase name="t1431DisconnectCancelsCappedPreAuthenticationFailureChain[27]" classname="com.blent.connection.ConnectionRetryControlsTest" time="0.063"/>
+  <testcase name="t1431UntouchedAndUnprovenEndedConnectionsDoNotOfferDisconnect[27]" classname="com.blent.connection.ConnectionRetryControlsTest" time="0.042"/>
+  <testcase name="t1431DisconnectCancelsInitialRememberedBackoff" classname="com.blent.connection.ConnectionRetryControlsTest" time="1.443"/>
+  <testcase name="t1431DisconnectCancelsCappedPreAuthenticationFailureChain" classname="com.blent.connection.ConnectionRetryControlsTest" time="0.059"/>
+  <testcase name="t1431UntouchedAndUnprovenEndedConnectionsDoNotOfferDisconnect" classname="com.blent.connection.ConnectionRetryControlsTest" time="0.04"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

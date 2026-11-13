@@ -1,0 +1,54 @@
+{
+  "tool": "scripts/complexity/kotlin.py; Kotlin PSI1.9.20",
+  "maximum": 9,
+  "functions": [
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-round3/android-transitions/RetryDisconnectProbe.kt",
+      18,
+      "<init>",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-round3/android-transitions/RetryDisconnectProbe.kt",
+      20,
+      "retryBackoffHasNoEnabledDisconnectControl",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-round3/android-transitions/RetryDisconnectProbe.kt",
+      21,
+      "<lambda>",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-round3/android-transitions/RetryDisconnectProbe.kt",
+      22,
+      "<lambda>",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-round3/android-transitions/RetryDisconnectProbe.kt",
+      28,
+      "<lambda>",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-round3/android-transitions/RetryDisconnectProbe.kt",
+      28,
+      "<lambda>",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-round3/android-transitions/RetryDisconnectProbe.kt",
+      28,
+      "<lambda>",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-round3/android-transitions/RetryDisconnectProbe.kt",
+      32,
+      "<lambda>",
+      1
+    ]
+  ]
+}

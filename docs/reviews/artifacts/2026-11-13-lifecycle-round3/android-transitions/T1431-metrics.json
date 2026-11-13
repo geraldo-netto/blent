@@ -1,0 +1,811 @@
+{
+  "tool": "JaCoCo0.8.15",
+  "scope": "Every line-bearing native method/callback in the three selected production source files. Compiler-inlined Kotlin bodies remain in enclosing native method; no new exclusions.",
+  "source_sha256": {
+    "android/app/src/main/java/com/blent/connection/RememberedConnection.kt": "267d937d797c69e514d653896984f014cea4218f8a3a02e51ade1ed0c982ed89",
+    "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt": "50af033bf6c08be0e01c6d23f28b29204c112aad246ff1ce91e84f362fa2cf4c",
+    "android/app/src/main/java/com/blent/connection/ConnectionControls.kt": "83ef221f989db30f0b605e5d653c2904d654b1a5ed73b15d99d95be1c957f5ab",
+    "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt": "2de5bdb70d67a24a0433652dd8407f456f4f4c0112e089526511c771cac69ead",
+    "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt": "212ccc81661e3da2df3472e338a50ee3e75c094e2f64c6fd834dd03739fe8790"
+  },
+  "suites": [
+    {
+      "name": "com.blent.connection.ConfiguredConnectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.blent.connection.ConnectionControlsTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.blent.connection.ConnectionPreferenceControlsTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.blent.connection.ConnectionReattachTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.blent.connection.ConnectionRetryControlsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.blent.connection.RememberedConnectionActivityTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.blent.connection.RememberedConnectionTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "methods": [
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$Attempt",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/Object;Lkotlinx/coroutines/Job;)V",
+      "line": "21",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$Attempt",
+      "method": "getIdentity",
+      "descriptor": "()Ljava/lang/Object;",
+      "line": "21",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$Attempt",
+      "method": "getExecution",
+      "descriptor": "()Lkotlinx/coroutines/Job;",
+      "line": "21",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "line": "63",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$3",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)V",
+      "line": "78",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$2",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)V",
+      "line": "77",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)V",
+      "line": "66",
+      "covered": 10,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$start$execution$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "line": "61",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$Selection",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/Object;Z)V",
+      "line": "20",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$Selection",
+      "method": "getAttempt",
+      "descriptor": "()Ljava/lang/Object;",
+      "line": "20",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$Selection",
+      "method": "getActive",
+      "descriptor": "()Z",
+      "line": "20",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-4$1",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+      "line": "39",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4$1$1$1$1",
+      "method": "invoke",
+      "descriptor": "(Z)V",
+      "line": "70",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionControls$3$3$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "line": "32",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$observeRemembered$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "line": "45",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$3$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "line": "78",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnectionKt",
+      "method": "connectionPreferenceFailure",
+      "descriptor": "(Ljava/lang/Throwable;)Ljava/lang/String;",
+      "line": "9",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-3$1",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+      "line": "32",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection$awaitEligible$value$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "line": "33",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection$Target",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/Object;Lcom/blent/connection/ConnectionPeer;)V",
+      "line": "17",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection$Target",
+      "method": "getAttempt",
+      "descriptor": "()Ljava/lang/Object;",
+      "line": "17",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection$Target",
+      "method": "getPeer",
+      "descriptor": "()Lcom/blent/connection/ConnectionPeer;",
+      "line": "17",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$2$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "line": "77",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$Request",
+      "method": "<clinit>",
+      "descriptor": "()V",
+      "line": "19",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection",
+      "method": "<init>",
+      "descriptor": "(Lkotlinx/coroutines/flow/StateFlow;Lkotlin/jvm/functions/Function2;)V",
+      "line": "13",
+      "covered": 5,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection",
+      "method": "getPending",
+      "descriptor": "()Lkotlinx/coroutines/flow/StateFlow;",
+      "line": "21",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection",
+      "method": "run",
+      "descriptor": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "line": "23",
+      "covered": 6,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection",
+      "method": "awaitEligible",
+      "descriptor": "(Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "line": "32",
+      "covered": 3,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection",
+      "method": "follow",
+      "descriptor": "(Lcom/blent/connection/RememberedConnection$Target;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "line": "37",
+      "covered": 9,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection",
+      "method": "retryAfter",
+      "descriptor": "(Lcom/blent/connection/RememberedConnection$Target;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "line": "49",
+      "covered": 7,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection",
+      "method": "awaitEnd",
+      "descriptor": "(Ljava/lang/Object;Lcom/blent/connection/ConnectionPeer;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "line": "60",
+      "covered": 4,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection",
+      "method": "eligible",
+      "descriptor": "(Lcom/blent/connection/ConnectionView;)Z",
+      "line": "70",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection",
+      "method": "matchesAttempt",
+      "descriptor": "(Ljava/lang/Object;Lcom/blent/connection/ConnectionView;Lcom/blent/connection/ConnectionPeer;)Z",
+      "line": "73",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection",
+      "method": "samePeer",
+      "descriptor": "(Lcom/blent/connection/ConnectionView;Lcom/blent/connection/ConnectionPeer;)Z",
+      "line": "76",
+      "covered": 2,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnectionView",
+      "method": "<init>",
+      "descriptor": "(ZLjava/lang/String;)V",
+      "line": "8",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnectionView",
+      "method": "<init>",
+      "descriptor": "(ZLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "line": "8",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnectionView",
+      "method": "getPending",
+      "descriptor": "()Z",
+      "line": "8",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnectionView",
+      "method": "getFailure",
+      "descriptor": "()Ljava/lang/String;",
+      "line": "8",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-2$1",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+      "line": "31",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-7$1",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)V",
+      "line": "64",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection$awaitEnd$value$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "line": "62",
+      "covered": 3,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionControls$4$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "line": "35",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$attachmentReady$ended$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "line": "95",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-1$1",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+      "line": "30",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection$retryAfter$cutoff$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "line": "53",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection$Ended",
+      "method": "<init>",
+      "descriptor": "(ZZ)V",
+      "line": "18",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection$Ended",
+      "method": "getAllowed",
+      "descriptor": "()Z",
+      "line": "18",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection$Ended",
+      "method": "getAuthenticated",
+      "descriptor": "()Z",
+      "line": "18",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-5$1",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+      "line": "77",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/connection/ConnectionBinding;Lcom/blent/connection/ConnectionPreferenceStore;Lkotlinx/coroutines/CoroutineScope;Lcom/blent/connection/AttachmentAdmission;)V",
+      "line": "13",
+      "covered": 9,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "getPreferences",
+      "descriptor": "()Lcom/blent/connection/ConnectionPreferenceStore;",
+      "line": "15",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "getRetryPending",
+      "descriptor": "()Lkotlinx/coroutines/flow/StateFlow;",
+      "line": "25",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "getState",
+      "descriptor": "()Lkotlinx/coroutines/flow/StateFlow;",
+      "line": "27",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "connect",
+      "descriptor": "()V",
+      "line": "30",
+      "covered": 4,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "attach",
+      "descriptor": "()V",
+      "line": "39",
+      "covered": 3,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "observeRemembered",
+      "descriptor": "()V",
+      "line": "44",
+      "covered": 3,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "retry",
+      "descriptor": "(Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "line": "48",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "admitRetry",
+      "descriptor": "(Ljava/lang/Object;)Lkotlinx/coroutines/Deferred;",
+      "line": "51",
+      "covered": 4,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "start",
+      "descriptor": "(Lcom/blent/connection/ConfiguredConnection$Request;)Lkotlinx/coroutines/Deferred;",
+      "line": "58",
+      "covered": 9,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "run",
+      "descriptor": "(Ljava/lang/Object;Lcom/blent/connection/ConfiguredConnection$Request;Lcom/blent/connection/ConfiguredConnection$Selection;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "line": "70",
+      "covered": 6,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "admit",
+      "descriptor": "(Ljava/lang/Object;Lcom/blent/connection/ConfiguredConnection$Request;Lcom/blent/connection/ConfiguredConnection$Selection;Ljava/lang/Object;)Ljava/lang/Object;",
+      "line": "80",
+      "covered": 10,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "attachmentReady",
+      "descriptor": "(Lcom/blent/connection/ConfiguredConnection$Selection;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "line": "93",
+      "covered": 4,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "finished",
+      "descriptor": "(Ljava/lang/Object;)V",
+      "line": "100",
+      "covered": 4,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection",
+      "method": "disconnect",
+      "descriptor": "()V",
+      "line": "106",
+      "covered": 4,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-6$1",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+      "line": "78",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionFingerprints$1",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/runtime/Composer;I)V",
+      "line": "48",
+      "covered": 4,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/RememberedConnection$retryAfter$cutoff$1$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "line": "53",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4$1$1$2",
+      "method": "invoke",
+      "descriptor": "(Landroidx/compose/ui/semantics/SemanticsPropertyReceiver;)V",
+      "line": "71",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConfiguredConnection$start$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Throwable;)V",
+      "line": "64",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionControls",
+      "descriptor": "(Lcom/blent/connection/ConnectionBinding;Lcom/blent/connection/ConfiguredConnection;Lcom/blent/connection/SavedTrustBinding;Landroidx/compose/runtime/Composer;I)V",
+      "line": "18",
+      "covered": 26,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionFingerprints",
+      "descriptor": "(Lcom/blent/connection/ConnectionChoice;Landroidx/compose/runtime/Composer;I)V",
+      "line": "46",
+      "covered": 3,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionPairingDialog",
+      "descriptor": "(Lcom/blent/connection/ConnectionBinding;Landroidx/compose/runtime/Composer;I)V",
+      "line": "58",
+      "covered": 9,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionControls$lambda$0",
+      "descriptor": "(Landroidx/compose/runtime/State;)Lcom/blent/connection/ConnectionView;",
+      "line": "19",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionControls$lambda$1",
+      "descriptor": "(Landroidx/compose/runtime/State;)Lcom/blent/connection/ConnectionUse;",
+      "line": "20",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionControls$lambda$2",
+      "descriptor": "(Landroidx/compose/runtime/State;)Lcom/blent/connection/ConfiguredConnectionView;",
+      "line": "21",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionControls$lambda$3",
+      "descriptor": "(Landroidx/compose/runtime/State;)Z",
+      "line": "22",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionControls$lambda$5",
+      "descriptor": "(Landroidx/compose/runtime/MutableState;)Z",
+      "line": "23",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionControls$lambda$6",
+      "descriptor": "(Landroidx/compose/runtime/MutableState;Z)V",
+      "line": "23",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionPairingDialog$lambda$13",
+      "descriptor": "(Landroidx/compose/runtime/State;)Lcom/blent/connection/ConnectionView;",
+      "line": "59",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionPairingDialog$lambda$15",
+      "descriptor": "(Landroidx/compose/runtime/MutableState;)Z",
+      "line": "61",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt",
+      "method": "ConnectionPairingDialog$lambda$16",
+      "descriptor": "(Landroidx/compose/runtime/MutableState;Z)V",
+      "line": "61",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt",
+      "method": "<clinit>",
+      "descriptor": "()V",
+      "line": "30",
+      "covered": 7,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/ConnectionControlsKt$ConnectionControls$5$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "line": "39",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    }
+  ]
+}

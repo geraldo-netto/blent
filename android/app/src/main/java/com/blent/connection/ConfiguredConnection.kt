@@ -21,6 +21,8 @@ internal class ConfiguredConnection(
     private class Attempt(val identity: Any, val execution: Job)
     private var current: Attempt? = null
     private var remembered: Job? = null
+    private val reconnect = RememberedConnection(binding.state, ::retry)
+    val retryPending = reconnect.pending
     private val mutableState = MutableStateFlow(ConfiguredConnectionView())
     val state = mutableState.asStateFlow()
 
@@ -40,7 +42,7 @@ internal class ConfiguredConnection(
 
     @Synchronized fun observeRemembered() {
         if (remembered != null) return
-        remembered = scope.launch { RememberedConnection(binding.state, ::retry).run() }
+        remembered = scope.launch { reconnect.run() }
     }
 
     private suspend fun retry(attempt: Any): Any? = admitRetry(attempt)?.await()

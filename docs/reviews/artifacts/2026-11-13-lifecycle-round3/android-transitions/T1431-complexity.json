@@ -1,0 +1,648 @@
+{
+  "tool": "scripts/complexity/kotlin.py; Kotlin PSI1.9.20",
+  "maximum": 9,
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 13,
+      "function": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 17,
+      "function": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 18,
+      "function": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 23,
+      "function": "run",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 32,
+      "function": "awaitEligible",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 33,
+      "function": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 37,
+      "function": "follow",
+      "complexity": 4
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 49,
+      "function": "retryAfter",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 52,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 53,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 60,
+      "function": "awaitEnd",
+      "complexity": 4
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 62,
+      "function": "<lambda>",
+      "complexity": 4
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 69,
+      "function": "eligible",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 72,
+      "function": "matchesAttempt",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "line": 75,
+      "function": "samePeer",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 8,
+      "function": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 9,
+      "function": "connectionPreferenceFailure",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 13,
+      "function": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 19,
+      "function": "<clinit>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 20,
+      "function": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 21,
+      "function": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 29,
+      "function": "connect",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 38,
+      "function": "attach",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 43,
+      "function": "observeRemembered",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 45,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 48,
+      "function": "retry",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 50,
+      "function": "admitRetry",
+      "complexity": 5
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 57,
+      "function": "start",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 59,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 61,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 64,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 69,
+      "function": "run",
+      "complexity": 5
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 78,
+      "function": "admit",
+      "complexity": 8
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 90,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 93,
+      "function": "attachmentReady",
+      "complexity": 4
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 95,
+      "function": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 99,
+      "function": "finished",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "line": 105,
+      "function": "disconnect",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 18,
+      "function": "ConnectionControls",
+      "complexity": 8
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 23,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 26,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 28,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 29,
+      "function": "<lambda>",
+      "complexity": 5
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 30,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 31,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 32,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 32,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 35,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 36,
+      "function": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 39,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 39,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 46,
+      "function": "ConnectionFingerprints",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 47,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 48,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 58,
+      "function": "ConnectionPairingDialog",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 61,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 63,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 64,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 65,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 66,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 69,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 70,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 71,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 77,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 77,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 77,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 78,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 78,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "line": 78,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 17,
+      "function": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 20,
+      "function": "render",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 21,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 24,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 24,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 24,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 29,
+      "function": "t1431DisconnectCancelsInitialRememberedBackoff",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 33,
+      "function": "t1431DisconnectCancelsCappedPreAuthenticationFailureChain",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 37,
+      "function": "cancelBackoff",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 38,
+      "function": "<lambda>",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 49,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 56,
+      "function": "t1431UntouchedAndUnprovenEndedConnectionsDoNotOfferDisconnect",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 57,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/ConnectionRetryControlsTest.kt",
+      "line": 60,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 8,
+      "function": "t1393RememberedRetryWaitsForExactRetirementAndRetainsNoMediaConsent",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 9,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 22,
+      "function": "t1393TransientFailureRetriesAtBoundedBackoffAndResetsAfterSuccess",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 23,
+      "function": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 40,
+      "function": "t1393UnprovenAndUnrememberedFailuresNeverArmAutomaticRetry",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 42,
+      "function": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 53,
+      "function": "t1393PersistedFirstApprovalAndCoalescedAuthenticationRemainEligible",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 54,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 66,
+      "function": "t1393ChangedOrForgottenPeerRequiresApprovalInsteadOfAnotherRetry",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 68,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 82,
+      "function": "t1393DisconnectDuringBackoffAndInterveningManualAttemptWin",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 84,
+      "function": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 96,
+      "function": "t1393RevocationAndScopeLossCannotReviveAnOwnedConnection",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 98,
+      "function": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 111,
+      "function": "t1393InvalidPreferencesStopRetryWithoutImmediateLoop",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 112,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 122,
+      "function": "t1393QuarantinedOriginalDoesNotInventAReplacementAdmission",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 123,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 134,
+      "function": "t1393BindingCutoffDuringRetrySettingsReadWins",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 135,
+      "function": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 156,
+      "function": "t1393CoalescedRecoveryResetsBackoffFromCap",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 157,
+      "function": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 172,
+      "function": "t1431RetryObservationClearsOnCutoffAndOwnerLoss",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/connection/RememberedConnectionTest.kt",
+      "line": 174,
+      "function": "<lambda>",
+      "complexity": 2
+    }
+  ]
+}

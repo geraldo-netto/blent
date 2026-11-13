@@ -1,0 +1,7 @@
+allprojects { project ->
+    afterEvaluate {
+        if (project.path == ':app') {
+            project.android.sourceSets.test.java.srcDir('/tmp/blent-round3-android-probe')
+        }
+    }
+}

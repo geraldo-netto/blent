@@ -1,0 +1,135 @@
+[
+  {
+    "suite": "com.blent.connection.RememberedConnectionActivityTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.RetainedAdbCutoffTest",
+    "tests": 12,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.RevokedAdbDeliveryTest",
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.NullDisplayCutoffTest",
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.connection.ConnectionCutoffTest",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.connection.ConnectionOwnerTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.connection.ConnectionDisplayTest",
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.DisplayWorkerOwnerTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.DisplayReplacementNativeTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.SessionDisplayRouteTest",
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.connection.ConnectionPresentationTest",
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.connection.ConnectionDisplayBindingTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.connection.ConnectionReattachTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.connection.ConnectionDisplayActivityTest",
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.BackgroundAdbDeliveryTest",
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.connection.RememberedConnectionTest",
+    "tests": 11,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.connection.ConfiguredConnectionTest",
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.connection.ConnectionBindingTest",
+    "tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "com.blent.DisplayReplacementTest",
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+]

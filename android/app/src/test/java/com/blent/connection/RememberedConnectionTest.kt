@@ -169,4 +169,17 @@ class RememberedConnectionTest {
         }
     }
 
+    @Test fun t1431RetryObservationClearsOnCutoffAndOwnerLoss() {
+        for (cancelOwner in listOf(false, true)) {
+            RememberedConnectionFixture().use { rig ->
+                rig.end(rig.ready())
+                assertTrue(rig.configured.retryPending.value)
+                if (cancelOwner) rig.scope.cancel() else rig.configured.disconnect()
+                rig.dispatcher.runCurrent()
+                assertFalse(rig.configured.retryPending.value)
+                assertNull(rig.dispatcher.nextTimerAt())
+            }
+        }
+    }
+
 }

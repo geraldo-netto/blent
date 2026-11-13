@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.blent.connection.ConnectionRetryControlsTest" tests="6" skipped="0" failures="4" errors="0" timestamp="2026-11-13T18:51:05" hostname="morpheus" time="3.774">
+  <properties/>
+  <testcase name="t1431DisconnectCancelsInitialRememberedBackoff[27]" classname="com.blent.connection.ConnectionRetryControlsTest" time="1.776">
+    <failure message="java.lang.AssertionError: Failed to assert the following: (is enabled)&#10;Semantics of the node:&#10;Node #11 at (l=68.0, t=77.0, r=131.0, b=117.0)px&#10;Role = 'Button'&#10;Text = '[Disconnect USB]'&#10;[Disabled]&#10;Actions = [OnClick, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, GetTextLayoutResult]&#10;MergeDescendants = 'true'&#10;Has 9 siblings&#10;Selector used: (Text + EditableText contains 'Disconnect USB' (ignoreCase: false))&#10;" type="java.lang.AssertionError">java.lang.AssertionError: Failed to assert the following: (is enabled)
+Semantics of the node:
+Node #11 at (l=68.0, t=77.0, r=131.0, b=117.0)px
+Role = 'Button'
+Text = '[Disconnect USB]'
+[Disabled]
+Actions = [OnClick, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, GetTextLayoutResult]
+MergeDescendants = 'true'
+Has 9 siblings
+Selector used: (Text + EditableText contains 'Disconnect USB' (ignoreCase: false))
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:265)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:255)
+	at androidx.compose.ui.test.AssertionsKt.assertIsEnabled(Assertions.kt:56)
+	at com.blent.connection.ConnectionRetryControlsTest.cancelBackoff(ConnectionRetryControlsTest.kt:48)
+	at com.blent.connection.ConnectionRetryControlsTest.t1431DisconnectCancelsInitialRememberedBackoff(ConnectionRetryControlsTest.kt:30)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:272)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:271)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt:495)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt:327)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withComposeIdlingResource(ComposeUiTest.android.kt:379)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withComposeIdlingResource(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1.invoke(ComposeUiTest.android.kt:326)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withWindowRecomposer(ComposeUiTest.android.kt:353)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withWindowRecomposer(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1.invoke(ComposeUiTest.android.kt:325)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withTestCoroutines(ComposeUiTest.android.kt:366)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withTestCoroutines(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1.invoke(ComposeUiTest.android.kt:324)
+	at androidx.compose.ui.test.junit4.IdlingStrategy.withStrategy(IdlingStrategy.android.kt:52)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1.invoke(ComposeUiTest.android.kt:323)
+	at androidx.compose.ui.test.junit4.IdlingResourceRegistry.withRegistry(IdlingResourceRegistry.jvm.kt:157)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1.invoke(ComposeUiTest.android.kt:322)
+	at androidx.compose.ui.test.junit4.ComposeRootRegistry.withRegistry(ComposeRootRegistry.android.kt:146)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.runTest(ComposeUiTest.android.kt:321)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1.evaluate(AndroidComposeTestRule.android.kt:271)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:542)
+	at org.robolectric.internal.SandboxTestRunner.lambda$executeInSandbox$4(SandboxTestRunner.java:429)
+	at org.robolectric.internal.SandboxTestRunner.runInSandbox(SandboxTestRunner.java:455)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:420)
+	at org.robolectric.internal.SandboxTestRunner$5.evaluate(SandboxTestRunner.java:405)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$000(SandboxTestRunner.java:64)
+	at org.robolectric.internal.SandboxTestRunner$4.evaluate(SandboxTestRunner.java:294)
+	at org.robolectric.internal.SandboxTestRunner$2.evaluate(SandboxTestRunner.java:260)
+	at org.robolectric.internal.SandboxTestRunner$3.lambda$evaluate$0(SandboxTestRunner.java:280)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThreadWithClassLoader$1(Sandbox.java:112)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+</failure>
+  </testcase>
+  <testcase name="t1431DisconnectCancelsCappedPreAuthenticationFailureChain[27]" classname="com.blent.connection.ConnectionRetryControlsTest" time="0.055">
+    <failure message="java.lang.AssertionError: Failed to assert the following: (is enabled)&#10;Semantics of the node:&#10;Node #40 at (l=68.0, t=77.0, r=131.0, b=117.0)px&#10;Role = 'Button'&#10;Text = '[Disconnect USB]'&#10;[Disabled]&#10;Actions = [OnClick, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, GetTextLayoutResult]&#10;MergeDescendants = 'true'&#10;Has 6 siblings&#10;Selector used: (Text + EditableText contains 'Disconnect USB' (ignoreCase: false))&#10;" type="java.lang.AssertionError">java.lang.AssertionError: Failed to assert the following: (is enabled)
+Semantics of the node:
+Node #40 at (l=68.0, t=77.0, r=131.0, b=117.0)px
+Role = 'Button'
+Text = '[Disconnect USB]'
+[Disabled]
+Actions = [OnClick, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, GetTextLayoutResult]
+MergeDescendants = 'true'
+Has 6 siblings
+Selector used: (Text + EditableText contains 'Disconnect USB' (ignoreCase: false))
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:265)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:255)
+	at androidx.compose.ui.test.AssertionsKt.assertIsEnabled(Assertions.kt:56)
+	at com.blent.connection.ConnectionRetryControlsTest.cancelBackoff(ConnectionRetryControlsTest.kt:48)
+	at com.blent.connection.ConnectionRetryControlsTest.t1431DisconnectCancelsCappedPreAuthenticationFailureChain(ConnectionRetryControlsTest.kt:34)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:272)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:271)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt:495)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt:327)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withComposeIdlingResource(ComposeUiTest.android.kt:379)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withComposeIdlingResource(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1.invoke(ComposeUiTest.android.kt:326)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withWindowRecomposer(ComposeUiTest.android.kt:353)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withWindowRecomposer(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1.invoke(ComposeUiTest.android.kt:325)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withTestCoroutines(ComposeUiTest.android.kt:366)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withTestCoroutines(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1.invoke(ComposeUiTest.android.kt:324)
+	at androidx.compose.ui.test.junit4.IdlingStrategy.withStrategy(IdlingStrategy.android.kt:52)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1.invoke(ComposeUiTest.android.kt:323)
+	at androidx.compose.ui.test.junit4.IdlingResourceRegistry.withRegistry(IdlingResourceRegistry.jvm.kt:157)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1.invoke(ComposeUiTest.android.kt:322)
+	at androidx.compose.ui.test.junit4.ComposeRootRegistry.withRegistry(ComposeRootRegistry.android.kt:146)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.runTest(ComposeUiTest.android.kt:321)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1.evaluate(AndroidComposeTestRule.android.kt:271)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:542)
+	at org.robolectric.internal.SandboxTestRunner.lambda$executeInSandbox$4(SandboxTestRunner.java:429)
+	at org.robolectric.internal.SandboxTestRunner.runInSandbox(SandboxTestRunner.java:455)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:420)
+	at org.robolectric.internal.SandboxTestRunner$5.evaluate(SandboxTestRunner.java:405)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$000(SandboxTestRunner.java:64)
+	at org.robolectric.internal.SandboxTestRunner$4.evaluate(SandboxTestRunner.java:294)
+	at org.robolectric.internal.SandboxTestRunner$2.evaluate(SandboxTestRunner.java:260)
+	at org.robolectric.internal.SandboxTestRunner$3.lambda$evaluate$0(SandboxTestRunner.java:280)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThreadWithClassLoader$1(Sandbox.java:112)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+</failure>
+  </testcase>
+  <testcase name="t1431UntouchedAndUnprovenEndedConnectionsDoNotOfferDisconnect[27]" classname="com.blent.connection.ConnectionRetryControlsTest" time="0.058"/>
+  <testcase name="t1431DisconnectCancelsInitialRememberedBackoff" classname="com.blent.connection.ConnectionRetryControlsTest" time="1.786">
+    <failure message="java.lang.AssertionError: Failed to assert the following: (is enabled)&#10;Semantics of the node:&#10;Node #11 at (l=68.0, t=97.0, r=131.0, b=149.0)px&#10;Role = 'Button'&#10;Text = '[Disconnect USB]'&#10;[Disabled]&#10;Actions = [OnClick, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, GetTextLayoutResult]&#10;MergeDescendants = 'true'&#10;Has 9 siblings&#10;Selector used: (Text + EditableText contains 'Disconnect USB' (ignoreCase: false))&#10;" type="java.lang.AssertionError">java.lang.AssertionError: Failed to assert the following: (is enabled)
+Semantics of the node:
+Node #11 at (l=68.0, t=97.0, r=131.0, b=149.0)px
+Role = 'Button'
+Text = '[Disconnect USB]'
+[Disabled]
+Actions = [OnClick, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, GetTextLayoutResult]
+MergeDescendants = 'true'
+Has 9 siblings
+Selector used: (Text + EditableText contains 'Disconnect USB' (ignoreCase: false))
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:265)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:255)
+	at androidx.compose.ui.test.AssertionsKt.assertIsEnabled(Assertions.kt:56)
+	at com.blent.connection.ConnectionRetryControlsTest.cancelBackoff(ConnectionRetryControlsTest.kt:48)
+	at com.blent.connection.ConnectionRetryControlsTest.t1431DisconnectCancelsInitialRememberedBackoff(ConnectionRetryControlsTest.kt:30)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:272)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:271)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt:495)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt:327)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withComposeIdlingResource(ComposeUiTest.android.kt:379)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withComposeIdlingResource(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1.invoke(ComposeUiTest.android.kt:326)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withWindowRecomposer(ComposeUiTest.android.kt:353)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withWindowRecomposer(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1.invoke(ComposeUiTest.android.kt:325)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withTestCoroutines(ComposeUiTest.android.kt:366)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withTestCoroutines(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1.invoke(ComposeUiTest.android.kt:324)
+	at androidx.compose.ui.test.junit4.IdlingStrategy.withStrategy(IdlingStrategy.android.kt:52)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1.invoke(ComposeUiTest.android.kt:323)
+	at androidx.compose.ui.test.junit4.IdlingResourceRegistry.withRegistry(IdlingResourceRegistry.jvm.kt:157)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1.invoke(ComposeUiTest.android.kt:322)
+	at androidx.compose.ui.test.junit4.ComposeRootRegistry.withRegistry(ComposeRootRegistry.android.kt:146)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.runTest(ComposeUiTest.android.kt:321)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1.evaluate(AndroidComposeTestRule.android.kt:271)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:542)
+	at org.robolectric.internal.SandboxTestRunner.lambda$executeInSandbox$4(SandboxTestRunner.java:429)
+	at org.robolectric.internal.SandboxTestRunner.runInSandbox(SandboxTestRunner.java:455)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:420)
+	at org.robolectric.internal.SandboxTestRunner$5.evaluate(SandboxTestRunner.java:405)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$000(SandboxTestRunner.java:64)
+	at org.robolectric.internal.SandboxTestRunner$4.evaluate(SandboxTestRunner.java:294)
+	at org.robolectric.internal.SandboxTestRunner$2.evaluate(SandboxTestRunner.java:260)
+	at org.robolectric.internal.SandboxTestRunner$3.lambda$evaluate$0(SandboxTestRunner.java:280)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThreadWithClassLoader$1(Sandbox.java:112)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+</failure>
+  </testcase>
+  <testcase name="t1431DisconnectCancelsCappedPreAuthenticationFailureChain" classname="com.blent.connection.ConnectionRetryControlsTest" time="0.045">
+    <failure message="java.lang.AssertionError: Failed to assert the following: (is enabled)&#10;Semantics of the node:&#10;Node #40 at (l=68.0, t=97.0, r=131.0, b=149.0)px&#10;Role = 'Button'&#10;Text = '[Disconnect USB]'&#10;[Disabled]&#10;Actions = [OnClick, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, GetTextLayoutResult]&#10;MergeDescendants = 'true'&#10;Has 6 siblings&#10;Selector used: (Text + EditableText contains 'Disconnect USB' (ignoreCase: false))&#10;" type="java.lang.AssertionError">java.lang.AssertionError: Failed to assert the following: (is enabled)
+Semantics of the node:
+Node #40 at (l=68.0, t=97.0, r=131.0, b=149.0)px
+Role = 'Button'
+Text = '[Disconnect USB]'
+[Disabled]
+Actions = [OnClick, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution, GetTextLayoutResult]
+MergeDescendants = 'true'
+Has 6 siblings
+Selector used: (Text + EditableText contains 'Disconnect USB' (ignoreCase: false))
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:265)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:255)
+	at androidx.compose.ui.test.AssertionsKt.assertIsEnabled(Assertions.kt:56)
+	at com.blent.connection.ConnectionRetryControlsTest.cancelBackoff(ConnectionRetryControlsTest.kt:48)
+	at com.blent.connection.ConnectionRetryControlsTest.t1431DisconnectCancelsCappedPreAuthenticationFailureChain(ConnectionRetryControlsTest.kt:34)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:272)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:271)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt:495)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt:327)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withComposeIdlingResource(ComposeUiTest.android.kt:379)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withComposeIdlingResource(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1.invoke(ComposeUiTest.android.kt:326)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withWindowRecomposer(ComposeUiTest.android.kt:353)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withWindowRecomposer(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1.invoke(ComposeUiTest.android.kt:325)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withTestCoroutines(ComposeUiTest.android.kt:366)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withTestCoroutines(ComposeUiTest.android.kt:230)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1.invoke(ComposeUiTest.android.kt:324)
+	at androidx.compose.ui.test.junit4.IdlingStrategy.withStrategy(IdlingStrategy.android.kt:52)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1.invoke(ComposeUiTest.android.kt:323)
+	at androidx.compose.ui.test.junit4.IdlingResourceRegistry.withRegistry(IdlingResourceRegistry.jvm.kt:157)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1.invoke(ComposeUiTest.android.kt:322)
+	at androidx.compose.ui.test.junit4.ComposeRootRegistry.withRegistry(ComposeRootRegistry.android.kt:146)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.runTest(ComposeUiTest.android.kt:321)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1.evaluate(AndroidComposeTestRule.android.kt:271)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:542)
+	at org.robolectric.internal.SandboxTestRunner.lambda$executeInSandbox$4(SandboxTestRunner.java:429)
+	at org.robolectric.internal.SandboxTestRunner.runInSandbox(SandboxTestRunner.java:455)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:420)
+	at org.robolectric.internal.SandboxTestRunner$5.evaluate(SandboxTestRunner.java:405)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$000(SandboxTestRunner.java:64)
+	at org.robolectric.internal.SandboxTestRunner$4.evaluate(SandboxTestRunner.java:294)
+	at org.robolectric.internal.SandboxTestRunner$2.evaluate(SandboxTestRunner.java:260)
+	at org.robolectric.internal.SandboxTestRunner$3.lambda$evaluate$0(SandboxTestRunner.java:280)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThreadWithClassLoader$1(Sandbox.java:112)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+</failure>
+  </testcase>
+  <testcase name="t1431UntouchedAndUnprovenEndedConnectionsDoNotOfferDisconnect" classname="com.blent.connection.ConnectionRetryControlsTest" time="0.05"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

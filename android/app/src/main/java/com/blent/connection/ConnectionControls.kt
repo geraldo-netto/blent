@@ -19,6 +19,7 @@ internal fun ConnectionControls(binding: ConnectionBinding, configured: Configur
     val view by binding.state.collectAsState()
     val use by saved.connectionUse.collectAsState(initial = null)
     val configuration by configured.state.collectAsState()
+    val retryPending by configured.retryPending.collectAsState()
     var settings by remember { mutableStateOf(false) }
     SettingsSection("USB connection")
     Text(view.status)
@@ -27,7 +28,7 @@ internal fun ConnectionControls(binding: ConnectionBinding, configured: Configur
     configuration.failure?.let { Text(it, color = MaterialTheme.colorScheme.error) }
     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         Button(onClick = configured::connect, enabled = !view.active && !configuration.pending && use == null) { Text("Connect USB") }
-        OutlinedButton(onClick = configured::disconnect, enabled = view.active || configuration.pending) { Text("Disconnect USB") }
+        OutlinedButton(onClick = configured::disconnect, enabled = view.active || configuration.pending || retryPending) { Text("Disconnect USB") }
         OutlinedButton(onClick = { settings = true }) { Text("USB capacity and deadlines") }
     }
     SavedComputerControls(saved)
