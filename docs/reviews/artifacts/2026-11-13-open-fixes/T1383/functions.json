@@ -1,0 +1,43 @@
+[
+  {
+    "file": "common/src/adb.rs",
+    "name": "physical_identity",
+    "line": 73,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "4c2b2fae7f1141e8bf0b359183a52439a82a9f906b440a056f536387126b9576",
+    "complexity": 1
+  },
+  {
+    "file": "host/src/usb.rs",
+    "name": "identity",
+    "line": 88,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "e98c01eee45a78bc182663be0b5d609246aff35dbfc1c2e7e702dac99dd783e4",
+    "complexity": 1
+  },
+  {
+    "file": "host/src/linux_main.rs",
+    "name": "probe_device_identity",
+    "line": 2490,
+    "language": "rust",
+    "covered": 11,
+    "total": 12,
+    "percent": 91.66666666666667,
+    "passes": true,
+    "missing": [
+      2497
+    ],
+    "source_sha256": "cf0afcbbbe11d48326f76b8fe744d2f02e316db1c488c1d16fd0713f84a61ec3",
+    "complexity": 2
+  }
+]

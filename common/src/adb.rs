@@ -67,3 +67,39 @@ mod tests {
         }
     }
 }
+
+/// Decode a bounded physical identity from an ADB property response.
+/// The returned view borrows only this response; callers own any retained copy.
+pub fn physical_identity(bytes: &[u8]) -> Option<&str> {
+    let identity = std::str::from_utf8(bytes).ok()?.trim();
+    crate::tablets::validate_adb_serial(identity).ok()?;
+    (!identity.eq_ignore_ascii_case("unknown")).then_some(identity)
+}
+
+#[cfg(test)]
+mod identity_tests {
+    #[test]
+    fn t1383_physical_identity_contract_boundaries() {
+        for bytes in [
+            vec![0xff],
+            vec![0xfe],
+            vec![],
+            b"unknown".to_vec(),
+            b" UnKnOwN\n".to_vec(),
+            vec![b'a'; 1025],
+        ] {
+            assert_eq!(super::physical_identity(&bytes), None);
+        }
+        for code in (0..=31).chain(127..=159) {
+            let value = format!("a{}b", char::from_u32(code).unwrap());
+            assert_eq!(super::physical_identity(value.as_bytes()), None);
+        }
+        for identity in ["café".to_owned(), "x".repeat(1024)] {
+            let response = format!("{identity}\r\n");
+            assert_eq!(
+                super::physical_identity(response.as_bytes()),
+                Some(identity.as_str())
+            );
+        }
+    }
+}

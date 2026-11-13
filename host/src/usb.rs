@@ -90,12 +90,7 @@ impl<C: Commands> Adb<C> {
             .checked(args(serial, &["shell", "getprop", "ro.serialno"]), None)
             .await
             .ok()?;
-        let id = std::str::from_utf8(&bytes).ok()?.trim();
-        (!id.is_empty()
-            && id.len() <= 1024
-            && !id.chars().any(char::is_control)
-            && !id.eq_ignore_ascii_case("unknown"))
-        .then(|| id.to_string())
+        blent_config::adb::physical_identity(&bytes).map(str::to_owned)
     }
     pub async fn installed(&self, serial: &str) -> Option<bool> {
         let output = self

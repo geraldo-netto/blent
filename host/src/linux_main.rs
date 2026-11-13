@@ -1033,6 +1033,26 @@ printf '%s\n' "$2" >> "$0.log"
         );
     }
 
+    #[tokio::test]
+    async fn t1383_invalid_physical_identities_remain_distinct() {
+        use std::os::unix::fs::PermissionsExt;
+        let root = tempfile::tempdir().unwrap();
+        let adb = root.path().join("adb");
+        std::fs::write(&adb, "#!/bin/sh\ncat \"$0.bytes\"\n").unwrap();
+        std::fs::set_permissions(&adb, std::fs::Permissions::from_mode(0o700)).unwrap();
+        let devices = ["USB".into(), "tablet:5555".into()];
+        for bytes in [vec![0xff], vec![0xfe], b"a\0b".to_vec(), b"a\x1bb".to_vec(), vec![b'a'; 1025]] {
+            std::fs::write(adb.with_extension("bytes"), bytes).unwrap();
+            let mut identities = Default::default();
+            assert_eq!(unique_devices(&devices, None, &mut identities, adb.to_str().unwrap()).await, devices);
+            assert!(identities.is_empty(), "T1383: malformed identity became authoritative");
+        }
+        for bytes in [b"tablet\r\n".to_vec(), vec![b'a'; 1024], "café".as_bytes().to_vec()] {
+            std::fs::write(adb.with_extension("bytes"), bytes).unwrap();
+            assert_eq!(unique_devices(&devices, None, &mut Default::default(), adb.to_str().unwrap()).await, ["USB"]);
+        }
+    }
+
     #[test]
     fn t278_network_serial_forms_do_not_claim_usb_transport() {
         for serial in [
@@ -2473,9 +2493,11 @@ async fn probe_device_identity(serial: &str, adb: &str) -> Option<(String, Strin
         .output_bounded()
         .await
         .ok()?;
-    let id = String::from_utf8_lossy(&output.stdout).trim().to_string();
-    (output.status.success() && !id.is_empty() && !id.eq_ignore_ascii_case("unknown"))
-        .then(|| (serial.to_string(), id))
+    if !output.status.success() {
+        return None;
+    }
+    let id = blent_config::adb::physical_identity(&output.stdout)?;
+    Some((serial.to_string(), id.to_string()))
 }
 
 /// Filter once before assigning any display slot. Explicit test serials do
