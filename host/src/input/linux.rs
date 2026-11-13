@@ -594,14 +594,14 @@ pub(super) fn create_device(
 pub(super) static TOUCH_DEVICES: std::sync::atomic::AtomicUsize =
     std::sync::atomic::AtomicUsize::new(0);
 
-pub(super) async fn osk_touch_device_added() {
+async fn osk_touch_device_added(lifetime: &lifetime::Lifetime) {
     TOUCH_DEVICES.fetch_add(1, Ordering::SeqCst);
-    crate::osk::sync_touch_state(&TOUCH_DEVICES).await;
+    crate::osk::sync_touch_state(&TOUCH_DEVICES, &|proof| lifetime.observe_osk(proof)).await;
 }
 
-pub(super) async fn osk_touch_device_removed() {
+async fn osk_touch_device_removed(lifetime: &lifetime::Lifetime) {
     TOUCH_DEVICES.fetch_sub(1, Ordering::SeqCst);
-    crate::osk::sync_touch_state(&TOUCH_DEVICES).await;
+    crate::osk::sync_touch_state(&TOUCH_DEVICES, &|proof| lifetime.observe_osk(proof)).await;
 }
 
 /// Own device lifetime even when the watcher is cancelled inside an await.
@@ -642,7 +642,7 @@ impl DeviceOwner {
         }
         if has_touch {
             self.touch_registered = true;
-            osk_touch_device_added().await;
+            osk_touch_device_added(&self.lifetime).await;
         }
         count
     }
@@ -660,7 +660,7 @@ impl DeviceOwner {
         drop(old);
         if had_touch {
             self.touch_registered = false;
-            osk_touch_device_removed().await;
+            osk_touch_device_removed(&self.lifetime).await;
         }
         info!("Tablet detached — virtual input devices removed");
     }

@@ -1,0 +1,33 @@
+
+running 1 test
+test t1433_cancelled_osk_retains_input_and_shared_restore_gate ... FAILED
+
+failures:
+
+---- t1433_cancelled_osk_retains_input_and_shared_restore_gate stdout ----
+
+thread 't1433_cancelled_osk_retains_input_and_shared_restore_gate' (1326320) panicked at host/tests/input_commands/fixture.rs:51:5:
+
+running 1 test
+original_alive=true input_complete_early=true restore_complete_early=true commands_before_release=3
+test t1433_cancelled_osk_retains_input_and_shared_restore_gate ... FAILED
+
+failures:
+
+failures:
+    t1433_cancelled_osk_retains_input_and_shared_restore_gate
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+
+
+thread 't1433_cancelled_osk_retains_input_and_shared_restore_gate' (1326334) panicked at host/tests/input_commands.rs:60:5:
+T1433 input retired before original command
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    t1433_cancelled_osk_retains_input_and_shared_restore_gate
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s

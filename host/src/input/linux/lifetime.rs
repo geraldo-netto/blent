@@ -17,6 +17,7 @@ struct State {
     claimed: bool,
     identity: Option<Identity>,
     native: Vec<Completion>,
+    osk: blent_config::retirement::observations::Observations<2>,
 }
 struct Identity(u32);
 impl Identity {
@@ -65,9 +66,17 @@ impl Lifetime {
         assert!(state.native.len() < 2, "Input native observation capacity");
         state.native.push(proof);
     }
-    pub(super) fn restore_touch(&self) {
-        match crate::owned_task::Task::spawn(async {
-            crate::osk::sync_touch_state(&super::TOUCH_DEVICES).await;
+    pub(super) fn observe_osk(&self, proof: Completion) -> io::Result<()> {
+        self.state.lock().unwrap().osk.reserve()?.bind(proof);
+        Ok(())
+    }
+    pub(super) fn restore_touch(self: &Arc<Self>) {
+        let lifetime = self.clone();
+        match crate::owned_task::Task::spawn(async move {
+            crate::osk::sync_touch_state(&super::TOUCH_DEVICES, &|proof| {
+                lifetime.observe_osk(proof)
+            })
+            .await;
             Ok(())
         }) {
             Ok(task) => {
@@ -96,12 +105,39 @@ fn pool() -> io::Result<&'static Pool> {
 }
 impl Observe for State {
     fn poll_complete(&mut self) -> bool {
-        self.native.iter().all(Completion::is_complete)
+        self.osk.complete() && self.native.iter().all(Completion::is_complete)
     }
 }
 impl Drop for Lifetime {
     fn drop(&mut self) {
         let state = std::mem::take(self.state.get_mut().unwrap());
         self.admission.take().unwrap().retain(state);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn t1433_osk_observation_exhaustion_rejects_without_forgetting_originals() {
+        let originals = Pool::new(3).unwrap();
+        let first = originals.reserve().unwrap();
+        let second = originals.reserve().unwrap();
+        let next = originals.reserve().unwrap();
+        let lifetime = Lifetime::new().unwrap();
+        lifetime.observe_osk(first.completion()).unwrap();
+        lifetime.observe_osk(second.completion()).unwrap();
+        assert!(lifetime.observe_osk(next.completion()).is_err());
+        assert!(!lifetime.state.lock().unwrap().osk.complete());
+        drop(first);
+        lifetime.observe_osk(next.completion()).unwrap();
+        drop((second, next));
+        assert!(lifetime.state.lock().unwrap().osk.complete());
+        let proof = lifetime.completion();
+        drop(lifetime);
+        while !proof.is_complete() {
+            std::thread::yield_now();
+        }
     }
 }

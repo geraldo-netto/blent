@@ -219,6 +219,17 @@ for original settlement. The process drain retains these input admissions too.
 The input and task limits bound active/retiring work; lowering them reduces
 resource use but can reject new sessions while cleanup remains pending.
 
+Each input lifetime separately funds two constructor/final-task receipts and two
+OSK operation observations. The shared keyboard gate has a fixed two-receipt pool:
+one serialized operation plus its predecessor's completion-publication gap.
+These receipts do not consume task slots, so a final cleanup task can still run
+with `BLENT_TASK_LIMIT=1`. Before each OSK command, two bounded observations are
+reserved for its original child and output collector. Cancellation retains both
+proofs and the original keyboard-operation gate until settlement; a command
+failure/deadline does not permit another keyboard effect. Input-owned final
+restoration inherits the existing input admission after process cutoff. Its
+command receipts are distinct from its task completion, avoiding a self-wait.
+
 Display ADB routes keep one original worker through creation, repair and cleanup.
 Caller cancellation and Activity/session stop do not settle an unacknowledged ADB
 server effect. Empty snapshots cannot retire an unknown creator; cleanup waits for

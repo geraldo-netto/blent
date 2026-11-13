@@ -1,0 +1,110 @@
+{
+  "tool": "Blent syn2.0.119 and tree-sitter C local counters",
+  "functions": [
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/control_exit.rs",
+      3,
+      "main",
+      4
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_command.rs",
+      5,
+      "intercepted",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_command.rs",
+      13,
+      "drop",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_command.rs",
+      15,
+      "check",
+      4
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_command.rs",
+      35,
+      "main",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_identity.rs",
+      5,
+      "intercepted",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_identity.rs",
+      11,
+      "check",
+      3
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_identity.rs",
+      23,
+      "main",
+      2
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_release.rs",
+      5,
+      "intercepted",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_release.rs",
+      11,
+      "check",
+      3
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_release.rs",
+      42,
+      "main",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/deny_owned_kill.c",
+      10,
+      "original",
+      4
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/deny_owned_kill.c",
+      26,
+      "kill",
+      5
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/held_command.c",
+      6,
+      "main",
+      3
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/reject_input_write.c",
+      9,
+      "rejected",
+      7
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-native-ownership-review/reject_input_write.c",
+      19,
+      "write",
+      2
+    ]
+  ],
+  "source_sha256": {
+    "docs/reviews/artifacts/2026-11-13-native-ownership-review/control_exit.rs": "ddc8efa929b7e50012554f35ff462b3df6a5eb3ae7ebee6af515620fd25ff6f8",
+    "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_command.rs": "c5147357aee03fcf83c1e80a9827c78324d0754f9c8fd05a5a74018f39d96c1d",
+    "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_identity.rs": "96e60ff5de3a55176db9f2f620c18083582df9cab253ce719890e6718fb4d94d",
+    "docs/reviews/artifacts/2026-11-13-native-ownership-review/input_release.rs": "d59c9e81d8c1c5d1cce8a51fac8ee7749a83b04e62a315fb70d9fd4bc096cf14",
+    "docs/reviews/artifacts/2026-11-13-native-ownership-review/deny_owned_kill.c": "059f4c6fcae974b8bd366797a597a2691dcb4f03ac59d7ea82a70cd0f38c5b23",
+    "docs/reviews/artifacts/2026-11-13-native-ownership-review/held_command.c": "71fa740260d507acd71474f9379b3c389ea2f63de3ca91ed914fe6c0048746bc",
+    "docs/reviews/artifacts/2026-11-13-native-ownership-review/reject_input_write.c": "0d820387155d30b49cdbd5450184482ca3925c3dd39eec88b25c483b71c7b620"
+  }
+}

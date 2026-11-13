@@ -1,0 +1,75 @@
+COHORT native_commands::
+
+running 4 tests
+test native_commands::tests::t1433_child_and_collector_must_both_settle_in_either_order ... ok
+test native_commands::tests::t1433_command_slots_are_bounded_and_cancelled_reservations_recover ... ok
+test native_commands::tests::t1433_failed_spawn_retires_collector_and_allows_later_commands ... ok
+test native_commands::tests::t1433_unknown_original_prevents_successor_command_effects ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 851 filtered out; finished in 0.07s
+
+COHORT osk::
+
+running 12 tests
+test osk::operation::tests::t1433_operation_capacity_rejects_before_effects_and_recovers ... ok
+test osk::tests::t111_restore_retries_preserved_setting_until_confirmed ... ok
+test osk::tests::t1433_rejected_operation_observation_prevents_keyboard_effects ... ok
+test osk::tests::t148_concurrent_device_changes_serialize_keyboard_writes ... ok
+test osk::tests::t148_detach_during_disable_reconciles_current_device_count ... ok
+test osk::tests::t334_failed_or_interrupted_writes_never_publish_empty_or_replace_valid_state ... ok
+test osk::tests::t334_invalid_existing_backup_never_suppresses_or_restores ... ok
+test osk::tests::t334_new_state_must_be_saved_before_suppression ... ok
+test osk::tests::t334_saved_state_must_be_a_regular_file_without_symlinks ... ok
+test osk::tests::t334_unreadable_state_never_changes_the_keyboard ... ok
+test osk::tests::t334_unwritable_state_destination_does_not_suppress ... ok
+test osk::tests::t334_valid_backup_is_preserved_and_restoration_can_retry ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 843 filtered out; finished in 0.05s
+
+COHORT kwin::
+
+running 5 tests
+test kwin::coverage_tests::t497_kwin_adapters_restore_only_the_owned_keyboard_state ... ok
+test kwin::regression_tests::t512_qdbus_preserves_signed_scalar_values ... ok
+test kwin::tests::busctl_scalar_drops_the_signature_and_quotes ... ok
+test kwin::tests::busctl_string_array_is_split_on_quotes ... ok
+test kwin::tests::t064_transient_probe_failure_is_retried_until_backend_is_available ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 850 filtered out; finished in 0.30s
+
+COHORT input::linux::coverage_tests
+
+running 2 tests
+test input::linux::coverage_tests::t1430_device_identity_range_is_checked_and_every_admitted_identity_is_distinct ... ok
+test input::linux::coverage_tests::t497_uinput_construction_errors_and_owned_retirement ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 853 filtered out; finished in 3.57s
+
+COHORT input::linux::lifetime::
+
+running 1 test
+test input::linux::lifetime::tests::t1433_osk_observation_exhaustion_rejects_without_forgetting_originals ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 854 filtered out; finished in 0.00s
+
+COHORT input_commands
+
+running 3 tests
+test t1433_cancelled_osk_retains_input_and_shared_restore_gate ... ok
+test t1433_one_task_slot_still_funds_original_osk_final_restoration ... ok
+test t1433_process_cutoff_preserves_admitted_input_osk_cleanup ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.58s
+
+COHORT input_creation
+
+running 7 tests
+test t1422_cancelled_creation_retains_native_proof_and_identity ... ok
+test t1422_capacity_rejects_before_creation_and_recovers_after_settlement ... ok
+test t1422_failed_constructor_settles_original_admission ... ok
+test t1422_invalid_capacity_never_admits_native_work ... ok
+test t1422_process_exit_waits_for_cancelled_constructor ... ok
+test t1422_session_retirement_waits_for_original_constructor ... ok
+test t1430_identity_boundary_rejects_without_panic_or_admission ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.43s

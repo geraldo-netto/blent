@@ -1,0 +1,417 @@
+{
+  "tool": "cargo-llvm-cov0.8.7 / Rust1.100.0 LLVM; exact library,input_commands,input_creation",
+  "profiles": 38,
+  "production_functions": [
+    {
+      "file": "host/src/native_commands.rs",
+      "name": "output",
+      "line": 29,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "name": "originals",
+      "line": 48,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "name": "complete",
+      "line": 53,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "name": "reserve",
+      "line": 56,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "name": "run",
+      "line": 62,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "name": "output",
+      "line": 85,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/osk/operation.rs",
+      "name": "pool",
+      "line": 17,
+      "language": "rust",
+      "covered": 4,
+      "total": 5,
+      "percent": 80.0,
+      "passes": true,
+      "missing": [
+        23
+      ]
+    },
+    {
+      "file": "host/src/osk/operation.rs",
+      "name": "acquire",
+      "line": 25,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/osk/operation.rs",
+      "name": "completion",
+      "line": 42,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/osk/operation.rs",
+      "name": "drop",
+      "line": 47,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/osk/operation.rs",
+      "name": "poll_complete",
+      "line": 59,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/osk.rs",
+      "name": "get_mode",
+      "line": 41,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/osk.rs",
+      "name": "set_mode",
+      "line": 46,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/osk.rs",
+      "name": "disable",
+      "line": 52,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/osk.rs",
+      "name": "restore",
+      "line": 166,
+      "language": "rust",
+      "covered": 4,
+      "total": 5,
+      "percent": 80.0,
+      "passes": true,
+      "missing": [
+        169
+      ]
+    },
+    {
+      "file": "host/src/osk.rs",
+      "name": "restore_unlocked",
+      "line": 173,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/osk.rs",
+      "name": "sync_touch_state",
+      "line": 206,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/osk.rs",
+      "name": "reconcile",
+      "line": 218,
+      "language": "rust",
+      "covered": 17,
+      "total": 19,
+      "percent": 89.47368421052632,
+      "passes": true,
+      "missing": [
+        230,
+        231
+      ]
+    },
+    {
+      "file": "host/src/osk.rs",
+      "name": "reconcile_current",
+      "line": 241,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "name": "output_of",
+      "line": 46,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "name": "backend",
+      "line": 55,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "name": "backend_with",
+      "line": 59,
+      "language": "rust",
+      "covered": 44,
+      "total": 44,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "name": "get_property",
+      "line": 123,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "name": "get_property_with",
+      "line": 127,
+      "language": "rust",
+      "covered": 35,
+      "total": 35,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "name": "set_property",
+      "line": 174,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "name": "set_property_with",
+      "line": 184,
+      "language": "rust",
+      "covered": 39,
+      "total": 40,
+      "percent": 97.5,
+      "passes": true,
+      "missing": [
+        224
+      ]
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "name": "list_strings",
+      "line": 229,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "osk_touch_device_added",
+      "line": 597,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "osk_touch_device_removed",
+      "line": 602,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "create_devices",
+      "line": 614,
+      "language": "rust",
+      "covered": 26,
+      "total": 29,
+      "percent": 89.65517241379311,
+      "passes": true,
+      "missing": [
+        631,
+        632,
+        642
+      ]
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "remove_devices",
+      "line": 650,
+      "language": "rust",
+      "covered": 15,
+      "total": 16,
+      "percent": 93.75,
+      "passes": true,
+      "missing": [
+        664
+      ]
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "observe_osk",
+      "line": 69,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "restore_touch",
+      "line": 73,
+      "language": "rust",
+      "covered": 14,
+      "total": 15,
+      "percent": 93.33333333333333,
+      "passes": true,
+      "missing": [
+        89
+      ]
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "poll_complete",
+      "line": 107,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "sources": {
+    "host/src/input/linux.rs": "4be76e05ab1b03f4f53d896f95758e719bfab04c9ad95e453d28fdd408a58cc1",
+    "host/src/input/linux/lifetime.rs": "dac199dda5f0bf96caa924bc402f56f708349bbc18a0725b60047ae2a9685eaa",
+    "host/src/kwin.rs": "25f504afac279e382f4ee1691630c903736b2818a156e0a34521fe764337f607",
+    "host/src/kwin/coverage_tests.rs": "50a53ff369210d25178724f52f94b89832b861f4998cbe7bea5dcbfac33112a3",
+    "host/src/lib.rs": "91a20ef9492b15c5c7c7c99516eaec8e05d651852e13f55402470993ea6a3f04",
+    "host/src/native_commands.rs": "47712bf42e5ed8899fab712095e1bd4bf94defee20718333ba6a3909209b0fb7",
+    "host/src/native_commands/tests.rs": "d6d29730b86899165cd4d8135dbeaa8ad3663dc539c16e94e568f34e1def5f65",
+    "host/src/osk.rs": "e98f9e722f9ef3c5a732e28a6c781fb54e7f4c4f81f9aee6250fffe9c19ff883",
+    "host/src/osk/operation.rs": "d4804256121babf221f1d4d0836438ac73ab9a047155de400d089591dac34b67",
+    "host/tests/input_commands.rs": "98b0e5169507079b27b877e2e83f57300253b71d1aa7c7737b72bddf6c6abb1a",
+    "host/tests/input_commands/fixture.rs": "ca6f2d65c265e2046f1030c05a5e36d9bac8e5e3083a9c8050c6c2892c1e9110",
+    "host/tests/input_commands/command.c": "d80a7c4f3845c1d0e753c5e7f022f33af047aadd273b9532b2a3285200dd8647",
+    "host/tests/input_commands/deny_kill.c": "9778bcb83d8fd7bebb00315ae2ef1a5b46803f390fe1310fb7ae72c4dc176aaf"
+  },
+  "objects": {
+    "library": "83e6383d69fc1f4f0e66b97125fe7796246d5ef33658abc82fa9ba6eaf3cbebb",
+    "input_commands": "1bd63ee1908032012ceaefd1a055b02490d1657803137afdc5d3857f06f1f555",
+    "input_creation": "93dda48ed9ecb2a389b0edf349c7a3d0f75b89ad19f32aa25290f7f5083bda61"
+  }
+}

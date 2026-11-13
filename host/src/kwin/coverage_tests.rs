@@ -87,12 +87,12 @@ async fn properties(root: &Path, busctl: bool) {
 async fn keyboard(root: &Path) {
     use std::sync::atomic::{AtomicUsize, Ordering};
     let devices = AtomicUsize::new(1);
-    crate::osk::sync_touch_state(&devices).await;
+    crate::osk::sync_touch_state(&devices, &|_| Ok(())).await;
     let backup = root.join(".local/share/blent/osk-restore");
     assert_eq!(std::fs::read_to_string(&backup).unwrap(), "2");
     assert_eq!(std::fs::read_to_string(root.join("mode")).unwrap(), "0\n");
     devices.store(0, Ordering::SeqCst);
-    crate::osk::sync_touch_state(&devices).await;
+    crate::osk::sync_touch_state(&devices, &|_| Ok(())).await;
     assert_eq!(std::fs::read_to_string(root.join("mode")).unwrap(), "2\n");
     assert!(!backup.exists());
     crate::osk::restore().await;

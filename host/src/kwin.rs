@@ -12,7 +12,7 @@
 //! project targets, and it is tried first; the qdbus family stays as a
 //! fallback for systems without it.
 
-use blent_config::commands::AsyncCommandExt;
+use crate::native_commands::{CommandPort, SystemCommands};
 use tokio::sync::OnceCell;
 use tracing::{info, warn};
 
@@ -43,12 +43,8 @@ impl Backend {
 
 static BACKEND: OnceCell<Backend> = OnceCell::const_new();
 
-async fn output_of(cmd: &str, args: &[&str]) -> Option<String> {
-    let out = tokio::process::Command::new(cmd)
-        .args(args)
-        .output_bounded()
-        .await
-        .ok()?;
+async fn output_of(port: &dyn CommandPort, cmd: &str, args: &[&str]) -> Option<String> {
+    let out = port.output(cmd, args).await.ok()?;
     if !out.status.success() {
         return None;
     }
@@ -57,8 +53,13 @@ async fn output_of(cmd: &str, args: &[&str]) -> Option<String> {
 
 /// Cache a successful probe; a session bus that is still starting is retried.
 pub async fn backend() -> Option<Backend> {
+    backend_with(&SystemCommands).await
+}
+
+async fn backend_with(port: &dyn CommandPort) -> Option<Backend> {
     cached_backend(&BACKEND, || async {
         if output_of(
+            port,
             "busctl",
             &[
                 "--user",
@@ -77,6 +78,7 @@ pub async fn backend() -> Option<Backend> {
         }
         for cmd in QDBUS_NAMES {
             if output_of(
+                port,
                 cmd,
                 &[
                     "--literal",
@@ -119,10 +121,20 @@ where
 
 /// A scalar property. Strings come back unquoted, numbers as digits.
 pub async fn get_property(path: &str, iface: &str, prop: &str) -> Option<String> {
-    match backend().await? {
+    get_property_with(&SystemCommands, path, iface, prop).await
+}
+
+pub(crate) async fn get_property_with(
+    port: &dyn CommandPort,
+    path: &str,
+    iface: &str,
+    prop: &str,
+) -> Option<String> {
+    match backend_with(port).await? {
         Backend::Busctl => {
             // `s "DVI-I-1"`, `i 1`, `b true` — signature first, then the value.
             let raw = output_of(
+                port,
                 "busctl",
                 &["--user", "get-property", SERVICE, path, iface, prop],
             )
@@ -133,6 +145,7 @@ pub async fn get_property(path: &str, iface: &str, prop: &str) -> Option<String>
         Backend::Qdbus(cmd) => {
             // `[Variant(QString): "DVI-I-1"]`, `[Variant(int): 1]`
             let raw = output_of(
+                port,
                 cmd,
                 &[
                     "--literal",
@@ -165,8 +178,20 @@ pub async fn set_property(
     signature: &str,
     value: &str,
 ) -> bool {
-    match backend().await {
+    set_property_with(&SystemCommands, path, iface, prop, signature, value).await
+}
+
+pub(crate) async fn set_property_with(
+    port: &dyn CommandPort,
+    path: &str,
+    iface: &str,
+    prop: &str,
+    signature: &str,
+    value: &str,
+) -> bool {
+    match backend_with(port).await {
         Some(Backend::Busctl) => output_of(
+            port,
             "busctl",
             &[
                 "--user",
@@ -182,6 +207,7 @@ pub async fn set_property(
         .await
         .is_some(),
         Some(Backend::Qdbus(cmd)) => output_of(
+            port,
             cmd,
             &[
                 "--literal",
@@ -205,6 +231,7 @@ pub async fn list_strings(path: &str, iface: &str, prop: &str) -> Option<Vec<Str
         Backend::Busctl => {
             // `as 12 "event7" "event8" …` — every other field between quotes.
             let raw = output_of(
+                &SystemCommands,
                 "busctl",
                 &["--user", "get-property", SERVICE, path, iface, prop],
             )
@@ -220,7 +247,7 @@ pub async fn list_strings(path: &str, iface: &str, prop: &str) -> Option<Vec<Str
         Backend::Qdbus(cmd) => {
             // qdbus reads a property through its member name, one per line.
             let member = format!("{}.{}", iface, prop);
-            let raw = output_of(cmd, &[SERVICE, path, &member]).await?;
+            let raw = output_of(&SystemCommands, cmd, &[SERVICE, path, &member]).await?;
             Some(raw.split_whitespace().map(str::to_string).collect())
         }
     }

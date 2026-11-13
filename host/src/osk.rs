@@ -25,26 +25,37 @@ const IFACE: &str = "org.kde.kwin.VirtualKeyboard";
 /// Only when explicitly asked for, rather than on touch input.
 const MODE_MANUAL: &str = "0";
 
-static KEYBOARD_OPERATION: tokio::sync::Mutex<()> = tokio::sync::Mutex::const_new(());
+mod operation;
+use crate::native_commands::CommandPort;
+use blent_config::retirement::Completion;
+use operation::Gate;
+
+static KEYBOARD_OPERATION: std::sync::LazyLock<Gate> = std::sync::LazyLock::new(Gate::default);
+type Observer<'a> = &'a (dyn Fn(Completion) -> io::Result<()> + Send + Sync);
 
 fn state_path() -> PathBuf {
     let home = std::env::var("HOME").unwrap_or_default();
     PathBuf::from(home).join(".local/share/blent/osk-restore")
 }
 
-async fn get_mode() -> Option<String> {
-    let raw = crate::kwin::get_property(OBJECT, IFACE, "mode").await?;
+async fn get_mode(commands: &dyn CommandPort) -> Option<String> {
+    let raw = crate::kwin::get_property_with(commands, OBJECT, IFACE, "mode").await?;
     valid_mode(&raw).map(str::to_owned)
 }
 
-async fn set_mode(mode: &str) -> bool {
+async fn set_mode(commands: &dyn CommandPort, mode: &str) -> bool {
     // `mode` is a D-Bus int32; busctl needs to be told so.
-    crate::kwin::set_property(OBJECT, IFACE, "mode", "i", mode).await
+    crate::kwin::set_property_with(commands, OBJECT, IFACE, "mode", "i", mode).await
 }
 
 /// Turn the on-screen keyboard off, remembering how it was set.
-async fn disable() {
-    disable_from(&state_path(), get_mode, || set_mode(MODE_MANUAL)).await;
+async fn disable(commands: &dyn CommandPort) {
+    disable_from(
+        &state_path(),
+        || get_mode(commands),
+        || set_mode(commands, MODE_MANUAL),
+    )
+    .await;
 }
 
 async fn disable_from<Get, GetFuture, Apply, ApplyFuture>(
@@ -153,12 +164,17 @@ where
 
 /// Put the on-screen keyboard back the way the user had it.
 pub async fn restore() {
-    let _operation = KEYBOARD_OPERATION.lock().await;
-    restore_unlocked().await;
+    match KEYBOARD_OPERATION.acquire().await {
+        Ok(_operation) => restore_unlocked(KEYBOARD_OPERATION.commands.as_ref()).await,
+        Err(error) => warn!("OSK restoration admission failed: {error}; disk recovery retained"),
+    }
 }
 
-async fn restore_unlocked() {
-    restore_from(&state_path(), |saved| async move { set_mode(&saved).await }).await;
+async fn restore_unlocked(commands: &dyn CommandPort) {
+    restore_from(&state_path(), |saved| async move {
+        set_mode(commands, &saved).await
+    })
+    .await;
 }
 
 async fn restore_from<F, Fut>(path: &std::path::Path, apply: F)
@@ -187,12 +203,13 @@ where
 
 /// Device counts can change while D-Bus is in flight. Serialize with shutdown
 /// restoration and reconcile again before releasing ownership of the keyboard.
-pub async fn sync_touch_state(devices: &std::sync::atomic::AtomicUsize) {
-    reconcile(devices, &KEYBOARD_OPERATION, |wanted| async move {
+pub async fn sync_touch_state(devices: &std::sync::atomic::AtomicUsize, observe: Observer<'_>) {
+    let commands = KEYBOARD_OPERATION.commands.as_ref();
+    reconcile(devices, &KEYBOARD_OPERATION, observe, |wanted| async move {
         if wanted {
-            disable().await;
+            disable(commands).await;
         } else {
-            restore_unlocked().await;
+            restore_unlocked(commands).await;
         }
     })
     .await;
@@ -200,13 +217,32 @@ pub async fn sync_touch_state(devices: &std::sync::atomic::AtomicUsize) {
 
 async fn reconcile<F, Fut>(
     devices: &std::sync::atomic::AtomicUsize,
-    serial: &tokio::sync::Mutex<()>,
-    mut apply: F,
+    serial: &Gate,
+    observe: Observer<'_>,
+    apply: F,
 ) where
     F: FnMut(bool) -> Fut,
     Fut: std::future::Future<Output = ()>,
 {
-    let _operation = serial.lock().await;
+    let operation = match serial.acquire().await {
+        Ok(operation) => operation,
+        Err(error) => {
+            warn!("OSK synchronization admission failed: {error}; disk recovery retained");
+            return;
+        }
+    };
+    if let Err(error) = observe(operation.completion()) {
+        warn!("OSK observation admission failed: {error}; disk recovery retained");
+        return;
+    }
+    reconcile_current(devices, apply).await;
+}
+
+async fn reconcile_current<F, Fut>(devices: &std::sync::atomic::AtomicUsize, mut apply: F)
+where
+    F: FnMut(bool) -> Fut,
+    Fut: std::future::Future<Output = ()>,
+{
     loop {
         let wanted = devices.load(std::sync::atomic::Ordering::SeqCst) > 0;
         apply(wanted).await;
@@ -392,14 +428,36 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn t1433_rejected_operation_observation_prevents_keyboard_effects() {
+        let devices = AtomicUsize::new(1);
+        let gate = Gate::default();
+        let applied = AtomicBool::new(false);
+        reconcile(
+            &devices,
+            &gate,
+            &|_| Err(io::ErrorKind::WouldBlock.into()),
+            async |_| {
+                applied.store(true, Ordering::SeqCst);
+            },
+        )
+        .await;
+        assert!(!applied.load(Ordering::SeqCst));
+        reconcile(&devices, &gate, &|_| Ok(()), async |_| {
+            applied.store(true, Ordering::SeqCst);
+        })
+        .await;
+        assert!(applied.load(Ordering::SeqCst));
+    }
+
+    #[tokio::test]
     async fn t148_detach_during_disable_reconciles_current_device_count() {
         let devices = AtomicUsize::new(1);
-        let serial = tokio::sync::Mutex::new(());
+        let serial = Gate::default();
         let disabled = AtomicBool::new(false);
         let started = tokio::sync::Notify::new();
         let release = tokio::sync::Notify::new();
         tokio::join!(
-            reconcile(&devices, &serial, async |wanted| {
+            reconcile(&devices, &serial, &|_| Ok(()), async |wanted| {
                 if wanted {
                     started.notify_one();
                     release.notified().await;
@@ -421,11 +479,11 @@ mod tests {
     #[tokio::test]
     async fn t148_concurrent_device_changes_serialize_keyboard_writes() {
         let devices = AtomicUsize::new(1);
-        let serial = tokio::sync::Mutex::new(());
+        let serial = Gate::default();
         let release = tokio::sync::Notify::new();
         let disabled = AtomicBool::new(false);
         let calls = std::sync::Mutex::new(Vec::new());
-        let first = reconcile(&devices, &serial, async |wanted| {
+        let first = reconcile(&devices, &serial, &|_| Ok(()), async |wanted| {
             calls.lock().unwrap().push(wanted);
             if wanted {
                 release.notified().await;
@@ -435,7 +493,7 @@ mod tests {
         tokio::pin!(first);
         assert!(futures_util::poll!(&mut first).is_pending());
         devices.store(0, Ordering::SeqCst);
-        let second = reconcile(&devices, &serial, async |wanted| {
+        let second = reconcile(&devices, &serial, &|_| Ok(()), async |wanted| {
             calls.lock().unwrap().push(wanted);
             disabled.store(wanted, Ordering::SeqCst);
         });
@@ -451,7 +509,7 @@ mod tests {
         assert!(disabled.load(Ordering::SeqCst));
         assert_eq!(*calls.lock().unwrap(), [true, true]);
         devices.store(0, Ordering::SeqCst);
-        reconcile(&devices, &serial, async |wanted| {
+        reconcile(&devices, &serial, &|_| Ok(()), async |wanted| {
             disabled.store(wanted, Ordering::SeqCst);
         })
         .await;

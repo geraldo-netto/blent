@@ -68,6 +68,8 @@ pub mod kscreen;
 #[cfg(target_os = "linux")]
 pub mod kwin;
 #[cfg(target_os = "linux")]
+mod native_commands;
+#[cfg(target_os = "linux")]
 pub mod osk;
 #[cfg(test)]
 mod poll_probe;

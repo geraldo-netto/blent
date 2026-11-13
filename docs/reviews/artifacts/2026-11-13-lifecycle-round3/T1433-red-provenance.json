@@ -1,0 +1,18 @@
+{
+  "compiler": "rustc1.100.0 --edition=2021 --test -C instrument-coverage host/tests/input_commands.rs",
+  "dependencies": {
+    "libc": "0bd56eb7069dd7a0995266cab856b9521b933235feb02ec8e66c3dc894b5774f",
+    "tokio": "fce6006f8ebb0f99f121f27163f4a8ba8c2b78c497402d6fdec9886f85e0dab1",
+    "tempfile": "7ea3b9e1f22c878dae7ff36e11292eeffe243c6effa16172ced57670b23d6599",
+    "blent_config": "2b600f9baf34d53faad85ab119768227df8f283475ed10cf76bbfee06423ba0f",
+    "blent": "be92e08fc6a89e566b67237a36730c1d9dc675ae47ca9139ad5dcaa89470c980"
+  },
+  "permanent_sources": {
+    "host/tests/input_commands.rs": "98b0e5169507079b27b877e2e83f57300253b71d1aa7c7737b72bddf6c6abb1a",
+    "host/tests/input_commands/fixture.rs": "ca6f2d65c265e2046f1030c05a5e36d9bac8e5e3083a9c8050c6c2892c1e9110",
+    "host/tests/input_commands/command.c": "d80a7c4f3845c1d0e753c5e7f022f33af047aadd273b9532b2a3285200dd8647",
+    "host/tests/input_commands/deny_kill.c": "9778bcb83d8fd7bebb00315ae2ef1a5b46803f390fe1310fb7ae72c4dc176aaf"
+  },
+  "full_command_location": "external /tmp/blent-t1433-coverage/red-command.json; dependency paths excluded from portable artifact",
+  "baseline": "frozen library from pre-T1433 state, copied before behavior edits; baseline provenance originally selected from T1434 Cargo JSON"
+}
