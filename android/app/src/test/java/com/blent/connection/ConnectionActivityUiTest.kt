@@ -68,9 +68,11 @@ class ConnectionActivityUiTest {
             fixture.controller.start().resume().visible()
         }
         compose.onNodeWithText("Pair with this computer?").assertExists()
+        // T1384: approval remembers the unchanged fingerprint by default.
+        compose.onNodeWithContentDescription("Remember this computer").assertIsOn()
         compose.onNodeWithText("Approve computer").performClick()
         compose.runOnIdle {
-            assertEquals(listOf(ConnectionWorkerCommand.Decide(fixture.usb.ticket, true, false)), fixture.usb.workers.single().commands)
+            assertEquals(listOf(ConnectionWorkerCommand.Decide(fixture.usb.ticket, true, true)), fixture.usb.workers.single().commands)
             assertNull(compose.activity.cameras.selected)
             assertFalse(compose.activity.microphone.sharing)
         }
