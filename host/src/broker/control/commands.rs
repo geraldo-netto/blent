@@ -18,7 +18,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
             Command::Revoke { peer } => self.revoke(peer),
         }
     }
-    fn connect(&mut self, revision: u64, target: u64, now: i64) -> Result<Action<T>> {
+    pub(super) fn connect(&mut self, revision: u64, target: u64, now: i64) -> Result<Action<T>> {
         self.editable()?;
         self.admitting()?;
         ensure!(revision == self.revision, "stale device snapshot");
@@ -44,6 +44,8 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
         let key = device.key.clone();
         let payload = device.payload.clone();
         let connection = self.fresh()?;
+        self.automatic
+            .insert(key.clone(), Some(now.saturating_add(2_000)));
         self.links.insert(
             connection,
             Link {
@@ -82,6 +84,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
             "stale approval"
         );
         if !allow {
+            self.automatic.insert(link.key.clone(), None);
             close(link);
             self.changed()?;
             return Ok(Action::Retire(vec![connection]));
@@ -101,6 +104,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
             .get_mut(&connection)
             .ok_or_else(|| anyhow::anyhow!("unknown link"))?;
         ensure!(link.ticket == ticket, "stale disconnect");
+        self.automatic.insert(link.key.clone(), None);
         close(link);
         self.changed()?;
         Ok(Action::Retire(vec![connection]))
@@ -118,6 +122,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
                 .as_ref()
                 .is_some_and(|ticket| ticket.peer == peer)
             {
+                self.automatic.insert(link.key.clone(), None);
                 close(link);
                 retired.push(id);
             }

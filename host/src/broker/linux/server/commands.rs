@@ -124,7 +124,7 @@ impl Server {
             Err(error) => {
                 self.inventory_error = true;
                 tracing::warn!("USB inventory unavailable: {error:#}");
-                return self.controller.replace_devices(Vec::new());
+                return self.controller.inventory_unavailable();
             }
         };
         let devices = candidates
@@ -144,6 +144,17 @@ impl Server {
             .collect();
         self.controller.replace_devices(devices)?;
         self.inventory_error = false;
+        Ok(())
+    }
+
+    pub(super) fn automatic(&mut self) -> Result<()> {
+        if self.inventory_error {
+            return Ok(());
+        }
+        let action = self.controller.automatic(link::now(self.origin)?)?;
+        if let Err(error) = self.action(action) {
+            tracing::warn!("Automatic USB connection unavailable: {error:#}");
+        }
         Ok(())
     }
 }

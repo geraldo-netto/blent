@@ -5,6 +5,7 @@ use blent_config::{
 };
 use std::{cell::Cell, rc::Rc};
 type Control = Controller<u64, u64>;
+mod automatic;
 struct Store {
     bytes: Option<Vec<u8>>,
     fail: Rc<Cell<bool>>,

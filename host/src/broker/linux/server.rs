@@ -255,6 +255,7 @@ impl Server {
         self.collect_clients();
         self.collect_links()?;
         self.scan()?;
+        self.automatic()?;
         Ok(())
     }
     fn collect_clients(&mut self) {

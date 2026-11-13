@@ -12,6 +12,7 @@ use blent_config::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 mod authority;
+mod automatic;
 mod commands;
 mod lifecycle;
 pub use authority::{Admission, AuthorityJob, AuthorityKind, AuthorityOperation, AuthorityReply};
@@ -96,6 +97,8 @@ pub struct Controller<K, T> {
     healthy: bool,
     pending: Option<AuthorityOperation>,
     revokes: BTreeMap<String, PeerId>,
+    // Physical-location scheduling hints only; never peer authentication.
+    automatic: BTreeMap<K, Option<i64>>,
 }
 impl<K: Ord + Clone, T: Clone> Controller<K, T> {
     /// saved must originate from the healthy, exclusively owned Trust store.
@@ -120,6 +123,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
             healthy: true,
             pending: None,
             revokes: BTreeMap::new(),
+            automatic: BTreeMap::new(),
         })
     }
     fn fresh(&mut self) -> Result<u64> {
@@ -174,6 +178,8 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
         for device in devices {
             replacement.insert(self.fresh()?, device);
         }
+        self.automatic
+            .retain(|key, _| replacement.values().any(|device| &device.key == key));
         self.devices = replacement;
         self.changed()
     }

@@ -1,0 +1,29 @@
+T1389 read-only recovery preparation, 2026-11-13
+
+Current kernel: 7.0.0-43-generic; EVDI installed for 7.0.0-42 only.
+Configured max_tablets: 1. Xorg is running; live DRM hot-add is prohibited.
+Local apt candidate linux-modules-evdi-generic-hwe-24.04 7.0.0-43.43~24.04.1
+tracks linux-main-modules-evdi-7.0.0-43-generic of the same version.
+apt-get --simulate install linux-modules-evdi-generic-hwe-24.04:
+0 upgraded, 2 newly installed, 0 to remove, 4 not upgraded.
+Both candidate archives were downloaded to /tmp/blent-evdi-recovery for inspection.
+The signed module's vermagic matches 7.0.0-43-generic. No module was loaded.
+Its postinst runs depmod and schedules existing kernel postinstall hooks; no
+explicit modprobe/insmod appears in that package script or those local hooks.
+Package installation may update initramfs and bootloader files.
+
+Concrete owner steps after reviewing normal package-manager output:
+1. sudo apt-get install linux-modules-evdi-generic-hwe-24.04
+2. Open Blent's 'Set up display and input (asks for password)' action. This saves
+   initial_device_count=1 and evdi/uinput boot loading, and invokes guarded setup.
+   With Xorg running, EVDI provisioning intentionally reports deferred/reboot.
+3. Reboot at the owner's chosen time. Do not unload a live EVDI module or bypass
+   the guard with direct modprobe/sysfs growth while Xorg is running.
+4. After login, run blent doctor and verify actual tablet display frames.
+
+Normal sudo installation/setup requires interactive administrator authentication;
+`sudo -n true` reports "a password is required"; no blanket NOPASSWD grant exists. No root install, setup, service restart, device
+mutation, display-server restart, or reboot was attempted during this investigation.
+This verifies package availability and recovery prerequisites, not runtime display
+acceptance or driver correctness. T1389 remains blocked until those steps and
+actual frame delivery can be observed.

@@ -115,6 +115,16 @@ that connection owns the physical device, including during discovery refreshes.
 It becomes available only after the connection and its native worker retire.
 Use the connection’s **Disconnect** button to stop it.
 
+Once a computer has remembered peers, its running USB broker automatically tries
+available USB candidates on startup and reconnect. An unchanged saved fingerprint
+skips repeat approval; every connection still requires fresh TLS proof. A changed
+fingerprint requires approval again. USB names and locations are scheduling hints,
+not trust. Devices reserved for ADB or with unknown availability are not attempted.
+Failed attempts retry with bounded capacity after the original native owner
+retires. Disconnect, Deny and Revoke suppress automatic retries for that physical
+attachment until confirmed unplug/replug or an explicit Connect request. An
+unavailable inventory cannot clear that suppression. Pairing grants no media consent.
+
 While a device advertises USB debugging, its row shows **Reserved for USB
 debugging** and disables **Connect**. Use **Tablets** for ADB display sharing.
 To use debugging-free USB instead, turn USB debugging off on the tablet and

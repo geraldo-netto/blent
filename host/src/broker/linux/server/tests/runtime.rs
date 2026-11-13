@@ -117,3 +117,68 @@ async fn t853_server_run_inspects_native_inventory_and_retires_failed_synthetic_
     assert_eq!(fixture.server.link_pool.active(), 0);
     fixture.finish().await;
 }
+
+#[tokio::test]
+async fn t1391_saved_peer_starts_available_usb_without_ui_command() {
+    let mut fixture = Fixture::new().await;
+    fixture.server.controller = Controller::new(
+        peer(0),
+        vec![peer(1)],
+        crate::broker::control::Limits::default(),
+    )
+    .unwrap();
+    fixture
+        .server
+        .inventory_result(Ok(vec![candidate()]))
+        .unwrap();
+    fixture.server.tick().unwrap();
+    let started = fixture.server.links.len();
+    fixture
+        .server
+        .shutdown(Duration::from_secs(5))
+        .await
+        .unwrap();
+    fixture.finish().await;
+    assert_eq!(
+        started, 1,
+        "T1391: remembered USB still requires manual Connect"
+    );
+}
+
+#[tokio::test]
+async fn t1391_automatic_start_failure_keeps_server_alive_and_bounded() {
+    let mut fixture = Fixture::new().await;
+    fixture.server.controller = Controller::new(
+        peer(0),
+        vec![peer(1)],
+        crate::broker::control::Limits::default(),
+    )
+    .unwrap();
+    fixture
+        .server
+        .inventory_result(Ok(vec![candidate()]))
+        .unwrap();
+    let holds: Vec<_> = (0..4)
+        .map(|_| fixture.server.link_pool.reserve().unwrap())
+        .collect();
+    fixture.server.automatic().unwrap();
+    assert!(fixture.server.links.is_empty());
+    assert_eq!(
+        fixture.server.controller.collect_retired().unwrap().len(),
+        1
+    );
+    fixture.server.automatic().unwrap();
+    assert!(fixture
+        .server
+        .controller
+        .collect_retired()
+        .unwrap()
+        .is_empty());
+    drop(holds);
+    fixture
+        .server
+        .shutdown(Duration::from_secs(5))
+        .await
+        .unwrap();
+    fixture.finish().await;
+}

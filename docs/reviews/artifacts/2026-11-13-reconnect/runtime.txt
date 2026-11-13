@@ -1,0 +1,49 @@
+$ uname -r
+7.0.0-43-generic
+exit=0
+
+$ modinfo -F filename evdi
+modinfo: ERROR: Module evdi not found.
+exit=1
+
+$ dkms status
+ddcci/0.4.4, 7.0.0-34-generic, x86_64: installed
+ddcci/0.4.4, 7.0.0-38-generic, x86_64: installed
+ddcci/0.4.4, 7.0.0-42-generic, x86_64: installed
+ddcci/0.4.4, 7.0.0-43-generic, x86_64: installed
+ivsc-driver/0~git202311021215.73a044d9-0ubuntu2.1, 7.0.0-34-generic, x86_64: installed
+ivsc-driver/0~git202311021215.73a044d9-0ubuntu2.1, 7.0.0-38-generic, x86_64: installed
+ivsc-driver/0~git202311021215.73a044d9-0ubuntu2.1, 7.0.0-42-generic, x86_64: installed
+ivsc-driver/0~git202311021215.73a044d9-0ubuntu2.1, 7.0.0-43-generic, x86_64: installed
+usbio-drivers/0~git202312141918.78ffb706-0ubuntu2.2, 7.0.0-34-generic, x86_64: installed
+usbio-drivers/0~git202312141918.78ffb706-0ubuntu2.2, 7.0.0-38-generic, x86_64: installed
+usbio-drivers/0~git202312141918.78ffb706-0ubuntu2.2, 7.0.0-42-generic, x86_64: installed
+usbio-drivers/0~git202312141918.78ffb706-0ubuntu2.2, 7.0.0-43-generic, x86_64: installed
+exit=0
+
+$ systemctl --user is-active blent.service
+active
+exit=0
+
+Selected initial service evidence:
+Nov 13 07:56:55 morpheus env[2788]: 2026-11-13T06:56:55.831675Z  INFO blent: 2428: Blent token delivery command completed on tablet
+Nov 13 07:56:56 morpheus env[2788]: 2026-11-13T06:56:56.001156Z  INFO blent: 2428: Blent launch command completed on tablet
+Nov 13 07:56:56 morpheus env[2788]: 2026-11-13T06:56:56.001280Z  INFO blent::monitor: 475: Tablet 1 connected over USB (8002RH1010011900)
+Nov 13 07:56:56 morpheus env[2788]: 2026-11-13T06:56:56.112958Z  INFO blent::input: 253: Input client: 127.0.0.1:54935
+Nov 13 07:56:56 morpheus env[2788]: 2026-11-13T06:56:56.173654Z  INFO blent::input::settings: 148: Tablet reports native resolution: 1280x800 (218x136 mm)
+Nov 13 07:56:56 morpheus env[2788]: 2026-11-13T06:56:56.492680Z  INFO blent::stream: 122: Client connected: 127.0.0.1:53303
+Nov 13 07:56:56 morpheus env[3134]: [evdi-helper] No free pre-created EVDI device; refusing DRM hot-add while Xorg is running.
+Nov 13 07:56:56 morpheus env[2788]: 2026-11-13T06:56:56.525704Z ERROR blent::capture: 683: The evdi kernel module is not loaded. Install it (evdi-dkms; on Arch it is in the AUR) and run: sudo modprobe evdi
+Nov 13 07:56:58 morpheus env[3199]: [evdi-helper] No free pre-created EVDI device; refusing DRM hot-add while Xorg is running.
+Nov 13 07:57:02 morpheus env[3556]: [evdi-helper] No free pre-created EVDI device; refusing DRM hot-add while Xorg is running.
+No /sys/module/evdi; no EVDI options in /etc/modprobe.d or /etc/modules-load.d. No runtime mutations performed.
+
+Kernel upgrade evidence:
+Installed: linux-main-modules-evdi-7.0.0-42-generic 7.0.0-42.42~24.04.1
+Absent: linux-main-modules-evdi-7.0.0-43-generic
+Available matching candidate: 7.0.0-43.43~24.04.1 (local apt-cache policy)
+The active 7.0.0-43 kernel therefore lacks its installed predecessor's EVDI module.
+AppImage user registration intentionally does not install the kernel driver.
+Installed runtime manifest: desktop 3bb0e69da7ba4d6fc69fdfe2144dc258e6614f6e,
+Android 016880d38045b5a69d40039fe0d6a2699e6f4432. Current checkout was 9181d0d6.
+Normal sudo operations require interactive authorization; no root mutation attempted.
