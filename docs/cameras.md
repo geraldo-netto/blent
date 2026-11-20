@@ -67,7 +67,7 @@ start. ADB mappings remain owned through cleanup under the
 covers the selected RugKing tablet and recorded ADB version, independently of
 camera capture. Camera operations never attach EVDI or restart display sharing.
 
-**Apply** saves camera preferences without starting capture. **Start camera**
+**Save** saves camera preferences without starting capture. **Start camera**
 uses the current controls; **Restart camera** applies changed controls to an
 active camera. Opening the host never restores capture automatically. After
 an error, correct its cause and press Start/Restart to retry. The tablet can stop

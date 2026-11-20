@@ -21,7 +21,6 @@
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
 | T1452 | blocked | low | small | Review T1450 automatic brightness with the physical tablet in the owner’s actual lighting after the call, when restarting the GUI/camera is permitted. The owner explicitly prohibits touching running instances during the call, so changes remain uninstalled. Synthetic H.264 output/preview, bounded central metering, smoothing, frame ownership and CLI/GUI/save tests pass; they do not establish subjective face brightness, noise or physical camera quality. Completion: start the updated GUI, enable the option, restart only the intended camera and confirm exported-call image quality; adjust the bounded policy if needed. |
-| T1453 | open | low | small | `docs/cameras.md` calls the camera preference-save action **Apply**, while `gui/src/main.rs::show_footer` exposes **Save** (also visible in the owner screenshot). Replace the stale button name after verifying current UI; documentation-only, no artificial test required. |
 
 ## Desktop interface
 
