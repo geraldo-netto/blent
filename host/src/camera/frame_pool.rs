@@ -7,8 +7,18 @@ const MAX_BYTES: usize = 1920 * 1080 * 3 / 2;
 pub(super) struct Pool {
     slots: Vec<Arc<Vec<u8>>>,
     discard: Vec<u8>,
+    brightness: Option<blent_config::camera::brightness::AutoBrightness>,
 }
 impl Pool {
+    pub(super) fn for_profile(profile: &blent_config::camera::CameraProfile) -> Result<Self> {
+        let mut pool = Self::configured(profile.frame_bytes()?)?;
+        pool.brightness = profile
+            .auto_brightness
+            .then(|| blent_config::camera::brightness::AutoBrightness::new(profile))
+            .transpose()?;
+        Ok(pool)
+    }
+
     pub(super) fn configured(bytes: usize) -> Result<Self> {
         let slots = blent_config::retirement_limits::configured("BLENT_CAMERA_FRAME_SLOTS", 3, 16)?;
         Self::new(bytes, slots)
@@ -25,6 +35,7 @@ impl Pool {
         Ok(Self {
             slots: (0..slots).map(|_| Arc::new(vec![0; bytes])).collect(),
             discard: vec![0; bytes],
+            brightness: None,
         })
     }
     pub(super) async fn read(
@@ -34,6 +45,9 @@ impl Pool {
         for slot in &mut self.slots {
             if let Some(bytes) = Arc::get_mut(slot) {
                 input.read_exact(bytes).await?;
+                if let Some(brightness) = &mut self.brightness {
+                    brightness.apply(bytes)?;
+                }
                 return Ok(Some(slot.clone()));
             }
         }

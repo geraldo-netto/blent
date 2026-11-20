@@ -22,7 +22,7 @@ ADB operations remain available.
 
 The host **Cameras** tab controls camera sharing: Front/Rear, resolution, frame
 rate, bitrate, clockwise rotation (0°, 90°, 180° or 270°), mirroring and whether sharing continues while the tablet app is
-hidden or its screen is locked. Lens and resolution stay visible; the remaining
+hidden or its screen is locked. Lens, resolution and automatic brightness stay visible; the remaining
 profile controls are under **Advanced camera settings**. Android shows status,
 its required camera permission prompt, and explicit **Start camera** / **Stop
 camera** actions; camera profile configuration stays on the computer.
@@ -36,8 +36,17 @@ requested. Pairing alone does not start capture. In Google Meet or another appli
 Linux webcams exist while sharing runs, but only the selected lens is live;
 the inactive endpoint is black. A browser's webcam picker does not switch lenses.
 
+Enable **Automatically brighten dark video** to lift dark tones when the center
+of the image is underexposed, then **Start/Restart camera**. It defaults to off;
+**Save** stores the preference without changing a running session. The host meters
+the central half of the image, smooths adjustments over successive frames and
+limits shadow lift while preserving black/white endpoints and chroma. This is
+image processing, not face detection or sensor exposure control; it can make
+noise more visible and adds a luma pass per exported frame. The CLI option is
+`blent cameras --auto-brightness`. No Android update is needed for this option.
+
 The small live preview shows the selected webcam’s exported image, including
-rotation and mirroring. It uses a thumbnail at up to five updates per second; it
+rotation, mirroring and automatic brightness. It uses a thumbnail at up to five updates per second; it
 does not open a second camera. Stopped or stale previews clear rather than
 retaining the last camera image. Select **180°** when the tablet is upside down,
 then **Restart camera** to apply the change.

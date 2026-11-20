@@ -1,0 +1,255 @@
+{
+  "tool": "cargo-llvm-cov 0.8.7; rustc 1.100.0; repository per-function LCOV inventory",
+  "sources": {
+    "gui/src/main.rs": "ff96ba79d300a5cc740a10e8eef9d8a44aeadce1de6e3e28f195098ca7fd1295",
+    "gui/src/camera_settings.rs": "94f6a3afab09da460b81be290c7dce51efefc9e9b9d67ace1768278e3c1d0cdf",
+    "common/src/camera.rs": "b49c321ce60d1c7e75f849e6d81ae5acefe301346e979d5e0dd087455c200d7f",
+    "host/src/camera/decoder.rs": "b7091857939bbf6015d7fc4e396c9173eb3ff649d30bcc9d7bdf332f016f18c2",
+    "host/src/camera/frame_pool.rs": "b4648844d18b3f53f3254efa7e54570d39889d9efb0c5305d9fd751e6aaf2828",
+    "gui/src/activation.rs": "17260f2859e8d9874da4333b9bc950628e6130848fa57e44bf1d0e4cc6ba17bf",
+    "gui/src/platform/activation.rs": "2b512e15201bf2e62848094ce82be113c4a5329c6e532107e13a763dfc8910ab",
+    "common/src/camera/brightness.rs": "7d300d22b0d9144acb0925b8746da9b551357663b78abed63a0516fdc9d11c2d"
+  },
+  "functions": [
+    {
+      "file": "gui/src/main.rs",
+      "name": "main",
+      "line": 1240,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/camera_settings.rs",
+      "name": "stop",
+      "line": 134,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/camera_settings.rs",
+      "name": "profile",
+      "line": 223,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera.rs",
+      "name": "default",
+      "line": 106,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "transfer",
+      "line": 104,
+      "language": "rust",
+      "covered": 41,
+      "total": 42,
+      "percent": 97.61904761904762,
+      "passes": true,
+      "missing": [
+        148
+      ]
+    },
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "name": "for_profile",
+      "line": 13,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "name": "configured",
+      "line": 22,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "name": "new",
+      "line": 26,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "name": "read",
+      "line": 41,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/activation.rs",
+      "name": "show",
+      "line": 4,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/activation.rs",
+      "name": "update",
+      "line": 18,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/activation.rs",
+      "name": "poll",
+      "line": 25,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "run",
+      "line": 14,
+      "language": "rust",
+      "covered": 4,
+      "total": 5,
+      "percent": 80.0,
+      "passes": true,
+      "missing": [
+        16
+      ]
+    },
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "run_at",
+      "line": 20,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        33
+      ]
+    },
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "notify",
+      "line": 37,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "requested",
+      "line": 49,
+      "language": "rust",
+      "covered": 10,
+      "total": 11,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        58
+      ]
+    },
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "error",
+      "line": 65,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/brightness.rs",
+      "name": "new",
+      "line": 16,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/brightness.rs",
+      "name": "apply",
+      "line": 29,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/brightness.rs",
+      "name": "center_mean",
+      "line": 45,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/brightness.rs",
+      "name": "curve",
+      "line": 59,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "passes": true
+}

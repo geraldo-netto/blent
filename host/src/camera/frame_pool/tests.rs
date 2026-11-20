@@ -81,3 +81,54 @@ async fn t816_bounded_lease_schedule_property() {
         }
     }
 }
+
+#[tokio::test]
+async fn t1450_brightness_precedes_publication_without_mutating_readers() {
+    let profile = blent_config::camera::CameraProfile {
+        width: 160,
+        height: 120,
+        auto_brightness: true,
+        ..Default::default()
+    };
+    let mut pool = Pool::for_profile(&profile).unwrap();
+    let mut source = vec![128; profile.frame_bytes().unwrap()];
+    source[..19200].fill(40);
+    let first = pool.read(&mut source.as_slice()).await.unwrap().unwrap();
+    let frozen = (*first).clone();
+    assert!(first[0] > 40);
+    assert_eq!(&first[19200..], &source[19200..]);
+    for _ in 0..64 {
+        let next = pool.read(&mut source.as_slice()).await.unwrap().unwrap();
+        assert!(next[0] >= first[0]);
+        assert_eq!(*first, frozen);
+    }
+    let weak = Arc::downgrade(&first);
+    drop(pool);
+    assert_eq!(*first, frozen);
+    drop(first);
+    assert!(weak.upgrade().is_none());
+}
+
+#[tokio::test]
+async fn t1450_disabled_adjustment_preserves_exact_bytes_and_rejects_invalid_profile() {
+    let profile = blent_config::camera::CameraProfile {
+        width: 160,
+        height: 120,
+        ..Default::default()
+    };
+    let mut pool = Pool::for_profile(&profile).unwrap();
+    let source = vec![40; profile.frame_bytes().unwrap()];
+    let output = pool.read(&mut source.as_slice()).await.unwrap().unwrap();
+    assert_eq!(*output, source);
+    assert!(Pool::for_profile(&blent_config::camera::CameraProfile {
+        width: 0,
+        ..profile.clone()
+    })
+    .is_err());
+    assert!(Pool::for_profile(&blent_config::camera::CameraProfile {
+        auto_brightness: true,
+        fps: 0,
+        ..profile
+    })
+    .is_err());
+}

@@ -228,6 +228,10 @@ fn profile(ui: &mut egui::Ui, options: &mut CameraProfile) {
     });
     ui.end_row();
     resolution(ui, options);
+    ui.label("Brightness");
+    ui.checkbox(&mut options.auto_brightness, "Automatically brighten dark video")
+        .on_hover_text("Gently lifts dark tones using the center of the image. May make noise more visible. Start/Restart camera applies this setting.");
+    ui.end_row();
 }
 
 fn advanced_profile(ui: &mut egui::Ui, options: &mut CameraProfile) {
@@ -306,6 +310,64 @@ fn resolution(ui: &mut egui::Ui, options: &mut CameraProfile) {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
+
+    #[test]
+    fn t1450_brightness_checkbox_changes_only_camera_preference() {
+        let context = egui::Context::default();
+        let mut options = CameraProfile::default();
+        let text = brightness_frame(&context, &mut options, Vec::new());
+        let pos = text
+            .iter()
+            .find(|(label, _)| label == "Automatically brighten dark video")
+            .unwrap()
+            .1
+            .center();
+        for pressed in [true, false] {
+            brightness_frame(
+                &context,
+                &mut options,
+                vec![
+                    egui::Event::PointerMoved(pos),
+                    egui::Event::PointerButton {
+                        pos,
+                        button: egui::PointerButton::Primary,
+                        pressed,
+                        modifiers: Default::default(),
+                    },
+                ],
+            );
+        }
+        assert_eq!(
+            options,
+            CameraProfile {
+                auto_brightness: true,
+                ..Default::default()
+            }
+        );
+    }
+
+    fn brightness_frame(
+        context: &egui::Context,
+        options: &mut CameraProfile,
+        events: Vec<egui::Event>,
+    ) -> Vec<(String, egui::Rect)> {
+        let output = context.run(
+            egui::RawInput {
+                events,
+                ..Default::default()
+            },
+            |context| {
+                egui::CentralPanel::default().show(context, |ui| {
+                    egui::Grid::new("brightness-test").show(ui, |ui| profile(ui, options));
+                });
+            },
+        );
+        let mut text = Vec::new();
+        for shape in output.shapes {
+            crate::tests::collect_text_rects(&shape.shape, &mut text);
+        }
+        text
+    }
 
     #[test]
     fn t1451_stop_releases_hidden_preview_pixels_and_texture() {

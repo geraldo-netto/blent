@@ -4,6 +4,7 @@ use anyhow::{ensure, Result};
 use clap::{Args, ValueEnum};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
+pub mod brightness;
 pub mod connection;
 mod preview;
 pub mod stop;
@@ -66,6 +67,9 @@ pub struct CameraProfile {
     /// Mirror exported camera video horizontally.
     #[cfg_attr(feature = "platform", arg(long))]
     pub mirror: bool,
+    /// Lift dark camera tones using smoothed center metering on the host.
+    #[cfg_attr(feature = "platform", arg(long))]
+    pub auto_brightness: bool,
 }
 
 /// Portable UI/backend contract. Only the native adapter owns OS devices.
@@ -113,6 +117,7 @@ impl Default for CameraProfile {
             adaptive_bitrate: true,
             min_bitrate: 1000,
             mirror: false,
+            auto_brightness: false,
             rotation: 0,
         }
     }

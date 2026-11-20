@@ -823,3 +823,47 @@ async fn t1205_camera_requires_exact_single_current_broadcast_acknowledgement() 
         );
     }
 }
+
+#[tokio::test]
+async fn t1450_real_decoder_exports_brightened_pixels_to_preview() {
+    let encoded = tokio::process::Command::new(executable("ffmpeg").unwrap())
+        .args([
+            "-v",
+            "error",
+            "-f",
+            "lavfi",
+            "-i",
+            "color=0x202020:s=160x120:r=30",
+            "-frames:v",
+            "8",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "1",
+            "-tune",
+            "zerolatency",
+            "-f",
+            "h264",
+            "pipe:1",
+        ])
+        .output()
+        .await
+        .unwrap();
+    assert!(encoded.status.success());
+    let mut profile = options();
+    let original = transformed_test_frame(&encoded.stdout, &profile).await;
+    profile.auto_brightness = true;
+    let adjusted = transformed_test_frame(&encoded.stdout, &profile).await;
+    assert!(adjusted[0] > original[0]);
+    assert_eq!(&adjusted[19200..], &original[19200..]);
+    let preview = |bytes: &[u8]| {
+        blent_config::camera::CameraPreview::from_yuv420(
+            profile.lens,
+            profile.width,
+            profile.height,
+            bytes,
+        )
+        .unwrap()
+    };
+    assert!(preview(&adjusted).rgba()[0] > preview(&original).rgba()[0]);
+}
