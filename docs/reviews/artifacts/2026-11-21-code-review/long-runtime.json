@@ -1,0 +1,7 @@
+{
+  "probe": "long private runtime path",
+  "runtime_path_bytes": 127,
+  "exit": 1,
+  "stdout": "",
+  "stderr": "Error: AppCreation(Error { kind: InvalidInput, message: \"abstract socket name must be shorter than SUN_LEN\" })\n"
+}

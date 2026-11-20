@@ -1,0 +1,5 @@
+{
+  "rustc": "rustc 1.100.0 (0ef1bc386 2026-11-09)",
+  "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+  "complexity": "repository checker with blent-rust-source 0.1.0 / syn 2.0.119; Python AST"
+}

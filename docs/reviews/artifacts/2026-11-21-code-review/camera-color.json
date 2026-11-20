@@ -1,0 +1,28 @@
+[
+  {
+    "input_matrix": "bt601",
+    "decoded_yuv": [
+      81,
+      90,
+      240
+    ],
+    "preview_rgb_from_actual_integer_formula": [
+      255,
+      0,
+      0
+    ]
+  },
+  {
+    "input_matrix": "bt709",
+    "decoded_yuv": [
+      62,
+      102,
+      239
+    ],
+    "preview_rgb_from_actual_integer_formula": [
+      231,
+      0,
+      1
+    ]
+  }
+]

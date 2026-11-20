@@ -1,0 +1,112 @@
+{
+  "date": "2026-11-21",
+  "reviewed_head": "af6f8ec94ec50c0b341ac63f61959db92fb44247",
+  "scope": "Focused review of GUI/media with sampled Android wire/capture, configuration, display control, Wi-Fi cleanup and installation paths. Files below were examined in whole or in relevant excerpts; this is not an exhaustive repository audit.",
+  "examined_source_files": 44,
+  "sources": {
+    "gui/src/activation.rs": "17260f2859e8d9874da4333b9bc950628e6130848fa57e44bf1d0e4cc6ba17bf",
+    "gui/src/platform/activation.rs": "2b512e15201bf2e62848094ce82be113c4a5329c6e532107e13a763dfc8910ab",
+    "gui/src/camera_settings.rs": "94f6a3afab09da460b81be290c7dce51efefc9e9b9d67ace1768278e3c1d0cdf",
+    "gui/src/media_owner.rs": "6a120006a05b6cacfdd8659883a7c15a4b16bf8969d1c8ec3c673ca3f567af35",
+    "gui/src/status_poll.rs": "0aa14e9c7faa6fdab65e1a7547ef1a0d2ef60f28a7772708529d8f96d5d3b7f6",
+    "gui/src/settings.rs": "a8c1ba94bdbe05557a6a4678cba9c0df7d453ccb7509c406e52ee02c02a701df",
+    "gui/src/camera_preview.rs": "a033a8c1d104fc3e83c62fd26879878a5f2c812981c5667f62ffc41cfbeb84ce",
+    "gui/src/audio_settings.rs": "774dca61730436d31fbd074c157d582981d9f1fc728bbafe9a6611418c32d3d9",
+    "gui/src/resource_workspace.rs": "c892caf4d317c32aa6fc8ad99243860a6e2b3d4857042f36072e654f68d1164b",
+    "gui/src/status_poll/linux.rs": "9e5cb6749ee3f86aa22e9635125a53689a8eadc7194840e239689f783a396f35",
+    "gui/src/camera_settings/connection.rs": "645e1f9bcf48fcc128ee5ca4c4f9b4f3db78f1b27065c5ae4e9cfc54bb7d4bf3",
+    "common/src/camera/brightness.rs": "7d300d22b0d9144acb0925b8746da9b551357663b78abed63a0516fdc9d11c2d",
+    "common/src/camera/preview.rs": "48187758c907871ba7d76645b9bf4f2cfc206e50da275ccbb1c0af9791e8041f",
+    "common/src/camera/connection.rs": "67784c979e5a69cab32c43263f5a257769ff1f6a9403a8c792350d978701e265",
+    "common/src/workspace.rs": "ab1822d30772bb388f062e1af7df2a5648d189a0573feb2145bccf4f2e2dbc1b",
+    "common/src/linux/runtime.rs": "361347eeca5fbdff577304ddad10b8685b6655893e9840f5f3b3e26b2568dbbe",
+    "common/src/audio/wire.rs": "1ed93e3f9b0cf7a8053cdadf3553f2dd44fa4d86b7cad101af66be83eb52fe7b",
+    "common/src/display_control.rs": "ec23ab2e3a5290ae66eef9619ee9333cefc815a3bb867873026f1f173480f17f",
+    "common/src/linux/display_control.rs": "ad5c6f4a5af39e7d8b2aee4e955f3609421fe2cf3d4d0bf4c3ce5118bde9e4a7",
+    "common/src/storage/diff.rs": "7940412f8c95c37a341684f0852a6b1adbcfa4bc685a256ae13223672a7df6e2",
+    "host/src/camera/decoder.rs": "b7091857939bbf6015d7fc4e396c9173eb3ff649d30bcc9d7bdf332f016f18c2",
+    "host/src/camera_control.rs": "ab29ac0501689c463f641f9ba2eab3bff34f186c7c0dcafd97935ccfaaf7b00b",
+    "host/src/camera/output_device/abi.rs": "24c61de529e9cfbd4379c71646e530255e8de6fea65e11738c9b9325fc17d5d6",
+    "host/src/audio/protocol.rs": "6b973bebcc93489ffa0ada68e3affbaab3cf2f0800c0084e8da58405226180f1",
+    "host/src/camera/output_worker.rs": "5af60e15a05cf866be117a68381e417ebbec027d78d429832ab02d2c84d7712a",
+    "host/src/camera/output_writer.rs": "9166f36d552ae092d7655f500453d66f671578415448c14da5db3c6ffc6bfc71",
+    "host/src/camera/output_worker/progress.rs": "609c889e92d61edd9b6657279ed934ee389785b82afd715e301d14a22161926b",
+    "host/src/camera/outputs.rs": "d5101b17bd4af1a36ac240dd7395675b791d53fa1d34047d9296c3ca092d9446",
+    "host/src/camera.rs": "1c3e5abdccd2d7bf3418e5c0e544cbc7d58400fef8eec3b56c998768b6dc1e1c",
+    "host/src/wifi/attempt.rs": "7201be145b6e596a6180c75ef046e0ce515a0e2b38f6a78e14f15086e57390c6",
+    "host/src/wifi/attempt/cleanup.rs": "ea70f0ce55534cc1e3963832463799ad8c8a98253060a1883d79317868bc8057",
+    "host/src/camera/usb.rs": "7d9e057e08ad76d241419a300cc660c692b7a77db2569f8269ba09f8e311120a",
+    "host/src/camera_registration.rs": "d4394409eefdaeeaa93fd93331ff0b1d704a82029bc345e340fc95b346c9e809",
+    "android/app/src/main/java/com/blent/CameraWire.kt": "58e36a811465b7e4ba8c569e1a682de20de648df778fe07e541c9a986c53010d",
+    "android/app/src/main/java/com/blent/CameraFreshness.kt": "6f5b28c56def8931c5c0459550eae09560deda495f1ec4aabf0831dc7fe238b0",
+    "android/app/src/main/java/com/blent/CameraCapture.kt": "90dd68b8e336c41b338427f7d79e0dbc9f239e7f4518327eadcb77674179e55b",
+    "android/app/src/main/java/com/blent/CameraRate.kt": "2b3b8f5f070a29cfe89dc9822c8f6b7cc295236140bbc5a86aa543c274dab663",
+    "android/app/src/main/java/com/blent/CameraCaptureContracts.kt": "b979a066c2eaf99db54dcc2ff8b4fba7258fa1cc3899acdcd2412d00cce244bb",
+    "android/app/src/main/java/com/blent/AudioWire.kt": "fd8b95e26a5d4294a4748bb4b7c4486b57fb16dc3d6df2ded55bafd48249393d",
+    "android/app/src/main/java/com/blent/AudioPackets.kt": "8d26359da31e057672e1f5b5806e2269a4b76732e9d740fa3d7b811174e5b9b6",
+    "android/app/src/main/java/com/blent/CameraResources.kt": "3155f946d6d8522be183b86aa5a2792719ab7afe1787ebbe54f39e3eca56a27f",
+    "android/app/src/main/java/com/blent/CameraStartup.kt": "0bf52b17424da9f400e72853290355e122da5ea4b46896ab12c07402aa58269f",
+    "scripts/install.sh": "328e4abafc7d9424dafe05cf3ba41c6f7cfb0d6326e68558d1d7d204a69c8b51",
+    "packaging/appimage/AppRun": "e0857ce5796ce069ab0531ac49098a3a800ffa9f01de5322faf547f80afd4235"
+  },
+  "findings": {
+    "T1454": {
+      "severity": "medium",
+      "evidence": "long-runtime.json",
+      "kind": "actual GUI startup in private runtime/config environment; exit precedes GUI/device initialization"
+    },
+    "T1455": {
+      "severity": "medium",
+      "evidence": "queued-owner.log",
+      "kind": "original Owner source included and actual Controller with no-device successful session; original thread retirement awaited"
+    },
+    "T1456": {
+      "severity": "medium",
+      "evidence": [
+        "camera-color.json",
+        "queued-owner.log"
+      ],
+      "kind": "FFmpeg independently generates BT.601/BT.709 red H.264; unchanged production filter string and actual public CameraPreview conversion; no real webcam"
+    },
+    "T1457": {
+      "severity": "medium",
+      "evidence": "freshness.log",
+      "kind": "unchanged production next/feed/write_frame/current_frame bodies with recording writer and paused Tokio clock; demonstrates delayed consumer schedule, not physical driver behavior"
+    },
+    "T1458": {
+      "severity": "low",
+      "evidence": "hidden-preview.log",
+      "kind": "original Preview source with headless egui; expired frame and texture retained while another tab renders, then released on camera-tab rendering"
+    },
+    "T1453": {
+      "severity": "low",
+      "evidence": "docs/cameras.md:167 versus gui/src/settings.rs::apply_label",
+      "kind": "reopened remaining stale Apply label after previous partial correction"
+    },
+    "T1459": {
+      "severity": "low",
+      "evidence": "gui camera/audio connection qualification strings versus scoped T858/T1238 acceptance and camera/audio guides",
+      "kind": "stale blanket-pending statement; historical selected-device acceptance does not qualify all devices/current builds"
+    }
+  },
+  "existing_tests": {
+    "gui_passed": 16,
+    "gui_selected": 16,
+    "host_passed": 18,
+    "host_selected": 18,
+    "warning": "These passing tests do not cover all reproduced schedules. Required permanent regressions are specified in TODO.md for implementation."
+  },
+  "constraints": "Production code unchanged. No running user Blent instance, live ADB endpoint, camera, audio service or display was changed. All processes/devices created for observations were isolated fixtures and retired; no install or push. One paused-clock probe stalled because its fixture kept the executor ready while waiting for a timer; its exact owned PID was terminated and its driver corrected to await event notifications, with final graceful stop/join recorded.",
+  "transport_answer": {
+    "implemented": "Linux ADB and feature-enabled direct USB; GUI dependency enables accessory-transport. Both camera paths feed the same decoder/output/brightness implementation.",
+    "ADB_gain": "Authorized ADB invitations can start media without each direct-USB offer\u2019s extra local Start; ADB also supplies developer shell/install/debug operations. No measured transport performance winner established by this review.",
+    "direct_USB": "Recorded selected API36 RugKing acceptance with debugging off; still experimental, not universal or current-build acceptance. New AOA connection can reset tablet USB and interrupt an ADB route.",
+    "references": [
+      "docs/cameras.md:163",
+      "docs/audio.md:25",
+      "docs/reviews/artifacts/2026-10-21-media-acceptance/T1238/README.md",
+      "https://developer.android.com/tools/adb",
+      "https://source.android.com/docs/core/interaction/accessories/aoa2"
+    ]
+  }
+}

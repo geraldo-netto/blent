@@ -1,0 +1,26 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.11s
+     Running unittests src/lib.rs (target/debug/build/blent/193737eb4ff8727a/out/blent-193737eb4ff8727a)
+
+running 18 tests
+test camera::output_worker::tests::operation_tests::t1148_blocked_configuration_times_out_while_original_lease_stays_owned ... ok
+test camera::output_worker::tests::operation_tests::t1148_blocked_write_times_out_without_releasing_original_native_work ... ok
+test camera::output_worker::tests::t1145_both_original_observations_are_reserved_before_native_configuration ... ok
+test camera::output_worker::tests::t1145_cancel_keeps_blocked_original_configuration_and_lease_owned ... ok
+test camera::output_worker::tests::t1145_cancelled_unstarted_job_never_configures_or_writes ... ok
+test camera::output_worker::tests::t1145_closed_frame_channel_publishes_final_black_then_joins ... ok
+test camera::output_worker::tests::t1145_fixture_owner_loss_cannot_erase_the_only_native_release ... ok
+test camera::output_worker::tests::t1145_initial_black_live_frames_and_stop_black_keep_full_frame_boundaries ... ok
+test camera::output_worker::tests::t1145_invalid_profile_boundaries_never_admit_native_configuration ... ok
+test camera::output_worker::tests::t1145_invalid_received_frame_lengths_never_reach_native_output ... ok
+test camera::output_worker::tests::t1145_native_config_failure_retires_every_original_reference ... ok
+test camera::output_worker::tests::t1145_real_native_write_failure_retires_without_followup_writes ... ok
+test camera::output_worker::tests::t1145_real_non_video_configuration_failure_does_not_leak_work ... ok
+test camera::output_worker::tests::t1145_rejected_controller_admission_still_retires_its_original_native_work ... ok
+test camera::output_worker::tests::t1145_runtime_teardown_retains_blocked_native_ownership_until_exact_return ... ok
+test camera::output_worker::tests::t1145_work_admission_failure_releases_originals_without_native_effects ... ok
+test camera::status_tests::t704_stop_and_lens_replacement_cannot_inherit_a_previous_deadline ... ok
+test camera::status_tests::t704_streaming_expires_at_two_seconds_and_recovers_on_selected_frames ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 868 filtered out; finished in 4.12s
+

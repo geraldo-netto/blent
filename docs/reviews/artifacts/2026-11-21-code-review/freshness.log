@@ -1,0 +1,5 @@
+   Compiling blent-freshness-review v0.1.0 (/tmp/blent-review-20261121/freshness)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
+     Running `target/debug/blent-freshness-review`
+publication t=0 ms; writes (age_ms,luma)=[(1500, 99), (1501, 99), (2501, 99)]
+after stop (age_ms,luma)=[(1500, 99), (1501, 99), (2501, 99), (2501, 16)]

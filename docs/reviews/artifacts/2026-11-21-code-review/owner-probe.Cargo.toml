@@ -1,0 +1,8 @@
+[package]
+name = "blent-review-probe"
+version = "0.1.0"
+edition = "2021"
+[workspace]
+[dependencies]
+blent-config = { path = "/backups/disk2/projects/blent/common" }
+blent = { path = "/backups/disk2/projects/blent/host" }

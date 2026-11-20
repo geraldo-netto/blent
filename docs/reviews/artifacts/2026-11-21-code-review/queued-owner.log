@@ -1,0 +1,37 @@
+   Compiling blent-review-probe v0.1.0 (/tmp/blent-review-20261121/probe)
+warning: function `identity` is never used
+  --> /backups/disk2/projects/blent/gui/src/media_owner.rs:15:15
+   |
+15 | pub(super) fn identity(target: Target<'_>) -> Option<Identity> {
+   |               ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: methods `needs_release`, `target`, `prepare`, and `release` are never used
+  --> /backups/disk2/projects/blent/gui/src/media_owner.rs:23:19
+   |
+22 | impl Owner {
+   | ---------- methods in this implementation
+23 |     pub(super) fn needs_release(&mut self, target: &Option<Identity>, observed: Activity) -> bool {
+   |                   ^^^^^^^^^^^^^
+...
+26 |     pub(super) fn target(&self) -> Option<&Identity> {
+   |                   ^^^^^^
+...
+30 |     pub(super) fn prepare(&mut self, target: &Option<Identity>) -> Result<(), String> {
+   |                   ^^^^^^^
+...
+47 |     pub(super) fn release(&mut self, fence: Fence) {
+   |                   ^^^^^^^
+
+warning: `blent-review-probe` (bin "blent-review-probe") generated 2 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.66s
+     Running `target/debug/blent-review-probe`
+backend=Stopped, GUI=Starting
+later GUI poll=Starting
+later GUI poll=Starting
+later GUI poll=Starting
+later GUI poll=Starting
+original controller/native thread retired
+actual CameraPreview bt601: [255, 0, 0, 255]
+actual CameraPreview bt709: [231, 0, 1, 255]

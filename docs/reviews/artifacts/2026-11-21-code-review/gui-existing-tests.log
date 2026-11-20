@@ -1,0 +1,23 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.16s
+     Running unittests src/main.rs (target/debug/build/blent-gui/20ab51cf01d97c1d/out/blent_gui-20ab51cf01d97c1d)
+
+running 16 tests
+test camera_preview::tests::t543_preview_uses_exported_lens_and_clears_texture_after_stop ... ok
+test camera_settings::tests::t1273_camera_states_preserve_pending_and_retiring_ownership ... ok
+test camera_settings::tests::t1273_queued_camera_start_cannot_be_retargeted ... ok
+test camera_settings::tests::t1295_invalid_serials_never_reach_camera_backend ... ok
+test camera_settings::tests::t1450_brightness_checkbox_changes_only_camera_preference ... ok
+test camera_settings::tests::t1451_stop_releases_hidden_preview_pixels_and_texture ... ok
+test camera_settings::tests::t543_portable_backend_contract_and_status_are_separate_from_preferences ... ok
+test camera_settings::tests::t974_exact_usb_profile_reaches_only_camera_backend ... ok
+test camera_settings::tests::t974_unavailable_saved_target_remains_visible_and_rendering_never_rewrites_it ... ok
+test camera_settings::tests::t974_unsupported_invalid_and_ambiguous_camera_targets_never_create_backend ... ok
+test media_owner::tests::t1273_original_media_owner_survives_queued_start_and_retirement ... ok
+test platform::activation::tests::t1449_cross_process_activation_has_no_new_state_owner ... ok
+test platform::activation::tests::t1449_error_unwind_and_repeated_reuse_release_descriptors ... ok
+test platform::activation::tests::t1449_flood_and_invalid_messages_are_bounded ... ok
+test platform::activation::tests::t1449_repeated_launch_keeps_original_state_owner ... ok
+test platform::activation::tests::t1449_secondary_fixture ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 187 filtered out; finished in 0.04s
+
