@@ -44,7 +44,12 @@ then **Restart camera** to apply the change.
 
 The camera helper is embedded in the host GUI through a reusable host library.
 No separate helper command or display daemon is needed. Keep the host window
-open while sharing; **Stop camera** or closing that window requests capture
+open while sharing. On Linux, tray clicks and repeated GUI launches restore the
+existing window and its camera/audio state. Admission remains held through native
+shutdown; launching again during cleanup does not create a replacement owner.
+Window focus remains subject to the desktop compositor. This activation requires
+the updated GUI to have started first; it cannot attach to a pre-update instance.
+**Stop camera** or closing that window requests capture
 cleanup and black output. A replacement waits for the original output workers
 and FFmpeg decoder and, for direct USB, the original registration to retire.
 Unconfirmed cleanup keeps replacement pending; Stop also cancels that pending

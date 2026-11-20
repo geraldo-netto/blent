@@ -5,6 +5,8 @@ mod monitor_inventory;
 mod overview;
 
 mod about;
+#[cfg(target_os = "linux")]
+mod activation;
 mod audio_settings;
 mod camera_preview;
 mod camera_settings;
@@ -1236,12 +1238,28 @@ fn settings_grid(ui: &mut egui::Ui, id: impl std::hash::Hash, render: impl FnOnc
 }
 
 fn main() -> eframe::Result {
+    #[cfg(target_os = "linux")]
+    return platform::activation::run(|instance| {
+        platform::run_gui(|| {
+            let scheduling_status = blent_config::scheduling::apply_configured();
+            eframe::run_native(
+                "Blent",
+                native_options(),
+                Box::new(move |cc| {
+                    Ok(Box::new(activation::Window {
+                        app: App::new(cc, scheduling_status),
+                        instance,
+                    }))
+                }),
+            )
+        })
+    });
+    #[cfg(not(target_os = "linux"))]
     platform::run_gui(|| {
         let scheduling_status = blent_config::scheduling::apply_configured();
-        let options = native_options();
         eframe::run_native(
             "Blent",
-            options,
+            native_options(),
             Box::new(move |cc| Ok(Box::new(App::new(cc, scheduling_status)))),
         )
     })

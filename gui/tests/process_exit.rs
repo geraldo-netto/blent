@@ -2,6 +2,15 @@
 //! T1435: actual main-thread GUI startup/close on an owned display; no nested Cargo.
 #[test]
 fn t1435_actual_gui_entry_closes_on_private_display() {
+    private_probe("process_exit.py");
+}
+
+#[test]
+fn t1449_actual_gui_relaunch_preserves_original_window() {
+    private_probe("activation.py");
+}
+
+fn private_probe(script: &str) {
     let output = std::process::Command::new("/usr/bin/unshare")
         .args([
             "--user",
@@ -21,7 +30,11 @@ fn t1435_actual_gui_entry_closes_on_private_display() {
             "--",
             "/usr/bin/python3",
         ])
-        .arg(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/process_exit.py"))
+        .arg(
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                .join("tests")
+                .join(script),
+        )
         .arg(env!("CARGO_BIN_EXE_blent-gui"))
         .output()
         .unwrap();
