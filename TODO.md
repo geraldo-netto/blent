@@ -21,7 +21,6 @@
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
 | T1453 | open | low | small | `docs/cameras.md` calls the camera preference-save action **Apply**, while `gui/src/main.rs::show_footer` exposes **Save** (also visible in the owner screenshot). Replace the stale button name after verifying current UI; documentation-only, no artificial test required. |
-| T1451 | open | low | small | Camera Stop from the resource overview retains `camera_settings::Panel.preview` CPU pixels and egui texture until the camera tab renders again or the GUI exits. `Panel::stop` closes only the backend; `Preview::update(None)` performs release only during show. Release cached preview immediately on Stop, including with no backend. Prove a weak frame reference and owned texture are released without reopening the tab, before/after fix. This is bounded unnecessary retention, not evidence of unbounded growth. |
 | T1450 | in_progress | medium | small | Add an optional saved automatic camera brightness control: center-metered, bounded and smoothed dark-tone adjustment shared by preview and exported frames. Current `CameraProfile`/GUI/decoder have no brightness option. Keep processing platform independent, allocation bounded and retained reader frames immutable; verify off/on, bright background, invalid dimensions/lengths, temporal bounds and cleanup, plus per-function coverage/complexity. Native visual acceptance must wait until the owner finishes the call; no running process/device changes. |
 
 ## Desktop interface

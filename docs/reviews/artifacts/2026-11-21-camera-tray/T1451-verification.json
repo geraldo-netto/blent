@@ -1,0 +1,22 @@
+{
+  "issue": "T1451",
+  "coverage_tool": "cargo-llvm-cov 0.8.7; rustc 1.100.0; repository per-function LCOV inventory",
+  "functions": [
+    {
+      "file": "gui/src/camera_settings.rs",
+      "name": "stop",
+      "line": 134,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "tests": [
+    "camera_settings::tests::t1451_stop_releases_hidden_preview_pixels_and_texture"
+  ],
+  "regression": "Permanent weak-reference/texture-count regression failed before Panel::stop cleared its preview and passed afterwards.",
+  "measurement_scope": "Panel::stop body unchanged between this commit and the combined T1449/T1450/T1451 coverage snapshot; full-source hashes retained in coverage.json with T1450."
+}

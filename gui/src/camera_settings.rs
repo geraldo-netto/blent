@@ -132,6 +132,7 @@ impl Panel {
     }
 
     pub(super) fn stop(&mut self) {
+        self.preview = Default::default();
         if let Some(backend) = self.backend.take() {
             self.owner.release(backend.close());
         }
@@ -305,6 +306,31 @@ fn resolution(ui: &mut egui::Ui, options: &mut CameraProfile) {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
+
+    #[test]
+    fn t1451_stop_releases_hidden_preview_pixels_and_texture() {
+        let context = egui::Context::default();
+        let frame = std::sync::Arc::new(
+            blent_config::camera::CameraPreview::new(Lens::Front, [2, 2], vec![127; 16]).unwrap(),
+        );
+        let weak = std::sync::Arc::downgrade(&frame);
+        let mut panel = Panel::default();
+        let _ = context.run(Default::default(), |context| {
+            egui::CentralPanel::default().show(context, |ui| {
+                panel.preview.show(ui, Some(frame.clone()));
+            });
+        });
+        drop(frame);
+        let allocated = context.tex_manager().read().num_allocated();
+        panel.stop(); // Overview Stop does not render the camera tab.
+        assert!(
+            weak.upgrade().is_none(),
+            "T1451 stopped camera retained preview pixels"
+        );
+        assert_eq!(context.tex_manager().read().num_allocated(), allocated - 1);
+        panel.stop(); // Idempotent, including after the backend has gone.
+        assert_eq!(context.tex_manager().read().num_allocated(), allocated - 1);
+    }
 
     #[test]
     fn t1273_camera_states_preserve_pending_and_retiring_ownership() {
