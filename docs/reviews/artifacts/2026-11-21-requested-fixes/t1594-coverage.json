@@ -1,0 +1,131 @@
+[
+  {
+    "file": "host/src/broker/control/automatic.rs",
+    "name": "attempted",
+    "line": 15,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/control/automatic.rs",
+    "name": "suppress",
+    "line": 20,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/control/automatic.rs",
+    "name": "ready",
+    "line": 23,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/control/automatic.rs",
+    "name": "retire_automatic",
+    "line": 58,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/control/automatic.rs",
+    "name": "automatic_ready",
+    "line": 66,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/control/commands.rs",
+    "name": "connect",
+    "line": 21,
+    "language": "rust",
+    "covered": 46,
+    "total": 47,
+    "percent": 97.87234042553192,
+    "passes": true,
+    "missing": [
+      32
+    ]
+  },
+  {
+    "file": "host/src/broker/control/commands.rs",
+    "name": "decide",
+    "line": 71,
+    "language": "rust",
+    "covered": 32,
+    "total": 33,
+    "percent": 96.96969696969697,
+    "passes": true,
+    "missing": [
+      83
+    ]
+  },
+  {
+    "file": "host/src/broker/control/commands.rs",
+    "name": "disconnect",
+    "line": 105,
+    "language": "rust",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/control/commands.rs",
+    "name": "revoke",
+    "line": 120,
+    "language": "rust",
+    "covered": 21,
+    "total": 22,
+    "percent": 95.45454545454545,
+    "passes": true,
+    "missing": [
+      124
+    ]
+  },
+  {
+    "file": "host/src/broker/control/lifecycle.rs",
+    "name": "collect_retired",
+    "line": 82,
+    "language": "rust",
+    "covered": 17,
+    "total": 17,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/control/authority.rs",
+    "name": "admit_proven",
+    "line": 210,
+    "language": "rust",
+    "covered": 19,
+    "total": 20,
+    "percent": 95.0,
+    "passes": true,
+    "missing": [
+      226
+    ]
+  }
+]

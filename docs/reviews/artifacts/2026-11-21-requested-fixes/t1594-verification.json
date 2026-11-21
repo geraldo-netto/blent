@@ -1,0 +1,28 @@
+{
+  "finding": "T1594",
+  "red": {
+    "regressions": 3,
+    "failed": 3,
+    "conditions": [
+      "Mixed inventory selected unrelated keyboard",
+      "Fixed retry ignored exponential delay",
+      "Discovery failure retried after original native retirement"
+    ]
+  },
+  "green": {
+    "broker_cases_passed": 256,
+    "failed": 0,
+    "new_policy_cases": 5
+  },
+  "coverage": {
+    "maintained_production_methods": 11,
+    "minimum_percent": 95
+  },
+  "complexity": {
+    "functions_measured": 66,
+    "above_nine": 0
+  },
+  "ownership": "Controller owns at most one retry record per admitted device key; confirmed inventory detach removes records, unavailable inventory preserves cutoffs. Retirement modifies only an existing retry record, preventing late owners from resurrecting a detached key. Existing link/native-completion/pairing gates still precede release. No new thread or native resource.",
+  "policy": "Automatic candidates must already be Android accessories, remain available and have no live/retiring link. Startup failures back off 2/4/8/16/32/60 seconds; authentication clears history. Native discovery without Hello suppresses until confirmed replug or manual Connect. No normal-mode hardware hints are persisted.",
+  "limits": "No connected USB devices probed. Normal-mode tablet mode-switch requires explicit Connect; accessory identity is scheduling evidence only, never authentication."
+}

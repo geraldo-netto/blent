@@ -88,6 +88,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
             .collect();
         for id in &retired {
             let mut link = self.links.remove(id).unwrap();
+            self.retire_automatic(&link);
             if let Some(ticket) = link.ticket {
                 link.pairing.as_mut().unwrap().retired(&ticket)?;
             }

@@ -225,6 +225,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
             link.pairing.as_ref().unwrap().current(&lease),
             "invalid returned authority"
         );
+        self.automatic.remove(&link.key);
         link.state = State::Authenticated;
         link.lease = Some(lease.clone());
         Ok(Some(Admission { connection, lease }))

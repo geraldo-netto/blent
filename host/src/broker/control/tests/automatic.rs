@@ -137,3 +137,96 @@ fn t1391_automatic_admission_respects_trust_availability_and_bounds() {
     start(&mut rig, 0);
     idle(&mut rig, 3_000);
 }
+
+#[test]
+fn t1594_unrelated_usb_devices_are_never_automatic_candidates() {
+    let mut rig = fixture();
+    let mut keyboard = device(2);
+    keyboard.vendor = 0x046d;
+    keyboard.product = 0xc31c;
+    keyboard.accessory = false;
+    let mut phone = device(3);
+    phone.vendor = 0x1234;
+    phone.product = 7;
+    phone.accessory = false;
+    rig.control
+        .replace_devices(vec![keyboard, phone, device(1)])
+        .unwrap();
+    start(&mut rig, 0);
+    idle(&mut rig, 60_000);
+}
+
+#[test]
+fn t1594_repeated_start_failures_back_off_to_a_bounded_interval() {
+    let mut rig = fixture();
+    let mut now = 0;
+    let mut current = start(&mut rig, now);
+    for delay in [2_000, 4_000, 8_000, 16_000, 32_000, 60_000, 60_000] {
+        rig.control.start_failed(current).unwrap();
+        rig.control.collect_retired().unwrap();
+        idle(&mut rig, now + delay - 1);
+        now += delay;
+        current = start(&mut rig, now);
+    }
+}
+
+#[test]
+fn t1594_discovery_failure_suppresses_automatic_retry_until_confirmed_replug() {
+    let mut rig = fixture();
+    let first = start(&mut rig, 0);
+    let hold = rig.pool.reserve().unwrap();
+    rig.control.attach(first, hold.completion()).unwrap();
+    rig.control.failed(first).unwrap();
+    rig.control.native_finished(first).unwrap();
+    idle(&mut rig, 1_000_000);
+    assert!(rig.control.collect_retired().unwrap().is_empty());
+    drop(hold);
+    rig.control.collect_retired().unwrap();
+    idle(&mut rig, 1_000_000);
+    rig.control.inventory_unavailable().unwrap();
+    rig.control.replace_devices(vec![device(1)]).unwrap();
+    idle(&mut rig, 1_000_000);
+    rig.control.replace_devices(vec![]).unwrap();
+    rig.control.replace_devices(vec![device(1)]).unwrap();
+    start(&mut rig, 1_000_000);
+}
+
+#[test]
+fn t1594_detach_during_original_discovery_cleanup_clears_retry_history() {
+    let mut rig = fixture();
+    let first = start(&mut rig, 0);
+    let hold = rig.pool.reserve().unwrap();
+    rig.control.attach(first, hold.completion()).unwrap();
+    rig.control.failed(first).unwrap();
+    rig.control.replace_devices(vec![]).unwrap();
+    rig.control.replace_devices(vec![device(1)]).unwrap();
+    rig.control.native_finished(first).unwrap();
+    idle(&mut rig, 60_000);
+    drop(hold);
+    rig.control.collect_retired().unwrap();
+    start(&mut rig, 60_000);
+}
+
+#[test]
+fn t1594_authentication_resets_backoff_before_next_connection() {
+    let mut rig = fixture();
+    let first = start(&mut rig, 0);
+    rig.control.start_failed(first).unwrap();
+    rig.control.collect_retired().unwrap();
+    let (id, ticket, hold) = rig.pending(1, peer(1));
+    let job = rig.job(id, &ticket);
+    assert!(rig
+        .control
+        .complete_authority(job.run(&mut rig.trust), 4)
+        .unwrap()
+        .is_some());
+    rig.control.failed(id).unwrap();
+    rig.control.native_finished(id).unwrap();
+    drop(hold);
+    rig.control.collect_retired().unwrap();
+    let next = start(&mut rig, 2_000);
+    rig.control.start_failed(next).unwrap();
+    rig.control.collect_retired().unwrap();
+    idle(&mut rig, 3_999);
+    start(&mut rig, 4_000);
+}

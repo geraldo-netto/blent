@@ -25,3 +25,9 @@ Upstream ADB distinguishes these failures before transport registration from gen
 ## T1595 — broker accept failures
 
 A private native descriptor-exhaustion regression failed before the fix because `accept4` EMFILE terminated the broker. Accept failures now delay only further accepts by 100 ms; existing clients and links continue service. Permanent tests confirm service during exhaustion, admission after capacity returns, and service after actual SO_PEERCRED rejection against a deliberately different expected UID. All 256 broker cases pass under instrumentation. Three maintained methods exceed 91% line coverage; all 21 measured functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1595-verification.json). Existing owners and exact shutdown settlement remain intact.
+
+## T1594 — automatic USB selection and retry
+
+Three failing-first regressions confirmed unrelated-device selection, fixed retries and repeated native discovery. Automatic attempts now require Android accessory identity; normal-mode tablets require explicit Connect. Startup failures back off from 2 to 60 seconds, authentication resets the history, and native discovery without Hello suppresses retries until confirmed replug or manual Connect. Two additional tests cover authentication reset and detach during original cleanup. Existing automatic-server fixtures now identify accessory candidates explicitly; their original service/ownership assertions remain.
+
+All 256 broker cases pass; all 11 maintained production methods reach at least 95% line coverage, and all 66 measured functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1594-verification.json). Retry records remain controller-owned and bounded by admitted device keys; exact original native retirement still precedes reuse. No connected USB hardware was probed.

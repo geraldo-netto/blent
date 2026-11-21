@@ -116,13 +116,17 @@ It becomes available only after the connection and its native worker retire.
 Use the connection’s **Disconnect** button to stop it.
 
 Once a computer has remembered peers, its running USB broker automatically tries
-available USB candidates on startup and reconnect. An unchanged saved fingerprint
-skips repeat approval; every connection still requires fresh TLS proof. A changed
+devices already in Android accessory mode on startup and reconnect. Normal USB
+keyboards, cameras, phones and tablets are never switched automatically. Use
+**Connect** to switch a tablet that has returned to its normal USB mode. An unchanged
+saved fingerprint skips repeat approval; every connection still requires fresh TLS proof. A changed
 fingerprint requires approval again. USB names and locations are scheduling hints,
 not trust. Devices reserved for ADB or with unknown availability are not attempted.
-Failed attempts retry with bounded capacity after the original native owner
-retires. Disconnect, Deny and Revoke suppress automatic retries for that physical
-attachment until confirmed unplug/replug or an explicit Connect request. An
+Startup failures before native admission retry after 2 seconds, doubling up to
+60 seconds; successful authentication resets the delay. Each retry waits for the
+original native owner to retire. Native discovery that ends without a Blent Hello,
+Disconnect, Deny and Revoke suppress automatic retries for that physical attachment
+until confirmed unplug/replug or an explicit Connect request. An
 unavailable inventory cannot clear that suppression. Pairing grants no media consent.
 
 On Android, an accessory attachment received during an old connection's cleanup

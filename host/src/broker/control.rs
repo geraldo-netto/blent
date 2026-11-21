@@ -98,7 +98,7 @@ pub struct Controller<K, T> {
     pending: Option<AuthorityOperation>,
     revokes: BTreeMap<String, PeerId>,
     // Physical-location scheduling hints only; never peer authentication.
-    automatic: BTreeMap<K, Option<i64>>,
+    automatic: BTreeMap<K, automatic::Retry>,
 }
 impl<K: Ord + Clone, T: Clone> Controller<K, T> {
     /// saved must originate from the healthy, exclusively owned Trust store.

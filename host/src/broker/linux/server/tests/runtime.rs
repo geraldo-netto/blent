@@ -129,7 +129,7 @@ async fn t1391_saved_peer_starts_available_usb_without_ui_command() {
     .unwrap();
     fixture
         .server
-        .inventory_result(Ok(vec![candidate()]))
+        .inventory_result(Ok(vec![accessory_candidate()]))
         .unwrap();
     fixture.server.tick().unwrap();
     let started = fixture.server.links.len();
@@ -156,7 +156,7 @@ async fn t1391_automatic_start_failure_keeps_server_alive_and_bounded() {
     .unwrap();
     fixture
         .server
-        .inventory_result(Ok(vec![candidate()]))
+        .inventory_result(Ok(vec![accessory_candidate()]))
         .unwrap();
     let holds: Vec<_> = (0..4)
         .map(|_| fixture.server.link_pool.reserve().unwrap())
@@ -181,4 +181,13 @@ async fn t1391_automatic_start_failure_keeps_server_alive_and_bounded() {
         .await
         .unwrap();
     fixture.finish().await;
+}
+
+fn accessory_candidate() -> Candidate {
+    Candidate {
+        vendor: 0x18d1,
+        product: 0x2d00,
+        support: Support::Accessory,
+        ..candidate()
+    }
 }
