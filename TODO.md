@@ -50,6 +50,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
+| T1563 | open | medium | small | Let a stopped media worker retire without waiting the full grace period. `AndroidWorkerRun.kt::stopAndExit` sends STOP, waits `graceMillis` for process death and only then sends EXIT, while `MediaWorkerService.kt::stop` cancels its run but never terminates the process, and the worker's `Ended` event is discarded once stopped. Every retirement therefore lasts at least the grace period (500 ms as configured by callers) plus a process start before `ResourceLane` admits the successor — for each display replacement (format, rate, decoder selection, surface or route change), each calibration step that changes the decoder selection, and camera or audio setting changes. Traced in code; not timed on a device. Completion: terminate the worker after its run has retired and published its end, or send EXIT as soon as the end arrives after STOP; measure replace-to-connected time before and after and keep retirement ordering regressions. |
 
 ## Configuration and diagnostics
 
