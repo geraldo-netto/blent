@@ -1,0 +1,24 @@
+[
+  {
+    "file": "host/src/camera/decoder.rs",
+    "name": "receive_packets",
+    "line": 143,
+    "language": "rust",
+    "covered": 24,
+    "total": 24,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/camera/decoder.rs",
+    "name": "write_access_unit",
+    "line": 173,
+    "language": "rust",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

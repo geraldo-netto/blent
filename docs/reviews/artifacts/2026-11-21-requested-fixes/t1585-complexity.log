@@ -1,0 +1,14 @@
+host/src/camera/decoder.rs:14	filters	1
+host/src/camera/decoder.rs:19	command	1
+host/src/camera/decoder.rs:67	connection	4
+host/src/camera/decoder.rs:113	transfer	1
+host/src/camera/decoder.rs:143	receive_packets	2
+host/src/camera/decoder.rs:173	write_access_unit	4
+host/src/camera/decoder.rs:190	decode_frames	3
+host/src/camera/decoder.rs:202	retire	2
+host/src/camera/decoder/latency_tests.rs:6	t1585_only_complete_valid_picture_headers_receive_a_delimiter	5
+host/src/camera/decoder/latency_tests.rs:26	t1585_pipe_failure_is_returned_without_retrying_the_packet	1
+host/src/camera/decoder/latency_tests.rs:38	encoded_frame	1
+host/src/camera/decoder/latency_tests.rs:66	single_packet	2
+host/src/camera/decoder/latency_tests.rs:81	t1585_single_camera_packet_decodes_without_successor_or_eof	1
+13 functions; 0 exceed cyclomatic complexity 9

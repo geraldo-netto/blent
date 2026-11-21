@@ -213,6 +213,11 @@ resource deadlines are described in the [technical reference](camera-reference.m
 
 ## Adjust freshness and bandwidth
 
+The host appends an H.264 access-unit delimiter after each picture packet so the
+decoder can emit it without waiting for the next camera frame. Configuration-only
+packets remain unchanged. This removes the parser's frame-boundary wait; it does
+not bound sensor, decoding or calling-application latency.
+
 The experimental freshness setting defaults to **150 ms**, range **50–2000 ms**.
 It limits extra encoder-queue age, not total camera delay. Lower values can discard
 more stale frames but cause more freezing. A fresh keyframe is needed after a gap;

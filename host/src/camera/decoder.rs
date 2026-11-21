@@ -7,6 +7,8 @@ use tokio::{io::AsyncWriteExt, net::TcpStream, process::Command};
 #[cfg(test)]
 mod flow_tests;
 #[cfg(test)]
+mod latency_tests;
+#[cfg(test)]
 mod retirement_tests;
 
 pub fn filters(options: &CameraProfile) -> String {
@@ -152,7 +154,7 @@ async fn receive_packets(
         )
         .await??;
         let packet = super::source_color::normalize(&packet)?;
-        tokio::time::timeout(budget, input.write_all(&packet))
+        tokio::time::timeout(budget, write_access_unit(input, &packet))
             .await
             .context("camera decoder input stalled")??;
         sequence = sequence
@@ -163,6 +165,26 @@ async fn receive_packets(
             .await
             .context("camera feedback stalled")??;
     }
+}
+
+/// Borrow one normalized packet (<= MAX_PACKET); the fixed six-byte delimiter
+/// closes its picture for the raw H.264 parser without waiting for a successor.
+/// Configuration-only packets do not introduce empty access units.
+async fn write_access_unit(
+    input: &mut (impl tokio::io::AsyncWrite + Unpin),
+    packet: &[u8],
+) -> std::io::Result<()> {
+    input.write_all(packet).await?;
+    let picture = crate::annex_scan::annex_b_offsets(packet).any(|(_, offset)| {
+        packet
+            .get(offset)
+            .is_some_and(|header| matches!(header & 0x9f, 1..=5))
+    });
+    if picture {
+        // AUD with primary_pic_type=7 (all slice types), then rbsp_stop_one_bit.
+        input.write_all(&[0, 0, 0, 1, 9, 0xf0]).await?;
+    }
+    Ok(())
 }
 
 async fn decode_frames(

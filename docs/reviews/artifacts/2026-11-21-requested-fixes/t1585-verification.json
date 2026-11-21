@@ -1,0 +1,21 @@
+{
+  "issue": "T1585",
+  "regression": "Single real H.264 frame must be emitted before successor or EOF; failed before, passes after",
+  "suite": {
+    "camera_cases": 126,
+    "failed": 0,
+    "new_boundary_cases": 3
+  },
+  "coverage": {
+    "tool": "cargo-llvm-cov 0.8.7, rustc 1.100.0",
+    "production_methods": 2,
+    "minimum_percent": 100
+  },
+  "complexity": {
+    "tool": "project checker, syn 2.0.119",
+    "functions": 13,
+    "over_9": 0
+  },
+  "ownership": "One borrowed normalized packet <=2 MiB; allocation-free NAL scan; six static delimiter bytes within the existing write deadline. Original decoder ownership/retirement unchanged.",
+  "limitations": "Software FFmpeg fixtures only, not sensor/call latency. FFmpeg can log a metadata-only trailing access unit at EOF; no extra picture is emitted."
+}
