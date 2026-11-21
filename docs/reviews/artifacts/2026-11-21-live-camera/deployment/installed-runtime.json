@@ -1,0 +1,19 @@
+{
+  "source_commit": "7114f23fb4ad64f5255d02035bf3f719733272bd",
+  "profile": "release optimized",
+  "runtime_environment": {
+    "SPA_PLUGIN_DIR": "/home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/0cc82216a407cc993941b5ddabd446becc3c9a6219d9bcf50125c60101dcad46/files/lib/x86_64-linux-gnu/spa-0.2",
+    "PIPEWIRE_MODULE_DIR": "/home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/0cc82216a407cc993941b5ddabd446becc3c9a6219d9bcf50125c60101dcad46/files/lib/x86_64-linux-gnu/pipewire-0.3"
+  },
+  "scope": "Local Linux SDK installation of reviewed commit; native software tests and release builds verified. Not a portable release.",
+  "sha256": {
+    "blent": "f9ef55db2e64ada741bb8dca11282082164923b28d1287e802984a0f3a890a0d",
+    "blent-gui": "7356d11d1f71b77d92fb8740076e6b72d72abe18e1dea5586bfd9abce3ccb805",
+    "blent-audio": "685bccd3e8a97b75eb397604e1b16e8ed58addf04b07f15ee0acffdff912dddb",
+    "blent-usb-broker": "c93d6f356eb3bcd4dd379c154b74aecebac2d11e20d17f3c1cfc5d373ffbf8c6",
+    "evdi_helper": "9a2a5c8cf0fe9100ff9e6a8b3957049efa96716ef24aee75442c2a43cb1c7bb0",
+    "blent-usb-io": "09a1aba3c42c122a7e9902ce0310f732a903bdf4e5402983000ea61ee5d497fe"
+  },
+  "android_apk_sha256": "0fb8cc3b51b68d6e34c4487f95062396f728ad4d50eabe6480554617ac186267",
+  "android_profile_apk_sha256": "244d0976cf432d9b0acca9e93f52dd5b340b3aff82ebf31fa2bd3983254c7b29"
+}

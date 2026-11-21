@@ -1,0 +1,8 @@
+{
+  "camera_mapping_observed_before_stop": "UsbFfs tcp:33719 tcp:40841",
+  "after_settlement": [
+    "UsbFfs tcp:8890 tcp:8890",
+    "UsbFfs tcp:8891 tcp:8891"
+  ],
+  "note": "Original decoder exit and route retirement observed independently."
+}

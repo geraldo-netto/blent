@@ -1,0 +1,18 @@
+{
+  "sensor": {
+    "exposure": 0,
+    "metering": "device",
+    "noise": "device",
+    "flicker": "device"
+  },
+  "shadow_mode": "auto",
+  "shadow_strength": 40,
+  "bitrate": 3000,
+  "min_bitrate": 1000,
+  "adaptive_bitrate": true,
+  "fps": 30,
+  "width": 640,
+  "height": 480,
+  "rotation": 0,
+  "mirror": false
+}

@@ -1,0 +1,11 @@
+{
+  "gui": 3090894,
+  "children": [
+    {
+      "pid": 3188066,
+      "exe": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/libexec/ffmpeg"
+    }
+  ],
+  "fds": 46,
+  "threads": 60
+}

@@ -1,0 +1,20 @@
+11-21 09:04:02.609  6616  6632 I BlentCamera: adjustment=2 status=0
+11-21 09:05:16.291  6616  6632 I BlentCamera: adjustment=3 status=0
+11-21 09:05:16.404  6616  6632 I BlentCamera: adjustment=4 status=0
+11-21 09:05:46.051  6616  6632 I BlentCamera: adjustment=5 status=0
+11-21 09:05:46.318  6616  6632 I BlentCamera: adjustment=6 status=0
+11-21 09:05:46.359  6616  6632 I BlentCamera: adjustment=7 status=0
+11-21 09:06:26.151  6616  6632 I BlentCamera: adjustment=8 status=0
+11-21 09:06:44.792  6616  6632 I BlentCamera: adjustment=9 status=0
+11-21 09:07:11.639  6616  6632 I BlentCamera: adjustment=10 status=0
+11-21 09:07:11.906  6616  6632 I BlentCamera: adjustment=11 status=0
+11-21 09:07:52.405  6616  6632 I BlentCamera: adjustment=12 status=0
+11-21 09:08:09.176  6616  6632 I BlentCamera: controls=CameraTuningCapabilities(minimum=-30, maximum=30, numerator=1, denominator=10, center=true, noiseMask=7, flickerMask=15)
+11-21 09:09:39.697  8209  8224 I BlentCamera: controls=CameraTuningCapabilities(minimum=-30, maximum=30, numerator=1, denominator=10, center=true, noiseMask=7, flickerMask=15)
+11-21 09:09:40.120  8209  8224 I BlentCamera: adjustment=1 status=0
+11-21 09:09:53.851  8209  8224 I BlentCamera: adjustment=2 status=0
+11-21 09:10:44.000  8209  8224 I BlentCamera: adjustment=3 status=0
+11-21 09:11:40.940  8209  8224 I BlentCamera: controls=CameraTuningCapabilities(minimum=-30, maximum=30, numerator=1, denominator=10, center=true, noiseMask=7, flickerMask=15)
+11-21 09:12:02.427  9002  9019 I BlentCamera: controls=CameraTuningCapabilities(minimum=-30, maximum=30, numerator=1, denominator=10, center=true, noiseMask=7, flickerMask=15)
+11-21 09:12:02.791  9002  9019 I BlentCamera: adjustment=1 status=0
+11-21 09:12:42.059  9002  9019 I BlentCamera: controls=CameraTuningCapabilities(minimum=-30, maximum=30, numerator=1, denominator=10, center=true, noiseMask=7, flickerMask=15)

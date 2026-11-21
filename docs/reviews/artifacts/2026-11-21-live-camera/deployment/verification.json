@@ -1,0 +1,53 @@
+{
+  "source_commit": "7114f23fb4ad64f5255d02035bf3f719733272bd",
+  "resolved_items": [
+    "T1466",
+    "T1467",
+    "T1468",
+    "T1469",
+    "T1470",
+    "T1471",
+    "T1472"
+  ],
+  "latest_focused_test_cases": {
+    "android": 341,
+    "host": 151,
+    "common": 32,
+    "gui": 25
+  },
+  "native_device": "RugKing Pad 2 Pro, Android 16, front camera",
+  "native_transport": "ADB; direct-USB command/receipt transport covered by leased-channel tests, not rerun on hardware in this validation",
+  "native_controls_accepted": [
+    "exposure +1 EV",
+    "center metering",
+    "50 Hz anti-flicker",
+    "Fast noise reduction",
+    "bitrate ceiling 2500 kbit/s",
+    "shadow mode Manual and Auto",
+    "shadow strength 60 and 40 percent",
+    "rotation 90 and 0 degrees",
+    "mirror on and off"
+  ],
+  "capabilities": {
+    "exposure_ev_min": -3,
+    "exposure_ev_max": 3,
+    "exposure_step_ev": 0.1,
+    "center_metering": true,
+    "noise": [
+      "device",
+      "off",
+      "fast"
+    ],
+    "flicker": [
+      "device",
+      "auto",
+      "50 Hz",
+      "60 Hz"
+    ]
+  },
+  "native_identity": "Original decoder 3188066 and Camera2 client 6616 unchanged across live edits; final GUI EV-entry/Save/repeated-launch checks retained decoder 3769434 and Camera2 client 8209. Camera2 reports one connect/disconnect per explicit session.",
+  "settlement": "Both final stop cycles: no GUI child, 40 file descriptors, 57 threads. Original decoder exits observed through pidfds; Android active camera client list empty; only two original display ADB routes remain. These finite observations do not prove unrestricted leak freedom.",
+  "installed": "All six native artifact hashes and both installed APK hashes match runtime metadata. Running daemon and GUI binaries match installed hashes.",
+  "final_state": "Desktop daemon and one GUI running; main Android app reopened; profile package updated and left inactive; camera stopped, display sharing running.",
+  "remaining": "T1452 owner lighting/noise/detail acceptance remains unverified. T1464 old daemon hang recurred; original broker terminated gracefully, then original child-free daemon terminated through pidfd after confirmed hang. Recovery is not a fix. Shared ADB PID 3379 retained in its dedicated scope; T1465 absent-server placement remains open."
+}
