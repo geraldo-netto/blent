@@ -352,3 +352,12 @@ All four command-path regressions failed before the fix. All 59 doctor tests and
 All eight maintained production functions meet the per-function executable-line requirement: state observation is 87.5%, desktop-file observation is 84%, and the other six are 100%. All 136 measured functions in affected production/test files have complexity <=9 (project Rust syn 2.0.119).
 
 Native commands retain their existing bounded child/output ownership. The desktop observer owns one nonblocking-opened regular-file descriptor, reads at most 64 KiB plus one sentinel byte into call-scoped storage, validates size again after reading, and drops the descriptor on every return. This is an input-length bound; allocator capacity and metadata overhead are separate. The shared parser borrows the call-scoped text; no setting, process, callback or native handle survives the observation. Missing measurements for Windows remain outside this Linux-only doctor change.
+
+
+## T1501 — bound and throttle malformed controller diagnostics
+
+Each input listener owns one warning window shared by successive controllers. It emits at most one malformed-input warning per second and counts suppressed messages with saturating arithmetic. Parser errors and frames each use an escaped 256-byte excerpt plus an optional three-byte truncation marker; formatting stops at the bound without allocating the complete parser diagnostic. Valid input and controller retirement remain unchanged.
+
+Both initial regressions failed: one unknown-type frame emitted 120221 log bytes, and a 32-frame burst emitted 32 warnings. All 153 input tests pass afterward, including controller replacement, exact time boundaries, a regressed clock, counter exhaustion, Unicode/control input and a formatter that ignores truncation errors. All six maintained production functions have 100% executable-line coverage; all 103 measured functions in affected source/test files have complexity <=9 (project Rust syn 2.0.119).
+
+The listener owns only a timestamp, saturating counter and mutex; it retains no frame or parser error. The mutex is released before logging. Each admitted warning temporarily owns two strings with at most 259 bytes of content each, dropped after synchronous emission; allocator bookkeeping is separate. Rejection stores no text, and no native handle, task, queue or callback is introduced. Existing controller/native retirement ownership is unchanged. Tests use private log files and fake input sinks, without modifying installed sessions.

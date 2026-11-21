@@ -1128,6 +1128,11 @@ and card changes; KWin/X11 output selection lives in its mapping adapter.
 `SessionSettings` applies geometry/configuration policy, including the existing
 live persistent auto-resolution setting. Greetings still snapshot live encoder
 settings. Adapter contract tests run without desktop services or real devices.
+Malformed controller input retains the connection and emits at most one warning
+per second per listener, including controller replacements. Each warning reports
+the number suppressed since the preceding warning. Parser errors and frame text
+are independently escaped and limited to 256 bytes plus a truncation marker;
+formatting stops at the bound rather than constructing the complete diagnostic.
 
 `input::event_writer` serializes native `input_event` fields into a reusable,
 zeroed 64-event buffer per device. Each existing `SYN_REPORT` boundary flushes

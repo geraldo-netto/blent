@@ -8,6 +8,7 @@ mod batching_tests;
 mod config;
 #[cfg(test)]
 mod contracts;
+mod diagnostics;
 pub mod direct;
 #[cfg(target_os = "linux")]
 mod event_writer;
@@ -46,12 +47,14 @@ pub use wire::InputEvent;
 struct Controllers {
     devices: Arc<dyn InputSink>,
     generation: watch::Sender<u64>,
+    invalid: diagnostics::Invalid,
 }
 impl Controllers {
     fn new(devices: Arc<dyn InputSink>) -> Self {
         Self {
             devices,
             generation: watch::channel(0).0,
+            invalid: diagnostics::Invalid::default(),
         }
     }
     #[cfg(test)]
@@ -624,7 +627,7 @@ fn dispatch_controller_text(
             }
             return dispatch_event(event, &controllers.devices, settings, latency, pen_enabled);
         }
-        Err(e) => warn!("Invalid input: {} - {}", e, text),
+        Err(e) => controllers.invalid.report(&e, text),
     }
     Dispatch::Immediate(true)
 }

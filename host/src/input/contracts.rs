@@ -463,3 +463,5 @@ fn t1647_pen_wire_requires_explicit_boolean_button_state() {
         }
     }
 }
+
+mod invalid_log;
