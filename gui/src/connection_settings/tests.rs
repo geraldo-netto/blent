@@ -111,6 +111,7 @@ fn publish_ownership(
     let mut snapshot = None;
     for notice in [
         Notice::Begin {
+            inventory_available: true,
             revision,
             local: peer(1),
         },
@@ -460,6 +461,7 @@ fn t894_empty_inventory_and_small_window_keep_labels_readable() {
     let mut assembler = Assembler::new(Limits::default()).unwrap();
     assembler
         .push(Notice::Begin {
+            inventory_available: true,
             revision: 2,
             local: peer(1),
         })
@@ -547,6 +549,7 @@ fn replace_named_device(handle: &Handle, manufacturer: &str, model: &str, access
     let mut snapshot = None;
     for notice in [
         Notice::Begin {
+            inventory_available: true,
             revision: 2,
             local: peer(1),
         },
@@ -672,6 +675,7 @@ fn reserved_view(
     let mut assembler = Assembler::new(Limits::default()).unwrap();
     assembler
         .push(Notice::Begin {
+            inventory_available: true,
             revision: 2,
             local: peer(1),
         })
@@ -726,6 +730,7 @@ fn grid_devices(handle: &Handle) {
     let mut assembler = Assembler::new(Limits::default()).unwrap();
     assembler
         .push(Notice::Begin {
+            inventory_available: true,
             revision: 2,
             local: peer(1),
         })
@@ -902,4 +907,55 @@ fn t1358_approval_remembers_matching_fingerprints_by_default() {
             ..
         }
     ));
+}
+
+#[test]
+fn t1598_inventory_failure_keeps_connection_and_trust_controls_visible() {
+    let (mut panel, handle) = fixture();
+    let mut assembler = Assembler::new(Limits::default()).unwrap();
+    for notice in [
+        Notice::Begin {
+            revision: 2,
+            local: peer(1),
+            inventory_available: false,
+        },
+        Notice::Link {
+            revision: 2,
+            connection: 2,
+            ticket: Some(Ticket {
+                epoch: 1,
+                peer: peer(2),
+            }),
+            state: State::Authenticated,
+            trusted: true,
+        },
+        Notice::Saved {
+            revision: 2,
+            peer: peer(3),
+        },
+    ] {
+        assembler.push(notice).unwrap();
+    }
+    let snapshot = assembler
+        .push(Notice::End { revision: 2 })
+        .unwrap()
+        .unwrap();
+    {
+        let mut fake = handle.0.lock().unwrap();
+        fake.status.view = Some(fake.model.publish(snapshot).unwrap());
+    }
+    let context = egui::Context::default();
+    let labels = frame(&mut panel, &context, 900.0, vec![]);
+    assert!(labels
+        .iter()
+        .any(|(label, _)| label.starts_with("USB inventory unavailable.")));
+    assert!(!labels
+        .iter()
+        .any(|(label, _)| label.starts_with("No USB devices found.")));
+    click(&mut panel, &context, "Disconnect");
+    assert!(matches!(
+        handle.0.lock().unwrap().commands.last(),
+        Some(Command::Disconnect { .. })
+    ));
+    assert!(labels.iter().any(|(label, _)| label == "Forget tablet"));
 }

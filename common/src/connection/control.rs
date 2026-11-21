@@ -66,6 +66,8 @@ pub enum Notice {
     Begin {
         revision: u64,
         local: PeerId,
+        /// False means discovery is unavailable, not an empty successful scan.
+        inventory_available: bool,
     },
     /// Target is opaque. Even an accessory VID/PID proves no peer identity.
     Device {

@@ -55,7 +55,7 @@ async fn identity(socket: &AsyncSocket) -> String {
             socket.send(&Message::Control { request: 1, command: Command::Inspect }, &[]).await.unwrap();
             match socket.receive().await.unwrap().message {
                 Message::Rejected { .. } => tokio::time::sleep(Duration::from_millis(10)).await,
-                Message::Report { notice: Notice::Begin { revision, local }, .. } => {
+                Message::Report { notice: Notice::Begin { revision, local, inventory_available: true }, .. } => {
                     assert!(matches!(socket.receive().await.unwrap().message,
                         Message::Report { notice: Notice::End { revision: end }, .. } if end == revision));
                     return local.as_str().to_owned();

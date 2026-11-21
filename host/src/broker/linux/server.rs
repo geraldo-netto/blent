@@ -36,6 +36,7 @@ use tokio::time::Instant;
 pub(super) mod authority;
 mod commands;
 mod events;
+mod inspection;
 mod routes;
 mod settings;
 mod shutdown;
@@ -43,6 +44,7 @@ pub use settings::Settings;
 type Control = Controller<(u8, Vec<u8>), Candidate>;
 struct Client {
     peer: Option<Peer>,
+    inspection: Option<u64>,
     completion: Completion,
 }
 struct Link {
@@ -76,7 +78,7 @@ pub struct Server {
     claims: RouteClaims,
     link_pool: Pool,
     inventory: Option<Inventory>,
-    inventory_error: bool,
+    inventory_observed: bool,
     next_inventory: Instant,
     origin: Instant,
     owner_id: u64,
@@ -128,7 +130,7 @@ impl Server {
             links: BTreeMap::new(),
             routes: BTreeMap::new(),
             inventory: None,
-            inventory_error: true,
+            inventory_observed: false,
             next_inventory: Instant::now(),
             origin: Instant::now(),
             owner_id: 0,
@@ -176,6 +178,7 @@ impl Server {
                     Client {
                         completion: peer.completion(),
                         peer: Some(peer),
+                        inspection: None,
                     },
                 );
             }
@@ -237,12 +240,11 @@ impl Server {
         );
     }
     fn close_client(&mut self, client: u64) -> Result<()> {
-        if let Some(peer) = self
-            .clients
-            .get_mut(&client)
-            .and_then(|client| client.peer.take())
-        {
-            peer.stop();
+        if let Some(owner) = self.clients.get_mut(&client) {
+            owner.inspection = None;
+            if let Some(peer) = owner.peer.take() {
+                peer.stop();
+            }
         }
         self.revocations.remove(&client);
         let owners: Vec<_> = self

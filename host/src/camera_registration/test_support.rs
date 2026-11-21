@@ -22,6 +22,7 @@ pub(crate) fn view(links: &[(u64, u64, LinkState)]) -> View {
     let mut assembler = Assembler::new(Limits::default()).unwrap();
     assembler
         .push(Notice::Begin {
+            inventory_available: true,
             revision: 1,
             local: peer(1),
         })

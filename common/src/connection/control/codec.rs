@@ -188,10 +188,15 @@ impl Notice {
     pub fn encode(&self) -> Result<Vec<u8>> {
         let mut out = Vec::with_capacity(MAX_BODY);
         match self {
-            Self::Begin { revision, local } => {
+            Self::Begin {
+                revision,
+                local,
+                inventory_available,
+            } => {
                 out.push(0);
                 push_counter(&mut out, *revision)?;
                 out.extend_from_slice(local.as_str().as_bytes());
+                out.push(u8::from(*inventory_available));
             }
             Self::Device {
                 revision,
@@ -251,6 +256,7 @@ impl Notice {
             0 => Self::Begin {
                 revision,
                 local: input.peer()?,
+                inventory_available: input.flag()?,
             },
             1 => Self::Device {
                 revision,

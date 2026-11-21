@@ -90,6 +90,7 @@ pub struct Controller<K, T> {
     local: PeerId,
     limits: Limits,
     revision: u64,
+    inventory_available: bool,
     next: u64,
     devices: BTreeMap<u64, Device<K, T>>,
     links: BTreeMap<u64, Link<K>>,
@@ -116,6 +117,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
             local,
             limits,
             revision: 1,
+            inventory_available: false,
             next: 1,
             devices: BTreeMap::new(),
             links: BTreeMap::new(),
@@ -166,6 +168,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
     pub fn snapshot(&self) -> Vec<Notice> {
         let revision = self.revision;
         let mut notices = vec![Notice::Begin {
+            inventory_available: self.inventory_available,
             revision,
             local: self.local.clone(),
         }];

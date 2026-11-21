@@ -42,6 +42,7 @@ fn changed_view(
     let mut assembler = Assembler::new(Limits::default()).unwrap();
     assembler
         .push(Notice::Begin {
+            inventory_available: true,
             revision: f.revision,
             local: peer(1),
         })

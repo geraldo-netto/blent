@@ -119,6 +119,11 @@ that connection owns the physical device, including during discovery refreshes.
 It becomes available only after the connection and its native worker retire.
 Use the connection’s **Disconnect** button to stop it.
 
+A failed USB scan is shown as **USB inventory unavailable**. Existing links,
+pairing choices and saved tablets remain visible; Disconnect, pairing decisions
+and Forget remain available. New connections require successful discovery.
+The first inventory view waits for the initial scan to finish, including failure.
+
 Android reports worker binding/startup expiry as a connection failure, rather
 than a normal end. Saved-computer list/forget operations have a separate
 five-second observation budget after startup. Expiry does not prove native

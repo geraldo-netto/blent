@@ -127,6 +127,7 @@ impl Fixture {
         let mut assembler = Assembler::new(Limits::default()).unwrap();
         assembler
             .push(Notice::Begin {
+                inventory_available: true,
                 revision: self.revision,
                 local: peer(1),
             })

@@ -3,14 +3,30 @@
 use super::*;
 
 impl<K: Ord + Clone, T: Clone> Controller<K, T> {
+    pub fn inventory_available(&self) -> bool {
+        self.inventory_available
+    }
+
+    /// An unavailable scan cannot prove detach or release any original link.
+    pub fn inventory_unavailable(&mut self) -> Result<()> {
+        if !self.inventory_available && self.devices.is_empty() {
+            return Ok(());
+        }
+        self.changed()?;
+        self.devices.clear();
+        self.inventory_available = false;
+        Ok(())
+    }
+
     pub fn replace_devices(&mut self, devices: Vec<Device<K, T>>) -> Result<()> {
         self.validate_inventory(&devices)?;
         let (replacement, next) = self.replacement(devices)?;
-        if self.inventory_changed(&replacement) {
+        if !self.inventory_available || self.inventory_changed(&replacement) {
             self.changed()?;
         }
         self.automatic
             .retain(|key, _| replacement.values().any(|device| &device.key == key));
+        self.inventory_available = true;
         self.devices = replacement;
         self.next = next;
         Ok(())

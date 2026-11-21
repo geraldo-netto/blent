@@ -50,6 +50,7 @@ pub(crate) fn candidate() -> Candidate {
     let mut assembler = Assembler::new(Limits::default()).unwrap();
     assembler
         .push(Notice::Begin {
+            inventory_available: true,
             revision: 1,
             local: peer(1),
         })

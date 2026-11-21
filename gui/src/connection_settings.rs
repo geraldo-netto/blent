@@ -175,6 +175,10 @@ impl Panel {
     fn devices(&mut self, ui: &mut egui::Ui, view: &View) {
         ui.separator();
         ui.strong("USB devices");
+        if !view.snapshot().inventory_available() {
+            ui.label("USB inventory unavailable. Existing connections and saved tablets remain manageable.");
+            return;
+        }
         if view.snapshot().devices().is_empty() {
             ui.label("No USB devices found. Connect your tablet and open Blent.");
             return;

@@ -31,7 +31,10 @@ impl Server {
         Ok(())
     }
     fn control_command(&mut self, client: u64, request: u64, command: Command) -> Result<()> {
-        if self.inventory_error && matches!(command, Command::Inspect | Command::Connect { .. }) {
+        if command == Command::Inspect {
+            return self.inspect(client, request);
+        }
+        if !self.controller.inventory_available() && matches!(command, Command::Connect { .. }) {
             self.reject(client, request, Rejection::Unavailable);
             return Ok(());
         }
@@ -119,10 +122,16 @@ impl Server {
         Ok(())
     }
     pub(super) fn inventory_result(&mut self, result: Result<Vec<Candidate>>) -> Result<()> {
+        self.update_inventory(result)?;
+        self.inventory_observed = true;
+        self.complete_inspections();
+        Ok(())
+    }
+
+    fn update_inventory(&mut self, result: Result<Vec<Candidate>>) -> Result<()> {
         let candidates = match result {
             Ok(candidates) => candidates,
             Err(error) => {
-                self.inventory_error = true;
                 tracing::warn!("USB inventory unavailable: {error:#}");
                 return self.controller.inventory_unavailable();
             }
@@ -142,13 +151,11 @@ impl Server {
                 }
             })
             .collect();
-        self.controller.replace_devices(devices)?;
-        self.inventory_error = false;
-        Ok(())
+        self.controller.replace_devices(devices)
     }
 
     pub(super) fn automatic(&mut self) -> Result<()> {
-        if self.inventory_error {
+        if !self.controller.inventory_available() {
             return Ok(());
         }
         let action = self.controller.automatic(link::now(self.origin)?)?;

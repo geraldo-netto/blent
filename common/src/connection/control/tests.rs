@@ -43,6 +43,7 @@ fn commands() -> Vec<Command> {
 fn notices() -> Vec<Notice> {
     let mut values = vec![
         Notice::Begin {
+            inventory_available: true,
             revision: 1,
             local: peer(),
         },
@@ -368,5 +369,24 @@ fn t1338_availability_wire_domain_is_exhaustive() {
             *availability = Availability::parse(value).unwrap();
         }
         assert_eq!(Notice::decode(&notice.encode().unwrap()).unwrap(), notice);
+    }
+}
+
+#[test]
+fn t1598_inventory_availability_is_required_and_strict_on_the_wire() {
+    for available in [false, true] {
+        let notice = Notice::Begin {
+            revision: 1,
+            local: peer(),
+            inventory_available: available,
+        };
+        let bytes = notice.encode().unwrap();
+        assert_eq!(Notice::decode(&bytes).unwrap(), notice);
+        assert!(Notice::decode(&bytes[..bytes.len() - 1]).is_err());
+        for invalid in 2..=255 {
+            let mut bad = bytes.clone();
+            *bad.last_mut().unwrap() = invalid;
+            assert!(Notice::decode(&bad).is_err());
+        }
     }
 }

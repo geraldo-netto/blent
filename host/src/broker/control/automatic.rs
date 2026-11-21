@@ -26,13 +26,6 @@ impl Retry {
 }
 
 impl<K: Ord + Clone, T: Clone> Controller<K, T> {
-    /// Unknown inventory cannot establish detach or clear an explicit cutoff.
-    pub fn inventory_unavailable(&mut self) -> Result<()> {
-        self.editable()?;
-        self.devices.clear();
-        self.changed()
-    }
-
     /// One action per call; live and retiring owners both reserve their key.
     /// Called only by the running broker, never during shutdown draining.
     pub fn automatic(&mut self, now: i64) -> Result<Action<T>> {

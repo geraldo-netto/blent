@@ -24,6 +24,7 @@ fn peer(id: u64) -> PeerId {
 fn authenticated() -> View {
     let mut view = Assembler::new(Limits::default()).unwrap();
     view.push(Notice::Begin {
+        inventory_available: true,
         revision: 1,
         local: peer(1),
     })

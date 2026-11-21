@@ -12,6 +12,7 @@ fn ticket() -> Ticket {
 }
 fn begin(revision: u64) -> Notice {
     Notice::Begin {
+        inventory_available: true,
         revision,
         local: peer(1),
     }
@@ -318,6 +319,7 @@ fn changed_computer() -> Snapshot {
     let mut builder = Assembler::new(Limits::default()).unwrap();
     builder
         .push(Notice::Begin {
+            inventory_available: true,
             revision: 3,
             local: peer(99),
         })
@@ -463,5 +465,52 @@ fn t1337_snapshot_rejects_missing_or_duplicate_device_owner() {
         }
         assembler.push(link(1, 2, State::Pending)).unwrap();
         assert!(assembler.push(Notice::End { revision: 1 }).is_err());
+    }
+}
+
+#[test]
+fn t1598_unavailable_inventory_blocks_only_new_device_connections() {
+    let mut builder = Assembler::new(Limits::default()).unwrap();
+    for value in [
+        Notice::Begin {
+            revision: 1,
+            local: peer(1),
+            inventory_available: false,
+        },
+        device(1, 1),
+        link(1, 2, State::Pending),
+        Notice::Saved {
+            revision: 1,
+            peer: peer(4),
+        },
+    ] {
+        builder.push(value).unwrap();
+    }
+    let snapshot = builder.push(Notice::End { revision: 1 }).unwrap().unwrap();
+    let mut model = Model::default();
+    let view = model.publish(snapshot).unwrap();
+    assert!(!view.snapshot().inventory_available());
+    assert!(view
+        .prepare(Command::Connect {
+            revision: 1,
+            target: 1
+        })
+        .is_err());
+    for command in [
+        Command::Inspect,
+        Command::Decide {
+            connection: 2,
+            ticket: ticket(),
+            allow: false,
+            remember: false,
+        },
+        Command::Disconnect {
+            connection: 2,
+            ticket: Some(ticket()),
+        },
+        Command::Revoke { peer: peer(4) },
+    ] {
+        let action = view.prepare(command.clone()).unwrap();
+        assert_eq!(model.command(&action).unwrap(), &command);
     }
 }

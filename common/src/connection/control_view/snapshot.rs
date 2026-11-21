@@ -51,6 +51,7 @@ pub struct Link {
 pub struct Snapshot {
     revision: u64,
     computer: PeerId,
+    inventory_available: bool,
     devices: BTreeMap<u64, Device>,
     links: BTreeMap<u64, Link>,
     saved: BTreeMap<String, PeerId>,
@@ -61,6 +62,9 @@ impl Snapshot {
     }
     pub fn computer(&self) -> &PeerId {
         &self.computer
+    }
+    pub fn inventory_available(&self) -> bool {
+        self.inventory_available
     }
     pub fn devices(&self) -> &BTreeMap<u64, Device> {
         &self.devices
@@ -194,11 +198,17 @@ impl Assembler {
         let previous = self.pending.take();
         // Reuse the independent flat schema's counter and field validation.
         notice.encode()?;
-        if let Notice::Begin { revision, local } = notice {
+        if let Notice::Begin {
+            revision,
+            local,
+            inventory_available,
+        } = notice
+        {
             ensure!(previous.is_none(), "nested snapshot begin");
             self.pending = Some(Snapshot {
                 revision,
                 computer: local,
+                inventory_available,
                 devices: BTreeMap::new(),
                 links: BTreeMap::new(),
                 saved: BTreeMap::new(),

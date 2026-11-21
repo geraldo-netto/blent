@@ -178,7 +178,7 @@ async fn t853_retired_route_reply_failure_still_cancels_every_client_sibling() {
 }
 
 #[tokio::test]
-async fn t853_failed_inventory_rejects_inspect_until_successful_refresh() {
+async fn t853_failed_inventory_reports_unavailable_until_successful_refresh() {
     let mut fixture = Fixture::new().await;
     let (client, remote) = fixture.client().await;
     fixture
@@ -193,10 +193,23 @@ async fn t853_failed_inventory_rejects_inspect_until_successful_refresh() {
     assert!(
         matches!(
             response(&remote).await,
-            Message::Rejected { request: 1, .. }
+            Message::Report {
+                request: 1,
+                notice: Notice::Begin {
+                    inventory_available: false,
+                    ..
+                }
+            }
         ),
         "scan failure was reported as successful empty inventory"
     );
+    assert!(matches!(
+        response(&remote).await,
+        Message::Report {
+            request: 1,
+            notice: Notice::End { .. }
+        }
+    ));
     fixture.server.inventory_result(Ok(vec![])).unwrap();
     control(&mut fixture.server, client, 2, Command::Inspect);
     assert!(matches!(
@@ -242,3 +255,5 @@ async fn t1336_inventory_names_reach_control_snapshot() {
     assert_eq!(names.model(), "RugKing Pad 2 Pro");
     fixture.finish().await;
 }
+
+mod inventory_view;

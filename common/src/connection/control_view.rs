@@ -128,6 +128,7 @@ fn allowed(snapshot: &Snapshot, command: &Command) -> Result<()> {
     match command {
         Command::Inspect => Ok(()),
         Command::Connect { revision, target } => {
+            ensure!(snapshot.inventory_available(), "USB inventory unavailable");
             ensure!(
                 *revision == snapshot.revision() && snapshot.devices().contains_key(target),
                 "stale USB device selection"

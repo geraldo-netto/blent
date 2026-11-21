@@ -37,6 +37,7 @@ fn ticket() -> Ticket {
 fn notices(revision: u64, state: State) -> Vec<Notice> {
     vec![
         Notice::Begin {
+            inventory_available: true,
             revision,
             local: peer(1),
         },

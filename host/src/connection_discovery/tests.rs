@@ -16,6 +16,7 @@ fn snapshot(model: &mut Model, revision: u64, links: &[(u64, u64, u64, State)]) 
     let mut assembler = Assembler::new(Limits::default()).unwrap();
     assembler
         .push(Notice::Begin {
+            inventory_available: true,
             revision,
             local: peer(1),
         })
