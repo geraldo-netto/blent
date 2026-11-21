@@ -70,10 +70,18 @@ pub async fn reconnect<C: Commands + Clone + 'static>(
     current.then_some(address)
 }
 pub(super) fn connected(bytes: &[u8], address: &str) -> bool {
-    let text = String::from_utf8_lossy(bytes);
+    let Ok(text) = std::str::from_utf8(bytes) else {
+        return false;
+    };
     // Exact ADB success prefixes; "failed to connect" cannot authorize a route.
-    text.trim() == format!("connected to {address}")
-        || text.trim() == format!("already connected to {address}")
+    let Some(target) = text
+        .trim()
+        .strip_prefix("connected to ")
+        .or_else(|| text.trim().strip_prefix("already connected to "))
+    else {
+        return false;
+    };
+    valid_address(address) && valid_address(target) && endpoint_key(address) == endpoint_key(target)
 }
 pub async fn setup<C: Commands + Clone + 'static>(
     adb: &Adb<C>,

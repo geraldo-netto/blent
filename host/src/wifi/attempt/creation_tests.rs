@@ -101,6 +101,24 @@ fn response(code: u32, text: &str) -> crate::usb::RouteCommand {
         started: true,
     }
 }
+
+#[tokio::test]
+async fn t1544_canonical_reply_acknowledges_the_original_creator() {
+    use blent_config::adb_reverse::temporary::Creation;
+    let adb = Adb(Script(Mutex::new(
+        [
+            response(0, "List of devices attached\n"),
+            response(0, "connected to LOCALHOST:55637\n"),
+        ]
+        .into(),
+    )));
+    let mut state = Creation::NotStarted;
+    assert!(connect_route(&adb, "LOCALHOST:055637", &mut state)
+        .await
+        .unwrap());
+    assert_eq!(state, Creation::Acknowledged);
+    assert!(adb.0 .0.lock().unwrap().is_empty());
+}
 #[tokio::test]
 async fn t1364_preexisting_and_unknown_inventory_never_start_creators() {
     use blent_config::adb_reverse::temporary::Creation;

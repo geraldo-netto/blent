@@ -83,3 +83,9 @@ Additional finding from this pass: the parser accepted bare connected without id
 ### T1545 — wider USB fixture follow-up
 
 The wider USB suite exposed one additional fixture still treating the valid token bogus as malformed. That existing regression failed, then passed after changing its malformed case to a multiword state and adding detached to its non-ready records. All 37 USB tests pass in the combined Wi-Fi/USB run. All 34 functions in the changed USB test file have complexity <=9. No production behavior or original malformed/duplicate/ownership assertion was weakened.
+
+## T1544 — normalize connect-reply endpoint identity
+
+A private native ADB 34.0.4-debian server confirmed the bug: a request for LOCALHOST:055637 returned connected to LOCALHOST:55637. The probe used its own filesystem server socket, temporary home/keys, a nonexistent --one-device serial and one simulated loopback adbd; all probe-owned sockets, thread and server process were stopped and joined. It did not address the installed server or physical tablet.
+
+Connect success now validates both endpoints and compares the same normalized identity used for reservations and observations. Hostname case, port leading zeroes and canonical IPv6 spelling match; different endpoints, invalid ports, malformed UTF-8 and unqualified replies do not. Two permanent regressions failed before the fix. All 88 selected tests pass (50 Wi-Fi, 37 USB and one audio-USB test), including a creator-state regression, all 256 repeated-byte reply cases and port boundaries. The maintained classifier has 100% line coverage; all 28 measured functions in affected policy/reply/creation-test files have complexity <=9 (project Rust syn 2.0.119). At most two validated endpoint strings, each bounded by the 253-byte address limit, are retained within the call; native ownership transitions remain unchanged.

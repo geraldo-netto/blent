@@ -33,6 +33,8 @@ pub async fn setup<C: Commands + Clone + 'static, S: Snapshots + Transactions + 
 }
 
 #[cfg(test)]
+mod reply_tests;
+#[cfg(test)]
 mod tests;
 
 pub struct Reconnect {

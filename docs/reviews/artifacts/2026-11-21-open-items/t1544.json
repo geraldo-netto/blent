@@ -1,0 +1,39 @@
+{
+  "issue": "T1544",
+  "tests": {
+    "wifi": 50,
+    "usb": 37,
+    "audio_usb": 1
+  },
+  "native_probe": {
+    "version": "ADB 34.0.4-debian",
+    "result": {
+      "address": "LOCALHOST:055637",
+      "code": 0,
+      "stdout": "connected to LOCALHOST:55637\n",
+      "stderr": "",
+      "handshake": [
+        "CNXN exchanged"
+      ]
+    },
+    "isolation": "private filesystem server socket, temporary HOME/keys, nonexistent --one-device serial, loopback simulated adbd; exact child terminated/reaped and thread joined"
+  },
+  "coverage": [
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "connected",
+      "line": 72,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 28,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}
