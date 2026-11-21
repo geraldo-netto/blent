@@ -11,6 +11,8 @@ use tokio::sync::watch;
 pub(crate) mod native;
 pub use native::Resource as NativeResource;
 #[cfg(test)]
+mod restart_tests;
+#[cfg(test)]
 mod retirement_tests;
 
 #[derive(Clone)]
@@ -273,10 +275,18 @@ where
             status.wait_native().await;
             if let Err(error) = result {
                 status.update(State::Failed(format!("{error:#}")));
+                reject_replacement(commands);
                 return changed.is_ok() && commands.changed().await.is_ok();
             }
             changed.is_ok()
         }
+    }
+}
+
+/// Reject the latest queued command after failed cleanup; require a fresh action.
+fn reject_replacement(commands: &mut watch::Receiver<Option<Request<CameraProfile>>>) {
+    if let Some(request) = commands.borrow_and_update().as_ref() {
+        request.reject();
     }
 }
 

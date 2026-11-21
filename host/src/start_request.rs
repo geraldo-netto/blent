@@ -17,6 +17,9 @@ impl<T> Request<T> {
             start,
         )
     }
+    pub(crate) fn reject(&self) {
+        self.acknowledgement.reject();
+    }
     /// The supervisor has published Starting before acknowledging consumption.
     pub(crate) fn begin(self) -> T {
         self.acknowledgement.acknowledge();

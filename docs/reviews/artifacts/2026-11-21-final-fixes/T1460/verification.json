@@ -1,0 +1,449 @@
+{
+  "finding": "T1460",
+  "coverage": [
+    {
+      "file": "common/src/media_start.rs",
+      "name": "drop",
+      "line": 25,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/media_start.rs",
+      "name": "pending",
+      "line": 33,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/media_start.rs",
+      "name": "acknowledged",
+      "line": 40,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/media_start.rs",
+      "name": "outcome",
+      "line": 43,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/media_start.rs",
+      "name": "is_pending",
+      "line": 50,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/media_start.rs",
+      "name": "acknowledge",
+      "line": 57,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/media_start.rs",
+      "name": "reject",
+      "line": 61,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/media_start.rs",
+      "name": "settle",
+      "line": 64,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/start_request.rs",
+      "name": "new",
+      "line": 10,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/start_request.rs",
+      "name": "reject",
+      "line": 20,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/start_request.rs",
+      "name": "begin",
+      "line": 24,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera_control.rs",
+      "name": "manage_session",
+      "line": 240,
+      "language": "rust",
+      "covered": 38,
+      "total": 44,
+      "percent": 86.36363636363636,
+      "passes": true,
+      "missing": [
+        265,
+        266,
+        270,
+        273,
+        282,
+        283
+      ]
+    },
+    {
+      "file": "host/src/camera_control.rs",
+      "name": "reject_replacement",
+      "line": 287,
+      "language": "rust",
+      "covered": 4,
+      "total": 5,
+      "percent": 80.0,
+      "passes": true,
+      "missing": [
+        290
+      ]
+    }
+  ],
+  "complexity": [
+    [
+      "common/src/media_start.rs",
+      25,
+      "drop",
+      1
+    ],
+    [
+      "common/src/media_start.rs",
+      33,
+      "pending",
+      1
+    ],
+    [
+      "common/src/media_start.rs",
+      40,
+      "acknowledged",
+      1
+    ],
+    [
+      "common/src/media_start.rs",
+      43,
+      "outcome",
+      4
+    ],
+    [
+      "common/src/media_start.rs",
+      50,
+      "is_pending",
+      1
+    ],
+    [
+      "common/src/media_start.rs",
+      57,
+      "acknowledge",
+      1
+    ],
+    [
+      "common/src/media_start.rs",
+      61,
+      "reject",
+      1
+    ],
+    [
+      "common/src/media_start.rs",
+      64,
+      "settle",
+      1
+    ],
+    [
+      "common/src/media_start.rs",
+      76,
+      "t1455_acknowledgement_is_sticky_and_request_specific",
+      1
+    ],
+    [
+      "common/src/media_start.rs",
+      94,
+      "t1460_last_request_owner_settles_unconsumed_start",
+      1
+    ],
+    [
+      "common/src/media_start.rs",
+      111,
+      "t1460_first_settlement_is_final_and_rejection_is_explicit",
+      4
+    ],
+    [
+      "host/src/start_request.rs",
+      10,
+      "new",
+      1
+    ],
+    [
+      "host/src/start_request.rs",
+      20,
+      "reject",
+      1
+    ],
+    [
+      "host/src/start_request.rs",
+      24,
+      "begin",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      27,
+      "new",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      40,
+      "scoped",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      49,
+      "original",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      54,
+      "publish",
+      4
+    ],
+    [
+      "host/src/camera_control.rs",
+      60,
+      "publish_current",
+      3
+    ],
+    [
+      "host/src/camera_control.rs",
+      66,
+      "state",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      71,
+      "reserve_native",
+      2
+    ],
+    [
+      "host/src/camera_control.rs",
+      88,
+      "native_retired",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      94,
+      "wait_native",
+      3
+    ],
+    [
+      "host/src/camera_control.rs",
+      103,
+      "preview",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      106,
+      "publish_preview",
+      2
+    ],
+    [
+      "host/src/camera_control.rs",
+      113,
+      "activity",
+      5
+    ],
+    [
+      "host/src/camera_control.rs",
+      122,
+      "update",
+      3
+    ],
+    [
+      "host/src/camera_control.rs",
+      140,
+      "new",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      148,
+      "with_pool",
+      4
+    ],
+    [
+      "host/src/camera_control.rs",
+      176,
+      "shutdown",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      181,
+      "retire",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      188,
+      "close",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      191,
+      "start",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      198,
+      "stop",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      202,
+      "state",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      205,
+      "preview",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      211,
+      "drop",
+      1
+    ],
+    [
+      "host/src/camera_control.rs",
+      216,
+      "supervise",
+      5
+    ],
+    [
+      "host/src/camera_control.rs",
+      240,
+      "manage_session",
+      2
+    ],
+    [
+      "host/src/camera_control.rs",
+      287,
+      "reject_replacement",
+      2
+    ],
+    [
+      "host/src/camera_control.rs",
+      294,
+      "cancelled",
+      2
+    ],
+    [
+      "host/src/camera_control.rs",
+      307,
+      "t543_manual_start_switch_stop_and_owner_exit_retire_in_order",
+      5
+    ],
+    [
+      "host/src/camera_control.rs",
+      368,
+      "t543_failed_session_waits_for_explicit_retry",
+      4
+    ],
+    [
+      "host/src/camera_control.rs",
+      393,
+      "t811_drop_returns_while_native_retirement_is_held",
+      6
+    ],
+    [
+      "host/src/camera_control.rs",
+      441,
+      "t543_controller_owns_worker_and_validates_before_start",
+      4
+    ],
+    [
+      "host/src/camera_control.rs",
+      472,
+      "t1272_camera_close_returns_the_original_worker_fence",
+      3
+    ],
+    [
+      "host/src/camera_control/restart_tests.rs",
+      5,
+      "t1460_failed_cleanup_rejects_replacement_without_restarting",
+      5
+    ]
+  ],
+  "tool": "scripts/complexity/check.py (Rust syn); cargo-llvm-cov 0.8.7",
+  "sources": {
+    "common/src/media_start.rs": "50b72a37ed2900cb3bedafe25f6a8dfd340310770ca61ded529b6ade08a94215",
+    "host/src/start_request.rs": "bfc32ad916ba6f378d47d01559de1b9ef2ac4cd98ab5802b6f730f6cac2ab557",
+    "host/src/camera_control.rs": "cb69713a7316eb7b272f7089834621d1ed2b6326d44af6d8edf6485a74474158",
+    "host/src/camera_control/restart_tests.rs": "a7b452c69b4c5a5157c29a998c4334baba204b2b39c93b31e76cc6f991924544"
+  },
+  "ownership": "Request settlement is bounded and independent of native completion. The last request owner rejects abandoned admission. Failed cleanup rejects the queued request only after the original native fence. Successful restart and native caller-loss regressions also pass."
+}
