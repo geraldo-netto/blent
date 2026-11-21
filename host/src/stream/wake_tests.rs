@@ -41,7 +41,7 @@ async fn playback() -> (ClientPlayback, TcpStream) {
             socket,
             last_sent_config: None,
             last_write: tokio::time::Instant::now(),
-            capabilities: negotiation::channel().1,
+            capabilities: presence::channel().1,
             last_generation: None,
             wait_for_idr: true,
             dropped: 0,

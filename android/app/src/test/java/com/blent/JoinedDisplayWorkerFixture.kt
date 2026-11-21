@@ -56,7 +56,7 @@ internal class JoinedDisplayWorkerFixture {
         @Volatile var settled = false
         @Volatile var originalJob: Job? = null; private set
         private val receiver = VideoReceiver(task.routes) { socket }.apply {
-            setStreamFormat(task.format); setVideoLiveness(task.liveness); setNativeSurface(surface)
+            setStreamFormat(task.format); setNativeSurface(surface)
         }
         private val actual = DisplayWorkerRun(receiver, report)
         override suspend fun execute() = coroutineScope {

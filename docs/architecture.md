@@ -866,57 +866,49 @@ validation campaign is closed as `wont_fix` for now.
 ### Video TCP
 
 The application client sends exactly 64 ASCII token bytes, with **no newline or
-length prefix**, before receiving video. The low-level server API also retains
-an unauthenticated mode for isolated callers/tests; applications do not expose
-it. In that API mode the server starts sending immediately and consumes an
-optional 64-byte hexadecimal prefix with a three-second completion deadline.
-That prefix grants no identity proof. Malformed, incomplete or extra input
-closes the viewer; EOF releases its capture subscription even without frames.
-A client can acknowledge display-liveness protocol 1 on this same connection
-with the exact eight bytes `!BLENT1\n` after authentication (or after the optional
-prefix in the low-level unauthenticated API). Its first byte
-starts a separate three-second completion deadline. Malformed, partial, repeated
-or extra acknowledgement input ends this viewer. The grant belongs to that
-original socket; closure revokes its read-only view and a replacement starts
-without a grant. Without a control greeting offer, the socket has no liveness grant.
+length prefix**, before receiving video. The low-level server API also supports
+an explicitly unauthenticated standalone composition for isolated callers/tests;
+applications do not expose it. That composition sends immediately and accepts no
+client prefix. After authentication, any client bytes are unexpected and close
+the viewer. EOF releases its capture subscription even without frames.
+
+Transport liveness is mandatory. There is no control offer, socket acknowledgement
+or worker capability switch. Presence belongs to the original admitted socket;
+closure revokes its read-only view. A replacement acquires its own presence only
+after admission. No old acknowledgement or optional token prefix is consumed.
 
 Capture observes viewers through the independent read-only `ViewerActivity`
 contract. Each original queue receiver owns one membership; its drop removes that
 membership and actual subscription together. The registry retains weak membership
-references and reads the original connection's grant source, without copying its
-mutable capability. Liveness readiness requires viewers present and every member
-acknowledged; ungranted receivers and closed sources deny it. Structural
-membership changes and original ACK/source closure wake an observation armed before
-reading current state. Old observations may retain read views, but cannot retain
-membership or grant replacements permission. Empty/closed views wait without
-periodic polling. Production TCP admission still bounds viewers to sixteen.
-These observations provide desired policy input, never native retirement proof.
+references and reads the original connection's presence source without copying
+mutable authority. Liveness readiness requires viewers present and every member's
+source active; unmanaged receivers and closed sources deny it. Membership changes
+and original source closure wake an observation armed before reading current state.
+Old observations may retain read views, but cannot retain membership or grant a
+replacement permission. Empty/closed views wait without periodic polling.
+Production TCP admission bounds viewers to sixteen. These observations provide
+policy input, never native retirement proof.
 
-Android implements the strict negotiated type-2 receiver contract: body length
-2, type byte 2 and version byte 1, with no codec/frame/render callback. The
-protected `connected` greeting's optional `video_liveness: 1` offer is carried
-separately from codec format through the immutable display-worker request.
-Capability changes retire the prior display run before its replacement. Hosts with a media-settings source advertise protocol 1; standalone input-only
-compositions omit the offer. Each video socket must still acknowledge it before
-any new packet type is sent. After the existing initial configuration wait (at
-most five seconds), an acknowledged idle socket gets one six-byte liveness
-record every two seconds without requiring pixels or an encoder. Successful
-configuration/frame writes reset that deadline; obsolete queued frames do not.
-`BLENT_VIDEO_LIVENESS_MS` accepts 100–5000 ms (default 2000): shorter intervals
-add traffic/wakeups, longer intervals reduce them while remaining below Android’s
-10-second read timeout. Invalid values reject the admitted connection before it
-subscribes or requests an IDR. Legacy sockets add no heartbeat timer. The existing
-one-second whole-write and batch deadlines also bound liveness writes.
+Android always accepts the strict type-2 contract: body length 2, type byte 2 and
+version byte 1, with no codec/frame/render callback. After the existing initial
+configuration wait (at most five seconds), an admitted idle socket gets one
+six-byte liveness record every two seconds without requiring pixels or an encoder.
+Successful configuration/frame writes reset that deadline; obsolete queued frames
+do not. `BLENT_VIDEO_LIVENESS_MS` accepts 100–5000 ms (default 2000): shorter
+intervals add traffic/wakeups, longer intervals reduce them while remaining below
+Android's ten-second read timeout. Invalid values reject the connection before it
+subscribes or requests an IDR. Existing one-second whole-write and batch deadlines
+also bound liveness writes.
 
 The server sends:
 
 | Field | Encoding |
 | --- | --- |
 | Packet length | Four-byte unsigned big-endian integer; excludes these four bytes, includes type and all payload bytes |
-| Packet type | One byte: 0 for codec configuration, 1 for frame, negotiated 2 for liveness |
+| Packet type | One byte: 0 for codec configuration, 1 for frame, 2 for liveness |
 | Type 0 payload | H.264/HEVC Annex B parameter sets, or the [VP9/AV1 configuration envelope](video-codecs.md#framing) |
 | Type 1 payload | Four-byte unsigned big-endian sequence number, then encoded access-unit bytes |
-| Type 2 payload | Exact version byte 1; whole body length 2; original socket ACK required |
+| Type 2 payload | Exact version byte 1; whole body length 2; every admitted original socket |
 
 The codec is announced on the input/control connection; there is no separate
 codec-name field in the video packet header.

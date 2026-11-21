@@ -15,7 +15,6 @@ internal interface DisplaySession<S> {
     val decoderDiagnostics: StateFlow<DecoderDiagnostics>
     fun observeConnection(connected: () -> Unit, disconnected: () -> Unit)
     fun setStreamFormat(format: DecoderFormat)
-    fun setVideoLiveness(enabled: Boolean)
     fun setSurface(surfaceView: S)
     fun onSurfaceDestroyed()
     fun start()

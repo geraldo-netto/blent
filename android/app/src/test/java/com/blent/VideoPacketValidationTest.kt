@@ -27,12 +27,12 @@ class VideoPacketValidationTest {
         return field.get(reader) as ByteArray
     }
 
-    private fun rejectedHeader(size: Int, type: Int, enabled: Boolean, consumed: Int) {
+    private fun rejectedHeader(size: Int, type: Int, consumed: Int) {
         val input = Input(size, type)
         val diagnostics = mutableListOf<String>()
-        val reader = VideoPacketReader(input, enabled, diagnostics::add)
+        val reader = VideoPacketReader(input, diagnostics::add)
         val original = backing(reader)
-        assertFalse("T1040 size=$size type=$type enabled=$enabled", reader.read())
+        assertFalse("T1040 size=$size type=$type", reader.read())
         assertEquals("T1040 payload consumed after invalid header", consumed, input.consumed)
         assertSame("T1040 invalid header replaced backing", original, backing(reader))
         assertTrue("T1040 invalid header requested oversized storage", input.largestBuffer <= original.size)
@@ -42,28 +42,30 @@ class VideoPacketValidationTest {
 
     @Test fun t1040_unknownTypesRejectBeforePayloadReadOrAllocation() {
         for (type in 3..255) {
-            rejectedHeader(VideoWire.MAX_FRAME_SIZE + 1, type, true, 5)
+            rejectedHeader(VideoWire.MAX_FRAME_SIZE + 1, type, 5)
         }
     }
 
     @Test fun t1040_typeSpecificLengthsRejectFromHeaderAlone() {
         for (size in listOf(3, 5, 512 * 1024 + 1, VideoWire.MAX_FRAME_SIZE + 1)) {
-            rejectedHeader(size, 2, true, 5)
+            rejectedHeader(size, 2, 5)
         }
-        for (size in 2..5) rejectedHeader(size, 1, true, 5)
-        rejectedHeader(2, 2, false, 5)
+        for (size in 2..5) rejectedHeader(size, 1, 5)
+        val current = Input(2, 2)
+        assertTrue(VideoPacketReader(current).read())
+        assertEquals(6, current.consumed)
     }
 
     @Test fun t1040_genericBoundsRejectWithoutReadingType() {
         for (size in listOf(Int.MIN_VALUE, -1, 0, 1, VideoWire.MAX_FRAME_SIZE + 2, Int.MAX_VALUE)) {
-            rejectedHeader(size, 0, true, 4)
+            rejectedHeader(size, 0, 4)
         }
     }
 
     @Test fun t1040_validHeadersStillRequireCompletePayload() {
         for ((size, type) in listOf(2 to 0, 6 to 1, 2 to 2, (VideoWire.MAX_FRAME_SIZE + 1) to 0)) {
             val prefix = ByteBuffer.allocate(5).putInt(size).put(type.toByte()).array()
-            val reader = VideoPacketReader(prefix.inputStream(), true)
+            val reader = VideoPacketReader(prefix.inputStream())
             assertThrows("T1040 valid partial payload must remain EOF", EOFException::class.java) { reader.read() }
         }
     }

@@ -127,10 +127,21 @@ def read_video_packet(video, header, scratch):
         read_exact_into(video, view[:4])
         sequence = struct.unpack_from(">I", header)[0]
         remaining -= 4
+    elif kind == 2:
+        read_liveness(video, length, header)
+        return kind, length, None
     elif kind != 0:
         raise ValueError(f"unknown video type: {kind}")
     drain_exact(video, remaining, scratch)
     return kind, length, sequence
+
+
+def read_liveness(video, length, header):
+    if length != 2:
+        raise ValueError("invalid liveness length")
+    read_exact_into(video, memoryview(header)[:1])
+    if header[0] != 1:
+        raise ValueError("invalid liveness version")
 
 
 def receive_video(video, control, seconds):
@@ -150,10 +161,10 @@ def receive_video(video, control, seconds):
         if kind == 0:
             got_config = True
             print(f"codec config: {length-1} bytes")
-        else:
+        elif kind == 1:
             frames += 1
             seq_last = sequence
-            # This compatibility message acknowledges receipt only. The fake
+            # This message acknowledges receipt only. The fake
             # decode_us is explicitly synthetic; it is not tablet latency.
             ws_send(control, {"type": "rendered", "seq": sequence, "decode_us": 1000})
     return got_config, frames, seq_last

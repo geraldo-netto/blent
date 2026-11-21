@@ -87,8 +87,6 @@ pub struct InputResponse {
     pub display_activity: Option<blent_config::display_activity::Signal>,
     /// Offered only once the host emission path implements this protocol.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub video_liveness: Option<u32>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub direct_input: Option<super::direct::Status>,
     pub status: String,
     /// Accepted ADB route, independent of loopback addresses and charging.

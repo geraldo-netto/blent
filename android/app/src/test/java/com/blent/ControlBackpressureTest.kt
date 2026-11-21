@@ -226,27 +226,23 @@ class ControlBackpressureTest {
         assertEquals(ControlStatisticsSnapshot(2, 1, 7, 30, 2, 15, 15), stats.snapshot(7))
     }
 
-    @Test fun t1039_livenessOfferResetsWithOriginalControlAndStaleGreetingCannotGrant() {
+    @Test fun t1039_originalControlResetAndStaleGreetingCannotGrant() {
         val connection = Connection()
         val capture = connection.capture
-        val offered = mutableListOf<Boolean>()
-        capture.onVideoLivenessKnown = { offered.add(it) }
         try {
-            val old = connection.recover()
-            assertFalse(offered.last())
-            old.listener.onMessage(old, """{"status":"connected","video_liveness":1}""")
-            assertTrue(offered.last())
-            old.listener.onMessage(old, """{"status":"mode","video_liveness":1}""")
-            assertTrue(offered.last())
+            val old = connection.connect().also { it.open() }
+            assertFalse(capture.controlConnected.value)
+            old.listener.onMessage(old, """{"status":"connected"}""")
+            assertTrue(capture.controlConnected.value)
+            old.listener.onMessage(old, """{"status":"mode"}""")
+            assertTrue(capture.controlConnected.value)
             capture.disconnect()
-            assertFalse(offered.last())
-            val next = connection.recover()
-            val count = offered.size
-            old.listener.onMessage(old, """{"status":"connected","video_liveness":1}""")
-            assertEquals(count, offered.size)
-            assertFalse(offered.last())
-            next.listener.onMessage(next, """{"status":"connected","video_liveness":"1"}""")
-            assertFalse(offered.last())
+            assertFalse(capture.controlConnected.value)
+            val next = connection.connect().also { it.open() }
+            old.listener.onMessage(old, """{"status":"connected"}""")
+            assertFalse(capture.controlConnected.value)
+            next.listener.onMessage(next, """{"status":"connected"}""")
+            assertTrue(capture.controlConnected.value)
         } finally { capture.disconnect() }
     }
 
@@ -254,13 +250,13 @@ class ControlBackpressureTest {
         val connection = Connection()
         val capture = connection.capture
         val original = connection.recover()
-        capture.onVideoLivenessKnown = { error("T1039 observer fault") }
+        capture.onDisplayActivityKnown = { error("T1039 observer fault") }
         try {
             val stopped = runCatching { capture.disconnect() }
             assertTrue("T1039 optional observer interrupted native control cleanup", stopped.isSuccess)
             assertFalse(capture.controlConnected.value)
             assertTrue(original.closed)
-        } finally { capture.onVideoLivenessKnown = null; capture.disconnect() }
+        } finally { capture.onDisplayActivityKnown = null; capture.disconnect() }
     }
 
 }

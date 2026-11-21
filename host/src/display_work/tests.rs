@@ -203,7 +203,7 @@ fn t1045_acknowledgement_is_not_a_viewer_or_capture_authority() {
     let source: Arc<dyn LivenessCapability> = Arc::new(Grant);
     assert!(source.supported());
     assert!(work.begin().is_none());
-    let receiver = video.subscribe_negotiated(source).unwrap();
+    let receiver = video.subscribe_with_presence(source).unwrap();
     assert!(video.viewer_activity().liveness_ready());
     assert!(work.begin().is_some());
     drop(receiver);

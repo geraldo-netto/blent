@@ -114,22 +114,22 @@ class SessionRevocationTest {
             } finally { session.stop() }
         }
     }
-    @Test fun t1039_queuedOldLivenessOfferCannotRetargetCurrentDisplayRun() {
+    @Test fun t1039_queuedOldFormatCannotRetargetCurrentDisplayRun() {
         val fixture = Fixture()
         with(fixture) {
             session.start()
             receiver.start()
             try {
-                capture.onVideoLivenessKnown!!.invoke(true)
+                capture.onStreamFormat!!.invoke(DecoderFormat("video/avc", 64, 64, 30))
                 callbacks.toList().forEach { it() }; callbacks.clear()
-                assertTrue(ReflectionHelpers.getField(receiver, "livenessEnabled"))
-                capture.onVideoLivenessKnown!!.invoke(false)
+                assertEquals(30, receiver.streamFps)
+                capture.onStreamFormat!!.invoke(DecoderFormat("video/avc", 64, 64, 60))
                 callbacks.toList().forEach { it() }; callbacks.clear()
-                assertFalse(ReflectionHelpers.getField(receiver, "livenessEnabled"))
-                capture.onVideoLivenessKnown!!.invoke(true)
+                assertEquals(60, receiver.streamFps)
+                capture.onStreamFormat!!.invoke(DecoderFormat("video/avc", 64, 64, 30))
                 clear()
                 callbacks.toList().forEach { it() }
-                assertFalse(ReflectionHelpers.getField(receiver, "livenessEnabled"))
+                assertEquals(60, receiver.streamFps)
                 assertNull(job())
             } finally { session.stop() }
         }

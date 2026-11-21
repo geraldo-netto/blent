@@ -26,6 +26,40 @@ internal class PacketSocketPair : AutoCloseable {
 }
 
 class ChannelPacketReaderTest {
+    @Test fun t1567_livenessNeverBecomesDecoderInputOrConsumesFollowingMedia() {
+        PacketSocketPair().use { sockets ->
+            ChannelPacketReader(sockets.client).use { reader ->
+                val heartbeat = byteArrayOf(0, 0, 0, 2, 2, 1)
+                sockets.send(heartbeat + packet(0, byteArrayOf(7)) + heartbeat + packet(1, byteArrayOf(8), 42))
+                assertEquals(ChannelPacketHeader(1, true, 0), reader.readHeader())
+                assertArrayEquals(byteArrayOf(7), payload(reader, 1))
+                assertEquals(ChannelPacketHeader(1, false, 42), reader.readHeader())
+                assertArrayEquals(byteArrayOf(8), payload(reader, 1))
+            }
+            assertFalse(sockets.client.isOpen)
+        }
+    }
+
+    @Test fun t1567_livenessRejectsInvalidVersionsAndLengths() {
+        for (version in 0..255) {
+            if (version == 1) continue
+            PacketSocketPair().use { sockets ->
+                ChannelPacketReader(sockets.client).use { reader ->
+                    sockets.send(byteArrayOf(0, 0, 0, 2, 2, version.toByte()))
+                    assertThrows(ProtocolException::class.java) { reader.readHeader() }
+                }
+            }
+        }
+        for (size in listOf(3, 4, 5, 6, 32)) {
+            PacketSocketPair().use { sockets ->
+                ChannelPacketReader(sockets.client).use { reader ->
+                    sockets.send(packet(2, ByteArray(size - 1) { 1 }))
+                    assertThrows(ProtocolException::class.java) { reader.readHeader() }
+                }
+            }
+        }
+    }
+
     @Test fun t497_payloadRequiresAnUnconsumedValidatedHeader() {
         PacketSocketPair().use { sockets ->
             ChannelPacketReader(sockets.client).use { reader ->

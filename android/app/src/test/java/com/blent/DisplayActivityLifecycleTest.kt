@@ -159,7 +159,6 @@ class DisplayActivityLifecycleTest {
             rig.signal(1, 0, true, true); rig.awaitRequests(2)
             rig.signal(2, 1, false)
             rig.control.onFpsKnown!!.invoke(60)
-            rig.control.onVideoLivenessKnown!!.invoke(true)
             rig.session.handle(SettingsEvent.Stream(15000, 30))
             rig.until { rig.settled == 2 }
             assertEquals(2, rig.requests.size)

@@ -14,7 +14,7 @@ async fn pair() -> (ClientPlayback, TcpStream) {
             socket: server.into_split().1,
             last_sent_config: None,
             last_write: tokio::time::Instant::now(),
-            capabilities: negotiation::channel().1,
+            capabilities: presence::channel().1,
             last_generation: None,
             wait_for_idr: true,
             dropped: 0,
@@ -48,7 +48,7 @@ async fn t1038_no_frames_for_longer_than_android_deadline_retain_original_viewer
     let (client, mut viewer) = pair().await;
     let (tx, rx) = crate::video_queue::channel(8, Default::default());
     let cache = CodecConfig::new(Some(Bytes::from_static(b"csd")));
-    let (grant, capabilities) = negotiation::channel();
+    let (grant, capabilities) = presence::channel();
     grant.send_replace(true);
     let task = tokio::spawn(StreamServer::stream_packets(
         client.socket,
@@ -92,7 +92,7 @@ async fn t1038_no_frames_for_longer_than_android_deadline_retain_original_viewer
 #[tokio::test(start_paused = true)]
 async fn t1038_ready_obsolete_packets_cannot_postpone_transport_liveness_or_revive_codec() {
     let (mut client, viewer) = pair().await;
-    let (grant, capabilities) = negotiation::channel();
+    let (grant, capabilities) = presence::channel();
     grant.send_replace(true);
     client.capabilities = capabilities;
     let (tx, mut rx) = crate::video_queue::channel(8, Default::default());
@@ -129,7 +129,7 @@ async fn t1038_ready_obsolete_packets_cannot_postpone_transport_liveness_or_revi
     );
 }
 #[tokio::test(start_paused = true)]
-async fn t1038_only_authenticated_current_client_gets_liveness_and_stop_releases_it() {
+async fn t1567_authenticated_current_client_gets_liveness_without_ack_and_stop_releases_it() {
     let idr = Arc::new(AtomicBool::new(false));
     let server = Arc::new(StreamServer::new(
         StreamConfig {
@@ -154,18 +154,12 @@ async fn t1038_only_authenticated_current_client_gets_liveness_and_stop_releases
     viewer.write_all("a".repeat(64).as_bytes()).await.unwrap();
     viewer.read_exact(&mut [0; 8]).await.unwrap();
     tokio::time::advance(Duration::from_secs(12)).await;
-    let legacy = record(&viewer).await;
-    viewer.write_all(b"!BLENT1\n").await.unwrap();
     let after = record(&viewer).await;
     server.stop();
     task.await.unwrap().unwrap();
     assert_eq!(viewer.read(&mut [0]).await.unwrap(), 0);
     assert_eq!(tx.receiver_count(), 0);
     assert_eq!(before, None);
-    assert_eq!(
-        legacy, None,
-        "T1038 legacy viewer received an unacknowledged packet type"
-    );
     assert_eq!(
         after,
         Some([0, 0, 0, 2, 2, 1]),
@@ -176,7 +170,7 @@ async fn t1038_only_authenticated_current_client_gets_liveness_and_stop_releases
 #[tokio::test(start_paused = true)]
 async fn t1038_actual_frame_writes_postpone_liveness_without_extra_packets() {
     let (mut client, mut viewer) = pair().await;
-    let (grant, capabilities) = negotiation::channel();
+    let (grant, capabilities) = presence::channel();
     grant.send_replace(true);
     client.capabilities = capabilities;
     let (tx, mut rx) = crate::video_queue::channel(8, Default::default());
@@ -258,13 +252,11 @@ fn t1038_configured_interval_rejects_invalid_values_and_honors_user_bounds() {
 }
 
 #[tokio::test(start_paused = true)]
-async fn t1038_unacknowledged_and_closed_original_grants_cannot_emit() {
+async fn t1038_revoked_and_closed_original_presence_cannot_emit() {
     for closed in [false, true] {
         let (mut client, viewer) = pair().await;
-        let (grant, capabilities) = negotiation::channel();
-        if closed {
-            grant.send_replace(true);
-        }
+        let (grant, capabilities) = presence::channel();
+        grant.send_replace(closed); // Deliberate revoked-source control.
         client.capabilities = capabilities;
         if closed {
             drop(grant);
@@ -279,9 +271,10 @@ async fn t1038_unacknowledged_and_closed_original_grants_cannot_emit() {
 }
 
 #[tokio::test(start_paused = true)]
-async fn t1038_late_ack_wakes_idle_playback_without_producer_packet() {
+async fn t1038_presence_change_wakes_idle_playback_without_producer_packet() {
     let (mut client, viewer) = pair().await;
-    let (grant, capabilities) = negotiation::channel();
+    let (grant, capabilities) = presence::channel();
+    grant.send_replace(false); // Exercise the independent presence signal.
     client.capabilities = capabilities;
     let (tx, mut rx) = crate::video_queue::channel(8, Default::default());
     let task = tokio::spawn(async move {
@@ -293,11 +286,7 @@ async fn t1038_late_ack_wakes_idle_playback_without_producer_packet() {
             .await
     });
     tokio::time::advance(Duration::from_secs(12)).await;
-    assert_eq!(
-        record(&viewer).await,
-        None,
-        "T1038 unacknowledged idle socket emitted"
-    );
+    assert_eq!(record(&viewer).await, None, "T1038 revoked source emitted");
     grant.send_replace(true);
     assert_eq!(record(&viewer).await, Some([0, 0, 0, 2, 2, 1]));
     drop(tx);
@@ -307,7 +296,7 @@ async fn t1038_late_ack_wakes_idle_playback_without_producer_packet() {
 #[tokio::test(start_paused = true)]
 async fn t1038_failed_liveness_write_does_not_renew_deadline() {
     let (mut client, _viewer) = pair().await;
-    let (grant, capabilities) = negotiation::channel();
+    let (grant, capabilities) = presence::channel();
     grant.send_replace(true);
     client.capabilities = capabilities;
     client.socket.shutdown().await.unwrap();

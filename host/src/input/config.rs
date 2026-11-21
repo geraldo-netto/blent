@@ -54,9 +54,6 @@ impl InputConfig {
             .unwrap_or((self.virtual_width, self.virtual_height));
         InputResponse {
             display_activity: None,
-            video_liveness: settings
-                .as_ref()
-                .map(|_| blent_config::video::negotiation::VERSION),
             direct_input: None,
             status: status.into(),
             transport: None,

@@ -41,6 +41,14 @@ internal class ChannelPacketReader(
 
     fun readHeader(): ChannelPacketHeader {
         check(pending == 0) { "Previous payload has not been consumed" }
+        while (true) {
+            val header = readRecord() ?: continue
+            pending = header.size
+            return header
+        }
+    }
+
+    private fun readRecord(): ChannelPacketHeader? {
         deadline = clock() + timeout
         prefix.clear().limit(4)
         readExact(prefix)
@@ -51,16 +59,20 @@ internal class ChannelPacketReader(
         prefix.clear().limit(minOf(wireSize, 5))
         readExact(prefix)
         prefix.flip()
-        val header = parseHeader(wireSize)
-        pending = header.size
-        return header
+        return parseHeader(wireSize)
     }
 
-    private fun parseHeader(size: Int): ChannelPacketHeader = when (val type = prefix.get().toInt() and 0xff) {
+    private fun parseHeader(size: Int): ChannelPacketHeader? = when (val type = prefix.get().toInt() and 0xff) {
         VideoWire.PACKET_TYPE_CONFIG -> ChannelPacketHeader(size - 1, true, 0)
         VideoWire.PACKET_TYPE_FRAME -> {
             if (size <= VideoWire.FRAME_HEADER_SIZE) throw ProtocolException("Truncated frame: $size")
             ChannelPacketHeader(size - VideoWire.FRAME_HEADER_SIZE, false, prefix.int.toLong() and 0xffff_ffffL)
+        }
+        VideoWire.PACKET_TYPE_LIVENESS -> {
+            if (size != 2 || prefix.get().toInt() != VideoWire.LIVENESS_VERSION) {
+                throw ProtocolException("Invalid liveness packet")
+            }
+            null
         }
         else -> throw ProtocolException("Unknown packet type: $type")
     }

@@ -46,7 +46,6 @@ internal object LocalMediaRuns {
     }
     private fun display(task: MediaTask.Display, surface: Surface, report: (WorkerEvent) -> Unit): LifecycleRun {
         val receiver = VideoReceiver(initialRoutes = task.routes)
-        receiver.setVideoLiveness(task.liveness)
         receiver.setStreamFormat(task.format)
         receiver.setNativeSurface(surface)
         return DisplayWorkerRun(receiver, report)

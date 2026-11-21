@@ -25,8 +25,8 @@ async fn t1041_capture_observes_original_grant_and_denies_unmanaged_or_closed_so
     let (video, raw) = crate::video_queue::channel(8, Default::default());
     let viewers = video.viewers();
     assert_eq!(viewers.epoch(), 0);
-    let (grant, capability) = negotiation::channel();
-    let original = video.subscribe_negotiated(Arc::new(capability)).unwrap();
+    let (grant, capability) = presence::channel();
+    let original = video.subscribe_with_presence(Arc::new(capability)).unwrap();
     assert_eq!(viewers.epoch(), 1);
     assert_eq!(video.viewer_epoch().load(Ordering::Acquire), 1);
     grant.send_replace(true);
@@ -46,7 +46,7 @@ async fn t1041_capture_observes_original_grant_and_denies_unmanaged_or_closed_so
 }
 
 #[tokio::test]
-async fn t1041_authenticated_socket_ack_reaches_capture_and_peer_loss_revokes_it() {
+async fn t1041_authenticated_socket_presence_reaches_capture_and_peer_loss_revokes_it() {
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let mut peer = TcpStream::connect(listener.local_addr().unwrap())
         .await
@@ -64,8 +64,7 @@ async fn t1041_authenticated_socket_ack_reaches_capture_and_peer_loss_revokes_it
     ));
     peer.write_all("a".repeat(64).as_bytes()).await.unwrap();
     peer.read_exact(&mut [0; 8]).await.unwrap();
-    assert!(!viewers.liveness_ready());
-    peer.write_all(b"!BLENT1\n").await.unwrap();
+    assert!(viewers.liveness_ready());
     ready(viewers.as_ref()).await;
     drop(peer);
     let _ = owner.await.unwrap();
@@ -75,7 +74,7 @@ async fn t1041_authenticated_socket_ack_reaches_capture_and_peer_loss_revokes_it
 
 #[tokio::test]
 async fn t1041_armed_original_grant_notice_cannot_lose_closure_before_first_poll() {
-    let (grant, capability) = negotiation::channel();
+    let (grant, capability) = presence::channel();
     grant.send_replace(true);
     let original: &dyn crate::capture_contract::LivenessCapability = &capability;
     let changed = original.changed();
@@ -87,17 +86,18 @@ async fn t1041_armed_original_grant_notice_cannot_lose_closure_before_first_poll
 }
 
 #[tokio::test]
-async fn t1041_mixed_original_viewers_wake_on_ack_and_legacy_departure() {
+async fn t1041_mixed_original_viewers_wake_on_presence_and_unmanaged_departure() {
     let (video, initial) = crate::video_queue::channel(8, Default::default());
     drop(initial);
     let viewers = video.viewers();
-    let (first, capability) = negotiation::channel();
-    let _first = video.subscribe_negotiated(Arc::new(capability)).unwrap();
+    let (first, capability) = presence::channel();
+    let _first = video.subscribe_with_presence(Arc::new(capability)).unwrap();
     first.send_replace(true);
     assert!(viewers.liveness_ready());
     let added = viewers.changed();
-    let (second, capability) = negotiation::channel();
-    let second_reader = video.subscribe_negotiated(Arc::new(capability)).unwrap();
+    let (second, capability) = presence::channel();
+    second.send_replace(false); // Deliberate revoked-source control.
+    let second_reader = video.subscribe_with_presence(Arc::new(capability)).unwrap();
     assert!(!viewers.liveness_ready());
     timeout(Duration::from_millis(100), added).await.unwrap();
     let acknowledged = viewers.changed();
@@ -106,10 +106,10 @@ async fn t1041_mixed_original_viewers_wake_on_ack_and_legacy_departure() {
         .await
         .unwrap();
     assert!(viewers.liveness_ready());
-    let legacy = video.subscribe().unwrap();
+    let unmanaged = video.subscribe().unwrap();
     let departed = viewers.changed();
     assert!(!viewers.liveness_ready());
-    drop(legacy);
+    drop(unmanaged);
     timeout(Duration::from_millis(100), departed).await.unwrap();
     assert!(viewers.liveness_ready());
     let lost = viewers.changed();
@@ -126,13 +126,14 @@ async fn t1041_late_original_notices_never_grant_replacement_membership() {
     drop(initial);
     let viewers = video.viewers();
     for _ in 0..1000 {
-        let (old, capability) = negotiation::channel();
-        let old_reader = video.subscribe_negotiated(Arc::new(capability)).unwrap();
+        let (old, capability) = presence::channel();
+        let old_reader = video.subscribe_with_presence(Arc::new(capability)).unwrap();
         old.send_replace(true);
         let retained_notice = viewers.changed();
         drop(old_reader);
-        let (new, capability) = negotiation::channel();
-        let replacement = video.subscribe_negotiated(Arc::new(capability)).unwrap();
+        let (new, capability) = presence::channel();
+        new.send_replace(false); // A stale publisher cannot grant this replacement.
+        let replacement = video.subscribe_with_presence(Arc::new(capability)).unwrap();
         old.send_replace(true);
         timeout(Duration::from_millis(100), retained_notice)
             .await
@@ -154,9 +155,9 @@ async fn t1041_read_only_wait_is_idle_and_closed_sources_do_not_spin() {
     assert!(timeout(Duration::from_millis(10), viewers.changed())
         .await
         .is_err());
-    let (grant, capability) = negotiation::channel();
+    let (grant, capability) = presence::channel();
     grant.send_replace(true);
-    let original = video.subscribe_negotiated(Arc::new(capability)).unwrap();
+    let original = video.subscribe_with_presence(Arc::new(capability)).unwrap();
     drop(grant);
     assert!(!viewers.liveness_ready());
     assert!(timeout(Duration::from_millis(10), viewers.changed())

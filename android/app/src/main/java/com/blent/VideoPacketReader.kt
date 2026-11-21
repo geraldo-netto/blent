@@ -17,7 +17,7 @@ internal interface VideoPacketSink {
 
 /** Length/type/sequence framing, independent of codec, Surface and session state.
  * Storage belongs to this connection and is reused without per-frame allocation. */
-internal class VideoPacketReader(private val input: InputStream, private val livenessEnabled: Boolean = false, private val diagnostic: (String) -> Unit = {}) {
+internal class VideoPacketReader(private val input: InputStream, private val diagnostic: (String) -> Unit = {}) {
     private val header = ByteArray(4)
     private var data = ByteArray(512 * 1024)
     var size = 0; private set
@@ -43,7 +43,7 @@ internal class VideoPacketReader(private val input: InputStream, private val liv
         return when (val type = data[0].toInt() and 0xff) {
             PACKET_TYPE_CONFIG -> true
             PACKET_TYPE_FRAME -> validate(size > FRAME_HEADER_SIZE, "Truncated frame packet")
-            PACKET_TYPE_LIVENESS -> validate(livenessEnabled && size == 2, "Invalid liveness packet")
+            PACKET_TYPE_LIVENESS -> validate(size == 2, "Invalid liveness packet")
             else -> {
                 diagnostic("Unknown packet type: $type, reconnecting")
                 false

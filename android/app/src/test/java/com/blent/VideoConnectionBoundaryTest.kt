@@ -127,8 +127,8 @@ class VideoConnectionBoundaryTest {
         }
     }
     private class LivenessSocket : Socket() {
-        val acknowledgement = ByteArrayOutputStream()
-        override fun getOutputStream(): java.io.OutputStream = acknowledgement
+        val credentials = ByteArrayOutputStream()
+        override fun getOutputStream(): java.io.OutputStream = credentials
         val consumed = CountDownLatch(1)
         private val released = CountDownLatch(1)
         val deadline = java.util.concurrent.atomic.AtomicInteger()
@@ -154,8 +154,8 @@ class VideoConnectionBoundaryTest {
         val disconnected = java.util.concurrent.atomic.AtomicInteger()
         val rendered = java.util.concurrent.atomic.AtomicInteger()
         val receiver = VideoReceiver { opens.incrementAndGet(); socket }
+        receiver.token = "a".repeat(64)
         receiver.mimeType = "video/x-vnd.on2.vp9"
-        receiver.setVideoLiveness(true)
         ReflectionHelpers.getField<AtomicBoolean>(receiver, "surfaceReady").set(true)
         receiver.onConnected = { connected.incrementAndGet() }
         receiver.onDisconnected = { disconnected.incrementAndGet() }
@@ -163,7 +163,7 @@ class VideoConnectionBoundaryTest {
         try {
             receiver.start()
             assertTrue("T1038 actual receiver rejected liveness", socket.consumed.await(2, TimeUnit.SECONDS))
-            assertArrayEquals("!BLENT1\n".toByteArray(Charsets.US_ASCII), socket.acknowledgement.toByteArray())
+            assertArrayEquals("a".repeat(64).toByteArray(Charsets.US_ASCII), socket.credentials.toByteArray())
             assertEquals(10000, socket.deadline.get())
             assertEquals(1, opens.get())
             assertEquals(0, connected.get())

@@ -268,7 +268,7 @@ class RemoteDisplayTest {
             native.cancel(); native.retire()
         } finally { surface.release() }
     }
-    @Test fun t1039_transportOfferReplacesDisplayOnlyAfterOriginalNativeRetirement() = runBlocking {
+    @Test fun t1039_formatChangeReplacesDisplayOnlyAfterOriginalNativeRetirement() = runBlocking {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         val requests = mutableListOf<MediaTask.Display>()
         val retired = CompletableDeferred<Unit>()
@@ -283,17 +283,18 @@ class RemoteDisplayTest {
         }
         try {
             receiver.token = "a".repeat(64); receiver.setSurface(view(surface)); receiver.start()
-            assertFalse(requests.single().liveness)
-            receiver.setVideoLiveness(true)
-            receiver.setVideoLiveness(true)
+            val original = requests.single().format
+            val changed = original.copy(fps = if (original.fps == 60) 30 else 60)
+            receiver.setStreamFormat(changed)
+            receiver.setStreamFormat(changed)
             assertEquals(1, requests.size)
             retired.complete(Unit)
             withTimeout(2000) { while (requests.size != 2) delay(1) }
-            assertTrue(requests.last().liveness)
+            assertEquals(changed, requests.last().format)
             assertEquals(requests.first().routes, requests.last().routes)
-            receiver.setVideoLiveness(false)
+            receiver.setStreamFormat(original)
             withTimeout(2000) { while (requests.size != 3) delay(1) }
-            assertFalse(requests.last().liveness)
+            assertEquals(original, requests.last().format)
         } finally { retired.complete(Unit); receiver.stop(); scope.cancel(); surface.release() }
     }
 
@@ -424,7 +425,7 @@ class RemoteDisplayTest {
             receiver.token = "a".repeat(64); receiver.setSurface(view(surface)); receiver.start()
             dispatcher.drain()
             callbacks.single()(WorkerEvent.Display(true, 99f, 99f, "stale queued", null, DecoderDiagnostics()))
-            receiver.setVideoLiveness(true)
+            receiver.setStreamFormat(DecoderFormat("video/avc", 64, 64, 30))
             dispatcher.drain()
             assertEquals(0f, receiver.getFps())
             assertNotEquals("stale queued", receiver.startupStatus.value)

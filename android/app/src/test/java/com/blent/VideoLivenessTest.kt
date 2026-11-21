@@ -21,7 +21,7 @@ class VideoLivenessTest {
         val golden = byteArrayOf(0, 0, 0, 2, 2, 1)
         val config = byteArrayOf(0, 0, 0, 3, 0, 7, 8)
         val frame = byteArrayOf(0, 0, 0, 6, 1, 0, 0, 0, 9, 42)
-        val reader = VideoPacketReader(ByteArrayInputStream(golden + golden + config + frame), livenessEnabled = true)
+        val reader = VideoPacketReader(ByteArrayInputStream(golden + golden + config + frame))
         val sink = Sink()
         repeat(2) { assertTrue(reader.read()); assertTrue("T1038 valid liveness rejected", reader.dispatch(sink)) }
         assertEquals(0, sink.configurations)
@@ -35,7 +35,7 @@ class VideoLivenessTest {
     @Test fun t1038_boundedLengthsAndVersionsRejectMalformedLivenessWithoutMediaCallbacks() {
         for (length in 0..32) {
             for (version in 0..255) {
-                val reader = VideoPacketReader(packet(ByteArray(length) { version.toByte() }).inputStream(), livenessEnabled = true)
+                val reader = VideoPacketReader(packet(ByteArray(length) { version.toByte() }).inputStream())
                 val sink = Sink()
                 val accepted = reader.read() && reader.dispatch(sink)
                 assertEquals("T1038 length=$length version=$version", length == 1 && version == 1, accepted)
@@ -47,7 +47,7 @@ class VideoLivenessTest {
     @Test fun t1038_fragmentedAndTruncatedLivenessCannotBecomeAPartialFrame() {
         val golden = byteArrayOf(0, 0, 0, 2, 2, 1)
         for (length in golden.indices) {
-            val reader = VideoPacketReader(ByteArrayInputStream(golden.copyOf(length)), livenessEnabled = true)
+            val reader = VideoPacketReader(ByteArrayInputStream(golden.copyOf(length)))
             val sink = Sink()
             assertThrows(EOFException::class.java) { if (reader.read()) reader.dispatch(sink) }
             assertEquals(0, sink.frames)
@@ -55,14 +55,14 @@ class VideoLivenessTest {
         val input = object : ByteArrayInputStream(golden) {
             override fun read(bytes: ByteArray, offset: Int, size: Int): Int = super.read(bytes, offset, minOf(size, 1))
         }
-        val reader = VideoPacketReader(input, livenessEnabled = true)
+        val reader = VideoPacketReader(input)
         assertTrue(reader.read())
         assertTrue(reader.dispatch(Sink()))
     }
-    @Test fun t1039_absentNegotiationRejectsNewPacketTypeWithoutMediaCallbacks() {
+    @Test fun t1567_everyReaderAcceptsLivenessWithoutNegotiationOrMediaCallbacks() {
         val reader = VideoPacketReader(byteArrayOf(0, 0, 0, 2, 2, 1).inputStream())
         val sink = Sink()
-        assertFalse("T1039 unnegotiated liveness accepted", reader.read() && reader.dispatch(sink))
+        assertTrue("T1567 current liveness required no optional grant", reader.read() && reader.dispatch(sink))
         assertEquals(0, sink.frames)
         assertEquals(0, sink.configurations)
     }

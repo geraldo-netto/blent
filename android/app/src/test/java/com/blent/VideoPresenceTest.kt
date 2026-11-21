@@ -18,7 +18,7 @@ import org.robolectric.util.ReflectionHelpers
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
-class VideoNegotiationTest {
+class VideoPresenceTest {
     private open class Peer : Socket() {
         val bytes = ByteArrayOutputStream()
         override fun connect(endpoint: SocketAddress?, timeout: Int) {}
@@ -28,37 +28,34 @@ class VideoNegotiationTest {
         override fun getInputStream() = ByteArrayInputStream(byteArrayOf())
         override fun getOutputStream(): java.io.OutputStream = bytes
     }
-    @Test fun t1039_onlyExplicitValidConnectedOfferEnablesAcknowledgement() {
-        assertFalse(VideoNegotiation.offered(JSONObject()))
-        for (status in listOf("connected", "mode", "", "settings_rejected")) {
-            for (value in listOf<Any>(1, 0, 2, -1, Int.MAX_VALUE, 1.5, "1", true, JSONObject.NULL)) {
-                val message = JSONObject().put("status", status).put("video_liveness", value)
-                assertEquals("$status $value", status == "connected" && value == 1, VideoNegotiation.offered(message))
-            }
+    @Test fun t1039_currentWorkerRejectsEveryObsoleteFeatureValue() {
+        val current = MediaTask.Display(AdbDisplayRoutes.create("a".repeat(64)), DecoderFormat("video/avc", 64, 64, 30))
+        for (value in listOf<Any>(1, 0, 2, -1, Int.MAX_VALUE, 1.5, "1", true, false, JSONObject.NULL)) {
+            val message = JSONObject(MediaTaskJson.encode(current)).put("liveness", value)
+            assertTrue("$value", runCatching { MediaTaskJson.decode(message.toString()) }.isFailure)
         }
-        assertArrayEquals(byteArrayOf(33, 66, 76, 69, 78, 84, 49, 10), VideoNegotiation.acknowledgement())
     }
-    @Test fun t1039_originalSocketAuthenticatesBeforeAckAndLegacyHasNoNewPrelude() {
+    @Test fun t1039_originalSocketWritesOnlyCredentialsAndRetirementPreservesReplacement() {
         val current = AtomicLong(7)
         val peer = Peer()
         val transport = VideoTransport(Any(), { it == current.get() }, { peer })
         try {
-            assertNotNull(transport.open(7, peer, AdbDisplayRoutes.create("a".repeat(64)), true))
-            assertEquals("a".repeat(64) + "!BLENT1\n", peer.bytes.toString("US-ASCII"))
+            assertNotNull(transport.open(7, peer, AdbDisplayRoutes.create("a".repeat(64))))
+            assertEquals("a".repeat(64), peer.bytes.toString("US-ASCII"))
             current.set(8)
             val next = Peer()
-            assertNotNull(transport.open(8, next, AdbDisplayRoutes.create(), false))
+            assertNotNull(transport.open(8, next, AdbDisplayRoutes.create()))
             assertEquals(0, next.bytes.size())
-            assertFalse(transport.acknowledge(7, peer, true))
+            assertNull(transport.open(7, peer, AdbDisplayRoutes.create("a".repeat(64))))
             transport.retire(peer)
             assertFalse(next.isClosed)
-            assertTrue(transport.acknowledge(8, next, false))
+            assertNotNull(transport.open(8, next, AdbDisplayRoutes.create()))
             assertEquals(0, next.bytes.size())
             transport.stop()
             assertTrue(next.isClosed)
         } finally { transport.stop(); peer.close() }
     }
-    @Test fun t1039_cancelBlockedAckClosesOriginalWithoutGrantingAReplacement() {
+    @Test fun t1039_cancelBlockedAuthenticationClosesOriginalWithoutGrantingAReplacement() {
         val writing = CountDownLatch(1)
         val released = CountDownLatch(1)
         val peer = object : Peer() {
@@ -73,7 +70,7 @@ class VideoNegotiationTest {
         val current = AtomicLong(1)
         val transport = VideoTransport(Any(), { it == current.get() }, { peer })
         val result = java.util.concurrent.atomic.AtomicReference<java.io.InputStream?>()
-        val thread = Thread { result.set(transport.open(1, peer, AdbDisplayRoutes.create(), true)) }
+        val thread = Thread { result.set(transport.open(1, peer, AdbDisplayRoutes.create("a".repeat(64)))) }
         try {
             thread.start()
             assertTrue(writing.await(2, TimeUnit.SECONDS))
@@ -83,34 +80,35 @@ class VideoNegotiationTest {
             assertFalse(thread.isAlive)
             assertNull(result.get())
             val next = Peer()
-            assertNotNull(transport.open(2, next, AdbDisplayRoutes.create(), false))
+            assertNotNull(transport.open(2, next, AdbDisplayRoutes.create()))
             assertEquals(0, next.bytes.size())
         } finally { transport.stop(); peer.close(); thread.join(2000) }
     }
-    @Test fun t1039_workerSnapshotBoundsFeatureAndAbsenceRemainsLegacy() {
-        val legacy = MediaTask.Display(AdbDisplayRoutes.create("a".repeat(64)), DecoderFormat("video/avc", 64, 64, 30))
-        val enabled = legacy.copy(liveness = true)
-        assertEquals(enabled, MediaTaskJson.decode(MediaTaskJson.encode(enabled)))
-        val encoded = JSONObject(MediaTaskJson.encode(legacy)).apply { remove("liveness") }
-        assertEquals(legacy, MediaTaskJson.decode(encoded.toString()))
-        for (value in listOf<Any>(0, 1, -1, "true", JSONObject.NULL, JSONObject())) {
-            val invalid = JSONObject(encoded.toString()).put("liveness", value)
+    @Test fun t1039_workerSnapshotHasOneCurrentDisplayContract() {
+        val task = MediaTask.Display(AdbDisplayRoutes.create("a".repeat(64)), DecoderFormat("video/avc", 64, 64, 30))
+        val encoded = JSONObject(MediaTaskJson.encode(task))
+        assertFalse(encoded.has("liveness"))
+        assertEquals(task, MediaTaskJson.decode(encoded.toString()))
+        for (value in listOf<Any>(0, 65536, -1, "8890", JSONObject.NULL, JSONObject())) {
+            val invalid = JSONObject(encoded.toString()).put("videoPort", value)
             assertTrue(runCatching { MediaTaskJson.decode(invalid.toString()) }.isFailure)
         }
     }
-    @Test fun t1039_receiverCapabilityChangesRetireOnlyItsOriginalWaitingRun() {
+    @Test fun t1039_receiverFormatChangesRetireOnlyItsOriginalWaitingRun() {
         val receiver = VideoReceiver { error("T1039 absent Surface must not open socket") }
         try {
-            receiver.setVideoLiveness(false)
+            val original = DecoderFormat("video/avc", 64, 64, 30)
+            val changed = original.copy(fps = 60)
+            receiver.setStreamFormat(original)
             receiver.start()
             val previous = ReflectionHelpers.getField<Job>(receiver, "job")
-            receiver.setVideoLiveness(true)
+            receiver.setStreamFormat(changed)
             assertTrue(previous.isCancelled)
             val replacement = ReflectionHelpers.getField<Job>(receiver, "job")
             assertNotSame(previous, replacement)
-            receiver.setVideoLiveness(true)
+            receiver.setStreamFormat(changed)
             assertSame(replacement, ReflectionHelpers.getField<Job>(receiver, "job"))
-            receiver.setVideoLiveness(false)
+            receiver.setStreamFormat(original)
             assertTrue(replacement.isCancelled)
         } finally { receiver.stop() }
     }

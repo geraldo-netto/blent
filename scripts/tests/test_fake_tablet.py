@@ -38,6 +38,27 @@ class FragmentedSocket:
 
 
 class PartialIoTest(unittest.TestCase):
+    def test_t1567_liveness_preserves_following_media_without_render_ack(self):
+        heartbeat = bytes([0, 0, 0, 2, 2, 1])
+        config = struct.pack('>I', 4) + b'\x00csd'
+        frame = struct.pack('>I', 6) + b'\x01' + struct.pack('>I', 42) + b'x'
+        for split in range(7):
+            chunks = [heartbeat[:split], heartbeat[split:], config, heartbeat, frame]
+            with self.subTest(split=split), patch.object(tablet, 'ws_send') as send:
+                result = tablet.receive_video(FragmentedSocket([c for c in chunks if c]), object(), 5)
+                self.assertEqual(result, (True, 1, 42))
+                self.assertEqual([call.args[1]['seq'] for call in send.call_args_list], [42])
+
+    def test_t1567_liveness_lengths_and_versions_reject_before_media(self):
+        for length in range(2, 33):
+            for version in range(256):
+                if length == 2 and version == 1:
+                    continue
+                wire = struct.pack('>I', length) + bytes([2, version])
+                with self.subTest(length=length, version=version):
+                    with self.assertRaises(ValueError):
+                        tablet.read_video_packet(FragmentedSocket([wire]), bytearray(5), bytearray(16))
+
     def test_t408_exact_binary_reads_preserve_every_byte_and_eof(self):
         payload = bytes(range(256)) * 5
         chunks = [payload[i:i + 3] for i in range(0, len(payload), 3)]

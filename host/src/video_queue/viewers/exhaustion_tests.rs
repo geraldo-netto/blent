@@ -18,13 +18,13 @@ fn t1177_denial_keeps_original_presence_capability_and_subscription() {
     let (video, raw) = video_queue::channel(8, Default::default());
     drop(raw);
     video.viewer_epoch().store(u64::MAX - 1, Ordering::Release);
-    let original = video.subscribe_negotiated(Arc::new(Capability(true)));
+    let original = video.subscribe_with_presence(Arc::new(Capability(true)));
     let before = video.viewers.presence().unwrap();
     assert!(video.viewers.liveness_ready());
     let notice = video.viewers.changed();
     let capability = Arc::new(Capability(false));
     for _ in 0..3 {
-        let denied = video.subscribe_negotiated(capability.clone());
+        let denied = video.subscribe_with_presence(capability.clone());
         assert_eq!(video.receiver_count(), 1, "T1177: denied receiver admitted");
         assert_eq!(video.viewers.members.lock().unwrap().entries.len(), 1);
         assert_eq!(video.viewers.epoch(), u64::MAX);

@@ -1,0 +1,1143 @@
+{
+  "issue": "T1567",
+  "red": [
+    "Host emitted no heartbeat without ACK.",
+    "Android reader rejected heartbeat without optional grant.",
+    "Channel reader rejected current type 2.",
+    "Fake tablet stopped at type 2 before following media."
+  ],
+  "green": {
+    "host_library": 113,
+    "capture_idle": 5,
+    "android_jvm": 141,
+    "fake_tablet": 18,
+    "existing_ignored_timing_benchmark": 1,
+    "replay_apk": "assembleDebug succeeded"
+  },
+  "rust_coverage": [
+    {
+      "file": "host/src/stream.rs",
+      "name": "handle_client",
+      "line": 166,
+      "language": "rust",
+      "covered": 32,
+      "total": 32,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream.rs",
+      "name": "stream_packets",
+      "line": 216,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream/presence.rs",
+      "name": "watch",
+      "line": 8,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream/presence.rs",
+      "name": "channel",
+      "line": 18,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream/presence.rs",
+      "name": "supported",
+      "line": 23,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream/presence.rs",
+      "name": "changed",
+      "line": 26,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream/presence.rs",
+      "name": "supported",
+      "line": 35,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream/presence.rs",
+      "name": "changed",
+      "line": 38,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/config.rs",
+      "name": "response",
+      "line": 30,
+      "language": "rust",
+      "covered": 48,
+      "total": 48,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/video_queue.rs",
+      "name": "subscribe_with_presence",
+      "line": 62,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "kotlin_coverage": [
+    {
+      "file": "android/app/src/main/java/com/blent/ChannelPacketReader.kt",
+      "name": "readHeader",
+      "line": 42,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ChannelPacketReader.kt",
+          "owner": "com/blent/ChannelPacketReader",
+          "name": "readHeader",
+          "signature": "()Lcom/blent/ChannelPacketHeader;",
+          "line": 43,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ChannelPacketReader.kt",
+      "name": "readRecord",
+      "line": 51,
+      "language": "kotlin",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ChannelPacketReader.kt",
+          "owner": "com/blent/ChannelPacketReader",
+          "name": "readRecord",
+          "signature": "()Lcom/blent/ChannelPacketHeader;",
+          "line": 52,
+          "covered": 10,
+          "total": 10
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ChannelPacketReader.kt",
+      "name": "parseHeader",
+      "line": 65,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ChannelPacketReader.kt",
+          "owner": "com/blent/ChannelPacketReader",
+          "name": "parseHeader",
+          "signature": "(I)Lcom/blent/ChannelPacketHeader;",
+          "line": 65,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+      "name": "receiveControl",
+      "line": 211,
+      "language": "kotlin",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+          "owner": "com/blent/ControlSession",
+          "name": "receiveControl",
+          "signature": "(Lokhttp3/WebSocket;Lorg/json/JSONObject;)V",
+          "line": 213,
+          "covered": 13,
+          "total": 13
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+      "name": "resetGreeting",
+      "line": 272,
+      "language": "kotlin",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+          "owner": "com/blent/ControlSession",
+          "name": "resetGreeting",
+          "signature": "()V",
+          "line": 273,
+          "covered": 14,
+          "total": 14
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/LocalMediaRuns.kt",
+      "name": "display",
+      "line": 47,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/LocalMediaRuns.kt",
+          "owner": "com/blent/LocalMediaRuns",
+          "name": "display",
+          "signature": "(Lcom/blent/MediaTask$Display;Landroid/view/Surface;Lkotlin/jvm/functions/Function1;)Lcom/blent/LifecycleRun;",
+          "line": 48,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/MediaTask.kt",
+      "name": "<init>",
+      "line": 7,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/MediaTask.kt",
+          "owner": "com/blent/MediaTask$Display",
+          "name": "<init>",
+          "signature": "(Lcom/blent/DisplayRoutes;Lcom/blent/DecoderFormat;)V",
+          "line": 7,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/MediaTaskJson.kt",
+      "name": "display",
+      "line": 59,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/MediaTaskJson.kt",
+          "owner": "com/blent/MediaTaskJson",
+          "name": "display",
+          "signature": "(Lcom/blent/MediaTask$Display;)Lorg/json/JSONObject;",
+          "line": 60,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/MediaTaskJson.kt",
+      "name": "readDisplay",
+      "line": 66,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/MediaTaskJson.kt",
+          "owner": "com/blent/MediaTaskJson",
+          "name": "readDisplay",
+          "signature": "(Lorg/json/JSONObject;)Lcom/blent/MediaTask$Display;",
+          "line": 67,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+      "name": "replace",
+      "line": 81,
+      "language": "kotlin",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+          "owner": "com/blent/RemoteDisplay",
+          "name": "replace",
+          "signature": "()V",
+          "line": 82,
+          "covered": 21,
+          "total": 21
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+      "name": "<lambda>",
+      "line": 101,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+          "owner": "com/blent/RemoteDisplay$replace$1",
+          "name": "invoke",
+          "signature": "(Lkotlin/jvm/functions/Function1;)Lcom/blent/LifecycleRun;",
+          "line": 101,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+      "name": "<lambda>",
+      "line": 102,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+          "owner": "com/blent/RemoteDisplay$replace$2",
+          "name": "invoke",
+          "signature": "(Lcom/blent/WorkerEvent;)V",
+          "line": 102,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+          "owner": "com/blent/RemoteDisplay$replace$3",
+          "name": "invoke",
+          "signature": "(Ljava/lang/Exception;)V",
+          "line": 102,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+      "name": "<lambda>",
+      "line": 102,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+          "owner": "com/blent/RemoteDisplay$replace$2",
+          "name": "invoke",
+          "signature": "(Lcom/blent/WorkerEvent;)V",
+          "line": 102,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+          "owner": "com/blent/RemoteDisplay$replace$3",
+          "name": "invoke",
+          "signature": "(Ljava/lang/Exception;)V",
+          "line": 102,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+      "name": "<lambda>",
+      "line": 103,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+          "owner": "com/blent/RemoteDisplay$replace$4",
+          "name": "invoke",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 103,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+      "name": "connectFormatCallbacks",
+      "line": 232,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+          "owner": "com/blent/SessionCoordinator",
+          "name": "connectFormatCallbacks",
+          "signature": "()V",
+          "line": 233,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+      "name": "<lambda>",
+      "line": 233,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+          "owner": "com/blent/SessionCoordinator$connectFormatCallbacks$1",
+          "name": "invoke",
+          "signature": "(Lcom/blent/DecoderFormat;)V",
+          "line": 234,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+      "name": "<lambda>",
+      "line": 234,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+          "owner": "com/blent/SessionCoordinator$connectFormatCallbacks$1$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 235,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+      "name": "<lambda>",
+      "line": 236,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+          "owner": "com/blent/SessionCoordinator$connectFormatCallbacks$1$1$1",
+          "name": "invoke",
+          "signature": "(Lcom/blent/DisplaySession;)V",
+          "line": 236,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+      "name": "<lambda>",
+      "line": 239,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+          "owner": "com/blent/SessionCoordinator$connectFormatCallbacks$2",
+          "name": "invoke",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 240,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+      "name": "<lambda>",
+      "line": 240,
+      "language": "kotlin",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+          "owner": "com/blent/SessionCoordinator$connectFormatCallbacks$2$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 241,
+          "covered": 13,
+          "total": 13
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+      "name": "<init>",
+      "line": 18,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+          "owner": "com/blent/VideoPacketReader",
+          "name": "<init>",
+          "signature": "(Ljava/io/InputStream;Lkotlin/jvm/functions/Function1;)V",
+          "line": 20,
+          "covered": 3,
+          "total": 3
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+          "owner": "com/blent/VideoPacketReader",
+          "name": "<init>",
+          "signature": "(Ljava/io/InputStream;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+          "line": 20,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+      "name": "<lambda>",
+      "line": 20,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+          "owner": "com/blent/VideoPacketReader$1",
+          "name": "invoke",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 20,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+      "name": "read",
+      "line": 25,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+          "owner": "com/blent/VideoPacketReader",
+          "name": "read",
+          "signature": "()Z",
+          "line": 26,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+      "name": "readHeader",
+      "line": 37,
+      "language": "kotlin",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+          "owner": "com/blent/VideoPacketReader",
+          "name": "readHeader",
+          "signature": "()Z",
+          "line": 38,
+          "covered": 10,
+          "total": 10
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+      "name": "validate",
+      "line": 54,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+          "owner": "com/blent/VideoPacketReader",
+          "name": "validate",
+          "signature": "(ZLjava/lang/String;)Z",
+          "line": 55,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+      "name": "dispatch",
+      "line": 59,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 6,
+      "percent": 83.33333333333333,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+          "owner": "com/blent/VideoPacketReader",
+          "name": "dispatch",
+          "signature": "(Lcom/blent/VideoPacketSink;)Z",
+          "line": 61,
+          "covered": 5,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+      "name": "liveness",
+      "line": 72,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+          "owner": "com/blent/VideoPacketReader",
+          "name": "liveness",
+          "signature": "()Z",
+          "line": 74,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+      "name": "readExact",
+      "line": 81,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+          "owner": "com/blent/VideoPacketReader",
+          "name": "readExact",
+          "signature": "([BII)V",
+          "line": 82,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+      "name": "bigEndianInt",
+      "line": 90,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoPacketReader.kt",
+          "owner": "com/blent/VideoPacketReader",
+          "name": "bigEndianInt",
+          "signature": "([BI)I",
+          "line": 91,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+      "name": "start",
+      "line": 188,
+      "language": "kotlin",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+          "owner": "com/blent/VideoReceiver",
+          "name": "start",
+          "signature": "()V",
+          "line": 189,
+          "covered": 19,
+          "total": 19
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+      "name": "<lambda>",
+      "line": 207,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+          "owner": "com/blent/VideoReceiver$start$1$3",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 208,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+      "name": "<lambda>",
+      "line": 211,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+          "owner": "com/blent/VideoReceiver$start$1$4",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 212,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+      "name": "connectAndReceive",
+      "line": 221,
+      "language": "kotlin",
+      "covered": 22,
+      "total": 25,
+      "percent": 88.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+          "owner": "com/blent/VideoReceiver",
+          "name": "connectAndReceive",
+          "signature": "(JLcom/blent/DisplayRoutes;Lcom/blent/ReceiverStatistics;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 224,
+          "covered": 22,
+          "total": 25
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+      "name": "<lambda>",
+      "line": 244,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+          "owner": "com/blent/VideoReceiver$connectAndReceive$2",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 244,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+      "name": "<lambda>",
+      "line": 246,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+          "owner": "com/blent/VideoReceiver$connectAndReceive$3",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 246,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+      "name": "<lambda>",
+      "line": 248,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+          "owner": "com/blent/VideoReceiver$connectAndReceive$4",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 248,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+      "name": "<lambda>",
+      "line": 250,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+          "owner": "com/blent/VideoReceiver$connectAndReceive$5",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 250,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+      "name": "receivePackets",
+      "line": 288,
+      "language": "kotlin",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+          "owner": "com/blent/VideoReceiver",
+          "name": "receivePackets",
+          "signature": "(JLjava/net/Socket;Ljava/io/InputStream;Lcom/blent/ReceiverStatistics;)V",
+          "line": 291,
+          "covered": 10,
+          "total": 10
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+      "name": "<lambda>",
+      "line": 291,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoReceiver.kt",
+          "owner": "com/blent/VideoReceiver$receivePackets$reader$1",
+          "name": "invoke",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 291,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoTransport.kt",
+      "name": "open",
+      "line": 37,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoTransport.kt",
+          "owner": "com/blent/VideoTransport",
+          "name": "open",
+          "signature": "(JLjava/net/Socket;Lcom/blent/DisplayRoutes;)Ljava/io/InputStream;",
+          "line": 38,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/VideoTransport.kt",
+      "name": "owns",
+      "line": 46,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/VideoTransport.kt",
+          "owner": "com/blent/VideoTransport",
+          "name": "owns",
+          "signature": "(JLjava/net/Socket;)Z",
+          "line": 46,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    }
+  ],
+  "source_sha256": {
+    "android/app/src/main/java/com/blent/ChannelPacketReader.kt": "e27eac50fa2cf686b98132510968ac2a72b138b996abc39cd3cb8f6f8b725b2d",
+    "android/app/src/main/java/com/blent/ControlSession.kt": "b75113c73b9f051894d7b9054b634f85bf7a1643e84a0d0eca13150853401ea5",
+    "android/app/src/main/java/com/blent/DisplaySession.kt": "adf4d07e887cbbd2d6057b2a03475c34495bfbe2e76fb4137ab2427b129c099c",
+    "android/app/src/main/java/com/blent/LocalMediaRuns.kt": "ef08317a4cb41b93ce216ada1773a36f7c12b1a7c9c385d8c9372fb62de0a11b",
+    "android/app/src/main/java/com/blent/MediaTask.kt": "31ffba7ca0d8ec309883aaefa8329c49832f6710e268acd1bae6701cc879772e",
+    "android/app/src/main/java/com/blent/MediaTaskJson.kt": "53573c9e6a57a15a9c18a856c4f6e140efc1f910744485accd072cc72c5a20a3",
+    "android/app/src/main/java/com/blent/RemoteDisplay.kt": "3e831f96d02ddcd25ea4213c84ca5fea84edfbd2ff5239ef48c19247aa968c9b",
+    "android/app/src/main/java/com/blent/SessionCoordinator.kt": "5d76ea9efb002b45d2a7cb950fd8881f99acfa70ae2666f11d323729f7878e2f",
+    "android/app/src/main/java/com/blent/TouchCapture.kt": "4b04302982990764cf90da64e663705691763f4a9f291a004bfe7cda9e4a34c6",
+    "android/app/src/main/java/com/blent/VideoPacketReader.kt": "ddc7e5a15a15a065cfe73c6178215566b700f0f9f2ceba110759aff4cbfb6dee",
+    "android/app/src/main/java/com/blent/VideoReceiver.kt": "c21906f720317b793b226b779018d7fbc1e8da8d0f6b1caf76a617f01bb54a99",
+    "android/app/src/main/java/com/blent/VideoTransport.kt": "a26bd012e6271be232f902921e9aec90e83862fd71c81cd49ec6345246a363de",
+    "android/app/src/test/java/com/blent/ChannelPacketReaderTest.kt": "a58655636d1e36ca67deb696b0b694011f787c32cd0250f8dd659f45788cfc19",
+    "android/app/src/test/java/com/blent/ControlBackpressureTest.kt": "39d078fa4401382c26719af1f4305771ce1fc87f6e851b4e94e845365990cc8f",
+    "android/app/src/test/java/com/blent/DisplayActivityLifecycleTest.kt": "d88636efbaa000ce336962391b9a9076b9d02c6f4cdc99a5e8bea32f7cc3f688",
+    "android/app/src/test/java/com/blent/JoinedDisplayWorkerFixture.kt": "50c2c7f88853ff5c5c0628ad0d7f4d73d9a8e2ebf79bd25986d2d44e4e86c71e",
+    "android/app/src/test/java/com/blent/RemoteDisplayTest.kt": "db335a9ed9bb454aeca579c134cded4f572f15f868b335860e4520cc423db477",
+    "android/app/src/test/java/com/blent/SessionRevocationTest.kt": "464108a0e2cda8f72c6dceee958ac54ed8e16d4a531c62faaa881a99248472a7",
+    "android/app/src/test/java/com/blent/VideoConnectionBoundaryTest.kt": "3c9bb2d78fc1b17e262e3b26ab233166ceb88168f0d9432ab69fb0658bd0dc84",
+    "android/app/src/test/java/com/blent/VideoLivenessTest.kt": "5456587438eb938ff51c66d241f3e3330e20f155c7eea4fa1c6c8cc0119534e3",
+    "android/app/src/test/java/com/blent/VideoPacketValidationTest.kt": "f7fdfaacf3059b9bc6907569a637ccf51928301f347eabf3ee7c45747e0881be",
+    "common/src/video.rs": "14e8e10ebbecefbbfa17bb9772a29bc34242f8e1e448e958afafb3b055b39090",
+    "host/src/capture/idle/trial_tests.rs": "e98cd0a16db71132ef953f383e6a3abef96d14e9d6c67f693be6c275b7353c83",
+    "host/src/capture_contract.rs": "b8664e15e86a899f90f1d8ddaff52dbba72714029127c59f9ad8590c3fe6a6f3",
+    "host/src/display_work/tests.rs": "e43e7f4bab5935c62c5e0eb6cecd3bde106f4ea695cba19273f637f76af672e0",
+    "host/src/input.rs": "d8a1d571eaa584558ad3704ed065d03d56fad78cae84248cb307873c0ae4f630",
+    "host/src/input/config.rs": "8839879ac5c02681421e665aaa3fb91fcfe27f7521ba88342e7742277bac810e",
+    "host/src/input/wire.rs": "6bf64a5d66a906f685b8c18065924742ff6eeed3ec2843a29761ae0c3689f5ed",
+    "host/src/stream.rs": "59c1e2642d4c4ce91a44339cddd019c3be09bf03423fcc57b53ceacb7d7e4330",
+    "host/src/stream/liveness_tests.rs": "580aa91a9b585504bd1e25ee78af36a14cd20efe7c23893a1b1500f3204aefb0",
+    "host/src/stream/viewer_tests.rs": "7abbb47eb85f55d454ff946919ecd76f7eb6ab5908fac9eda3b15a99d7a3ba98",
+    "host/src/stream/wake_tests.rs": "e2990a8ac2dbb320abc9aec3e5e093d4b42cb3a577f64b7c48f65e932c541b55",
+    "host/src/video_queue.rs": "e8af0f7f4b6406e8e68d919fe353430abd2ab006c9d7eda603876515a94512be",
+    "host/src/video_queue/viewers/exhaustion_tests.rs": "ff65c44c6955e1fad2781fea3ce06b9b601b52fd911620d31a277ccc9cc83ce3",
+    "scripts/fake-tablet.py": "865a04513782bff195d4c872cd89f65edd7883f8a7ee0465f9a61f1cbec2e05a",
+    "scripts/tests/test_fake_tablet.py": "0659280ab80456c03a1a48c31fa739e698b958a097f46d95e902fbfa17ae40fd",
+    "android/app/src/test/java/com/blent/VideoPresenceTest.kt": "3d18500cc9d95ec0931dfb750e16841de090110b1402c5456c360949461fc420",
+    "host/src/stream/presence.rs": "f7dfa31248e379fe8eef7f3101967f352a2dcc40f8b05e8f01684374f2fc6468",
+    "host/src/stream/presence_tests.rs": "32bf824ce190afee824325430d1747e0e6fab2d3cdaf896d1765de76a000812c"
+  },
+  "complexity": "t1567-complexity.log.gz"
+}

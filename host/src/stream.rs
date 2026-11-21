@@ -1,5 +1,5 @@
 mod liveness;
-mod negotiation;
+mod presence;
 #[cfg(test)]
 mod wake_tests;
 #[cfg(test)]
@@ -185,10 +185,7 @@ impl StreamServer {
                     .map(|t| blent_config::credentials::token_matches(expected, t))
                     .unwrap_or(false);
             if !ok {
-                warn!(
-                    "Video client did not present a valid session token — dropped. \
-                       An app older than 1.1.0 cannot authenticate: update it."
-                );
+                warn!("Video client did not present a valid session token — dropped.");
                 return Ok(());
             }
         }
@@ -203,18 +200,16 @@ impl StreamServer {
 
         // Only admitted peers count as viewers or request encoder work.
         let liveness = liveness::configured_interval()?;
-        let (negotiated, capabilities) = negotiation::channel();
+        let (presence_owner, capabilities) = presence::channel();
         let rx = video_tx
-            .subscribe_negotiated(Arc::new(capabilities.clone()))
+            .subscribe_with_presence(Arc::new(capabilities.clone()))
             .context("Video viewer epochs exhausted")?;
         idr_wanted.store(true, Ordering::SeqCst);
         let (mut reader, writer) = socket.into_split();
         tokio::select! {
             result = Self::stream_packets(writer, rx, codec_config, video_tx.budget(), liveness, capabilities) => result,
-            // Disabled authentication accepts the Android client's saved token
-            // as an optional prelude, without delaying current clients without a saved token.
-            // EOF, malformed/extra input and incomplete preludes end the viewer.
-            _ = watch_client_input(&mut reader, token.is_none(), negotiated) => Ok(()),
+            // EOF or unexpected client bytes retire this original viewer.
+            _ = presence::watch(&mut reader, presence_owner) => Ok(()),
         }
     }
 
@@ -224,7 +219,7 @@ impl StreamServer {
         codec_config: CodecConfig,
         budget: Arc<crate::media_storage::Budget>,
         liveness: blent_config::video::liveness::Interval,
-        capabilities: negotiation::View,
+        capabilities: presence::View,
     ) -> Result<()> {
         let mut client = ClientPlayback {
             socket,
@@ -329,23 +324,12 @@ impl StreamServer {
     }
 }
 
-/// Monitor disconnects while streaming. With checks disabled, consume at most
-/// one optional 64-byte hex token; after its first byte the usual auth deadline
-/// bounds completion. This never participates in enabled authentication.
-async fn watch_client_input(
-    reader: &mut (impl tokio::io::AsyncRead + Unpin),
-    optional_token: bool,
-    negotiated: tokio::sync::watch::Sender<bool>,
-) -> Result<()> {
-    negotiation::watch(reader, optional_token, negotiated).await
-}
-
 /// Decode readiness and backlog state owned by one admitted viewer.
 struct ClientPlayback {
     socket: tokio::net::tcp::OwnedWriteHalf,
     last_sent_config: Option<Bytes>,
     last_write: tokio::time::Instant,
-    capabilities: negotiation::View,
+    capabilities: presence::View,
     last_generation: Option<Arc<AtomicBool>>,
     wait_for_idr: bool,
     dropped: u64,
@@ -545,7 +529,7 @@ mod tests {
             socket,
             last_sent_config: None,
             last_write: tokio::time::Instant::now(),
-            capabilities: negotiation::channel().1,
+            capabilities: presence::channel().1,
             last_generation: None,
             wait_for_idr: false,
             dropped: 0,
@@ -640,7 +624,7 @@ mod tests {
             socket,
             last_sent_config: None,
             last_write: tokio::time::Instant::now(),
-            capabilities: negotiation::channel().1,
+            capabilities: presence::channel().1,
             last_generation: None,
             wait_for_idr: true,
             dropped: 0,
@@ -714,7 +698,7 @@ mod tests {
             CodecConfig::new(Some(new.clone())),
             tx.budget(),
             blent_config::video::liveness::interval(2000).unwrap(),
-            negotiation::channel().1,
+            presence::channel().1,
         ));
         assert_eq!(
             t227_read_packet(&mut viewer).await,
@@ -743,7 +727,7 @@ mod tests {
             socket,
             last_sent_config: None,
             last_write: tokio::time::Instant::now(),
-            capabilities: negotiation::channel().1,
+            capabilities: presence::channel().1,
             last_generation: None,
             wait_for_idr: true,
             dropped: 0,
@@ -822,7 +806,7 @@ mod tests {
         let (mut viewer, tx, task) = t267_connection(expected).await;
         if let Some(token) = saved {
             // Android writes the saved token before reading any video. TCP
-            // fragmentation must not turn that optional prefix into extra input.
+            // fragmentation must not turn that authentication record into extra input.
             for chunk in token.as_bytes().chunks(3) {
                 viewer.write_all(chunk).await.unwrap();
                 tokio::task::yield_now().await;
@@ -865,18 +849,33 @@ mod tests {
         assert_eq!(tx.receiver_count(), 0);
     }
 
+    async fn t267_reject_obsolete_prefix(saved: &str) {
+        let (mut viewer, tx, task) = t267_connection(None).await;
+        let _ = viewer.write_all(saved.as_bytes()).await;
+        tokio::time::timeout(std::time::Duration::from_secs(1), task)
+            .await
+            .unwrap()
+            .unwrap()
+            .unwrap();
+        assert_eq!(
+            tx.receiver_count(),
+            0,
+            "T1567 obsolete prefix retained viewer"
+        );
+    }
+
     #[tokio::test]
-    async fn t267_saved_android_token_survives_enabled_disabled_enabled_transitions() {
+    async fn t267_current_token_rotation_preserves_fragmented_authentication() {
         let saved = "a".repeat(64);
         t267_expect_stream(Some(saved.clone()), Some(&saved)).await;
-        t267_expect_stream(None, Some(&saved)).await;
+        t267_reject_obsolete_prefix(&saved).await;
         t267_expect_stream(Some(saved.clone()), Some(&saved)).await;
         let rotated = "b".repeat(64);
         t267_expect_stream(Some(rotated.clone()), Some(&rotated)).await;
     }
 
     #[tokio::test]
-    async fn t267_disabled_auth_keeps_legacy_tokenless_video_and_idle_cleanup() {
+    async fn t267_explicit_standalone_stream_has_no_prefix_and_cleans_up_when_idle() {
         t267_expect_stream(None, None).await;
     }
 
@@ -1187,7 +1186,7 @@ mod tests {
 mod liveness_tests;
 
 #[cfg(test)]
-mod negotiation_tests;
+mod presence_tests;
 
 #[cfg(test)]
 mod viewer_tests;

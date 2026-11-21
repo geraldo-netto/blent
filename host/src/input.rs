@@ -2028,11 +2028,14 @@ fi
     }
 
     #[test]
-    fn t1038_liveness_offer_requires_media_settings_and_explicit_socket_ack() {
+    fn t1567_current_greetings_do_not_offer_optional_video_liveness() {
         let config = InputConfig::default();
         let (publisher, _view) = watch::channel(settings("libx264"));
         let connected = config.response("connected", false, &Some(publisher));
-        assert_eq!(connected.video_liveness, Some(1));
+        assert!(serde_json::to_value(connected)
+            .unwrap()
+            .get("video_liveness")
+            .is_none());
         let standalone = config.response("connected", false, &None);
         assert!(serde_json::to_value(standalone)
             .unwrap()

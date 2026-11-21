@@ -59,7 +59,7 @@ impl VideoSender {
     pub fn subscribe(&self) -> Option<VideoReceiver> {
         self.subscriber(None)
     }
-    pub fn subscribe_negotiated(
+    pub fn subscribe_with_presence(
         &self,
         capability: Arc<dyn crate::capture_contract::LivenessCapability>,
     ) -> Option<VideoReceiver> {

@@ -52,8 +52,8 @@ pub trait ViewerActivity: Send + Sync {
 
     /// Monotonic connection epoch; a changed value invalidates idle evidence.
     fn epoch(&self) -> u64;
-    /// True only with viewers present and every original viewer acknowledging
-    /// liveness. Unmanaged/legacy/closed sources deny peer-dependent pausing.
+    /// True only with viewers present and every original liveness source active.
+    /// Unmanaged or closed sources deny peer-dependent pausing.
     fn liveness_ready(&self) -> bool {
         false
     }
