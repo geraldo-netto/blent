@@ -97,3 +97,9 @@ All 100 Android cases pass. In each paused-dispatcher case, 1,000 offered receip
 The permanent regression failed at the second empty recovery. Consecutive empty recoveries now double the interval from 250 ms to one second; notifications, immediate readiness and non-empty grabs restore 250 ms. Lost-event recovery and same-tick fallback coalescing remain. Sixty simulated idle seconds produce 60 recovery grabs after backoff; this is a deterministic harness count, not a live kernel measurement.
 
 All 71 helper cases pass, and the dedicated new case passes ASan/UBSan. Seven maintained C methods reach at least 81.25% line coverage; all 235 measured C/Rust functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1607-verification.json). The existing capture context owns one bounded integer, with no new native lifetime. Live kernel-log and wakeup comparison remains T1632.
+
+## T1571 — notification permission and Stop access
+
+Failing-first manifest and UI regressions confirmed the missing permission and controls on API 27/34. The manifest now declares POST_NOTIFICATIONS. Tablet audio settings offer its runtime request on Android 13+ and Android notification settings on both versions. Denial leaves sharing available and explains that local Stop is available by reopening Blent. Resume refreshes OS notification availability; enabling notifications grants no media consent.
+
+All 40 Android cases pass, including grant, denial, settings intent, resume changes and original service Stop ownership. All 25 maintained methods/callbacks have 100% JaCoCo line coverage; all measured functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1571-verification.json). The composition removes its lifecycle observer on disposal. No installed APK or physical service notification was changed.

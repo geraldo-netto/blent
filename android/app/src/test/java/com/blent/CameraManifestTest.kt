@@ -12,6 +12,12 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class CameraManifestTest {
+    @Test fun t1571_stopNotificationsDeclareRuntimePermission() {
+        val app = RuntimeEnvironment.getApplication()
+        val info = app.packageManager.getPackageInfo(app.packageName, PackageManager.GET_PERMISSIONS)
+        assertTrue("T1571 foreground Stop notifications need POST_NOTIFICATIONS",
+            info.requestedPermissions.contains(Manifest.permission.POST_NOTIFICATIONS))
+    }
     @Test fun t539_cameraIsOptionalAndSharingRequiresPermission() {
         val app = RuntimeEnvironment.getApplication()
         val info = app.packageManager.getPackageInfo(app.packageName,

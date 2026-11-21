@@ -35,6 +35,7 @@ class AudioControlsTest {
         binding.start()
         compose.setContent { BlentTheme { SettingsSheet(SettingsValues(), null, {}, false, {}, onSettingsEvent = {}, cameraControls = { AudioControls(binding) }) } }
         try {
+            if (direction == 1) compose.onNodeWithText("Sharing notifications").performScrollTo().assertExists()
             compose.onNodeWithText("Allow $label").performScrollTo().assertIsNotEnabled()
             compose.onNodeWithText("Raw").performScrollTo().performClick()
             compose.runOnIdle { assertEquals(2, binding.preferences.processing); assertEquals(0, opened) }

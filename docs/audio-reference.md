@@ -419,3 +419,14 @@ existing deadline/connection-retirement behavior. At exact zero drift and phase,
 the worker queue bulk-copies PCM slices; fractional resampling remains unchanged.
 [T818 stage measurements](reviews/2026-10-10-audio-staging.md) show lower allocation
 traffic and processing time, without claiming lower acoustic latency.
+
+### Sharing notification permission
+
+The tablet's audio settings include **Sharing notifications**. On Android 13+
+choose **Allow notifications** to expose foreground-service notifications,
+including their Stop action. **Notification settings** also opens Android's
+settings so a denied permission or disabled channel can be changed. Permission
+is optional for sharing: if notifications are disabled, reopen Blent and use
+its local Stop control. Enabling notifications never grants media consent.
+The controls refresh notification availability when the app resumes.
+This follows Android's [notification permission contract](https://developer.android.com/develop/ui/views/notifications/notification-permission).

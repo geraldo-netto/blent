@@ -1,0 +1,27 @@
+{
+  "issue": "T1571",
+  "red": {
+    "cases": 8,
+    "failed": 4,
+    "checks": "Manifest permission and visible notification controls fail on API 27 and 34",
+    "sha256": "4e35714b12530d822a82638e9701e04cfabc6231db41a39fe3ed21846d0241a4"
+  },
+  "green": {
+    "cases": 40,
+    "failed": 0,
+    "platforms": "Robolectric API 27 and 34"
+  },
+  "coverage": {
+    "tool": "JaCoCo 0.8.15",
+    "methods": 25,
+    "minimum_percent": 100,
+    "scope": "New SharingNotifications methods/callbacks and maintained AudioControls/AudioSettings, including nested callbacks"
+  },
+  "complexity": {
+    "tool": "Kotlin PSI 1.9.20 project checker",
+    "functions": 72,
+    "over_9": 0
+  },
+  "ownership": "Composition owns launcher and lifecycle observer; disposal removes observer. Callbacks refresh presentation only and retain no media consent or native resource.",
+  "native": "No physical tablet changed; permission UI/service rendering not exercised on hardware."
+}

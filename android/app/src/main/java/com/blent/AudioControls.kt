@@ -18,6 +18,7 @@ internal fun AudioControls(binding: AudioBinding, access: MediaAccessControls<Au
     if (consent?.offer != null) AudioConsentControls(binding, checkNotNull(access), consent)
     else LegacyAudioControls(binding)
     AudioSettings(binding)
+    if (binding.direction == 1) SharingNotifications()
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -40,7 +41,7 @@ private fun AudioSettings(binding: AudioBinding) {
     Row {
         Checkbox(state.preferences.background, { binding.configure(state.preferences.copy(background = it)) },
             modifier = Modifier.semantics { contentDescription = "Allow background ${binding.label}" })
-        Text("Allow background ${binding.label} (notification includes Stop)")
+        Text("Allow background ${binding.label} (Stop notification requires notifications enabled)")
     }
     Row {
         Checkbox(state.preferences.builtIn, { binding.configure(state.preferences.copy(builtIn = it)) },
