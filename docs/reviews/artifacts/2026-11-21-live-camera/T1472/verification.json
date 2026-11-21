@@ -1,0 +1,109 @@
+{
+  "coverage": [
+    {
+      "file": "gui/src/camera_settings/tuning.rs",
+      "name": "exposure",
+      "line": 25,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/camera_settings/tuning.rs",
+      "name": "parse_exposure",
+      "line": 37,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "gui/src/camera_settings/tuning.rs",
+      5,
+      "show",
+      2
+    ],
+    [
+      "gui/src/camera_settings/tuning.rs",
+      25,
+      "exposure",
+      3
+    ],
+    [
+      "gui/src/camera_settings/tuning.rs",
+      37,
+      "parse_exposure",
+      1
+    ],
+    [
+      "gui/src/camera_settings/tuning.rs",
+      42,
+      "metering",
+      5
+    ],
+    [
+      "gui/src/camera_settings/tuning.rs",
+      57,
+      "flicker",
+      4
+    ],
+    [
+      "gui/src/camera_settings/tuning.rs",
+      70,
+      "flicker_label",
+      5
+    ],
+    [
+      "gui/src/camera_settings/tuning/tests.rs",
+      3,
+      "t1468_camera_capability_controls_preserve_settings_and_render_all_labels",
+      6
+    ],
+    [
+      "gui/src/camera_settings/tuning/tests.rs",
+      37,
+      "frame",
+      5
+    ],
+    [
+      "gui/src/camera_settings/tuning/tests.rs",
+      69,
+      "click",
+      2
+    ],
+    [
+      "gui/src/camera_settings/tuning/tests.rs",
+      88,
+      "t1468_supported_camera_menus_apply_and_reset_without_starting",
+      6
+    ],
+    [
+      "gui/src/camera_settings/tuning/tests.rs",
+      137,
+      "t1468_unavailable_exposure_does_not_silently_rewrite_saved_preference",
+      3
+    ],
+    [
+      "gui/src/camera_settings/tuning/tests.rs",
+      162,
+      "t1472_exposure_text_uses_displayed_ev_units",
+      3
+    ],
+    [
+      "gui/src/camera_settings/tuning/tests.rs",
+      189,
+      "t1472_exposure_parser_rejects_nonfinite_and_malformed_text",
+      3
+    ]
+  ],
+  "cases": 25,
+  "regression": "Same EV-entry regression fails before (1.00 becomes 0 after raw-hundredths step rounding) and passes after. Positive/negative text edits clamp to advertised bounds; nonfinite input rejects; unavailable saved values remain unchanged.",
+  "tools": "cargo-llvm-cov 0.8.7, rustc 1.100.0; complexity via repository syn 2.0.119 frontend"
+}

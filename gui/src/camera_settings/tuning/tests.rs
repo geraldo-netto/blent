@@ -157,3 +157,45 @@ fn t1468_unavailable_exposure_does_not_silently_rewrite_saved_preference() {
         "Rendering unavailable capabilities mutated saved exposure"
     );
 }
+
+#[test]
+fn t1472_exposure_text_uses_displayed_ev_units() {
+    for (input, expected) in [("1.00", 100), ("100", 200), ("-100", -200)] {
+        let context = egui::Context::default();
+        let mut sensor = Sensor::default();
+        let text = frame(&context, &mut sensor, vec![], true);
+        let pos = text
+            .iter()
+            .find(|(label, _)| label == "+0.00 EV")
+            .unwrap()
+            .1
+            .center();
+        click(&context, &mut sensor, pos, true);
+        frame(&context, &mut sensor, vec![], true);
+        frame(
+            &context,
+            &mut sensor,
+            vec![egui::Event::Text(input.into())],
+            true,
+        );
+        assert_eq!(
+            sensor.exposure, expected,
+            "T1472 incorrect EV units or advertised bounds: {input}"
+        );
+    }
+}
+
+#[test]
+fn t1472_exposure_parser_rejects_nonfinite_and_malformed_text() {
+    for text in ["NaN", "inf", "-inf", "1e999", "", "EV", "1x", "1.0 EV EV"] {
+        assert_eq!(parse_exposure(text), None);
+    }
+    for (text, expected) in [
+        ("1", 100.0),
+        ("+1.00 EV", 100.0),
+        (" -0.33 EV ", -33.0),
+        ("0", 0.0),
+    ] {
+        assert_eq!(parse_exposure(text), Some(expected));
+    }
+}

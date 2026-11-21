@@ -27,11 +27,17 @@ fn exposure(ui: &mut egui::Ui, sensor: &mut Sensor, caps: Capabilities) {
     ui.label("Exposure compensation");
     ui.add_enabled(step > 0.0 && minimum < maximum,
         egui::Slider::new(&mut sensor.exposure, (minimum*100.0).ceil() as i16..=(maximum*100.0).floor() as i16)
-            .clamping(egui::SliderClamping::Never)
+            .clamping(egui::SliderClamping::Edits)
             .step_by((step*100.0).max(1.0))
-            .custom_formatter(|value, _| format!("{:+.2} EV", value/100.0)))
+            .custom_formatter(|value, _| format!("{:+.2} EV", value/100.0))
+            .custom_parser(parse_exposure))
         .on_hover_text("Positive values ask the camera for a brighter exposure; highlights can clip and motion can blur.");
     ui.end_row();
+}
+fn parse_exposure(text: &str) -> Option<f64> {
+    let text = text.trim().strip_suffix("EV").unwrap_or(text).trim();
+    let value = text.parse::<f64>().ok()? * 100.0;
+    value.is_finite().then_some(value)
 }
 fn metering(ui: &mut egui::Ui, sensor: &mut Sensor, caps: Capabilities) {
     ui.label("Exposure metering");

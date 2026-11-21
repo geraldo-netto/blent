@@ -1,0 +1,26 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.14s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/b9d5ee1bd93a8000/out/blent_gui-b9d5ee1bd93a8000)
+
+running 1 test
+test camera_settings::tuning::tests::t1472_exposure_text_uses_displayed_ev_units ... FAILED
+
+failures:
+
+---- camera_settings::tuning::tests::t1472_exposure_text_uses_displayed_ev_units stdout ----
+
+thread 'camera_settings::tuning::tests::t1472_exposure_text_uses_displayed_ev_units' (3504835) panicked at gui/src/camera_settings/tuning/tests.rs:169:5:
+assertion `left == right` failed: T1472 EV text was interpreted as raw hundredths
+  left: 0
+ right: 100
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    camera_settings::tuning::tests::t1472_exposure_text_uses_displayed_ev_units
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 216 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`
+error: process didn't exit successfully: `/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo test --tests --manifest-path /backups/disk2/projects/blent/Cargo.toml --target-dir /backups/disk2/projects/blent/target/llvm-cov-target --offline -p blent-gui -- t1472_exposure_text` (exit status: 101)
