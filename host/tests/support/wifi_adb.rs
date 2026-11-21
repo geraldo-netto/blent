@@ -9,12 +9,16 @@ case "$1" in
     if [ -s "$0.route" ]; then read -r route < "$0.route"; printf '%s\tdevice\n' "$route"; fi;;
   connect)
     printf '%s\n' "$2" > "$0.route"
-    printf '@REPLY@\n';;
+    @REPLY@;;
   disconnect) : > "$0.route";;
   *) exit 85;;
 esac
 "#;
-    let reply = if accept { "connected" } else { "disconnected" };
+    let reply = if accept {
+        r#"printf 'connected to %s\n' "$2""#
+    } else {
+        "printf 'disconnected\n'"
+    };
     std::fs::write(path, source.replace("@REPLY@", reply)).unwrap();
     std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o700)).unwrap();
 }
