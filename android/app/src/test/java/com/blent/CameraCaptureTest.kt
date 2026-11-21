@@ -184,12 +184,13 @@ class CameraCaptureTest {
                             CameraEncoderShadow.step = 0
                             peer.soTimeout = 2000
                             val input = java.io.DataInputStream(peer.getInputStream())
-                            input.readFully(ByteArray(74)); peer.getOutputStream().write("OK".toByteArray())
+                            input.readFully(ByteArray(94)); peer.getOutputStream().write("OK".toByteArray())
                             var sequence = 0L
                             while (true) {
+                                input.readFully(ByteArray(9))
                                 packets.add(ByteArray(input.readInt()).also { input.readFully(it) })
                                 if (failFeedback && connection == 0) break
-                                java.io.DataOutputStream(peer.getOutputStream()).writeLong(++sequence)
+                                CameraTuningFixture.reply(peer.getOutputStream(), ++sequence)
                             }
                         }
                     } catch (_: java.io.IOException) {}
@@ -230,7 +231,7 @@ class CameraCaptureTest {
             CameraEncoderShadow.releases = 0
             val codec = MediaCodec.createEncoderByType("video/avc")
             try {
-                val feedback = okio.Buffer().apply { if (ack != null) writeLong(ack) }
+                val feedback = okio.Buffer().apply { if (ack != null) { writeLong(ack); write(CameraTuningFixture.command) } }
                 val source = object : okio.ForwardingSource(feedback) {
                     override fun read(sink: okio.Buffer, byteCount: Long): Long {
                         assertEquals("T805 codec buffer held while awaiting ACK", 1, CameraEncoderShadow.releases)
@@ -245,6 +246,7 @@ class CameraCaptureTest {
                 if (ack == 1L) result.getOrThrow()
                 else assertTrue(result.exceptionOrNull().toString(), result.exceptionOrNull() is CameraTransportException)
                 assertEquals("T805 lease released twice", 1, CameraEncoderShadow.releases)
+                assertEquals(0L, output.readLong()); assertEquals(0, output.readByte().toInt())
                 assertEquals(3, output.readInt())
                 assertArrayEquals(byteArrayOf(1, 2, 3), output.readByteArray())
             } finally { codec.release() }
@@ -259,7 +261,7 @@ class CameraCaptureTest {
                 CameraEncoderShadow.afterPacket = { released = System.nanoTime() }
                 val codec = MediaCodec.createEncoderByType("video/avc")
                 try {
-                    val input = object : okio.ForwardingSource(okio.Buffer().writeLong(1)) {
+                    val input = object : okio.ForwardingSource(CameraTuningFixture.ack(1)) {
                         override fun read(sink: okio.Buffer, byteCount: Long): Long {
                             Thread.sleep(delay)
                             return super.read(sink, byteCount)
@@ -271,7 +273,8 @@ class CameraCaptureTest {
                     sendOwned(codec, CameraLink(output, input, 2000), info)
                     val ended = System.nanoTime()
                     assertEquals(1, CameraEncoderShadow.releases)
-                    assertEquals(3, output.readInt())
+                    assertEquals(0L, output.readLong()); assertEquals(0, output.readByte().toInt())
+                assertEquals(3, output.readInt())
                     assertArrayEquals(byteArrayOf(1, 2, 3), output.readByteArray())
                     println("T805 delay_ms=$delay hold_us=${(released - started) / 1000} cycle_us=${(ended - started) / 1000}")
                 } finally { codec.release(); CameraEncoderShadow.afterPacket = {} }
@@ -284,7 +287,7 @@ class CameraCaptureTest {
         CameraEncoderShadow.afterPacket = { error("native release failed") }
         try {
             val info = MediaCodec.BufferInfo().apply { set(1, 3, 1000, MediaCodec.BUFFER_FLAG_KEY_FRAME) }
-            val failure = runCatching { sendOwned(codec, CameraLink(okio.Buffer(), okio.Buffer().writeLong(1)), info) }.exceptionOrNull()
+            val failure = runCatching { sendOwned(codec, CameraLink(okio.Buffer(), CameraTuningFixture.ack(1)), info) }.exceptionOrNull()
             assertEquals("native release failed", failure?.message)
             assertEquals(1, CameraEncoderShadow.releases)
         } finally { CameraEncoderShadow.afterPacket = {}; codec.release() }

@@ -2,13 +2,14 @@
 use anyhow::{ensure, Result};
 use tokio::io::{AsyncRead, AsyncReadExt};
 
-pub const MAGIC: &[u8; 8] = b"BLCAM002";
+pub const MAGIC: &[u8; 8] = b"BLCAM003";
 pub const MAX_PACKET: usize = 2 * 1024 * 1024;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Header {
     pub lens: usize,
     pub rotation: u8,
+    pub capabilities: blent_config::camera::tuning::Capabilities,
 }
 
 pub async fn header(reader: &mut (impl AsyncRead + Unpin), token: &str) -> Result<Header> {
@@ -22,10 +23,23 @@ pub async fn header(reader: &mut (impl AsyncRead + Unpin), token: &str) -> Resul
     );
     ensure!(bytes[72] <= 1, "invalid camera identity");
     ensure!(bytes[73] <= 3, "invalid camera rotation");
+    let mut capabilities = [0; 20];
+    reader.read_exact(&mut capabilities).await?;
     Ok(Header {
         lens: bytes[72] as usize,
         rotation: bytes[73],
+        capabilities: blent_config::camera::tuning::Capabilities::decode(capabilities)?,
     })
+}
+
+pub async fn received_packet(
+    reader: &mut (impl AsyncRead + Unpin),
+    live: &crate::camera_live::Session,
+) -> Result<Vec<u8>> {
+    let revision = reader.read_u64().await?;
+    let status = reader.read_u8().await?;
+    live.receipt(revision, status)?;
+    packet(reader).await
 }
 
 pub async fn packet(reader: &mut (impl AsyncRead + Unpin)) -> Result<Vec<u8>> {
@@ -40,11 +54,13 @@ pub async fn packet(reader: &mut (impl AsyncRead + Unpin)) -> Result<Vec<u8>> {
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
     use super::*;
 
-    fn greeting() -> Vec<u8> {
-        [MAGIC.as_slice(), "a".repeat(64).as_bytes(), &[0, 0]].concat()
+    pub(crate) const CAPS: [u8; 20] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0];
+
+    pub(super) fn greeting() -> Vec<u8> {
+        [MAGIC.as_slice(), "a".repeat(64).as_bytes(), &[0, 0], &CAPS].concat()
     }
 
     #[tokio::test]
@@ -59,7 +75,9 @@ mod tests {
                     header(&mut bytes.as_slice(), &token).await.unwrap(),
                     Header {
                         lens: lens as usize,
-                        rotation
+                        rotation,
+                        capabilities: blent_config::camera::tuning::Capabilities::decode(CAPS)
+                            .unwrap(),
                     }
                 );
             }
@@ -69,9 +87,27 @@ mod tests {
             bytes[index] = 255;
             assert!(header(&mut bytes.as_slice(), &token).await.is_err());
         }
-        for length in 0..74 {
+        for length in 0..94 {
             assert!(header(&mut &greeting()[..length], &token).await.is_err());
         }
+    }
+
+    #[tokio::test]
+    async fn t1468_receipts_are_bounded_and_checked_before_payload() {
+        let live = crate::camera_live::Session::new(Default::default());
+        let bytes = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 7];
+        assert_eq!(
+            received_packet(&mut bytes.as_slice(), &live).await.unwrap(),
+            vec![7]
+        );
+        for length in 0..bytes.len() {
+            assert!(received_packet(&mut &bytes[..length], &live).await.is_err());
+        }
+        let mut invalid = bytes;
+        invalid[8] = 3;
+        assert!(received_packet(&mut invalid.as_slice(), &live)
+            .await
+            .is_err());
     }
 
     #[tokio::test]

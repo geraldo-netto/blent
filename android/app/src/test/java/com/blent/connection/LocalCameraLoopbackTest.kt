@@ -67,7 +67,7 @@ class LocalCameraLoopbackTest {
             val route = checkNotNull(rig.group.cameraRoute()); port = route.port
             assertEquals(rig.offer.profile, route.profile); assertNull(rig.group.route())
             socket = Socket("127.0.0.1", port).apply { soTimeout = 1000 }
-            val greeting = "BLCAM002".toByteArray() + "0".repeat(64).toByteArray() + byteArrayOf(0, 0)
+            val greeting = com.blent.CameraTuningFixture.greeting("0".repeat(64))
             socket.getOutputStream().write(greeting)
             rig.await { rig.protocol.payloads.sumOf { it.second.size } == greeting.size }
             assertTrue(rig.protocol.payloads.all { it.first == ConnectionWire.CAMERA })
@@ -76,6 +76,16 @@ class LocalCameraLoopbackTest {
             repeat(16) { rig.step() }
             val feedback = ByteArray(2); DataInputStream(socket.getInputStream()).readFully(feedback)
             assertArrayEquals("OK".toByteArray(), feedback)
+            // T1468: the same original leased channel carries live commands and receipts.
+            val controls = com.blent.CameraTuningFixture.ack(1).readByteArray()
+            assertTrue(rig.protocol.host.offer(ConnectionWire.CAMERA, controls))
+            repeat(16) { rig.step() }
+            val received = ByteArray(26); DataInputStream(socket.getInputStream()).readFully(received)
+            assertArrayEquals(controls, received)
+            val receipt = byteArrayOf(0,0,0,0,0,0,0,1,0,0,0,0,1,7)
+            socket.getOutputStream().write(receipt)
+            rig.await { rig.protocol.payloads.sumOf { it.second.size } == greeting.size + receipt.size }
+            assertArrayEquals(greeting + receipt, rig.protocol.payloads.flatMap { it.second.toList() }.toByteArray())
         } finally { socket?.close(); rig.stop() }
         assertNull(rig.group.cameraRoute())
         ServerSocket(port, 1, java.net.InetAddress.getByName("127.0.0.1")).close()

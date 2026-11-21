@@ -45,7 +45,7 @@ class LocalCameraOwnerLoopbackTest {
             rig.await { rig.local.camera() != null }
             val route = checkNotNull(rig.local.camera())
             socket = Socket("127.0.0.1", route.port).apply { soTimeout = 1000 }
-            val greeting = "BLCAM002".toByteArray() + "0".repeat(64).toByteArray() + byteArrayOf(0, 0)
+            val greeting = com.blent.CameraTuningFixture.greeting("0".repeat(64))
             socket.getOutputStream().write(greeting)
             rig.await { rig.protocol.payloads.sumOf { it.second.size } == greeting.size }
             assertArrayEquals(greeting, rig.protocol.payloads.flatMap { it.second.toList() }.toByteArray())

@@ -26,7 +26,15 @@ async fn t1126_pending_original_decoder_rejects_native_replacement_before_spawn(
     let (socket, _) = listener.accept().await.unwrap();
     let token = "ab".repeat(32);
     client
-        .write_all(&[protocol::MAGIC.as_slice(), token.as_bytes(), &[0, 0]].concat())
+        .write_all(
+            &[
+                protocol::MAGIC.as_slice(),
+                token.as_bytes(),
+                &[0, 0],
+                &protocol::tests::CAPS,
+            ]
+            .concat(),
+        )
         .await
         .unwrap();
     client.shutdown().await.unwrap();
@@ -69,7 +77,15 @@ async fn t1126_live_decoder_is_observed_until_its_cancelled_future_retires() {
     let (socket, _) = listener.accept().await.unwrap();
     let token = "ab".repeat(32);
     client
-        .write_all(&[protocol::MAGIC.as_slice(), token.as_bytes(), &[0, 0]].concat())
+        .write_all(
+            &[
+                protocol::MAGIC.as_slice(),
+                token.as_bytes(),
+                &[0, 0],
+                &protocol::tests::CAPS,
+            ]
+            .concat(),
+        )
         .await
         .unwrap();
     let frames = [

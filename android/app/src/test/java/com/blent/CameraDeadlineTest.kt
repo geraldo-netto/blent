@@ -24,7 +24,7 @@ class CameraDeadlineTest {
                 server.accept().use { socket ->
                     socket.soTimeout = 2000
                     val input = java.io.DataInputStream(socket.getInputStream())
-                    input.readFully(ByteArray(74))
+                    input.readFully(ByteArray(94))
                     received.countDown()
                     assertEquals(-1, input.read())
                 }
@@ -32,7 +32,7 @@ class CameraDeadlineTest {
             try {
                 val endpoint = CameraEndpoint("a".repeat(64), server.localPort, 1280, 720, 30, 3000)
                 val connect = executor.submit<Throwable?> {
-                    runCatching { CameraWire.connect(endpoint, CameraLens.FRONT, 0, resources) }.exceptionOrNull()
+                    runCatching { CameraWire.connect(endpoint, CameraLens.FRONT, 0, resources, CameraTuningFixture.capabilities) }.exceptionOrNull()
                 }
                 assertTrue(received.await(2, TimeUnit.SECONDS))
                 resources.cancel()
@@ -53,7 +53,8 @@ class CameraDeadlineTest {
             val peer = executor.submit {
                 server.accept().use { socket ->
                     val input = java.io.DataInputStream(socket.getInputStream())
-                    input.readFully(ByteArray(74)); socket.getOutputStream().write("OK".toByteArray())
+                    input.readFully(ByteArray(94)); socket.getOutputStream().write("OK".toByteArray())
+                    input.readFully(ByteArray(9))
                     input.readFully(ByteArray(input.readInt()))
                     received.countDown()
                     retire.await(3, TimeUnit.SECONDS)
@@ -61,7 +62,7 @@ class CameraDeadlineTest {
             }
             try {
                 val endpoint = CameraEndpoint("a".repeat(64), server.localPort, 1280, 720, 30, 3000, freshnessMs = 50)
-                val link = CameraWire.connect(endpoint, CameraLens.FRONT, 0, resources)
+                val link = CameraWire.connect(endpoint, CameraLens.FRONT, 0, resources, CameraTuningFixture.capabilities)
                 val send = executor.submit<Throwable?> {
                     runCatching { link.send(ByteBuffer.wrap(byteArrayOf(1)), 0, 1, 0) }.exceptionOrNull()
                 }
@@ -84,7 +85,8 @@ class CameraDeadlineTest {
                 server.accept().use { socket ->
                     socket.soTimeout = 2000
                     val input = java.io.DataInputStream(socket.getInputStream())
-                    input.readFully(ByteArray(74)); socket.getOutputStream().write("OK".toByteArray())
+                    input.readFully(ByteArray(94)); socket.getOutputStream().write("OK".toByteArray())
+                    input.readFully(ByteArray(9))
                     assertEquals(CameraWire.MAX_PACKET, input.readInt())
                     retire.await(2, TimeUnit.SECONDS)
                     var received = 0
@@ -95,7 +97,7 @@ class CameraDeadlineTest {
             }
             try {
                 val endpoint = CameraEndpoint("a".repeat(64), server.localPort, 1280, 720, 30, 3000, freshnessMs = 50)
-                val link = CameraWire.connect(endpoint, CameraLens.FRONT, 0, resources)
+                val link = CameraWire.connect(endpoint, CameraLens.FRONT, 0, resources, CameraTuningFixture.capabilities)
                 val send = executor.submit<Throwable?> {
                     runCatching { link.send(ByteBuffer.allocate(CameraWire.MAX_PACKET), 0, CameraWire.MAX_PACKET, 0) }.exceptionOrNull()
                 }

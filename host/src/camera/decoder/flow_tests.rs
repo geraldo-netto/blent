@@ -41,7 +41,7 @@ async fn t1461_incomplete_decoder_pipes_fail_and_child_is_retired() {
             &mut child,
             &CameraProfile::default(),
             &frames,
-            None,
+            crate::camera_live::Session::new(CameraProfile::default()),
             0,
         )
         .await

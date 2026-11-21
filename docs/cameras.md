@@ -22,7 +22,7 @@ ADB operations remain available.
 
 The host **Cameras** tab controls camera sharing: Front/Rear, resolution, frame
 rate, bitrate, clockwise rotation (0°, 90°, 180° or 270°), mirroring and whether sharing continues while the tablet app is
-hidden or its screen is locked. Lens, resolution and automatic brightness stay visible; the remaining
+hidden or its screen is locked. Lens, resolution and shadow correction stay visible; the remaining
 profile controls are under **Advanced camera settings**. Android shows status,
 its required camera permission prompt, and explicit **Start camera** / **Stop
 camera** actions; camera profile configuration stays on the computer.
@@ -47,7 +47,16 @@ state and a 256-entry lookup table. The CLI controls are
 `blent cameras --shadow-mode auto --shadow-strength 40`.
 **Shadow correction**, strength, mirror and rotation apply to the next processed
 frame of the current session; they do not reopen the camera, decoder or transport.
-**Save** persists preferences. Lens, dimensions, FPS, transport and background
+Exposure compensation, center-weighted metering and anti-flicker appear under
+**Tablet image controls** after the camera advertises its capabilities. They apply
+live, as do bitrate ceiling, floor and adaptive bitrate. Unsupported choices are
+disabled. Exposure defaults to **0 EV**; metering and anti-flicker use **Device
+default**. Positive exposure can brighten the face but clip highlights or blur
+motion. Center metering favors the middle of the image without detecting faces.
+Use **Reset tablet adjustments** to restore neutral sensor settings. Acknowledgement
+means the tablet accepted the request; the sensor pipeline can take several frames.
+
+**Save** persists preferences. Lens, dimensions, FPS, freshness budget, transport and background
 policy changes display **Restart required** and wait for **Restart camera**.
 
 The small live preview shows the selected webcam’s exported image, including

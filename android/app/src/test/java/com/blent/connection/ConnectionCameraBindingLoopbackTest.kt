@@ -43,7 +43,7 @@ class ConnectionCameraBindingLoopbackTest {
             val target = checkNotNull(binding.cameraTarget.value)
             first = checkNotNull(target.authority.retain()); second = checkNotNull(target.authority.retain())
             socket = Socket("127.0.0.1", target.endpoint.port)
-            val payload = "BLCAM002".toByteArray() + target.endpoint.token.toByteArray() + byteArrayOf(0, 0)
+            val payload = com.blent.CameraTuningFixture.greeting(target.endpoint.token)
             socket.getOutputStream().write(payload)
             until { rig.payload().size == payload.size }; assertArrayEquals(payload, rig.payload())
             socket.close(); socket = null

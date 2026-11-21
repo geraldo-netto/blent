@@ -1,9 +1,9 @@
 package com.blent
 
 /** Feedback-driven target, not a claim about achieved encoder/network bitrate. */
-internal class CameraRate(private val ceiling: Int, minimum: Int,
-    private val enabled: Boolean, private val budgetUs: Long) {
-    private val floor = minOf(minimum, ceiling)
+internal class CameraRate(private var ceiling: Int, minimum: Int,
+    private var enabled: Boolean, private val budgetUs: Long) {
+    private var floor = minOf(minimum, ceiling)
     var current = ceiling; private set
     private var badSamples = 0
     private var goodSince = -1L
@@ -12,6 +12,14 @@ internal class CameraRate(private val ceiling: Int, minimum: Int,
     init {
         require(ceiling in 256..20000 && minimum in 256..20000)
         require(budgetUs in 50_000..2_000_000)
+    }
+
+    fun configure(ceiling: Int, minimum: Int, enabled: Boolean, nowUs: Long): Int? {
+        require(ceiling in 256..20000 && minimum in 256..20000 && nowUs >= 0)
+        val floor = minOf(minimum, ceiling)
+        val target = if (enabled) current.coerceIn(floor, ceiling) else ceiling
+        this.ceiling = ceiling; this.floor = floor; this.enabled = enabled
+        return change(target, nowUs)
     }
 
     fun observe(delayUs: Long, nowUs: Long): Int? {

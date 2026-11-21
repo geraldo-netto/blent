@@ -13,6 +13,13 @@ internal class CameraLink(private val sink: BufferedSink, private val input: Buf
     private val budgetMs: Int = 150, private val close: () -> Unit = {}) {
     private var sequence = 0L
     private var active = true
+    private var command: CameraTuningCommand? = null
+    private var revision = 0L
+    private var status = 0
+
+    fun takeCommand(): CameraTuningCommand? = command.also { command = null }
+    fun receipt(owner: CameraLiveTuning) { revision = owner.revision; status = owner.status }
+
 
     init { require(budgetMs in 50..2000) }
 
@@ -37,9 +44,11 @@ internal class CameraLink(private val sink: BufferedSink, private val input: Buf
         sink.timeout().deadlineNanoTime(deadline)
         input.timeout().deadlineNanoTime(deadline)
         try {
+            sink.writeLong(revision).writeByte(status)
             CameraWire.packet(sink, source, offset, size)
             copied()
             if (input.readLong() != sequence + 1) throw IOException("Invalid camera feedback sequence")
+            command = CameraTuningCommand.read(input)
             if (System.nanoTime() >= deadline) throw java.net.SocketTimeoutException("Camera feedback exceeded freshness budget")
             sequence++
             return report(started, queueAgeUs)

@@ -24,6 +24,7 @@ impl CameraBackend for Backend {
         profile.validate()?;
         self.updates.set(self.updates.get() + 1);
         Ok(blent_config::camera::adjustments::Status {
+            capabilities: None,
             pending: self.mode.get() == 0,
             restart_required: self.mode.get() == 1,
             error: (self.mode.get() == 2).then(|| "Unsupported control".into()),

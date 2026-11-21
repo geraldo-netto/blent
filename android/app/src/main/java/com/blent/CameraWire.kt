@@ -12,7 +12,7 @@ import okio.sink
 internal object CameraWire {
     const val MAX_PACKET = 2 * 1024 * 1024
 
-    fun connect(endpoint: CameraEndpoint, lens: CameraLens, rotation: Int, resources: CameraResources): CameraLink {
+    fun connect(endpoint: CameraEndpoint, lens: CameraLens, rotation: Int, resources: CameraResources, capabilities: CameraTuningCapabilities): CameraLink {
         val socket = Socket()
         resources.interrupt { socket.close() }
         try {
@@ -24,16 +24,18 @@ internal object CameraWire {
         socket.soTimeout = 3000
         socket.sendBufferSize = 128 * 1024
         val sink = socket.sink().apply { timeout().timeout(3, TimeUnit.SECONDS) }.buffer()
-        greeting(sink, endpoint.token, lens, rotation)
+        greeting(sink, endpoint.token, lens, rotation, capabilities)
         val input = socket.getInputStream()
         check(input.read() == 'O'.code && input.read() == 'K'.code) { "Desktop rejected camera connection" }
         return CameraLink(sink, socket.source().buffer(), endpoint.freshnessMs) { socket.close() }
     }
 
-    fun greeting(sink: BufferedSink, token: String, lens: CameraLens, rotation: Int) {
+    fun greeting(sink: BufferedSink, token: String, lens: CameraLens, rotation: Int, capabilities: CameraTuningCapabilities) {
         require(token.matches(Regex("[0-9a-f]{64}")))
         require(rotation in 0..3)
-        sink.writeUtf8("BLCAM002").writeUtf8(token).writeByte(lens.wire).writeByte(rotation).flush()
+        sink.writeUtf8("BLCAM003").writeUtf8(token).writeByte(lens.wire).writeByte(rotation)
+        capabilities.write(sink)
+        sink.flush()
     }
 
     fun packet(sink: BufferedSink, source: ByteBuffer, offset: Int, size: Int) {

@@ -1,0 +1,40 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.73s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/build/blent-config/ef649b5beebb5167/out/blent_config-ef649b5beebb5167)
+
+running 32 tests
+test camera::brightness::tests::t1450_bright_and_black_frames_stay_unchanged ... ok
+test camera::brightness::tests::t1450_curve_is_bounded_monotonic_and_never_darkens ... ok
+test camera::brightness::tests::t1450_dark_center_bright_background_and_chroma ... ok
+test camera::brightness::tests::t1450_invalid_dimensions_fps_and_frames_are_atomic ... ok
+test camera::brightness::tests::t1450_t1466_defaults_saved_and_cli_selectable ... ok
+test camera::brightness::tests::t1450_temporal_smoothing_and_recovery_are_bounded ... ok
+test camera::brightness::tests::t1466_modes_strength_and_invalid_updates_are_bounded ... ok
+test camera::brightness::tests::t1466_shadow_lift_protects_upper_midtones ... ok
+test camera::connection_tests::t1231_export_and_native_capture_profiles_have_explicit_dimensions ... ok
+test camera::connection_tests::t931_cli_rejects_mixed_transports_and_keeps_native_selection_explicit ... ok
+test camera::connection_tests::t931_credentials_reject_all_invalid_lengths_and_ascii_bytes ... ok
+test camera::connection_tests::t931_target_selection_and_saved_legacy_defaults_are_explicit ... ok
+test camera::connection_tests::t931_usb_selection_rejects_ambiguous_or_invalid_settings ... ok
+test camera::connection_tests::t931_wire_projection_preserves_camera_controls_and_host_transforms ... ok
+test camera::connection_tests::t974_camera_transport_capabilities_are_independent_and_fail_closed ... ok
+test camera::preview::invalid_publication_tests::t1457_future_publication_cannot_extend_freshness ... ok
+test camera::preview::publication_tests::t1457_thumbnail_conversion_does_not_renew_source_age ... ok
+test camera::preview::tests::t543_preview_bounds_colours_and_shape_preserve_exported_pixels ... ok
+test camera::stop::tests::t1204_bounded_invalid_stop_keys_never_become_requests ... ok
+test camera::stop::tests::t1204_shared_stop_key_retains_exact_original_credential_and_port ... ok
+test camera::tests::t539_profile_limits_and_bounded_invalid_inputs ... ok
+test camera::tests::t616_freshness_budget_is_bounded ... ok
+test camera::tests::t618_adaptive_rate_bounds_and_fixed_override ... ok
+test camera::tests::t938_dimension_boundaries_and_supported_sizes_are_exact ... ok
+test camera::tests::t938_unchecked_dimensions_never_panic_or_wrap_frame_size ... ok
+test camera::transform::tests::t1467_identity_mirror_and_half_turn_have_independent_pixel_oracles ... ok
+test camera::transform::tests::t1467_invalid_transform_is_atomic ... ok
+test camera::transform::tests::t1467_quarter_turn_quadrants_match_independent_orientation_oracle ... ok
+test camera::transform::tests::t1467_quarter_turns_keep_layout_and_chroma_aligned_letterboxing ... ok
+test camera::tuning::tests::t1468_capabilities_and_sensor_bounds_are_independent ... ok
+test camera::tuning::tests::t1468_command_has_independent_cross_language_byte_oracle ... ok
+test camera::tuning::tests::t1468_invalid_capability_fields_are_rejected ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 423 filtered out; finished in 0.09s

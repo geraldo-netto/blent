@@ -25,7 +25,7 @@ class CameraContractTest {
         val resources = CameraResources()
         try {
             val failure = runCatching {
-                CameraWire.connect(endpoint(port), CameraLens.FRONT, 0, resources)
+                CameraWire.connect(endpoint(port), CameraLens.FRONT, 0, resources, CameraTuningFixture.capabilities)
             }.exceptionOrNull()
             assertEquals("Cannot reach the computer camera service. Enable camera sharing in Blent on your computer.", failure?.message)
         } finally { resources.close() }
@@ -66,11 +66,12 @@ class CameraContractTest {
 
     @Test fun t539_wireAndBoundedInvalidInputPreserveSourceBuffer() {
         val buffer = Buffer()
-        CameraWire.greeting(buffer, endpoint().token, CameraLens.REAR, 3)
-        assertEquals("BLCAM002", buffer.readUtf8(8))
+        CameraWire.greeting(buffer, endpoint().token, CameraLens.REAR, 3, CameraTuningFixture.capabilities)
+        assertEquals("BLCAM003", buffer.readUtf8(8))
         assertEquals(endpoint().token, buffer.readUtf8(64))
         assertEquals(1, buffer.readByte().toInt())
         assertEquals(3, buffer.readByte().toInt())
+        assertArrayEquals(byteArrayOf(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0), buffer.readByteArray(20))
         val bytes = ByteBuffer.wrap(byteArrayOf(1, 2, 3, 4))
         CameraWire.packet(buffer, bytes, 1, 2)
         assertEquals(2, buffer.readInt())
@@ -81,8 +82,8 @@ class CameraContractTest {
             assertEquals(size in 1..4 && offset >= 0 && offset <= 4 - size, result.isSuccess)
         }
         assertTrue(runCatching { CameraWire.packet(buffer, bytes, 0, CameraWire.MAX_PACKET + 1) }.isFailure)
-        assertTrue(runCatching { CameraWire.greeting(buffer, "wrong", CameraLens.FRONT, 0) }.isFailure)
-        assertTrue(runCatching { CameraWire.greeting(buffer, endpoint().token, CameraLens.FRONT, 4) }.isFailure)
+        assertTrue(runCatching { CameraWire.greeting(buffer, "wrong", CameraLens.FRONT, 0, CameraTuningFixture.capabilities) }.isFailure)
+        assertTrue(runCatching { CameraWire.greeting(buffer, endpoint().token, CameraLens.FRONT, 4, CameraTuningFixture.capabilities) }.isFailure)
     }
 
     @Test fun t539_socketHandshakeAndOwnershipClose() {
@@ -90,16 +91,17 @@ class CameraContractTest {
         ServerSocket(0).use { server ->
             val received = executor.submit<ByteArray> {
                 server.accept().use { peer ->
-                    val greeting = ByteArray(74)
+                    val greeting = ByteArray(94)
                     java.io.DataInputStream(peer.getInputStream()).readFully(greeting)
                     peer.getOutputStream().write("OK".toByteArray())
+                    java.io.DataInputStream(peer.getInputStream()).readFully(ByteArray(9))
                     java.io.DataInputStream(peer.getInputStream()).readInt().let { length ->
-                        ByteArray(length).also { java.io.DataInputStream(peer.getInputStream()).readFully(it); java.io.DataOutputStream(peer.getOutputStream()).writeLong(1) }
+                        ByteArray(length).also { java.io.DataInputStream(peer.getInputStream()).readFully(it); CameraTuningFixture.reply(peer.getOutputStream(), 1) }
                     }
                 }
             }
             val resources = CameraResources()
-            val sink = CameraWire.connect(endpoint(server.localPort), CameraLens.FRONT, 0, resources)
+            val sink = CameraWire.connect(endpoint(server.localPort), CameraLens.FRONT, 0, resources, CameraTuningFixture.capabilities)
             sink.send(ByteBuffer.wrap(byteArrayOf(4, 5)), 0, 2, 0)
             assertArrayEquals(byteArrayOf(4, 5), received.get(5, TimeUnit.SECONDS))
             resources.close()

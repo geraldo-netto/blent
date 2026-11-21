@@ -1,0 +1,174 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 30.80s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/build/blent/71c49429767bef11/out/blent-71c49429767bef11)
+
+running 151 tests
+test camera::bridge::tests::t539_cleanup_preserves_other_reverse_mappings ... ok
+test camera::connection_tests::t931_adb_adapter_rejects_native_target_without_a_command ... ok
+test camera::connection_tests::t931_camera_session_invites_through_independent_port ... ok
+test camera::connection_tests::t931_native_camera_selection_fails_before_output_device_ownership ... ok
+test camera::connection_tests::t933_connection_factory_uses_private_commands_and_explicit_transport ... ok
+test camera::connection_tests::t933_connection_loss_stops_sessions_without_claiming_producer_retirement ... ok
+test camera::connection_tests::t971_producer_failure_interrupts_pending_invitation ... ok
+test camera::connection_tests::t971_stop_cancels_pending_invitation_before_output_retirement ... ok
+test camera::decoder::flow_tests::t1461_decoder_discards_exhausted_frames_and_releases_borrows_at_eof ... ok
+test camera::decoder::flow_tests::t1461_incomplete_decoder_pipes_fail_and_child_is_retired ... ok
+test camera::decoder::retirement_tests::t1126_live_decoder_is_observed_until_its_cancelled_future_retires ... ok
+test camera::decoder::retirement_tests::t1126_pending_original_decoder_rejects_native_replacement_before_spawn ... ok
+test camera::frame_pool::tests::t1450_brightness_precedes_publication_without_mutating_readers ... ok
+test camera::frame_pool::tests::t1450_disabled_adjustment_preserves_exact_bytes_and_rejects_invalid_profile ... ok
+test camera::frame_pool::tests::t1467_live_shadow_and_mirror_updates_preserve_reader_and_pool ... ok
+test camera::frame_pool::tests::t816_bounded_lease_schedule_property ... ok
+test camera::frame_pool::tests::t816_invalid_capacities_and_lengths_are_bounded ... ok
+test camera::frame_pool::tests::t816_partial_eof_and_cancel_never_publish_incomplete_frames ... ok
+test camera::frame_pool::tests::t816_retained_readers_full_pool_and_generation_stay_immutable ... ok
+test camera::native_tests::admission::t1147_partial_pair_failure_releases_original_file_before_reuse ... ok
+test camera::native_tests::ownership::t1137_creator_process ... ok
+test camera::native_tests::ownership::t1137_native_rights_rejections_cannot_retain_file_leases ... ok
+test camera::native_tests::ownership::t1137_writer_cannot_follow_a_replaced_device_path ... ok
+test camera::native_tests::ownership::t1137_writer_keeps_original_device_lease_after_creator_death ... ok
+test camera::native_tests::retirement::budget::t1137_cleanup_budget_preserves_blocked_original_work_until_actual_join ... ok
+test camera::native_tests::retirement::cleanup::t1137_successful_stop_cannot_hide_original_final_black_write_failure ... ok
+test camera::native_tests::retirement::t1126_camera_reserves_all_producer_observations_before_creation ... ok
+test camera::native_tests::retirement::t1126_cancelled_camera_keeps_actual_output_workers_observed ... ok
+test camera::native_tests::retirement::t1126_failed_writer_admission_has_no_unobserved_native_effects ... ok
+test camera::native_tests::startup::t1147_stop_during_original_open_keeps_coordinator_responsive_and_skips_later_admission ... ok
+test camera::native_tests::t1088_logical_camera_success_cannot_hide_original_cleanup_failure ... ok
+test camera::native_tests::t572_isolated_native_devices_and_session_cleanup ... ok
+test camera::native_tests::terminal::t1146_rejected_private_pty_never_becomes_controlling_terminal ... ok
+test camera::native_tests::virtual_output::t1137_capture_oracle_rejects_invalid_lengths_and_plane_boundary_corruption ... ok
+test camera::native_tests::virtual_output::t1137_snapshot_parser_rejects_invalid_counts_bytes_ranges_and_bounds ... ok
+test camera::native_tests::virtual_output::t1137_virtual_pair_uses_original_outputs_and_retires_before_reuse ... ok
+test camera::output_admission::tests::t1147_abandoned_queued_devices_keep_funded_original_file_retirement ... ok
+test camera::output_admission::tests::t1147_closed_reply_rejects_before_any_configured_path_access ... ok
+test camera::output_admission::tests::t1147_invalid_path_corpus_retires_constructor_and_close_credit ... ok
+test camera::output_admission::tests::t1147_observation_and_work_exhaustion_leave_no_unbound_obligation ... ok
+test camera::output_admission::tests::t1147_pre_stopped_and_closed_control_admit_no_native_work ... ok
+test camera::output_device::native::tests::t1143_native_ioctl_result_boundaries_keep_error_and_success_distinct ... ok
+test camera::output_device::tests::corpus::t1143_adjusted_image_fields_reject_before_rate_or_writer_admission ... ok
+test camera::output_device::tests::corpus::t1143_invalid_and_out_of_bounds_profiles_never_form_a_native_request ... ok
+test camera::output_device::tests::corpus::t1143_queried_rate_boundaries_and_unknown_types_fail_closed ... ok
+test camera::output_device::tests::corpus::t1143_set_rate_readback_uses_exact_fraction_and_bounded_wide_arithmetic ... ok
+test camera::output_device::tests::corpus::t1456_native_color_metadata_is_explicit_and_substitution_is_rejected ... ok
+test camera::output_device::tests::oracle::t1143_ioctl_boundary_accepts_signed_and_unsigned_native_request_widths ... ok
+test camera::output_device::tests::oracle::t1143_uapi_matches_installed_independent_c_headers ... ok
+test camera::output_device::tests::oracle::t1456_color_contract_matches_independent_native_headers ... ok
+test camera::output_device::tests::t1143_fixed_rate_and_each_native_failure_stop_before_later_effects ... ok
+test camera::output_device::tests::t1143_native_non_video_capability_rejects_without_descriptor_loss ... ok
+test camera::output_device::tests::t1143_owned_capability_handoff_and_each_failure_preserve_kernel_lease ... ok
+test camera::output_device::tests::virtual_driver::t1143_virtual_output_process_fixture ... ok
+test camera::output_device::tests::virtual_driver::t1144_virtual_frame_transfer_fixture ... ok
+test camera::output_device::tests::writer::t1144_each_full_raw_frame_is_one_native_write_with_identical_bytes ... ok
+test camera::output_device::tests::writer::t1144_packet_oracle_rejects_the_observed_fragmented_write_control ... ok
+test camera::output_worker::progress::tests::t1148_expired_snapshot_cannot_alarm_a_cleared_or_different_operation ... ok
+test camera::output_worker::progress::tests::t1148_idle_or_closed_progress_never_implies_native_completion ... ok
+test camera::output_worker::progress::tests::t1148_native_panic_is_reported_after_actual_task_retirement ... ok
+test camera::output_worker::progress::tests::t1148_replaced_or_completed_operation_cancels_the_original_deadline ... ok
+test camera::output_worker::tests::operation_tests::t1148_blocked_configuration_times_out_while_original_lease_stays_owned ... ok
+test camera::output_worker::tests::operation_tests::t1148_blocked_write_times_out_without_releasing_original_native_work ... ok
+test camera::output_worker::tests::t1145_both_original_observations_are_reserved_before_native_configuration ... ok
+test camera::output_worker::tests::t1145_cancel_keeps_blocked_original_configuration_and_lease_owned ... ok
+test camera::output_worker::tests::t1145_cancelled_unstarted_job_never_configures_or_writes ... ok
+test camera::output_worker::tests::t1145_closed_frame_channel_publishes_final_black_then_joins ... ok
+test camera::output_worker::tests::t1145_fixture_owner_loss_cannot_erase_the_only_native_release ... ok
+test camera::output_worker::tests::t1145_initial_black_live_frames_and_stop_black_keep_full_frame_boundaries ... ok
+test camera::output_worker::tests::t1145_invalid_profile_boundaries_never_admit_native_configuration ... ok
+test camera::output_worker::tests::t1145_invalid_received_frame_lengths_never_reach_native_output ... ok
+test camera::output_worker::tests::t1145_native_config_failure_retires_every_original_reference ... ok
+test camera::output_worker::tests::t1145_real_native_write_failure_retires_without_followup_writes ... ok
+test camera::output_worker::tests::t1145_real_non_video_configuration_failure_does_not_leak_work ... ok
+test camera::output_worker::tests::t1145_rejected_controller_admission_still_retires_its_original_native_work ... ok
+test camera::output_worker::tests::t1145_runtime_teardown_retains_blocked_native_ownership_until_exact_return ... ok
+test camera::output_worker::tests::t1145_work_admission_failure_releases_originals_without_native_effects ... ok
+test camera::output_worker::tests::t1457_delayed_output_observation_cannot_renew_frame_age ... ok
+test camera::output_writer::tests::t1144_invalid_lengths_have_no_native_effect_and_leave_writer_usable ... ok
+test camera::output_writer::tests::t1144_original_lease_stays_owned_across_success_rejection_and_failure ... ok
+test camera::output_writer::tests::t1144_panicking_native_port_cannot_reenter_before_reconfiguration ... ok
+test camera::output_writer::tests::t1144_real_read_only_file_failure_poisoned_and_released ... ok
+test camera::output_writer::tests::t1144_short_zero_oversized_and_native_errors_poison_without_retry ... ok
+test camera::outputs::tests::t539_inactive_and_stale_outputs_never_replay_camera_frames ... ok
+test camera::protocol::tests::t1468_receipts_are_bounded_and_checked_before_payload ... ok
+test camera::protocol::tests::t539_header_identity_authentication_and_bounds ... ok
+test camera::protocol::tests::t539_packet_rejects_truncation_zero_and_oversize ... ok
+test camera::retirement_tests::t1126_native_validation_failure_still_waits_for_original_report_obligations ... ok
+test camera::source_color::tests::t1461_malformed_and_oversized_metadata_stays_bounded ... ok
+test camera::source_color::tests::t1461_packet_rewrite_preserves_other_nals_and_is_idempotent ... ok
+test camera::source_color::tests::t1461_unspecified_fields_get_defaults_and_signalled_fields_survive ... ok
+test camera::status_tests::t1457_delayed_status_observation_cannot_renew_frame_age ... ok
+test camera::status_tests::t704_stop_and_lens_replacement_cannot_inherit_a_previous_deadline ... ok
+test camera::status_tests::t704_streaming_expires_at_two_seconds_and_recovers_on_selected_frames ... ok
+test camera::tests::color::t1456_tagged_matrices_and_ranges_share_exported_color_contract ... ok
+test camera::tests::color::t1461_fully_tagged_bt709_primaries_are_converted_to_export_primaries ... ok
+test camera::tests::color::t1461_sdr_transfer_and_mixed_primaries_are_normalized ... ok
+test camera::tests::t1205_camera_requires_exact_single_current_broadcast_acknowledgement ... ok
+test camera::tests::t1231_adb_invites_capture_size_without_changing_export_size ... ok
+test camera::tests::t1231_native_360p_capture_decodes_into_exact_180p_and_360p_outputs ... ok
+test camera::tests::t1450_real_decoder_exports_brightened_pixels_to_preview ... ok
+test camera::tests::t539_bridge_invitation_and_mapping_ownership ... ok
+test camera::tests::t539_graceful_output_stop_allows_final_blank_to_flush ... ok
+test camera::tests::t539_producer_failure_retires_session_and_rejects_foreign_clients ... ok
+test camera::tests::t539_real_h264_upload_decodes_only_to_selected_endpoint ... [vost#0:0/rawvideo @ 0x583dc8a8a680] Error submitting a packet to the muxer: Broken pipe
+[out#0/rawvideo @ 0x583dc8acb6c0] Error muxing a packet
+[out#0/rawvideo @ 0x583dc8acb6c0] Error writing trailer: Broken pipe
+[out#0/rawvideo @ 0x583dc8acb6c0] Error closing file: Broken pipe
+ok
+test camera::tests::t539_rejects_encoded_dimensions_above_negotiated_profile ... [h264 @ 0x5bec6b458880] [IMGUTILS @ 0x7fffb217b520] Picture size 320x240 exceeds specified max pixel count 24576, see the documentation if you wish to increase it
+[h264 @ 0x5bec6b458880] video_get_buffer: image parameters invalid
+[h264 @ 0x5bec6b458880] get_buffer() failed
+[h264 @ 0x5bec6b458880] decode_slice_header error
+[h264 @ 0x5bec6b458880] no frame!
+[h264 @ 0x5bec6b4d0d00] [IMGUTILS @ 0x7fffb2183960] Picture size 320x240 exceeds specified max pixel count 24576, see the documentation if you wish to increase it
+[vist#0:0/h264 @ 0x5bec6b4d23c0] Error while opening decoder: Invalid argument
+[vost#0:0/rawvideo @ 0x5bec6b4d1b40] Error initializing a simple filtergraph
+Error opening output file pipe:1.
+Error opening output files: Invalid argument
+ok
+test camera::tests::t539_rotation_and_mirroring_are_bounded_filter_choices ... ok
+test camera::tests::t539_stalled_decoder_cannot_hold_camera_session_forever ... ok
+test camera::tests::t539_virtual_camera_writes_black_on_start_and_stop ... ok
+test camera::tests::t543_desktop_rotation_combines_sensor_orientation_before_mirroring ... ok
+test camera::tests::t543_embedded_adapter_rejects_invalid_profile_before_native_work ... ok
+test camera::tests::t543_host_reports_frames_and_rejects_unselected_lens ... ok
+test camera::tests::t543_real_output_and_preview_rotate_the_same_asymmetric_picture ... ok
+test camera::tests::t609_invitation_token_uses_stdin_not_process_arguments ... ok
+test camera::tests::t609_rejects_shell_input_and_redacts_adb_diagnostics ... ok
+test camera::tests::t620_early_producer_exit_cancels_pending_handshake ... ok
+test camera::tests::t938_invalid_black_frame_dimensions_are_rejected_before_allocation ... ok
+test camera::tests::t974_camera_native_availability_matches_selected_build_without_acquiring_devices ... ok
+test camera_control::restart_tests::t1460_failed_cleanup_rejects_replacement_without_restarting ... ok
+test camera_control::retirement_tests::owned_future::t1125_original_future_drops_before_its_own_native_settlement_wait ... ok
+test camera_control::retirement_tests::scopes::t1125_nested_scope_preserves_original_cutoff_and_inflight_reservation ... ok
+test camera_control::retirement_tests::t1125_group_bounds_reserve_before_effects_and_share_original_scopes ... ok
+test camera_control::retirement_tests::t1125_owner_loss_keeps_native_fence_without_blocking_sibling ... ok
+test camera_control::retirement_tests::t1125_success_failure_and_panic_cannot_replace_unretired_original ... ok
+test camera_control::tests::t543_controller_owns_worker_and_validates_before_start ... ok
+test camera_control::tests::t543_failed_session_waits_for_explicit_retry ... ok
+test camera_control::tests::t543_manual_start_switch_stop_and_owner_exit_retire_in_order ... ok
+test camera_control::tests::t811_drop_returns_while_native_retirement_is_held ... ok
+test camera_control::workspace_close_tests::t1272_camera_close_returns_the_original_worker_fence ... ok
+test camera_live::tests::t1467_controller_live_updates_keep_original_worker_and_start_identity ... ok
+test camera_live::tests::t1467_invalid_and_exhausted_updates_preserve_original_settings ... ok
+test camera_live::tests::t1467_updates_are_bounded_session_bound_and_acknowledged ... ok
+test camera_live::tests::t1468_tablet_receipts_do_not_acknowledge_newer_or_replacement_controls ... ok
+test camera_live::tests::t1468_unsupported_and_invalid_receipts_preserve_admitted_state ... ok
+test camera_registration::tests::t969_changed_routes_and_admission_rollback_close_original_only ... ok
+test camera_registration::tests::t969_closed_owner_and_unpublished_startup_failures_never_start_replacements ... ok
+test camera_registration::tests::t969_distinct_invocations_preserve_fresh_supplied_credentials ... ok
+test camera_registration::tests::t969_equal_tickets_in_replacement_source_cannot_revive_registration ... ok
+test camera_registration::tests::t969_explicit_peer_ambiguity_and_independent_admission ... ok
+test camera_registration::tests::t969_invalid_profile_target_and_token_fail_before_native_start ... ok
+test camera_registration::tests::t969_invalid_status_never_releases_actual_cleanup_or_admits_capture ... ok
+test camera_registration::tests::t969_retired_or_lost_source_and_drop_close_without_forgetting_native_clients ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_request::tests::t991_camera_and_audio_credential_byte_and_utf8_boundaries_are_checked_before_slicing ... ok
+test media_request::tests::t991_camera_and_audio_original_requests_reject_mismatch_and_invalid_schema ... ok
+test media_request::tests::t991_camera_and_audio_reject_native_selection_resource_and_profile_mismatch_before_registration ... ok
+test media_request::tests::t991_camera_and_audio_requests_preserve_resource_profile_and_original_credential ... ok
+test registered_session::tests::activity::acceptance::t1016_display_pause_does_not_revoke_camera_microphone_or_speaker_owners ... ok
+
+test result: ok. 151 passed; 0 failed; 0 ignored; 0 measured; 755 filtered out; finished in 16.54s

@@ -4,11 +4,13 @@ use eframe::egui;
 mod connection;
 #[cfg(all(test, target_os = "linux"))]
 mod live_tests;
+mod tuning;
 
 pub(super) struct Panel {
     owner: crate::media_owner::Owner,
     pub(super) backend: Option<Box<dyn CameraBackend>>,
     error: Option<String>,
+    capabilities: Option<blent_config::camera::tuning::Capabilities>,
     preview: crate::camera_preview::Preview,
     create: fn() -> Result<Box<dyn CameraBackend>, String>,
     transports: blent_config::camera::connection::Transports,
@@ -20,6 +22,7 @@ impl Default for Panel {
             owner: Default::default(),
             backend: None,
             error: None,
+            capabilities: None,
             preview: Default::default(),
             create: create_backend,
             transports: transport_capabilities(),
@@ -51,6 +54,7 @@ impl Panel {
                 .show(ui, |ui| {
                     super::settings_grid(ui, "camera-advanced-grid", |ui| {
                         advanced_profile(ui, options);
+                        tuning::show(ui, &mut options.sensor, self.capabilities);
                         connection::show(ui, options, self.transports);
                     });
                 });
@@ -60,6 +64,7 @@ impl Panel {
 
     fn live_adjustments(&mut self, ui: &mut egui::Ui, options: &CameraProfile) {
         if !self.native_state().is_active() {
+            self.capabilities = None;
             return;
         }
         let Some(backend) = self.backend.as_ref() else {
@@ -67,11 +72,12 @@ impl Panel {
         };
         match backend.adjust(options) {
             Ok(status) => {
+                self.capabilities = status.capabilities;
                 if status.restart_required {
                     ui.label("Restart required for camera session changes");
                 }
                 if status.pending {
-                    ui.label("Applying image adjustments…");
+                    ui.label("Applying camera adjustments…");
                     ui.ctx()
                         .request_repaint_after(std::time::Duration::from_millis(50));
                 }
@@ -181,6 +187,7 @@ impl Panel {
 
     pub(super) fn stop(&mut self) {
         self.preview = Default::default();
+        self.capabilities = None;
         if let Some(backend) = self.backend.take() {
             self.owner.release(backend.close());
         }

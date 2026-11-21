@@ -1,0 +1,159 @@
+use super::*;
+#[test]
+fn t1468_camera_capability_controls_preserve_settings_and_render_all_labels() {
+    let context = egui::Context::default();
+    let caps = Capabilities {
+        minimum: -6,
+        maximum: 6,
+        numerator: 1,
+        denominator: 3,
+        center: true,
+        noise_mask: 7,
+        flicker_mask: 15,
+    };
+    for capability in [
+        None,
+        Some(caps),
+        Some(Capabilities {
+            numerator: 0,
+            center: false,
+            ..caps
+        }),
+    ] {
+        let mut sensor = Sensor::default();
+        let output = context.run(Default::default(), |ctx| {
+            egui::CentralPanel::default().show(ctx, |ui| {
+                egui::Grid::new("t1468").show(ui, |ui| show(ui, &mut sensor, capability));
+            });
+        });
+        assert!(!output.shapes.is_empty());
+        assert_eq!(sensor, Sensor::default());
+    }
+    for value in [Flicker::Device, Flicker::Auto, Flicker::Hz50, Flicker::Hz60] {
+        assert!(!flicker_label(value).is_empty());
+    }
+}
+
+fn frame(
+    context: &egui::Context,
+    sensor: &mut Sensor,
+    events: Vec<egui::Event>,
+    center: bool,
+) -> Vec<(String, egui::Rect)> {
+    let caps = Capabilities {
+        minimum: -6,
+        maximum: 6,
+        numerator: 1,
+        denominator: 3,
+        center,
+        noise_mask: 7,
+        flicker_mask: 15,
+    };
+    let output = context.run(
+        egui::RawInput {
+            events,
+            ..Default::default()
+        },
+        |ctx| {
+            egui::CentralPanel::default().show(ctx, |ui| {
+                egui::Grid::new("controls").show(ui, |ui| show(ui, sensor, Some(caps)));
+            });
+        },
+    );
+    let mut text = Vec::new();
+    for shape in output.shapes {
+        crate::tests::collect_text_rects(&shape.shape, &mut text);
+    }
+    text
+}
+fn click(context: &egui::Context, sensor: &mut Sensor, pos: egui::Pos2, center: bool) {
+    for pressed in [true, false] {
+        frame(
+            context,
+            sensor,
+            vec![
+                egui::Event::PointerMoved(pos),
+                egui::Event::PointerButton {
+                    pos,
+                    button: egui::PointerButton::Primary,
+                    pressed,
+                    modifiers: Default::default(),
+                },
+            ],
+            center,
+        );
+    }
+}
+#[test]
+fn t1468_supported_camera_menus_apply_and_reset_without_starting() {
+    let context = egui::Context::default();
+    let mut sensor = Sensor::default();
+    let text = frame(&context, &mut sensor, vec![], true);
+    let pos = text
+        .iter()
+        .find(|(label, _)| label == "Device default")
+        .unwrap()
+        .1
+        .center();
+    click(&context, &mut sensor, pos, true);
+    let text = frame(&context, &mut sensor, vec![], true);
+    let pos = text
+        .iter()
+        .find(|(label, _)| label == "Center weighted")
+        .unwrap()
+        .1
+        .center();
+    click(&context, &mut sensor, pos, true);
+    assert_eq!(sensor.metering, Metering::Center);
+    let text = frame(&context, &mut sensor, vec![], true);
+    let pos = text
+        .iter()
+        .find(|(label, _)| label == "Device default")
+        .unwrap()
+        .1
+        .center();
+    click(&context, &mut sensor, pos, true);
+    let text = frame(&context, &mut sensor, vec![], true);
+    let pos = text
+        .iter()
+        .find(|(label, _)| label == "50 Hz")
+        .unwrap()
+        .1
+        .center();
+    click(&context, &mut sensor, pos, true);
+    assert_eq!(sensor.flicker, Flicker::Hz50);
+    let text = frame(&context, &mut sensor, vec![], true);
+    let pos = text
+        .iter()
+        .find(|(label, _)| label == "Reset tablet adjustments")
+        .unwrap()
+        .1
+        .center();
+    click(&context, &mut sensor, pos, true);
+    assert_eq!(sensor, Sensor::default());
+}
+
+#[test]
+fn t1468_unavailable_exposure_does_not_silently_rewrite_saved_preference() {
+    let context = egui::Context::default();
+    let mut sensor = Sensor {
+        exposure: 100,
+        ..Default::default()
+    };
+    let caps = Capabilities {
+        minimum: 0,
+        maximum: 0,
+        numerator: 0,
+        denominator: 1,
+        center: false,
+        noise_mask: 1,
+        flicker_mask: 1,
+    };
+    let _ = context.run(Default::default(), |ctx| {
+        egui::CentralPanel::default().show(ctx, |ui| exposure(ui, &mut sensor, caps));
+    });
+    assert_eq!(
+        sensor.exposure, 100,
+        "Rendering unavailable capabilities mutated saved exposure"
+    );
+}

@@ -40,6 +40,7 @@ impl Image {
 }
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct Status {
+    pub capabilities: Option<super::tuning::Capabilities>,
     pub pending: bool,
     pub restart_required: bool,
     pub error: Option<String>,

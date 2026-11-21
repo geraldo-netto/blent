@@ -35,7 +35,7 @@ class ConnectionJoinedCameraTest {
             val route = checkNotNull(rig.presentation.state.value.camera).route
             assertEquals(1, rig.opened.get())
             socket = Socket("127.0.0.1", route.port).apply { soTimeout = 1000 }
-            val greeting = "BLCAM002".toByteArray() + "0".repeat(64).toByteArray() + byteArrayOf(0, 0)
+            val greeting = com.blent.CameraTuningFixture.greeting("0".repeat(64))
             socket.getOutputStream().write(greeting); until { rig.payload().size == greeting.size }
             assertArrayEquals(greeting, rig.payload()); assertTrue(rig.feedback("OK".toByteArray()))
             delay(64); val feedback = ByteArray(2); DataInputStream(socket.getInputStream()).readFully(feedback)

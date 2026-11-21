@@ -55,14 +55,24 @@ still allow explicit selection on the tablet.
 Direct USB uses the brokered accessory channel and a local TCP relay without ADB.
 It remains labelled experimental; selected-device physical evidence is described in
 [integration status](#direct-usb-camera-integration-status). Both carry the same
-authenticated stream. Its `BLCAM002` header
-contains the session credential, lens identity and rotation, followed by bounded
+authenticated stream. Its 94-byte `BLCAM003` header
+contains the session credential, lens identity, rotation and 20-byte capability
+record (exposure step range, rational step, metering/noise/flicker availability).
+Each packet begins with a nine-byte control receipt (revision u64, status u8), followed by bounded
 big-endian length-prefixed H.264 packets. Packets are capped at 2 MiB; connection,
 read/write and encoder-progress deadlines bound stalled sessions. Each new lens
 connection gets a new decoder; no encoded history crosses the switch.
 Both applications must be updated together. After each complete packet reaches
 the host decoder input, the host sends an eight-byte big-endian acceptance counter
-starting at one per connection. Android permits only one packet in flight and
+starting at one per connection, followed by an 18-byte latest-control command
+(revision u64, exposure i16 hundredths EV, metering/noise/flicker u8 each, bitrate
+ceiling/floor u16 each, adaptive u8; all multibyte values big-endian).
+The original host session owns one latest snapshot; Android applies it on its
+original capture worker before native retirement. Repeated revisions have no
+native effects. Receipt status 0 accepts, 1 rejects unsupported input, 2 reports
+a native application failure; failure may leave some controls applied and requires
+a new edit or restart to retry. A receipt is request acceptance, not sensor-result
+or presentation evidence. Android permits only one packet in flight and
 rejects unexpected feedback; acceptance is not decoding or presentation.
 `BlentCamera` logs every 30 accepted packets: sender-side feedback duration and
 extra encoder-queue age relative to the first encoded timestamp. Initial capture

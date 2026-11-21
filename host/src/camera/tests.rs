@@ -155,12 +155,21 @@ async fn t539_real_h264_upload_decodes_only_to_selected_endpoint() {
     let token = "a".repeat(64);
     let upload = async {
         client
-            .write_all(&[protocol::MAGIC.as_slice(), token.as_bytes(), &[0, 0]].concat())
+            .write_all(
+                &[
+                    protocol::MAGIC.as_slice(),
+                    token.as_bytes(),
+                    &[0, 0],
+                    &protocol::tests::CAPS,
+                ]
+                .concat(),
+            )
             .await
             .unwrap();
         let mut ack = [0; 2];
         client.read_exact(&mut ack).await.unwrap();
         assert_eq!(&ack, b"OK");
+        client.write_all(&[0; 9]).await.unwrap();
         client.write_u32(encoded.stdout.len() as u32).await.unwrap();
         client.write_all(&encoded.stdout).await.unwrap();
         // T614: feedback acknowledges decoder-input acceptance, not presentation.
@@ -307,10 +316,19 @@ async fn t539_rejects_encoded_dimensions_above_negotiated_profile() {
     let token = "a".repeat(64);
     let upload = async {
         client
-            .write_all(&[protocol::MAGIC.as_slice(), token.as_bytes(), &[0, 0]].concat())
+            .write_all(
+                &[
+                    protocol::MAGIC.as_slice(),
+                    token.as_bytes(),
+                    &[0, 0],
+                    &protocol::tests::CAPS,
+                ]
+                .concat(),
+            )
             .await
             .unwrap();
         client.read_exact(&mut [0; 2]).await.unwrap();
+        client.write_all(&[0; 9]).await.unwrap();
         client.write_u32(encoded.stdout.len() as u32).await.unwrap();
         client.write_all(&encoded.stdout).await.unwrap();
         tokio::time::timeout(Duration::from_secs(6), received.changed())
@@ -353,10 +371,19 @@ async fn t539_stalled_decoder_cannot_hold_camera_session_forever() {
     let token = "a".repeat(64);
     let upload = async {
         client
-            .write_all(&[protocol::MAGIC.as_slice(), token.as_bytes(), &[0, 0]].concat())
+            .write_all(
+                &[
+                    protocol::MAGIC.as_slice(),
+                    token.as_bytes(),
+                    &[0, 0],
+                    &protocol::tests::CAPS,
+                ]
+                .concat(),
+            )
             .await
             .unwrap();
         client.read_exact(&mut [0; 2]).await.unwrap();
+        client.write_all(&[0; 9]).await.unwrap();
         client.write_u32(protocol::MAX_PACKET as u32).await.unwrap();
         client
             .write_all(&vec![0; protocol::MAX_PACKET])
@@ -457,7 +484,15 @@ async fn t539_producer_failure_retires_session_and_rejects_foreign_clients() {
             .await
             .unwrap();
         client
-            .write_all(&[protocol::MAGIC.as_slice(), token.as_bytes(), &[1, 0]].concat())
+            .write_all(
+                &[
+                    protocol::MAGIC.as_slice(),
+                    token.as_bytes(),
+                    &[1, 0],
+                    &protocol::tests::CAPS,
+                ]
+                .concat(),
+            )
             .await
             .unwrap();
         let mut ack = [0; 2];
@@ -509,7 +544,15 @@ async fn t543_host_reports_frames_and_rejects_unselected_lens() {
     let frames = [front, rear];
     let token = "a".repeat(64);
     client
-        .write_all(&[protocol::MAGIC.as_slice(), token.as_bytes(), &[1, 0]].concat())
+        .write_all(
+            &[
+                protocol::MAGIC.as_slice(),
+                token.as_bytes(),
+                &[1, 0],
+                &protocol::tests::CAPS,
+            ]
+            .concat(),
+        )
         .await
         .unwrap();
     let result = decoder::connection(
@@ -592,10 +635,19 @@ async fn transformed_test_frame(
     let token = "a".repeat(64);
     let upload = async {
         client
-            .write_all(&[protocol::MAGIC.as_slice(), token.as_bytes(), &[0, 0]].concat())
+            .write_all(
+                &[
+                    protocol::MAGIC.as_slice(),
+                    token.as_bytes(),
+                    &[0, 0],
+                    &protocol::tests::CAPS,
+                ]
+                .concat(),
+            )
             .await
             .unwrap();
         client.read_exact(&mut [0; 2]).await.unwrap();
+        client.write_all(&[0; 9]).await.unwrap();
         client.write_u32(encoded.len() as u32).await.unwrap();
         client.write_all(encoded).await.unwrap();
         tokio::time::timeout(

@@ -39,15 +39,21 @@ internal class CameraCapture(context: Context, private val nowUs: () -> Long = {
             val sensor = metadata.get(CameraCharacteristics.SENSOR_ORIENTATION) ?: 0
             val rotation = rotation(sensor, displayRotation, lens)
             android.util.Log.i("BlentCamera", "timestampSource=${metadata.get(CameraCharacteristics.SENSOR_INFO_TIMESTAMP_SOURCE)} age=relative-encoder-queue")
-            val sink = CameraWire.connect(endpoint, lens, rotation, resources)
+            val tuning = CameraTuning(metadata)
+            android.util.Log.i("BlentCamera", "controls=${tuning.capabilities}")
+            val sink = CameraWire.connect(endpoint, lens, rotation, resources, tuning.capabilities)
             val codec = encoder(endpoint.copy(bitrate = rate.current), resources)
             val surface = codec.createInputSurface()
             resources.own { surface.release() }
             codec.start()
             val camera = withTimeout(5000) { open(id, resources) }
             val session = withTimeout(5000) { session(camera, surface, resources) }
-            repeat(camera, session, surface, frameRate(metadata, endpoint.fps))
-            drain(codec, sink, endpoint.freshnessMs, rate, resources)
+            val fps = frameRate(metadata, endpoint.fps)
+            repeat(camera, session, surface, fps, tuning, CameraSensorTuning())
+            val live = CameraLiveTuning(tuning.capabilities,
+                { values -> repeat(camera, session, surface, fps, tuning, values) },
+                { command -> updateBitrate(codec, rate.configure(command.bitrate, command.floor, command.adaptive, nowUs())) })
+            drain(codec, sink, endpoint.freshnessMs, rate, resources, live)
         }
 
     private fun cameraId(lens: CameraLens): String {
@@ -103,15 +109,16 @@ internal class CameraCapture(context: Context, private val nowUs: () -> Long = {
         } catch (error: Exception) { startup.abort(error) }
     }
 
-    private fun repeat(camera: CameraDevice, session: CameraCaptureSession, surface: Surface, fps: Range<Int>) {
+    private fun repeat(camera: CameraDevice, session: CameraCaptureSession, surface: Surface, fps: Range<Int>, tuning: CameraTuning, values: CameraSensorTuning) {
         val request = camera.createCaptureRequest(CameraDevice.TEMPLATE_RECORD).apply {
             addTarget(surface)
             set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, fps)
+            tuning.apply(this, values)
         }.build()
         session.setRepeatingRequest(request, null, handler)
     }
 
-    private suspend fun drain(codec: MediaCodec, sink: CameraLink, freshnessMs: Int, rate: CameraRate, resources: CameraResources): Nothing {
+    private suspend fun drain(codec: MediaCodec, sink: CameraLink, freshnessMs: Int, rate: CameraRate, resources: CameraResources, live: CameraLiveTuning): Nothing {
         val info = MediaCodec.BufferInfo()
         val clock = CameraFrameClock()
         val freshness = CameraFreshness(freshnessMs * 1000L)
@@ -123,6 +130,11 @@ internal class CameraCapture(context: Context, private val nowUs: () -> Long = {
             when {
                 index >= 0 -> { sendBuffer(codec, sink, info, index, clock, freshness, rate); progress = android.os.SystemClock.elapsedRealtime() }
                 index == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED -> sendConfiguration(codec.outputFormat, sink)
+            }
+            sink.takeCommand()?.let { command ->
+                resources.checkActive()
+                live.accept(command)
+                sink.receipt(live)
             }
             check(android.os.SystemClock.elapsedRealtime() - progress < 5000) { "Camera encoder stopped producing frames" }
         }

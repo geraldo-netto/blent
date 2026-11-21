@@ -18,10 +18,10 @@ import org.robolectric.annotation.Config
 class CameraFeedbackTest {
     @Test fun t614_feedbackRequiresExactConnectionLocalSequence() {
         val output = Buffer()
-        val acks = Buffer().apply { for (i in 1L..31L) writeLong(i) }.readByteArray()
+        val acks = Buffer().apply { for (i in 1L..31L) { writeLong(i); write(CameraTuningFixture.command) } }.readByteArray()
         val link = CameraLink(output, Buffer().write(acks))
         repeat(31) { assertTrue(link.send(ByteBuffer.wrap(byteArrayOf(7)), 0, 1, 0) >= 0) }
-        repeat(31) { assertEquals(1, output.readInt()); assertEquals(7, output.readByte().toInt()) }
+        repeat(31) { assertEquals(0L, output.readLong()); assertEquals(0, output.readByte().toInt()); assertEquals(1, output.readInt()); assertEquals(7, output.readByte().toInt()) }
         for (ack in listOf(-1L, 0L, 2L, Long.MAX_VALUE)) {
             val input = Buffer().writeLong(ack).readByteArray()
             val invalid = CameraLink(Buffer(), Buffer().write(input))
@@ -44,7 +44,7 @@ class CameraFeedbackTest {
                     flushed = true
                 }
             }.buffer()
-            val link = CameraLink(target, Buffer().writeLong(1), close = { closed++ })
+            val link = CameraLink(target, CameraTuningFixture.ack(1), close = { closed++ })
             val result = runCatching { link.send(ByteBuffer.wrap(byteArrayOf(1)), 0, 1, 0) {
                 assertTrue(flushed); copied++
             } }
@@ -75,6 +75,7 @@ class CameraFeedbackTest {
                             assertEquals(1, released); assertEquals(1, retired)
                             assertTrue("T805 missing ACK/Stop stuck", System.nanoTime() - started < 2_000_000_000L)
                             val data = java.io.DataInputStream(peer.getInputStream())
+                            assertEquals(0L, data.readLong()); assertEquals(0, data.readByte().toInt())
                             assertEquals(1, data.readInt()); assertEquals(7, data.read())
                             assertThrows(IllegalStateException::class.java) { link.send(ByteBuffer.allocate(1), 0, 1, 0) }
                         } finally { timer.shutdownNow() }

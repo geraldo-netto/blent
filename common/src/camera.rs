@@ -7,6 +7,7 @@ use std::sync::Arc;
 pub mod adjustments;
 pub mod brightness;
 pub mod transform;
+pub mod tuning;
 pub use adjustments::ShadowMode;
 pub mod connection;
 mod preview;
@@ -34,6 +35,8 @@ pub struct CameraSettings {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(default)]
 pub struct CameraProfile {
+    #[cfg_attr(feature = "platform", command(flatten))]
+    pub sensor: tuning::Sensor,
     /// Lens selected by the desktop; Android still requires camera permission.
     #[cfg_attr(feature = "platform", arg(long, value_enum, default_value = "front"))]
     pub lens: Lens,
@@ -115,6 +118,7 @@ pub trait CameraBackend {
 impl Default for CameraProfile {
     fn default() -> Self {
         Self {
+            sensor: Default::default(),
             lens: Lens::Front,
             background: false,
             serial: None,
@@ -137,6 +141,7 @@ impl Default for CameraProfile {
 impl CameraProfile {
     pub fn validate(&self) -> Result<()> {
         ensure!(self.shadow_strength <= 100, "shadow strength must be 0–100");
+        self.sensor.validate()?;
         self.target()?;
         self.validate_freshness()?;
         ensure!(

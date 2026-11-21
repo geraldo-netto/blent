@@ -80,6 +80,11 @@ pub async fn connection(
         header.lens == selected,
         "camera lens was not selected by host"
     );
+    let live = status
+        .live
+        .clone()
+        .unwrap_or_else(|| crate::camera_live::Session::new(options.clone()));
+    live.capabilities(header.capabilities);
     let mut command = command(ffmpeg, options)?;
     let original = status.reserve_native(crate::camera_control::NativeResource::Decoder)?;
     let mut decoder =
@@ -90,7 +95,7 @@ pub async fn connection(
         &mut decoder,
         options,
         &outputs[header.lens],
-        status.live.clone(),
+        live,
         header.rotation,
     )
     .await;
@@ -108,7 +113,7 @@ async fn transfer(
     decoder: &mut tokio::process::Child,
     options: &CameraProfile,
     frames: &Frames,
-    live: Option<std::sync::Arc<crate::camera_live::Session>>,
+    live: std::sync::Arc<crate::camera_live::Session>,
     rotation: u8,
 ) -> Result<()> {
     let mut input = decoder
@@ -121,14 +126,13 @@ async fn transfer(
         .context("camera decoder stdout missing")?;
     let mut pool = super::frame_pool::Pool::for_profile(options)?;
     pool.orient(rotation)?;
-    if let Some(live) = live {
-        pool.attach(live);
-    }
+    pool.attach(live.clone());
     socket.write_all(b"OK").await?;
     let receive = receive_packets(
         socket,
         &mut input,
         Duration::from_millis(options.freshness_ms.into()),
+        &live,
     );
     let decode = decode_frames(&mut pool, &mut output, frames);
     tokio::select! { result = receive => result, result = decode => result }
@@ -138,11 +142,15 @@ async fn receive_packets(
     socket: &mut TcpStream,
     input: &mut tokio::process::ChildStdin,
     budget: Duration,
+    live: &crate::camera_live::Session,
 ) -> Result<()> {
     let mut sequence = 0u64;
     loop {
-        let packet =
-            tokio::time::timeout(Duration::from_secs(5), protocol::packet(socket)).await??;
+        let packet = tokio::time::timeout(
+            Duration::from_secs(5),
+            protocol::received_packet(socket, live),
+        )
+        .await??;
         let packet = super::source_color::normalize(&packet)?;
         tokio::time::timeout(budget, input.write_all(&packet))
             .await
@@ -150,7 +158,8 @@ async fn receive_packets(
         sequence = sequence
             .checked_add(1)
             .context("camera sequence exhausted")?;
-        tokio::time::timeout(budget, socket.write_u64(sequence))
+        let feedback = [sequence.to_be_bytes().as_slice(), &live.command()?.encode()].concat();
+        tokio::time::timeout(budget, socket.write_all(&feedback))
             .await
             .context("camera feedback stalled")??;
     }
