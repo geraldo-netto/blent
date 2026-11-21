@@ -484,3 +484,71 @@ async fn t1602_cancelled_admission_preserves_link_and_sibling_native_streams() {
         assert_eq!(display_probe.socket_drops.load(Ordering::SeqCst), 2);
     }
 }
+
+fn cancelled_before_poll(resource: Resource, pending: bool) {
+    let mut rig = Rig::new();
+    let mut bridges = Bridges::new(16, Duration::from_secs(1)).unwrap();
+    let (connect, display_probe) = connector(2, false, false);
+    let display = register(&mut bridges, &mut rig, Resource::DisplaySession, connect);
+    admit(&mut bridges, &mut rig, &display);
+    let _ = poll(&mut bridges, &mut rig);
+    let (connect, probe) = connector(1, pending, false);
+    let lease = register(&mut bridges, &mut rig, resource, connect);
+    admit(&mut bridges, &mut rig, &lease);
+    rig.host.cancel(&lease, Reason::Requested).unwrap();
+    let _ = poll(&mut bridges, &mut rig);
+    let polled = probe.polls.load(Ordering::SeqCst);
+    let destroyed = probe.connector_drops.load(Ordering::SeqCst);
+    assert!(rig.host.current(&display));
+    assert_eq!(display_probe.socket_drops.load(Ordering::SeqCst), 0);
+    dispatch(&mut bridges, &mut rig, 3);
+    assert_eq!(probe.socket_drops.load(Ordering::SeqCst), 1);
+    rig.message(Message::Result(lease.key, Outcome::Revoked));
+    dispatch(&mut bridges, &mut rig, 4);
+    let (next_connect, _) = connector(1, false, false);
+    let next = register(&mut bridges, &mut rig, resource, next_connect);
+    assert_ne!(lease.key, next.key);
+    bridges.disconnect(&mut rig.host).unwrap();
+    finish_disconnect(&mut bridges, &mut rig);
+    assert_eq!(
+        polled, 0,
+        "T1660 connector polled after authoritative lease cutoff"
+    );
+    assert_eq!(
+        destroyed, 1,
+        "T1660 original connector not destroyed at cutoff"
+    );
+}
+
+#[tokio::test]
+async fn t1660_cancel_before_first_poll_never_opens_local_endpoint() {
+    for resource in [Resource::Camera, Resource::Microphone, Resource::Speakers] {
+        for pending in [false, true] {
+            cancelled_before_poll(resource, pending);
+        }
+    }
+}
+
+#[tokio::test]
+async fn t1660_cutoff_drops_pending_and_open_local_owners_before_further_io() {
+    for pending in [false, true] {
+        let mut rig = Rig::new();
+        let mut bridges = Bridges::new(16, Duration::from_secs(1)).unwrap();
+        let (connect, probe) = connector(1, pending, false);
+        let lease = register(&mut bridges, &mut rig, Resource::Camera, connect);
+        admit(&mut bridges, &mut rig, &lease);
+        let _ = poll(&mut bridges, &mut rig);
+        assert_eq!(probe.polls.load(Ordering::SeqCst), 1);
+        probe.sockets[0].lock().unwrap().input.extend([1, 2, 3]);
+        rig.host.cancel(&lease, Reason::Requested).unwrap();
+        let _ = poll(&mut bridges, &mut rig);
+        assert_eq!(probe.polls.load(Ordering::SeqCst), 1);
+        assert_eq!(probe.sockets[0].lock().unwrap().input.len(), 3);
+        assert_eq!(probe.connector_drops.load(Ordering::SeqCst), 1);
+        assert_eq!(probe.socket_drops.load(Ordering::SeqCst), 1);
+        dispatch(&mut bridges, &mut rig, 3);
+        rig.message(Message::Result(lease.key, Outcome::Revoked));
+        dispatch(&mut bridges, &mut rig, 4);
+        assert!(bridges.entries[1].is_none());
+    }
+}

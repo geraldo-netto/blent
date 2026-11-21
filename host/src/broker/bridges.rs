@@ -171,6 +171,10 @@ impl Entry {
         block: usize,
         timeout: Duration,
     ) -> Poll<Result<()>> {
+        if !session.current(&self.lease) {
+            retire(session, self)?;
+            return Poll::Ready(Ok(()));
+        }
         if let Some(connect) = self.connect.as_mut() {
             let streams = std::task::ready!(connect.as_mut().poll(cx))?;
             self.connect.take();

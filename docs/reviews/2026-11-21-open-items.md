@@ -251,3 +251,12 @@ All three maintained production functions have 100% executable-line coverage fro
 A queued Admitted notice for the same original lease now becomes a no-op when that lease is no longer current. It neither admits a connector nor fails the USB link. Unknown/stale identities and duplicate current admissions still reject; Closing/Retired notices retain their existing exact cleanup rules.
 
 The permanent regression failed before the fix and all 54 selected bridge/session/link tests pass afterward. It checks cancellation both before and after Closing delivery, no camera connector polling, exact connector/socket destruction, and preservation of admitted display streams through camera retirement. The maintained state method has 96.97% executable-line coverage. All 35 measured functions in affected source/test files have complexity <=9 (project Rust syn 2.0.119). This changes no allocation or native ownership: the original entry remains owned until its closing/retirement path settles. A separate confirmed connector-poll-after-cutoff issue is tracked as T1660.
+
+
+## T1660 — fence local bridge polling at authoritative cutoff
+
+Every local bridge turn now checks the authoritative session lease before polling its connector or pumps. A cancelled lease synchronously retires the original local owner and reports progress, even when its Closing notice is still queued. Sibling resources retain their independent turns and ownership.
+
+The permanent regression failed before the fix (one connector poll after cutoff instead of zero). All 56 selected bridge/session/link tests pass afterward. Eight bounded interleavings cover unstarted camera/microphone/speaker connectors, pending connectors and established streams. They verify no post-cutoff I/O, exact connector/socket destruction, unchanged sibling display streams and reuse only after the original peer/native retirement. The maintained poll method has 100% executable-line coverage; all 38 measured functions in affected files have complexity <=9 (project Rust syn 2.0.119).
+
+No new state or allocation is introduced. The existing connector contract requires synchronous destruction of all native I/O; process-backed adapters remain excluded from this boundary. Only after dropping the original connector/pumps does retirement publish native completion. Peer retirement is still independently required before slot reuse. This is deterministic mock-stream evidence, not physical USB timing acceptance.
