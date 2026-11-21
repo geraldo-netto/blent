@@ -1,5 +1,6 @@
 use blent_config::camera::tuning::{Capabilities, Flicker, Metering, Sensor};
 use eframe::egui;
+mod noise;
 
 pub(super) fn show(ui: &mut egui::Ui, sensor: &mut Sensor, caps: Option<Capabilities>) {
     ui.label("Tablet image controls");
@@ -19,6 +20,7 @@ pub(super) fn show(ui: &mut egui::Ui, sensor: &mut Sensor, caps: Option<Capabili
     exposure(ui, sensor, caps);
     metering(ui, sensor, caps);
     flicker(ui, sensor, caps);
+    noise::show(ui, &mut sensor.noise, caps.noise_mask);
 }
 fn exposure(ui: &mut egui::Ui, sensor: &mut Sensor, caps: Capabilities) {
     let (minimum, maximum, step) = caps.exposure_bounds();

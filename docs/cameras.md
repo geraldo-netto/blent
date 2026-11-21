@@ -56,6 +56,12 @@ motion. Center metering favors the middle of the image without detecting faces.
 Use **Reset tablet adjustments** to restore neutral sensor settings. Acknowledgement
 means the tablet accepted the request; the sensor pipeline can take several frames.
 
+**Noise reduction** offers **Device default**, **Off** and **Fast** when advertised
+by the camera. Device default is the initial choice. Fast may soften fine detail
+and can behave like Off on some cameras; Blent adds no host-side denoising buffer.
+The high-quality camera mode is not offered because it can reduce frame rate.
+Try Fast only if shadow correction makes noise distracting.
+
 **Save** persists preferences. Lens, dimensions, FPS, freshness budget, transport and background
 policy changes display **Restart required** and wait for **Restart camera**.
 

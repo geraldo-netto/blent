@@ -1,0 +1,123 @@
+{
+  "coverage": [
+    {
+      "file": "gui/src/camera_settings/tuning.rs",
+      "name": "show",
+      "line": 5,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/camera_settings/tuning/noise.rs",
+      "name": "show",
+      "line": 4,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/camera_settings/tuning/noise.rs",
+      "name": "label",
+      "line": 17,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "gui/src/camera_settings/tuning.rs",
+      5,
+      "show",
+      2
+    ],
+    [
+      "gui/src/camera_settings/tuning.rs",
+      25,
+      "exposure",
+      3
+    ],
+    [
+      "gui/src/camera_settings/tuning.rs",
+      36,
+      "metering",
+      5
+    ],
+    [
+      "gui/src/camera_settings/tuning.rs",
+      51,
+      "flicker",
+      4
+    ],
+    [
+      "gui/src/camera_settings/tuning.rs",
+      64,
+      "flicker_label",
+      5
+    ],
+    [
+      "gui/src/camera_settings/tuning/noise.rs",
+      4,
+      "show",
+      4
+    ],
+    [
+      "gui/src/camera_settings/tuning/noise.rs",
+      17,
+      "label",
+      4
+    ],
+    [
+      "gui/src/camera_settings/tuning/noise.rs",
+      27,
+      "frame",
+      5
+    ],
+    [
+      "gui/src/camera_settings/tuning/noise.rs",
+      50,
+      "click",
+      2
+    ],
+    [
+      "gui/src/camera_settings/tuning/noise.rs",
+      69,
+      "t1469_noise_choices_follow_device_capabilities",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraNoiseTest.kt",
+      16,
+      "t1469_noiseModeUsesAdvertisedNativeValueAndFreshDefault",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraNoiseTest.kt",
+      27,
+      "t1469_unavailableNoiseModeRejectsBeforeRequestMutation",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraNoiseTest.kt",
+      31,
+      "<lambda>",
+      1
+    ]
+  ],
+  "gui_cases": 23,
+  "android_cases": 341,
+  "android_evidence": "../T1468/usb-integration.log; CameraNoiseTest covers native mode mapping and unsupported-mode rejection.",
+  "default": "device",
+  "quality_acceptance": "T1452; no claim of noise/detail improvement from advertised capabilities alone.",
+  "tools": "cargo-llvm-cov 0.8.7; rustc 1.100.0; complexity checker syn 2.0.119 and Kotlin 1.9.20"
+}
