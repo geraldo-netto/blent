@@ -58,7 +58,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1534 | open | low | small | Remove undocumented position aliases. `common/src/model.rs::Position::parse` accepts `top` and `bottom` for `above` and `below`, while the field documentation lists only right, left, above and below and no current producer emits the aliases; project policy forbids retained aliases. Whether they were introduced for older data was not established. Completion: remove the aliases or document them as current values, updating the parser regression and settings documentation together. |
 
 ## Installation and distribution
 

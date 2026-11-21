@@ -1,0 +1,23 @@
+{
+  "issue": "T1534",
+  "coverage": [
+    {
+      "file": "common/src/model.rs",
+      "name": "parse",
+      "line": 243,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "red": "top accepted by old parser; permanent t1534 assertion failed.",
+  "green": "64 selected model/storage/runtime cases pass.",
+  "complexity": [
+    "common/src/model.rs:243\tparse\t6",
+    "common/src/model.rs:377\tt1534_positions_accept_current_names_and_reject_obsolete_aliases\t3",
+    "common/src/storage.rs:353\tt264_positions_round_trip_and_obsolete_aliases_use_invalid_value_policy\t2"
+  ]
+}

@@ -350,15 +350,15 @@ mod tests {
     }
 
     #[test]
-    fn t264_position_aliases_round_trip_as_one_canonical_choice() {
+    fn t264_positions_round_trip_and_obsolete_aliases_use_invalid_value_policy() {
         let dir = tempfile::tempdir().unwrap();
         let path = dir.path().join("config.toml");
         for (input, expected) in [
             (" LEFT ", "left"),
             ("Above", "above"),
-            (" top ", "above"),
+            (" top ", "right"),
             (" BELOW ", "below"),
-            ("Bottom", "below"),
+            ("Bottom", "right"),
             (" right ", "right"),
             ("typo", "right"),
         ] {

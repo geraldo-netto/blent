@@ -244,8 +244,8 @@ impl Position {
         match s.trim().to_ascii_lowercase().as_str() {
             "right" => Some(Position::Right),
             "left" => Some(Position::Left),
-            "above" | "top" => Some(Position::Above),
-            "below" | "bottom" => Some(Position::Below),
+            "above" => Some(Position::Above),
+            "below" => Some(Position::Below),
             _ => None,
         }
     }
@@ -373,6 +373,24 @@ impl FileConfig {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn t1534_positions_accept_current_names_and_reject_obsolete_aliases() {
+        for (text, expected) in [
+            ("right", super::Position::Right),
+            ("left", super::Position::Left),
+            ("above", super::Position::Above),
+            ("below", super::Position::Below),
+        ] {
+            assert_eq!(super::Position::parse(text), Some(expected));
+        }
+        for text in ["top", "bottom", " TOP ", "Bottom", "", "abov", "left\0"] {
+            assert!(
+                super::Position::parse(text).is_none(),
+                "T1534 obsolete/invalid position accepted: {text:?}"
+            );
+        }
+    }
+
     #[test]
     fn t612_worker_capacity_roundtrip_and_sanitize() {
         for value in [0, 1, 2, 128] {
