@@ -74,6 +74,15 @@ errors preserve ownership. Successful settlement closes both owned listener desc
 then joins the worker and releases admission. A worker panic leaves its original
 reservation/admission quarantined instead of asserting cleanup.
 
+Retained cleanup first obtains a successful, UTF-8, validated ADB inventory of
+at most 64 KiB. If the original serial is absent, it issues no per-device query
+and retains its endpoints and creator/removal state. Offline or unauthorized
+entries still count as present. Every inventory command uses the original child
+and collector fences. Failed or unsettled cleanup delays subsequent observations
+by 100, 200, 400, 800, 1600 and 3200 ms, then five seconds, plus command time.
+Returning tablets may wait up to five seconds for their next observation. This
+cadence never authorizes endpoint reuse or reissues an unknown removal.
+
 ## Resource bounds and eventual cleanup
 
 Conservation: every started mapping worker owns one reserved admission; each

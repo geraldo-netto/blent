@@ -72,7 +72,9 @@ args = sys.argv[1:]
 config = json.loads((root / 'config.json').read_text())
 with (root / 'calls.jsonl').open('a') as log:
     log.write(json.dumps(args) + '\n')
-if args == ['get-serialno']:
+if args == ['devices']:
+    print('List of devices attached\n' + config['serial'] + '\tdevice')
+elif args == ['get-serialno']:
     if config['mode'] == 'hold':
         (root / 'entered').write_text('entered')
         while True:

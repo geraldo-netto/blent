@@ -250,6 +250,11 @@ async fn t539_bridge_invitation_and_mapping_ownership() {
     assert_eq!(bridge.target().serial, "tablet");
     bridge.invite(&"b".repeat(64), &options()).await.unwrap();
     bridge.close().await.unwrap();
+    std::fs::write(
+        root.path().join("inventory"),
+        "List of devices attached\nselected\tdevice\n",
+    )
+    .unwrap();
     let explicit = bridge::Bridge::create(adb, Some("selected"), &listener, &|_| Ok(()))
         .await
         .unwrap();

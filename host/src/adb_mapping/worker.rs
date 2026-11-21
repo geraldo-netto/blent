@@ -1,10 +1,7 @@
 use super::{native, Control, Invocation};
 use anyhow::{ensure, Result};
 use blent_config::adb_reverse::temporary::{self, Cleanup, Creation, Route};
-use std::{
-    sync::{atomic::Ordering, Arc},
-    time::Duration,
-};
+use std::sync::{atomic::Ordering, Arc};
 use tokio::sync::{mpsc, oneshot, watch};
 
 pub(super) async fn run(
@@ -82,6 +79,7 @@ async fn cleanup(
     mut creation: Creation,
     failure: &watch::Sender<Option<String>>,
 ) {
+    let mut retry = crate::cleanup_retry::Retry::new();
     loop {
         match cleanup_once(control, &mut creation).await {
             Ok(true) => return,
@@ -94,7 +92,7 @@ async fn cleanup(
                 failure.send_replace(Some(error.to_string()));
             }
         }
-        tokio::time::sleep(Duration::from_millis(100)).await;
+        tokio::time::sleep(retry.next()).await;
     }
 }
 
@@ -102,6 +100,7 @@ async fn cleanup_once(control: &Control, creation: &mut Creation) -> Result<bool
     if *creation == Creation::NotStarted {
         return Ok(true);
     }
+    native::present(control).await?;
     let target = &control.target;
     let listing = native::list(control).await?;
     let route = temporary::route(&listing, &target.remote, &target.local)?;

@@ -2,12 +2,18 @@
 #![cfg(target_os = "linux")]
 #[path = "../src/adb_command.rs"]
 mod adb_command;
+#[path = "../src/adb_inventory.rs"]
+mod adb_inventory;
 #[path = "../src/adb_mapping/mod.rs"]
 mod adb_mapping;
 #[path = "../src/camera/bridge.rs"]
 mod bridge;
 #[path = "adb_mapping/stop.rs"]
 mod camera_stop;
+#[path = "../src/cleanup_retry.rs"]
+mod cleanup_retry;
+#[path = "adb_mapping/polling.rs"]
+mod polling;
 
 use blent_config::retirement::Completion;
 use std::{

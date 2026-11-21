@@ -48,7 +48,8 @@ fn fixture(root: &Path) {
         r#"import json,pathlib,shlex,sys
 root=pathlib.Path(__file__).parent
 args=sys.argv[1:]
-if args==['get-serialno']: print('original-tablet')
+if args==['devices']: print('List of devices attached\noriginal-tablet\tdevice')
+elif args==['get-serialno']: print('original-tablet')
 elif '--no-rebind' in args:
     (root/'port').write_text(args[-1].split(':')[1])
     (root/'remote').write_text(args[-2])

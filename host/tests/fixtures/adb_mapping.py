@@ -90,11 +90,28 @@ def listing():
     return 0
 
 
+def inventory():
+    (ROOT / 'inventory_entered').touch()
+    wait('hold_inventory')
+    override = ROOT / 'inventory'
+    if override.exists():
+        sys.stdout.buffer.write(override.read_bytes())
+    else:
+        print('List of devices attached')
+        if not (ROOT / 'absent').exists():
+            print('original\tdevice\noriginal-tablet\tdevice')
+    return int((ROOT / 'fail_inventory').exists())
+
+
 def main(args):
     if args == ['--server']:
         return server()
     with (ROOT / 'calls.jsonl').open('a') as stream:
         stream.write(json.dumps(args) + '\n')
+    with (ROOT / 'times.jsonl').open('a') as stream:
+        stream.write(json.dumps([time.monotonic(), args]) + '\n')
+    if args == ['devices']:
+        return inventory()
     if 'get-serialno' in args:
         print('original-tablet')
         return 0

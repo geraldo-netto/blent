@@ -109,7 +109,8 @@ async fn lifecycle(root: &std::path::Path, front: PathBuf, rear: PathBuf) {
             r#"import sys, pathlib
 root=pathlib.Path({root:?})
 a=sys.argv
-if '--no-rebind' in a:
+if a[1:]==['devices']: print('List of devices attached\nfixture-tablet\tdevice')
+elif '--no-rebind' in a:
     (root/'mapping').write_text(a[-2]+' '+a[-1])
 elif '--list' in a:
     if (root/'mapping').exists(): print('Usb '+(root/'mapping').read_text())
@@ -160,7 +161,8 @@ async fn cleanup_failure(root: &std::path::Path, front: PathBuf, rear: PathBuf) 
             r#"import pathlib, sys
 root = pathlib.Path({root:?})
 args = sys.argv[1:]
-if '--no-rebind' in args:
+if args==['devices']: print('List of devices attached\nfixture-tablet\tdevice')
+elif '--no-rebind' in args:
     import fcntl
     (root/'mapping').write_text(args[-2] + ' ' + args[-1])
     with (root/'stop-gate').open() as gate: fcntl.flock(gate, fcntl.LOCK_SH)

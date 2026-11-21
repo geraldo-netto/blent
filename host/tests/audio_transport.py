@@ -15,7 +15,8 @@ import os,sys
 from pathlib import Path
 root=Path(os.environ['BLENT_AUDIO_FIXTURE'])
 args=sys.argv[1:]
-if args[-1:] == ['shell']:
+if args == ['devices']: print('List of devices attached\\nfixture\\tdevice')
+elif args[-1:] == ['shell']:
  (root/'invitation').write_text(sys.stdin.read()); print('Broadcast completed: result=1')
 elif '--list' in args:
  if (root/'mapping').exists(): print((root/'mapping').read_text())

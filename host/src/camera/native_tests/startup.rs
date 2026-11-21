@@ -96,7 +96,8 @@ fn tools(root: &std::path::Path) {
 root = pathlib.Path({root:?})
 (root/'called-adb').touch()
 a = sys.argv
-if 'tcp:0' in a:
+if a[1:]==['devices']: print('List of devices attached\nfixture-tablet\tdevice')
+elif 'tcp:0' in a:
     (root/'mapping').write_text(a[-1]); print('34567')
 elif '--list' in a: print('Usb tcp:34567 '+(root/'mapping').read_text())
 elif '--remove' in a: (root/'mapping').unlink()

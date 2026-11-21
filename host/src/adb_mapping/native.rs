@@ -73,3 +73,20 @@ pub(super) async fn shell(control: &Control, input: &str) -> Result<()> {
     );
     Ok(())
 }
+
+/// Absence suppresses device queries; it never settles an original mapping.
+pub(super) async fn present(control: &Control) -> Result<()> {
+    let output = execute(control, &["devices"], None).await.output?;
+    ensure!(output.status.success(), "ADB inventory query failed");
+    ensure!(output.stdout.len() <= 65536, "ADB inventory exceeds 64 KiB");
+    let listing = String::from_utf8(output.stdout)?;
+    let entries = crate::adb_inventory::entries(&listing)
+        .ok_or_else(|| anyhow::anyhow!("ADB inventory is invalid"))?;
+    ensure!(
+        entries
+            .iter()
+            .any(|(serial, _)| *serial == control.target.serial),
+        "ADB media tablet absent; original cleanup retained"
+    );
+    Ok(())
+}
