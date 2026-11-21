@@ -61,3 +61,9 @@ All 225 GUI cases pass; the maintained presentation method exceeds 95% line cove
 The failing-first helper regression confirmed that equal-geometry instances shared an EDID and cache path. Generated serials now use instance+1, reject overflow and include the instance in cache filenames. Repeated use of one instance remains stable; checksums remain valid. A bounded serial test covers 1024 consecutive instances plus the maximum accepted value, and X11 contract fixtures resolve equal-geometry outputs by distinct serials while retaining ambiguity rejection.
 
 All 18 EDID cases, 36 helper cases and 14 X11 mapping cases pass. Five maintained production methods reach at least 80% line coverage; all measured functions are <=9 complexity. [Evidence](artifacts/2026-11-21-requested-fixes/t1496-verification.json). Tests generated files in private directories and started no EVDI/GPU session. Explicit custom EDIDs retain their supplied identity.
+
+## T1560 — unavailable decoder queries
+
+Failing-first Android and Rust regressions confirmed that unavailable inventory escaped onto the wire and was accepted as an empty capability set. The current Android request now retries with 100 ms–2 s backoff, cancels on replacement/disconnect, and never publishes busy or failed queries. The host rejects unavailable markers and unknown report fields; a genuinely completed empty inventory remains valid. The existing held-query regression now requires successful recovery after original retirement, retaining its stale-socket assertions.
+
+All 17 Rust negotiation cases and 52 Android cases pass. Eight maintained Android methods/callbacks have 100% native JaCoCo line coverage; all 223 measured functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1560-verification.json). The existing request job owns the bounded retry state; native query retirement remains independently owned. No device was accessed.

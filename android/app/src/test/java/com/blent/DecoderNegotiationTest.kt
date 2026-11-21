@@ -16,6 +16,25 @@ import java.util.concurrent.TimeUnit
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class DecoderNegotiationTest {
+    @Test fun t1560UnavailableQueryRetriesWithoutSendingAnEmptyInventory() {
+        lateinit var socket: Socket
+        val queries = java.util.concurrent.atomic.AtomicInteger()
+        val control = ControlSession(Any(), Input, WebSocket.Factory { _, listener -> Socket(listener).also { socket = it } }) {
+            width, height, fps ->
+            val report = DecoderCapabilities.describe(width, height, fps) { _, _, _, _ -> true }
+            if (queries.incrementAndGet() < 3) report.put("status", "unavailable") else report
+        }
+        try {
+            control.connect(); socket.open(); socket.greeting()
+            val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(3)
+            while (socket.sent.none { it.contains("capabilities") } && System.nanoTime() < deadline) Thread.sleep(5)
+            val report = JSONObject(socket.sent.single { it.contains("capabilities") }).getJSONObject("capabilities")
+            assertFalse("T1560 busy query escaped onto the wire", report.has("status"))
+            assertEquals(3, queries.get())
+            assertEquals("7", report.getString("scope"))
+        } finally { control.disconnect() }
+    }
+
     @Test fun t808_stopAndReconnectDoNotWaitOrPublishRetiredNativeResult() {
         val sockets = CopyOnWriteArrayList<Socket>()
         val entered = CountDownLatch(1)
@@ -31,14 +50,16 @@ class DecoderNegotiationTest {
             control.disconnect()
             assertFalse(control.controlConnected.value)
             control.connect(); sockets[1].open(); sockets[1].greeting(1280)
-            val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(2)
-            while (sockets[1].sent.none { it.contains("capabilities") } && System.nanoTime() < deadline) Thread.sleep(5)
+            Thread.sleep(150)
             assertTrue(sockets[0].sent.none { it.contains("capabilities") })
-            val report = JSONObject(sockets[1].sent.single { it.contains("capabilities") }).getJSONObject("capabilities")
-            assertEquals(1280, report.getInt("width"))
-            assertEquals("unavailable", report.getString("status"))
+            assertTrue("T1560 busy original query published unavailable capabilities", sockets[1].sent.none { it.contains("capabilities") })
             release.countDown()
             runBlocking { withTimeout(2_000) { while (MetadataQueries.lane.busy) delay(1) } }
+            val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(3)
+            while (sockets[1].sent.none { it.contains("capabilities") } && System.nanoTime() < deadline) Thread.sleep(5)
+            val report = JSONObject(sockets[1].sent.single { it.contains("capabilities") }).getJSONObject("capabilities")
+            assertEquals(1280, report.getInt("width"))
+            assertFalse(report.has("status"))
             assertTrue(sockets[0].sent.none { it.contains("capabilities") })
         } finally {
             release.countDown(); control.disconnect()

@@ -337,7 +337,8 @@ internal class ControlSession(
         capabilityJob?.cancel()
         capabilityJob = scope.launch {
             val (width, height, fps) = request.format
-            val report = scopedCapabilities(decoderCapabilities(width, height, fps), request.scope)
+            val available = awaitCapabilities(query = { decoderCapabilities(width, height, fps) })
+            val report = scopedCapabilities(available, request.scope)
             synchronized(lock) {
                 if (isActive && webSocket === source && isConnected && capabilityRequest == request) {
                     enqueue(JSONObject().put("type", "decoders").put("capabilities", report))

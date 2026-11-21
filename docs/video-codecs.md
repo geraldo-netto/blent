@@ -101,7 +101,12 @@ fields in a later partial update. A valid `decoder_protocol: 2` offer and
 
 Android queries regular MediaCodec decoders for that format off the UI and
 control locks. Responses from retired sockets or superseded requests are
-ignored. The host requires exact dimensions/FPS and a supported protocol before
+ignored. Busy or failed queries are retried by the current request, with delays
+from 100 ms to 2 seconds; they never advertise an empty inventory. Cancelling a
+request cancels its retry, while the query worker retains original cleanup.
+The host rejects unavailable markers and unknown report fields. A completed
+query that actually finds no decoders may still report an empty list.
+The host requires exact dimensions/FPS and a supported protocol before
 selecting VP9 or AV1. Without current evidence, it uses `libx264` while preserving the
 requested encoder preference. Tablet replacement and every new authenticated controller clear capabilities,
 so an older APK cannot inherit support reported by its predecessor. Capability-only updates

@@ -1,5 +1,18 @@
 use super::*;
 
+#[test]
+fn t1560_unavailable_inventory_is_not_an_empty_capability_report() {
+    let mut value = serde_json::to_value(report()).unwrap();
+    value["codecs"] = serde_json::json!([]);
+    value["hardware"] = serde_json::json!([]);
+    value["details"] = serde_json::json!([]);
+    assert!(serde_json::from_value::<DecoderCapabilities>(value.clone())
+        .unwrap()
+        .valid());
+    value["status"] = serde_json::json!("unavailable");
+    assert!(serde_json::from_value::<DecoderCapabilities>(value).is_err());
+}
+
 fn report() -> DecoderCapabilities {
     serde_json::from_str(include_str!(
         "../../../testdata/decoder-capabilities-v2.json"

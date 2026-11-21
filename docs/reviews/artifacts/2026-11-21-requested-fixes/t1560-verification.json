@@ -1,0 +1,19 @@
+{
+  "issue": "T1560",
+  "regressions": {
+    "before": "Rust unavailable report accepted; both Android API 27/34 cases sent unavailable",
+    "after": "17 Rust negotiation cases and 52 Android cases pass"
+  },
+  "coverage": {
+    "tool": "JaCoCo 0.8.15",
+    "authored_methods_and_callbacks": 8,
+    "minimum_percent": 100
+  },
+  "complexity": {
+    "tool": "Rust syn 2.0.119 and Kotlin PSI 1.9.20, project checker",
+    "functions": 223,
+    "over_9": 0
+  },
+  "ownership": "Existing request Job owns one retry loop and one bounded backoff; cancellation discards its report; native query lane still owns exact retirement. No queue or native owner added.",
+  "limits": "Robolectric API 27/34 and private Rust fixtures; no physical tablet accessed."
+}

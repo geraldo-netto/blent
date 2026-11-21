@@ -2,6 +2,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DecoderCapabilities {
     pub protocol: u32,
     /// Optional firmware/app fingerprint for persistent profile invalidation.
