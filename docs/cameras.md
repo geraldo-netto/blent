@@ -164,7 +164,7 @@ determine internet usage; the Blent camera bitrate controls its USB stream.
 
 For paired USB, choose **Direct USB** under **Advanced camera settings** and paste
 the full **Tablet** fingerprint from USB connection controls. Choosing USB clears
-the ADB serial; choosing ADB clears the USB peer. **Apply** saves; **Start/Restart**
+the ADB serial; choosing ADB clears the USB peer. **Save** saves; **Start/Restart camera**
 applies the profile without restarting display sharing.
 
 The host needs an `accessory-transport` build. On Android, the offer shows the
