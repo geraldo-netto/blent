@@ -348,5 +348,8 @@
       "t1537_all_c0_and_c1_controls_are_rejected_at_text_boundaries",
       3
     ]
+  ],
+  "coverage_profiles": [
+    "blent-2757892-5216933082563239879_0.profraw"
   ]
 }
