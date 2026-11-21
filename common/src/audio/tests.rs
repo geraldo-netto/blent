@@ -59,7 +59,7 @@ fn t719_capture_transfer_bounds_age_overflow_and_partial_rendering() {
         queue.push(block(Direction::Speakers, i), i as u64).unwrap();
     }
     let next = queue.pop(21).unwrap().unwrap();
-    assert_eq!(next.samples()[0], 1);
+    assert_eq!(next.samples()[0], 17); // T1584: retain the latest target depth after overflow.
     assert!(next.discontinuity);
     assert!(!queue.pop(22).unwrap().unwrap().discontinuity);
     assert!(queue.pop(21).is_err());
@@ -283,9 +283,84 @@ fn t717_queue_prefill_overflow_underflow_and_no_repeated_speech() {
     }
     assert_eq!(queue.queued_frames(), 20 * BLOCK_FRAMES);
     assert!(queue.render(0, &mut output).unwrap().discontinuity);
-    assert_eq!(output, [5; BLOCK_FRAMES]);
+    assert_eq!(output, [21; BLOCK_FRAMES]); // T1584: consumer trims the retained capacity to target.
     queue.clear();
     assert_eq!(queue.queued_frames(), 0);
+}
+
+fn t1584_stall(queue: &mut PcmQueue, direction: Direction, sequence: &mut i16) {
+    for _ in 0..6 {
+        queue
+            .push(block(direction, *sequence), *sequence as u64 * 10)
+            .unwrap();
+        *sequence += 1;
+    }
+}
+
+#[test]
+fn t1584_capture_transfer_returns_to_target_after_each_stall() {
+    for direction in [Direction::Microphone, Direction::Speakers] {
+        let mut queue = PcmQueue::new(AudioProfile::new(direction)).unwrap();
+        let mut sequence = 0;
+        for _ in 0..3 {
+            t1584_stall(&mut queue, direction, &mut sequence);
+            let now = sequence as u64 * 10;
+            let output = queue.pop(now).unwrap().unwrap();
+            assert_eq!(
+                output.samples[0],
+                sequence - 4,
+                "T1584 stale capture backlog"
+            );
+            assert!(output.discontinuity);
+            assert_eq!(queue.queued_frames(), 3 * BLOCK_FRAMES);
+            assert!(!queue.pop(now).unwrap().unwrap().discontinuity);
+        }
+    }
+}
+
+#[test]
+fn t1584_playback_returns_to_target_after_each_stall() {
+    for direction in [Direction::Microphone, Direction::Speakers] {
+        let mut queue = PcmQueue::new(AudioProfile::new(direction)).unwrap();
+        let mut sequence = 0;
+        let mut samples = vec![0; BLOCK_FRAMES * direction.channels()];
+        for _ in 0..3 {
+            t1584_stall(&mut queue, direction, &mut sequence);
+            let now = sequence as u64 * 10;
+            let output = queue.render(now, &mut samples).unwrap();
+            assert!(!output.silence);
+            assert_eq!(samples[0], sequence - 4, "T1584 stale playback backlog");
+            assert!(output.discontinuity);
+            assert_eq!(queue.queued_frames(), 3 * BLOCK_FRAMES);
+            assert!(!queue.render(now, &mut samples).unwrap().discontinuity);
+        }
+    }
+}
+
+#[test]
+fn t1584_all_targets_keep_one_jitter_block_and_bound_surplus() {
+    for target in 2..=20usize {
+        for count in 1..=25usize {
+            let mut profile = AudioProfile::new(Direction::Speakers);
+            profile.buffer_ms = (target * 10) as u16;
+            let mut queue = PcmQueue::new(profile).unwrap();
+            for index in 0..count {
+                queue
+                    .push(block(Direction::Speakers, index as i16), 0)
+                    .unwrap();
+            }
+            let capacity = count.min(20);
+            let retain = if capacity > target + 1 {
+                target
+            } else {
+                capacity
+            };
+            let output = queue.pop(0).unwrap().unwrap();
+            assert_eq!(output.samples[0] as usize, count - retain);
+            assert_eq!(queue.queued_frames(), (retain - 1) * BLOCK_FRAMES);
+            assert_eq!(output.discontinuity, retain != count);
+        }
+    }
 }
 
 #[test]
@@ -338,7 +413,9 @@ fn t717_drift_bounds_overflow_and_discontinuity() {
 #[test]
 fn t717_resampling_preserves_channels_and_bounded_consumption() {
     for delta in [-1000, -1, 0, 1, 1000] {
-        let mut queue = PcmQueue::new(AudioProfile::new(Direction::Speakers)).unwrap();
+        let mut profile = AudioProfile::new(Direction::Speakers);
+        profile.buffer_ms = 200; // Exercise the full resampling window without T1584 catch-up.
+        let mut queue = PcmQueue::new(profile).unwrap();
         for _ in 0..20 {
             let mut frame = block(Direction::Speakers, i16::MIN);
             for pair in frame.samples.as_chunks_mut::<2>().0.iter_mut() {

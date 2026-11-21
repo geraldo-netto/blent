@@ -32,6 +32,7 @@ internal class AudioPlaybackQueue(targetMs: Int, private val clock: () -> Long) 
         ?: "Native clock drift unmeasured (warming, reset or unavailable)"
     @Synchronized fun poll(): PlaybackChunk? {
         advance()
+        trimSurplus()
         if (!primed && blocks.size < target) return null
         primed = true
         val step = 1_000_000L + ppm
@@ -76,6 +77,13 @@ internal class AudioPlaybackQueue(targetMs: Int, private val clock: () -> Long) 
     }
     private fun dropOldest() {
         blocks.removeFirst(); offset = 0; phase = 0; discontinuity = true
+    }
+    // One extra 10 ms block absorbs jitter; a larger backlog returns to target
+    // at the next consumer call, with one discontinuity and no new allocation.
+    private fun trimSurplus() {
+        if (blocks.size * 480 - offset > (target + 1) * 480) {
+            while (blocks.size > target) dropOldest()
+        }
     }
     @Synchronized fun clear() {
         blocks.clear(); primed = false; discontinuity = true

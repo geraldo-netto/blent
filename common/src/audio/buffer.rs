@@ -67,6 +67,7 @@ impl PcmQueue {
             "cannot transfer partially rendered or resampled audio"
         );
         self.advance_clock(now_ms)?;
+        self.trim_surplus();
         Ok(self.blocks.pop_front().map(|(_, mut block)| {
             block.discontinuity |= self.discontinuity;
             self.discontinuity = false;
@@ -89,6 +90,16 @@ impl PcmQueue {
         self.offset = 0;
         self.phase = 0;
         self.discontinuity = true;
+    }
+
+    /// Allow one 10 ms jitter block above target. On consumer recovery, discard
+    /// surplus once instead of carrying stall latency through the whole session.
+    fn trim_surplus(&mut self) {
+        if self.queued_frames() > (self.target + 1) * BLOCK_FRAMES {
+            while self.blocks.len() > self.target {
+                self.drop_oldest();
+            }
+        }
     }
 
     pub fn push(&mut self, block: PcmBlock, now_ms: u64) -> Result<()> {
@@ -157,6 +168,7 @@ impl PcmQueue {
             "invalid audio output buffer"
         );
         self.advance_clock(now_ms)?;
+        self.trim_surplus();
         if !self.primed {
             self.primed = self.blocks.len() >= self.target;
         }

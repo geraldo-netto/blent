@@ -1,0 +1,35 @@
+[
+  {
+    "file": "common/src/audio/buffer.rs",
+    "name": "pop",
+    "line": 64,
+    "language": "rust",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/audio/buffer.rs",
+    "name": "trim_surplus",
+    "line": 97,
+    "language": "rust",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/audio/buffer.rs",
+    "name": "render",
+    "line": 164,
+    "language": "rust",
+    "covered": 25,
+    "total": 25,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

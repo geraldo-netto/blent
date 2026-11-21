@@ -90,7 +90,10 @@ permission, PipeWire availability and supported processing mode. Raw processing
 was explicitly unsupported in the selected RugKing test. Do not disable consent
 to work around a failure.
 
-The application drops stale audio and plays silence when input runs out. Device
+The application drops stale audio and plays silence when input runs out. After
+a stall, a backlog exceeding the selected buffer plus 10 ms is trimmed back to
+the selected buffer. This can cause a short gap instead of retaining added delay.
+Device
 clock correction uses native counters when available; unavailable counters leave
 bounded playback at its nominal rate and report drift as unmeasured. Buffer
 settings and counters are not measurements of microphone-to-speaker delay.

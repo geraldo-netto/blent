@@ -1,0 +1,20 @@
+{
+  "issue": "T1584",
+  "regressions": {
+    "red": "Both Rust transfer/render tests and Android playback test returned pre-stall samples",
+    "green": "52 Rust audio tests and 14 Android audio tests pass",
+    "bounds": "475 Rust target/backlog pairs; 285 Android target/backlog pairs, plus repeated stalls in both Rust directions"
+  },
+  "measurements": "Synthetic 60 ms producer advances: first backlog 6 blocks, subsequent backlog 8 blocks; consumption trims to target 4 then emits one, retaining 3. Discontinuity is reported once per cut. No physical audio-latency measurement.",
+  "coverage": {
+    "tools": "cargo-llvm-cov 0.8.7/rustc 1.100.0 and JaCoCo 0.8.15",
+    "production_methods": 5,
+    "minimum_percent": 100
+  },
+  "complexity": {
+    "tool": "project checker, syn 2.0.119/Kotlin PSI 1.9.20",
+    "functions": 120,
+    "over_9": 0
+  },
+  "ownership": "Existing single queue owner discards up to 20 owned PCM blocks; resets partial offset/phase, preserves clock-rate correction. No queue, native resource or retained borrow added."
+}

@@ -74,7 +74,7 @@ class AudioPacketsTest {
         assertEquals(2, queue.poll()!!.samples[0].toInt()); assertNull(queue.poll())
         repeat(21) { index -> queue.offer(AudioBlock(ShortArray(960) { index.toShort() })) }
         val afterOverflow = queue.poll()!!
-        assertTrue(afterOverflow.discontinuity); assertEquals(1, afterOverflow.samples[0].toInt())
+        assertTrue(afterOverflow.discontinuity); assertEquals(19, afterOverflow.samples[0].toInt())
         now = 201; assertNull(queue.poll())
         queue.offer(AudioBlock(ShortArray(960), true)); assertNull(queue.poll())
         queue.offer(AudioBlock(ShortArray(960))); assertTrue(queue.poll()!!.discontinuity)

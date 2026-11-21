@@ -294,6 +294,11 @@ end-to-end latency promise.
 
 `PcmQueue` preallocates space for twenty complete 10 ms blocks, independent of the
 requested prefill target. Rendering waits for that target after Start/underflow.
+Consumer recovery allows one extra 10 ms jitter block above target. A larger
+backlog is trimmed to the newest target-sized window before capture transfer or
+playback, reporting one discontinuity and resetting the partial sample offset
+and interpolation phase. This trades a short gap for removal of accumulated
+stall delay. Clock-rate correction remains independent of queue-depth recovery.
 Overflow drops the oldest block (including any unconsumed remainder), preserving
 channel alignment and reporting discontinuity. Blocks older than 200 ms on the
 receiver's local clock are discarded. Underflow returns an entire silent block;

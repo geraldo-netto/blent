@@ -65,7 +65,7 @@ class AudioIdentityTest {
         val blocks = List(25) { ShortArray(960) { _ -> it.toShort() } }
         for (block in blocks) { now++; queue.offer(AudioBlock(block)) }
         val output = queue.poll()!!
-        assertSame(blocks[5], output.samples)
+        assertSame(blocks[23], output.samples) // T1584: catch up to the configured two-block target.
         assertTrue(output.discontinuity)
         now += 201
         assertNull(queue.poll())
