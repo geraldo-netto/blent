@@ -86,7 +86,9 @@ internal class ConnectionTrust(
         check(lease.remember && pairing.current(lease))
         val peer = lease.ticket.peer.fingerprint
         if (peers.contains(peer)) return false
-        check(peers.size < capacity)
+        check(peers.size < capacity) {
+            "Saved computer limit reached ($capacity); forget a computer or pair without remembering"
+        }
         val updated = peers.toSortedSet().apply { add(peer) }
         persist(updated)
         peers.add(peer)

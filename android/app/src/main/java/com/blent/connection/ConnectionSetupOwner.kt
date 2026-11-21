@@ -197,7 +197,7 @@ internal class ConnectionSetupOwner(
             waiting = false
             checkNotNull(decision)
         }
-        check(selected.approved)
+        check(selected.approved) { "Pairing denied on tablet" }
         pairing.approve(selected.ticket, selected.remember, now())
     }
 
