@@ -1,0 +1,20 @@
+{
+  "finding": "T1551",
+  "red": "Assigned/unknown display scheduled timed frames; an additional failing-first regression caught an overbroad draft edit hiding Stop.",
+  "green": {
+    "gui_cases_passed": 225,
+    "failed": 0
+  },
+  "coverage": {
+    "maintained_production_methods": 1,
+    "minimum_percent": 95.83333333333333
+  },
+  "measurement": {
+    "observation_seconds": 1.5,
+    "old_timer_control_update_callbacks": 18,
+    "fixed_update_callbacks": 0,
+    "fixture": "Private Xvfb Overview with assigned display, 500 ms warmup; native app update callbacks, not kernel wake counters."
+  },
+  "ownership": "Display presentation is stateless and continues to use status-worker change notifications. Camera/audio retain their timed repaint while active. No new state, native handle, queue or owner. Display Stop behavior is unchanged and now has an explicit permanent assertion.",
+  "limits": "Linux private rendering; Windows native presentation evidence remains tracked in T1271."
+}

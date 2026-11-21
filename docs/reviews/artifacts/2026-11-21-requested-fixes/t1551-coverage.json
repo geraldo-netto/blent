@@ -1,0 +1,15 @@
+[
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "resource_card",
+    "line": 168,
+    "language": "rust",
+    "covered": 23,
+    "total": 24,
+    "percent": 95.83333333333333,
+    "passes": true,
+    "missing": [
+      177
+    ]
+  }
+]

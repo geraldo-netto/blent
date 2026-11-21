@@ -49,3 +49,9 @@ The failing-first GUI regression uses the real host camera Controller/session up
 The production wrapper's unconditional timer failed the new idle regression. It now receives activation through one cancellable asynchronous socket reader and one coalesced pending bit. Window updates request focus only when that bit is set. The entry still retains the original abstract socket through native cleanup, and worker retirement remains exact. Tests cover malformed messages, coalescing, duplicate-reader rejection and original socket release.
 
 All 225 GUI cases and both actual-entry/relaunch cases pass. Ten maintained production methods reach at least 80% line coverage, including 100% for the real main entry. All measured functions are <=9 complexity. A private Xvfb window observed zero update callbacks over 1.5 idle seconds; the restored old 250 ms timer produced six callbacks over the same interval. These are application callbacks, not kernel wake counters. [Evidence](artifacts/2026-11-21-requested-fixes/t1550-verification.json).
+
+## T1551 — assigned-display repaint
+
+Assigned and unknown display state now rely on existing status-worker change notifications. Camera/audio retain their active-state timers. The new idle regression failed before the fix; diff review also caught an overbroad draft edit to display buttons, which was reproduced by a separate permanent Stop-button test and reverted before commit.
+
+All 225 GUI cases pass; the maintained presentation method exceeds 95% line coverage and all measured functions are <=9 complexity. Private Xvfb Overview measurement observed zero callbacks over 1.5 idle seconds, versus 18 with the old 100 ms timer restored as a test control. [Evidence](artifacts/2026-11-21-requested-fixes/t1551-verification.json). No resource ownership changes; Windows native presentation remains unmeasured under T1271.

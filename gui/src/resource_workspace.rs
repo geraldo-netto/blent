@@ -185,7 +185,7 @@ impl App {
         if let Some(action) = action {
             self.resource_action(status, selected, resource, action);
         }
-        if view.can_stop() {
+        if resource != Resource::Display && view.can_stop() {
             ui.ctx()
                 .request_repaint_after(std::time::Duration::from_millis(100));
         }

@@ -102,6 +102,8 @@ fn t1550_t1551_private_window_idle_callback_measurements() {
     for mode in [
         "old-wrapper",
         "fixed-wrapper",
+        "old-overview",
+        "fixed-overview",
     ] {
         let root = tempfile::tempdir().unwrap();
         use std::os::unix::fs::PermissionsExt;

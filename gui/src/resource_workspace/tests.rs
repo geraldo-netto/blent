@@ -513,3 +513,58 @@ fn t1295_invalid_projection_keeps_existing_owner_stoppable() {
     app.camera.stop();
     assert!(app.camera.target().is_none());
 }
+
+#[test]
+fn t1551_assigned_display_waits_for_status_notification_without_timed_repaint() {
+    let (_root, mut app) = settings_test_app(Tab::Overview);
+    let context = egui::Context::default();
+    let selected = Identity::Adb("first".into());
+    for display in [Some(display()), None] {
+        let status = Status {
+            display,
+            daemon_running: true,
+            ..Default::default()
+        };
+        for _ in 0..3 {
+            let _ = context.run(Default::default(), |ctx| {
+                egui::CentralPanel::default().show(ctx, |ui| {
+                    app.resource_card(ui, &status, &selected, Resource::Display)
+                });
+            });
+        }
+        let output = context.run(Default::default(), |ctx| {
+            egui::CentralPanel::default().show(ctx, |ui| {
+                app.resource_card(ui, &status, &selected, Resource::Display)
+            });
+        });
+        assert_eq!(
+            output.viewport_output[&egui::ViewportId::ROOT].repaint_delay,
+            std::time::Duration::MAX,
+            "T1551 assigned/unknown display schedules idle frames"
+        );
+    }
+}
+
+#[test]
+fn t1551_idle_display_keeps_its_stop_button() {
+    let (_root, mut app) = settings_test_app(Tab::Overview);
+    let context = egui::Context::default();
+    let status = Status {
+        display: Some(display()),
+        daemon_running: true,
+        ..Default::default()
+    };
+    let text = crate::tests::settings_test_frame(&mut app, &context, vec![], |app, ui| {
+        app.resource_card(
+            ui,
+            &status,
+            &Identity::Adb("first".into()),
+            Resource::Display,
+        );
+    });
+    assert!(
+        text.iter()
+            .any(|(label, _)| label == "Stop display & input"),
+        "T1551 repaint policy changed the display action: {text:?}"
+    );
+}
