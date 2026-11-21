@@ -459,11 +459,15 @@ mod tests {
             assert_eq!(panel.state(), native);
         }
         *state.borrow_mut() = CameraState::Stopped;
+        // T1470: pending means an original request owner is still alive.
+        let (pending, acknowledgement) = blent_config::media_start::Start::pending();
         panel.owner.admit(
             Some(blent_config::tablets::Identity::Adb("first".into())),
-            blent_config::media_start::Start::pending().0,
+            pending,
         );
         assert_eq!(panel.state(), CameraState::Starting);
+        drop(acknowledgement);
+        assert_eq!(panel.state(), CameraState::Stopped);
         let pool = blent_config::retirement::Pool::new(1).unwrap();
         let admission = pool.reserve().unwrap();
         panel
