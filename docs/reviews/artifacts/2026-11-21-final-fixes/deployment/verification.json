@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-21",
+  "desktop": {
+    "service_pid": 3252406,
+    "gui_pid": 3249994,
+    "active": true,
+    "installed_binary_hashes_checked": 6,
+    "installed_binary_count": 6,
+    "single_instance": "Second blent-gui launcher exited and reused PID 3249994. Tray uses the same installed GUI launcher; no physical tray click claimed.",
+    "display": "Live stream and tablet render acknowledgements observed after waking tablet.",
+    "camera": "Start and restart both reached host-video state; native Android service records original disconnect before replacement connect. Stop removed host decoder and temporary ADB route; Android reports no active camera clients and no CameraWorkerService. Preview black in current scene, no subjective lighting/color acceptance. Camera left stopped, as before deployment."
+  },
+  "android": {
+    "devices_updated": 1,
+    "packages_updated": [
+      "io.github.geraldo_netto.blent",
+      "io.github.geraldo_netto.blent.profile"
+    ],
+    "installed_apk_hashes_checked": 2,
+    "installed_apk_count": 2,
+    "main_reopened": true,
+    "profile": "Installed package updated; was not running before reload and is left stopped.",
+    "data": "install -r; no clear/uninstall"
+  },
+  "recovery": {
+    "T1464": "Old daemon failed to exit after reported shutdown. Broker gracefully exited; original daemon terminated with pidfd-bound SIGKILL and pidfd exit confirmation. Stack inspection denied. Issue unresolved.",
+    "T1465": "Shared ADB PID 3379 remained in service cgroup and blocked systemd restart. Same live PID moved through systemd StartTransientUnit to blent-adb-shared.scope; no ADB server kill or unrelated mapping removal. Permanent supervision fix remains open."
+  },
+  "remaining": [
+    "T1452 physical lighting acceptance",
+    "T1463 dependency release notices",
+    "T1464 shutdown investigation",
+    "T1465 shared ADB service placement"
+  ],
+  "scope": "Local installation only; no push or release publication."
+}

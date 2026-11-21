@@ -1,0 +1,71 @@
+Nov 21 04:13:15 morpheus env[3170]: 2026-11-21T03:13:15.495958Z  INFO blent::capture::process: 18: ffmpeg exited cleanly
+Nov 21 04:13:15 morpheus env[3170]: 2026-11-21T03:13:15.533931Z  INFO blent::capture::process: 18: evdi_helper exited cleanly
+Nov 21 04:13:15 morpheus env[3170]: 2026-11-21T03:13:15.566695Z  INFO blent: 1915: blent daemon stopped
+Nov 21 04:15:57 morpheus systemd[2646]: blent.service: Main process exited, code=killed, status=9/KILL
+Nov 21 04:15:57 morpheus systemd[2646]: blent.service: Failed with result 'signal'.
+Nov 21 04:16:17 morpheus systemd[2646]: blent.service: Found left-over process 3379 (adb) in control group while starting unit. Ignoring.
+Nov 21 04:16:17 morpheus systemd[2646]: blent.service: Will not start SendSIGKILL=no service of type KillMode=control-group or mixed while processes exist
+Nov 21 04:16:17 morpheus systemd[2646]: blent.service: Failed with result 'resources'.
+Nov 21 04:16:20 morpheus systemd[2646]: blent.service: Found left-over process 3379 (adb) in control group while starting unit. Ignoring.
+Nov 21 04:16:20 morpheus systemd[2646]: blent.service: Will not start SendSIGKILL=no service of type KillMode=control-group or mixed while processes exist
+Nov 21 04:16:20 morpheus systemd[2646]: blent.service: Failed with result 'resources'.
+Nov 21 04:16:24 morpheus systemd[2646]: blent.service: Found left-over process 3379 (adb) in control group while starting unit. Ignoring.
+Nov 21 04:16:24 morpheus systemd[2646]: blent.service: Will not start SendSIGKILL=no service of type KillMode=control-group or mixed while processes exist
+Nov 21 04:16:24 morpheus systemd[2646]: blent.service: Failed with result 'resources'.
+Nov 21 04:16:27 morpheus systemd[2646]: blent.service: Found left-over process 3379 (adb) in control group while starting unit. Ignoring.
+Nov 21 04:16:27 morpheus systemd[2646]: blent.service: Will not start SendSIGKILL=no service of type KillMode=control-group or mixed while processes exist
+Nov 21 04:16:27 morpheus systemd[2646]: blent.service: Failed with result 'resources'.
+Nov 21 04:16:30 morpheus systemd[2646]: blent.service: Found left-over process 3379 (adb) in control group while starting unit. Ignoring.
+Nov 21 04:16:30 morpheus systemd[2646]: blent.service: Will not start SendSIGKILL=no service of type KillMode=control-group or mixed while processes exist
+Nov 21 04:16:30 morpheus systemd[2646]: blent.service: Failed with result 'resources'.
+Nov 21 04:16:33 morpheus systemd[2646]: blent.service: Found left-over process 3379 (adb) in control group while starting unit. Ignoring.
+Nov 21 04:16:33 morpheus systemd[2646]: blent.service: Will not start SendSIGKILL=no service of type KillMode=control-group or mixed while processes exist
+Nov 21 04:16:33 morpheus systemd[2646]: blent.service: Failed with result 'resources'.
+Nov 21 04:16:37 morpheus systemd[2646]: blent.service: Found left-over process 3379 (adb) in control group while starting unit. Ignoring.
+Nov 21 04:16:37 morpheus systemd[2646]: blent.service: Will not start SendSIGKILL=no service of type KillMode=control-group or mixed while processes exist
+Nov 21 04:16:37 morpheus systemd[2646]: blent.service: Failed with result 'resources'.
+Nov 21 04:16:40 morpheus systemd[2646]: blent.service: Found left-over process 3379 (adb) in control group while starting unit. Ignoring.
+Nov 21 04:16:40 morpheus systemd[2646]: blent.service: Will not start SendSIGKILL=no service of type KillMode=control-group or mixed while processes exist
+Nov 21 04:16:40 morpheus systemd[2646]: blent.service: Failed with result 'resources'.
+Nov 21 04:16:43 morpheus systemd[2646]: blent.service: Found left-over process 3379 (adb) in control group while starting unit. Ignoring.
+Nov 21 04:16:43 morpheus systemd[2646]: blent.service: Will not start SendSIGKILL=no service of type KillMode=control-group or mixed while processes exist
+Nov 21 04:16:43 morpheus systemd[2646]: blent.service: Failed with result 'resources'.
+Nov 21 04:16:46 morpheus env[3252406]: 2026-11-21T03:16:46.054250Z  INFO blent::monitor: 475: Tablet 1 connected over USB (8002RH1010011900)
+Nov 21 04:17:44 morpheus env[3252406]: 2026-11-21T03:17:44.847867Z  INFO blent::stream: 122: Client connected: 127.0.0.1:45179
+Nov 21 04:17:55 morpheus env[3252406]: 2026-11-21T03:17:55.641338Z  INFO blent::input::mapping::x11_cache: 55: Mapped 'Blent Touch @3ebd1ad49fae430814adbf5d42164699-0000000000000000' (listed X11 id 20) to DVI-I-2-1
+Nov 21 04:17:55 morpheus env[3252406]: 2026-11-21T03:17:55.691922Z  INFO blent::input::mapping::x11_cache: 55: Mapped 'Blent Pointer @3ebd1ad49fae430814adbf5d42164699-0000000000000000' (listed X11 id 22) to DVI-I-2-1
+Nov 21 04:17:55 morpheus env[3252406]: 2026-11-21T03:17:55.728898Z  WARN blent::native_commands::mutation: 83: Native mutation outcome unconfirmed; original resources remain quarantined program="xinput" status=Ok(ExitStatus(unix_wait_status(256)))
+Nov 21 04:18:00 morpheus env[3252406]: 2026-11-21T03:18:00.416503Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 14.1ms  p95 16.1ms  max 43.7ms  (105 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:00 morpheus env[3252406]: 2026-11-21T03:18:00.416522Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 9.9ms  p95 11.6ms  (105 samples)
+Nov 21 04:18:05 morpheus env[3252406]: 2026-11-21T03:18:05.429685Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 14.6ms  p95 20.1ms  max 32.7ms  (60 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:05 morpheus env[3252406]: 2026-11-21T03:18:05.429703Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 10.3ms  p95 13.3ms  (60 samples)
+Nov 21 04:18:10 morpheus env[3252406]: 2026-11-21T03:18:10.478449Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 14.4ms  p95 16.5ms  max 23.3ms  (42 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:10 morpheus env[3252406]: 2026-11-21T03:18:10.478463Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 10.0ms  p95 11.7ms  (42 samples)
+Nov 21 04:18:15 morpheus env[3252406]: 2026-11-21T03:18:15.497426Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 14.4ms  p95 18.1ms  max 20.1ms  (43 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:15 morpheus env[3252406]: 2026-11-21T03:18:15.497443Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 10.1ms  p95 11.3ms  (43 samples)
+Nov 21 04:18:20 morpheus env[3252406]: 2026-11-21T03:18:20.651417Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 14.3ms  p95 18.5ms  max 38.3ms  (43 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:20 morpheus env[3252406]: 2026-11-21T03:18:20.651433Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 10.0ms  p95 11.0ms  (43 samples)
+Nov 21 04:18:25 morpheus env[3252406]: 2026-11-21T03:18:25.738535Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 14.3ms  p95 16.4ms  max 19.8ms  (48 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:25 morpheus env[3252406]: 2026-11-21T03:18:25.738562Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 10.0ms  p95 10.7ms  (48 samples)
+Nov 21 04:18:30 morpheus env[3252406]: 2026-11-21T03:18:30.752189Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 14.1ms  p95 15.7ms  max 16.6ms  (42 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:30 morpheus env[3252406]: 2026-11-21T03:18:30.752206Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 10.0ms  p95 11.3ms  (42 samples)
+Nov 21 04:18:35 morpheus env[3252406]: 2026-11-21T03:18:35.870625Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 14.5ms  p95 20.2ms  max 40.9ms  (55 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:35 morpheus env[3252406]: 2026-11-21T03:18:35.870639Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 10.3ms  p95 13.1ms  (55 samples)
+Nov 21 04:18:41 morpheus env[3252406]: 2026-11-21T03:18:41.070545Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.4ms  p95 24.0ms  max 31.8ms  (58 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:41 morpheus env[3252406]: 2026-11-21T03:18:41.070560Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 14.6ms  (58 samples)
+Nov 21 04:18:46 morpheus env[3252406]: 2026-11-21T03:18:46.204930Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.4ms  p95 22.2ms  max 28.4ms  (49 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:46 morpheus env[3252406]: 2026-11-21T03:18:46.204946Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 14.8ms  (49 samples)
+Nov 21 04:18:51 morpheus env[3252406]: 2026-11-21T03:18:51.337513Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.6ms  p95 22.1ms  max 46.7ms  (50 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:51 morpheus env[3252406]: 2026-11-21T03:18:51.337536Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 14.5ms  (50 samples)
+Nov 21 04:18:56 morpheus env[3252406]: 2026-11-21T03:18:56.488049Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.3ms  p95 24.3ms  max 44.3ms  (55 samples, 1 in flight, 0 aged out)
+Nov 21 04:18:56 morpheus env[3252406]: 2026-11-21T03:18:56.488067Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.5ms  p95 14.4ms  (55 samples)
+Nov 21 04:19:01 morpheus env[3252406]: 2026-11-21T03:19:01.544744Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.4ms  p95 22.1ms  max 29.5ms  (49 samples, 1 in flight, 0 aged out)
+Nov 21 04:19:01 morpheus env[3252406]: 2026-11-21T03:19:01.544764Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.7ms  p95 14.7ms  (49 samples)
+Nov 21 04:19:06 morpheus env[3252406]: 2026-11-21T03:19:06.553273Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.2ms  p95 21.9ms  max 36.1ms  (49 samples, 2 in flight, 0 aged out)
+Nov 21 04:19:06 morpheus env[3252406]: 2026-11-21T03:19:06.553287Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.5ms  p95 14.2ms  (49 samples)
+Nov 21 04:19:11 morpheus env[3252406]: 2026-11-21T03:19:11.587773Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.1ms  p95 22.3ms  max 46.6ms  (53 samples, 1 in flight, 0 aged out)
+Nov 21 04:19:11 morpheus env[3252406]: 2026-11-21T03:19:11.587791Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.5ms  p95 14.3ms  (53 samples)
+Nov 21 04:19:16 morpheus env[3252406]: 2026-11-21T03:19:16.621612Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.1ms  p95 21.4ms  max 36.9ms  (50 samples, 1 in flight, 0 aged out)
+Nov 21 04:19:16 morpheus env[3252406]: 2026-11-21T03:19:16.621635Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.5ms  p95 14.6ms  (50 samples)
+Nov 21 04:19:21 morpheus env[3252406]: 2026-11-21T03:19:21.765845Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.2ms  p95 22.6ms  max 42.3ms  (50 samples, 1 in flight, 0 aged out)
+Nov 21 04:19:21 morpheus env[3252406]: 2026-11-21T03:19:21.765861Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 14.7ms  (50 samples)

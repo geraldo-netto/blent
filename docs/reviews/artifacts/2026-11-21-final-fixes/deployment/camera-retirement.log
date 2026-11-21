@@ -1,0 +1,9 @@
+Active Camera Clients:
+[]
+  11-21 04:18:34 : DISCONNECT device 1 client for package io.github.geraldo_netto.blent (PID 30125)
+  11-21 04:18:04 : CONNECT device 1 client for package io.github.geraldo_netto.blent (PID 30125)
+  11-21 04:18:02 : DISCONNECT device 1 client for package io.github.geraldo_netto.blent (PID 29782)
+  11-21 04:17:44 : CONNECT device 1 client for package io.github.geraldo_netto.blent (PID 29782)
+  Device 0 is closed, no client instance
+  Device 1 is closed, no client instance
+  11-21 04:18:34 : Device 1 is open. Client instance dump:
