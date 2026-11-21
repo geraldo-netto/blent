@@ -154,6 +154,13 @@ It reports the route and does not start the daemon during installation.
 `make install` preserves the autostart preference and repairs the entry for an
 already enabled service. Switching to systemd replaces a direct-daemon entry.
 
+The user service starts the shared ADB server in an independent scope before
+connecting to it on loopback port 5037. Stopping Blent preserves that server and
+other applications' connections. If the server exits, Blent's service reports
+ADB unavailable instead of starting a replacement in its own process group;
+restart Blent to recreate the server in an independent scope. If ADB is not
+installed, direct USB remains available. Other ADB startup failures are reported.
+
 ### Installed paths
 
 | Files | Location |

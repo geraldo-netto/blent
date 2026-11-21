@@ -1,0 +1,29 @@
+{
+  "previous": {
+    "pid": 509202,
+    "stop_seconds": 0.3270430329721421,
+    "exact_exit": true
+  },
+  "adb": {
+    "pid": 3379,
+    "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/blent-adb-shared.scope\n"
+  },
+  "broker": {
+    "pid": 543835,
+    "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/run-r35ef8d63cf424705937df641eda4ba68.scope\n"
+  },
+  "candidate": {
+    "pid": 543768,
+    "stop_seconds": 0.3227878239704296,
+    "exact_exit": true
+  },
+  "final_daemon": 546310,
+  "status": "Result=success\nActiveState=active\n",
+  "adb_mappings": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\n\n",
+  "binaries": {
+    "blent": "6264b9cf62f6e43c4937b8f689afe765bd95f392a8f6903e74b72fbf9e27d5a9",
+    "blent-gui": "5aebfa3e000552e5d9b5f7c75b27595e7b77321a8292d07fb6baeac1bbcd6e93",
+    "blent-audio": "685bccd3e8a97b75eb397604e1b16e8ed58addf04b07f15ee0acffdff912dddb",
+    "blent-usb-broker": "4a370fc2f73c4d262615198c9efb76f06ba4d103e6feffae2b12039c088fa014"
+  }
+}

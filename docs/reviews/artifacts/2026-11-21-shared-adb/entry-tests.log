@@ -1,0 +1,18 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.17s
+     Running tests/activity_dpms.rs (target/llvm-cov-target/debug/build/blent/8ef100cd92364d95/out/activity_dpms-8ef100cd92364d95)
+
+running 2 tests
+test t1013_real_blocked_xlib_connection_keeps_original_process_until_retirement ... ok
+test t1013_real_helper_dispatches_before_daemon_startup_on_private_x11 ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s
+
+     Running tests/adb_server.rs (target/llvm-cov-target/debug/build/blent/24430068070810fd/out/adb_server-24430068070810fd)
+
+running 1 test
+test t1465_bootstrap_dispatch_waits_and_preserves_arguments ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+

@@ -83,6 +83,9 @@ use tracing::{info, warn};
 mod wifi_adb_fixture;
 
 fn main() -> Result<()> {
+    if let Some(result) = blent::adb_server::dispatch(std::env::args_os().skip(1)) {
+        return result;
+    }
     if let Some(result) = blent::dpms_probe::dispatch(std::env::args_os().skip(1)) {
         return result;
     }

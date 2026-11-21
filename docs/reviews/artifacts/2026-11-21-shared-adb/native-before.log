@@ -1,0 +1,15 @@
+F
+======================================================================
+FAIL: test_t1465_native_scope_survives_daemon_stop_and_restart (scripts.tests.test_adb_service.AdbServiceTest.test_t1465_native_scope_survives_daemon_stop_and_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_adb_service.py", line 59, in test_t1465_native_scope_survives_daemon_stop_and_restart
+    self.exercise_native(unit, root)
+  File "/backups/disk2/projects/blent/scripts/tests/test_adb_service.py", line 74, in exercise_native
+    self.assertNotIn(unit, group)
+AssertionError: 'blent-t1465-3d3c6e13e8934564a3639f2fbc255f2c.service' unexpectedly found in '0::/user.slice/user-1000.slice/user@1000.service/app.slice/blent-t1465-3d3c6e13e8934564a3639f2fbc255f2c.service\n'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.607s
+
+FAILED (failures=1)

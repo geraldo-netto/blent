@@ -3,6 +3,8 @@
 pub mod activity;
 pub mod activity_follow;
 #[cfg(target_os = "linux")]
+pub mod adb_server;
+#[cfg(target_os = "linux")]
 pub mod audio;
 pub mod audio_control;
 #[cfg(target_os = "linux")]

@@ -1,0 +1,12 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.65s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/build/blent/71c49429767bef11/out/blent-71c49429767bef11)
+
+running 3 tests
+test adb_server::tests::t1465_bootstrap_waits_for_original_client_and_reports_failure ... ok
+test adb_server::tests::t1465_dispatch_rejects_other_and_extra_arguments_without_starting_adb ... ok
+test adb_server::tests::t1465_missing_adb_does_not_disable_direct_usb_service ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 910 filtered out; finished in 0.03s
+

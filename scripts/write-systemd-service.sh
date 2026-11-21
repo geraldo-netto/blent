@@ -18,6 +18,7 @@ helper=
 if [[ $# -eq 3 ]]; then helper=" --helper $(systemd_path "$3")"; fi
 while IFS= read -r line || [[ -n $line ]]; do
     case "$line" in
+        ExecStartPre=*) printf 'ExecStartPre=:/usr/bin/systemd-run --user --scope --quiet -- /usr/bin/env %s --blent-start-adb-server\n' "$daemon" ;;
         ExecStart=*) printf 'ExecStart=:/usr/bin/env %s%s start\n' "$daemon" "$helper" ;;
         *) printf '%s\n' "$line" ;;
     esac
