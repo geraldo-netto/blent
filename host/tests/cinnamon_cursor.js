@@ -13,7 +13,7 @@ class Signals {
         }
     }
 }
-function fixture(visible = true, existing = [], allowExisting = true) {
+function fixture(visible = true, existing = []) {
     const tracker = new Signals(); tracker.visible = visible; tracker.writes = 0;
     tracker.get_pointer_visible = () => tracker.visible;
     tracker.set_pointer_visible = value => {
@@ -28,7 +28,7 @@ function fixture(visible = true, existing = [], allowExisting = true) {
     const context = { imports: { gi: { GLib, Clutter: { InputDeviceType: { TOUCHSCREEN_DEVICE: 2 },
         get_default_backend: () => ({ get_default_seat: () => seat }) },
         Meta: { CursorTracker: { get_for_display: () => tracker } } } }, global: { display: {} } };
-    assert.equal(vm.runInNewContext(source.replace('__BLENT_DEVICE__', JSON.stringify('Blent Touch')).replace('__BLENT_EXISTING__', String(allowExisting)), context), true);
+    assert.equal(vm.runInNewContext(source.replace('__BLENT_DEVICE__', JSON.stringify('Blent Touch')), context, { filename: process.argv[2] }), true);
     return { tracker, seat, timers, context };
 }
 function device(name = 'Blent Touch', type = 2) { return { get_device_name: () => name, get_device_type: () => type }; }
@@ -44,8 +44,12 @@ for (const initiallyVisible of [true, false]) {
     f.seat.emit('device-removed', own); clean(f);
     f.tracker.set_pointer_visible(false); assert.equal(f.tracker.visible, false, 'policy leaked after retirement');
 }
-// Existing owned device supports live recovery; matching name alone is insufficient.
-const own = device(); const live = fixture(false, [own]); assert.equal(live.tracker.visible, true);
+// T1646: snapshots never admit a preexisting identity, even with the same name.
+const oldDevice = device(); const own = device(); const live = fixture(false, [oldDevice]);
+assert.equal(live.tracker.visible, false, 'T1646: preexisting device was adopted');
+add(live, own); assert.equal(live.tracker.visible, true);
+live.seat.emit('device-removed', oldDevice);
+live.tracker.set_pointer_visible(false); assert.equal(live.tracker.visible, true);
 live.seat.emit('device-removed', own); clean(live);
 for (const foreign of [device('Other Touch'), device('Blent Touch', 1)]) {
     const f = fixture(); add(f, foreign); assert.equal(f.tracker.visible, false);
@@ -54,7 +58,7 @@ for (const foreign of [device('Other Touch'), device('Blent Touch', 1)]) {
 }
 // Multiple tablets remain independent when one retires.
 const f = fixture(); const first = device(); const second = device('Blent Touch 2');
-assert.equal(vm.runInNewContext(source.replace('__BLENT_DEVICE__', JSON.stringify('Blent Touch 2')).replace('__BLENT_EXISTING__', 'true'), f.context), true);
+assert.equal(vm.runInNewContext(source.replace('__BLENT_DEVICE__', JSON.stringify('Blent Touch 2')), f.context, { filename: process.argv[2] }), true);
 add(f, first); add(f, second); assert.equal(f.tracker.visible, true);
 f.seat.emit('device-removed', first);
 f.tracker.set_pointer_visible(false); assert.equal(f.tracker.visible, true);
@@ -65,7 +69,7 @@ console.log('T604 cursor lifecycle scenarios passed');
 // T610: creation must ignore a retiring same-name device in Cinnamon's snapshot.
 for (const removeFirst of [true, false]) {
     const old = device(); const next = device();
-    const pending = fixture(true, [old], false);
+    const pending = fixture(true, [old]);
     if (removeFirst) pending.seat.emit('device-removed', old);
     add(pending, next);
     if (!removeFirst) pending.seat.emit('device-removed', old);

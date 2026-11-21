@@ -27,3 +27,9 @@ Removed `--binaries-only`; prebuilt-bundle tests use `--user-install`. Unknown f
 Removed the obsolete Debian package directory and unused fakeroot/dpkg-deb test commands. Current build prerequisites and uninstall guidance no longer advertise Debian release packaging. Debian package-owner lookup and corresponding-source downloads remain required for AppImage dependencies. The documentation inventory marks its original Debian entry as removed while retaining historical metadata.
 
 Retargeted the three EVDI safety regressions from the removed postinst to the current full system-setup entry, preserving all failure, Xorg deferral, capacity and no-unload assertions. No obsolete implementation remains in fixtures. All 32 setup/package/release/notice tests pass; seven affected test functions have measured complexity <=7. No production executable function changed. Fixtures own their temporary roots and mocked command traces; no kernel or installed package mutation was performed.
+
+## T1646 — dormant cursor adoption
+
+Removed the Cinnamon existing-device parameter and snapshot adoption path; only a newly added device can acquire the policy. The retargeted permanent regression failed before removal by adopting an old same-name device. It now verifies the new identity survives old-device removal and releases every signal/timer on its own removal. Existing foreign-device, expiry, replacement and multi-device assertions remain.
+
+The executable JavaScript lifecycle model and both private Rust cursor tests pass. Rust `script` coverage is 100%; native Node/V8 counters cover every executable statement-start line in all seven policy functions, with nested callbacks measured separately. ESLint 10.15.0 classic cyclomatic scores are <=5 for all 25 policy/fixture functions; the project Rust checker reports <=4 for the two changed Rust functions. This is isolated lifecycle evidence, not a new physical Cinnamon acceptance claim.

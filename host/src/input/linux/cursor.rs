@@ -11,7 +11,6 @@ fn supported(touch: bool, desktop: &str, session: &str) -> bool {
 
 fn script(name: &str) -> String {
     include_str!("cinnamon_cursor.js")
-        .replace("__BLENT_EXISTING__", "false")
         .replace("__BLENT_DEVICE__", &serde_json::to_string(name).unwrap())
 }
 

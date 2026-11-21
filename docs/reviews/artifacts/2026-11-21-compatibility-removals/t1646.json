@@ -1,0 +1,220 @@
+{
+  "issue": "T1646",
+  "red": "T1646: preexisting device was adopted",
+  "green": "1 JavaScript lifecycle suite and 2 Rust cursor tests passed.",
+  "rust_coverage": [
+    {
+      "file": "host/src/input/linux/cursor.rs",
+      "name": "script",
+      "line": 12,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "javascript_coverage": {
+    "tool": "Node.js v24.18.0 V8 native counters, Espree 11.2.0",
+    "scope": "Executable statement start lines, nested functions counted independently; rendered names change only final invocation offsets.",
+    "file": "host/src/input/linux/cinnamon_cursor.js",
+    "functions": [
+      {
+        "name": "<callback>",
+        "line": 3,
+        "covered": 8,
+        "total": 8,
+        "percent": 100
+      },
+      {
+        "name": "show",
+        "line": 8,
+        "covered": 1,
+        "total": 1,
+        "percent": 100
+      },
+      {
+        "name": "cleanup",
+        "line": 11,
+        "covered": 5,
+        "total": 5,
+        "percent": 100
+      },
+      {
+        "name": "adopt",
+        "line": 18,
+        "covered": 7,
+        "total": 7,
+        "percent": 100
+      },
+      {
+        "name": "<callback>",
+        "line": 27,
+        "covered": 1,
+        "total": 1,
+        "percent": 100
+      },
+      {
+        "name": "<callback>",
+        "line": 28,
+        "covered": 1,
+        "total": 1,
+        "percent": 100
+      },
+      {
+        "name": "<callback>",
+        "line": 31,
+        "covered": 3,
+        "total": 3,
+        "percent": 100
+      }
+    ]
+  },
+  "javascript_complexity": {
+    "tool": "ESLint",
+    "version": "10.15.0",
+    "results": [
+      {
+        "file": "host/src/input/linux/cinnamon_cursor.js",
+        "functions": [
+          {
+            "line": 3,
+            "description": "Function has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 8,
+            "description": "Function 'show' has a complexity of 2. Maximum allowed is 0.",
+            "complexity": 2
+          },
+          {
+            "line": 11,
+            "description": "Function 'cleanup' has a complexity of 5. Maximum allowed is 0.",
+            "complexity": 5
+          },
+          {
+            "line": 18,
+            "description": "Function 'adopt' has a complexity of 5. Maximum allowed is 0.",
+            "complexity": 5
+          },
+          {
+            "line": 27,
+            "description": "Arrow function has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 28,
+            "description": "Arrow function has a complexity of 2. Maximum allowed is 0.",
+            "complexity": 2
+          },
+          {
+            "line": 31,
+            "description": "Arrow function has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          }
+        ]
+      },
+      {
+        "file": "host/tests/cinnamon_cursor.js",
+        "functions": [
+          {
+            "line": 7,
+            "description": "Constructor has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 8,
+            "description": "Method 'connect' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 9,
+            "description": "Method 'disconnect' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 10,
+            "description": "Method 'emit' has a complexity of 3. Maximum allowed is 0.",
+            "complexity": 3
+          },
+          {
+            "line": 16,
+            "description": "Function 'fixture' has a complexity of 3. Maximum allowed is 0.",
+            "complexity": 3
+          },
+          {
+            "line": 18,
+            "description": "Arrow function has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 19,
+            "description": "Arrow function has a complexity of 2. Maximum allowed is 0.",
+            "complexity": 2
+          },
+          {
+            "line": 23,
+            "description": "Arrow function has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 26,
+            "description": "Method 'timeout_add' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 27,
+            "description": "Method 'source_remove' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 29,
+            "description": "Method 'get_default_backend' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 29,
+            "description": "Method 'get_default_seat' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 30,
+            "description": "Method 'get_for_display' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 34,
+            "description": "Function 'device' has a complexity of 3. Maximum allowed is 0.",
+            "complexity": 3
+          },
+          {
+            "line": 34,
+            "description": "Method 'get_device_name' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 34,
+            "description": "Method 'get_device_type' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 35,
+            "description": "Function 'add' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          },
+          {
+            "line": 36,
+            "description": "Function 'clean' has a complexity of 1. Maximum allowed is 0.",
+            "complexity": 1
+          }
+        ]
+      }
+    ]
+  },
+  "rust_complexity": [
+    "host/src/input/linux/cursor.rs:12\tscript\t1",
+    "host/src/input/linux/cursor/tests.rs:8\tt604_policy_is_scoped_to_enabled_cinnamon_x11_touch\t4",
+    "2 functions; 0 exceed cyclomatic complexity 9"
+  ]
+}
