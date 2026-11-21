@@ -25,11 +25,15 @@ internal class CameraLiveTuning(
         android.util.Log.i("BlentCamera", "adjustment=$revision status=$status")
     }
     private fun apply(command: CameraTuningCommand) {
-        if (accepted?.sensor != command.sensor) sensor(command.sensor)
-        if (!sameEncoding(command)) encoding(command)
+        val previous = accepted
+        // Native calls can take effect before throwing. Never deduplicate a
+        // later retry/revert against a command whose native state is uncertain.
+        accepted = null
+        if (previous?.sensor != command.sensor) sensor(command.sensor)
+        if (!sameEncoding(previous, command)) encoding(command)
     }
-    private fun sameEncoding(command: CameraTuningCommand): Boolean {
-        val previous = accepted ?: return false
+    private fun sameEncoding(previous: CameraTuningCommand?, command: CameraTuningCommand): Boolean {
+        if (previous == null) return false
         return previous.bitrate == command.bitrate && previous.floor == command.floor && previous.adaptive == command.adaptive
     }
 }

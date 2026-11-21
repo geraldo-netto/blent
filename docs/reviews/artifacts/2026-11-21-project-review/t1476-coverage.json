@@ -1,0 +1,94 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/CameraLiveTuning.kt",
+    "name": "<init>",
+    "line": 3,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/CameraLiveTuning.kt",
+        "owner": "com/blent/CameraLiveTuning",
+        "name": "<init>",
+        "signature": "(Lcom/blent/CameraTuningCapabilities;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V",
+        "line": 5,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/CameraLiveTuning.kt",
+    "name": "accept",
+    "line": 14,
+    "language": "kotlin",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/CameraLiveTuning.kt",
+        "owner": "com/blent/CameraLiveTuning",
+        "name": "accept",
+        "signature": "(Lcom/blent/CameraTuningCommand;)V",
+        "line": 15,
+        "covered": 12,
+        "total": 12
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/CameraLiveTuning.kt",
+    "name": "apply",
+    "line": 27,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/CameraLiveTuning.kt",
+        "owner": "com/blent/CameraLiveTuning",
+        "name": "apply",
+        "signature": "(Lcom/blent/CameraTuningCommand;)V",
+        "line": 28,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/CameraLiveTuning.kt",
+    "name": "sameEncoding",
+    "line": 35,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/CameraLiveTuning.kt",
+        "owner": "com/blent/CameraLiveTuning",
+        "name": "sameEncoding",
+        "signature": "(Lcom/blent/CameraTuningCommand;Lcom/blent/CameraTuningCommand;)Z",
+        "line": 36,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  }
+]

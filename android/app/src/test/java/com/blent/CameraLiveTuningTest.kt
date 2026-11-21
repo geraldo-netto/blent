@@ -56,4 +56,20 @@ class CameraLiveTuningTest {
         assertThrows(IllegalArgumentException::class.java) { rate.configure(3000,1000,true,-1) }
         assertEquals(1000,rate.configure(1000,3000,true,7))
     }
+    @Test fun t1476_partialNativeFailureCannotAcknowledgeARevertWithoutRestoringTheSensor() {
+        var actual = CameraSensorTuning()
+        var failEncoding = false
+        val live = CameraLiveTuning(CameraTuningCapabilities(-2, 2, 1, 1, false, 1, 1),
+            { actual = it }, { if (failEncoding) throw IllegalStateException("encoder rejected") })
+        live.accept(command())
+        failEncoding = true
+        live.accept(command(2).copy(sensor = CameraSensorTuning(exposureHundredths = 100), bitrate = 2000))
+        assertEquals(2, live.status)
+        assertEquals(100, actual.exposureHundredths)
+        failEncoding = false
+        live.accept(command(3))
+        assertEquals(0, live.status)
+        assertEquals("T1476 success must describe the actual restored sensor", CameraSensorTuning(), actual)
+    }
+
 }
