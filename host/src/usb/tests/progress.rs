@@ -179,6 +179,8 @@ async fn t1381_monitor_attaches_healthy_device_and_observes_its_removal() {
         "List of devices attached\nslow-a\tdevice\nslow-b\tdevice\n".into();
     monitor.poll().await;
     let removed = monitor.sessions().is_empty();
+    assert!(monitor.shutdown().await.is_err());
+    adb.0.fake.0.lock().unwrap().inventory = "List of devices attached\nUSB\tdevice\n".into();
     monitor.shutdown().await.unwrap();
     assert_eq!(attached.len(), 1, "T1381: healthy attachment starved");
     assert_eq!(attached[0].identity.adb_serial(), Some("USB"));

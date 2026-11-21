@@ -17,8 +17,19 @@ struct State {
     installed: bool,
     identities: BTreeMap<String, String>,
 }
-#[derive(Clone, Default)]
+#[derive(Clone)]
 pub(super) struct Fake(Arc<Mutex<State>>);
+impl Default for Fake {
+    fn default() -> Self {
+        Self(Arc::new(Mutex::new(State {
+            inventory: "List of devices attached\nUSB\tdevice\n".into(),
+            ..Default::default()
+        })))
+    }
+}
+pub(super) fn set_inventory(adb: &Adb<Fake>, listing: &str) {
+    adb.0 .0.lock().unwrap().inventory = listing.into();
+}
 fn output(code: u32, text: &str) -> Output {
     #[cfg(unix)]
     let status = {
@@ -761,9 +772,13 @@ async fn t525_two_slots_preserve_assignments_and_cleanup_independently() {
     adb.0 .0.lock().unwrap().inventory = "List of devices attached\nOTHER\tdevice\n".into();
     monitor.poll().await;
     assert_eq!(monitor.sessions(), vec![sessions[1].clone()]);
-    assert!(adb.0 .0.lock().unwrap().routes.is_empty());
+    assert!(!adb.0 .0.lock().unwrap().routes.is_empty());
     assert_eq!(adb.0 .0.lock().unwrap().other_routes["OTHER"].len(), 2);
+    assert!(monitor.shutdown().await.is_err());
+    adb.0 .0.lock().unwrap().inventory =
+        "List of devices attached\nUSB\tdevice\nOTHER\tdevice\n".into();
     monitor.shutdown().await.unwrap();
+    assert!(adb.0 .0.lock().unwrap().routes.is_empty());
     assert!(adb.0 .0.lock().unwrap().other_routes["OTHER"].is_empty());
 }
 
@@ -805,6 +820,8 @@ async fn t1386_malformed_serial_preserves_connected_attachment_and_credential() 
             "T650: old authenticated lease was retired"
         );
     }
+    assert!(monitor.shutdown().await.is_err());
+    adb.0 .0.lock().unwrap().inventory = "List of devices attached\nUSB\tdevice\n".into();
     monitor.shutdown().await.unwrap();
 }
 
@@ -968,6 +985,9 @@ async fn t691_network_reconnect_rereads_saved_address_and_bounds_inventory() {
     adb.0 .0.lock().unwrap().inventory = "List of devices attached\n".into();
     monitor.poll().await;
     assert!(monitor.sessions().is_empty());
+    assert!(monitor.shutdown().await.is_err());
+    adb.0 .0.lock().unwrap().inventory =
+        "List of devices attached\n192.0.2.2:5555\tdevice\n".into();
     monitor.shutdown().await.unwrap();
 }
 
@@ -994,6 +1014,7 @@ async fn t691_absent_inventory_cleanup_requires_reconfirmed_identity() {
     assert!(!adb.0 .0.lock().unwrap().routes.is_empty());
     assert!(monitor.shutdown().await.is_err());
     adb.0 .0.lock().unwrap().fail = None;
+    adb.0 .0.lock().unwrap().inventory = "List of devices attached\nUSB\tdevice\n".into();
     monitor.shutdown().await.unwrap();
     assert!(adb.0 .0.lock().unwrap().routes.is_empty());
 }

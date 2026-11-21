@@ -301,6 +301,13 @@ its original effect, and failed removal retains its outcome. Matching preexistin
 and unrelated mappings remain externally owned. Network aliases require a physical
 tablet identity before admission, and cleanup rechecks that identity. Stable USB
 serial ownership remains available when the device exposes no separate identity.
+Retained display cleanup checks a validated ADB inventory before device-specific
+identity and mapping queries. An absent selected serial retains every obligation
+without those device queries. Failed or unsettled cleanup backs off from 100 ms
+through 200, 400, 800, 1600 and 3200 ms to a five-second cap, plus command time;
+a returning device can wait up to five seconds for its next observation. Every
+query still waits for its original command fence. Native unplug/replug CPU and
+process-rate acceptance remains unmeasured.
 Native display leases use separate device and local-port namespaces: a SHA-256
 identity digest names each device lock, and each port has an exact numeric lock.
 Lock files remain until runtime-directory cleanup so every waiter sees the same

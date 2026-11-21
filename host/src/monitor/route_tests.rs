@@ -69,6 +69,11 @@ fn fixture(listing: &str) -> (tempfile::TempDir, Monitor, PathBuf) {
         &adb,
         r#"#!/bin/sh
 printf '%s\n' "$*" >> "$0.log"
+if [ "$1" = devices ]; then
+    printf 'List of devices attached\n'
+    [ -f "$0.offline" ] || printf 'USB\tdevice\n'
+    exit 0
+fi
 [ "$3" = reverse ] || { cat >/dev/null; exit 0; }
 case "$4" in
 --list) [ ! -f "$0.offline" ] || exit 1; cat "$0.listing"; exit 0 ;;

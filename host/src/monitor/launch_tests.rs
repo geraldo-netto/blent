@@ -8,7 +8,7 @@ fn adb(root: &std::path::Path) -> PathBuf {
         &path,
         r#"#!/bin/sh
 if [ "$1" = version ]; then exit 0; fi
-if [ "$1" = devices ]; then printf 'List of devices attached\n'; exit 0; fi
+if [ "$1" = devices ]; then printf 'List of devices attached\nUSB\tdevice\nOTHER\tdevice\n192.0.2.8:5555\tdevice\n'; exit 0; fi
 if [ "$4" = getprop ]; then echo same-tablet; exit 0; fi
 if [ "$4" = pm ]; then echo package:/base.apk; exit 0; fi
 if [ "$3" = reverse ]; then

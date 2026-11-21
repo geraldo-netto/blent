@@ -74,7 +74,8 @@ async fn t1410_pending_native_session_excludes_its_slot_and_serial() {
 
 #[tokio::test]
 async fn t1410_retirement_preserves_sibling_progress_and_original_slot_recovery() {
-    let (_, mut monitor, _stop, ports) = super::super::tests::monitor_fixture().await;
+    let (adb, mut monitor, _stop, ports) = super::super::tests::monitor_fixture().await;
+    super::super::tests::set_inventory(&adb, "List of devices attached\nUSB\tdevice\nB\tdevice\n");
     monitor.config.max_tablets = 2;
     monitor.ports = blent_config::slot_ports(ports.0, ports.1, 2).unwrap();
     monitor.slots.push(None);

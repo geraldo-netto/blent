@@ -1,5 +1,7 @@
 use super::*;
 use blent_config::adb_reverse::temporary::{self, Cleanup, Creation};
+#[cfg(test)]
+mod tests;
 
 struct State<C> {
     adb: Adb<C>,
@@ -59,9 +61,13 @@ impl<C: Commands> State<C> {
     }
     async fn serial(&self) -> Result<String> {
         let serial = self.control.serial.lock().unwrap().clone();
+        self.check_identity(&serial).await?;
+        Ok(serial)
+    }
+    async fn check_identity(&self, serial: &str) -> Result<()> {
         match &self.physical {
             Some(identity) => ensure!(
-                physical(&self.adb, &serial).await?.as_str() == identity,
+                physical(&self.adb, serial).await?.as_str() == identity,
                 "Display route transport identity changed"
             ),
             None => ensure!(
@@ -69,6 +75,18 @@ impl<C: Commands> State<C> {
                 "USB serial cannot retarget without physical identity"
             ),
         }
+        Ok(())
+    }
+    async fn cleanup_serial(&self) -> Result<String> {
+        let serial = self.control.serial.lock().unwrap().clone();
+        let listing = checked(&self.adb, vec!["devices".into()]).await?;
+        let devices = crate::adb_inventory::entries(&listing)
+            .context("Display route inventory is invalid")?;
+        ensure!(
+            devices.iter().any(|(device, _)| *device == serial),
+            "Display route tablet absent; original cleanup retained"
+        );
+        self.check_identity(&serial).await?;
         Ok(serial)
     }
     async fn serve(
@@ -166,6 +184,7 @@ impl<C: Commands> State<C> {
         Ok(())
     }
     async fn cleanup(&mut self, failure: &watch::Sender<Option<String>>) {
+        let mut retry = crate::cleanup_retry::Retry::new();
         loop {
             match self.cleanup_once().await {
                 Ok(true) => return,
@@ -181,7 +200,7 @@ impl<C: Commands> State<C> {
                     failure.send_replace(Some(error.to_string()));
                 }
             }
-            tokio::time::sleep(Duration::from_millis(100)).await;
+            tokio::time::sleep(retry.next()).await;
         }
     }
     async fn cleanup_once(&mut self) -> Result<bool> {
@@ -192,7 +211,7 @@ impl<C: Commands> State<C> {
         {
             return Ok(true);
         }
-        let serial = self.serial().await?;
+        let serial = self.cleanup_serial().await?;
         let listing = listing(&self.adb, &serial).await?;
         for index in 0..2 {
             self.cleanup_route(index, &serial, &listing).await?;

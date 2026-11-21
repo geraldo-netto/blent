@@ -6,6 +6,7 @@ fn identity_adb(root: &std::path::Path) -> PathBuf {
     std::fs::write(
         &adb,
         r#"#!/bin/sh
+if [ "$1" = devices ]; then printf 'List of devices attached\nOLD\tdevice\nNEW\tdevice\n'; exit 0; fi
 if [ "$4" = getprop ]; then cat "$0.$2"; exit; fi
 if [ "$4" = pm ]; then echo package:/app/blent.apk; fi
 "#,

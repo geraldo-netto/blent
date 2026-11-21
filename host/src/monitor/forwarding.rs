@@ -64,6 +64,7 @@ mod tests {
             &adb,
             r#"#!/bin/sh
 printf '%s\n' "$*" >> "$0.args"
+if [ "$1" = devices ]; then printf 'List of devices attached\nUSB\tdevice\n'; exit 0; fi
 if [ "$4" = --list ]; then
     if [ -f "$0.list-fail" ]; then exit 1; fi
     cat "$0.listing"

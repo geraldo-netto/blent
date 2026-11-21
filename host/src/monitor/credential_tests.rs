@@ -9,6 +9,10 @@ fn fixture(root: &std::path::Path) -> Monitor {
         &adb,
         r#"#!/bin/sh
 printf '%s\n' "$*" >> "$0.actions"
+if [ "$1" = devices ]; then
+    printf 'List of devices attached\nUSB\tdevice\nUSB-A\tdevice\nUSB-B\tdevice\n192.0.2.5:5555\tdevice\n'
+    exit 0
+fi
 if [ "$3" = shell ] && [ "$4" = getprop ]; then
     case "$2" in USB-A|192.0.2.5:5555) echo physical-A ;; *) echo "$2" ;; esac
     exit 0
