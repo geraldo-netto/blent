@@ -336,3 +336,8 @@ The permanent regression starts both native failure paths behind a pthread barri
 The three maintained production functions have 100%, 85.71% and 100% executable-line coverage (GCC/gcov 13.3.0). The fatal _Exit statement is exercised by the subprocess regression but cannot flush its own coverage counters; this remains visible as the one uncovered line. All 49 measured functions in affected production/test files have complexity <=9 (project tree-sitter 0.25.2, C grammar 0.24.2, Python AST 3.12).
 
 The process owns its USB state, lock and both native directions. One scalar mode is set by the main thread before pthread creation and remains immutable afterward. No thread frees shared libusb state while another transfer can access it; process exit ends both directions, and the existing supervisor retains admission until original process retirement is observed. The fixture's barrier and callbacks are process-scoped. No physical disconnect acceptance or unrestricted native safety claim is made.
+
+
+## Android integration checkpoint
+
+The complete Android unit suite passes all 2970 cases, with zero failures, errors or skips, after the decoder retirement, inventory, watchdog, TLS and bitrate changes. This is Robolectric/JVM evidence. T1486 remains open: the earlier joined-speaker failure was not reproduced or explained, and another successful full run does not establish its cause or resolution. Installed host/tablet applications were not changed during these source fixes.
