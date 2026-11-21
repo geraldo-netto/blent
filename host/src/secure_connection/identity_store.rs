@@ -10,8 +10,10 @@ pub const MAX_RECORD: usize = 16 + MAX_CERTIFICATE + MAX_PRIVATE_KEY;
 /// is conclusive only when no interrupted initialization exists. reserve() must
 /// durably record initialization BEFORE key generation. publish() atomically
 /// installs the complete record without overwriting any existing identity.
-/// Any failure preserves existing/pending state; callers must not retry with a
-/// replacement key or use a generated identity before publication succeeds.
+/// Failure preserves existing/pending state. A restart may finish a validated
+/// complete original record; it must never replace an incomplete key implicitly
+/// or use a generated identity before publication succeeds. Explicit identity
+/// reset must also retire every saved approval bound to the old identity.
 pub trait IdentityStorage {
     fn load(&mut self) -> Result<Option<Vec<u8>>>;
     fn reserve(&mut self) -> Result<()>;

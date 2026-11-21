@@ -4,6 +4,7 @@ use super::*;
 
 impl LinuxTrustStore {
     pub(super) fn recover(&self) -> Result<()> {
+        self.directory.ensure_absent(c"identity.reset")?;
         if self.directory.read(c"trust.reset", 0)?.is_some() {
             self.directory.sync()?;
             return self.finish_reset();

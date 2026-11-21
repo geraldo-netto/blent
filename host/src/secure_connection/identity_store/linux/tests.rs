@@ -301,3 +301,207 @@ fn t869_stalled_child() {
         std::thread::park();
     }
 }
+
+#[test]
+fn t1636_restart_finishes_complete_identity_without_generating_a_new_key() {
+    for point in ["record-sync", "rename"] {
+        let root = root();
+        let record = IdentityRecord::generate().unwrap();
+        let expected = record.certificate.clone();
+        let bytes = crate::secure_connection::identity_store::encode(&record).unwrap();
+        let mut store = LinuxIdentityStore::open(root.path()).unwrap();
+        store.reserve().unwrap();
+        FAULT.set(Some((point, false)));
+        let result = store.publish(&bytes);
+        FAULT.set(None);
+        assert!(result.is_err());
+        drop(store);
+        let mut store = LinuxIdentityStore::open(root.path()).unwrap();
+        let identity =
+            load_or_create(&mut store, || panic!("T1636 replaced complete key")).unwrap();
+        assert_eq!(identity.certificate(), expected);
+        assert!(!root.path().join("identity.pending").exists());
+    }
+}
+
+const RESET_POINTS: [&str; 9] = [
+    "reset-intent-sync",
+    "trust.bin",
+    "trust.pending",
+    "trust.next",
+    "trust.reset",
+    "identity.bin",
+    "identity.pending",
+    "reset-remove",
+    "reset-retirement-sync",
+];
+
+fn reset_fixture(root: &Path) {
+    for name in [
+        "trust.bin",
+        "trust.pending",
+        "trust.next",
+        "trust.reset",
+        "identity.bin",
+        "identity.pending",
+    ] {
+        private_file(&root.join(name), b"incomplete record for explicit reset");
+    }
+}
+
+fn reset_complete(root: &Path) {
+    use blent_config::connection::trust::TrustStorage;
+    let mut identity = LinuxIdentityStore::open(root).unwrap();
+    assert!(identity.load().unwrap().is_none());
+    let mut trust = crate::secure_connection::trust_store::LinuxTrustStore::open(root).unwrap();
+    assert!(trust.load().unwrap().is_none());
+    assert!(root.join("identity.lock").is_file());
+    assert!(root.join("trust.lock").is_file());
+    assert!(!root.join("identity.reset").exists());
+    drop(trust);
+    identity.reset().unwrap();
+    load_or_create(&mut identity, IdentityRecord::generate).unwrap();
+}
+
+#[test]
+fn t1636_reset_failure_keeps_all_authority_closed_until_recovery() {
+    use blent_config::connection::trust::TrustStorage;
+    for point in RESET_POINTS {
+        let root = root();
+        reset_fixture(root.path());
+        let mut store = LinuxIdentityStore::open(root.path()).unwrap();
+        FAULT.set(Some((point, false)));
+        let result = store.reset();
+        FAULT.set(None);
+        assert!(result.is_err(), "T1636 reset {point}");
+        if root.path().join("identity.reset").exists() {
+            let mut trust =
+                crate::secure_connection::trust_store::LinuxTrustStore::open(root.path()).unwrap();
+            assert!(trust.load().is_err());
+        }
+        drop(store);
+        reset_complete(root.path());
+    }
+}
+
+#[test]
+fn t1636_reset_crash_child() {
+    let Ok(point) = std::env::var("BLENT_T1636_RESET_POINT") else {
+        return;
+    };
+    let selected = RESET_POINTS
+        .into_iter()
+        .find(|candidate| *candidate == point)
+        .unwrap();
+    let root = std::env::var_os("BLENT_T1636_RESET_DIR").unwrap();
+    let mut store = LinuxIdentityStore::open(Path::new(&root)).unwrap();
+    FAULT.set(Some((selected, true)));
+    let _ = store.reset();
+    panic!("T1636 reset missed crash checkpoint");
+}
+
+#[test]
+fn t1636_reset_survives_original_process_exit_at_each_transition() {
+    for point in RESET_POINTS {
+        let root = root();
+        reset_fixture(root.path());
+        let mut command = std::process::Command::new(std::env::current_exe().unwrap());
+        command
+            .args([
+                "--exact",
+                "secure_connection::identity_store::linux::tests::t1636_reset_crash_child",
+                "--nocapture",
+            ])
+            .env("BLENT_T1636_RESET_POINT", point)
+            .env("BLENT_T1636_RESET_DIR", root.path());
+        let output = crash_output(&mut command, std::time::Duration::from_secs(10)).unwrap();
+        assert_eq!(output.status.code(), Some(86));
+        reset_complete(root.path());
+    }
+}
+
+#[test]
+fn t1636_reset_rejects_live_trust_owner_and_in_progress_initialization() {
+    let root = root();
+    reset_fixture(root.path());
+    let mut identity = LinuxIdentityStore::open(root.path()).unwrap();
+    let trust = crate::secure_connection::trust_store::LinuxTrustStore::open(root.path()).unwrap();
+    assert!(identity.reset().is_err());
+    assert!(!root.path().join("identity.reset").exists());
+    assert_eq!(
+        std::fs::read(root.path().join("trust.bin")).unwrap(),
+        b"incomplete record for explicit reset"
+    );
+    drop(trust);
+    identity.reset().unwrap();
+    identity.reserve().unwrap();
+    assert!(identity.reset().is_err());
+    assert!(identity.load().is_err());
+    assert!(root.path().join("identity.pending").is_file());
+}
+
+#[test]
+fn t1636_every_truncated_identity_requires_explicit_reset() {
+    let bytes =
+        crate::secure_connection::identity_store::encode(&IdentityRecord::generate().unwrap())
+            .unwrap();
+    for size in 0..bytes.len() {
+        let root = root();
+        private_file(&root.path().join("identity.pending"), &bytes[..size]);
+        let mut store = LinuxIdentityStore::open(root.path()).unwrap();
+        assert!(
+            store.load().is_err(),
+            "T1636 truncated record length {size}"
+        );
+        assert_eq!(
+            std::fs::metadata(root.path().join("identity.pending"))
+                .unwrap()
+                .len(),
+            size as u64
+        );
+        store.reset().unwrap();
+        assert!(store.load().unwrap().is_none());
+    }
+}
+
+#[test]
+fn t1636_failed_recovery_retries_the_same_key() {
+    let record = IdentityRecord::generate().unwrap();
+    let bytes = crate::secure_connection::identity_store::encode(&record).unwrap();
+    for point in ["recovery-rename", "recovery-sync"] {
+        let root = root();
+        private_file(&root.path().join("identity.pending"), &bytes);
+        let mut store = LinuxIdentityStore::open(root.path()).unwrap();
+        FAULT.set(Some((point, false)));
+        let result = store.load();
+        FAULT.set(None);
+        assert!(result.is_err());
+        drop(store);
+        let mut store = LinuxIdentityStore::open(root.path()).unwrap();
+        let loaded =
+            load_or_create(&mut store, || panic!("T1636 recovery rotated identity")).unwrap();
+        assert_eq!(loaded.certificate(), record.certificate);
+    }
+}
+
+#[test]
+fn t1636_invalid_key_and_conflicting_records_remain_closed() {
+    let record = IdentityRecord::generate().unwrap();
+    let bytes = crate::secure_connection::identity_store::encode(&record).unwrap();
+    let root = root();
+    private_file(&root.path().join("identity.bin"), &bytes);
+    private_file(&root.path().join("identity.pending"), &bytes);
+    let mut store = LinuxIdentityStore::open(root.path()).unwrap();
+    assert!(store.load().is_err());
+    store.reset().unwrap();
+    let mismatched = IdentityRecord {
+        certificate: record.certificate,
+        private_key: IdentityRecord::generate().unwrap().private_key,
+    };
+    let bad = crate::secure_connection::identity_store::encode(&mismatched).unwrap();
+    private_file(&root.path().join("identity.pending"), &bad);
+    assert!(store.load().is_err());
+    assert!(!root.path().join("identity.bin").exists());
+    store.reset().unwrap();
+    assert!(store.load().unwrap().is_none());
+}

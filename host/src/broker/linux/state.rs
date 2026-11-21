@@ -12,7 +12,8 @@ use blent_config::connection::trust::Trust;
 use std::{path::Path, sync::Arc};
 
 /// Caller supplies an existing private directory. Store adapters reject unsafe
-/// paths and interrupted transactions and hold stable exclusive lifetime locks.
+/// paths, recover complete original intents and hold stable exclusive lifetime
+/// locks. Incomplete transactions require explicitly confirmed repair.
 pub fn open(path: &Path, capacity: usize) -> Result<Initialized<LinuxTrustStore>> {
     let mut identity_owner = LinuxIdentityStore::open(path)?;
     let identity = load_or_create(&mut identity_owner, IdentityRecord::generate)?;

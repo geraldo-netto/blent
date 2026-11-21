@@ -25,6 +25,14 @@ impl Directory {
             .context("private record store already owned")?;
         Ok(Self { file, _lock: lock })
     }
+    /// Acquire an additional stable store lock through this pinned directory.
+    /// The caller retains the returned descriptor through its entire workflow.
+    pub(super) fn lock(&self, name: &CStr) -> Result<File> {
+        let lock = self.child(name, libc::O_RDWR | libc::O_CREAT)?;
+        lock.try_lock()
+            .context("private record store already owned")?;
+        Ok(lock)
+    }
     pub(super) fn child(&self, name: &CStr, flags: i32) -> Result<File> {
         let file = child(&self.file, name, flags)?;
         private(&file, false)?;

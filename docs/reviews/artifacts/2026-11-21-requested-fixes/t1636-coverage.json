@@ -1,0 +1,92 @@
+[
+  {
+    "file": "host/src/secure_connection/identity_store/linux.rs",
+    "name": "load",
+    "line": 33,
+    "language": "rust",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/secure_connection/identity_store/linux.rs",
+    "name": "reserve",
+    "line": 37,
+    "language": "rust",
+    "covered": 16,
+    "total": 16,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/secure_connection/identity_store/linux/recovery.rs",
+    "name": "recover",
+    "line": 7,
+    "language": "rust",
+    "covered": 21,
+    "total": 22,
+    "percent": 95.45454545454545,
+    "passes": true,
+    "missing": [
+      25
+    ]
+  },
+  {
+    "file": "host/src/secure_connection/identity_store/linux/recovery.rs",
+    "name": "reset",
+    "line": 37,
+    "language": "rust",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/secure_connection/identity_store/linux/recovery.rs",
+    "name": "reset_records",
+    "line": 45,
+    "language": "rust",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/secure_connection/identity_store/linux/recovery.rs",
+    "name": "erase_records",
+    "line": 60,
+    "language": "rust",
+    "covered": 17,
+    "total": 17,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/secure_connection/private_directory.rs",
+    "name": "lock",
+    "line": 30,
+    "language": "rust",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/secure_connection/trust_store/recovery.rs",
+    "name": "recover",
+    "line": 6,
+    "language": "rust",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

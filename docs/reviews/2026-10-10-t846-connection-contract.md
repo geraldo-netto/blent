@@ -703,8 +703,13 @@ revocation and full channel/media integration remain T846 work.
 behind an independent storage interface. Its Linux adapter holds an exclusive stable
 lock in a descriptor-pinned private directory. A durable pending record precedes
 generation; complete state is synced and atomically published without replacement.
-Malformed, unsafe or interrupted state fails closed and remains available for explicit
-repair. Existing keys never silently rotate. [Validation](artifacts/2026-10-10-t867/README.md)
+T1636 now finishes a complete interrupted identity only after parsing its original
+certificate and matching private key; publication never replaces an existing file.
+Malformed, unsafe or conflicting state fails closed for explicit repair. Confirmed
+identity reset holds both identity and trust locks and durably removes all approvals
+bound to the former key before allowing new initialization. Interrupted resets finish
+first; the host repair entry remains tracked under T1597. Existing keys never silently
+rotate. [Validation](artifacts/2026-10-10-t867/README.md)
 covers restart, concurrent ownership, bounded invalid input and crash/failure boundaries.
 
 This is storage readiness only: T868 supplies peer trust, T852 composes TLS/pairing,

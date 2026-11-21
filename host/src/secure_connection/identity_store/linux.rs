@@ -31,11 +31,11 @@ impl LinuxIdentityStore {
 }
 impl IdentityStorage for LinuxIdentityStore {
     fn load(&mut self) -> Result<Option<Vec<u8>>> {
-        // A pending file is never ignored, even if someone supplied a final file.
-        self.no_pending()?;
+        self.recover()?;
         self.read_identity()
     }
     fn reserve(&mut self) -> Result<()> {
+        self.recover()?;
         ensure!(self.read_identity()?.is_none(), "identity already exists");
         self.no_pending()?;
         let file = self.directory.child(
@@ -79,5 +79,6 @@ impl IdentityStorage for LinuxIdentityStore {
     }
 }
 
+mod recovery;
 #[cfg(test)]
 mod tests;

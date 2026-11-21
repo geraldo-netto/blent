@@ -1,0 +1,39 @@
+{
+  "issue": "T1636",
+  "parent": "T1597",
+  "before": {
+    "tests": 1,
+    "failed": 1,
+    "log": "/tmp/blent-t1636-red.log"
+  },
+  "after": {
+    "tests": 54,
+    "failed": 0,
+    "ignored": 0,
+    "log": "/tmp/blent-t1636-coverage.log",
+    "reset_failures": 9,
+    "reset_process_exits": 9,
+    "recovery_failures": 2,
+    "truncation_domain": "every proper prefix of one generated complete identity record",
+    "additional_cases": [
+      "original key reuse",
+      "mismatched key",
+      "conflicting records",
+      "live trust lock",
+      "active identity reservation",
+      "trust rejection while identity reset is pending"
+    ]
+  },
+  "coverage": {
+    "methods": 8,
+    "minimum_percent": 95.4545,
+    "tool": "Rust 1.100.0 LLVM, cargo-llvm-cov 0.8.7, project per-function inventory"
+  },
+  "complexity": {
+    "functions": 54,
+    "over_nine": 0,
+    "tool": "project Rust syn 2.0.119 checker"
+  },
+  "ownership": "Original identity lock and pinned directory own recovery. Reset acquires the stable trust lock before creating intent, retains both through synchronous erasure, and leaves an empty identity.reset marker on failure. Trust loads reject that marker. Identity and trust records retain their existing 8208/65624-byte bounds; temporary validation holds bounded parsed certificate/key data and makes no physical-erasure claim. Incomplete/corrupt state cannot rotate a key without explicit reset. Conditional eventual settlement requires filesystem success and previous-owner retirement.",
+  "integration": "T1597 still owns confirmed repair CLI and full broker restart acceptance; startup T1637/T1638 remain."
+}
