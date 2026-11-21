@@ -185,3 +185,6 @@ async fn tablet_ip<C: Commands + Clone + 'static>(adb: &Adb<C>, serial: &str) ->
     }
     None
 }
+
+#[cfg(all(test, unix))]
+mod selection_tests;

@@ -159,16 +159,6 @@ fn effective_config(cli: &Cli, saved: &config::FileConfig) -> config::FileConfig
 
 #[cfg(test)]
 mod cli_tests {
-    // T755: fixture adapter; production discovery uses the shared selection path.
-    async fn wifi_device_with(devices: &[String], adb: &str) -> Option<String> {
-        let usb: Vec<_> = devices
-            .iter()
-            .filter(|s| transport_of(s) == Transport::Usb)
-            .cloned()
-            .collect();
-        app_devices_with(&usb, adb).await.into_iter().next()
-    }
-
     #[test]
     fn t250_activity_and_token_targets_use_fork_package_and_original_classes() {
         let with_token = super::app_launch_command(Some(&"a".repeat(64)));
@@ -190,8 +180,14 @@ if [ "$6" = io.github.geraldo_netto.blent ] && [ "$2" = FORK ]; then echo packag
 exit 1
 "#).unwrap();
         std::fs::set_permissions(&adb, std::fs::Permissions::from_mode(0o700)).unwrap();
-        assert!(!super::app_installed_with("UPSTREAM", adb.to_str().unwrap()).await);
-        assert!(super::app_installed_with("FORK", adb.to_str().unwrap()).await);
+        assert_eq!(
+            super::app_presence_with("UPSTREAM", adb.to_str().unwrap()).await,
+            Some(false)
+        );
+        assert_eq!(
+            super::app_presence_with("FORK", adb.to_str().unwrap()).await,
+            Some(true)
+        );
     }
 
     #[test]
@@ -1008,8 +1004,20 @@ printf '%s\n' "$2" >> "$0.log"
         assert_eq!(sorted_launches(&log), expected);
     }
 
+    // T1661: exercise the current incremental discovery owner, then its selector.
+    async fn observed_devices(devices: &[String], adb: &str) -> Vec<String> {
+        let mut discovery = crate::discovery::Discovery::new();
+        discovery.refresh(devices.to_vec(), adb);
+        while !discovery.initial_probes_finished() {
+            discovery.next().await;
+        }
+        let eligible = discovery.eligible();
+        discovery.stop().await;
+        eligible
+    }
+
     #[tokio::test]
-    async fn t142_every_slot_and_wifi_setup_require_the_app() {
+    async fn t142_every_display_slot_requires_the_app() {
         use std::os::unix::fs::PermissionsExt;
         let root = tempfile::tempdir().unwrap();
         let adb = root.path().join("adb");
@@ -1017,33 +1025,28 @@ printf '%s\n' "$2" >> "$0.log"
         std::fs::set_permissions(&adb, std::fs::Permissions::from_mode(0o700)).unwrap();
         let adb = adb.to_str().unwrap();
         let network = ["PHONE", "192.0.2.1:5555"].map(String::from);
+        let eligible = observed_devices(&network, adb).await;
         assert_eq!(
-            pick_device_with(&network, None, adb).await.as_deref(),
+            select_tablet(&eligible, None).as_deref(),
             Some("192.0.2.1:5555")
         );
         assert_eq!(
-            pick_device_with(&network, Some("PHONE"), adb)
-                .await
-                .as_deref(),
+            select_tablet(&eligible, Some("PHONE")).as_deref(),
             Some("192.0.2.1:5555")
         );
-        assert_eq!(wifi_device_with(&network, adb).await, None);
         let devices = ["PHONE", "TABLET_A", "TABLET_B"].map(String::from);
-        let eligible = app_devices_with(&devices, adb).await;
-        let primary = pick_device_with(&devices, None, adb).await;
+        let eligible = observed_devices(&devices, adb).await;
+        let primary = select_tablet(&eligible, None);
         assert_eq!(primary.as_deref(), Some("TABLET_A"));
         assert_eq!(extra_devices(&eligible, primary.as_deref()), ["TABLET_B"]);
         assert_eq!(
-            wifi_device_with(&devices, adb).await.as_deref(),
-            Some("TABLET_A")
-        );
-        assert_eq!(
-            pick_device_with(&devices, Some("TABLET_B"), adb)
-                .await
-                .as_deref(),
+            select_tablet(&eligible, Some("TABLET_B")).as_deref(),
             Some("TABLET_B")
         );
-        assert_eq!(pick_device_with(&["PHONE".into()], None, adb).await, None);
+        assert_eq!(
+            select_tablet(&observed_devices(&["PHONE".into()], adb).await, None),
+            None
+        );
     }
 
     #[tokio::test]
@@ -1179,41 +1182,6 @@ printf '%s\n' "$2" >> "$0.log"
                 );
             }
         }
-    }
-
-    #[tokio::test]
-    async fn t278_wifi_setup_never_uses_mdns_as_the_usb_prerequisite() {
-        use std::os::unix::fs::PermissionsExt;
-        let root = tempfile::tempdir().unwrap();
-        let adb = root.path().join("adb");
-        std::fs::write(&adb, "#!/bin/sh\nprintf '%s\\n' \"$2\" >> \"$0.log\"\necho package:/data/app/com.blent/base.apk\n").unwrap();
-        std::fs::set_permissions(&adb, std::fs::Permissions::from_mode(0o700)).unwrap();
-        let network = [
-            "adb-TABLET-nonce._adb-tls-connect._tcp",
-            "tablet._adb._tcp.local",
-            "[2001:db8::1]:5555",
-        ]
-        .map(String::from);
-        assert_eq!(
-            wifi_device_with(&network, adb.to_str().unwrap()).await,
-            None
-        );
-        assert!(
-            !adb.with_extension("log").exists(),
-            "T278: wireless transport probed as USB"
-        );
-        let mut both = network.to_vec();
-        both.push("USB_TABLET".into());
-        assert_eq!(
-            wifi_device_with(&both, adb.to_str().unwrap())
-                .await
-                .as_deref(),
-            Some("USB_TABLET")
-        );
-        assert_eq!(
-            std::fs::read_to_string(adb.with_extension("log")).unwrap(),
-            "USB_TABLET\n"
-        );
     }
 
     #[tokio::test]
@@ -2577,12 +2545,6 @@ async fn probe_device_identity(serial: &str, adb: &str) -> Option<(String, Strin
     Some((serial.to_string(), id.to_string()))
 }
 
-/// Filter once before assigning any display slot. Explicit test serials do
-/// not need a real ADB package manager.
-async fn app_installed_with(serial: &str, adb: &str) -> bool {
-    app_presence_with(serial, adb).await == Some(true)
-}
-
 /// Unknown package observations preserve existing assignments (T413), but
 /// cannot admit a newly discovered transport without a successful probe.
 async fn app_presence_with(serial: &str, adb: &str) -> Option<bool> {
@@ -2604,25 +2566,6 @@ async fn app_presence_with(serial: &str, adb: &str) -> Option<bool> {
     package_presence(&out)
 }
 
-async fn app_devices_with(devices: &[String], adb: &str) -> Vec<String> {
-    use futures_util::StreamExt;
-    let work: Vec<_> = devices
-        .iter()
-        .cloned()
-        .map(|serial| {
-            let adb = adb.to_owned();
-            async move { app_installed_with(&serial, &adb).await.then_some(serial) }
-        })
-        .collect();
-    futures_util::stream::iter(work)
-        .buffered(4)
-        .collect::<Vec<_>>()
-        .await
-        .into_iter()
-        .flatten()
-        .collect()
-}
-
 fn select_tablet(devices: &[String], current: Option<&str>) -> Option<String> {
     current
         .filter(|cur| devices.iter().any(|d| d == cur))
@@ -2634,10 +2577,6 @@ fn select_tablet(devices: &[String], current: Option<&str>) -> Option<String> {
                 .cloned()
         })
         .or_else(|| devices.first().cloned())
-}
-
-async fn pick_device_with(devices: &[String], current: Option<&str>, adb: &str) -> Option<String> {
-    select_tablet(&app_devices_with(devices, adb).await, current)
 }
 
 /// The ports the tablet app dials on its own loopback. Fixed in the app

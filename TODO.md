@@ -59,7 +59,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1661 | open | low | small | Remove obsolete CLI tablet-selection helpers after T1516. The f54ed991 release build warns that `host/src/linux_main.rs::app_installed_with`, `app_devices_with` and `pick_device_with` have no production caller; remaining tests and `cli_tests::wifi_device_with` exercise this superseded package-filtered selection instead of current selection paths. Completion: remove the unused implementations, retarget permanent selection and package-observation regressions to current authoritative APIs without weakening their applicable ownership or rejection oracles, and verify focused tests plus a warning-free release build. |
 
 ## Installation and distribution
 

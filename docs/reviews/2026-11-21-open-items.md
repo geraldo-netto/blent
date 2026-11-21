@@ -380,3 +380,10 @@ The private native ADB fixture now emits `connected to <requested endpoint>` on 
 ## T1663 — expose connected inventory in the display retry fixture
 
 The retained T144 native fixture now answers `adb devices` with its actual PRIMARY and EXTRA identities. Its original regression failed because the stricter cleanup correctly refused the fixture's empty, invalid inventory. It now passes unchanged lost-acknowledgement, retry-backoff, both-port, launch-count and original-retirement assertions. This is a fixture correction; production unknown-inventory retention is unchanged. Private route files and child processes retain their existing cleanup sponsor and original completion boundaries. The maintained fixture method remains within complexity 9 under the project Rust syn 2.0.119 checker.
+
+
+## T1661 — remove obsolete tablet-selection implementations
+
+Removed the unused CLI app-installed wrapper, batch package-filter implementation, combined selector and test-only duplicate Wi-Fi selector. Permanent T142/T250 regressions now use current incremental Discovery, package observation and tablet selection; T142's Wi-Fi outcome and T278's mDNS exclusion exercise the actual shared Wi-Fi selector in its own module. No old implementation or compatibility wrapper remains. All applicable app-presence, preferred-tablet, extra-slot, wireless-exclusion and exact probe-count assertions remain.
+
+All 45 CLI tests and both shared Wi-Fi selection tests pass. The Linux release CLI build with native audio/accessory transport completes without warnings. All 120 measured functions in affected source/fixture files have complexity <=9 (project Rust syn 2.0.119). Retained production method bodies are unchanged; there are no new production methods needing coverage counters. The fixture's incremental discovery owner explicitly stops and awaits its original jobs before returning eligible values; native command fixtures remain private and bounded. Installed f54ed991 applications remain running unchanged.
