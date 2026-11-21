@@ -1,0 +1,537 @@
+{
+  "issue": "T1671",
+  "regression_red": "5 runtime assertion failures before implementation: default/missing field, range validation, decoder option, restart detection, GUI label. Initial test compilation error was corrected before this red run.",
+  "regression_green": "6 targeted tests pass; default CLI equality additionally checked.",
+  "verification": {
+    "common_camera_tests": 40,
+    "host_camera_tests": 165,
+    "gui_unit_tests": 260,
+    "gui_process_exit_tests": 2,
+    "gui_startup_tests": 1
+  },
+  "coverage": [
+    {
+      "file": "common/src/camera.rs",
+      "name": "default",
+      "line": 122,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera.rs",
+      "name": "validate",
+      "line": 146,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "command",
+      "line": 21,
+      "language": "rust",
+      "covered": 44,
+      "total": 44,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/camera_settings.rs",
+      "name": "advanced_profile",
+      "line": 365,
+      "language": "rust",
+      "covered": 37,
+      "total": 37,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity_tool": "project Rust syn 2.0.119",
+  "complexity": [
+    [
+      "common/src/camera.rs",
+      103,
+      "is_active",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      122,
+      "default",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      146,
+      "validate",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      168,
+      "validate_freshness",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      180,
+      "validate_dimensions",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      199,
+      "frame_bytes",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      220,
+      "options",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      228,
+      "t938_unchecked_dimensions_never_panic_or_wrap_frame_size",
+      2
+    ],
+    [
+      "common/src/camera.rs",
+      243,
+      "t938_dimension_boundaries_and_supported_sizes_are_exact",
+      7
+    ],
+    [
+      "common/src/camera.rs",
+      285,
+      "t618_adaptive_rate_bounds_and_fixed_override",
+      2
+    ],
+    [
+      "common/src/camera.rs",
+      307,
+      "t616_freshness_budget_is_bounded",
+      2
+    ],
+    [
+      "common/src/camera.rs",
+      316,
+      "t539_profile_limits_and_bounded_invalid_inputs",
+      5
+    ],
+    [
+      "common/src/camera/filter_tests.rs",
+      6,
+      "t1671_filter_capacity_default_cli_and_saved_profile_agree",
+      2
+    ],
+    [
+      "common/src/camera/filter_tests.rs",
+      32,
+      "t1671_filter_capacity_rejects_outside_the_bounded_grant",
+      4
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      16,
+      "filters",
+      1
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      21,
+      "command",
+      1
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      69,
+      "connection",
+      4
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      115,
+      "transfer",
+      1
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      145,
+      "receive_packets",
+      2
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      175,
+      "write_access_unit",
+      4
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      192,
+      "decode_frames",
+      3
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      204,
+      "retire",
+      2
+    ],
+    [
+      "host/src/camera/decoder/filter_tests.rs",
+      4,
+      "t1671_decoder_honors_filter_capacity_without_frame_threading",
+      6
+    ],
+    [
+      "host/src/camera/decoder/filter_tests.rs",
+      29,
+      "t1671_filter_change_requires_restart_without_revising_live_image",
+      1
+    ],
+    [
+      "host/src/camera/decoder/filter_tests.rs",
+      41,
+      "t1671_invalid_filter_capacity_never_builds_a_decoder_command",
+      2
+    ],
+    [
+      "host/src/camera/decoder/latency_tests.rs",
+      6,
+      "t1585_only_complete_valid_picture_headers_receive_a_delimiter",
+      5
+    ],
+    [
+      "host/src/camera/decoder/latency_tests.rs",
+      26,
+      "t1585_pipe_failure_is_returned_without_retrying_the_packet",
+      1
+    ],
+    [
+      "host/src/camera/decoder/latency_tests.rs",
+      38,
+      "encoded_frame",
+      1
+    ],
+    [
+      "host/src/camera/decoder/latency_tests.rs",
+      66,
+      "single_packet",
+      2
+    ],
+    [
+      "host/src/camera/decoder/latency_tests.rs",
+      81,
+      "t1585_single_camera_packet_decodes_without_successor_or_eof",
+      2
+    ],
+    [
+      "host/src/camera/decoder/latency_tests.rs",
+      88,
+      "single_frame_decodes",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      21,
+      "default",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      36,
+      "is_sharing",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      40,
+      "maintain_preview",
+      4
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      50,
+      "show",
+      6
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      71,
+      "live_adjustments",
+      7
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      103,
+      "admitted_profile",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      115,
+      "summary",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      128,
+      "native_state",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      134,
+      "state",
+      6
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      148,
+      "buttons",
+      8
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      185,
+      "validate_start",
+      5
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      200,
+      "start",
+      5
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      225,
+      "stop",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      234,
+      "resume",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      240,
+      "maintain_start",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      247,
+      "start_for",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      257,
+      "view",
+      4
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      278,
+      "error",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      281,
+      "target",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      286,
+      "observed_activity",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      292,
+      "activity",
+      8
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      305,
+      "transport_capabilities",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      312,
+      "create_backend",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      321,
+      "state_label",
+      8
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      337,
+      "profile",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      348,
+      "shadow_settings",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      365,
+      "advanced_profile",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      403,
+      "rotation",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      415,
+      "resolution",
+      4
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      448,
+      "t1671_advanced_camera_settings_expose_filter_capacity",
+      5
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      468,
+      "t1450_brightness_checkbox_changes_only_camera_preference",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      502,
+      "brightness_frame",
+      5
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      526,
+      "t1451_stop_releases_hidden_preview_pixels_and_texture",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      551,
+      "t1273_camera_states_preserve_pending_and_retiring_ownership",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      598,
+      "t1273_queued_camera_start_cannot_be_retargeted",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      634,
+      "adjust",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      640,
+      "close",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      645,
+      "start",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      650,
+      "stop",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      653,
+      "state",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      656,
+      "preview",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      662,
+      "t974_unsupported_invalid_and_ambiguous_camera_targets_never_create_backend",
+      5
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      718,
+      "t974_exact_usb_profile_reaches_only_camera_backend",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      739,
+      "t974_unavailable_saved_target_remains_visible_and_rendering_never_rewrites_it",
+      8
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      793,
+      "t543_portable_backend_contract_and_status_are_separate_from_preferences",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      846,
+      "t1295_invalid_serials_never_reach_camera_backend",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      891,
+      "t1455_fast_camera_completion_does_not_stick_starting",
+      5
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      932,
+      "t1669_camera_close_retains_pending_start_and_original_retirement",
+      1
+    ]
+  ],
+  "ownership": "One profile scalar; borrowed during decoder command creation. No new host queue, callback, lease or task. Filter workspaces/threads remain within the original OwnedChild decoder; cutoff and exact process-completion settlement unchanged. At most 4 filter workers, dimensions limited to 1920x1080. FFmpeg internal peak RSS was not measured.",
+  "native_limit": "Synthetic FFmpeg delivery and Linux GUI fixtures; no live-tablet performance claim or native Windows acceptance. Not installed."
+}

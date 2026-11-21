@@ -80,16 +80,24 @@ async fn single_packet(
 #[tokio::test]
 async fn t1585_single_camera_packet_decodes_without_successor_or_eof() {
     let ffmpeg = crate::camera::executable("ffmpeg").unwrap();
-    let packet = encoded_frame(&ffmpeg).await;
-    let profile = crate::camera::tests::options().profile;
+    for threads in 1..=4 {
+        single_frame_decodes(&ffmpeg, threads).await;
+    }
+}
+
+async fn single_frame_decodes(ffmpeg: &Path, filter_threads: u8) {
+    let packet = encoded_frame(ffmpeg).await;
+    let profile = CameraProfile {
+        filter_threads,
+        ..crate::camera::tests::options().profile
+    };
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let mut client = TcpStream::connect(listener.local_addr().unwrap())
         .await
         .unwrap();
     let (mut socket, _) = listener.accept().await.unwrap();
     let mut child =
-        blent_config::commands::OwnedChild::spawn(&mut command(&ffmpeg, &profile).unwrap())
-            .unwrap();
+        blent_config::commands::OwnedChild::spawn(&mut command(ffmpeg, &profile).unwrap()).unwrap();
     let mut input = child.stdin.take().unwrap();
     let mut output = child.stdout.take().unwrap();
     let live = crate::camera_live::Session::new(profile.clone());

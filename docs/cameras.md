@@ -62,7 +62,12 @@ and can behave like Off on some cameras; Blent adds no host-side denoising buffe
 The high-quality camera mode is not offered because it can reduce frame rate.
 Try Fast only if shadow correction makes noise distracting.
 
-**Save** persists preferences. Lens, dimensions, FPS, freshness budget, transport and background
+**Image processing threads** in Advanced camera settings defaults to **2** and
+accepts **1–4**. More workers can reduce host filtering time but consume additional
+CPU and memory; choose 1 for the lowest worker count. This controls filtering only,
+without enabling frame-threaded decoding. The CLI option is `--filter-threads`.
+
+**Save** persists preferences. Lens, dimensions, FPS, freshness budget, image processing threads, transport and background
 policy changes display **Restart required** and wait for **Restart camera**.
 When started from Overview, live adjustments and Restart use that camera's admitted
 tablet, even if the saved target is automatic or another Overview row is selected.

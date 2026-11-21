@@ -54,6 +54,9 @@ pub struct CameraProfile {
     pub width: u32,
     #[cfg_attr(feature = "platform", arg(long, default_value_t = 720))]
     pub height: u32,
+    /// Host image-filter workers; changing this requires a camera restart.
+    #[cfg_attr(feature = "platform", arg(long, default_value_t = 2, value_parser = clap::value_parser!(u8).range(1..=4)))]
+    pub filter_threads: u8,
     #[cfg_attr(feature = "platform", arg(long, default_value_t = 30))]
     pub fps: u32,
     /// Camera H.264 target bitrate in kbit/s; independent of display bitrate.
@@ -125,6 +128,7 @@ impl Default for CameraProfile {
             usb_peer: None,
             width: 1280,
             height: 720,
+            filter_threads: 2,
             fps: 30,
             bitrate: 3000,
             freshness_ms: 150,
@@ -141,6 +145,10 @@ impl Default for CameraProfile {
 impl CameraProfile {
     pub fn validate(&self) -> Result<()> {
         ensure!(self.shadow_strength <= 100, "shadow strength must be 0–100");
+        ensure!(
+            (1..=4).contains(&self.filter_threads),
+            "camera filter threads must be 1–4"
+        );
         self.sensor.validate()?;
         self.target()?;
         self.validate_freshness()?;
@@ -352,3 +360,6 @@ mod tests {
 
 #[cfg(test)]
 mod connection_tests;
+
+#[cfg(all(test, feature = "platform"))]
+mod filter_tests;

@@ -5,6 +5,8 @@ use std::{path::Path, process::Stdio, time::Duration};
 use tokio::{io::AsyncWriteExt, net::TcpStream, process::Command};
 
 #[cfg(test)]
+mod filter_tests;
+#[cfg(test)]
 mod flow_tests;
 #[cfg(test)]
 mod latency_tests;
@@ -34,7 +36,7 @@ fn command(ffmpeg: &Path, options: &CameraProfile) -> Result<Command> {
             "-max_pixels",
             &pixels.to_string(),
             "-filter_threads",
-            "1",
+            &options.filter_threads.to_string(),
             "-threads",
             "1",
             "-flags",

@@ -364,6 +364,10 @@ fn shadow_settings(ui: &mut egui::Ui, options: &mut CameraProfile) {
 
 fn advanced_profile(ui: &mut egui::Ui, options: &mut CameraProfile) {
     rotation(ui, &mut options.rotation);
+    ui.label("Image processing threads");
+    ui.add(egui::Slider::new(&mut options.filter_threads, 1..=4))
+        .on_hover_text("Default: 2. More threads can process frames faster but use more CPU and memory. Choose 1 to minimize worker resources. Requires Restart camera.");
+    ui.end_row();
     ui.label("Frame rate");
     ui.add(egui::Slider::new(&mut options.fps, 5..=30).suffix(" FPS"));
     ui.end_row();
@@ -439,6 +443,26 @@ fn resolution(ui: &mut egui::Ui, options: &mut CameraProfile) {
 mod tests {
     use super::*;
     mod replacement;
+
+    #[test]
+    fn t1671_advanced_camera_settings_expose_filter_capacity() {
+        let context = egui::Context::default();
+        let mut profile = CameraProfile::default();
+        let output = context.run(Default::default(), |context| {
+            egui::CentralPanel::default().show(context, |ui| {
+                egui::Grid::new("filter-capacity-test")
+                    .show(ui, |ui| advanced_profile(ui, &mut profile));
+            });
+        });
+        let mut text = Vec::new();
+        for shape in output.shapes {
+            crate::test_shapes::collect_text_rects(&shape.shape, &mut text);
+        }
+        assert!(text
+            .iter()
+            .any(|(label, _)| label == "Image processing threads"));
+        assert_eq!(profile, CameraProfile::default());
+    }
 
     #[test]
     fn t1450_brightness_checkbox_changes_only_camera_preference() {

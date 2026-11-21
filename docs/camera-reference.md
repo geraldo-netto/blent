@@ -166,6 +166,16 @@ initial hardware observations. Windows and macOS webcam output backends are not 
 
 ## Host frame reuse
 
+`camera.filter_threads` bounds the FFmpeg filter worker setting to 1–4, default 2.
+The GUI calls this **Image processing threads**; `blent cameras --filter-threads`
+sets the same value. Validation rejects out-of-range values before decoder
+admission. Changing it requires Restart camera; Save only persists the preference.
+Decoder and raw-output codec thread counts remain 1. Filter workers and their
+scratch storage belong to the original FFmpeg child and retire with its exact
+process completion; no host-side frame queue or publication slot is added.
+See the [measured synthetic comparison](reviews/2026-11-21-ffmpeg.md) for the
+latency/CPU tradeoff and its limits.
+
 Each decoder connection owns a bounded pool of immutable YUV420 frame leases.
 `BLENT_CAMERA_FRAME_SLOTS` defaults to 3, accepts 2..16, and takes effect on the
 next connection. One additional fixed frame drains input when all leases are held;
