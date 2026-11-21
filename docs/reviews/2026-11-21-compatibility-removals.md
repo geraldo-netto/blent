@@ -1,6 +1,6 @@
 # Compatibility-only removals — 2026-11-21
 
-Scope: current Blent production, tools and packaging. The no-backward-compatibility rule is saved in local AGENTS.md, persistent maintainer preferences and CONTRIBUTING.md. Hardware capability selection, current recovery and historical reports are distinct from obsolete caller support. This audit is in progress; installed sessions are unchanged during source verification.
+Scope: current Blent production, tools and packaging. The no-backward-compatibility rule is saved in local AGENTS.md, persistent maintainer preferences and CONTRIBUTING.md. Hardware capability selection, current recovery and historical reports are distinct from obsolete caller support. The identified compatibility-only removals are complete and committed locally. Installed sessions are unchanged during source verification.
 
 ## T1534 — position aliases
 
@@ -53,3 +53,13 @@ Host, Android, channel-reader and fake-tablet regressions failed before their co
 Removed the omitted/null button wire form for old clients. Android emits an explicit boolean for every current pen action; the host rejects missing, null and incorrectly typed values. Existing motion, batching, unsupported-backend and retirement tests now use the current record without changing their native transition or cleanup expectations. The internal optional native delta remains necessary to suppress unchanged key/SYN events.
 
 Host and Android rejection/emission regressions failed before removal; the action-five default-state assertion also failed before correcting its default. All 147 selected host tests and 12 Android/JVM tests pass. Both maintained Rust functions exceed 80% line coverage (87.5% and 83.87%); all three maintained Kotlin methods have 100%. The project checker measured 291 functions in affected Rust/Kotlin files, all <=9 (syn 2.0.119 and Kotlin PSI 1.9.20). Messages are call-local values; the existing controller remains the sole native input owner through admission, dispatch and release. No allocation, queue or cleanup owner was added. Hardware stylus expansion remains declined; these changes preserve existing behavior and do not claim new device acceptance.
+
+## T1648 — current optional calibration metadata
+
+Corrected the obsolete-peer rationale on `InputResponse.calibrating`. Its producer, `calibration_field`, omits metadata only when the current composition has no encoder-settings source. The comment now describes that boundary; behavior is unchanged, so no artificial test was added.
+
+## Final audit boundaries
+
+Reviewed remaining production/tooling candidates for old-peer handling, aliases, deprecated entry points, migrations and fallback paths against current callers. Retained current ADB and registered USB routes, hardware/OS capability handling, unsupported activity providers, explicit GPU selection and conservative decoder/idle policies. These remain current functionality. Internal optional native event deltas suppress duplicate input; they are not omitted-field wire support. Historical reports and upstream declarations retain their provenance. No additional compatibility-only path was confirmed in this pass.
+
+Nine removal findings and one documentation contradiction were resolved. Final offline, locked workspace compilation with all targets and accessory transport passed; Rust formatting and diff whitespace checks passed. Permanent regression evidence and per-function measurements are recorded above and in the adjacent artifacts. This is a source audit with automated verification, not a proof that every possible path is defect-free or a physical-device acceptance run. Desktop/tablet installation, pushes and running sessions were not changed.

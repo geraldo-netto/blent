@@ -102,7 +102,7 @@ pub struct InputResponse {
     pub requested_encoder: String,
     pub effective_encoder: String,
     pub selection_reason: String,
-    /// Optional for older peers and backends without automatic video tuning.
+    /// Absent when this composition has no encoder-settings source.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub calibrating: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
