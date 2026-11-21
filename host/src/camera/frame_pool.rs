@@ -12,10 +12,9 @@ pub(super) struct Pool {
 impl Pool {
     pub(super) fn for_profile(profile: &blent_config::camera::CameraProfile) -> Result<Self> {
         let mut pool = Self::configured(profile.frame_bytes()?)?;
-        pool.brightness = profile
-            .auto_brightness
-            .then(|| blent_config::camera::brightness::AutoBrightness::new(profile))
-            .transpose()?;
+        pool.brightness = Some(blent_config::camera::brightness::AutoBrightness::new(
+            profile,
+        )?);
         Ok(pool)
     }
 

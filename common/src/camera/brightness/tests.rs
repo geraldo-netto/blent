@@ -4,7 +4,7 @@ fn profile() -> CameraProfile {
     CameraProfile {
         width: 160,
         height: 120,
-        auto_brightness: true,
+        shadow_mode: crate::camera::ShadowMode::Auto,
         ..Default::default()
     }
 }
@@ -49,7 +49,7 @@ fn t1450_bright_and_black_frames_stay_unchanged() {
 fn t1450_curve_is_bounded_monotonic_and_never_darkens() {
     for step in 0..=100 {
         let gamma = 0.45 + 0.55 * step as f32 / 100.0;
-        let table = curve(gamma);
+        let table = curve(gamma, 100);
         assert_eq!(&table[..17], &(0..=16).collect::<Vec<u8>>());
         assert_eq!(&table[235..], &(235..=255).collect::<Vec<u8>>());
         assert!(table.windows(2).all(|pair| pair[0] <= pair[1]));
@@ -100,16 +100,70 @@ fn t1450_temporal_smoothing_and_recovery_are_bounded() {
 
 #[cfg(feature = "platform")]
 #[test]
-fn t1450_option_is_opt_in_saved_and_cli_selectable() {
+fn t1450_t1466_defaults_saved_and_cli_selectable() {
     use clap::Parser;
-    assert!(!CameraProfile::default().auto_brightness);
-    let profile: CameraProfile = toml::from_str("auto_brightness = true").unwrap();
-    assert!(profile.auto_brightness);
+    assert_eq!(CameraProfile::default().shadow_mode, ShadowMode::Auto);
+    assert_eq!(CameraProfile::default().shadow_strength, 40);
+    let profile: CameraProfile =
+        toml::from_str("shadow_mode = \"manual\"\nshadow_strength = 65").unwrap();
+    assert_eq!(profile.shadow_mode, ShadowMode::Manual);
     let encoded = toml::to_string(&profile).unwrap();
     assert_eq!(toml::from_str::<CameraProfile>(&encoded).unwrap(), profile);
-    let parsed = crate::cli::Cli::parse_from(["blent", "cameras", "--auto-brightness"]);
+    let parsed = crate::cli::Cli::parse_from([
+        "blent",
+        "cameras",
+        "--shadow-mode",
+        "manual",
+        "--shadow-strength",
+        "65",
+    ]);
     let Some(crate::cli::Commands::Cameras(options)) = parsed.command else {
         panic!()
     };
-    assert!(options.auto_brightness);
+    assert_eq!(options.shadow_mode, ShadowMode::Manual);
+    assert_eq!(options.shadow_strength, 65);
+}
+
+#[test]
+fn t1466_shadow_lift_protects_upper_midtones() {
+    let profile = profile();
+    let mut adjustment = AutoBrightness::new(&profile).unwrap();
+    let mut original = frame(&profile, 40);
+    original[0] = 200;
+    for _ in 0..60 {
+        let mut output = original.clone();
+        adjustment.apply(&mut output).unwrap();
+        assert!(
+            output[0] <= 203,
+            "T1466 bright background lifted excessively: {}",
+            output[0]
+        );
+        assert!(output[60 * 160 + 80] > 40);
+    }
+}
+
+#[test]
+fn t1466_modes_strength_and_invalid_updates_are_bounded() {
+    let profile = profile();
+    let mut adjustment = AutoBrightness::new(&profile).unwrap();
+    for mode in [ShadowMode::Auto, ShadowMode::Manual, ShadowMode::Off] {
+        for strength in [0, 40, 100] {
+            adjustment.update(mode, strength).unwrap();
+            let mut output = frame(&profile, 40);
+            adjustment.apply(&mut output).unwrap();
+            assert!(output[..19200].iter().all(|v| (40..=235).contains(v)));
+            if mode == ShadowMode::Off || strength == 0 {
+                assert_eq!(output[0], 40);
+            }
+        }
+    }
+    for invalid in [101, 128, 255] {
+        assert!(adjustment.update(ShadowMode::Auto, invalid).is_err());
+        assert_eq!(adjustment.mode, ShadowMode::Off);
+        assert!(AutoBrightness::new(&CameraProfile {
+            shadow_strength: invalid,
+            ..profile.clone()
+        })
+        .is_err());
+    }
 }

@@ -22,7 +22,14 @@ fn t974_camera_native_availability_matches_selected_build_without_acquiring_devi
 
 pub(super) fn options() -> CameraOptions {
     let cli = blent_config::cli::Cli::parse_from([
-        "blent", "cameras", "--width", "160", "--height", "120",
+        "blent",
+        "cameras",
+        "--width",
+        "160",
+        "--height",
+        "120",
+        "--shadow-mode",
+        "off",
     ]);
     let Some(blent_config::cli::Commands::Cameras(options)) = cli.command else {
         panic!()
@@ -855,7 +862,7 @@ async fn t1450_real_decoder_exports_brightened_pixels_to_preview() {
     assert!(encoded.status.success());
     let mut profile = options();
     let original = transformed_test_frame(&encoded.stdout, &profile).await;
-    profile.auto_brightness = true;
+    profile.shadow_mode = blent_config::camera::ShadowMode::Auto;
     let adjusted = transformed_test_frame(&encoded.stdout, &profile).await;
     assert!(adjusted[0] > original[0]);
     assert_eq!(&adjusted[19200..], &original[19200..]);

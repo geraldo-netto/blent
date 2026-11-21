@@ -87,7 +87,7 @@ async fn t1450_brightness_precedes_publication_without_mutating_readers() {
     let profile = blent_config::camera::CameraProfile {
         width: 160,
         height: 120,
-        auto_brightness: true,
+        shadow_mode: blent_config::camera::ShadowMode::Auto,
         ..Default::default()
     };
     let mut pool = Pool::for_profile(&profile).unwrap();
@@ -112,6 +112,7 @@ async fn t1450_brightness_precedes_publication_without_mutating_readers() {
 #[tokio::test]
 async fn t1450_disabled_adjustment_preserves_exact_bytes_and_rejects_invalid_profile() {
     let profile = blent_config::camera::CameraProfile {
+        shadow_mode: blent_config::camera::ShadowMode::Off,
         width: 160,
         height: 120,
         ..Default::default()
@@ -126,7 +127,7 @@ async fn t1450_disabled_adjustment_preserves_exact_bytes_and_rejects_invalid_pro
     })
     .is_err());
     assert!(Pool::for_profile(&blent_config::camera::CameraProfile {
-        auto_brightness: true,
+        shadow_mode: blent_config::camera::ShadowMode::Auto,
         fps: 0,
         ..profile
     })

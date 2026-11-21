@@ -254,9 +254,23 @@ fn profile(ui: &mut egui::Ui, options: &mut CameraProfile) {
     });
     ui.end_row();
     resolution(ui, options);
-    ui.label("Brightness");
-    ui.checkbox(&mut options.auto_brightness, "Automatically brighten dark video")
-        .on_hover_text("Gently lifts dark tones using the center of the image. May make noise more visible. Start/Restart camera applies this setting.");
+    shadow_settings(ui, options);
+}
+
+fn shadow_settings(ui: &mut egui::Ui, options: &mut CameraProfile) {
+    use blent_config::camera::ShadowMode;
+    ui.label("Shadow correction");
+    ui.horizontal(|ui| {
+        for (mode, label) in [(ShadowMode::Off, "Off"), (ShadowMode::Auto, "Auto"), (ShadowMode::Manual, "Manual")] {
+            ui.selectable_value(&mut options.shadow_mode, mode, label);
+        }
+    }).response.on_hover_text("Lift dark tones while protecting bright areas. Auto meters the image center; Manual uses fixed strength. May reveal noise.");
+    ui.end_row();
+    ui.label("Shadow strength");
+    ui.add_enabled(
+        options.shadow_mode != ShadowMode::Off,
+        egui::Slider::new(&mut options.shadow_strength, 0..=100).suffix("%"),
+    );
     ui.end_row();
 }
 
@@ -344,7 +358,7 @@ mod tests {
         let text = brightness_frame(&context, &mut options, Vec::new());
         let pos = text
             .iter()
-            .find(|(label, _)| label == "Automatically brighten dark video")
+            .find(|(label, _)| label == "Manual")
             .unwrap()
             .1
             .center();
@@ -366,7 +380,7 @@ mod tests {
         assert_eq!(
             options,
             CameraProfile {
-                auto_brightness: true,
+                shadow_mode: blent_config::camera::ShadowMode::Manual,
                 ..Default::default()
             }
         );

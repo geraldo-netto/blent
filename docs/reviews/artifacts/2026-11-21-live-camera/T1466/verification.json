@@ -1,0 +1,785 @@
+{
+  "coverage": [
+    {
+      "file": "common/src/camera.rs",
+      "name": "default",
+      "line": 112,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera.rs",
+      "name": "validate",
+      "line": 134,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/brightness.rs",
+      "name": "new",
+      "line": 18,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/brightness.rs",
+      "name": "update",
+      "line": 37,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/brightness.rs",
+      "name": "apply",
+      "line": 44,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/brightness.rs",
+      "name": "center_mean",
+      "line": 67,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/brightness.rs",
+      "name": "curve",
+      "line": 81,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "name": "for_profile",
+      "line": 13,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/camera_settings.rs",
+      "name": "profile",
+      "line": 249,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/camera_settings.rs",
+      "name": "shadow_settings",
+      "line": 260,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "common/src/camera.rs",
+      96,
+      "is_active",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      112,
+      "default",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      134,
+      "validate",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      151,
+      "validate_freshness",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      163,
+      "validate_dimensions",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      182,
+      "frame_bytes",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      203,
+      "options",
+      1
+    ],
+    [
+      "common/src/camera.rs",
+      211,
+      "t938_unchecked_dimensions_never_panic_or_wrap_frame_size",
+      2
+    ],
+    [
+      "common/src/camera.rs",
+      226,
+      "t938_dimension_boundaries_and_supported_sizes_are_exact",
+      7
+    ],
+    [
+      "common/src/camera.rs",
+      268,
+      "t618_adaptive_rate_bounds_and_fixed_override",
+      2
+    ],
+    [
+      "common/src/camera.rs",
+      290,
+      "t616_freshness_budget_is_bounded",
+      2
+    ],
+    [
+      "common/src/camera.rs",
+      299,
+      "t539_profile_limits_and_bounded_invalid_inputs",
+      5
+    ],
+    [
+      "common/src/camera/brightness.rs",
+      18,
+      "new",
+      1
+    ],
+    [
+      "common/src/camera/brightness.rs",
+      37,
+      "update",
+      1
+    ],
+    [
+      "common/src/camera/brightness.rs",
+      44,
+      "apply",
+      5
+    ],
+    [
+      "common/src/camera/brightness.rs",
+      67,
+      "center_mean",
+      3
+    ],
+    [
+      "common/src/camera/brightness.rs",
+      81,
+      "curve",
+      3
+    ],
+    [
+      "host/src/camera/frame_pool.rs",
+      13,
+      "for_profile",
+      1
+    ],
+    [
+      "host/src/camera/frame_pool.rs",
+      21,
+      "configured",
+      1
+    ],
+    [
+      "host/src/camera/frame_pool.rs",
+      25,
+      "new",
+      2
+    ],
+    [
+      "host/src/camera/frame_pool.rs",
+      40,
+      "read",
+      4
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      16,
+      "default",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      29,
+      "maintain_preview",
+      4
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      39,
+      "show",
+      6
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      58,
+      "summary",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      71,
+      "native_state",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      77,
+      "state",
+      6
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      90,
+      "buttons",
+      7
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      122,
+      "start",
+      9
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      152,
+      "stop",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      159,
+      "start_for",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      169,
+      "view",
+      4
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      190,
+      "error",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      193,
+      "target",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      198,
+      "observed_activity",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      204,
+      "activity",
+      8
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      217,
+      "transport_capabilities",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      224,
+      "create_backend",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      233,
+      "state_label",
+      8
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      249,
+      "profile",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      260,
+      "shadow_settings",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      277,
+      "advanced_profile",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      311,
+      "rotation",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      323,
+      "resolution",
+      4
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      355,
+      "t1450_brightness_checkbox_changes_only_camera_preference",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      389,
+      "brightness_frame",
+      5
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      413,
+      "t1451_stop_releases_hidden_preview_pixels_and_texture",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      438,
+      "t1273_camera_states_preserve_pending_and_retiring_ownership",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      480,
+      "t1273_queued_camera_start_cannot_be_retargeted",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      514,
+      "close",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      518,
+      "start",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      523,
+      "stop",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      526,
+      "state",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      529,
+      "preview",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      535,
+      "t974_unsupported_invalid_and_ambiguous_camera_targets_never_create_backend",
+      5
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      591,
+      "t974_exact_usb_profile_reaches_only_camera_backend",
+      1
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      611,
+      "t974_unavailable_saved_target_remains_visible_and_rendering_never_rewrites_it",
+      8
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      665,
+      "t543_portable_backend_contract_and_status_are_separate_from_preferences",
+      3
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      717,
+      "t1295_invalid_serials_never_reach_camera_backend",
+      2
+    ],
+    [
+      "gui/src/camera_settings.rs",
+      761,
+      "t1455_fast_camera_completion_does_not_stick_starting",
+      5
+    ],
+    [
+      "common/src/camera/brightness/tests.rs",
+      3,
+      "profile",
+      1
+    ],
+    [
+      "common/src/camera/brightness/tests.rs",
+      12,
+      "frame",
+      1
+    ],
+    [
+      "common/src/camera/brightness/tests.rs",
+      19,
+      "t1450_dark_center_bright_background_and_chroma",
+      3
+    ],
+    [
+      "common/src/camera/brightness/tests.rs",
+      37,
+      "t1450_bright_and_black_frames_stay_unchanged",
+      2
+    ],
+    [
+      "common/src/camera/brightness/tests.rs",
+      49,
+      "t1450_curve_is_bounded_monotonic_and_never_darkens",
+      2
+    ],
+    [
+      "common/src/camera/brightness/tests.rs",
+      64,
+      "t1450_invalid_dimensions_fps_and_frames_are_atomic",
+      4
+    ],
+    [
+      "common/src/camera/brightness/tests.rs",
+      85,
+      "t1450_temporal_smoothing_and_recovery_are_bounded",
+      4
+    ],
+    [
+      "common/src/camera/brightness/tests.rs",
+      103,
+      "t1450_t1466_defaults_saved_and_cli_selectable",
+      1
+    ],
+    [
+      "common/src/camera/brightness/tests.rs",
+      128,
+      "t1466_shadow_lift_protects_upper_midtones",
+      2
+    ],
+    [
+      "common/src/camera/brightness/tests.rs",
+      146,
+      "t1466_modes_strength_and_invalid_updates_are_bounded",
+      6
+    ],
+    [
+      "common/src/storage/merge_tests.rs",
+      5,
+      "t703_two_camera_snapshots_preserve_independent_edits_in_both_orders",
+      5
+    ],
+    [
+      "common/src/storage/merge_tests.rs",
+      35,
+      "t703_same_camera_field_keeps_last_edited_save_wins",
+      4
+    ],
+    [
+      "common/src/storage/merge_tests.rs",
+      50,
+      "t703_optional_serial_removal_and_addition_preserve_other_edits",
+      7
+    ],
+    [
+      "common/src/storage/merge_tests.rs",
+      90,
+      "t1194_real_locked_edit_rewrites_only_the_current_schema",
+      2
+    ],
+    [
+      "common/src/storage/merge_tests.rs",
+      117,
+      "t1450_brightness_save_preserves_independent_camera_edits",
+      2
+    ],
+    [
+      "host/src/camera/tests.rs",
+      6,
+      "new_report",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      11,
+      "t974_camera_native_availability_matches_selected_build_without_acquiring_devices",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      23,
+      "options",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      40,
+      "script",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      48,
+      "t609_invitation_token_uses_stdin_not_process_arguments",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      79,
+      "t1231_adb_invites_capture_size_without_changing_export_size",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      101,
+      "t539_graceful_output_stop_allows_final_blank_to_flush",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      120,
+      "t539_real_h264_upload_decodes_only_to_selected_endpoint",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      199,
+      "t539_virtual_camera_writes_black_on_start_and_stop",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      230,
+      "t539_bridge_invitation_and_mapping_ownership",
+      3
+    ],
+    [
+      "host/src/camera/tests.rs",
+      260,
+      "t539_rotation_and_mirroring_are_bounded_filter_choices",
+      2
+    ],
+    [
+      "host/src/camera/tests.rs",
+      276,
+      "t539_rejects_encoded_dimensions_above_negotiated_profile",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      345,
+      "t539_stalled_decoder_cannot_hold_camera_session_forever",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      393,
+      "fixture_outcome",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      409,
+      "t620_early_producer_exit_cancels_pending_handshake",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      433,
+      "t539_producer_failure_retires_session_and_rejects_foreign_clients",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      504,
+      "t543_host_reports_frames_and_rejects_unselected_lens",
+      3
+    ],
+    [
+      "host/src/camera/tests.rs",
+      548,
+      "t543_embedded_adapter_rejects_invalid_profile_before_native_work",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      564,
+      "t543_desktop_rotation_combines_sensor_orientation_before_mirroring",
+      7
+    ],
+    [
+      "host/src/camera/tests.rs",
+      583,
+      "transformed_test_frame",
+      2
+    ],
+    [
+      "host/src/camera/tests.rs",
+      621,
+      "t1231_native_360p_capture_decodes_into_exact_180p_and_360p_outputs",
+      2
+    ],
+    [
+      "host/src/camera/tests.rs",
+      661,
+      "t543_real_output_and_preview_rotate_the_same_asymmetric_picture",
+      3
+    ],
+    [
+      "host/src/camera/tests.rs",
+      719,
+      "t609_rejects_shell_input_and_redacts_adb_diagnostics",
+      6
+    ],
+    [
+      "host/src/camera/tests.rs",
+      780,
+      "t938_invalid_black_frame_dimensions_are_rejected_before_allocation",
+      2
+    ],
+    [
+      "host/src/camera/tests.rs",
+      794,
+      "fail_after_clients",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      805,
+      "reject_after_gate",
+      1
+    ],
+    [
+      "host/src/camera/tests.rs",
+      820,
+      "t1205_camera_requires_exact_single_current_broadcast_acknowledgement",
+      2
+    ],
+    [
+      "host/src/camera/tests.rs",
+      838,
+      "t1450_real_decoder_exports_brightened_pixels_to_preview",
+      2
+    ],
+    [
+      "host/src/camera/frame_pool/tests.rs",
+      4,
+      "t816_retained_readers_full_pool_and_generation_stay_immutable",
+      1
+    ],
+    [
+      "host/src/camera/frame_pool/tests.rs",
+      24,
+      "t816_partial_eof_and_cancel_never_publish_incomplete_frames",
+      2
+    ],
+    [
+      "host/src/camera/frame_pool/tests.rs",
+      46,
+      "t816_invalid_capacities_and_lengths_are_bounded",
+      4
+    ],
+    [
+      "host/src/camera/frame_pool/tests.rs",
+      61,
+      "t816_bounded_lease_schedule_property",
+      7
+    ],
+    [
+      "host/src/camera/frame_pool/tests.rs",
+      86,
+      "t1450_brightness_precedes_publication_without_mutating_readers",
+      2
+    ],
+    [
+      "host/src/camera/frame_pool/tests.rs",
+      113,
+      "t1450_disabled_adjustment_preserves_exact_bytes_and_rejects_invalid_profile",
+      1
+    ]
+  ],
+  "tools": "cargo-llvm-cov 0.8.7; native llvm-cov export of exact three executed objects (avoid cached old mappings); repository syn complexity checker",
+  "sources": {
+    "common/src/camera.rs": "2cda139b98b605a07782ffc5ab58ad635bf188a7cea75d8427b34c8134e40cc5",
+    "common/src/camera/brightness.rs": "67c6188e2a16e4504dec361a76a0ca0f2d98c7b8adb34b602b953940d475a04c",
+    "host/src/camera/frame_pool.rs": "9ccc62ca9acc9dbec4b55be54b2b7db2b7552e33b264e7cab4cbffabbdbfeb90",
+    "gui/src/camera_settings.rs": "f3a51e52127e7b299323b5b071f034c7788f9ef5f0334e820f958726eb59910d",
+    "common/src/camera/adjustments.rs": "86fdfb0735c829b12b5931304989b2a58376e99b4612d71a838c708a902137e6",
+    "common/src/camera/brightness/tests.rs": "25e4f0062d0b2be277494d2bee0100a9b900093bcade9e111ad9fc12c43371b9",
+    "common/src/storage/merge_tests.rs": "c629e9d4ae872bc492291f0014b25bf57ed5695ef9b84cdb5f45660617c0cc98",
+    "host/src/camera/tests.rs": "e80822c09b564c3d932ad888c813c6150a415e5e77785df0f833898cba8de995",
+    "host/src/camera/frame_pool/tests.rs": "0afdbf0436207a56393f8d2081653b8ba05de64ff48cc3798848e0003ea971ca"
+  },
+  "tests": "25 common camera tests, 116 host camera tests, two GUI regressions passed. T1466 failed before fix and passed after.",
+  "ownership": "Scalar state plus 256-byte curve; exclusive unpublished luma borrow. Existing bounded Arc frame pool is unchanged. No reference or native allocation retained by filter. Invalid updates reject before mutation; zero strength/Off preserve bytes. Native lighting acceptance remains T1452.",
+  "comparison": "Central dark patch Y40 with bright background Y200: old curve exceeded Y203 during adaptation (red control); new weighted curve stays <=203 while lifting dark patch. Existing monotonic/bounded/chroma/temporal cases retained; no calibrated physical quality or performance superiority claim."
+}

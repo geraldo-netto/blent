@@ -1,7 +1,7 @@
 //! Optional center-metered shadow lift for bounded, limited-range YUV420 frames.
 //! One decoder owns this scalar state. Each call exclusively borrows a complete
 //! unpublished frame; no buffer, reference, callback or native resource is retained.
-use super::CameraProfile;
+use super::{CameraProfile, ShadowMode};
 use anyhow::{ensure, Result};
 
 pub struct AutoBrightness {
@@ -10,20 +10,35 @@ pub struct AutoBrightness {
     bytes: usize,
     gamma: f32,
     blend: f32,
+    mode: ShadowMode,
+    strength: u8,
 }
 
 impl AutoBrightness {
     pub fn new(profile: &CameraProfile) -> Result<Self> {
         let bytes = profile.frame_bytes()?;
+        ensure!(
+            profile.shadow_strength <= 100,
+            "shadow strength must be 0–100"
+        );
         ensure!((5..=30).contains(&profile.fps), "camera FPS must be 5–30");
         Ok(Self {
             width: profile.width as usize,
             height: profile.height as usize,
             bytes,
             gamma: 1.0,
+            mode: profile.shadow_mode,
+            strength: profile.shadow_strength,
             // Approximately 0.3 seconds to settle 63% of an exposure change.
             blend: 1.0 - (-1.0 / (profile.fps as f32 * 0.3)).exp(),
         })
+    }
+
+    pub fn update(&mut self, mode: ShadowMode, strength: u8) -> Result<()> {
+        ensure!(strength <= 100, "shadow strength must be 0–100");
+        self.mode = mode;
+        self.strength = strength;
+        Ok(())
     }
 
     pub fn apply(&mut self, frame: &mut [u8]) -> Result<()> {
@@ -31,11 +46,18 @@ impl AutoBrightness {
             frame.len() == self.bytes,
             "camera brightness frame length mismatch"
         );
+        if self.mode == ShadowMode::Off {
+            self.gamma = 1.0;
+            return Ok(());
+        }
         let luma = &mut frame[..self.width * self.height];
         let mean = self.center_mean(luma);
-        let target = (0.5f32.ln() / mean.clamp(1.0 / 219.0, 0.5).ln()).clamp(0.45, 1.0);
+        let target = match self.mode {
+            ShadowMode::Manual => 0.45,
+            _ => (0.5f32.ln() / mean.clamp(1.0 / 219.0, 0.5).ln()).clamp(0.45, 1.0),
+        };
         self.gamma += (target - self.gamma) * self.blend;
-        let table = curve(self.gamma);
+        let table = curve(self.gamma, self.strength);
         for value in luma {
             *value = table[*value as usize];
         }
@@ -56,11 +78,15 @@ impl AutoBrightness {
     }
 }
 
-fn curve(gamma: f32) -> [u8; 256] {
+fn curve(gamma: f32, strength: u8) -> [u8; 256] {
     let mut table = std::array::from_fn(|value| value as u8);
     for value in 16..=235 {
         let normalized = (value - 16) as f32 / 219.0;
-        table[value] = (16.0 + 219.0 * normalized.powf(gamma)).round() as u8;
+        let lift = (normalized.powf(gamma) - normalized)
+            * (1.0 - normalized).powi(2)
+            * f32::from(strength)
+            / 100.0;
+        table[value] = (16.0 + 219.0 * (normalized + lift)).round() as u8;
     }
     table
 }

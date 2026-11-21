@@ -4,7 +4,9 @@ use anyhow::{ensure, Result};
 use clap::{Args, ValueEnum};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
+pub mod adjustments;
 pub mod brightness;
+pub use adjustments::ShadowMode;
 pub mod connection;
 mod preview;
 pub mod stop;
@@ -68,9 +70,12 @@ pub struct CameraProfile {
     /// Mirror exported camera video horizontally.
     #[cfg_attr(feature = "platform", arg(long))]
     pub mirror: bool,
-    /// Lift dark camera tones using smoothed center metering on the host.
-    #[cfg_attr(feature = "platform", arg(long))]
-    pub auto_brightness: bool,
+    /// Host shadow correction. Auto uses smoothed central metering.
+    #[cfg_attr(feature = "platform", arg(long, value_enum, default_value = "auto"))]
+    pub shadow_mode: ShadowMode,
+    /// Maximum shadow correction strength, percent; highlights are protected.
+    #[cfg_attr(feature = "platform", arg(long, default_value_t = 40))]
+    pub shadow_strength: u8,
 }
 
 /// Portable UI/backend contract. Only the native adapter owns OS devices.
@@ -118,7 +123,8 @@ impl Default for CameraProfile {
             adaptive_bitrate: true,
             min_bitrate: 1000,
             mirror: false,
-            auto_brightness: false,
+            shadow_mode: ShadowMode::Auto,
+            shadow_strength: 40,
             rotation: 0,
         }
     }
@@ -126,6 +132,7 @@ impl Default for CameraProfile {
 
 impl CameraProfile {
     pub fn validate(&self) -> Result<()> {
+        ensure!(self.shadow_strength <= 100, "shadow strength must be 0–100");
         self.target()?;
         self.validate_freshness()?;
         ensure!(

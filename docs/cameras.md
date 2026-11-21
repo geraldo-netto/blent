@@ -36,14 +36,16 @@ requested. Pairing alone does not start capture. In Google Meet or another appli
 Linux webcams exist while sharing runs, but only the selected lens is live;
 the inactive endpoint is black. A browser's webcam picker does not switch lenses.
 
-Enable **Automatically brighten dark video** to lift dark tones when the center
-of the image is underexposed, then **Start/Restart camera**. It defaults to off;
-**Save** stores the preference without changing a running session. The host meters
-the central half of the image, smooths adjustments over successive frames and
-limits shadow lift while preserving black/white endpoints and chroma. This is
-image processing, not face detection or sensor exposure control; it can make
-noise more visible and adds a luma pass per exported frame. The CLI option is
-`blent cameras --auto-brightness`. No Android update is needed for this option.
+**Shadow correction** offers **Off**, **Auto** and **Manual**, with a 0–100% strength
+slider. Defaults are **Auto at 40%**. Auto meters the central half of each image
+axis and smooths the correction over successive frames; Manual uses a fixed
+correction target. Both protect highlights, preserve black/white endpoints and
+leave chroma unchanged. Zero strength is an exact bypass. This is image processing,
+not face detection or sensor exposure control; it cannot recover missing detail
+and can make captured noise more visible. The bounded luma pass owns only scalar
+state and a 256-entry lookup table. The CLI controls are
+`blent cameras --shadow-mode auto --shadow-strength 40`.
+For now, **Start/Restart camera** applies the controls and **Save** persists them.
 
 The small live preview shows the selected webcam’s exported image, including
 rotation, mirroring and automatic brightness. It uses a thumbnail at up to five updates per second; it

@@ -119,12 +119,12 @@ fn t1450_brightness_save_preserves_independent_camera_edits() {
     let store = ConfigStore::new(root.path().join("config.toml"));
     let baseline = store.update(|_| Ok(())).unwrap();
     let mut brightness = baseline.clone();
-    brightness.camera.options.auto_brightness = true;
+    brightness.camera.options.shadow_strength = 65;
     let mut rotation = baseline.clone();
     rotation.camera.options.rotation = 180;
     store.save_edits(&rotation, &baseline).unwrap();
     store.save_edits(&brightness, &baseline).unwrap();
     let stored = store.load();
-    assert!(stored.camera.options.auto_brightness);
+    assert_eq!(stored.camera.options.shadow_strength, 65);
     assert_eq!(stored.camera.options.rotation, 180);
 }
