@@ -1,0 +1,71 @@
+{
+  "issue": "T1543",
+  "failing_before_tests": 2,
+  "passing_monitor_tests": 81,
+  "coverage_tool": "cargo-llvm-cov / LLVM line counters",
+  "coverage_binary": "target/llvm-cov-target/debug/build/blent/800400279ee4ebda/out/blent-800400279ee4ebda",
+  "coverage": [
+    {
+      "file": "host/src/monitor/retirement.rs",
+      "name": "retire",
+      "line": 5,
+      "language": "rust",
+      "covered": 38,
+      "total": 38,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity_tool": "project Rust syn 2.0.119",
+  "complexity": [
+    [
+      "host/src/monitor/retirement.rs",
+      5,
+      "retire",
+      8
+    ],
+    [
+      "host/src/monitor/retirement.rs",
+      48,
+      "retired",
+      4
+    ],
+    [
+      "host/src/monitor/retirement.rs",
+      61,
+      "remove_assignment",
+      8
+    ],
+    [
+      "host/src/monitor/retirement/attachment_tests.rs",
+      4,
+      "pending",
+      1
+    ],
+    [
+      "host/src/monitor/retirement/attachment_tests.rs",
+      22,
+      "settings",
+      1
+    ],
+    [
+      "host/src/monitor/retirement/attachment_tests.rs",
+      40,
+      "settled",
+      1
+    ],
+    [
+      "host/src/monitor/retirement/attachment_tests.rs",
+      48,
+      "t1543_rejected_preparations_release_each_distinct_attachment",
+      2
+    ],
+    [
+      "host/src/monitor/retirement/attachment_tests.rs",
+      66,
+      "t1543_panicked_and_cancelled_preparations_release_metadata",
+      3
+    ]
+  ]
+}

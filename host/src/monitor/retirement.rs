@@ -18,6 +18,7 @@ impl Monitor {
             .expect("assigned display ticket");
         assert_eq!(ticket.instance(), instance);
         self.slots.close(ticket).expect("current display ticket");
+        self.attachments.remove(&serial);
         self.retiring_slots.insert(instance);
         self.retiring_routes.insert(serial.clone(), instance);
         let adb = self.config.adb.clone();
@@ -77,5 +78,7 @@ impl Monitor {
     }
 }
 
+#[cfg(test)]
+mod attachment_tests;
 #[cfg(test)]
 mod tests;
