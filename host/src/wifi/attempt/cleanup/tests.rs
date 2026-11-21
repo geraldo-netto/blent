@@ -24,6 +24,18 @@ fn scripted(commands: Vec<RouteCommand>) -> Adb<Script> {
 }
 
 #[tokio::test]
+async fn t1545_unknown_state_never_settles_pending_removal_as_absent() {
+    let adb = scripted(vec![
+        listing("host:5\tdetached\n"),
+        listing("host:5\tmaintenance-mode_42\n"),
+    ]);
+    assert_eq!(observe(&adb, "host:5").await.unwrap(), Some(false));
+    let mut state = Creation::RemovalPending;
+    assert!(!once(&adb, "host:5", &mut state).await.unwrap());
+    assert_eq!(state, Creation::RemovalPending);
+}
+
+#[tokio::test]
 async fn t1539_retained_cleanup_reports_one_warning_per_episode() {
     use tracing::instrument::WithSubscriber;
     let log = tempfile::NamedTempFile::new().unwrap();
@@ -83,7 +95,7 @@ async fn t1363_invalid_snapshots_never_discharge_cleanup() {
         "",
         "error",
         "List of devices attached\nhost:5\tdevice\nhost:5\toffline",
-        "List of devices attached\nhost:5\tbogus",
+        "List of devices attached\nhost:5\tbad state",
     ] {
         let adb = scripted(vec![reply(0, text)]);
         assert!(once(&adb, "host:5", &mut Creation::Acknowledged)

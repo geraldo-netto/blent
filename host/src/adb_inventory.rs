@@ -28,30 +28,28 @@ pub fn with_synthetic(
     Some(devices)
 }
 
-fn known_state(state: &str) -> bool {
+fn valid_state(state: &str) -> bool {
     // ADB's short listing uses a tab before the complete connection state.
     // Missing udev access includes a diagnostic after "no permissions".
-    state.starts_with("no permissions")
-        || [
-            "device",
-            "offline",
-            "unauthorized",
-            "authorizing",
-            "connecting",
-            "bootloader",
-            "recovery",
-            "sideload",
-            "rescue",
-            "host",
-            "unknown",
-        ]
-        .contains(&state)
+    if state == "no permissions" || state.starts_with("no permissions ") {
+        return state.len() <= 1024 && !state.chars().any(char::is_control);
+    }
+    state.len() <= 64
+        && state
+            .bytes()
+            .next()
+            .is_some_and(|byte| byte.is_ascii_lowercase())
+        && state.bytes().all(state_token_byte)
+}
+
+fn state_token_byte(byte: u8) -> bool {
+    byte.is_ascii_lowercase() || byte.is_ascii_digit() || matches!(byte, b'_' | b'-')
 }
 
 fn record(line: &str) -> Option<(&str, &str)> {
     let (serial, state) = line.split_once('\t')?;
     blent_config::tablets::validate_adb_serial(serial).ok()?;
-    if !known_state(state) {
+    if !valid_state(state) {
         return None;
     }
     Some((serial, state))
@@ -103,6 +101,59 @@ pub fn package_presence(out: &std::process::Output) -> Option<bool> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn t1545_unknown_state_is_present_but_not_ready() {
+        for state in [
+            "detached".to_owned(),
+            "maintenance-mode_42".into(),
+            "x".repeat(64),
+        ] {
+            let text = format!("List of devices attached\nREADY\tdevice\nOTHER\t{state}\n");
+            assert_eq!(
+                entries(&text),
+                Some(vec![("READY", "device"), ("OTHER", state.as_str())]),
+                "T1545"
+            );
+            assert_eq!(parse(&text), Some(vec!["READY".to_owned()]), "T1545");
+        }
+    }
+
+    #[test]
+    fn t1545_state_syntax_and_capacity_still_reject_malformed_records() {
+        for state in [
+            "".to_owned(),
+            "bad state".into(),
+            "device\textra".into(),
+            "dev\0ice".into(),
+            "no permissions\0extra".into(),
+            "x".repeat(65),
+            format!("no permissions {}", "x".repeat(1024)),
+        ] {
+            assert_eq!(
+                entries(&format!("List of devices attached\nUSB\t{state}\n")),
+                None,
+                "T1545: {state:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn t1545_state_tokens_exhaust_single_byte_boundaries() {
+        for code in 0..=255u32 {
+            let state = format!("x{}y", char::from_u32(code).unwrap());
+            let text = format!("List of devices attached\nUSB\t{state}\n");
+            let allowed = matches!(code, 45 | 48..=57 | 95 | 97..=122);
+            assert_eq!(
+                entries(&text).is_some(),
+                allowed,
+                "T1545: state byte {code}"
+            );
+        }
+        let diagnostic = format!("no permissions {}", "x".repeat(1009));
+        assert_eq!(diagnostic.len(), 1024);
+        assert!(entries(&format!("List of devices attached\nUSB\t{diagnostic}\n")).is_some());
+    }
 
     #[test]
     fn t1386_serial_contract_rejects_controls_and_oversize() {
@@ -177,7 +228,7 @@ mod tests {
             "",
             "error",
             "List of devices attached\npartial",
-            "List of devices attached\nUSB\tbogus",
+            "List of devices attached\nUSB\tbad state",
             "List of devices attached\nUSB\tdevice\nUSB\toffline",
         ] {
             assert_eq!(parse(malformed), None, "T443: {malformed}");

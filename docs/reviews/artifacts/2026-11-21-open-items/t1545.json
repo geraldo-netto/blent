@@ -1,0 +1,48 @@
+{
+  "issue": "T1545",
+  "tests": {
+    "inventory_cleanup": 12,
+    "final_inventory": 7
+  },
+  "coverage": [
+    {
+      "file": "host/src/adb_inventory.rs",
+      "name": "valid_state",
+      "line": 31,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_inventory.rs",
+      "name": "state_token_byte",
+      "line": 45,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_inventory.rs",
+      "name": "record",
+      "line": 49,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 26,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  },
+  "upstream": "https://android.googlesource.com/platform/packages/modules/adb/+/HEAD/adb.cpp"
+}
