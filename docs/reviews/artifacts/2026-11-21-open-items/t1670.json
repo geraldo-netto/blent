@@ -1,0 +1,386 @@
+{
+  "issue": "T1670",
+  "provenance": {
+    "host": "Linux-7.0.0-43-generic-x86_64-with-glibc2.39",
+    "cpu_model": "AMD Ryzen 9 7945HX with Radeon Graphics",
+    "allowed_cpus": 32,
+    "source_head": "b42c4f32490e95e750956b6777309d77b0d7cd1c",
+    "files": {
+      "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/ffmpeg": "0e62ea1ba567fcf246b70d6c922b2c869c6920aa308b5781f8f7f8507a4feb81",
+      "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/libexec/ffmpeg": "643ab790095816900e48a6ecb2ed7aca19fdb6bd230dadcd3c7df1757231edc5",
+      "scripts/benchmarks/ffmpeg-camera-pipe.py": "17b5375b9efe77a4bea341f258e2e8e1253551fe71adef43c40f9a959aaab205",
+      "scripts/benchmarks/ffmpeg_camera_latency.py": "7cec1905090077d1172d040f2817e0b16f1da079225982df9c3e496af876abef"
+    },
+    "conditions": "Running desktop/display sessions preserved. No cargo or rustc processes present when final measurement began. Sequential synthetic workloads; no CPU affinity or governor change, no cache eviction. Three repeats with rotated variant order. Not a dedicated idle laboratory or native camera acceptance."
+  },
+  "summary": {
+    "pipes": [
+      {
+        "resolution": "640x480",
+        "effective_bytes": 65536,
+        "frames_per_run": 120,
+        "cpu_ms": 188.078,
+        "wall_ms": 172.1576330019161,
+        "reads": 960,
+        "child_voluntary_switches": 1204
+      },
+      {
+        "resolution": "640x480",
+        "effective_bytes": 262144,
+        "frames_per_run": 120,
+        "cpu_ms": 183.28200000000015,
+        "wall_ms": 166.55061102937907,
+        "reads": 405,
+        "child_voluntary_switches": 494
+      },
+      {
+        "resolution": "640x480",
+        "effective_bytes": 1048576,
+        "frames_per_run": 120,
+        "cpu_ms": 187.313,
+        "wall_ms": 170.69914599414915,
+        "reads": 383,
+        "child_voluntary_switches": 488
+      },
+      {
+        "resolution": "1280x720",
+        "effective_bytes": 65536,
+        "frames_per_run": 120,
+        "cpu_ms": 521.9319999999994,
+        "wall_ms": 473.7909699906595,
+        "reads": 2640,
+        "child_voluntary_switches": 2862
+      },
+      {
+        "resolution": "1280x720",
+        "effective_bytes": 262144,
+        "frames_per_run": 120,
+        "cpu_ms": 519.3910000000003,
+        "wall_ms": 472.7298539946787,
+        "reads": 855,
+        "child_voluntary_switches": 898
+      },
+      {
+        "resolution": "1280x720",
+        "effective_bytes": 1048576,
+        "frames_per_run": 120,
+        "cpu_ms": 545.981,
+        "wall_ms": 495.7272960455157,
+        "reads": 510,
+        "child_voluntary_switches": 489
+      },
+      {
+        "resolution": "1920x1080",
+        "effective_bytes": 65536,
+        "frames_per_run": 120,
+        "cpu_ms": 1219.055,
+        "wall_ms": 1118.6480940086767,
+        "reads": 5763,
+        "child_voluntary_switches": 5865
+      },
+      {
+        "resolution": "1920x1080",
+        "effective_bytes": 262144,
+        "frames_per_run": 120,
+        "cpu_ms": 1223.5429999999992,
+        "wall_ms": 1116.3549890043214,
+        "reads": 1625,
+        "child_voluntary_switches": 1634
+      },
+      {
+        "resolution": "1920x1080",
+        "effective_bytes": 1048576,
+        "frames_per_run": 120,
+        "cpu_ms": 1256.497000000001,
+        "wall_ms": 1121.9817970413715,
+        "reads": 843,
+        "child_voluntary_switches": 583
+      }
+    ],
+    "filter-threads": [
+      {
+        "resolution": "640x480",
+        "filter_threads": 1,
+        "frames_per_run": 120,
+        "cpu_ms": 186.69900000000013,
+        "wall_ms": 171.36274796212092,
+        "reads": 960,
+        "child_voluntary_switches": 1192
+      },
+      {
+        "resolution": "640x480",
+        "filter_threads": 2,
+        "frames_per_run": 120,
+        "cpu_ms": 183.0390000000001,
+        "wall_ms": 106.56575701432303,
+        "reads": 960,
+        "child_voluntary_switches": 1430
+      },
+      {
+        "resolution": "640x480",
+        "filter_threads": 4,
+        "frames_per_run": 120,
+        "cpu_ms": 194.05899999999997,
+        "wall_ms": 82.12375995935872,
+        "reads": 960,
+        "child_voluntary_switches": 1669
+      },
+      {
+        "resolution": "1280x720",
+        "filter_threads": 1,
+        "frames_per_run": 120,
+        "cpu_ms": 524.657,
+        "wall_ms": 476.34830098832026,
+        "reads": 2640,
+        "child_voluntary_switches": 2862
+      },
+      {
+        "resolution": "1280x720",
+        "filter_threads": 2,
+        "frames_per_run": 120,
+        "cpu_ms": 520.0749999999998,
+        "wall_ms": 297.900595003739,
+        "reads": 2641,
+        "child_voluntary_switches": 3096
+      },
+      {
+        "resolution": "1280x720",
+        "filter_threads": 4,
+        "frames_per_run": 120,
+        "cpu_ms": 533.056,
+        "wall_ms": 211.6173090180382,
+        "reads": 2641,
+        "child_voluntary_switches": 3338
+      },
+      {
+        "resolution": "1920x1080",
+        "filter_threads": 1,
+        "frames_per_run": 120,
+        "cpu_ms": 1209.9509999999993,
+        "wall_ms": 1104.7599309822544,
+        "reads": 5761,
+        "child_voluntary_switches": 5884
+      },
+      {
+        "resolution": "1920x1080",
+        "filter_threads": 2,
+        "frames_per_run": 120,
+        "cpu_ms": 1226.1660000000002,
+        "wall_ms": 698.7391670118086,
+        "reads": 5761,
+        "child_voluntary_switches": 6067
+      },
+      {
+        "resolution": "1920x1080",
+        "filter_threads": 4,
+        "frames_per_run": 120,
+        "cpu_ms": 1219.0609999999997,
+        "wall_ms": 480.8597950031981,
+        "reads": 5763,
+        "child_voluntary_switches": 6367
+      }
+    ],
+    "latency": [
+      {
+        "resolution": "640x480",
+        "filter_threads": 1,
+        "frames_per_run": 60,
+        "cpu_ms": 198.45100000000008,
+        "wall_ms": 1973.1728890328668,
+        "reads": 60,
+        "child_voluntary_switches": 676,
+        "frame_median_ms": 3.1394080142490566,
+        "frame_p95_ms": 4.537608998361975,
+        "first_frame_ms": 11.88401598483324
+      },
+      {
+        "resolution": "640x480",
+        "filter_threads": 2,
+        "frames_per_run": 60,
+        "cpu_ms": 240.575,
+        "wall_ms": 1974.7269850340672,
+        "reads": 60,
+        "child_voluntary_switches": 801,
+        "frame_median_ms": 2.6648779748938978,
+        "frame_p95_ms": 3.035336034372449,
+        "first_frame_ms": 19.12296301452443
+      },
+      {
+        "resolution": "640x480",
+        "filter_threads": 4,
+        "frames_per_run": 60,
+        "cpu_ms": 224.78599999999983,
+        "wall_ms": 1974.6029680245556,
+        "reads": 60,
+        "child_voluntary_switches": 940,
+        "frame_median_ms": 2.0969060133211315,
+        "frame_p95_ms": 2.5775880203582346,
+        "first_frame_ms": 18.26136204181239
+      },
+      {
+        "resolution": "1280x720",
+        "filter_threads": 1,
+        "frames_per_run": 60,
+        "cpu_ms": 462.3429999999995,
+        "wall_ms": 1981.4182719564997,
+        "reads": 60,
+        "child_voluntary_switches": 1352,
+        "frame_median_ms": 8.299424953293055,
+        "frame_p95_ms": 12.018435983918607,
+        "first_frame_ms": 26.896106952335685
+      },
+      {
+        "resolution": "1280x720",
+        "filter_threads": 2,
+        "frames_per_run": 60,
+        "cpu_ms": 468.7000000000008,
+        "wall_ms": 1975.3539490047842,
+        "reads": 60,
+        "child_voluntary_switches": 1420,
+        "frame_median_ms": 4.7589290188625455,
+        "frame_p95_ms": 7.5490790186449885,
+        "first_frame_ms": 23.116047028452158
+      },
+      {
+        "resolution": "1280x720",
+        "filter_threads": 4,
+        "frames_per_run": 60,
+        "cpu_ms": 537.5759999999998,
+        "wall_ms": 1977.3642140207812,
+        "reads": 60,
+        "child_voluntary_switches": 1548,
+        "frame_median_ms": 5.040052987169474,
+        "frame_p95_ms": 6.007699994370341,
+        "first_frame_ms": 28.367490973323584
+      },
+      {
+        "resolution": "1920x1080",
+        "filter_threads": 1,
+        "frames_per_run": 60,
+        "cpu_ms": 673.3250000000003,
+        "wall_ms": 1984.292417007964,
+        "reads": 60,
+        "child_voluntary_switches": 2197,
+        "frame_median_ms": 11.681654024869204,
+        "frame_p95_ms": 13.825391011778265,
+        "first_frame_ms": 28.08944199932739
+      },
+      {
+        "resolution": "1920x1080",
+        "filter_threads": 2,
+        "frames_per_run": 60,
+        "cpu_ms": 796.4629999999999,
+        "wall_ms": 1981.5871940227225,
+        "reads": 60,
+        "child_voluntary_switches": 2577,
+        "frame_median_ms": 7.677910034544766,
+        "frame_p95_ms": 15.207009972073138,
+        "first_frame_ms": 26.944352022837847
+      },
+      {
+        "resolution": "1920x1080",
+        "filter_threads": 4,
+        "frames_per_run": 60,
+        "cpu_ms": 764.6690000000004,
+        "wall_ms": 1980.658799991943,
+        "reads": 60,
+        "child_voluntary_switches": 2366,
+        "frame_median_ms": 5.976159009151161,
+        "frame_p95_ms": 9.344691992737353,
+        "first_frame_ms": 19.995465991087258
+      }
+    ]
+  },
+  "complexity_tool": "project Python AST 3.12",
+  "complexity": [
+    [
+      "scripts/benchmarks/ffmpeg-camera-pipe.py",
+      21,
+      "arguments",
+      1
+    ],
+    [
+      "scripts/benchmarks/ffmpeg-camera-pipe.py",
+      31,
+      "generate",
+      1
+    ],
+    [
+      "scripts/benchmarks/ffmpeg-camera-pipe.py",
+      42,
+      "recipe",
+      1
+    ],
+    [
+      "scripts/benchmarks/ffmpeg-camera-pipe.py",
+      54,
+      "capacity",
+      1
+    ],
+    [
+      "scripts/benchmarks/ffmpeg-camera-pipe.py",
+      64,
+      "consume",
+      2
+    ],
+    [
+      "scripts/benchmarks/ffmpeg-camera-pipe.py",
+      76,
+      "child_metrics",
+      1
+    ],
+    [
+      "scripts/benchmarks/ffmpeg-camera-pipe.py",
+      84,
+      "observe",
+      2
+    ],
+    [
+      "scripts/benchmarks/ffmpeg-camera-pipe.py",
+      106,
+      "cases",
+      5
+    ],
+    [
+      "scripts/benchmarks/ffmpeg-camera-pipe.py",
+      131,
+      "main",
+      1
+    ],
+    [
+      "scripts/benchmarks/ffmpeg_camera_latency.py",
+      19,
+      "access_units",
+      5
+    ],
+    [
+      "scripts/benchmarks/ffmpeg_camera_latency.py",
+      36,
+      "picture",
+      1
+    ],
+    [
+      "scripts/benchmarks/ffmpeg_camera_latency.py",
+      45,
+      "pictures",
+      3
+    ],
+    [
+      "scripts/benchmarks/ffmpeg_camera_latency.py",
+      64,
+      "run",
+      4
+    ],
+    [
+      "scripts/benchmarks/ffmpeg_camera_latency.py",
+      83,
+      "observe",
+      2
+    ]
+  ],
+  "decisions": {
+    "pipes": "Retain current pipe size: no consistent meaningful elapsed/CPU gain; larger buffering requires freshness evidence. T1590 still owns relay/speaker allocation work.",
+    "capability_probe": "Warm help probes cost roughly 3\u20137 ms each; retain current behavior pending actual session-start attribution under T1620.",
+    "filter_threads": "T1671 implements bounded 1\u20134, default 2, pending regression/coverage completion. Synthetic output is byte-identical; median processing improves, CPU and tail latency vary. No live-tablet gain claimed."
+  }
+}
