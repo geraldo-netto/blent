@@ -89,6 +89,16 @@ The tray controls the running daemon.
 - **Position** — `right` (default), `left`, `above`, `below` your real screens.
 - **Orientation** — in the tablet's ⚙ sheet: rotate automatically with the
   tilt sensor, or pin *camera up* / *camera down*.
+### Windows touch/mouse preview
+
+The opt-in **Touch/mouse input preview** chooses a host monitor and either touch or
+finger-driven mouse input. Its saved `[direct_input]` table contains `monitor`
+(the selected monitor identity) and `mode` (`touch` or `direct_mouse`). The table
+is absent by default. Root settings `input_touch` and `input_mouse` both default
+to `true`; the selected mode must be enabled. Save and restart display sharing
+to apply changes. This Windows preview still requires physical tablet acceptance;
+stylus input is unavailable. It does not select ADB versus direct USB transport.
+
 ## Video
 
 - **Codec** — new configurations default to `auto`: check tablet compatibility,
@@ -206,6 +216,28 @@ device before any mode switch, reset, or interface claim.
   identifiers. See [benchmarks](benchmarks.md)
   for historical Wi-Fi results.
 ## Power, queues and updates
+
+### Host activity pauses
+
+The desktop configuration accepts the following `[host_activity]` settings.
+They have no GUI controls; restart the daemon after editing them.
+
+| Key | Default | Display behavior |
+| --- | --- | --- |
+| `pause_on_lock` | `true` | Pause display work while the host is locked, where lock observation is supported. |
+| `pause_on_display_off` | `true` | Pause display work while the host display is off, where display-power observation is supported. |
+| `pause_without_viewer` | `true` | Pause display work when there is no active tablet viewer. |
+
+When a supported lock or display-power observer has no confirmed state, its
+enabled pause also applies. Disabling one setting disables that pause reason;
+other reasons still apply. Host suspend, unavailable power state and unknown
+state from a supported power observer independently block display and auxiliary
+media work. These three preferences do not bypass native cleanup or Android
+camera/microphone consent. Lock, display-off and no-viewer reasons themselves
+affect display work, not auxiliary camera/audio work. Backend observation support
+is separate from physical-device acceptance.
+
+### Other controls
 
 - **Battery saver** — an opt-in Android setting that preserves brightness,
   refresh rate and stream settings. It releases unnecessary CPU/Wi-Fi locks on

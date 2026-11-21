@@ -61,6 +61,17 @@ The CLI equivalents are `blent audio --direction microphone` and
 ADB tablet or `--usb-peer <full-tablet-fingerprint>` for direct USB. Ctrl-C/SIGTERM
 requests stop and waits for original pipeline cleanup.
 
+Additional CLI flags configure that new session:
+
+| Flag | Default | Meaning |
+| --- | --- | --- |
+| `--processing` | `speech` | `speech` requests communication processing; `raw` requires advertised unprocessed support. Speech does not guarantee echo cancellation. |
+| `--buffer-ms` | `40` | Application buffer from 20 to 200 ms in 10 ms steps. Larger values tolerate more timing variation and add lag. |
+| `--background` | omitted (false) | Request continued sharing while hidden, subject to the tablet's background preference and explicit consent described above. Start with the app visible. |
+
+These flags do not edit saved preferences or update an existing session. Stop
+and start the affected audio direction to change its session settings.
+
 ## Choose settings
 
 | Control | Meaning and tradeoff |

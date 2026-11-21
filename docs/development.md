@@ -311,6 +311,9 @@ them. See the [settings guide](settings.md) for paths and user controls.
 | `ten_bit` | false | HEVC FFmpeg path only; not HDR |
 | `max_tablets` | 1 | Up to four slots; EVDI capacity required |
 | `input_touch` / `input_pen` / `input_pointer` | true / true / true | Pointer creation also requires pen |
+| `input_mouse` | true | Enables finger mouse when the Windows touch/mouse preview selects it; save and restart |
+| `direct_input` | absent | Optional Windows preview table: `monitor` identity and `mode = "touch"` or `"direct_mouse"`; selected mode must be enabled; save and restart; physical acceptance pending |
+| `host_activity.pause_on_lock` / `pause_on_display_off` / `pause_without_viewer` | true / true / true | `[host_activity]` display pause preferences; daemon restart required; [observation support and independent power constraints](settings.md#host-activity-pauses) |
 | `video_port` / `input_port` | 8890 / 8891 | Incremented by two per additional slot |
 | `check_updates` / `auto_launch_app` | true / true | Update checks and app auto-launch are optional; authentication is always required |
 | `wifi_address` | empty | Set by `blent wifi`; reread for reconnect attempts |

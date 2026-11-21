@@ -57,7 +57,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1592 | open | low | small | Document implemented settings and flags that no guide mentions. The `[host_activity]` table (`pause_on_lock`, `pause_on_display_off`, `pause_without_viewer`, all default true; `common/src/host_activity.rs`, consumed in `host/src/linux_main.rs`) appears in no current guide or GUI, and the `docs/development.md` defaults table omits it; `direct_input` and `input_mouse` (`common/src/model.rs`, GUI touch/mouse preview) are described only in an archived review; `blent cameras --exposure/--metering/--noise/--flicker` (`common/src/camera/tuning.rs`) and `blent audio --processing/--buffer-ms/--background` (`common/src/cli.rs`) appear in no guide. The effect of each pause reason was not traced end to end. Completion: document key, default, meaning and restart requirement in `docs/settings.md` and the relevant guides after verifying behaviour in code. |
 
 ## Installation and distribution
 

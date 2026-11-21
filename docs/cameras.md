@@ -175,6 +175,20 @@ kbit/s. These are request limits, not guaranteed modes: Android rejects profiles
 its camera does not advertise. A bitrate target is not a measured traffic rate.
 Larger profiles cost USB bandwidth, decoding/encoding work and tablet power.
 
+Sensor flags configure the new CLI session:
+
+| Flag | Default | Meaning |
+| --- | --- | --- |
+| `--exposure` | `0` | Exposure compensation in hundredths of an EV: `100` requests +1 EV. Accepted range −300 to 300, further limited by the camera and rounded to its exposure steps. |
+| `--metering` | `device` | `device` keeps device metering; `center` requests center metering when advertised. |
+| `--noise` | `device` | `device`, `off` or `fast`; nondefault modes require camera support. |
+| `--flicker` | `device` | `device`, `auto`, `hz50` or `hz60`; nondefault modes require camera support. |
+
+For example, add `--exposure 100 --metering center` to brighten a supported
+camera's center subject. These flags neither edit saved preferences nor adjust
+another running session. Use the GUI's live camera controls for an existing
+GUI-owned session; launching another CLI camera command is not a live update.
+
 The resolution chooser also offers **320×180 (180p)** and **640×360 (360p)**
 for low-detail calls. These preserve the same explicit Start and Android consent.
 The 180p output deliberately uses native 640×360 capture and host downscaling;
