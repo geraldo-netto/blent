@@ -10,11 +10,16 @@ pub(crate) mod batch;
 /// Maximum number of simultaneous display assignments (slots 0 through 3).
 pub const MAX_SESSIONS: usize = 4;
 
-/// Explicit ADB identities contain 1..=1024 UTF-8 bytes and no control characters.
+/// Explicit ADB identities contain 1..=1024 UTF-8 bytes, without control or
+/// directional-formatting characters forbidden by the shared display policy.
 /// Borrowed validation admits no native work and retains no input storage.
 pub fn validate_adb_serial(serial: &str) -> Result<()> {
     ensure!(
-        !serial.is_empty() && serial.len() <= 1024 && !serial.chars().any(char::is_control),
+        !serial.is_empty()
+            && serial.len() <= 1024
+            && !serial
+                .chars()
+                .any(crate::connection::control::names::unsafe_character),
         "invalid ADB identity"
     );
     Ok(())

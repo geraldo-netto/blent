@@ -61,7 +61,9 @@ impl Identity {
 }
 fn validate_identity(value: &str) -> Result<()> {
     ensure!(
-        !value.is_empty() && value.len() <= 1024 && !value.chars().any(char::is_control),
+        !value.is_empty()
+            && value.len() <= 1024
+            && !value.chars().any(super::control::names::unsafe_character),
         "invalid local identity"
     );
     Ok(())

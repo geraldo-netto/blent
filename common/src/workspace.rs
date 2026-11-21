@@ -27,7 +27,10 @@ impl Device {
     ) -> Result<Self> {
         identity.validate()?;
         ensure!(
-            name.len() <= 1024 && !name.chars().any(char::is_control),
+            name.len() <= 1024
+                && !name
+                    .chars()
+                    .any(crate::connection::control::names::unsafe_character),
             "invalid tablet name"
         );
         let name = if name.is_empty() {

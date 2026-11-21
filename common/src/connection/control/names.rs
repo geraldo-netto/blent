@@ -39,6 +39,9 @@ fn validate(value: &str) -> Result<()> {
     Ok(())
 }
 
+/// Shared display policy for descriptor names and externally supplied identities.
+/// Reject controls and explicit direction marks/embeddings/isolates; ordinary
+/// international text remains valid and is never rewritten into another identity.
 pub fn unsafe_character(value: char) -> bool {
     value.is_control()
         || matches!(value, '\u{061c}' | '\u{200e}' | '\u{200f}' | '\u{202a}'..='\u{202e}' | '\u{2066}'..='\u{2069}')

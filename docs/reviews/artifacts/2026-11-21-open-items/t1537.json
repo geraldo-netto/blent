@@ -1,0 +1,352 @@
+{
+  "issue": "T1537",
+  "failing_before_tests": 3,
+  "common_library_passed": 490,
+  "integration_tests_passed": 10,
+  "windows_gnu_test_check": "passed; no native Windows execution",
+  "coverage_tool": "cargo-llvm-cov / LLVM line counters",
+  "coverage": [
+    {
+      "file": "common/src/tablets.rs",
+      "name": "validate_adb_serial",
+      "line": 16,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/routes.rs",
+      "name": "validate_identity",
+      "line": 62,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/workspace.rs",
+      "name": "new",
+      "line": 22,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity_tool": "project Rust syn 2.0.119",
+  "complexity": [
+    [
+      "common/src/tablets.rs",
+      16,
+      "validate_adb_serial",
+      1
+    ],
+    [
+      "common/src/tablets.rs",
+      34,
+      "adb_serial",
+      3
+    ],
+    [
+      "common/src/tablets.rs",
+      40,
+      "peer",
+      3
+    ],
+    [
+      "common/src/tablets.rs",
+      46,
+      "label",
+      3
+    ],
+    [
+      "common/src/tablets.rs",
+      52,
+      "validate",
+      2
+    ],
+    [
+      "common/src/tablets.rs",
+      67,
+      "validate",
+      1
+    ],
+    [
+      "common/src/tablets.rs",
+      105,
+      "try_from",
+      4
+    ],
+    [
+      "common/src/tablets.rs",
+      122,
+      "serialize",
+      1
+    ],
+    [
+      "common/src/tablets.rs",
+      138,
+      "deserialize",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      22,
+      "new",
+      2
+    ],
+    [
+      "common/src/workspace.rs",
+      49,
+      "identity",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      52,
+      "name",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      55,
+      "presence",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      58,
+      "display_assigned",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      62,
+      "merge",
+      2
+    ],
+    [
+      "common/src/workspace.rs",
+      72,
+      "name_rank",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      89,
+      "new",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      97,
+      "insert",
+      3
+    ],
+    [
+      "common/src/workspace.rs",
+      114,
+      "devices",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      117,
+      "into_devices",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      143,
+      "is_active",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      165,
+      "can_start",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      172,
+      "can_stop",
+      1
+    ],
+    [
+      "common/src/workspace.rs",
+      177,
+      "project",
+      6
+    ],
+    [
+      "common/src/connection/routes.rs",
+      13,
+      "profile_name",
+      3
+    ],
+    [
+      "common/src/connection/routes.rs",
+      33,
+      "observed",
+      2
+    ],
+    [
+      "common/src/connection/routes.rs",
+      45,
+      "authenticated",
+      1
+    ],
+    [
+      "common/src/connection/routes.rs",
+      52,
+      "peer",
+      3
+    ],
+    [
+      "common/src/connection/routes.rs",
+      58,
+      "profile",
+      1
+    ],
+    [
+      "common/src/connection/routes.rs",
+      62,
+      "validate_identity",
+      1
+    ],
+    [
+      "common/src/connection/routes.rs",
+      94,
+      "new",
+      1
+    ],
+    [
+      "common/src/connection/routes.rs",
+      108,
+      "reserve",
+      2
+    ],
+    [
+      "common/src/connection/routes.rs",
+      140,
+      "validate_ports",
+      2
+    ],
+    [
+      "common/src/connection/routes.rs",
+      153,
+      "current",
+      4
+    ],
+    [
+      "common/src/connection/routes.rs",
+      161,
+      "claim",
+      2
+    ],
+    [
+      "common/src/connection/routes.rs",
+      169,
+      "revoke",
+      1
+    ],
+    [
+      "common/src/connection/routes.rs",
+      177,
+      "retired",
+      2
+    ],
+    [
+      "common/src/connection/routes.rs",
+      191,
+      "t856_local_route_revision_exhaustion_does_not_wrap",
+      1
+    ],
+    [
+      "common/src/connection/control/names.rs",
+      14,
+      "new",
+      1
+    ],
+    [
+      "common/src/connection/control/names.rs",
+      23,
+      "manufacturer",
+      1
+    ],
+    [
+      "common/src/connection/control/names.rs",
+      27,
+      "model",
+      1
+    ],
+    [
+      "common/src/connection/control/names.rs",
+      32,
+      "validate",
+      1
+    ],
+    [
+      "common/src/connection/control/names.rs",
+      45,
+      "unsafe_character",
+      2
+    ],
+    [
+      "common/src/connection/control/names.rs",
+      55,
+      "t1336_names_bound_each_field_independently",
+      2
+    ],
+    [
+      "common/src/connection/control/names.rs",
+      73,
+      "t1336_control_and_direction_overrides_cannot_spoof_rows",
+      3
+    ],
+    [
+      "common/tests/identity_display.rs",
+      13,
+      "device",
+      1
+    ],
+    [
+      "common/tests/identity_display.rs",
+      23,
+      "t1537_adb_identities_reject_direction_controls",
+      2
+    ],
+    [
+      "common/tests/identity_display.rs",
+      38,
+      "t1537_workspace_names_reject_direction_controls",
+      2
+    ],
+    [
+      "common/tests/identity_display.rs",
+      46,
+      "t1537_route_keys_and_profiles_reject_direction_controls",
+      2
+    ],
+    [
+      "common/tests/identity_display.rs",
+      55,
+      "t1537_identity_limits_and_international_text_remain_supported",
+      3
+    ],
+    [
+      "common/tests/identity_display.rs",
+      83,
+      "t1537_all_c0_and_c1_controls_are_rejected_at_text_boundaries",
+      3
+    ]
+  ]
+}
