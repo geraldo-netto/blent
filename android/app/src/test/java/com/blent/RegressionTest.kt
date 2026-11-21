@@ -142,7 +142,7 @@ class RegressionTest {
                 val second = send(MotionEvent.ACTION_POINTER_DOWN or (1 shl 8),
                     10 to finger, 11 to finger).single().getInt("slot")
                 val rejected = send(palmAction, 10 to 5, 11 to finger)
-                val releases = rejected.filter { it.getInt("action") == 1 }
+                val releases = rejected.filter { it.getInt("action") == 3 }
                 assertEquals("T319 palm action $palmAction left the old contact down",
                     listOf(first), releases.map { it.getInt("slot") })
                 assertEquals(0.0, releases.single().getDouble("pressure"), 0.0)

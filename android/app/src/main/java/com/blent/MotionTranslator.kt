@@ -109,7 +109,7 @@ internal class MotionTranslator(private val send: (JSONObject, Long?) -> Unit) :
         for (index in 0 until event.pointerCount) {
             if (!isPalm(event, index)) continue
             val slot = touchSlots.remove(event.getPointerId(index)) ?: continue
-            sendTouch(0f, 0f, 0.0, 1, slot)
+            sendTouch(0f, 0f, 0.0, 3, slot)
         }
     }
 
@@ -177,7 +177,7 @@ internal class MotionTranslator(private val send: (JSONObject, Long?) -> Unit) :
 
     private fun releaseTouches() {
         // A refused send retires the connection and clears slots synchronously.
-        for (slot in touchSlots.values.toList()) sendTouch(0f, 0f, 0.0, 1, slot)
+        for (slot in touchSlots.values.toList()) sendTouch(0f, 0f, 0.0, 3, slot)
         touchSlots.clear()
     }
 

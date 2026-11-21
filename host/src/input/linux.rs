@@ -764,6 +764,7 @@ impl<W: Write + AsRawFd> InjectDevices<W> {
         action: u8,
         slot: u8,
     ) -> Result<()> {
+        let action = linux_touch_action(action);
         if slot >= 10 || action > 2 || self.touch.is_none() {
             return Ok(());
         }
@@ -829,6 +830,16 @@ impl<W: Write + AsRawFd> InjectDevices<W> {
             }
         }
         self.pen_button = false;
+    }
+}
+
+// Linux uinput has no cancellation flag: retire the contact without emitting
+// synthetic coordinates. Direct-input adapters preserve the distinct Cancel phase.
+fn linux_touch_action(action: u8) -> u8 {
+    if action == 3 {
+        1
+    } else {
+        action
     }
 }
 

@@ -448,3 +448,34 @@ async fn t1503_non_command_touch_entry_revokes_direct_authority() {
         .iter()
         .any(|call| call.contains("touch")));
 }
+
+#[tokio::test]
+async fn t1499_top_level_touch_cancellation_reaches_the_native_contact() {
+    let (backend, evidence) = backend(Mode::Touch, true, false);
+    let sink = backend.sink();
+    negotiate(&sink).await;
+    execute(&*sink, touch_command(0.5, 0.5, 0, 0).unwrap())
+        .await
+        .unwrap();
+    execute(&*sink, touch_command(0.0, 0.0, 3, 0).unwrap())
+        .await
+        .unwrap();
+    let calls = evidence.calls.lock().unwrap().clone();
+    assert!(
+        calls.iter().any(|call| call.contains("Cancel")),
+        "{calls:?}"
+    );
+    assert!(
+        !calls.iter().any(|call| call.contains("phase: Up")),
+        "{calls:?}"
+    );
+    sink.release_all();
+    wait_retired(&*sink).await;
+}
+
+#[test]
+fn t1499_touch_wire_accepts_only_four_defined_actions() {
+    for action in 0..=u8::MAX {
+        assert_eq!(touch_command(0.5, 0.5, action, 0).is_ok(), action <= 3);
+    }
+}

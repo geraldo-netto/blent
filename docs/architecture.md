@@ -1179,7 +1179,12 @@ Touch uses the top-level `touch` record on every backend. Direct-input `event`
 records carry mouse events only; internal touch commands are not a second wire format.
 
 Coordinates are normalized to 0–1; wire tilt values are degrees. Touch actions
-are 0 down, 1 up, 2 move; pen adds 3 hover, 4 exit/cancel, 5/6 stylus-button
+are 0 down, 1 up, 2 move and 3 cancel. Android system cancellation, palm
+reclassification and replacement of an unfinished gesture emit cancel. Direct
+input preserves the cancelled contact phase (Windows marks the native release
+cancelled). Linux uinput has no cancellation flag: it retires only the affected
+slot without synthetic position changes, so applications may interpret that
+release normally. Pen adds 3 hover, 4 exit/cancel, 5/6 stylus-button
 down/up. Pen tip-up publishes its final axes and releases pressure/touch while
 retaining tool proximity. Exit/cancel and controller teardown release the tool,
 tip and button. Every pen record carries a required boolean `button` field.

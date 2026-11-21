@@ -619,7 +619,7 @@ fn t1434_invalid_touch_values_never_publish_or_retire_existing_debt() {
                 .unwrap();
         }
     }
-    for action in 3..=u8::MAX {
+    for action in 4..=u8::MAX {
         for slot in 0..10 {
             devices
                 .inject_touch(i32::MAX, i32::MIN, 0, action, slot)
@@ -649,4 +649,36 @@ fn t1434_device_destruction_settles_debt_and_missing_device_ignores_input() {
     assert!(!devices.touch_retiring);
     devices.inject_touch(10, 20, 30, 0, 0).unwrap();
     assert_eq!(devices.active_slots, 0);
+}
+
+#[test]
+fn t1499_linux_cancel_releases_only_its_slot_without_moving_it() {
+    let mut devices = touch_devices();
+    devices.inject_touch(10, 20, 30, 0, 0).unwrap();
+    devices.inject_touch(40, 50, 60, 0, 1).unwrap();
+    let before = recorded_touch(&devices).len();
+    devices.inject_touch(0, 0, 0, 3, 0).unwrap();
+    assert_eq!(devices.active_slots, 2);
+    assert_eq!(devices.touch_contacts[0], None);
+    assert_eq!(devices.touch_contacts[1], Some((40, 50, 60)));
+    let tail = recorded_touch(&devices)[before..].to_vec();
+    assert!(tail.contains(&(EV_ABS, ABS_MT_TRACKING_ID, -1)));
+    assert!(!tail.iter().any(|(_, code, _)| *code == ABS_MT_POSITION_X));
+    devices.inject_touch(0, 0, 0, 3, 1).unwrap();
+    assert_eq!(devices.active_slots, 0);
+}
+
+#[test]
+fn t1499_failed_linux_cancel_retains_original_release_debt() {
+    let mut devices = touch_devices();
+    devices.inject_touch(10, 20, 30, 0, 0).unwrap();
+    reject_next_touch(&mut devices);
+    assert!(devices.inject_touch(0, 0, 0, 3, 0).is_err());
+    assert!(devices.touch_retiring);
+    assert_eq!(devices.active_slots, 1);
+    devices.release_all();
+    assert_eq!(devices.active_slots, 0);
+    assert!(!devices.touch_retiring);
+    devices.inject_touch(40, 50, 60, 0, 0).unwrap();
+    assert_eq!(devices.touch_contacts[0], Some((40, 50, 60)));
 }

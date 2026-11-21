@@ -11,6 +11,7 @@ pub enum InputEvent {
         x: f64,
         y: f64,
         pressure: f64,
+        /// 0=down, 1=up, 2=move, 3=cancel.
         action: u8,
         slot: u8,
     },

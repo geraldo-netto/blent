@@ -258,6 +258,7 @@ pub(super) fn touch_command(x: f64, y: f64, action: u8, slot: u8) -> Result<Comm
         0 => Phase::Down,
         1 => Phase::Up,
         2 => Phase::Move,
+        3 => Phase::Cancel,
         _ => anyhow::bail!("Invalid touch action"),
     };
     Ok(Command::Event {
