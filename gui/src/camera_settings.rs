@@ -70,7 +70,8 @@ impl Panel {
         let Some(backend) = self.backend.as_ref() else {
             return;
         };
-        match backend.adjust(options) {
+        let options = self.admitted_profile(options);
+        match backend.adjust(&options) {
             Ok(status) => {
                 self.capabilities = status.capabilities;
                 if status.restart_required {
@@ -89,6 +90,20 @@ impl Panel {
                 ui.colored_label(ui.visuals().error_fg_color, error.to_string());
             }
         }
+    }
+
+    /// Live edits and restart belong to the admitted tablet, independently of
+    /// the saved draft and the currently selected Overview row.
+    fn admitted_profile(&self, options: &CameraProfile) -> CameraProfile {
+        let mut profile = options.clone();
+        if let Some(target) = self.owner.target() {
+            crate::resource_workspace::set_target(
+                target,
+                &mut profile.serial,
+                &mut profile.usb_peer,
+            );
+        }
+        profile
     }
 
     fn summary(&mut self, ui: &mut egui::Ui, options: &CameraProfile) {
@@ -135,7 +150,12 @@ impl Panel {
                 .add_enabled(self.transports.available(), egui::Button::new(label))
                 .clicked()
             {
-                self.error = self.start(options.clone()).err();
+                let profile = if active {
+                    self.admitted_profile(options)
+                } else {
+                    options.clone()
+                };
+                self.error = self.start(profile).err();
                 ui.ctx()
                     .request_repaint_after(std::time::Duration::from_millis(100));
             }

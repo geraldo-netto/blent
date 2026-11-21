@@ -39,3 +39,7 @@ The failing-first regression confirmed that a read-only refresh error discards t
 ## T1541 — display lease namespaces
 
 A permanent native regression reproduced the collision between `T1541-Aa` and `T1541-BB` with disjoint ports. Display leases now use exact per-port names and a separate SHA-256 device-identity namespace. Same-device/port exclusion and stable-inode retention remain. All five lock tests and all 60 USB tests pass. Both maintained production methods exceed 91% line coverage; all 11 measured functions are <=9 complexity. [Evidence](artifacts/2026-11-21-requested-fixes/t1541-verification.json). Linux tests use private runtime directories. Windows native acceptance remains unmeasured. No installed binary or live lock namespace was changed.
+
+## T1548 — camera target after Overview start
+
+The failing-first GUI regression uses the real host camera Controller/session update with a private worker. Live edits and camera-tab Restart now overlay the admitted tablet onto a temporary profile, leaving saved drafts and Overview selection intact. Both ADB-serial and USB-peer cases pass, including changed mirror settings and original worker settlement. All 225 GUI cases pass; all three maintained methods exceed 95% line coverage and all measured functions are <=9 complexity. [Evidence](artifacts/2026-11-21-requested-fixes/t1548-verification.json). No camera or tablet was accessed. Windows native evidence remains tracked by T1271.

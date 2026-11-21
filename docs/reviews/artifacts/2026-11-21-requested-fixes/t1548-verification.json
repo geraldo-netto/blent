@@ -1,0 +1,18 @@
+{
+  "finding": "T1548",
+  "red": "Real camera Controller rejected live adjustment and did not start a restart when the draft target remained automatic.",
+  "green": {
+    "gui_cases_passed": 225,
+    "failed": 0,
+    "tested_targets": [
+      "ADB serial",
+      "USB peer"
+    ]
+  },
+  "coverage": {
+    "maintained_production_methods": 3,
+    "minimum_percent": 95.65217391304348
+  },
+  "ownership": "Existing panel Owner remains the authoritative admitted target. Temporary profile clones overlay that target for live edits and restart; saved drafts and Overview selection retain their values. No new owner or native resource. Test uses real session update/worker acknowledgement and waits original worker retirement, with no actual camera or tablet.",
+  "limits": "Linux GUI test; native Windows evidence remains in T1271."
+}

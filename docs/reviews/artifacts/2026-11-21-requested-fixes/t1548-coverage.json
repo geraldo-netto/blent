@@ -1,0 +1,37 @@
+[
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "live_adjustments",
+    "line": 65,
+    "language": "rust",
+    "covered": 22,
+    "total": 23,
+    "percent": 95.65217391304348,
+    "passes": true,
+    "missing": [
+      71
+    ]
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "admitted_profile",
+    "line": 97,
+    "language": "rust",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "buttons",
+    "line": 141,
+    "language": "rust",
+    "covered": 30,
+    "total": 30,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

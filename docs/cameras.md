@@ -64,6 +64,10 @@ Try Fast only if shadow correction makes noise distracting.
 
 **Save** persists preferences. Lens, dimensions, FPS, freshness budget, transport and background
 policy changes display **Restart required** and wait for **Restart camera**.
+When started from Overview, live adjustments and Restart use that camera's admitted
+tablet, even if the saved target is automatic or another Overview row is selected.
+Stop the camera before starting it for another tablet; editing the saved target
+alone does not retarget a running session.
 
 The small live preview shows the selected webcam’s exported image, including
 rotation, mirroring and automatic brightness. It uses a thumbnail at up to five updates per second; it
