@@ -16,7 +16,7 @@ internal data class PenMessage(
     val tiltX: Double = 0.0,
     val tiltY: Double = 0.0,
     val eraser: Boolean = false,
-    val button: Boolean? = null,
+    val button: Boolean = action == 5,
 ) {
     fun toJson() = JSONObject().apply {
         put("type", "pen")
@@ -27,7 +27,7 @@ internal data class PenMessage(
         put("tilt_y", finiteSample(tiltY))
         put("eraser", eraser)
         put("action", action)
-        button?.let { put("button", it) }
+        put("button", button)
     }
 }
 

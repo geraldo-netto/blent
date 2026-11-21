@@ -271,7 +271,7 @@ internal class MotionTranslator(private val send: (JSONObject, Long?) -> Unit) :
         event.buttonState and MotionEvent.BUTTON_STYLUS_PRIMARY != 0
 
     private fun sendPenButton(down: Boolean, sampleTimeMs: Long) {
-        if (penEnabled) send(PenMessage(if (down) 5 else 6).toJson(), sampleTimeMs)
+        if (penEnabled) send(PenMessage(if (down) 5 else 6, button = down).toJson(), sampleTimeMs)
     }
 
     private fun sendPenProximityExit(sampleTimeMs: Long) {

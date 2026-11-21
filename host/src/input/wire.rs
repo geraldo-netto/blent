@@ -25,10 +25,8 @@ pub enum InputEvent {
         /// Emitted as BTN_TOOL_RUBBER so GIMP's eraser works.
         #[serde(default)]
         eraser: bool,
-        /// Current primary stylus-button state on positional samples. Legacy
-        /// clients omit this and retain explicit action 5/6 behavior.
-        #[serde(default, skip_serializing_if = "Option::is_none")]
-        button: Option<bool>,
+        /// Current primary stylus-button state; required on every pen record.
+        button: bool,
         /// 0=down 1=up 2=move 3=hover 4=hover_exit
         /// 5=stylus button down 6=stylus button up
         action: u8,

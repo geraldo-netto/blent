@@ -198,7 +198,7 @@ async fn t673_wire_dispatch_accepts_negotiated_touch_and_rejects_pen_and_failed_
     }
     assert!(
         !dispatch(
-            r#"{"type":"pen","x":0.5,"y":0.5,"pressure":1,"tilt_x":0,"tilt_y":0,"action":0}"#
+            r#"{"type":"pen","x":0.5,"y":0.5,"pressure":1,"tilt_x":0,"tilt_y":0,"action":0,"button":false}"#
         )
         .finish()
         .await
@@ -303,7 +303,7 @@ async fn t673_negotiation_modes_bounds_and_failed_delivery_retire_owned_input() 
             tilt: (0.0, 0.0),
             eraser: false,
             action: 0,
-            button: None,
+            button: false,
         },
         true,
     );

@@ -8,7 +8,7 @@ pub struct PenSample {
     pub tilt: (f64, f64),
     pub eraser: bool,
     pub action: u8,
-    pub button: Option<bool>,
+    pub button: bool,
 }
 
 pub type DirectReply = Pin<Box<dyn Future<Output = anyhow::Result<()>> + Send>>;

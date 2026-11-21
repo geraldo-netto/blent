@@ -1164,8 +1164,10 @@ Coordinates are normalized to 0–1; wire tilt values are degrees. Touch actions
 are 0 down, 1 up, 2 move; pen adds 3 hover, 4 exit/cancel, 5/6 stylus-button
 down/up. Pen tip-up publishes its final axes and releases pressure/touch while
 retaining tool proximity. Exit/cancel and controller teardown release the tool,
-tip and button. Positional pen samples carry optional `button`, the current
-primary stylus-button state; legacy clients may omit it and use actions 5/6.
+tip and button. Every pen record carries a required boolean `button` field.
+Positional samples report the current primary stylus-button state; button events
+report their new state and proximity-exit reports false. Omitted or null button
+state is rejected. Actions 5/6 still carry the current explicit button events.
 Changed button state is synchronized after tool entry and before tip-down,
 restoring a held modifier across Android's hover-to-contact transition.
 

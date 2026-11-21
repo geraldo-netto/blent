@@ -438,3 +438,28 @@ fn t1176_check_seed(seed: u64) {
     assert_eq!(sink.0.lock().unwrap().len(), admissions + retained);
     assert_eq!(Arc::strong_count(&controllers), 1);
 }
+
+#[test]
+fn t1647_pen_wire_requires_explicit_boolean_button_state() {
+    for action in 0..=6 {
+        let mut wire = serde_json::json!({"type":"pen", "x":0.5, "y":0.5,
+            "pressure":0.5, "tilt_x":0, "tilt_y":0, "eraser":false, "action":action});
+        assert!(
+            serde_json::from_value::<InputEvent>(wire.clone()).is_err(),
+            "T1647 missing button accepted"
+        );
+        for invalid in [
+            serde_json::Value::Null,
+            serde_json::json!(0),
+            serde_json::json!("false"),
+        ] {
+            wire["button"] = invalid;
+            assert!(serde_json::from_value::<InputEvent>(wire.clone()).is_err());
+        }
+        for button in [false, true] {
+            wire["button"] = button.into();
+            let event: InputEvent = serde_json::from_value(wire.clone()).unwrap();
+            assert_eq!(serde_json::to_value(event).unwrap()["button"], button);
+        }
+    }
+}

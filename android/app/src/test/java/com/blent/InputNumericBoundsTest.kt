@@ -21,6 +21,15 @@ class InputNumericBoundsTest {
         }
     }
 
+    @Test fun t1647_allPenActionsCarryExplicitBooleanButtonState() {
+        for (action in 0..6) {
+            val neutral = PenMessage(action).toJson()
+            assertTrue("T1647 missing button on action $action", neutral.has("button"))
+            assertEquals(action == 5, neutral.getBoolean("button"))
+            assertTrue(PenMessage(action, button = true).toJson().getBoolean("button"))
+        }
+    }
+
     @Test fun t510_nonFiniteAndExtremeSamplesAlwaysHaveValidBoundedJson() {
         val random = java.util.Random(510)
         val values = listOf(Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,

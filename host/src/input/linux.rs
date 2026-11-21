@@ -964,7 +964,7 @@ pub(super) fn inject_pen_event(
     tilt: (f64, f64),
     eraser: bool,
     action: u8,
-    button: Option<bool>,
+    button: bool,
     pen_enabled: bool,
 ) {
     if pen_enabled {
@@ -982,11 +982,11 @@ impl<W: Write + AsRawFd> InjectDevices<W> {
         tilt: (f64, f64),
         eraser: bool,
         action: u8,
-        button: Option<bool>,
+        button: bool,
     ) {
         // Position samples restore actual button state after Android hover exits.
         // Avoid emitting duplicate key/SYN frames for unchanged historical samples.
-        let button = button.filter(|down| action <= 3 && *down != self.pen_button);
+        let button = (action <= 3 && button != self.pen_button).then_some(button);
         // Preserve wire degrees; advertise and emit Linux milliradians.
         let tilt_x = tilt_axis_units(tilt.0);
         let tilt_y = tilt_axis_units(tilt.1);

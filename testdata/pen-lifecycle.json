@@ -36,7 +36,8 @@
           "tilt_x": 0.0,
           "tilt_y": 0.0,
           "eraser": false,
-          "action": 5
+          "action": 5,
+          "button": true
         },
         "expected": {
           "tip": false,
@@ -56,7 +57,8 @@
           "tilt_x": 0.0,
           "tilt_y": 0.0,
           "eraser": false,
-          "action": 4
+          "action": 4,
+          "button": false
         },
         "expected": {
           "tip": false,
@@ -139,7 +141,8 @@
           "tilt_x": 0.0,
           "tilt_y": 0.0,
           "eraser": false,
-          "action": 4
+          "action": 4,
+          "button": false
         },
         "expected": {
           "tip": false,
@@ -201,7 +204,8 @@
           "tilt_x": 0.0,
           "tilt_y": 0.0,
           "eraser": false,
-          "action": 4
+          "action": 4,
+          "button": false
         },
         "expected": {
           "tip": false,
@@ -242,7 +246,8 @@
           "tilt_x": 0.0,
           "tilt_y": 0.0,
           "eraser": false,
-          "action": 4
+          "action": 4,
+          "button": false
         },
         "expected": {
           "tip": false,
@@ -310,7 +315,8 @@
           "tilt_x": 0.0,
           "tilt_y": 0.0,
           "eraser": false,
-          "action": 5
+          "action": 5,
+          "button": true
         },
         "expected": {
           "tip": false,
@@ -330,7 +336,8 @@
           "tilt_x": 0.0,
           "tilt_y": 0.0,
           "eraser": false,
-          "action": 4
+          "action": 4,
+          "button": false
         },
         "expected": {
           "tip": false,
@@ -413,7 +420,8 @@
           "tilt_x": 0.0,
           "tilt_y": 0.0,
           "eraser": false,
-          "action": 4
+          "action": 4,
+          "button": false
         },
         "expected": {
           "tip": false,
@@ -475,7 +483,8 @@
           "tilt_x": 0.0,
           "tilt_y": 0.0,
           "eraser": false,
-          "action": 4
+          "action": 4,
+          "button": false
         },
         "expected": {
           "tip": false,
@@ -516,7 +525,8 @@
           "tilt_x": 0.0,
           "tilt_y": 0.0,
           "eraser": false,
-          "action": 4
+          "action": 4,
+          "button": false
         },
         "expected": {
           "tip": false,

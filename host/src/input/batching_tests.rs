@@ -97,13 +97,13 @@ fn replay() -> InjectDevices<Recorder> {
     };
     for eraser in [false, true] {
         for (action, button) in [
-            (3, None),
-            (5, None),
-            (0, Some(true)),
-            (2, Some(false)),
-            (1, None),
-            (6, None),
-            (4, None),
+            (3, false),
+            (5, true),
+            (0, true),
+            (2, false),
+            (1, false),
+            (6, false),
+            (4, false),
         ] {
             devices.apply_pen(
                 AbsoluteContact {
@@ -134,7 +134,7 @@ fn replay() -> InjectDevices<Recorder> {
         (0.0, 0.0),
         false,
         0,
-        Some(true),
+        true,
     );
     devices.release_all();
     devices.release_all();

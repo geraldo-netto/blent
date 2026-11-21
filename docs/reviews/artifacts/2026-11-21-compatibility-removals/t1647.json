@@ -1,0 +1,135 @@
+{
+  "finding": "T1647",
+  "red": {
+    "host": "Missing button accepted by deserialization before removal",
+    "android": "Pen records omitted button before removal; action five initially defaulted false before correction"
+  },
+  "passed_tests": {
+    "host": 147,
+    "android_jvm": 12
+  },
+  "coverage": {
+    "rust": [
+      {
+        "file": "host/src/input/linux.rs",
+        "name": "inject_pen_event",
+        "line": 961,
+        "language": "rust",
+        "covered": 14,
+        "total": 16,
+        "percent": 87.5,
+        "passes": true,
+        "missing": [
+          972,
+          975
+        ]
+      },
+      {
+        "file": "host/src/input/linux.rs",
+        "name": "apply_pen",
+        "line": 979,
+        "language": "rust",
+        "covered": 26,
+        "total": 31,
+        "percent": 83.87096774193549,
+        "passes": true,
+        "missing": [
+          1006,
+          1007,
+          1011,
+          1012,
+          1016
+        ]
+      }
+    ],
+    "kotlin": [
+      {
+        "file": "android/app/src/main/java/com/blent/InputMessages.kt",
+        "name": "<init>",
+        "line": 10,
+        "language": "kotlin",
+        "covered": 9,
+        "total": 9,
+        "percent": 100.0,
+        "passes": true,
+        "missing": [],
+        "evidence": "JaCoCo method line counters; every mapped variant must pass",
+        "variants": [
+          {
+            "file": "android/app/src/main/java/com/blent/InputMessages.kt",
+            "owner": "com/blent/PenMessage",
+            "name": "<init>",
+            "signature": "(IDDDDDZZ)V",
+            "line": 11,
+            "covered": 9,
+            "total": 9
+          },
+          {
+            "file": "android/app/src/main/java/com/blent/InputMessages.kt",
+            "owner": "com/blent/PenMessage",
+            "name": "<init>",
+            "signature": "(IDDDDDZZILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+            "line": 11,
+            "covered": 9,
+            "total": 9
+          }
+        ]
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/InputMessages.kt",
+        "name": "toJson",
+        "line": 21,
+        "language": "kotlin",
+        "covered": 11,
+        "total": 11,
+        "percent": 100.0,
+        "passes": true,
+        "missing": [],
+        "evidence": "JaCoCo method line counters; every mapped variant must pass",
+        "variants": [
+          {
+            "file": "android/app/src/main/java/com/blent/InputMessages.kt",
+            "owner": "com/blent/PenMessage",
+            "name": "toJson",
+            "signature": "()Lorg/json/JSONObject;",
+            "line": 21,
+            "covered": 11,
+            "total": 11
+          }
+        ]
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/MotionTranslator.kt",
+        "name": "sendPenButton",
+        "line": 273,
+        "language": "kotlin",
+        "covered": 2,
+        "total": 2,
+        "percent": 100.0,
+        "passes": true,
+        "missing": [],
+        "evidence": "JaCoCo method line counters; every mapped variant must pass",
+        "variants": [
+          {
+            "file": "android/app/src/main/java/com/blent/MotionTranslator.kt",
+            "owner": "com/blent/MotionTranslator",
+            "name": "sendPenButton",
+            "signature": "(ZJ)V",
+            "line": 274,
+            "covered": 2,
+            "total": 2
+          }
+        ]
+      }
+    ]
+  },
+  "complexity": {
+    "functions_measured_in_affected_files": 291,
+    "above_nine": 0,
+    "tools": [
+      "Rust syn 2.0.119",
+      "Kotlin PSI 1.9.20"
+    ]
+  },
+  "validation_scope": "Automated source and isolated lifecycle tests; no installed or hardware session changed"
+}

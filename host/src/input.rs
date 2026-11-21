@@ -1090,7 +1090,7 @@ esac
             ] {
                 let wire = serde_json::json!({
                     "type": "pen", "x": 0.5, "y": 0.5, "pressure": 0.0,
-                    "tilt_x": degrees, "tilt_y": -degrees, "eraser": eraser, "action": 3,
+                    "tilt_x": degrees, "tilt_y": -degrees, "eraser": eraser, "action": 3, "button": false,
                 });
                 handle_event(
                     serde_json::from_value(wire).unwrap(),
@@ -1232,7 +1232,7 @@ esac
                 pen: Some(UInputDevice::from_writer(file.reopen().unwrap())),
                 ..InjectDevices::empty()
             };
-            for action in [3, 5, 0, 1] {
+            for (action, button) in [(3, false), (5, true), (0, true), (1, true)] {
                 devices.apply_pen(
                     AbsoluteContact {
                         x: 100,
@@ -1242,7 +1242,7 @@ esac
                     (0.0, 0.0),
                     eraser,
                     action,
-                    None,
+                    button,
                 );
             }
             // Lifting the tip alone must preserve a physically held button.
@@ -1257,7 +1257,7 @@ esac
                 (0.0, 0.0),
                 eraser,
                 4,
-                None,
+                false,
             );
             assert_eq!(
                 last_input_value(file.path(), BTN_STYLUS),
@@ -1266,7 +1266,7 @@ esac
             );
             assert!(!devices.pen_button, "T317: stale controller button state");
             assert!(!devices.pen_proximity);
-            for action in [3, 5, 6, 4] {
+            for (action, button) in [(3, false), (5, true), (6, false), (4, false)] {
                 devices.apply_pen(
                     AbsoluteContact {
                         x: 300,
@@ -1276,7 +1276,7 @@ esac
                     (0.0, 0.0),
                     eraser,
                     action,
-                    None,
+                    button,
                 );
             }
             // Model Linux input_get_disposition's duplicate-key filtering.
@@ -1381,7 +1381,7 @@ esac
                     (0.0, 0.0),
                     eraser,
                     action,
-                    None,
+                    false,
                 );
             }
             assert_eq!(
@@ -1424,7 +1424,7 @@ esac
                         tilt_x: 0.0,
                         tilt_y: 0.0,
                         eraser: false,
-                        button: None,
+                        button: false,
                     }
                 } else {
                     InputEvent::Touch {

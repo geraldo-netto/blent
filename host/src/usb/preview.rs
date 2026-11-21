@@ -117,7 +117,7 @@ mod tests {
                     tilt: (value, value),
                     eraser: true,
                     action: 255,
-                    button: Some(true),
+                    button: true,
                 },
                 true,
             );

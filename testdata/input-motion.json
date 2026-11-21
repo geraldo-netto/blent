@@ -43,7 +43,8 @@
       "tilt_x": 0.0,
       "tilt_y": 0.0,
       "eraser": false,
-      "action": 5
+      "action": 5,
+      "button": true
     }
   },
   {
@@ -58,7 +59,8 @@
       "tilt_x": 0.0,
       "tilt_y": 0.0,
       "eraser": false,
-      "action": 6
+      "action": 6,
+      "button": false
     }
   },
   {
@@ -73,7 +75,8 @@
       "tilt_x": 0.0,
       "tilt_y": 0.0,
       "eraser": false,
-      "action": 4
+      "action": 4,
+      "button": false
     }
   },
   {
