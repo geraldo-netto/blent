@@ -55,6 +55,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
+| T1531 | open | low | small | Make configuration publication durable. `common/src/storage.rs::write_at` syncs the temporary file and renames it over `config.toml` but never syncs the parent directory, so a save reported as successful can revert to the previous file after power loss; the trust storage contract explicitly requires synced publication. Completion: sync the parent directory after the rename on Unix and add a permanent regression through an injectable publication step. |
 
 ## Installation and distribution
 
