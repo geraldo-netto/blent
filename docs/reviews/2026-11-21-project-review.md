@@ -1,6 +1,6 @@
 # Project review — 2026-11-21
 
-Baseline: `27352839`. Review in progress; this is not a whole-project correctness certification. No installed Blent process or device session is changed.
+Baseline: `27352839`. This review pass is complete, with 12 findings resolved in local commits and T1486 retained open. This is not a whole-project correctness certification. No installed Blent process or device session was changed; no deployment or push was performed.
 
 ## T1476 — partial live-camera effects
 
@@ -66,8 +66,23 @@ Additional T1480 measurement: the unchanged internal retirement implementation, 
 
 ## T1486 — unresolved intermittent speaker regression
 
-The first uncontended full Android run completed 2,869 cases with one API-27 failure: the speaker offer was null before the blocked-renderer test requested Stop. The affected class then passed; 20 isolated invocations covering both API levels passed all 40 cases; a second full run passed all 2,869 cases. The original native-retirement/display-independence assertions remain unchanged, with additional state diagnostics on the failing offer assertion. No root cause or production defect is established. T1486 remains open; passing reruns do not resolve the observed failure. Permanent evidence records the original failure and bounded rechecks.
+The first complete Android run completed 2,869 cases with one API-27 failure: the speaker offer was null before the blocked-renderer test requested Stop. The affected class then passed; 20 isolated invocations covering both API levels passed all 40 cases; a second full run passed all 2,869 cases. The original native-retirement/display-independence assertions remain unchanged, with additional state diagnostics on the failing offer assertion. No root cause or production defect is established. T1486 remains open; passing reruns do not resolve the observed failure. Permanent evidence records the original failure and bounded rechecks.
 
 ## T1488 — private GUI startup fixture
 
 The permanent T078 startup smoke test failed before creating a window because its shared config/runtime fixture precreated `blent/` with umask-dependent mode 0775. The fixture now explicitly sets both owned directories to 0700; production singleton validation remains unchanged. The same startup/accessibility/update/close regression passes afterward. The two fixture functions measure complexity 1 and 2; the authoritative formatter passes. This adds no production method or resource owner.
+
+## Final verification
+
+| Check | Result | Scope and limits |
+| --- | --- | --- |
+| Rust | 2,729 passed; 0 failed; 5 ignored | All 82 selected Linux library/binary/integration targets completed across the workspace run and GUI continuation. Five ignored cases are existing opt-in benchmarks. |
+| Android | 2,869 passed; 0 failed; 0 skipped | Final debug JVM suite. The earlier T1486 failure remains unexplained despite 40 isolated passing cases and this complete passing rerun. |
+| Python/tooling | 572 passed; 0 failed; 1 skipped | 573 cases discovered; the skip requires native Windows process ownership. Includes native C ASan/UBSan fixtures. |
+| Complexity | 30,640 measured functions; 0 above 9 | Supported source inventory; existing declined JavaScript/PowerShell measurement remains excluded. Final T1488 fixture scores remain 1 and 2. |
+| Changed production coverage | 18/18 maintained methods/callbacks >=80% | Minimum 6/7 lines (85.7%); remaining measured methods/callbacks 100%. This is not whole-project coverage. |
+| Warning/format gates | Passed | Workspace Clippy with accessory transport and warnings denied; authoritative Rust formatter; git diff whitespace check. |
+
+The workspace command exited 143 (SIGTERM) during the GUI unit target after all 79 host/common targets completed successfully. Its signal origin is not established; it is not recorded as a passing invocation or a proven product defect. The complete GUI continuation passed 218 unit cases and two process-exit/activation cases, then exposed the T1488 startup-fixture failure. That same startup regression passed after its permission correction, completing all three GUI targets. Test-target counts were checked against Cargo metadata; nested fixture summaries are not double-counted.
+
+The [verification artifact](artifacts/2026-11-21-project-review/final-verification.json) retains per-target outcomes, invocation exit codes, log hashes and scope. Existing Windows native blockers, T1452 physical face-image acceptance and T1463 release-notice qualification remain outstanding alongside T1486. No new memory leak was confirmed in the examined ownership paths; these finite checks do not establish unrestricted leak freedom.

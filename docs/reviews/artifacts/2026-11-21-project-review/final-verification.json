@@ -1,0 +1,741 @@
+{
+  "baseline": "27352839",
+  "verified_source": "a5254c5caf75d88d3e7de6165df4451a640baf8b",
+  "rust": {
+    "scope": "Linux workspace libraries, binaries and integration tests; host accessory-transport/native-audio/inproc-encoder enabled. Segmented completion, not a successful uninterrupted workspace invocation.",
+    "completed_targets": 82,
+    "metadata_selected_targets": 82,
+    "passed": 2729,
+    "failed": 0,
+    "ignored": 5,
+    "ignored_reason": "Five existing opt-in benchmarks: T407, T416, T784, and two T402 cases.",
+    "interruption": "Workspace process exited 143 (SIGTERM) during GUI unit tests; origin not established. Complete GUI rerun passed unit/process-exit tests, then exposed T1488 startup fixture failure. Same startup regression passed after fixture correction.",
+    "runs": [
+      {
+        "log": "/tmp/blent-review-rust-final.log",
+        "sha256": "5e106bc1147ad3624bf90b03d4b4f7804f3f4d3ad4734e71301e2f2aa9ff449d",
+        "exit_code": 143,
+        "results": [
+          {
+            "package": "blent",
+            "target": "unittests src/lib.rs",
+            "outcome": "ok",
+            "passed": 1228,
+            "failed": 0,
+            "ignored": 3
+          },
+          {
+            "package": "blent",
+            "target": "unittests src/main.rs",
+            "outcome": "ok",
+            "passed": 424,
+            "failed": 0,
+            "ignored": 2
+          },
+          {
+            "package": "blent",
+            "target": "unittests src/bin/audio.rs",
+            "outcome": "ok",
+            "passed": 11,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "unittests src/bin/usb_broker.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/activity_dpms.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/activity_exit.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/adb_mapping_retirement.rs",
+            "outcome": "ok",
+            "passed": 27,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/adb_server.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/arch_output.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/audio_native.rs",
+            "outcome": "ok",
+            "passed": 3,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/audio_staging.rs",
+            "outcome": "ok",
+            "passed": 3,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/c_benchmarks.rs",
+            "outcome": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/camera_pool.rs",
+            "outcome": "ok",
+            "passed": 12,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/camera_probe.rs",
+            "outcome": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/camera_probe_options.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/camera_probe_policy.rs",
+            "outcome": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/camera_probe_samples.rs",
+            "outcome": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/capture_activity.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/capture_contract.rs",
+            "outcome": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/config_diagnostics.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/connection_routes.rs",
+            "outcome": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/contract_build.rs",
+            "outcome": "ok",
+            "passed": 16,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/control_exit.rs",
+            "outcome": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/control_failure.rs",
+            "outcome": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/conversion.rs",
+            "outcome": "ok",
+            "passed": 12,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/daemon_startup.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/evdi_helper.rs",
+            "outcome": "ok",
+            "passed": 70,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/evdi_modules.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/frame_retirement.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/gpu_capture.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/guest_probe.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/input_commands.rs",
+            "outcome": "ok",
+            "passed": 3,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/input_creation.rs",
+            "outcome": "ok",
+            "passed": 7,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/input_mapping.rs",
+            "outcome": "ok",
+            "passed": 10,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/linux_lifecycle.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/osk_exit.rs",
+            "outcome": "ok",
+            "passed": 3,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/portable_host.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/portable_session.rs",
+            "outcome": "ok",
+            "passed": 3,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/portable_usb.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/process_exit.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/rect_native.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/runtime_exit.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/session_failure.rs",
+            "outcome": "ok",
+            "passed": 16,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/shared_encode_replay.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/shutdown_deadline.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/tooling.rs",
+            "outcome": "ok",
+            "passed": 42,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/usb_broker.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/vdisplay.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/wifi_cli.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/wifi_exit.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/wifi_setup.rs",
+            "outcome": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/windows_autostart.rs",
+            "outcome": "ok",
+            "passed": 0,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/windows_cli.rs",
+            "outcome": "ok",
+            "passed": 0,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/windows_direct_usb.rs",
+            "outcome": "ok",
+            "passed": 0,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/windows_lifecycle.rs",
+            "outcome": "ok",
+            "passed": 0,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent",
+            "target": "tests/windows_usb.rs",
+            "outcome": "ok",
+            "passed": 0,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "unittests src/lib.rs",
+            "outcome": "ok",
+            "passed": 455,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/appimage.rs",
+            "outcome": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/audio_render_bench.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/autostart.rs",
+            "outcome": "ok",
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/command_lifetime.rs",
+            "outcome": "ok",
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/command_output.rs",
+            "outcome": "ok",
+            "passed": 7,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/config_location.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/connection.rs",
+            "outcome": "ok",
+            "passed": 10,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/connection_management.rs",
+            "outcome": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/connection_mux.rs",
+            "outcome": "ok",
+            "passed": 8,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/connection_pairing.rs",
+            "outcome": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/connection_registration.rs",
+            "outcome": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/connection_resource_mux.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/connection_resources.rs",
+            "outcome": "ok",
+            "passed": 8,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/connection_routes.rs",
+            "outcome": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/connection_window.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/diagnostics.rs",
+            "outcome": "ok",
+            "passed": 3,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/media_identity.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/owned_stream.rs",
+            "outcome": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/persistence_contract.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/portable_policy.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/tablet_status.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-config",
+            "target": "tests/windows_platform.rs",
+            "outcome": "ok",
+            "passed": 0,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-gui",
+            "target": "unittests src/main.rs",
+            "status": "interrupted; no complete target result"
+          }
+        ]
+      },
+      {
+        "log": "/tmp/blent-review-gui-final.log",
+        "sha256": "a14751f1e32c294025af188b70d5675f54a5373722568f9861b32b3f5bb16d74",
+        "exit_code": 101,
+        "results": [
+          {
+            "package": "blent-gui",
+            "target": "unittests src/main.rs",
+            "outcome": "ok",
+            "passed": 218,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-gui",
+            "target": "tests/process_exit.rs",
+            "outcome": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0
+          },
+          {
+            "package": "blent-gui",
+            "target": "tests/startup.rs",
+            "outcome": "FAILED",
+            "passed": 0,
+            "failed": 1,
+            "ignored": 0
+          }
+        ]
+      },
+      {
+        "log": "/tmp/blent-t1488-green.log",
+        "sha256": "1022519d2ab9aeb54fe30d0db557aaf0511aae21075852908a4ee13528ae6596",
+        "exit_code": 0,
+        "results": [
+          {
+            "package": "blent-gui",
+            "target": "tests/startup.rs",
+            "outcome": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0
+          }
+        ]
+      }
+    ]
+  },
+  "android": {
+    "suite": "debug JVM tests",
+    "tests": 2869,
+    "passed": 2869,
+    "failed": 0,
+    "skipped": 0,
+    "unresolved_prior_failure": "T1486 remains open; see t1486-evidence.json."
+  },
+  "python": {
+    "tests": 573,
+    "passed": 572,
+    "failed": 0,
+    "skipped": 1,
+    "skip_reason": "Windows native process ownership unavailable on Linux"
+  },
+  "complexity": {
+    "measured_functions": 30640,
+    "above_nine": 0,
+    "exclusions": "Existing declined JavaScript/PowerShell measurement T1397/T1398; generated/dependency/cache/build source excluded.",
+    "final_increment": "T1488 changes no function count; both fixture scores are unchanged at 1 and 2."
+  },
+  "production_coverage": {
+    "maintained_methods_or_callbacks": 18,
+    "at_least_80_percent": 18,
+    "minimum_percent": 85.71428571428571
+  },
+  "clippy": {
+    "exit_code": 0,
+    "command": "cargo clippy --offline --locked --workspace --lib --bins --tests --features blent/accessory-transport -- -D warnings"
+  },
+  "format": {
+    "command": "python3 scripts/format-rust.py --check",
+    "exit_code": 0
+  },
+  "operational_scope": "No running installed Blent instance or tablet session changed; no deployment or push."
+}
