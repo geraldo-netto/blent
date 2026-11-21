@@ -60,6 +60,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
+| T1516 | open | low | small | Let the doctor report a missing tablet application. `host/src/doctor.rs::diagnostic_sessions` selects its candidate through `pick_device_with`, which keeps only devices whose package probe succeeds (`host/src/linux_main.rs::app_devices_with`), while the `not installed` failure and APK install hint are in `check_tablet_session`, which runs only for a selected session. With an authorised tablet lacking the application the doctor prints only that there is no active tablet session; the install hint is unreachable in that first-run case. Confirmed without a running daemon. Completion: choose the diagnostic candidate without the application filter and let the session check report the missing package, with a failing-first permanent regression. |
 
 ## Installation and distribution
 
