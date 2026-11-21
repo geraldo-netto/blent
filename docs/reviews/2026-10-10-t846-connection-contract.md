@@ -730,7 +730,8 @@ snapshot, never the superseded approval list. Invalid intents remain unchanged
 until an explicit offline Reset saved computers. Its durable reset marker precedes
 all deletion; interrupted resets finish before any trust load. Reset keeps the
 keystore identity and requires a current-view confirmation and exclusive worker
-ownership. Host recovery remains tracked separately by T1597. Failure before intent
+ownership. T1635 implements equivalent complete-intent/reset storage on Linux;
+T1597 still owns the host repair entry and integrated recovery. Failure before intent
 durability cannot promise persistence, and no failed write reports a successful
 revoke. [Original T868 validation](artifacts/2026-10-10-t868/README.md)
 includes shared malformed vectors, per-function counters and an actual API 36 tablet

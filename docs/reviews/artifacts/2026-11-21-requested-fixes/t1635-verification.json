@@ -1,0 +1,34 @@
+{
+  "issue": "T1635",
+  "parent": "T1597",
+  "before": {
+    "tests": 1,
+    "failed": 1,
+    "log": "/tmp/blent-t1635-red.log"
+  },
+  "after": {
+    "tests": 46,
+    "failed": 0,
+    "ignored": 0,
+    "log": "/tmp/blent-t1635-coverage.log",
+    "publication_failures": 8,
+    "publication_process_exits": 8,
+    "recovery_failures": 6,
+    "reset_failures": 6,
+    "reset_process_exits": 6,
+    "truncated_intents": 88,
+    "unsafe_child_kinds": 5
+  },
+  "coverage": {
+    "methods": 9,
+    "minimum_percent": 91.6667,
+    "tool": "Rust 1.100.0 LLVM, cargo-llvm-cov 0.8.7, project per-function inventory"
+  },
+  "complexity": {
+    "functions": 40,
+    "over_nine": 0,
+    "tool": "project Rust syn 2.0.119 checker"
+  },
+  "ownership": "Existing pinned private-directory descriptor and stable trust.lock own the bounded transaction. Intent and next record each <=65624 bytes, reset intent empty. Conditional eventual cleanup requires successful native filesystem operations; no failure releases a live owner or restores superseded approvals. Reset validates fixed child metadata and preserves identity plus stable locks. Native fixtures ran only in private temporary directories. Power-loss/filesystem durability across hardware is not proved.",
+  "integration": "T1597 still owns confirmed repair CLI and full broker restart acceptance; identity recovery T1636 and startup T1637/T1638 remain."
+}

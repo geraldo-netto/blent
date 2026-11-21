@@ -71,6 +71,15 @@ impl Directory {
         );
         Ok(())
     }
+    pub(super) fn remove_if_present(&self, name: &CStr) -> Result<()> {
+        let file = match child(&self.file, name, libc::O_RDONLY) {
+            Ok(file) => file,
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(()),
+            Err(error) => return Err(error.into()),
+        };
+        private(&file, false)?;
+        self.remove(name)
+    }
     pub(super) fn remove(&self, name: &CStr) -> Result<()> {
         let result = unsafe { libc::unlinkat(self.file.as_raw_fd(), name.as_ptr(), 0) };
         ensure!(
