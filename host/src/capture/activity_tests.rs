@@ -221,7 +221,7 @@ async fn t1015_actual_running_pause_retains_helper_and_resumes_fresh_codec_and_i
         std::fs::read_to_string(root.join("helper.pid")).unwrap(),
         helper
     );
-    while received.try_recv().is_ok() {}
+    discard_queued(&mut received);
     assert!(timeout(Duration::from_millis(30), received.recv())
         .await
         .is_err());
@@ -677,4 +677,44 @@ async fn t1054_forged_ack_cannot_replace_original_request_identity_in_trace() {
         original[0].ends_with("01"),
         "T1054 forged reply overwrote original request trace"
     );
+}
+
+// T1629: invoke only after the original producer generation is quiescent.
+fn discard_queued(video: &mut blent::video_queue::VideoReceiver) {
+    use tokio::sync::broadcast::error::TryRecvError;
+    while matches!(video.try_recv(), Ok(_) | Err(TryRecvError::Lagged(_))) {}
+}
+
+#[test]
+fn t1629_quiescent_fixture_discards_every_packet_after_lag() {
+    for count in [0, 7, 8, 9, 32] {
+        let (video, mut received) = crate::video_queue::channel(8, Default::default());
+        let generation = Arc::new(std::sync::atomic::AtomicBool::new(false));
+        for seq in 0..count {
+            video
+                .send(crate::media::VideoPacket {
+                    data: crate::media_storage::MediaBytes::from_static(b"expired"),
+                    seq,
+                    is_idr: false,
+                    codec_config: None,
+                    generation: generation.clone(),
+                })
+                .ok()
+                .unwrap();
+        }
+        discard_queued(&mut received);
+        assert!(
+            matches!(
+                received.try_recv(),
+                Err(tokio::sync::broadcast::error::TryRecvError::Empty)
+            ),
+            "T1629 retained expired packets after lag at count={count}"
+        );
+        drop(video);
+        discard_queued(&mut received);
+        assert!(matches!(
+            received.try_recv(),
+            Err(tokio::sync::broadcast::error::TryRecvError::Closed)
+        ));
+    }
 }

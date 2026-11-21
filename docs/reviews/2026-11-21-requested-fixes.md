@@ -1,6 +1,6 @@
 # Requested findings — 2026-11-21
 
-Baseline: `58f58a32`. All 25 findings explicitly listed by the owner now have local verified fixes; T1622's original deletion claim was corrected by native evidence before fixing extraction ownership and cleanup. Physical-device acceptance and the additional unexplained T1629 capture failure remain separately tracked. Existing unrelated TODO additions remain unstaged. No installed Blent instance or tablet session is restarted or changed. No push or deployment.
+Baseline: `58f58a32`. All 25 findings explicitly listed by the owner now have local verified fixes; T1622's original deletion claim was corrected by native evidence before fixing extraction ownership and cleanup. Physical-device acceptance remains separately tracked; the additional T1629 capture fixture failure is now explained and fixed. Existing unrelated TODO additions remain unstaged. No installed Blent instance or tablet session is restarted or changed. No push or deployment.
 
 ## T1615 — capture pause acknowledgements
 
@@ -8,9 +8,11 @@ Confirmed both missing transitions with permanent failing-first regressions: a n
 
 All six quiescence cases pass. Five maintained production methods measure 100% executable-line coverage; 22 functions in the changed source/test scope have complexity <=7. [Evidence](artifacts/2026-11-21-requested-fixes/t1615-verification.json). No resource owner or queue is added: the capture worker retains the authoritative quiescent state until new capture admission, and exact helper/encoder settlement remains the prerequisite. Physical host-lock/display-sleep acceptance was not run against the user's session.
 
-## T1629 — additional verification finding, open
+## T1629 — expired packets retained by the test fixture
 
-The broader instrumented capture run passed 244 cases, failed one existing resume packet assertion and ignored two optional cases. The failed assertion required IDR plus codec configuration on the first received packet. Twenty normal and thirty instrumented isolated reruns pass; added generation diagnostics retain the original assertions. The cause is not established, and passing reruns do not resolve it. It remains in TODO.md for an explained reproduction and baseline comparison.
+The original run exposed a fixture queue-clearing bug. With a 400 ms delayed consumer, the same native test reproducibly received an expired prior-generation delta after resume. `try_recv` first reported Lagged; the fixture mistook that notification for an empty queue. A permanent bounded overflow regression failed before correction. The shared fixture helper now drains through Lagged to Empty/Closed after the original producer is quiescent. Production behavior and every generation/IDR/cleanup assertion remain unchanged.
+
+All 26 activity cases and all 247 executed capture cases pass; two existing opt-in experiments remain ignored. All five changed test functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1629-verification.json). The delayed native consumer remains a permanent interleaving regression.
 
 ## T1489 — VAAPI quality option
 

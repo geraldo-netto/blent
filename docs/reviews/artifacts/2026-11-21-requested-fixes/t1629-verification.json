@@ -1,0 +1,16 @@
+{
+  "issue": "T1629",
+  "root_cause": "Test fixture stopped clearing its quiescent broadcast queue when try_recv returned Lagged. Expired packets remained; the resume assertion then consumed a prior-generation delta frame.",
+  "red": "Original native test plus a 400ms delayed consumer failed with idr=false, config=true, current=false, same_generation=true. Permanent bounded queue regression failed at nine packets in an eight-slot queue before fixing discard_queued.",
+  "green": "26/26 activity tests and 247/247 executed capture tests pass; two preexisting opt-in experiments remain ignored. Delayed native consumer and all original IDR/config/generation/retirement assertions retained.",
+  "bounds": "Permanent fixture regression covers 0,7,8,9,32 packets; drains to Empty while sender lives and Closed after sender drop. Only quiescent fixtures invoke the helper; Lagged is retried, not completion. Packets are dropped on each iteration and retain no borrowed storage. No production queue or ownership behavior changed.",
+  "complexity": [
+    "host/src/capture/activity_tests.rs:182\tt1015_actual_running_pause_retains_helper_and_resumes_fresh_codec_and_idr\t5",
+    "host/src/capture/activity_tests.rs:683\tdiscard_queued\t2",
+    "host/src/capture/activity_tests.rs:689\tt1629_quiescent_fixture_discards_every_packet_after_lag\t3",
+    "host/src/capture/joined_activity_tests.rs:25\theld_resume\t5",
+    "host/src/capture/registered_tests.rs:291\tt1016_registration_pause_waits_for_actual_native_generation_and_resumes_fresh_codec_keyframe\t3",
+    "5 functions; 0 exceed cyclomatic complexity 9"
+  ],
+  "measurement": "Test-only change; no production coverage claim needed. Project Rust syn 2.0.119 checker measures all five changed functions <=9. Rust formatting and diff checks pass."
+}

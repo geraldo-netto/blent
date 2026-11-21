@@ -306,7 +306,7 @@ async fn t1016_registration_pause_waits_for_actual_native_generation_and_resumes
         published.send_replace(publication(&feed));
         fixture.paused(&first, now).await;
         assert_eq!(fixture.count.load(Ordering::SeqCst), 1);
-        while fixture.received.try_recv().is_ok() {}
+        discard_queued(&mut fixture.received);
         assert!(timeout(Duration::from_millis(30), fixture.received.recv())
             .await
             .is_err());

@@ -30,6 +30,7 @@ async fn held_resume(
     turn: u64,
     first: crate::media::VideoPacket,
 ) -> crate::media::VideoPacket {
+    tokio::time::sleep(Duration::from_millis(400)).await; // T1629: delayed consumer crosses the eight-packet queue capacity.
     let now = Instant::now() + Duration::from_secs(100 * turn);
     let root = crate::runtime::runtime_dir().unwrap();
     let _ = std::fs::remove_file(root.join("release-pause"));
@@ -61,7 +62,7 @@ async fn held_resume(
         .ticket(&blent::display_slots::Owner::Peer(peer(2)))
         .unwrap();
     assert_eq!(fixture.slots.closing(ticket), Some(false));
-    while fixture.received.try_recv().is_ok() {}
+    discard_queued(&mut fixture.received);
     std::fs::write(
         root.join("release-pause"),
         b"original native writer may ACK",
