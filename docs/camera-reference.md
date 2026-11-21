@@ -171,7 +171,8 @@ Each decoder connection owns a bounded pool of immutable YUV420 frame leases.
 next connection. One additional fixed frame drains input when all leases are held;
 no replacement allocation or wait for a stalled reader occurs. Lower capacities
 use less memory but can discard more frames when readers are slow. Default pixel
-storage is four frames: 5.53 MB at 720p or 12.44 MB at 1080p, excluding allocator
+storage is five frames, including the transform scratch: 6.91 MB at 720p or
+15.55 MB at 1080p, excluding allocator
 metadata, decoder buffers and the output workers' two fixed black frames. Held
 leases survive Stop/reconnect without being overwritten; partial input is never
 published.

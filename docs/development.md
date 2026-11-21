@@ -207,7 +207,9 @@ records one/two/four-client copying and allocation measurements.
 
 ```
 host/              Rust daemon
-  src/main.rs        CLI, orchestration, adb monitor, per-tablet sessions
+  src/main.rs        Compile-time platform entry selection
+  src/linux_main.rs  Linux CLI orchestration, ADB monitor and per-tablet sessions
+  src/windows_main.rs Windows preview entry and backend orchestration
   src/media.rs       Shared codec, frame-generation and live-settings contracts
   src/annex_b.rs     Complete H.264/HEVC access-unit assembly; legacy replay tests
   src/framed_annex_b.rs  Bounded stock tee/framecrc packet framing
@@ -235,9 +237,10 @@ host/              Rust daemon
     writer.c         lease ownership, pacing and idle keepalives
     evdi_helper.c    options, device acquisition, signals and teardown
 common/            settings, commands, version parsing, runtime session ledger
+  src/cli.rs         Current shared CLI grammar
 gui/               egui desktop app: status, settings, start/stop
 android/           Kotlin/Compose app: MediaCodec decoder, touch/pen capture
-packaging/         AppImage builder, PKGBUILD (legacy deb fixtures retained), udev/modprobe files
+packaging/         AppImage builder, PKGBUILD, udev/modprobe files
 scripts/           install.sh, release build, fake tablet
 docs/              documentation and proposed static-site source
 ```
@@ -313,7 +316,7 @@ them. See the [settings guide](settings.md) for paths and user controls.
 | `wifi_address` | empty | Set by `blent wifi`; reread for reconnect attempts |
 
 On Linux, **Video → Conversion capacity** offers Auto or a manual 1–128 value.
-Use **Apply & restart** after changing it. Auto uses startup CPU affinity minus
+Use **Save & restart all displays** after changing it. Auto uses startup CPU affinity minus
 two, with at least one participant. Manual capacity bypasses that heuristic;
 dirty-work dispatch still uses fewer participants for small updates. The calling
 thread counts toward the limit, so 1 creates no conversion workers. Capacity
@@ -336,7 +339,7 @@ Resolution and FPS are validated together against the generated EDID's supported
 **10–655.35 MHz** rounded pixel-clock range. Explicit unsupported combinations,
 such as 640×480 at 10 FPS or 3840×2160 at 90 FPS, are rejected before saving,
 starting capture or replacing a working stream. The GUI explains invalid drafts
-before Apply; rejected Android FPS requests restore the host's confirmed values
+before Save; rejected Android FPS requests restore the host's confirmed values
 and show the reason. For a low clock, raise FPS or resolution: 640×480 needs at
 least 25 FPS with these fixed porches. For an excessive clock, lower either.
 

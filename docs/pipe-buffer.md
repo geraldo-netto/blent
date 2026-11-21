@@ -1,7 +1,7 @@
 # Linux capture pipe buffer
 
 Open **Blent → Video → Capture pipe buffer** on Linux. Choose **1, 2, 4 or
-8 MiB** and click **Apply**. This is the raw-video buffer between the Linux
+8 MiB** and click **Save**. This is the raw-video buffer between the Linux
 capture helper and FFmpeg, not Android memory or a total application RAM limit.
 The setting has one owner and is deliberately absent from Android settings.
 
@@ -16,7 +16,7 @@ FFmpeg or the virtual display. The helper checks for updates approximately once
 per second, between complete frame writes, and retries a refused request. A
 shrink can remain pending while queued bytes occupy more space than the requested
 capacity. It never truncates queued frames to force a resize. If other settings
-in the same edit require a restart, the button still says **Apply & restart**.
+in the same edit require a restart, the button still says **Save & restart all displays**.
 
 ## Choosing a size
 
@@ -59,7 +59,7 @@ To raise a smaller ceiling until reboot, run in a terminal:
 sudo sysctl -w fs.pipe-max-size=8388608
 ```
 
-Then select the desired capacity in Blent and **Apply**. If that request was
+Then select the desired capacity in Blent and **Save**. If that request was
 already saved, the active helper retries it automatically. Confirm the
 **effective capacity** in the GUI; no display restart is required.
 
@@ -100,7 +100,7 @@ for the per-user accounting rules.
 
 ## Undo
 
-Choose **1 MiB** in Blent and **Apply** first, then wait for its effective
+Choose **1 MiB** in Blent and **Save** first, then wait for its effective
 capacity to drop. Remove the dedicated persistent file only if you created it
 for this purpose:
 
@@ -125,7 +125,7 @@ Do not replace an administrator's larger original ceiling with this example.
 
 The persisted Linux setting is `pipe_capacity_mib = 1` in `config.toml`, with
 allowed values 1, 2, 4 and 8. Unsupported integers fall back to 1. Manual TOML
-edits are loaded on daemon startup; use the GUI's Apply for a live change.
+edits are loaded on daemon startup; use the GUI's Save for a live change.
 
 At startup the daemon publishes the saved preference in a private atomic
 `pipe-capacity-mib` request file beside its capture FIFOs. The GUI publishes the

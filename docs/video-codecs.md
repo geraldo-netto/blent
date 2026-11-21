@@ -8,7 +8,7 @@ A newer codec or hardware label does not automatically mean a faster display.
 | Goal | Setting or action |
 | --- | --- |
 | Choose a working starting point | `encoder = "auto"` (default for new configurations). Existing explicit choices stay unchanged. |
-| Tune again after a meaningful setup change | **Video → Advanced video settings → Recalibrate display**, then **Apply & restart**. |
+| Tune again after a meaningful setup change | **Video → Advanced video settings → Recalibrate display**, then **Save & restart all displays**. |
 | Limit software H.264 workers | **Software encoder workers**: Auto compares 1, 2 and 4; manual values accept 1–128. |
 | Check what is running | `blent doctor` reports the requested encoder and, when identifiable, the running FFmpeg encoder. That is not proof of successful display. |
 
@@ -291,7 +291,7 @@ are fixed for a daemon session. The optional in-process encoder build maps
 `encoder_workers = 0` (Auto), or `blent --encoder-workers auto start`, compares
 1, 2 and 4 libx264 workers inside the existing selector. The Linux settings control
 is **Software encoder workers**, under **Video > Advanced video settings**. Manual values 1–128 fix the software H.264
-budget; changing the saved value requires Apply & restart. CLI overrides do not
+budget; changing the saved value requires Save & restart all displays. CLI overrides do not
 persist. Explicit libx264 and the optional in-process build use one worker for
 Auto; the latter accepts manual counts but does not run CLI calibration. Hardware
 encoders keep their existing options. Without current decoder evidence, Auto keeps the one-worker fallback.
@@ -348,7 +348,7 @@ Current clients use the host's calibration state through each trial and reset it
 when authentication ends.
 
 Linux **Video > Advanced video settings > Recalibrate display**, followed by
-**Apply & restart**, requests new tuning. The equivalent configuration operation
+**Save & restart all displays**, requests new tuning. The equivalent configuration operation
 is incrementing `calibration_generation` before restarting. At its maximum
 (`4294967295`), further GUI recalibration requests are disabled and show
 “Recalibration limit reached.” Existing profiles remain usable; the counter

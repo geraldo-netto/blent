@@ -36,7 +36,7 @@ until cleanup finishes. Other ADB operations and unrelated mappings remain usabl
 ## Start sharing
 
 1. In the desktop **Audio** tab, select the direction, connection and preferences.
-   **Apply** only saves them; it does not start audio or restart the display.
+   **Save** only saves them; it does not start audio or restart the display.
 2. Open Blent on the tablet and choose **Start** for that direction on the
    computer. Direct USB requires local Start for the offered session. An authorized
    ADB invitation starts immediately if Android permission is already granted;

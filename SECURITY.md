@@ -37,9 +37,8 @@ Other programs may use ADB and unrelated mappings, but must not replace/remove
 these endpoints or run `adb reverse --remove-all` during that ownership.
 Preexisting mappings remain externally owned. ADB has no atomic
 compare-and-delete operation; listing before removal cannot protect against
-external replacement during this interval. Outstanding creation and cleanup
-ownership defects remain tracked in T1344, T1346 and T1352; this contract does
-not claim those fixes are complete.
+external replacement during this interval. Remaining Windows display-route cleanup and native acceptance work is tracked
+in T1352; this contract does not claim that work is complete.
 
 The host video and input servers bind to **127.0.0.1**, on ports 8890/8891
 by default, plus two ports per additional tablet slot. On the ADB route, the
@@ -192,7 +191,7 @@ automatically undone by removing application files.
 ## How to uninstall completely
 
 1. Stop camera sessions in **Cameras**, and microphone/speaker sessions in
-   **Audio**. For terminal sessions, press Ctrl+C in each `blent camera` or
+   **Audio**. For terminal sessions, press Ctrl+C in each `blent cameras` or
    `blent audio` terminal and wait for exit. These owners are independent;
    `blent stop` does not stop them.
 2. Disconnect direct USB in the connection controls and close the GUI. If

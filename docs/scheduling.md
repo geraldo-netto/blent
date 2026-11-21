@@ -1,18 +1,19 @@
 # CPU scheduling
 
 Blent requests **High** CPU scheduling priority by default. Existing TOML
-files inherit this preference when the field is absent. Select **General → CPU
+files inherit this preference when the field is absent. Select **Settings → CPU
 scheduling → Normal** to opt out, or set this top-level configuration field:
 
 ```toml
 scheduling_priority = "normal" # default: "high"
 ```
 
-Apply the setting to restart the daemon and its capture/encoder children.
+Use **Save & restart all displays** to restart a running daemon and its
+capture/encoder children with the changed setting.
 Reopen the settings window to apply its own changed priority. Denied requests
 are reported in the daemon journal or GUI stderr, and startup continues with
 the OS's effective settings. A configured preference is not proof of elevation.
-The General tab also shows whether this GUI process's startup request succeeded.
+The Settings tab also shows whether this GUI process's startup request succeeded.
 
 High requests a greater CPU share when programs compete for processor time.
 It does not reserve a core, guarantee deadlines or multiply video speed. The

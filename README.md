@@ -74,7 +74,7 @@ Desktop settings live at `~/.config/blent/config.toml` unless an absolute
   Existing explicit choices stay unchanged. [Video guide](docs/video-codecs.md).
 - **Tablet screen:** brightness defaults to 50%, display preference to 60 Hz.
   These affect Blent only; stream FPS is separate. Android may override the mode.
-- **Resources:** Apply saves preferences; Start requests sharing. Stop retains
+- **Resources:** Save saves preferences; Start requests sharing. Stop retains
   original ownership until cleanup finishes. Selecting another tablet cannot
   retarget work already starting or stopping.
 - **Input:** retained Linux pen code forwards pressure, tilt, eraser and button.
