@@ -5,6 +5,6 @@ use eframe::egui;
 
 pub(super) fn show(ui: &mut egui::Ui, options: &mut CameraProfile, transports: Transports) {
     media_target_settings::show(ui, Selection {serial: &mut options.serial, usb_peer: &mut options.usb_peer}, transports,
-        Description {label:"USB camera status", unavailable:"Direct USB camera is unavailable on this backend.", qualification:"Experimental: physical debugging-off camera acceptance is pending.",
+        Description {label:"USB camera status", unavailable:"Direct USB camera is unavailable on this backend.", qualification:"Experimental: camera tested on RugKing Pad 2 Pro with USB debugging off (October 2026). Other devices and newer builds still need validation.",
             consent:"Pair and select this tablet in Connections. Start camera locally on the tablet; pairing does not grant camera access."});
 }

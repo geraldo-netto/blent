@@ -1,0 +1,208 @@
+{
+  "coverage": [
+    {
+      "file": "gui/src/audio_settings.rs",
+      "name": "connection",
+      "line": 214,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/camera_settings/connection.rs",
+      "name": "show",
+      "line": 6,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "gui/src/audio_settings.rs",
+      15,
+      "default",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      26,
+      "show",
+      6
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      58,
+      "status",
+      5
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      79,
+      "buttons",
+      8
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      111,
+      "start",
+      9
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      140,
+      "stop",
+      2
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      146,
+      "start_for",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      156,
+      "view",
+      3
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      176,
+      "error",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      179,
+      "target",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      184,
+      "observed_activity",
+      2
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      194,
+      "activity",
+      7
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      205,
+      "transport_capabilities",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      214,
+      "connection",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      225,
+      "factory",
+      3
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      233,
+      "preferences",
+      2
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      261,
+      "t1273_audio_states_preserve_pending_and_retiring_ownership",
+      2
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      294,
+      "close",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      298,
+      "start",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      302,
+      "stop",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      305,
+      "status",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      310,
+      "t718_audio_controls_preserve_passive_preferences_and_validate_start",
+      3
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      330,
+      "t979_invalid_full_audio_targets_never_reach_even_a_permissive_backend",
+      4
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      359,
+      "t979_unavailable_direction_and_factory_failure_never_create_or_retain_backend",
+      8
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      396,
+      "t979_exact_speaker_usb_and_microphone_adb_options_reach_only_selected_backend",
+      1
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      430,
+      "t979_bounded_profile_and_nonhex_target_inputs_never_reach_backend",
+      8
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      459,
+      "t979_unavailable_saved_audio_targets_remain_visible_and_rendering_stays_passive",
+      7
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      489,
+      "t1295_invalid_serials_never_reach_audio_backend",
+      4
+    ],
+    [
+      "gui/src/audio_settings.rs",
+      526,
+      "t1455_fast_audio_completion_does_not_stick_starting",
+      5
+    ],
+    [
+      "gui/src/camera_settings/connection.rs",
+      6,
+      "show",
+      1
+    ]
+  ]
+}

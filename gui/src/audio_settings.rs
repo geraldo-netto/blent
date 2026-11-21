@@ -218,7 +218,7 @@ fn connection(
 ) {
     use crate::media_target_settings::{self, Description, Selection};
     media_target_settings::show(ui, Selection {serial: &mut options.serial, usb_peer: &mut options.usb_peer}, transports,
-        Description {label:"USB audio status", unavailable:"Direct USB audio is unavailable on this backend.", qualification:"Experimental: physical debugging-off audio acceptance is pending.",
+        Description {label:"USB audio status", unavailable:"Direct USB audio is unavailable on this backend.", qualification:"Experimental: audio tested on RugKing Pad 2 Pro with USB debugging off (October 2026). Other devices and newer builds still need validation.",
             consent:"Pair and select this tablet in Connections. Start this audio direction locally on the tablet; pairing grants no audio access."});
 }
 
