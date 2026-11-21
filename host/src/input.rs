@@ -227,9 +227,10 @@ impl InputServer {
 
         let config = self.config.clone();
 
+        let mut acceptance = crate::listener_retry::Accept::default();
         loop {
             let accept = tokio::select! {
-                res = listener.accept() => res,
+                res = acceptance.next(&listener) => res,
                 _ = tasks.join_next(), if !tasks.is_empty() => continue,
                 completion = native.join_next() => {
                     completion.context("Native input worker missing")??;

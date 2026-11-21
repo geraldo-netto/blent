@@ -1,0 +1,64 @@
+{
+  "issue": "T1633",
+  "red": "Both native exhaustion regressions fail before the fix; stream fixture observed 508 accept failures over four polls within the 100ms retry interval.",
+  "green": "Three native cases pass: video stop during backoff, input recovery/cancellation with native-owner retirement, and video recovery after descriptor capacity returns.",
+  "suite": "36 selected input/stream contract, wakeup and native exhaustion cases pass; final three native cases rerun after adding input recovery.",
+  "functions": [
+    {
+      "file": "host/src/listener_retry.rs",
+      "name": "next",
+      "line": 15,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream.rs",
+      "name": "run_with_listener",
+      "line": 93,
+      "language": "rust",
+      "covered": 38,
+      "total": 39,
+      "percent": 97.43589743589743,
+      "passes": true,
+      "missing": [
+        137
+      ]
+    },
+    {
+      "file": "host/src/input.rs",
+      "name": "run_with_listener",
+      "line": 200,
+      "language": "rust",
+      "covered": 45,
+      "total": 51,
+      "percent": 88.23529411764706,
+      "passes": true,
+      "missing": [
+        236,
+        237,
+        250,
+        258,
+        273,
+        276
+      ]
+    }
+  ],
+  "complexity": [
+    "host/src/listener_retry.rs:15\tnext\t3",
+    "host/src/accept_failure_tests.rs:7\texhausted\t1",
+    "host/src/accept_failure_tests.rs:25\tdrop\t1",
+    "host/src/accept_failure_tests.rs:30\texhaust\t2",
+    "host/src/accept_failure_tests.rs:57\tt1633_stream_exhaustion_backs_off_and_stop_remains_immediate\t2",
+    "host/src/accept_failure_tests.rs:81\tt1633_input_exhaustion_backs_off_and_cancellation_retires_owner\t3",
+    "host/src/accept_failure_tests.rs:133\tt1633_stream_recovers_after_descriptor_capacity_returns\t2",
+    "host/src/stream.rs:93\trun_with_listener\t5",
+    "host/src/input.rs:200\trun_with_listener\t7",
+    "9 functions; 0 exceed cyclomatic complexity 9"
+  ],
+  "ownership": "Each server owns one optional retry Instant. Cancelling an accept wait preserves that deadline and admits no socket. Successful sockets remain owned by existing bounded client tasks; JoinSet shutdown/cancellation retains existing cleanup. Idle listeners have no retry timer.",
+  "limits": "Real EMFILE exercised only inside isolated Linux test subprocesses. Shared Windows adapter acceptance remains in T1271."
+}

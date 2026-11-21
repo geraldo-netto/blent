@@ -100,9 +100,10 @@ impl StreamServer {
         let mut clients = tokio::task::JoinSet::new();
         let slots = Arc::new(tokio::sync::Semaphore::new(MAX_CLIENTS));
 
+        let mut acceptance = crate::listener_retry::Accept::default();
         loop {
             let accept = tokio::select! {
-                res = listener.accept() => res,
+                res = acceptance.next(&listener) => res,
                 _ = clients.join_next(), if !clients.is_empty() => continue,
                 _ = stop.wait_for(|stopped| *stopped) => break,
             };
