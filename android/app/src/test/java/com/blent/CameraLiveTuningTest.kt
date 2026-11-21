@@ -45,16 +45,16 @@ class CameraLiveTuningTest {
     }
     @Test fun t1468_liveBitrateConfigurationRespectsBoundsAndAdaptiveState() {
         val rate=CameraRate(3000,1000,true,150000)
-        assertEquals(2250,rate.congested(1));assertNull(rate.configure(4000,1000,true,2))
-        assertEquals(2000,rate.configure(2000,1000,true,3))
-        assertEquals(5000,rate.configure(5000,1000,false,4));assertNull(rate.congested(5))
+        assertEquals(2250,rate.congested(1));assertNull(rate.configure(4000,1000,true,2) {})
+        assertEquals(2000,rate.configure(2000,1000,true,3) {})
+        assertEquals(5000,rate.configure(5000,1000,false,4) {});assertNull(rate.congested(5))
         for (value in listOf(255,20001)) {
-            assertThrows(IllegalArgumentException::class.java) { rate.configure(value,1000,true,6) }
+            assertThrows(IllegalArgumentException::class.java) { rate.configure(value,1000,true,6) {} }
             assertEquals(5000,rate.current)
         }
-        assertThrows(IllegalArgumentException::class.java) { rate.configure(3000,255,true,6) }
-        assertThrows(IllegalArgumentException::class.java) { rate.configure(3000,1000,true,-1) }
-        assertEquals(1000,rate.configure(1000,3000,true,7))
+        assertThrows(IllegalArgumentException::class.java) { rate.configure(3000,255,true,6) {} }
+        assertThrows(IllegalArgumentException::class.java) { rate.configure(3000,1000,true,-1) {} }
+        assertEquals(1000,rate.configure(1000,3000,true,7) {})
     }
     @Test fun t1476_partialNativeFailureCannotAcknowledgeARevertWithoutRestoringTheSensor() {
         var actual = CameraSensorTuning()

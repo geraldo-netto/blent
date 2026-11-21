@@ -14,10 +14,13 @@ internal class CameraRate(private var ceiling: Int, minimum: Int,
         require(budgetUs in 50_000..2_000_000)
     }
 
-    fun configure(ceiling: Int, minimum: Int, enabled: Boolean, nowUs: Long): Int? {
+    fun configure(ceiling: Int, minimum: Int, enabled: Boolean, nowUs: Long, native: (Int) -> Unit): Int? {
         require(ceiling in 256..20000 && minimum in 256..20000 && nowUs >= 0)
         val floor = minOf(minimum, ceiling)
         val target = if (enabled) current.coerceIn(floor, ceiling) else ceiling
+        // A previous failed call may have changed native state. Reassert even
+        // an unchanged target, and commit policy only after native acceptance.
+        native(target)
         this.ceiling = ceiling; this.floor = floor; this.enabled = enabled
         return change(target, nowUs)
     }

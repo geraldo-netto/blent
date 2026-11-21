@@ -52,7 +52,7 @@ internal class CameraCapture(context: Context, private val nowUs: () -> Long = {
             repeat(camera, session, surface, fps, tuning, CameraSensorTuning())
             val live = CameraLiveTuning(tuning.capabilities,
                 { values -> repeat(camera, session, surface, fps, tuning, values) },
-                { command -> updateBitrate(codec, rate.configure(command.bitrate, command.floor, command.adaptive, nowUs())) })
+                { command -> rate.configure(command.bitrate, command.floor, command.adaptive, nowUs()) { target -> updateBitrate(codec, target) }; Unit })
             drain(codec, sink, endpoint.freshnessMs, rate, resources, live)
         }
 

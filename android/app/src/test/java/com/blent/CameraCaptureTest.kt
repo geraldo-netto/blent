@@ -323,7 +323,7 @@ class CameraCaptureTest {
             Triple(100_000L, 1_300_000L, 0),
             Triple(1_400_000L, 1_410_000L, MediaCodec.BUFFER_FLAG_KEY_FRAME))
         assertEquals("Camera encoder stopped", exercise().first?.message)
-        assertEquals("T618 sustained pressure left bitrate unchanged", listOf(2_250_000), CameraEncoderShadow.bitrates)
+        assertEquals("T618 sustained pressure left bitrate unchanged", listOf(3_000_000, 2_250_000), CameraEncoderShadow.bitrates)
     }
 
     @Test fun t616_staleGapDiscardsDependentFramesUntilFreshKeyframe() {

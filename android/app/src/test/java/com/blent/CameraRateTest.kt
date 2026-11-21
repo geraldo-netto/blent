@@ -44,4 +44,33 @@ class CameraRateTest {
         }
         assertTrue(runCatching { CameraRate(3000, 1000, true, 0) }.isFailure)
     }
+    // T1477 native adapter boundary: a failed setParameters must not commit policy.
+    private fun configureNative(rate: CameraRate, native: (Int) -> Unit) {
+        rate.configure(5000, 4500, false, 1, native)
+    }
+
+    @Test fun t1477_failedNativeConfigurationPreservesPolicyAndRetryReassertsTarget() {
+        val rate = rate()
+        assertThrows(IllegalStateException::class.java) {
+            configureNative(rate) { throw IllegalStateException("native failure after possible effect") }
+        }
+        assertEquals("T1477 unacknowledged target is not current policy", 3000, rate.current)
+        assertEquals("T1477 original adaptive mode and floor survive", 2250, rate.congested(2))
+        var applied = 0
+        configureNative(rate) { applied = it }
+        assertEquals(5000, applied)
+        assertEquals(5000, rate.current)
+    }
+
+    @Test fun t1477_revertingAfterUncertainNativeEffectReassertsUnchangedTarget() {
+        val rate = rate()
+        var actual = 3000
+        assertThrows(IllegalStateException::class.java) {
+            configureNative(rate) { actual = it; throw IllegalStateException("after effect") }
+        }
+        assertEquals(5000, actual)
+        assertNull(rate.configure(3000, 1000, true, 2) { actual = it })
+        assertEquals(3000, actual)
+        assertEquals(3000, rate.current)
+    }
 }

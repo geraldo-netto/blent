@@ -13,3 +13,9 @@ The original capture worker owns one bounded cached command and receipt. Synchro
 ## T1478 — embedded notices
 
 The About inventory omitted 17 checked-in camera-color documents. Added their verbatim compile-time inclusions. Existing permanent T1277 inventory/content regression failed at 81 authoritative files versus 64 inclusions; it now passes with 81 exact matches. No runtime method, allocation or native ownership changes. T1463 upstream notice qualification remains open.
+
+## T1477 — transactional live bitrate policy
+
+`CameraRate.configure` previously committed limits/current bitrate before the native codec call. A failed call could make a retry skip the native write and falsely report success. The explicit native callback now runs before policy commit and reasserts unchanged targets after uncertain effects. The capture worker remains the single synchronous policy/native owner; no queue, allocator, detached callback or resource release was added. On rejection the previous limits, adaptive flag, current bitrate and observation history remain owned and unchanged.
+
+Permanent T1477 regression failed with current bitrate 5000 instead of retained 3000 before the fix. It now passes, including retry and reverting after a native effect followed by failure. All 250 camera test cases pass (API 27/34 where configured). The existing exact-call pressure test now includes the initial 3000 kbit/s reassertion before its required 2250 kbit/s reduction. JaCoCo 0.8.15: configure, stream and six compiled callbacks each 100% executable-line coverage. Repository checker measured 186 methods/callbacks across the five changed files, maximum complexity 8.
