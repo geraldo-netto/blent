@@ -1,0 +1,25 @@
+{
+  "issue": "T1645",
+  "red": "Three invalid argument sets accepted before removal.",
+  "green": "9 build/install tests passed.",
+  "coverage": [
+    {
+      "file": "scripts/install.sh",
+      "name": "main",
+      "line": 328,
+      "language": "shell",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    "scripts/install.sh:328\tmain\t5",
+    "scripts/tests/test_build_output.py:161\ttest_t1645_obsolete_and_invalid_install_arguments_have_no_effects\t2",
+    "scripts/tests/test_build_output.py:178\ttest_t1645_no_arguments_preserve_full_install_sequence\t2",
+    "scripts/tests/test_build_output.py:191\ttest_t336_prebuilt_install_uses_bundle_without_cargo\t2",
+    "4 functions; 0 exceed cyclomatic complexity 9"
+  ]
+}

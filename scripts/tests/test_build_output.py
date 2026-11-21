@@ -158,6 +158,36 @@ class BuildOutputTest(unittest.TestCase):
                 self.run_command(root, env, 'make', 'clean')
                 self.assertFalse((root / 'target').exists(), 'T336: clean targeted a different directory')
 
+    def test_t1645_obsolete_and_invalid_install_arguments_have_no_effects(self):
+        for arguments in [['--binaries-only', 'installed'], ['--unknown'],
+                          ['--user-install'], ['--user-install', ''], ['--user-install', 'installed', 'extra']]:
+            with self.subTest(arguments=arguments), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                env, _ = fixture(root, 'relative', True)
+                source = (root / 'scripts/install.sh').read_text().removesuffix('main "$@"\n')
+                source += '\ninstall_deps() { touch effect; }\ninstall_files() { touch effect; }\n'
+                source += 'install_binaries() { touch effect; }\ncheck_deps() { :; }\n'
+                source += 'build_if_needed() { :; }\nsystem_setup() { touch effect; }\nmain "$@"\n'
+                write(root, 'scripts/rejection-fixture.sh', source)
+                result = subprocess.run(['bash', 'scripts/rejection-fixture.sh', *arguments],
+                                        cwd=root, env=env, capture_output=True, text=True)
+                self.assertNotEqual(result.returncode, 0, 'T1645: obsolete/invalid arguments accepted')
+                self.assertFalse((root / 'effect').exists(), 'T1645: rejected arguments caused installation')
+                self.assertFalse((root / 'installed').exists())
+
+    def test_t1645_no_arguments_preserve_full_install_sequence(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            env, _ = fixture(root, 'relative', False)
+            source = (root / 'scripts/install.sh').read_text().removesuffix('main "$@"\n')
+            steps = ['install_deps', 'check_deps', 'build_if_needed', 'install_files',
+                     'system_setup', 'check_path']
+            for step in steps:
+                source += f'\n{step}() {{ echo {step} >> steps; }}\n'
+            write(root, 'scripts/full-fixture.sh', source + '\nmain "$@"\n')
+            self.run_command(root, env, 'bash', 'scripts/full-fixture.sh')
+            self.assertEqual((root / 'steps').read_text().splitlines(), steps)
+
     def test_t336_prebuilt_install_uses_bundle_without_cargo(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -165,7 +195,7 @@ class BuildOutputTest(unittest.TestCase):
             for name in ['blent', 'blent-gui', 'blent-audio', 'blent-usb-broker', 'blent-usb-io', 'evdi_helper']:
                 write(root, 'bin/' + name, '#!/bin/sh\necho prebuilt\n', True)
             installed = root / 'installed'
-            self.run_command(root, env, 'bash', 'scripts/install.sh', '--binaries-only', str(installed))
+            self.run_command(root, env, 'bash', 'scripts/install.sh', '--user-install', str(installed))
             self.assertEqual(self.run_command(root, env, str(installed / 'blent')), 'prebuilt\n')
             self.assertFalse((root / 'cargo.log').exists())
 

@@ -328,16 +328,13 @@ system_setup() {
 main() {
     # Make has built the programs; install only user files without enabling
     # autostart, installing dependencies or changing system/module settings.
-    if [[ ${1:-} == --user-install ]]; then
+    if (( $# )); then
+        if [[ $# != 2 || $1 != --user-install || -z $2 ]]; then
+            error "Usage: install.sh [--user-install BIN_DIR]" >&2
+            return 2
+        fi
         BIN_DIR="$2"
         install_files no-enable
-        return
-    fi
-    # Make has already built the source tree and owns the remaining setup.
-    if [[ ${1:-} == --binaries-only ]]; then
-        BIN_DIR="$2"
-        mkdir -p "$BIN_DIR"
-        install_binaries
         return
     fi
     echo "================================================"
