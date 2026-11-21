@@ -461,3 +461,9 @@ The tuning cache now hashes the native FFmpeg executable and declared codec file
 Both permanent regressions failed before implementation. Afterward, 32 cache Rust tests, 16 FFmpeg bundle/identity Python tests and 28 AppImage Python tests pass. All 12 maintained production functions have 89.47–100% executable-line coverage; all 81 measured production/test functions have complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1676.json).
 
 Hashing owns one descriptor and one 64 KiB buffer at a time, with explicit metadata/component/count bounds. No reference escapes and errors close resources. Tests use private files and wait for their original subprocess before cleanup. The declaration does not fence concurrent external package mutation or cover undeclared system libraries. This is source-only; no installed process or FFmpeg file changed.
+
+## T1674 — retain fresh FFmpeg capability probes
+
+Sixty private native H.264/HEVC VAAPI starts attribute a median 4–5 ms to the help probe and 32–51 ms to complete first-packet delivery including that probe. The probe occupies 9–17% of this narrow startup portion, but saves only a few milliseconds once per start and cannot improve steady-state frames. Retain fresh probing rather than adding cache identity/invalidation state for that measured saving. End-to-end viewer startup was not measured. [Method, results and reproduction](2026-11-21-ffmpeg.md#t1674--native-startup-attribution).
+
+The benchmark uses current production recipes/parsers, waits for the exact child on every observed outcome, and changes no installed session. All six benchmark functions have complexity ≤9; benchmark coverage is exempt. The single opt-in benchmark passes all 60 observations.

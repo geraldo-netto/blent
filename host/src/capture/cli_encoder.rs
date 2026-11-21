@@ -9,6 +9,9 @@ mod framing_profile;
 #[cfg(test)]
 #[path = "startup_packet_tests.rs"]
 mod startup_packet_tests;
+#[cfg(test)]
+#[path = "startup_profile.rs"]
+mod startup_profile;
 
 #[cfg(test)]
 #[path = "sparse_codec_tests.rs"]

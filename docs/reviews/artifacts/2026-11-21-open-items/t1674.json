@@ -1,0 +1,965 @@
+{
+  "issue": "T1674",
+  "samples": [
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 63284,
+      "original_child_waited": true,
+      "packet_bytes": 8922,
+      "probe_us": 10406,
+      "repeat": 0,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 105084,
+      "original_child_waited": true,
+      "packet_bytes": 40422,
+      "probe_us": 9820,
+      "repeat": 0,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 62337,
+      "original_child_waited": true,
+      "packet_bytes": 34901,
+      "probe_us": 8857,
+      "repeat": 0,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 53388,
+      "original_child_waited": true,
+      "packet_bytes": 165883,
+      "probe_us": 6562,
+      "repeat": 0,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 39299,
+      "original_child_waited": true,
+      "packet_bytes": 70219,
+      "probe_us": 4418,
+      "repeat": 0,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 49040,
+      "original_child_waited": true,
+      "packet_bytes": 340345,
+      "probe_us": 4395,
+      "repeat": 0,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 37333,
+      "original_child_waited": true,
+      "packet_bytes": 40422,
+      "probe_us": 5511,
+      "repeat": 1,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 32623,
+      "original_child_waited": true,
+      "packet_bytes": 8922,
+      "probe_us": 4388,
+      "repeat": 1,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 41895,
+      "original_child_waited": true,
+      "packet_bytes": 165883,
+      "probe_us": 4418,
+      "repeat": 1,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 32322,
+      "original_child_waited": true,
+      "packet_bytes": 34901,
+      "probe_us": 4428,
+      "repeat": 1,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 50829,
+      "original_child_waited": true,
+      "packet_bytes": 340345,
+      "probe_us": 4366,
+      "repeat": 1,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 41238,
+      "original_child_waited": true,
+      "packet_bytes": 70219,
+      "probe_us": 5493,
+      "repeat": 1,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 32774,
+      "original_child_waited": true,
+      "packet_bytes": 8922,
+      "probe_us": 5548,
+      "repeat": 2,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 41426,
+      "original_child_waited": true,
+      "packet_bytes": 40422,
+      "probe_us": 5473,
+      "repeat": 2,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 33986,
+      "original_child_waited": true,
+      "packet_bytes": 34901,
+      "probe_us": 4392,
+      "repeat": 2,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 43923,
+      "original_child_waited": true,
+      "packet_bytes": 165883,
+      "probe_us": 4393,
+      "repeat": 2,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 37487,
+      "original_child_waited": true,
+      "packet_bytes": 70219,
+      "probe_us": 4403,
+      "repeat": 2,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 48550,
+      "original_child_waited": true,
+      "packet_bytes": 340345,
+      "probe_us": 4362,
+      "repeat": 2,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 37713,
+      "original_child_waited": true,
+      "packet_bytes": 40422,
+      "probe_us": 4438,
+      "repeat": 3,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 31818,
+      "original_child_waited": true,
+      "packet_bytes": 8922,
+      "probe_us": 4393,
+      "repeat": 3,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 46473,
+      "original_child_waited": true,
+      "packet_bytes": 165883,
+      "probe_us": 4414,
+      "repeat": 3,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 36595,
+      "original_child_waited": true,
+      "packet_bytes": 34901,
+      "probe_us": 5416,
+      "repeat": 3,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 58613,
+      "original_child_waited": true,
+      "packet_bytes": 340345,
+      "probe_us": 9822,
+      "repeat": 3,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 40220,
+      "original_child_waited": true,
+      "packet_bytes": 70219,
+      "probe_us": 4409,
+      "repeat": 3,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 34316,
+      "original_child_waited": true,
+      "packet_bytes": 8922,
+      "probe_us": 6616,
+      "repeat": 4,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 38152,
+      "original_child_waited": true,
+      "packet_bytes": 40422,
+      "probe_us": 5413,
+      "repeat": 4,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 32818,
+      "original_child_waited": true,
+      "packet_bytes": 34901,
+      "probe_us": 4364,
+      "repeat": 4,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 42600,
+      "original_child_waited": true,
+      "packet_bytes": 165883,
+      "probe_us": 4403,
+      "repeat": 4,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 37784,
+      "original_child_waited": true,
+      "packet_bytes": 70219,
+      "probe_us": 4370,
+      "repeat": 4,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 50643,
+      "original_child_waited": true,
+      "packet_bytes": 340345,
+      "probe_us": 4394,
+      "repeat": 4,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 42710,
+      "original_child_waited": true,
+      "packet_bytes": 40422,
+      "probe_us": 4397,
+      "repeat": 5,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 37584,
+      "original_child_waited": true,
+      "packet_bytes": 8922,
+      "probe_us": 4401,
+      "repeat": 5,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 42060,
+      "original_child_waited": true,
+      "packet_bytes": 165883,
+      "probe_us": 4383,
+      "repeat": 5,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 33808,
+      "original_child_waited": true,
+      "packet_bytes": 34901,
+      "probe_us": 4410,
+      "repeat": 5,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 51324,
+      "original_child_waited": true,
+      "packet_bytes": 340345,
+      "probe_us": 5465,
+      "repeat": 5,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 36926,
+      "original_child_waited": true,
+      "packet_bytes": 70219,
+      "probe_us": 5462,
+      "repeat": 5,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 28979,
+      "original_child_waited": true,
+      "packet_bytes": 8922,
+      "probe_us": 4393,
+      "repeat": 6,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 38875,
+      "original_child_waited": true,
+      "packet_bytes": 40422,
+      "probe_us": 5430,
+      "repeat": 6,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 37392,
+      "original_child_waited": true,
+      "packet_bytes": 34901,
+      "probe_us": 5504,
+      "repeat": 6,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 43824,
+      "original_child_waited": true,
+      "packet_bytes": 165883,
+      "probe_us": 5467,
+      "repeat": 6,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 38081,
+      "original_child_waited": true,
+      "packet_bytes": 70219,
+      "probe_us": 5423,
+      "repeat": 6,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 47353,
+      "original_child_waited": true,
+      "packet_bytes": 340345,
+      "probe_us": 4400,
+      "repeat": 6,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 36636,
+      "original_child_waited": true,
+      "packet_bytes": 40422,
+      "probe_us": 4372,
+      "repeat": 7,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 30585,
+      "original_child_waited": true,
+      "packet_bytes": 8922,
+      "probe_us": 5446,
+      "repeat": 7,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 41419,
+      "original_child_waited": true,
+      "packet_bytes": 165883,
+      "probe_us": 4323,
+      "repeat": 7,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 33123,
+      "original_child_waited": true,
+      "packet_bytes": 34901,
+      "probe_us": 4380,
+      "repeat": 7,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 51069,
+      "original_child_waited": true,
+      "packet_bytes": 340345,
+      "probe_us": 4380,
+      "repeat": 7,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 36322,
+      "original_child_waited": true,
+      "packet_bytes": 70219,
+      "probe_us": 4418,
+      "repeat": 7,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 31585,
+      "original_child_waited": true,
+      "packet_bytes": 8922,
+      "probe_us": 5421,
+      "repeat": 8,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 36956,
+      "original_child_waited": true,
+      "packet_bytes": 40422,
+      "probe_us": 4350,
+      "repeat": 8,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 37906,
+      "original_child_waited": true,
+      "packet_bytes": 34901,
+      "probe_us": 4415,
+      "repeat": 8,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 40018,
+      "original_child_waited": true,
+      "packet_bytes": 165883,
+      "probe_us": 4392,
+      "repeat": 8,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 35819,
+      "original_child_waited": true,
+      "packet_bytes": 70219,
+      "probe_us": 4471,
+      "repeat": 8,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 48716,
+      "original_child_waited": true,
+      "packet_bytes": 340345,
+      "probe_us": 5436,
+      "repeat": 8,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 39829,
+      "original_child_waited": true,
+      "packet_bytes": 40422,
+      "probe_us": 4384,
+      "repeat": 9,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 32343,
+      "original_child_waited": true,
+      "packet_bytes": 8922,
+      "probe_us": 5431,
+      "repeat": 9,
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 43064,
+      "original_child_waited": true,
+      "packet_bytes": 165883,
+      "probe_us": 4391,
+      "repeat": 9,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 35495,
+      "original_child_waited": true,
+      "packet_bytes": 34901,
+      "probe_us": 4382,
+      "repeat": 9,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "hevc_vaapi",
+      "exit": null,
+      "first_packet_us": 50852,
+      "original_child_waited": true,
+      "packet_bytes": 340345,
+      "probe_us": 5420,
+      "repeat": 9,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "async_depth": true,
+      "encoder": "h264_vaapi",
+      "exit": null,
+      "first_packet_us": 37888,
+      "original_child_waited": true,
+      "packet_bytes": 70219,
+      "probe_us": 5464,
+      "repeat": 9,
+      "size": [
+        1920,
+        1080
+      ]
+    }
+  ],
+  "summary": [
+    {
+      "encoder": "h264_vaapi",
+      "size": [
+        640,
+        400
+      ],
+      "observations": 10,
+      "probe_median_us": 5426.0,
+      "first_packet_median_us": 32483.0,
+      "median_probe_share_percent": 16.617610884898195,
+      "probe_max_us": 10406
+    },
+    {
+      "encoder": "h264_vaapi",
+      "size": [
+        1280,
+        800
+      ],
+      "observations": 10,
+      "probe_median_us": 4412.5,
+      "first_packet_median_us": 34740.5,
+      "median_probe_share_percent": 13.26051025091001,
+      "probe_max_us": 8857
+    },
+    {
+      "encoder": "h264_vaapi",
+      "size": [
+        1920,
+        1080
+      ],
+      "observations": 10,
+      "probe_median_us": 4444.5,
+      "first_packet_median_us": 37836.0,
+      "median_probe_share_percent": 12.322814653627955,
+      "probe_max_us": 5493
+    },
+    {
+      "encoder": "hevc_vaapi",
+      "size": [
+        640,
+        400
+      ],
+      "observations": 10,
+      "probe_median_us": 4925.5,
+      "first_packet_median_us": 38513.5,
+      "median_probe_share_percent": 11.852185808884592,
+      "probe_max_us": 9820
+    },
+    {
+      "encoder": "hevc_vaapi",
+      "size": [
+        1280,
+        800
+      ],
+      "observations": 10,
+      "probe_median_us": 4398.0,
+      "first_packet_median_us": 42832.0,
+      "median_probe_share_percent": 10.429033168876199,
+      "probe_max_us": 6562
+    },
+    {
+      "encoder": "hevc_vaapi",
+      "size": [
+        1920,
+        1080
+      ],
+      "observations": 10,
+      "probe_median_us": 4397.5,
+      "first_packet_median_us": 50736.0,
+      "median_probe_share_percent": 9.138232965663612,
+      "probe_max_us": 9822
+    }
+  ],
+  "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/libexec/ffmpeg",
+  "sha256": "643ab790095816900e48a6ecb2ed7aca19fdb6bd230dadcd3c7df1757231edc5",
+  "method": "Current production supports_async_depth and CliEncoder recipe plus current Packetizer, native bundled FFmpeg 6.1.6; default renderD128 GPU, synthetic NV12 checkerboard; one child at a time, 10 repeats per size/codec with alternating codec order. Frame prepared before timing; timing includes help, command construction, spawn, write and complete first IDR packet with stdin open. First sample not excluded. Debug host harness and working desktop; no Cargo/rustc running during measurement.",
+  "scope": "Private encoder-start lower portion, not end-to-end viewer connection or physical tablet render latency. No capture/transport/decoder/geometry setup included; no steady-frame codec comparison or tail guarantee. Active display shares GPU and remained running.",
+  "decision": "Retain fresh capability probes: median saving ceiling is 4\u20135 ms once per start, before cache lookup/invalidation overhead. No steady-state frame benefit; not sufficient to add another cache. No claim that the measured 9\u201317% fraction is zero.",
+  "complexity_tool": "project Rust syn 2.0.119",
+  "complexity": [
+    [
+      "host/src/capture/startup_profile.rs",
+      8,
+      "command",
+      2
+    ],
+    [
+      "host/src/capture/startup_profile.rs",
+      35,
+      "picture",
+      2
+    ],
+    [
+      "host/src/capture/startup_profile.rs",
+      45,
+      "first_packet",
+      3
+    ],
+    [
+      "host/src/capture/startup_profile.rs",
+      61,
+      "observe",
+      1
+    ],
+    [
+      "host/src/capture/startup_profile.rs",
+      70,
+      "sample",
+      1
+    ],
+    [
+      "host/src/capture/startup_profile.rs",
+      95,
+      "t1674_native_startup_probe_attribution",
+      5
+    ]
+  ],
+  "coverage": "Opt-in benchmark code; repository benchmark coverage exemption. Existing production lifecycle regressions retained.",
+  "ownership": "Exactly one child per observation; one <=1920x1080x3/2 NV12 input and bounded production packet reader. Stop and original wait occur before returning either observation or error. Three-second no-successor protocol bound is followed by kill/wait, not abandonment. No native display/camera/ADB ownership taken."
+}
