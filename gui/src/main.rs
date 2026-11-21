@@ -33,6 +33,8 @@ use platform::*;
 mod config_refresh;
 mod status_poll;
 mod status_worker;
+#[cfg(test)]
+mod test_shapes;
 #[cfg(all(test, windows))]
 mod windows_tests;
 
@@ -1326,6 +1328,7 @@ mod tests {
     mod overview;
     mod video_snapshot;
     use super::*;
+    use crate::test_shapes::collect_text_rects;
     use blent_config::commands::daemon_command_timeout;
     use std::os::unix::fs::PermissionsExt;
 
@@ -2257,21 +2260,6 @@ mod tests {
         click_settings_text(&mut app, &ctx, "Manual", conversion_test_frame);
         click_settings_text(&mut app, &ctx, "Auto", conversion_test_frame);
         assert_eq!(app.cfg, app.saved_cfg);
-    }
-
-    pub(crate) fn collect_text_rects(shape: &egui::Shape, text: &mut Vec<(String, egui::Rect)>) {
-        match shape {
-            egui::Shape::Text(value) => text.push((
-                value.galley.text().to_owned(),
-                egui::Rect::from_min_size(value.pos, value.galley.size()),
-            )),
-            egui::Shape::Vec(shapes) => {
-                for shape in shapes {
-                    collect_text_rects(shape, text);
-                }
-            }
-            _ => {}
-        }
     }
 
     type SettingsFrame =

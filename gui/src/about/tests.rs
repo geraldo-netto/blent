@@ -1,5 +1,5 @@
 use super::*;
-use crate::tests::collect_text_rects;
+use crate::test_shapes::collect_text_rects;
 use std::path::{Path, PathBuf};
 
 fn files(path: &Path, out: &mut Vec<PathBuf>) {

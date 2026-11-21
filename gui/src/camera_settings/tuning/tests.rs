@@ -62,7 +62,7 @@ fn frame(
     );
     let mut text = Vec::new();
     for shape in output.shapes {
-        crate::tests::collect_text_rects(&shape.shape, &mut text);
+        crate::test_shapes::collect_text_rects(&shape.shape, &mut text);
     }
     text
 }
@@ -198,4 +198,14 @@ fn t1472_exposure_parser_rejects_nonfinite_and_malformed_text() {
     ] {
         assert_eq!(parse_exposure(text), Some(expected));
     }
+}
+
+#[test]
+fn t1654_portable_camera_controls_expose_their_rendered_labels() {
+    let context = egui::Context::default();
+    let mut sensor = Sensor::default();
+    let labels = frame(&context, &mut sensor, Vec::new(), true);
+    assert!(labels.iter().any(|(name, _)| name == "Noise reduction"));
+    assert!(labels.iter().all(|(_, rect)| rect.is_finite()));
+    assert_eq!(sensor, Sensor::default());
 }

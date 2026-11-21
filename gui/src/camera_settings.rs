@@ -489,7 +489,7 @@ mod tests {
         );
         let mut text = Vec::new();
         for shape in output.shapes {
-            crate::tests::collect_text_rects(&shape.shape, &mut text);
+            crate::test_shapes::collect_text_rects(&shape.shape, &mut text);
         }
         text
     }
@@ -740,7 +740,7 @@ mod tests {
             );
             let mut text = Vec::new();
             for shape in output.shapes {
-                crate::tests::collect_text_rects(&shape.shape, &mut text);
+                crate::test_shapes::collect_text_rects(&shape.shape, &mut text);
             }
             assert!(text
                 .iter()

@@ -1,0 +1,15 @@
+{
+  "issue": "T1654",
+  "tests": {
+    "linux_gui": 58,
+    "windows_gnu_test_check": "passed",
+    "native_windows": "not executed"
+  },
+  "regression": "camera_settings::tuning::tests::t1654_portable_camera_controls_expose_their_rendered_labels",
+  "complexity": {
+    "functions": 255,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  },
+  "production_changes": false
+}

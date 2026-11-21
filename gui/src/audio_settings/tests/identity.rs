@@ -18,7 +18,7 @@ fn t1650_editor_labels_follow_resource_identity_without_rewriting_saved_request(
         });
         let mut labels = Vec::new();
         for shape in &output.shapes {
-            crate::tests::collect_text_rects(&shape.shape, &mut labels);
+            crate::test_shapes::collect_text_rects(&shape.shape, &mut labels);
         }
         let heading = if direction == Direction::Microphone {
             "Microphone sharing"

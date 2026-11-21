@@ -147,3 +147,9 @@ Both new regressions failed before the fix. All 47 selected host-library invento
 ## Broad checkpoint through T1574
 
 At implementation commit 33810de2, all 490 common-library tests and all 249 GUI tests passed. This includes private-display and private-process fixtures; it does not imply physical tablet or Windows native acceptance. Later increments retain their own scoped validation below.
+
+## T1654 — keep portable GUI tests independent of Linux fixtures
+
+Windows test compilation failed because camera tuning fixtures called a rendered-text helper inside the Linux-only root test module. The helper now has one platform-neutral test-module owner; every explicit caller uses that owner, without retaining the old exported path or gating portable tests out. The new T1654 camera-label regression was present during the failing Windows compile and remains in the ordinary test suite.
+
+Windows GNU checking of common and GUI tests now passes, and all 58 selected Linux camera/audio/About tests pass. The existing Windows CI checks compile the portable regression and run the workspace tests on Windows; no remote job was started here. All 255 measured functions in affected source/test files have complexity <=9 (project Rust syn 2.0.119). This changes test infrastructure only: the recursive read-only helper borrows the frame's finite shape tree and appends owned labels to the caller's vector; no native resource or production behavior changes. Cross-compilation does not establish native Windows runtime acceptance.
