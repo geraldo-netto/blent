@@ -9,6 +9,7 @@ import tarfile
 
 import elf
 import ffmpeg_bundle
+import ffmpeg_identity
 import sources
 import tools
 import runtime_build
@@ -41,6 +42,7 @@ def stage(repo, bundle, appdir, ffmpeg_prefix):
     (library / 'libevdi.so.1').unlink(missing_ok=True)
     dependencies.pop('libevdi.so.1', None)
     ffmpeg_bundle.isolate_codecs(appdir, dependencies)
+    ffmpeg_identity.write(appdir)
     for name in ('blent', 'blent-gui', 'blent-audio', 'blent-usb-broker', 'blent-usb-io', 'evdi_helper', 'bash'):
         elf.set_app_rpath(binary / name, helper=name == 'evdi_helper')
         elf.check_loaded(binary / name)

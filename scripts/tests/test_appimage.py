@@ -517,6 +517,9 @@ root.with_suffix('.gui').write_text(os.environ['APPDIR'])
         self.assertEqual(rpath.call_count, 7)
         self.assertEqual(loaded.call_count, 7)
         self.assertTrue((target/'usr/bin/libevdi.so.1').is_symlink())
+        identity = target/'usr/bin/ffmpeg.blent-runtime.json'
+        self.assertTrue(identity.is_file(), 'T1676 packaged launcher lacks native runtime identity')
+        self.assertEqual(json.loads(identity.read_text()), {'schema': 1, 'files': ['libexec/ffmpeg']})
         self.assertNotIn('libevdi.so.1', dependencies)
         for program in stock:
             self.assertEqual((target/'usr/libexec'/program.name).read_bytes(), program.read_bytes())

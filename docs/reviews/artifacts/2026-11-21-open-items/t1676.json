@@ -1,0 +1,648 @@
+{
+  "coverage": [
+    {
+      "file": "host/src/selection/worker/cache/context.rs",
+      "name": "host_stamp",
+      "line": 81,
+      "language": "rust",
+      "covered": 28,
+      "total": 29,
+      "percent": 96.55172413793103,
+      "passes": true,
+      "missing": [
+        101
+      ]
+    },
+    {
+      "file": "host/src/selection/worker/cache/context/runtime_identity.rs",
+      "name": "open",
+      "line": 24,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/context/runtime_identity.rs",
+      "name": "file_hash",
+      "line": 34,
+      "language": "rust",
+      "covered": 15,
+      "total": 16,
+      "percent": 93.75,
+      "passes": true,
+      "missing": [
+        46
+      ]
+    },
+    {
+      "file": "host/src/selection/worker/cache/context/runtime_identity.rs",
+      "name": "manifest",
+      "line": 53,
+      "language": "rust",
+      "covered": 17,
+      "total": 19,
+      "percent": 89.47368421052632,
+      "passes": true,
+      "missing": [
+        58,
+        60
+      ]
+    },
+    {
+      "file": "host/src/selection/worker/cache/context/runtime_identity.rs",
+      "name": "component",
+      "line": 73,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/context/runtime_identity.rs",
+      "name": "native_elf",
+      "line": 84,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/context/runtime_identity.rs",
+      "name": "fingerprint",
+      "line": 92,
+      "language": "rust",
+      "covered": 16,
+      "total": 17,
+      "percent": 94.11764705882354,
+      "passes": true,
+      "missing": [
+        107
+      ]
+    },
+    {
+      "file": "host/src/selection/worker/cache/context/runtime_identity.rs",
+      "name": "hash_declared",
+      "line": 112,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "packaging/appimage/build.py",
+      "name": "stage",
+      "line": 25,
+      "language": "python",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "packaging/appimage/ffmpeg_identity.py",
+      "name": "write",
+      "line": 12,
+      "language": "python",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "packaging/appimage/ffmpeg_identity.py",
+      "name": "validate",
+      "line": 28,
+      "language": "python",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "packaging/appimage/ffmpeg_identity.py",
+      "name": "validate_name",
+      "line": 38,
+      "language": "python",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "host/src/selection/worker/cache/context.rs",
+      10,
+      "open",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/context.rs",
+      43,
+      "fingerprint",
+      7
+    ],
+    [
+      "host/src/selection/worker/cache/context.rs",
+      81,
+      "host_stamp",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/context.rs",
+      114,
+      "device_stamp",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/context.rs",
+      126,
+      "platform_stamp",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/context.rs",
+      138,
+      "t743_stable_render_alias_retains_device_and_driver_identity",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/context.rs",
+      156,
+      "t714_reboot_preserves_context_but_kernel_driver_and_gpu_changes_do_not",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity.rs",
+      24,
+      "open",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity.rs",
+      34,
+      "file_hash",
+      4
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity.rs",
+      53,
+      "manifest",
+      5
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity.rs",
+      73,
+      "component",
+      5
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity.rs",
+      84,
+      "native_elf",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity.rs",
+      92,
+      "fingerprint",
+      5
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity.rs",
+      112,
+      "hash_declared",
+      2
+    ],
+    [
+      "packaging/appimage/build.py",
+      18,
+      "copy",
+      2
+    ],
+    [
+      "packaging/appimage/build.py",
+      25,
+      "stage",
+      4
+    ],
+    [
+      "packaging/appimage/build.py",
+      54,
+      "stock_paths",
+      2
+    ],
+    [
+      "packaging/appimage/build.py",
+      59,
+      "stage_stock",
+      2
+    ],
+    [
+      "packaging/appimage/build.py",
+      71,
+      "stage_metadata",
+      2
+    ],
+    [
+      "packaging/appimage/build.py",
+      89,
+      "build",
+      4
+    ],
+    [
+      "packaging/appimage/build.py",
+      117,
+      "arguments",
+      2
+    ],
+    [
+      "packaging/appimage/ffmpeg_identity.py",
+      12,
+      "write",
+      5
+    ],
+    [
+      "packaging/appimage/ffmpeg_identity.py",
+      28,
+      "validate",
+      4
+    ],
+    [
+      "packaging/appimage/ffmpeg_identity.py",
+      38,
+      "validate_name",
+      5
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+      11,
+      "new",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+      30,
+      "write",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+      36,
+      "t1676_declared_components_are_rehashed_and_links_stay_inside_the_root",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+      67,
+      "t1676_native_programs_work_without_metadata_but_opaque_scripts_do_not",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+      79,
+      "t1676_manifest_schema_and_count_bounds_reject_obsolete_or_unknown_inputs",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+      101,
+      "t1676_paths_reject_escape_control_missing_and_nonregular_components",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+      128,
+      "t1676_file_size_and_manifest_exact_boundaries_are_enforced",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+      151,
+      "t1676_hash_streaming_matches_sha256_across_chunk_boundaries",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+      162,
+      "t1676_maximum_component_count_and_path_length_are_admitted",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/context/tests/runtime_identity.rs",
+      4,
+      "isolated",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/context/tests/runtime_identity.rs",
+      25,
+      "t1676_native_payload_change_invalidates_an_unchanged_launcher",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      28,
+      "setUp",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      42,
+      "write",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      48,
+      "invoke",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      52,
+      "test_t308_dispatch_uses_stable_outer_path_without_global_loader_overrides",
+      3
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      67,
+      "installer_fixture",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      75,
+      "test_t308_user_registration_has_stable_quoted_paths_and_preserves_settings",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      96,
+      "test_t308_registration_rejects_running_daemon_and_unknown_options",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      105,
+      "test_t551_gui_upgrade_uses_registered_distribution_and_retains_rollback",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      128,
+      "test_t551_gui_registration_preserves_unrelated_symlink_target_and_rejects_directory",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      147,
+      "test_t551_failed_gui_link_restores_the_previous_launcher",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      156,
+      "test_t308_image_copy_survives_source_deletion_and_keeps_preferences",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      166,
+      "test_t308_stock_wrappers_reject_unknown_programs_and_preserve_arguments",
+      3
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      178,
+      "test_t308_invalid_elf_names_and_abi_fail_closed",
+      3
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      194,
+      "test_t308_dependency_closure_terminates_cycles_and_excludes_host_glibc",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      205,
+      "test_t308_pinned_tool_validation_download_and_bounds",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      225,
+      "test_t308_daemon_extraction_survives_gui_exit",
+      3
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      263,
+      "test_t308_autostart_redirect_and_nested_destination",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      281,
+      "test_t536_registration_preserves_managed_login_without_graphical_target",
+      4
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      297,
+      "test_t308_loader_index_and_commands",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      310,
+      "test_t308_pinned_cache_and_malformed_metadata_fuzz",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      325,
+      "test_t308_source_descriptor_corruption_and_path_bounds",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      332,
+      "test_t308_source_collection_uses_exact_version_and_checksums",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      349,
+      "test_t308_crate_sources_preserve_notices",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      367,
+      "test_t308_package_ownership_and_evdi_provenance",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      383,
+      "test_t308_version_argument_bounds",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      391,
+      "test_t308_interrupted_install_preserves_previous_directory",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      414,
+      "t497_archive",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      423,
+      "test_t497_runtime_source_licenses_are_bounded_regular_files",
+      3
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      447,
+      "test_t497_runtime_dependency_sources_keep_pins_and_reject_license_links",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      465,
+      "test_t497_debian_sources_deduplicate_packages_but_preserve_binary_notices",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      483,
+      "test_t497_corresponding_source_collection_mirrors_complete_manifest",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      497,
+      "t497_bundle",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      505,
+      "test_t497_staging_keeps_stock_tools_unmodified_and_evdi_replaceable",
+      2
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      530,
+      "test_t497_build_replaces_stale_assets_and_archives_corresponding_sources",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      453,
+      "download",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      470,
+      "copy_notice",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      538,
+      "collect",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      220,
+      "read",
+      1
+    ],
+    [
+      "scripts/tests/test_appimage.py",
+      434,
+      "download",
+      1
+    ],
+    [
+      "scripts/tests/test_ffmpeg_identity.py",
+      13,
+      "setUp",
+      2
+    ],
+    [
+      "scripts/tests/test_ffmpeg_identity.py",
+      23,
+      "test_t1676_declaration_lists_native_and_sorted_codec_files",
+      2
+    ],
+    [
+      "scripts/tests/test_ffmpeg_identity.py",
+      32,
+      "test_t1676_count_limit_accepts_32_and_rejects_33_files",
+      2
+    ],
+    [
+      "scripts/tests/test_ffmpeg_identity.py",
+      40,
+      "test_t1676_escaped_json_size_remains_bounded",
+      2
+    ],
+    [
+      "scripts/tests/test_ffmpeg_identity.py",
+      47,
+      "test_t1676_paths_reject_escapes_controls_missing_and_nonregular_files",
+      2
+    ],
+    [
+      "scripts/tests/test_ffmpeg_identity.py",
+      60,
+      "test_t1676_relative_links_within_the_runtime_remain_supported",
+      1
+    ],
+    [
+      "scripts/tests/test_ffmpeg_identity.py",
+      66,
+      "test_t1676_component_size_accepts_512_mib_and_rejects_one_more_byte",
+      1
+    ]
+  ],
+  "issue": "T1676",
+  "before": "Two permanent regressions failed: native executable replacement behind unchanged launcher/version retained the host stamp; AppDir stage omitted the native runtime declaration.",
+  "after": "Selected packaged launcher, native FFmpeg and declared codec contents participate in the tuning stamp. Undeclared opaque scripts and invalid metadata decline cache use. Native ELF programs remain eligible.",
+  "tests": {
+    "rust_cache": 32,
+    "python_ffmpeg_bundle_identity": 16,
+    "python_appimage": 28
+  },
+  "tools": {
+    "rust_coverage": "cargo-llvm-cov / LLVM native counters",
+    "python_coverage": "coverage.py 7.15.2",
+    "complexity": "project Rust syn 2.0.119 and Python AST 3.12"
+  },
+  "ownership": "One local descriptor and 64 KiB streaming buffer at a time; each file bounded to 512 MiB, metadata to 16 KiB, accepted components to 32. RAII closes files on success and errors; no borrowed view escapes. Fresh owned AppDir receives metadata before publication. Private regression subprocess waits before temporary paths release. No live installation mutation or package-mutation fence claim.",
+  "limits": "External undeclared dynamic libraries are outside the component declaration. No Windows implementation is affected; this is Linux cache identity. Source-only; installed runtime unchanged."
+}

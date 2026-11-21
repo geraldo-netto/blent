@@ -4,6 +4,8 @@ use blent::capture_contract::ProfileSource;
 use sha2::{Digest, Sha256};
 use std::path::Path;
 
+mod runtime_identity;
+
 impl Cache {
     pub async fn open(
         base: &CaptureConfig,
@@ -76,29 +78,13 @@ pub(super) fn fingerprint(
     Some(format!("{:x}", Sha256::digest(data)))
 }
 
-fn hash_file(digest: &mut Sha256, path: &Path) -> Option<()> {
-    let mut file = std::fs::File::open(path).ok()?;
-    let mut chunk = [0; 65536];
-    loop {
-        let count = file.read(&mut chunk).ok()?;
-        if count == 0 {
-            break;
-        }
-        digest.update(&chunk[..count]);
-    }
-    Some(())
-}
-
 fn host_stamp(base: &CaptureConfig, scope: &blent::native_scope::Scope) -> Option<String> {
     let mut digest = Sha256::new();
     let ffmpeg = blent_config::linux::programs::find_in("ffmpeg", &std::env::var_os("PATH")?)?;
-    for path in [
-        std::env::current_exe().ok()?,
-        ffmpeg.clone(),
-        base.helper_path.clone(),
-    ] {
-        hash_file(&mut digest, &path)?;
+    for path in [std::env::current_exe().ok()?, base.helper_path.clone()] {
+        digest.update(runtime_identity::file_hash(&path)?);
     }
+    digest.update(runtime_identity::fingerprint(&ffmpeg)?);
     // T714: reboot alone is not an environment change.
     digest.update(platform_stamp(
         Path::new("/proc"),
@@ -147,6 +133,7 @@ fn platform_stamp(proc: &Path, sys: &Path, node: &str) -> Option<Vec<u8>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    mod runtime_identity;
     #[test]
     fn t743_stable_render_alias_retains_device_and_driver_identity() {
         let root = tempfile::tempdir().unwrap();

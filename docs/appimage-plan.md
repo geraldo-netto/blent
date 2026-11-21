@@ -249,3 +249,7 @@ T1630 also qualifies explicit `--appimage-extract-and-run` and environment-only
 `APPIMAGE_EXTRACT_AND_RUN` invocation against ordinary and bounds-instrumented
 runtime builds. The instrumented executable is a packaging test artifact; the
 shipped runtime reserves the argument terminator without sanitizer dependencies.
+
+The packaged FFmpeg launcher declares its native executable and codec files for
+[tuning-cache runtime identity](ffmpeg-runtime-identity.md). The host rehashes
+these components when opening a tuning context.

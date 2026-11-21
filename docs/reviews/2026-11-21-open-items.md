@@ -453,3 +453,11 @@ The per-worker scheduler owns no grant, queue or native handle. Original file/in
 ## T1677 — retarget the FFmpeg packaging fixture
 
 The existing T563 prefix/job test still supplied an obsolete prebuilt-runtime tool entry. It failed when the current builder requested source-built FUSE inputs from its deliberately empty fixture. The test now mocks the current runtime-build and source-recipe-copy boundaries and asserts that the built runtime reaches `--runtime-file`; existing FFmpeg prefix/job/source assertions remain. All 16 FFmpeg bundle/identity Python tests pass. No production code changed for this fixture correction; no real runtime build/download is admitted. [Evidence](artifacts/2026-11-21-open-items/t1677.json).
+
+## T1676 — fingerprint the packaged FFmpeg runtime
+
+The tuning cache now hashes the native FFmpeg executable and declared codec files behind its launcher. Packaging emits a bounded [runtime declaration](../ffmpeg-runtime-identity.md); the consumer rehashes actual bytes. Changing the executable with unchanged launcher/version text invalidates the tuning stamp. Native ELF programs work without a declaration; opaque scripts or invalid declarations decline caching and retain fresh measurement. There is no old launcher-only identity fallback.
+
+Both permanent regressions failed before implementation. Afterward, 32 cache Rust tests, 16 FFmpeg bundle/identity Python tests and 28 AppImage Python tests pass. All 12 maintained production functions have 89.47–100% executable-line coverage; all 81 measured production/test functions have complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1676.json).
+
+Hashing owns one descriptor and one 64 KiB buffer at a time, with explicit metadata/component/count bounds. No reference escapes and errors close resources. Tests use private files and wait for their original subprocess before cleanup. The declaration does not fence concurrent external package mutation or cover undeclared system libraries. This is source-only; no installed process or FFmpeg file changed.
