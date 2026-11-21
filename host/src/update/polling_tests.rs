@@ -54,6 +54,32 @@ async fn receive(receiver: &mut watch::Receiver<Available>) -> Available {
         .unwrap();
     receiver.borrow_and_update().clone()
 }
+
+#[tokio::test]
+async fn t1517_offline_start_retries_before_daily_interval() {
+    let root = tempfile::tempdir().unwrap();
+    let exe = fixture(root.path());
+    std::fs::write(root.path().join("mode"), "fail").unwrap();
+    let mut subscription = Subscription::start(true, exe.into());
+    advance(Duration::from_secs(30)).await;
+    wait("T1517 initial attempt", || {
+        root.path().join("started").exists()
+    })
+    .await;
+    assert!(
+        tokio::time::timeout(Duration::from_millis(200), subscription.receiver.changed())
+            .await
+            .is_err()
+    );
+    std::fs::write(root.path().join("mode"), "").unwrap();
+    std::fs::write(root.path().join("reply"), r#"{"tag_name":"v999.0.0"}"#).unwrap();
+    advance(Duration::from_secs(60)).await;
+    assert_eq!(
+        receive(&mut subscription.receiver).await.as_deref(),
+        Some("999.0.0")
+    );
+    subscription.shutdown().await;
+}
 #[tokio::test]
 async fn t696_polling_is_optional_async_and_preserves_last_valid_release() {
     let root = tempfile::tempdir().unwrap();

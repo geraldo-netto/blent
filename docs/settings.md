@@ -216,3 +216,10 @@ device before any mode switch, reset, or interface claim.
 For dedicated workflows, see [camera](cameras.md), [audio](audio.md),
 [saved computers](saved-computers.md), [video selection](video-codecs.md),
 [pipe capacity](pipe-buffer.md) and [CPU scheduling](scheduling.md).
+
+## Update checks
+
+When `check_updates` is enabled, the daemon first checks after 30 seconds. A valid
+response schedules the next check in 24 hours. Failed or invalid responses retry
+after one minute, doubling up to one hour; a valid response resets the retry delay.
+Failures retain the last valid update notice. Checks do not download or install updates.

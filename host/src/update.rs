@@ -6,7 +6,7 @@
 //! states nobody can explain. So the daemon only asks GitHub what the latest
 //! tag is, and the tray icon and `blent doctor` say so if it is newer.
 //!
-//! Uses curl rather than an HTTP client crate: one HTTPS GET a day is not
+//! Uses curl rather than an HTTP client crate: daily checks with bounded retries are not
 //! worth a dependency tree. Backends inject executable paths; missing curl is
 //! handled like an offline response. Output and execution time are bounded.
 
@@ -24,6 +24,7 @@ use blent_config::release::{newer_tag, tag_from_json, API as RELEASES_API};
 /// network, and the interval between checks after that.
 const FIRST_CHECK: Duration = Duration::from_secs(30);
 const INTERVAL: Duration = Duration::from_secs(24 * 60 * 60);
+mod schedule;
 
 /// Version string of a newer release, if one exists.
 pub type Available = Option<String>;
@@ -92,8 +93,11 @@ impl Drop for Subscription {
 /// error condition for a second-screen daemon.
 pub async fn run(tx: watch::Sender<Available>, program: OsString) {
     tokio::time::sleep(FIRST_CHECK).await;
+    let mut schedule = schedule::Schedule::new();
     loop {
-        if let Some(tag) = latest_using(&program).await {
+        let tag = latest_using(&program).await;
+        let delay = schedule.delay(tag.is_some());
+        if let Some(tag) = tag {
             if let Some(latest) = newer_tag(&tag, current_version()) {
                 info!(
                     "A newer release is available: {} (running {}). {}",
@@ -107,7 +111,7 @@ pub async fn run(tx: watch::Sender<Available>, program: OsString) {
                 let _ = tx.send(None);
             }
         }
-        tokio::time::sleep(INTERVAL).await;
+        tokio::time::sleep(delay).await;
     }
 }
 

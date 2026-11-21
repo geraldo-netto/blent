@@ -1,0 +1,49 @@
+{
+  "issue": "T1517",
+  "tests": 11,
+  "policy_sequences": 4096,
+  "coverage": [
+    {
+      "file": "host/src/update.rs",
+      "name": "run",
+      "line": 94,
+      "language": "rust",
+      "covered": 13,
+      "total": 16,
+      "percent": 81.25,
+      "passes": true,
+      "missing": [
+        104,
+        105,
+        106
+      ]
+    },
+    {
+      "file": "host/src/update/schedule.rs",
+      "name": "new",
+      "line": 12,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/update/schedule.rs",
+      "name": "delay",
+      "line": 16,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 24,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}

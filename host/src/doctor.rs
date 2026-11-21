@@ -1003,7 +1003,7 @@ async fn check_version(r: &mut Report, cfg: &FileConfig) {
         return;
     }
     // One-shot: doctor is its own process and cannot read the daemon's daily
-    // result, and ten seconds on the network is fine for a diagnostic.
+    // result. Curl has a four-second transfer limit within a five-second command deadline.
     let cur = crate::update::current_version();
     match crate::update::latest_release_tag().await {
         Some(tag) => {
