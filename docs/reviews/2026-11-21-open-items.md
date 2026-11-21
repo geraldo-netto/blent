@@ -109,3 +109,11 @@ Both saved-configuration and workspace-start regressions failed before the fix. 
 ## T1547 — document retained display slots
 
 SECURITY.md now matches the Linux monitor's implemented ownership: the serial and port slot remain reserved until original route creation/cleanup, device work and session teardown settle. Offline cleanup does not permit reuse; revoked tokens independently reject late connections. Verified against host/src/monitor/routes.rs::settle, retirement.rs::retire/retired and the existing architecture contract. Documentation-only change; no runtime code or tests changed.
+
+## T1563 — retire ended Android workers promptly
+
+The parent retains one generation-scoped terminal signal, including events received after Stop, and requests EXIT when it arrives instead of always consuming the grace period. Stale generations and nonterminal events cannot accelerate exit. Original process death, control-call completion and unbind remain required before retirement; failed cleanup still forces process exit rather than claiming native settlement. The mailbox accepts the already-decoded immutable message, preserving one encode/decode per boundary event and its existing count/byte bounds.
+
+Both new regression methods failed on API 27 and 34 before the fix (four failing cases). All 76 selected hosted Android cases pass afterward, including original blocked START/STOP/EXIT, binding-loss and failed-unbind regressions. The 39 measured production methods/callbacks across the worker class and changed mailbox admission have 85.71–100% line coverage (JaCoCo 0.8.15); all 283 measured functions in affected source/test files have complexity <=9 (Kotlin PSI 1.9.20). The maintained admission/event/exit methods each have 100% line coverage.
+
+The same hosted default-grace fixture measured Stop-to-retired at 512.57/511.52 ms before and 5.94/6.14 ms after on API 27/34. These are two samples per revision in simulated Binder environments, not native replacement-to-connected performance. T1651 retains physical-device timing and acceptance; no installed APK or live session was changed. The new deferred owns no native resource, retains one completion bit per original worker, and does not release existing binding/control ownership.

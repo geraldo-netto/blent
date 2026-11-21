@@ -88,6 +88,7 @@ class AndroidWorkerRunTest {
         override fun isBinderAlive() = alive
         var failLink = false
         var failStop = false
+        var stop: (Endpoint) -> Unit = {}
         var start: (Endpoint) -> Unit = { it.emit(WorkerEvent.Result("ok")); it.emit(WorkerEvent.Ended(null)) }
         override fun linkToDeath(recipient: IBinder.DeathRecipient, flags: Int) {
             if (failLink) throw RemoteException("dead binding")
@@ -104,6 +105,7 @@ class AndroidWorkerRunTest {
                 WorkerIpc.STOP -> {
                     stopGate?.let { stopEntered.countDown(); check(it.await(3, java.util.concurrent.TimeUnit.SECONDS)) }
                     if (failStop) throw RemoteException("stop failed")
+                    stop(this)
                 }
                 WorkerIpc.EXIT -> {
                     if (killWorks) { alive = false; deaths.toList().forEach { it.binderDied() } }
@@ -371,6 +373,75 @@ class AndroidWorkerRunTest {
         assertTrue(endpoint.deaths.isEmpty())
         assertFalse(endpoint.alive)
         assertTrue(endpoint.commands.containsAll(listOf(WorkerIpc.START, WorkerIpc.STOP, WorkerIpc.EXIT)))
+    }
+
+    @Test fun t1563EndedAcknowledgementBypassesGraceButNotOriginalDeath() = runBlocking {
+        for (endedBeforeStop in listOf(false, true)) {
+            val endpoint = Endpoint().apply {
+                killWorks = false
+                start = { if (endedBeforeStop) it.emit(WorkerEvent.Ended(null)) }
+                stop = { if (!endedBeforeStop) it.emit(WorkerEvent.Ended(null)) }
+            }
+            val context = Context(endpoint)
+            val run = AndroidWorkerRun(context, task, graceMillis = 60000, exitMillis = 40)
+            val execution = async(Dispatchers.Default) { runCatching { run.execute() } }
+            try {
+                withTimeout(2000) { while (endpoint.callback == null) delay(1) }
+                run.cancel()
+                val exited = withTimeoutOrNull(1000) {
+                    while (!endpoint.commands.contains(WorkerIpc.EXIT)) delay(1)
+                    true
+                }
+                assertEquals("T1563 Ended must trigger EXIT without consuming the grace period", true, exited)
+                assertTrue(runCatching { run.retire() }.exceptionOrNull() is TimeoutCancellationException)
+                assertEquals("T1563 Ended is not original process death", 0, context.unbinds)
+            } finally {
+                endpoint.alive = false
+                endpoint.deaths.toList().forEach { it.binderDied() }
+                execution.await(); run.retire()
+            }
+            assertEquals(1, context.unbinds)
+        }
+    }
+
+    @Test fun t1563StaleAndNonterminalEventsCannotShortenGrace() = runBlocking {
+        val endpoint = Endpoint().apply { start = {}; killWorks = false }
+        val context = Context(endpoint)
+        val run = AndroidWorkerRun(context, task, graceMillis = 60000, exitMillis = 1000)
+        val execution = async(Dispatchers.Default) { runCatching { run.execute() } }
+        try {
+            withTimeout(2000) { while (endpoint.callback == null) delay(1) }
+            run.cancel()
+            withTimeout(2000) { while (!endpoint.commands.contains(WorkerIpc.STOP)) delay(1) }
+            endpoint.emit(WorkerEvent.Ended(null), endpoint.revision - 1)
+            endpoint.emit(WorkerEvent.Status("late"))
+            delay(50)
+            assertFalse(endpoint.commands.contains(WorkerIpc.EXIT))
+            endpoint.emit(WorkerEvent.Ended("cleanup failed"))
+            withTimeout(1000) { while (!endpoint.commands.contains(WorkerIpc.EXIT)) delay(1) }
+            assertEquals(0, context.unbinds)
+        } finally {
+            endpoint.alive = false
+            endpoint.deaths.toList().forEach { it.binderDied() }
+            execution.await(); run.retire()
+        }
+    }
+
+    @Test fun t1563MeasureHostedRetirementWithDefaultGrace() = runBlocking {
+        val endpoint = Endpoint().apply { start = {}; stop = { it.emit(WorkerEvent.Ended(null)) } }
+        val context = Context(endpoint)
+        val run = AndroidWorkerRun(context, task)
+        val execution = async(Dispatchers.Default) { runCatching { run.execute() } }
+        try {
+            withTimeout(2000) { while (endpoint.callback == null) delay(1) }
+            val started = System.nanoTime()
+            run.cancel(); execution.await(); run.retire()
+            val millis = (System.nanoTime() - started) / 1000000.0
+            println("T1563 hosted_stop_to_retired_ms=$millis sdk=${Build.VERSION.SDK_INT}")
+            assertEquals(1, context.unbinds)
+            assertFalse(endpoint.alive)
+            assertTrue(endpoint.commands.containsAll(listOf(WorkerIpc.START, WorkerIpc.STOP, WorkerIpc.EXIT)))
+        } finally { run.cancel(); execution.await(); run.retire() }
     }
 
 }

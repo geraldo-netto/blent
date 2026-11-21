@@ -30,12 +30,17 @@ class WorkerContractTest {
         val mailbox = WorkerMailbox()
         repeat(100) { sequence ->
             assertTrue("T1562 replaceable frame acknowledgement exhausted the mailbox",
-                mailbox.offer(WorkerEventJson.encode(WorkerEvent.Rendered(sequence, 1, null))))
+                mailbox.offer(encoded(WorkerEvent.Rendered(sequence, 1, null))))
         }
-        assertTrue(mailbox.offer(WorkerEventJson.encode(WorkerEvent.Status("ready"))))
+        assertTrue(mailbox.offer(encoded(WorkerEvent.Status("ready"))))
         assertEquals(WorkerEvent.Status("ready"), mailbox.receive().event)
         assertEquals(WorkerEvent.Rendered(99, 1, null), mailbox.receive().event)
         mailbox.close()
+    }
+
+    private fun encoded(event: WorkerEvent): WorkerMessage {
+        val text = WorkerEventJson.encode(event)
+        return WorkerMessage(WorkerEventJson.decode(text), text)
     }
 
     private val token = "a".repeat(64)
@@ -105,16 +110,16 @@ class WorkerContractTest {
     }
     @Test fun t809_mailboxBoundsBytesCountAndReleasesCapacity() = runBlocking {
         val mailbox = WorkerMailbox()
-        assertFalse(mailbox.offer("x".repeat(262145)))
+        assertFalse(mailbox.offer(WorkerMessage(WorkerEvent.Status("oversized"), "x".repeat(262145))))
         val overhead = WorkerEventJson.encode(WorkerEvent.Result("")).length
         val large = WorkerEvent.Result("x".repeat(262144 - overhead))
-        assertTrue(mailbox.offer(WorkerEventJson.encode(large)))
-        assertFalse(mailbox.offer(WorkerEventJson.encode(WorkerEvent.Status("a"))))
+        assertTrue(mailbox.offer(encoded(large)))
+        assertFalse(mailbox.offer(encoded(WorkerEvent.Status("a"))))
         assertEquals(large, mailbox.receive().event)
-        repeat(32) { assertTrue(mailbox.offer(WorkerEventJson.encode(WorkerEvent.Status("$it")))) }
-        assertFalse(mailbox.offer(WorkerEventJson.encode(WorkerEvent.Status("overflow"))))
+        repeat(32) { assertTrue(mailbox.offer(encoded(WorkerEvent.Status("$it")))) }
+        assertFalse(mailbox.offer(encoded(WorkerEvent.Status("overflow"))))
         repeat(32) { assertEquals(WorkerEvent.Status("$it"), mailbox.receive().event) }
-        mailbox.close(); assertFalse(mailbox.offer("closed"))
+        mailbox.close(); assertFalse(mailbox.offer(encoded(WorkerEvent.Status("closed"))))
         assertTrue(runCatching { mailbox.receive() }.isFailure)
     }
     @Test fun t809_queryCancellationKeepsAdmissionUntilRetirementAndQuarantinesFailure() = runBlocking {

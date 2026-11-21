@@ -4,6 +4,7 @@ import android.content.*
 import android.os.*
 import android.view.Surface
 import kotlinx.coroutines.*
+import kotlinx.coroutines.selects.select
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -21,6 +22,7 @@ internal class AndroidWorkerRun(
     private val app = context.applicationContext
     private val ready = CompletableDeferred<IBinder>()
     private val dead = CompletableDeferred<Unit>()
+    private val ended = CompletableDeferred<Unit>()
     private val mailbox = WorkerMailbox()
     private val stopped = AtomicBoolean()
     private val admitted = AtomicBoolean()
@@ -44,11 +46,16 @@ internal class AndroidWorkerRun(
             try {
                 WorkerIpc.validate(data, WorkerIpc.EVENT)
                 val revision = data.readLong()
-                if (revision != generation || stopped.get()) return true
-                check(mailbox.offer(requireNotNull(data.readString()))) { "Worker event backlog exceeded" }
+                if (revision != generation) return true
+                receiveEvent(requireNotNull(data.readString()))
                 return true
             } catch (error: Exception) { mailbox.close(error); interrupt(); return false }
         }
+    }
+    private fun receiveEvent(text: String) {
+        val event = WorkerEventJson.decode(text)
+        if (event is WorkerEvent.Ended) ended.complete(Unit)
+        if (!stopped.get()) check(mailbox.offer(WorkerMessage(event, text))) { "Worker event backlog exceeded" }
     }
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -130,7 +137,8 @@ internal class AndroidWorkerRun(
         val service = try { ready.await() } catch (_: Exception) { remote ?: return }
         // Separate jobs: a stuck STOP transaction cannot consume the exit timer.
         stopCall = control.launch(Dispatchers.IO) { runCatching { WorkerIpc.command(service, WorkerIpc.STOP, generation) } }
-        if (withTimeoutOrNull(graceMillis) { dead.await(); true } != true) {
+        withTimeoutOrNull(graceMillis) { select<Unit> { dead.onAwait { }; ended.onAwait { } } }
+        if (!dead.isCompleted) {
             exitCall = control.launch(Dispatchers.IO) { runCatching { WorkerIpc.command(service, WorkerIpc.EXIT, generation) } }
         }
     }

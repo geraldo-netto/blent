@@ -997,7 +997,11 @@ consumption runs on the default coroutine dispatcher; render acknowledgements
 reach the synchronized control sender directly, while presentation adapters
 dispatch status to their existing UI owners. Ordered-event exhaustion still
 fails closed; receipt replacement cannot exhaust that queue. Native retirement
-continues to require the original worker's settlement.
+continues to require the original worker's settlement. A generation-matched
+terminal event lets the parent request worker exit immediately, including after
+Stop. Without that event, the existing 500 ms grace remains. Terminal events
+never prove process death: replacement still waits for the original Binder
+death and completion of outstanding START, STOP, EXIT and unbind calls.
 Its `ReleaseCheckOwner` owns the optional update request independently of media
 work. It cancels unfinished requests on stop or when checks are disabled, and
 checks request generations again when queued results reach the UI. Resuming

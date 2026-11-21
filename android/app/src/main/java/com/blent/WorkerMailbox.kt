@@ -16,9 +16,9 @@ internal class WorkerMailbox {
     private val rendered = Channel<WorkerMessage>(Channel.CONFLATED)
     private var bytes = 0
     private var closed = false
-    @Synchronized fun offer(text: String): Boolean {
-        if (closed || text.length > WorkerEventJson.LIMIT) return false
-        return admit(WorkerMessage(WorkerEventJson.decode(text), text))
+    @Synchronized fun offer(message: WorkerMessage): Boolean {
+        if (closed || message.text.length > WorkerEventJson.LIMIT) return false
+        return admit(message)
     }
     @Synchronized fun offer(event: WorkerEvent): Boolean {
         if (closed) return false
