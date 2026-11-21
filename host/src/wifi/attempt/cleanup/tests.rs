@@ -22,6 +22,28 @@ fn listing(rows: &str) -> RouteCommand {
 fn scripted(commands: Vec<RouteCommand>) -> Adb<Script> {
     Adb(Script(Mutex::new(commands.into())))
 }
+
+#[tokio::test]
+async fn t1539_retained_cleanup_reports_one_warning_per_episode() {
+    use tracing::instrument::WithSubscriber;
+    let log = tempfile::NamedTempFile::new().unwrap();
+    let writer = log.reopen().unwrap();
+    let subscriber = tracing_subscriber::fmt()
+        .without_time()
+        .with_ansi(false)
+        .with_writer(move || writer.try_clone().unwrap())
+        .finish();
+    let adb = scripted(vec![reply(1, ""), reply(1, ""), reply(1, ""), listing("")]);
+    retire(&adb, "host:5", Creation::Acknowledged)
+        .with_subscriber(subscriber)
+        .await;
+    let messages = std::fs::read_to_string(log.path()).unwrap();
+    assert_eq!(
+        messages.matches("Wi-Fi cleanup retained").count(),
+        1,
+        "T1539: {messages}"
+    );
+}
 #[tokio::test]
 async fn t1363_removal_waits_for_effect_and_retries_only_proven_nonstarts() {
     let adb = scripted(vec![

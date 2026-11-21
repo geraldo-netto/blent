@@ -122,9 +122,16 @@ async fn disable<C: Commands + Clone + 'static>(
     if !adb.0.is_configured() {
         return Ok(super::Setup::AdbUnavailable);
     }
-    let attempt = super::attempt::Attempt::start(adb, &old, false)
-        .await
-        .context("Saved Wi-Fi address forgotten; transport disconnect unconfirmed")?;
+    let attempt = match super::attempt::Attempt::start(adb, &old, false).await {
+        Ok(attempt) => attempt,
+        Err(error) if error.is::<super::attempt::Unavailable>() => {
+            return Ok(super::Setup::AdbUnavailable)
+        }
+        Err(error) => {
+            return Err(error)
+                .context("Saved Wi-Fi address forgotten; transport disconnect unconfirmed")
+        }
+    };
     attempt
         .finish(true)
         .await

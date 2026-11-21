@@ -4,11 +4,17 @@ use super::*;
 use blent_config::adb_reverse::temporary::{Cleanup, Creation, Route};
 
 pub(super) async fn retire<C: Commands>(adb: &Adb<C>, address: &str, mut state: Creation) {
+    let mut reported = false;
     loop {
         match once(adb, address, &mut state).await {
             Ok(true) => return,
             Ok(false) => {}
-            Err(error) => tracing::warn!("Wi-Fi cleanup retained: {error:#}"),
+            Err(error) => {
+                if !reported {
+                    tracing::warn!("Wi-Fi cleanup retained: {error:#}");
+                    reported = true;
+                }
+            }
         }
         tokio::time::sleep(Duration::from_millis(100)).await;
     }
@@ -25,28 +31,40 @@ async fn once<C: Commands>(adb: &Adb<C>, address: &str, state: &mut Creation) ->
         Cleanup::Complete => Ok(true),
         Cleanup::Wait => Ok(false),
         Cleanup::Remove => {
-            *state = Creation::RemovalPending;
-            let command = adb
-                .0
-                .execute_route(vec!["disconnect".into(), address.into()])
-                .await;
-            if !command.started {
-                *state = Creation::Acknowledged;
-            }
-            let output = command.output?;
-            ensure!(
-                output.status.success(),
-                "ADB disconnect outcome unconfirmed"
-            );
+            remove(adb, address, state).await?;
             Ok(false)
         }
     }
 }
 
+pub(super) async fn remove<C: Commands>(
+    adb: &Adb<C>,
+    address: &str,
+    state: &mut Creation,
+) -> Result<()> {
+    *state = Creation::RemovalPending;
+    let command = adb
+        .0
+        .execute_route(vec!["disconnect".into(), address.into()])
+        .await;
+    if !command.started {
+        *state = Creation::Acknowledged;
+    }
+    let output = command.output?;
+    ensure!(
+        output.status.success(),
+        "ADB disconnect outcome unconfirmed"
+    );
+    Ok(())
+}
+
 /// None means confirmed absent; Some(false) means present but not ready.
 pub(super) async fn observe<C: Commands>(adb: &Adb<C>, address: &str) -> Result<Option<bool>> {
     let command = adb.0.execute_route(vec!["devices".into()]).await;
-    let output = command.output?;
+    observed(command.output?, address)
+}
+
+pub(super) fn observed(output: std::process::Output, address: &str) -> Result<Option<bool>> {
     ensure!(
         output.status.success() && output.stdout.len() <= 65536,
         "ADB transport inventory unavailable"

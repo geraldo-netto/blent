@@ -1,0 +1,126 @@
+{
+  "issue": "T1539",
+  "tests": {
+    "wifi": 44,
+    "final_targeted": 5
+  },
+  "coverage": [
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "execute_attempt",
+      "line": 211,
+      "language": "rust",
+      "covered": 25,
+      "total": 26,
+      "percent": 96.15384615384616,
+      "passes": true,
+      "missing": [
+        219
+      ]
+    },
+    {
+      "file": "host/src/wifi/attempt/cleanup.rs",
+      "name": "retire",
+      "line": 6,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt/cleanup.rs",
+      "name": "once",
+      "line": 23,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt/cleanup.rs",
+      "name": "remove",
+      "line": 40,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt/cleanup.rs",
+      "name": "observe",
+      "line": 62,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt/cleanup.rs",
+      "name": "observed",
+      "line": 67,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt/off.rs",
+      "name": "fmt",
+      "line": 8,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt/off.rs",
+      "name": "present",
+      "line": 14,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt/off.rs",
+      "name": "run",
+      "line": 22,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "disable",
+      "line": 114,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 55,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}

@@ -58,6 +58,13 @@ ADB's [connect workflow](https://android.googlesource.com/platform/packages/modu
 and [POSIX socket failure replies](https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/sysdeps/posix/network.cpp).
 The owner waits to observe its exclusively owned endpoint, removes it once, then
 waits for confirmed absence. Explicit Wi-Fi-off uses the same removal owner.
+Wi-Fi-off first performs a fenced inventory read. A proven nonstart reports ADB
+unavailable; a failed or malformed initial read reports an error. Neither creates
+a cleanup obligation or repeats the failed read. A confirmed absent endpoint
+finishes without disconnect. Once a disconnect starts, caller feedback is
+separate from settlement: unknown outcomes retain the endpoint until absence is
+confirmed. A proven disconnect nonstart returns its error and releases the off
+attempt. Retained cleanup logs its first error once per episode.
 T1364 tests exercise effects both before and after acknowledgement failure,
 preexisting transports, malformed snapshots, bounded replies and proven nonstarts.
 

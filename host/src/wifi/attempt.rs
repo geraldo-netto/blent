@@ -13,6 +13,12 @@ use std::{
 };
 use tokio::sync::oneshot;
 mod cleanup;
+mod off;
+pub(super) use off::Unavailable;
+#[cfg(test)]
+mod off_retirement_tests;
+#[cfg(test)]
+mod off_tests;
 
 struct Owners {
     pool: Pool,
@@ -212,14 +218,13 @@ async fn execute_attempt<C: Commands>(
     if ready.is_closed() {
         return;
     }
+    if !connect {
+        off::run(&adb, &address, ready).await;
+        return;
+    }
     use blent_config::adb_reverse::temporary::Creation;
     let mut creation = Creation::NotStarted;
-    let result = if connect {
-        connect_route(&adb, &address, &mut creation).await
-    } else {
-        cleanup::retire(&adb, &address, Creation::Acknowledged).await;
-        Ok(false)
-    };
+    let result = connect_route(&adb, &address, &mut creation).await;
     match result {
         Ok(created) => {
             let _ = ready.send(Ok(()));
