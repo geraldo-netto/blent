@@ -1,0 +1,23 @@
+{
+  "issue": "T1643",
+  "source_commit": "b560da7f6021dae74c11c475179fc0a5829f5c6c",
+  "build": "Gradle assembleRelease and assembleProfile offline: success; release shrink/lint/signing complete. Existing release/profile signing certificates match previous installed APKs. Designated release package/certificate verifier passes.",
+  "apks": {
+    "release": {
+      "certificate": "1b34ed115e476f4d178b49f6076cf9ed6cc07d474f9230ec952bc97bbba70400",
+      "sha256": "1bca0167eb41245028aecee07e5fa48536e4d941d744287fb58bc1091de3d55c",
+      "previous_sha256": "0fb8cc3b51b68d6e34c4487f95062396f728ad4d50eabe6480554617ac186267"
+    },
+    "profile": {
+      "certificate": "7c30da1cb114b5bde86af5719703f93640bfd4e8d966eefe907c1ba4d6e7ad88",
+      "sha256": "c54acb08c1197c46dc8b45899b65f8727c5a3b6ef9eabf47f10efe3c1fcf36c7",
+      "previous_sha256": "244d0976cf432d9b0acca9e93f52dd5b340b3aff82ebf31fa2bd3983254c7b29"
+    }
+  },
+  "installed": {
+    "io.github.geraldo_netto.blent": "1bca0167eb41245028aecee07e5fa48536e4d941d744287fb58bc1091de3d55c",
+    "io.github.geraldo_netto.blent.profile": "c54acb08c1197c46dc8b45899b65f8727c5a3b6ef9eabf47f10efe3c1fcf36c7"
+  },
+  "acceptance": "Both adb install -r -g operations succeeded without clearing app data. Release MainActivity foreground; updated tablet reconnects and sends successive render acknowledgements to updated daemon. Shared original ADB PID 3379 survived. Temporary signing properties removed.",
+  "limits": "No physical worker-death/storage-interruption injection performed. T1631/T1634 retain those native acceptance requirements; successful installation/display delivery does not close them."
+}
