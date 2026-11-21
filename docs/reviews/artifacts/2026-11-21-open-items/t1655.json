@@ -1,0 +1,139 @@
+{
+  "issue": "T1655",
+  "parent": "T1542",
+  "native_acceptance": "T1658",
+  "failing_before_tests": 3,
+  "passing_wifi_and_cadence_tests": 54,
+  "coverage_tool": "cargo-llvm-cov / LLVM line counters",
+  "coverage_profiles": [
+    "blent-2765417-8053947064978282923_0.profraw"
+  ],
+  "coverage": [
+    {
+      "file": "host/src/cleanup_retry.rs",
+      "name": "new",
+      "line": 9,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/cleanup_retry.rs",
+      "name": "next",
+      "line": 15,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt/cleanup.rs",
+      "name": "retire",
+      "line": 6,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity_tool": "project Rust syn 2.0.119",
+  "complexity": [
+    [
+      "host/src/cleanup_retry.rs",
+      9,
+      "new",
+      1
+    ],
+    [
+      "host/src/cleanup_retry.rs",
+      15,
+      "next",
+      1
+    ],
+    [
+      "host/src/cleanup_retry.rs",
+      27,
+      "t1655_retry_reaches_cap_and_new_owners_start_independently",
+      3
+    ],
+    [
+      "host/src/wifi/attempt/cleanup.rs",
+      6,
+      "retire",
+      5
+    ],
+    [
+      "host/src/wifi/attempt/cleanup.rs",
+      24,
+      "once",
+      5
+    ],
+    [
+      "host/src/wifi/attempt/cleanup.rs",
+      41,
+      "remove",
+      2
+    ],
+    [
+      "host/src/wifi/attempt/cleanup.rs",
+      63,
+      "observe",
+      1
+    ],
+    [
+      "host/src/wifi/attempt/cleanup.rs",
+      68,
+      "observed",
+      3
+    ],
+    [
+      "host/src/wifi/attempt/cleanup/tests/cadence.rs",
+      11,
+      "execute",
+      1
+    ],
+    [
+      "host/src/wifi/attempt/cleanup/tests/cadence.rs",
+      15,
+      "execute_route",
+      1
+    ],
+    [
+      "host/src/wifi/attempt/cleanup/tests/cadence.rs",
+      23,
+      "recorded",
+      1
+    ],
+    [
+      "host/src/wifi/attempt/cleanup/tests/cadence.rs",
+      30,
+      "verify",
+      3
+    ],
+    [
+      "host/src/wifi/attempt/cleanup/tests/cadence.rs",
+      54,
+      "t1655_inventory_failures_back_off_before_original_endpoint_removal",
+      2
+    ],
+    [
+      "host/src/wifi/attempt/cleanup/tests/cadence.rs",
+      67,
+      "t1655_absence_retains_unknown_creator_and_late_removal_is_not_reissued",
+      2
+    ],
+    [
+      "host/src/wifi/attempt/cleanup/tests/cadence.rs",
+      81,
+      "t1655_pending_removal_waits_for_absence_without_new_mutations",
+      2
+    ]
+  ]
+}

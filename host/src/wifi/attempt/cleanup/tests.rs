@@ -1,6 +1,7 @@
 use super::*;
 use crate::usb::{CommandFuture, RouteCommand, RouteFuture};
 use std::collections::VecDeque;
+mod cadence;
 struct Script(Mutex<VecDeque<RouteCommand>>);
 impl Commands for Script {
     fn execute(&self, _: Vec<String>, _: Option<Vec<u8>>) -> CommandFuture<'_> {

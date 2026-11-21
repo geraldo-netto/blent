@@ -17,6 +17,14 @@ removal is issued only once: a later valid inventory without the endpoint settle
 that original removal. Offline, connecting and unauthorized transports still
 count as present; malformed or failed inventories never prove absence.
 
+Retained endpoint cleanup retries after 100, 200, 400, 800, 1600 and 3200 ms,
+then at five-second intervals, in addition to command execution time. Each new
+cleanup owner starts at 100 ms. These intervals limit polling; they never release
+an uncertain creator or removal. A recovered endpoint can therefore wait up to
+five seconds for its next observation. Physical unplug/replug CPU and process
+rates remain unmeasured; the cadence and ownership transitions have automated
+virtual-time regression coverage.
+
 The caller's six-second wait bounds response latency, not cleanup lifetime.
 Cleanup continues in its admitted worker after caller loss. A panicked worker
 retains its slot and native lease. Unknown outcomes consume capacity until exact

@@ -5,6 +5,7 @@ use blent_config::adb_reverse::temporary::{Cleanup, Creation, Route};
 
 pub(super) async fn retire<C: Commands>(adb: &Adb<C>, address: &str, mut state: Creation) {
     let mut reported = false;
+    let mut retry = crate::cleanup_retry::Retry::new();
     loop {
         match once(adb, address, &mut state).await {
             Ok(true) => return,
@@ -16,7 +17,7 @@ pub(super) async fn retire<C: Commands>(adb: &Adb<C>, address: &str, mut state: 
                 }
             }
         }
-        tokio::time::sleep(Duration::from_millis(100)).await;
+        tokio::time::sleep(retry.next()).await;
     }
 }
 
