@@ -44,5 +44,10 @@
     "all_at_most_nine": true,
     "tool": "project Rust syn 2.0.119"
   },
-  "upstream": "https://android.googlesource.com/platform/packages/modules/adb/+/HEAD/adb.cpp"
+  "upstream": "https://android.googlesource.com/platform/packages/modules/adb/+/HEAD/adb.cpp",
+  "follow_up": {
+    "usb_tests": 37,
+    "test_file_functions": 34,
+    "complexity_at_most_nine": true
+  }
 }

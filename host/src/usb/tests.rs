@@ -202,12 +202,12 @@ async fn t525_usb_inventory_rejects_unknown_failed_and_nonready_observations() {
         "",
         "partial",
         "List of devices attached\nUSB\tdevice\nUSB\toffline",
-        "List of devices attached\nUSB\tbogus",
+        "List of devices attached\nUSB\tbad state",
     ] {
         adb.0 .0.lock().unwrap().inventory = invalid.into();
         assert_eq!(adb.inventory().await, None);
     }
-    adb.0.0.lock().unwrap().inventory="List of devices attached\r\nOFF\toffline\r\nNO\tunauthorized\r\nUSB\tdevice\r\n192.0.2.1:5555\tdevice\nphone._adb-tls-connect._tcp\tdevice\n".into();
+    adb.0.0.lock().unwrap().inventory="List of devices attached\r\nOFF\toffline\r\nNO\tunauthorized\r\nDET\tdetached\r\nUSB\tdevice\r\n192.0.2.1:5555\tdevice\nphone._adb-tls-connect._tcp\tdevice\n".into();
     assert_eq!(adb.inventory().await, Some(vec!["USB".into()]));
     adb.0 .0.lock().unwrap().fail = Some("devices".into());
     assert_eq!(adb.inventory().await, None);

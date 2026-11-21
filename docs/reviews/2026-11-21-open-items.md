@@ -79,3 +79,7 @@ All three original regressions failed before the fix. Twelve selected inventory/
 ## T1649 — require an endpoint in connect success
 
 Additional finding from this pass: the parser accepted bare connected without identifying an endpoint. Removed that unsupported branch; current endpoint-qualified success and already-connected replies remain accepted. The new regression failed before the fix; all 18 Wi-Fi policy/setup tests pass after retargeting the one old acceptance fixture to the current response contract. The maintained parser function has 100% line coverage; all 37 measured functions in affected files have complexity <=9 (project Rust syn 2.0.119). Reply processing remains call-scoped and does not alter native creator/retirement ownership. Endpoint normalization remains a separate T1544 fix.
+
+### T1545 — wider USB fixture follow-up
+
+The wider USB suite exposed one additional fixture still treating the valid token bogus as malformed. That existing regression failed, then passed after changing its malformed case to a multiword state and adding detached to its non-ready records. All 37 USB tests pass in the combined Wi-Fi/USB run. All 34 functions in the changed USB test file have complexity <=9. No production behavior or original malformed/duplicate/ownership assertion was weakened.
