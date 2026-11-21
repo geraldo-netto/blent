@@ -1,0 +1,24 @@
+{
+  "issue": "T1508",
+  "prerequisites": {
+    "T1640": "9017eb46",
+    "T1641": "f4b05444"
+  },
+  "regression_sequence": "Both production setter fixes retain their permanent failing-before/passing-after rejection and successor tests. Parent adds end-to-end integration of the actual input Lifetime, payload and process Registry, after the child fixes.",
+  "integration": "Private Xvfb and D-Bus subprocess: X11 missing-output rejection followed by successful mapping; original KWin missing-property error followed by successful Set; caller cancelled while original X11 worker is blocked by a server grab. Input payload is retired and Lifetime dropped. PROCESS.drain remains pending, both completion proofs remain incomplete and identity cannot be reclaimed. Releasing the original server gate allows drain to complete, both proofs settle and exact identity becomes reusable.",
+  "checks": "5/5 input lifetime/payload tests pass, including the integration subprocess. 70/70 selected native command, KWin, OSK and mapping tests passed for the prerequisites. Rust formatting and diff checks pass.",
+  "complexity": [
+    "host/src/input/linux/lifetime/integration_tests.rs:7\tprivate\t2",
+    "host/src/input/linux/lifetime/integration_tests.rs:38\tmode\t1",
+    "host/src/input/linux/lifetime/integration_tests.rs:42\tset_mode\t1",
+    "host/src/input/linux/lifetime/integration_tests.rs:46\tservice\t1",
+    "host/src/input/linux/lifetime/integration_tests.rs:57\tuntil\t2",
+    "host/src/input/linux/lifetime/integration_tests.rs:66\trecovered\t5",
+    "host/src/input/linux/lifetime/integration_tests.rs:85\tcancelled\t2",
+    "host/src/input/linux/lifetime/integration_tests.rs:97\tt1508_rejected_mutations_recover_and_original_input_drains\t2",
+    "8 functions; 0 exceed cyclomatic complexity 9"
+  ],
+  "coverage": "No production behavior added in parent integration commit. Prerequisite artifacts retain all maintained production per-function counters: 17/17 T1640 methods >=88.89%, 26/26 T1641 methods >=82.14%.",
+  "ownership": "Original identity/payload/process owners unchanged. Empty native payload exercises real retirement without admitting physical devices. Private service and Xvfb are child fixture owners; bus explicitly closed. Process registry closure occurs only in the isolated test subprocess. Three-second test observation boundaries are not production shutdown deadlines; genuine missing acknowledgement remains owned.",
+  "limits": "No live hardware, installed service, running GUI or tablet was modified. Integration verifies production input/payload/process composition but is not physical KWin, uinput or host-lock acceptance. Does not introduce kill escalation or pretend elapsed time proves settlement."
+}

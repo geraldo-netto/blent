@@ -1,6 +1,6 @@
 # Requested findings — 2026-11-21
 
-Baseline: `58f58a32`. Work covers the 25 findings explicitly listed by the owner; confirmation and fixes are in progress. Existing unrelated TODO additions remain unstaged. No installed Blent instance or tablet session is restarted or changed. No push or deployment.
+Baseline: `58f58a32`. All 25 findings explicitly listed by the owner now have local verified fixes; T1622's original deletion claim was corrected by native evidence before fixing extraction ownership and cleanup. Physical-device acceptance and the additional unexplained T1629 capture failure remain separately tracked. Existing unrelated TODO additions remain unstaged. No installed Blent instance or tablet session is restarted or changed. No push or deployment.
 
 ## T1615 — capture pause acknowledgements
 
@@ -191,3 +191,9 @@ All 62 selected native-command, KWin, OSK and input-mapping cases pass. The exis
 The permanent private-Xvfb regression failed on the old CLI port: an absent output prevented retirement and later mapping. Production writes now resolve the exact device name and active output on one native connection, validate the matrix property and observe the original XIChangeProperty check. Pre-dispatch rejection and original server success/error settle. Transport loss remains uncertain; cancellation retains the original worker through its actual join. Read-only discovery/readback still uses CLI tools.
 
 All 70 selected native-command, KWin, OSK and mapping cases pass, including real server rejection followed by success, transport-loss retention and cancellation while the server is held. All 26 maintained functions exceed 82% line coverage; all 116 measured functions have complexity <=9. Rotation/reflection tests cover all 16 valid combinations and the complete 65,536-value flag domain. [Evidence](artifacts/2026-11-21-requested-fixes/t1641-verification.json). Production compilation and formatting pass. No installed process or physical device was changed; parent T1508 still owns integrated input/payload/process retirement acceptance.
+
+## T1508 — integrated input retirement
+
+T1640 and T1641 replace generic CLI mutation exit classification with original native reply evidence. The parent integration test now exercises the actual input lifetime, payload retirement and process registry together in a private Xvfb/D-Bus subprocess. Both X11 and KWin rejection permit successful later requests. A cancelled caller leaves its blocked original worker owned: payload and lifetime proofs stay incomplete, identity reuse fails and process drain waits. Releasing that original worker allows cleanup, drain and identity reuse.
+
+All five selected input lifetime/payload tests pass, including this integration case. All eight new test functions have complexity <=9; prerequisite artifacts retain production coverage and failing-first regressions. [Evidence](artifacts/2026-11-21-requested-fixes/t1508-verification.json). No forced shutdown deadline or kill escalation was added. Genuine lost acknowledgements remain owned; this fix removes permanent quarantine caused merely by an acknowledged rejection. All 25 requested findings have local fixes. Hardware acceptance, unrelated ledger findings and the unexplained T1629 capture-test failure remain open as recorded.
