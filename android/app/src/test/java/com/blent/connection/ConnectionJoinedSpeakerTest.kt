@@ -158,7 +158,12 @@ class ConnectionJoinedSpeakerTest {
             assertTrue(rig.link.feedback(grant(endpoint), ConnectionWire.SPEAKER))
             for (sequence in 0L..3L) { assertTrue(rig.link.feedback(pcm(sequence), ConnectionWire.SPEAKER)); delay(10) }
             withTimeout(4000) { rig.native.audible.await() }
-            assertTrue(rig.stop(checkNotNull(rig.policy.state.value.offer)))
+            val offer = checkNotNull(rig.policy.state.value.offer) {
+                "T1486 offer withdrawn: state=${rig.connection.state.value}; audio=${rig.binding.state.value}; " +
+                    "controls=${rig.link.controls}; cancellations=${rig.link.cancellations}; " +
+                    "endpoints=${rig.link.nativeEndpoints.map { it.failure() }}; events=${rig.link.events}"
+            }
+            assertTrue(rig.stop(offer))
             rig.until { rig.native.exitRequested && rig.connection.speakersTarget.value == null }
             assertSame(display, rig.connection.state.value.display); assertTrue(rig.connection.state.value.authenticated)
             rig.native.release.complete(Unit); delay(50)

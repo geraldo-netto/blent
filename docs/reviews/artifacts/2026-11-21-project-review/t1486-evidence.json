@@ -1,0 +1,32 @@
+{
+  "full_run": {
+    "tests": 2869,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "failures": [
+    {
+      "class": "com.blent.connection.ConnectionJoinedSpeakerTest",
+      "case": "t978BlockedNativeRendererDoesNotBlockDisplayControlOrInventConsumerRetirement[27]",
+      "message": "java.lang.IllegalStateException: Required value was null.",
+      "trace": "java.lang.IllegalStateException: Required value was null.\n\tat com.blent.connection.ConnectionJoinedSpeakerTest$t978BlockedNativeRendererDoesNotBlockDisplayControlOrInventConsumerRetirement$1.invokeSuspend(ConnectionJoinedSpeakerTest.kt:161)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)\n\tat kotlinx.coroutines.DispatchedTaskKt.resume(DispatchedTask.kt:235)\n\tat kotlinx.coroutines.DispatchedTaskKt.dispatch(DispatchedTask.kt:168)"
+    }
+  ],
+  "isolated_recheck": {
+    "gradle_invocations": 20,
+    "api_levels": [
+      27,
+      34
+    ],
+    "test_cases": 40,
+    "failures": 0
+  },
+  "status": "open; one observed full-suite failure; isolated repetition and repeat full suite pass; root cause not established",
+  "repeat_full_run": {
+    "tests": 2869,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}
