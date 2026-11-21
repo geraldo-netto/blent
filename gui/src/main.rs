@@ -634,7 +634,10 @@ impl App {
             "Touch and pen input need permission to access /dev/uinput."
         });
         if ui
-            .button("Set up display and input (asks for password)")
+            .add_enabled(
+                !self.busy(),
+                egui::Button::new("Set up display and input (asks for password)"),
+            )
             .clicked()
         {
             let max_tablets = self.cfg.max_tablets;
@@ -729,9 +732,9 @@ impl App {
                 (false, false) => "Start daemon",
             };
             if ui
-                .add_sized(
-                    big,
-                    egui::Button::new(egui::RichText::new(label).size(16.0)),
+                .add_enabled(
+                    !self.busy(),
+                    egui::Button::new(egui::RichText::new(label).size(16.0)).min_size(big),
                 )
                 .clicked()
             {
@@ -1090,7 +1093,7 @@ impl App {
             let mut auto = status.autostart;
             if ui
                 .add_enabled(
-                    capabilities().autostart,
+                    capabilities().autostart && !self.busy(),
                     egui::Checkbox::new(&mut auto, "Start Blent with the desktop"),
                 )
                 .changed()
@@ -1314,6 +1317,7 @@ fn native_options() -> eframe::NativeOptions {
 mod tests {
     include!("config_refresh_tests.rs");
     mod about;
+    mod busy_controls;
     mod connection_guidance;
     mod coverage;
     mod overview;

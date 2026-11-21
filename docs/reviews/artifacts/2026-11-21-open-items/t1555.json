@@ -1,0 +1,49 @@
+{
+  "issue": "T1555",
+  "tests": 19,
+  "coverage": [
+    {
+      "file": "gui/src/main.rs",
+      "name": "show_system_setup",
+      "line": 628,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "show_daemon_control",
+      "line": 721,
+      "language": "rust",
+      "covered": 18,
+      "total": 22,
+      "percent": 81.81818181818181,
+      "passes": true,
+      "missing": [
+        723,
+        724,
+        731,
+        732
+      ]
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "setting_plug_and_play",
+      "line": 1086,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 184,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}
