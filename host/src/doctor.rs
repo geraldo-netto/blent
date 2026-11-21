@@ -1495,7 +1495,7 @@ mod tests {
             "evdi_helper",
             &["--capture-fifo", "/unrelated/capture.fifo"],
         );
-        let fifo = fixture.root.path().join("runtime/blent/capture.fifo");
+        let fifo = fixture.root.path().join("runtime/blent/capture-0.fifo");
         let helper =
             fixture.start_named("evdi_helper", &["--capture-fifo", fifo.to_str().unwrap()]);
         let encoder = fixture.start_named("ffmpeg", &["-i", fifo.to_str().unwrap()]);

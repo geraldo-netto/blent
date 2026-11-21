@@ -25,7 +25,7 @@ fn isolated() {
         String::from_utf8_lossy(&output.stdout),
         String::from_utf8_lossy(&output.stderr)
     );
-    assert!(!root.path().join("blent/capture.fifo").exists());
+    assert!(!root.path().join("blent/capture-0.fifo").exists());
 }
 
 #[tokio::test]

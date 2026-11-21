@@ -1,0 +1,27 @@
+{
+  "issue": "T1582",
+  "coverage": [
+    {
+      "file": "common/src/linux/runtime.rs",
+      "name": "fifo_path_for",
+      "line": 83,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "red": "Private runtime fixture returned capture.fifo for instance zero; expected capture-0.fifo.",
+  "green": "64 selected shared cases and six host cases passed.",
+  "complexity": [
+    "common/src/linux/runtime.rs:83\tfifo_path_for\t1",
+    "common/src/linux/runtime.rs:116\tt1582_every_capture_fifo_has_an_index\t3",
+    "host/src/doctor.rs:1486\tt251_doctor_recovers_daemons_without_broad_orphan_matches\t3",
+    "host/src/monitor/coverage_tests.rs:8\tisolated\t1",
+    "host/src/selection/worker/coverage_tests.rs:24\tisolated\t1",
+    "host/src/selection/worker/coverage_tests.rs:69\tcalibration_contract\t1",
+    "9 functions; 0 exceed cyclomatic complexity 9"
+  ]
+}

@@ -83,7 +83,7 @@ async fn calibration_contract(root: &Path, base: &CaptureConfig, snapshot: &Enco
     assert_eq!(candidates[0].measurement.encoder, "libx264");
     assert!(candidates[0].measurement.quality_db.unwrap() > 0.0);
     assert!(!candidates[0].hardware);
-    assert!(!root.join("blent/capture.fifo").exists());
+    assert!(!root.join("blent/capture-0.fifo").exists());
     let calls = std::fs::read_to_string(root.join("ffmpeg-calls")).unwrap();
     assert!(calls.contains("-s 64x64"));
     assert!(!calls.contains("-c:v libaom-av1"));

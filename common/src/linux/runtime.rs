@@ -79,14 +79,9 @@ fn validate_runtime_directory(path: &std::path::Path, uid: u32, private: bool) -
     Ok(())
 }
 
-/// One FIFO per virtual display; the first keeps the old name.
+/// One indexed FIFO name per virtual display, including instance zero.
 pub fn fifo_path_for(instance: u32) -> Result<PathBuf> {
-    let name = if instance == 0 {
-        "capture.fifo".into()
-    } else {
-        format!("capture-{instance}.fifo")
-    };
-    Ok(runtime_dir()?.join(name))
+    Ok(runtime_dir()?.join(format!("capture-{instance}.fifo")))
 }
 
 fn token_path() -> Result<PathBuf> {
@@ -117,6 +112,39 @@ mod session_tests;
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn t1582_every_capture_fifo_has_an_index() {
+        if std::env::var_os("BLENT_T1582_CHILD").is_none() {
+            let root = tempfile::Builder::new()
+                .permissions(std::fs::Permissions::from_mode(0o700))
+                .tempdir()
+                .unwrap();
+            let output = std::process::Command::new(std::env::current_exe().unwrap())
+                .args([
+                    "--exact",
+                    "linux::runtime::tests::t1582_every_capture_fifo_has_an_index",
+                    "--nocapture",
+                ])
+                .env("BLENT_T1582_CHILD", "1")
+                .env("XDG_RUNTIME_DIR", root.path())
+                .output()
+                .unwrap();
+            assert!(
+                output.status.success(),
+                "T1582: {}{}",
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr)
+            );
+            return;
+        }
+        for instance in [0, 1, 2, 4095, u32::MAX] {
+            assert_eq!(
+                super::fifo_path_for(instance).unwrap().file_name().unwrap(),
+                format!("capture-{instance}.fifo").as_str()
+            );
+        }
+    }
+
     use super::*;
     use std::os::unix::fs::PermissionsExt;
 
