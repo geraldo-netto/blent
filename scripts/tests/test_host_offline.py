@@ -131,8 +131,9 @@ class BinaryPreparationTest(unittest.TestCase):
             root = Path(directory)
             (root/'Cargo.toml').write_text('[package]\nname="worker-test"\nversion="0.0.0"\nedition="2021"\n[[bin]]\nname="worker-test"\npath="main.rs"\n[features]\nselected=[]\n')
             (root/'Cargo.lock').write_text('version = 4\n[[package]]\nname="worker-test"\nversion="0.0.0"\n')
-            (root/'main.rs').write_text('fn main() { assert!(cfg!(feature="selected")); println!("worker"); }\n#[test] fn needs_worker() { let exe=std::env::current_exe().unwrap(); let worker=exe.parent().unwrap().parent().unwrap().join("worker-test"); let result=std::process::Command::new(worker).output().unwrap(); assert!(result.status.success()); assert_eq!(result.stdout,b"worker\\n"); }\n')
+            (root/'main.rs').write_text('fn main() { assert!(cfg!(feature="selected")); println!("worker"); }\n#[test] fn needs_worker() { let worker=std::env::var_os("BLENT_T1355_WORKER").unwrap(); let result=std::process::Command::new(worker).output().unwrap(); assert!(result.status.success()); assert_eq!(result.stdout,b"worker\\n"); }\n')
             invocation = runner.command(['test', '--bins', '--all-features', '--manifest-path', str(root/'Cargo.toml'), '--target-dir', str(root/'target')])
             runner.prepare(invocation, dict(os.environ), root)
-            result = subprocess.run(invocation, cwd=root, capture_output=True, text=True)
+            result = subprocess.run(invocation, cwd=root, capture_output=True, text=True,
+                                    env=dict(os.environ, BLENT_T1355_WORKER=str(root/"target/debug/worker-test")))
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

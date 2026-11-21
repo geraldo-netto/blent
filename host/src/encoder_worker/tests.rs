@@ -545,3 +545,17 @@ async fn t1028_failed_reader_admission_keeps_original_child_proof() {
     );
     assert!(pending, "T1028 failed reader erased held native cleanup");
 }
+
+#[test]
+fn t1479_worker_fixture_resolves_profile_without_fixed_artifact_depth() {
+    let root = tempfile::tempdir().unwrap();
+    let profile = root.path().join("debug");
+    std::fs::create_dir_all(profile.join("deps")).unwrap();
+    assert!(test_executable(&profile.join("deps/test")).is_err());
+    let binary = profile.join("blent");
+    std::fs::write(&binary, b"production fixture").unwrap();
+    for artifact in ["deps/test", "build/blent/hash/out/test"] {
+        assert_eq!(test_executable(&profile.join(artifact)).unwrap(), binary);
+    }
+    assert!(test_executable(&root.path().join("outside/test")).is_err());
+}

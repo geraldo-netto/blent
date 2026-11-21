@@ -39,12 +39,18 @@ pub(crate) fn spawn(
     let executable = std::env::current_exe()?;
     // Unit fixtures execute the separately built production entry point.
     #[cfg(test)]
-    let executable = executable
-        .parent()
-        .and_then(Path::parent)
-        .context("Missing test artifact directory")?
-        .join("blent");
+    let executable = test_executable(&executable)?;
     spawn_at(&executable, job, fifo, socket, output, guard)
+}
+// Cargo may resolve a test executable through a symlink into build/.../out.
+// Locate its owning profile directory rather than assuming a fixed depth.
+#[cfg(test)]
+fn test_executable(executable: &Path) -> Result<std::path::PathBuf> {
+    let profile = executable.ancestors().find(|path| path.join("deps").is_dir())
+        .context("Missing Cargo profile directory for production worker")?;
+    let binary = profile.join("blent");
+    anyhow::ensure!(binary.is_file(), "Build the production blent binary before running worker tests");
+    Ok(binary)
 }
 fn spawn_at(
     executable: &Path,
