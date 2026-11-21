@@ -1,0 +1,144 @@
+{
+  "issue": "T1675",
+  "before": "Permanent injected inspection counter expected zero for absent helper, observed one.",
+  "after": "Absent and latched-failed helper states perform zero inspections; available helper performs one, launches its exact private child and waits for exit.",
+  "tests": "255 capture-matching tests passed; two pre-existing opt-in timing experiments ignored, none newly skipped.",
+  "measurement_scope": "Native inspection dispatch count; no wall-time, kernel-call or live display improvement claimed.",
+  "coverage": [
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "try_start",
+      "line": 42,
+      "language": "rust",
+      "covered": 27,
+      "total": 27,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity_tool": "project Rust syn 2.0.119",
+  "complexity": [
+    [
+      "host/src/capture/gpu.rs",
+      14,
+      "native_target",
+      1
+    ],
+    [
+      "host/src/capture/gpu.rs",
+      22,
+      "default",
+      1
+    ],
+    [
+      "host/src/capture/gpu.rs",
+      33,
+      "from_environment",
+      1
+    ],
+    [
+      "host/src/capture/gpu.rs",
+      42,
+      "try_start",
+      4
+    ],
+    [
+      "host/src/capture/gpu.rs",
+      75,
+      "start_with",
+      1
+    ],
+    [
+      "host/src/capture/gpu.rs",
+      90,
+      "encoder_finished",
+      2
+    ],
+    [
+      "host/src/capture/gpu.rs",
+      100,
+      "stopped",
+      1
+    ],
+    [
+      "host/src/capture/gpu.rs",
+      105,
+      "supported_connector",
+      5
+    ],
+    [
+      "host/src/capture/gpu.rs",
+      132,
+      "command",
+      1
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      4,
+      "connectors",
+      1
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      13,
+      "configuration",
+      1
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      22,
+      "t1675_inspection",
+      1
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      28,
+      "t1675_only_an_available_gpu_attempt_inspects_connectors",
+      3
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      56,
+      "t575_gpu_adapter_requires_owned_supported_capture",
+      4
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      88,
+      "t575_gpu_command_preserves_user_settings_without_shell_parsing",
+      2
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      146,
+      "t575_gpu_failure_falls_back_once_without_detaching_monitor",
+      1
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      173,
+      "t575_successful_gpu_spawn_and_failed_retry_preserve_adapter_state",
+      3
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      210,
+      "t575_capture_supervisor_starts_gpu_with_owned_monitor_identity",
+      2
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      238,
+      "t575_gpu_child_is_killed_when_its_owner_is_cancelled",
+      2
+    ],
+    [
+      "host/src/capture/gpu_tests.rs",
+      259,
+      "t575_native_stock_ffmpeg_packets_use_the_existing_wire_contract",
+      2
+    ]
+  ],
+  "ownership": "Rejected states allocate no connector vector and spawn no child. Admitted connector data is local to try_start and borrowed by start_with; no reference escapes. OwnedChild and failure latch semantics unchanged. Tests preserve exact child wait and fallback assertions."
+}

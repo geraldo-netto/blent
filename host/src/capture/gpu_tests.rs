@@ -17,6 +17,41 @@ fn configuration() -> CaptureConfig {
     }
 }
 
+static T1675_INSPECTIONS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+
+fn t1675_inspection() -> (Vec<EvdiConnector>, Desktop) {
+    T1675_INSPECTIONS.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+    (connectors(), Desktop::X11)
+}
+
+#[tokio::test]
+async fn t1675_only_an_available_gpu_attempt_inspects_connectors() {
+    T1675_INSPECTIONS.store(0, std::sync::atomic::Ordering::SeqCst);
+    for (helper, failed, expected) in [
+        (None, false, 0),
+        (None, true, 0),
+        (Some("/bin/echo"), true, 0),
+        (Some("/bin/echo"), false, 1),
+    ] {
+        let mut adapter = Adapter {
+            helper: helper.map(PathBuf::from),
+            failed,
+            inspect: t1675_inspection,
+            ..Default::default()
+        };
+        let child = adapter.try_start(&configuration(), (640, 400), Some(7));
+        assert_eq!(
+            T1675_INSPECTIONS.load(std::sync::atomic::Ordering::SeqCst),
+            expected
+        );
+        assert_eq!(child.is_some(), expected == 1);
+        if let Some(mut child) = child {
+            assert!(child.wait().await.unwrap().success());
+        }
+        assert_eq!(adapter.failed, failed);
+    }
+}
+
 #[test]
 fn t575_gpu_adapter_requires_owned_supported_capture() {
     let mut config = configuration();
@@ -138,16 +173,11 @@ fn t575_gpu_failure_falls_back_once_without_detaching_monitor() {
 async fn t575_successful_gpu_spawn_and_failed_retry_preserve_adapter_state() {
     let mut adapter = Adapter {
         helper: Some("/bin/echo".into()),
+        inspect: || (connectors(), Desktop::X11),
         ..Default::default()
     };
     let mut child = adapter
-        .try_start_using(
-            &configuration(),
-            (1280, 800),
-            Some(7),
-            &connectors(),
-            Desktop::X11,
-        )
+        .try_start(&configuration(), (1280, 800), Some(7))
         .unwrap();
     assert!(adapter.active && !adapter.failed);
     assert!(child.wait().await.unwrap().success());
@@ -157,13 +187,7 @@ async fn t575_successful_gpu_spawn_and_failed_retry_preserve_adapter_state() {
     assert!(!missing_helper.exists());
     adapter.helper = Some(missing_helper);
     assert!(adapter
-        .try_start_using(
-            &configuration(),
-            (1280, 800),
-            Some(7),
-            &connectors(),
-            Desktop::X11
-        )
+        .try_start(&configuration(), (1280, 800), Some(7))
         .is_none());
     assert!(adapter.failed && !adapter.active);
     adapter.helper = Some("/bin/echo".into());
@@ -171,13 +195,7 @@ async fn t575_successful_gpu_spawn_and_failed_retry_preserve_adapter_state() {
     for attempt in 1..=3 {
         assert!(
             adapter
-                .try_start_using(
-                    &configuration(),
-                    (1280, 800),
-                    Some(7),
-                    &connectors(),
-                    Desktop::X11
-                )
+                .try_start(&configuration(), (1280, 800), Some(7))
                 .is_none(),
             "T581: failed adapter spawned on retry {attempt}"
         );

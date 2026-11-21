@@ -435,3 +435,9 @@ The new scalar adds no host queue or retained frame. Filter threads and scratch 
 ## T1672 — exercise the real ADB inventory query in its integration harness
 
 The harness imported the production inventory module but never called `query`, producing a dead-code warning. The new permanent regression uses the private ADB program for ready/offline, confirmed-empty, malformed, invalid-UTF-8, failed-exit and missing-program outcomes. No production code or physical ADB state changed. All 44 mapping-retirement integration tests pass with no compiler warnings; all examined harness functions have complexity ≤9. The original private server is still killed and waited before its temporary directory is released. [Evidence](artifacts/2026-11-21-open-items/t1672.json).
+
+## T1675 — skip unavailable GPU capture inspection
+
+GPU helper availability and the session failure latch are checked before DRM/desktop inspection. The duplicated two-stage entry was merged; existing success/failure tests use the actual entry with an injected connector view. The new counter regression failed before the fix (one inspection instead of zero), then passed for all absent/failed/admitted combinations. Rejected states dispatch no inspection; admitted state dispatches exactly one. No elapsed-time gain is claimed from this call-count observation.
+
+All 255 capture-matching tests pass; two existing opt-in timing experiments remain ignored. The maintained `try_start` method has 100% executable-line coverage and the examined adapter/test functions all score ≤9. Native child ownership, monitor identity and one-way failure behavior are unchanged. [Evidence](artifacts/2026-11-21-open-items/t1675.json). This is source-only; active capture was not reloaded.

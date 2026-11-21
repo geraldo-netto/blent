@@ -45,23 +45,19 @@ impl Adapter {
         mode: (u32, u32),
         card: Option<u32>,
     ) -> Option<Child> {
-        let (connectors, desktop) = (self.inspect)();
-        self.try_start_using(config, mode, card, &connectors, desktop)
-    }
-
-    fn try_start_using(
-        &mut self,
-        config: &CaptureConfig,
-        mode: (u32, u32),
-        card: Option<u32>,
-        connectors: &[crate::vdisplay::EvdiConnector],
-        desktop: crate::desktop::Desktop,
-    ) -> Option<Child> {
         if self.failed {
             return None;
         }
         let program = self.helper.as_ref()?;
-        let result = self.start_with(program.as_os_str(), config, mode, card, connectors, desktop);
+        let (connectors, desktop) = (self.inspect)();
+        let result = self.start_with(
+            program.as_os_str(),
+            config,
+            mode,
+            card,
+            &connectors,
+            desktop,
+        );
         match result {
             Ok(child) => {
                 self.active = true;
