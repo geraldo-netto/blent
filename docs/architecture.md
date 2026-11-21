@@ -71,8 +71,10 @@ the relevant topic when implementing or diagnosing that part.
 ## Pipeline
 
 1. **Virtual display.** A C helper opens an EVDI device and presents a generated
-   EDID for the selected resolution and physical size. The desktop compositor
-   supplies frames. Automatic placement uses `kscreen-doctor` only in a KDE
+   EDID for the selected resolution and physical size. Generated serials and
+   cache filenames include the display instance, so equal-geometry tablets remain
+   distinguishable to X11 mapping and GPU capture. Explicit custom EDIDs retain
+   their supplied identity. The desktop compositor supplies frames. Automatic placement uses `kscreen-doctor` only in a KDE
    Wayland session; other desktops manage placement through their own settings.
 2. **Capture.** The helper requests updates, grabs BGRA pixels, converts damaged
    chroma-aligned regions to NV12 (BT.709, limited range) and sends raw frames

@@ -499,3 +499,20 @@ else:
         "listed\n"
     );
 }
+
+#[test]
+fn t1496_equal_geometry_with_distinct_serials_maps_to_its_own_connector() {
+    // Both output declarations have 1280x800 geometry. Only EDID serial differs.
+    let connectors = [connector(4, "DVI-I-1", 1), connector(5, "DVI-I-2", 2)];
+    let text = output("DVI-I-2-1", false, &connectors[0].edid)
+        + &output("DVI-I-3-2", false, &connectors[1].edid);
+    let active = x11_active_outputs(&text);
+    assert_eq!(
+        x11_target_output(false, &active, &connectors, Some(4)),
+        Some("DVI-I-2-1")
+    );
+    assert_eq!(
+        x11_target_output(false, &active, &connectors, Some(5)),
+        Some("DVI-I-3-2")
+    );
+}

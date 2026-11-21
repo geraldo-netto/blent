@@ -30,6 +30,7 @@ pub fn make_edid_sized(
     refresh: u32,
     width_mm: u32,
     height_mm: u32,
+    instance: u32,
 ) -> Result<Vec<u8>> {
     let pixel_clock_10khz = blent_config::display::pixel_clock_10khz(width, height, refresh)?;
     anyhow::ensure!(
@@ -48,7 +49,10 @@ pub fn make_edid_sized(
 
     // Product code / serial
     edid[10] = 0x01;
-    edid[12..16].copy_from_slice(&1u32.to_le_bytes());
+    let serial = instance
+        .checked_add(1)
+        .context("EDID display instance exhausted")?;
+    edid[12..16].copy_from_slice(&serial.to_le_bytes());
 
     edid[16] = 0; // week
     edid[17] = 34; // year (2024-1990)
@@ -146,13 +150,21 @@ pub fn make_edid_sized(
 /// Build an EDID at the default physical size.
 #[cfg(test)]
 pub fn make_edid(width: u32, height: u32, refresh: u32) -> Vec<u8> {
-    make_edid_sized(width, height, refresh, DEFAULT_WIDTH_MM, DEFAULT_HEIGHT_MM).unwrap()
+    make_edid_sized(
+        width,
+        height,
+        refresh,
+        DEFAULT_WIDTH_MM,
+        DEFAULT_HEIGHT_MM,
+        0,
+    )
+    .unwrap()
 }
 
 /// Bumped whenever the generator changes. It is part of the cache filename so
 /// that fixing a bug here actually reaches existing installs — without it, a
 /// stale file from a previous version would be reused forever.
-const EDID_GENERATION: u32 = 7;
+const EDID_GENERATION: u32 = 8;
 
 /// Write (or reuse) a generated EDID for this mode and return its path.
 pub fn ensure_edid_sized(
@@ -161,10 +173,11 @@ pub fn ensure_edid_sized(
     refresh: u32,
     width_mm: u32,
     height_mm: u32,
+    instance: u32,
 ) -> Result<PathBuf> {
     let home = std::env::var("HOME").unwrap_or_default();
     let dir = PathBuf::from(home).join(".local/share/blent/edid");
-    ensure_edid_in(&dir, width, height, refresh, width_mm, height_mm)
+    ensure_edid_in(&dir, width, height, refresh, width_mm, height_mm, instance)
 }
 
 fn ensure_edid_in(
@@ -174,12 +187,13 @@ fn ensure_edid_in(
     refresh: u32,
     width_mm: u32,
     height_mm: u32,
+    instance: u32,
 ) -> Result<PathBuf> {
-    let edid = make_edid_sized(width, height, refresh, width_mm, height_mm)?;
+    let edid = make_edid_sized(width, height, refresh, width_mm, height_mm, instance)?;
     std::fs::create_dir_all(dir).context("create EDID dir")?;
     let path = dir.join(format!(
-        "auto-v{}-{}x{}@{}-{}x{}mm.bin",
-        EDID_GENERATION, width, height, refresh, width_mm, height_mm
+        "auto-v{}-slot{}-{}x{}@{}-{}x{}mm.bin",
+        EDID_GENERATION, instance, width, height, refresh, width_mm, height_mm
     ));
     if std::fs::read(&path).ok().as_deref() != Some(edid.as_slice()) {
         // Only complete, matching generated contents are reusable. A previous
@@ -205,7 +219,14 @@ fn ensure_edid_in(
 /// Write (or reuse) a generated EDID at the default physical size.
 #[allow(dead_code)]
 pub fn ensure_edid(width: u32, height: u32, refresh: u32) -> Result<PathBuf> {
-    ensure_edid_sized(width, height, refresh, DEFAULT_WIDTH_MM, DEFAULT_HEIGHT_MM)
+    ensure_edid_sized(
+        width,
+        height,
+        refresh,
+        DEFAULT_WIDTH_MM,
+        DEFAULT_HEIGHT_MM,
+        0,
+    )
 }
 
 #[cfg(test)]
@@ -225,7 +246,7 @@ mod tests {
 
     #[test]
     fn t321_range_minimum_tracks_supported_geometry() {
-        let rust = make_edid_sized(640, 480, 25, 310, 194).unwrap();
+        let rust = make_edid_sized(640, 480, 25, 310, 194, 0).unwrap();
         let python = python_edid(640, 480, 25, 310, 194).unwrap();
         assert_eq!(
             rust[113], 25,
@@ -253,11 +274,11 @@ mod tests {
     fn t321_rust_rejects_low_clock_modes() {
         for fps in [10, 24] {
             assert!(
-                make_edid_sized(640, 480, fps, 310, 194).is_err(),
+                make_edid_sized(640, 480, fps, 310, 194, 0).is_err(),
                 "T321: Rust admitted low clock"
             );
         }
-        assert!(make_edid_sized(640, 480, 25, 310, 194).is_ok());
+        assert!(make_edid_sized(640, 480, 25, 310, 194, 0).is_ok());
     }
 
     fn assert_t320_dummy_descriptor(edid: &[u8]) {
@@ -291,13 +312,13 @@ mod tests {
     fn t246_repairs_incomplete_and_wrong_generated_edids() {
         use std::os::unix::fs::MetadataExt;
         let dir = tempfile::tempdir().unwrap();
-        let expected = make_edid_sized(1920, 1080, 60, 310, 194).unwrap();
-        let path = ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194).unwrap();
-        let wrong_mode = make_edid_sized(1280, 720, 60, 310, 194).unwrap();
+        let expected = make_edid_sized(1920, 1080, 60, 310, 194, 0).unwrap();
+        let path = ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194, 0).unwrap();
+        let wrong_mode = make_edid_sized(1280, 720, 60, 310, 194, 0).unwrap();
         for corrupt in [vec![], expected[..64].to_vec(), wrong_mode] {
             std::fs::write(&path, &corrupt).unwrap();
             assert_eq!(
-                ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194).unwrap(),
+                ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194, 0).unwrap(),
                 path
             );
             assert_eq!(
@@ -307,7 +328,7 @@ mod tests {
             );
         }
         let valid_inode = std::fs::metadata(&path).unwrap().ino();
-        ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194).unwrap();
+        ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194, 0).unwrap();
         assert_eq!(
             std::fs::metadata(&path).unwrap().ino(),
             valid_inode,
@@ -318,11 +339,11 @@ mod tests {
     #[test]
     fn t246_cache_directory_is_not_returned_as_an_edid() {
         let dir = tempfile::tempdir().unwrap();
-        let path = ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194).unwrap();
+        let path = ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194, 0).unwrap();
         std::fs::remove_file(&path).unwrap();
         std::fs::create_dir(&path).unwrap();
         assert!(
-            ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194).is_err(),
+            ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194, 0).is_err(),
             "T246: helper would be given a directory instead of an EDID"
         );
     }
@@ -340,7 +361,7 @@ mod tests {
     fn t114_rust_dtd_reports_exact_physical_size() {
         for (w, h) in [(310, 194), (255, 256), (4095, 4095)] {
             assert_eq!(
-                physical_size(&make_edid_sized(1920, 1080, 60, w, h).unwrap()),
+                physical_size(&make_edid_sized(1920, 1080, 60, w, h, 0).unwrap()),
                 (w, h)
             );
         }
@@ -351,7 +372,7 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let old = dir.path().join("auto-v3-1920x1080@60-310x194mm.bin");
         std::fs::write(&old, [0u8; 128]).unwrap();
-        let path = ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194).unwrap();
+        let path = ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194, 0).unwrap();
         assert_ne!(path, old);
         assert_eq!(physical_size(&std::fs::read(path).unwrap()), (310, 194));
     }
@@ -406,7 +427,7 @@ mod tests {
                 fps,
                 ..Default::default()
             };
-            let rust = make_edid_sized(width, height, fps, 310, 194);
+            let rust = make_edid_sized(width, height, fps, 310, 194, 0);
             let python = python_edid(width, height, fps, 310, 194);
             assert_eq!(
                 config.validate().is_ok(),
@@ -430,7 +451,7 @@ mod tests {
             (1, 1080, 60, 255, 256),
             (1024, 4095, 90, 310, 194),
         ] {
-            let rust = make_edid_sized(w, h, fps, wm, hm).unwrap();
+            let rust = make_edid_sized(w, h, fps, wm, hm, 0).unwrap();
             let python = python_edid(w, h, fps, wm, hm).unwrap();
             assert_eq!(rust, python, "generator mismatch at {w}x{h}@{fps}");
             assert!(u32::from(rust[113]) <= fps && u32::from(rust[114]) >= fps);
@@ -468,7 +489,7 @@ mod tests {
                 "Python accepted {w}x{h}@{fps}, {wm}x{hm} mm"
             );
             assert!(
-                make_edid_sized(w, h, fps, wm, hm).is_err(),
+                make_edid_sized(w, h, fps, wm, hm, 0).is_err(),
                 "Rust accepted {w}x{h}@{fps}, {wm}x{hm} mm"
             );
         }
@@ -479,7 +500,7 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let old = dir.path().join("auto-v4-1920x1080@10-310x194mm.bin");
         std::fs::write(&old, [0u8; 128]).unwrap();
-        let path = ensure_edid_in(dir.path(), 1920, 1080, 10, 310, 194).unwrap();
+        let path = ensure_edid_in(dir.path(), 1920, 1080, 10, 310, 194, 0).unwrap();
         assert_ne!(path, old);
     }
 
@@ -492,11 +513,11 @@ mod tests {
             (0, 1080, 60),
         ] {
             assert!(
-                make_edid_sized(w, h, fps, 310, 194).is_err(),
+                make_edid_sized(w, h, fps, 310, 194, 0).is_err(),
                 "{w}x{h}@{fps} must not be truncated"
             );
         }
-        assert!(make_edid_sized(4095, 2160, 30, 310, 194).is_ok());
+        assert!(make_edid_sized(4095, 2160, 30, 310, 194, 0).is_ok());
     }
 
     #[test]
@@ -511,5 +532,25 @@ mod tests {
             let v_act = edid[59] as u32 | (((edid[61] >> 4) as u32) << 8);
             assert_eq!((h_act, v_act), (w, h));
         }
+    }
+}
+
+#[cfg(test)]
+mod identity_tests {
+    use super::*;
+    #[test]
+    fn t1496_instance_serials_are_injective_and_reject_overflow() {
+        let mut serials = std::collections::BTreeSet::new();
+        for instance in (0..1024).chain([u32::MAX - 1]) {
+            let edid = make_edid_sized(1280, 800, 60, 310, 194, instance).unwrap();
+            let serial = u32::from_le_bytes(edid[12..16].try_into().unwrap());
+            assert_eq!(serial, instance + 1);
+            assert!(serials.insert(serial));
+            assert_eq!(
+                edid.iter().fold(0u8, |sum, byte| sum.wrapping_add(*byte)),
+                0
+            );
+        }
+        assert!(make_edid_sized(1280, 800, 60, 310, 194, u32::MAX).is_err());
     }
 }

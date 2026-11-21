@@ -55,3 +55,9 @@ All 225 GUI cases and both actual-entry/relaunch cases pass. Ten maintained prod
 Assigned and unknown display state now rely on existing status-worker change notifications. Camera/audio retain their active-state timers. The new idle regression failed before the fix; diff review also caught an overbroad draft edit to display buttons, which was reproduced by a separate permanent Stop-button test and reverted before commit.
 
 All 225 GUI cases pass; the maintained presentation method exceeds 95% line coverage and all measured functions are <=9 complexity. Private Xvfb Overview measurement observed zero callbacks over 1.5 idle seconds, versus 18 with the old 100 ms timer restored as a test control. [Evidence](artifacts/2026-11-21-requested-fixes/t1551-verification.json). No resource ownership changes; Windows native presentation remains unmeasured under T1271.
+
+## T1496 — generated display EDID identity
+
+The failing-first helper regression confirmed that equal-geometry instances shared an EDID and cache path. Generated serials now use instance+1, reject overflow and include the instance in cache filenames. Repeated use of one instance remains stable; checksums remain valid. A bounded serial test covers 1024 consecutive instances plus the maximum accepted value, and X11 contract fixtures resolve equal-geometry outputs by distinct serials while retaining ambiguity rejection.
+
+All 18 EDID cases, 36 helper cases and 14 X11 mapping cases pass. Five maintained production methods reach at least 80% line coverage; all measured functions are <=9 complexity. [Evidence](artifacts/2026-11-21-requested-fixes/t1496-verification.json). Tests generated files in private directories and started no EVDI/GPU session. Explicit custom EDIDs retain their supplied identity.

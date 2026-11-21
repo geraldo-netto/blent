@@ -125,3 +125,53 @@ async fn t497_helper_handshake_reports_eof_bad_numbers_and_invalid_utf8() {
         assert!(child.wait().await.unwrap().success());
     }
 }
+
+#[test]
+fn t1496_equal_geometry_displays_get_distinct_stable_edids() {
+    if std::env::var_os("BLENT_T1496_PRIVATE").is_none() {
+        let root = tempfile::tempdir().unwrap();
+        let output = std::process::Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", "capture::helper::coverage_tests::t1496_equal_geometry_displays_get_distinct_stable_edids", "--nocapture"])
+            .env("BLENT_T1496_PRIVATE", "1").env("HOME", root.path()).output().unwrap();
+        assert!(
+            output.status.success(),
+            "{}{}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
+        return;
+    }
+    let helper = HelperProcess::new();
+    let mut paths = Vec::new();
+    let mut identities = Vec::new();
+    for instance in [0, 1, 0] {
+        let config = CaptureConfig {
+            instance,
+            width: 1280,
+            height: 800,
+            fps: 60,
+            ..Default::default()
+        };
+        let command = helper
+            .command(&config, Path::new("/never/open/fifo"))
+            .unwrap();
+        let path = std::path::PathBuf::from(command.as_std().get_args().nth(1).unwrap());
+        let edid = std::fs::read(&path).unwrap();
+        assert_eq!(
+            edid.iter().fold(0u8, |sum, byte| sum.wrapping_add(*byte)),
+            0
+        );
+        paths.push(path);
+        identities.push(edid);
+    }
+    assert_ne!(
+        paths[0], paths[1],
+        "T1496 cache filename aliases display identities"
+    );
+    assert_ne!(
+        identities[0], identities[1],
+        "T1496 same-model displays have identical EDIDs"
+    );
+    assert_eq!(paths[0], paths[2]);
+    assert_eq!(identities[0], identities[2]);
+}

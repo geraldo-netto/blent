@@ -1,0 +1,18 @@
+{
+  "finding": "T1496",
+  "red": "Two equal-geometry helper commands with display instances 0 and 1 emitted the same cached EDID filename.",
+  "green": {
+    "edid_cases_passed": 18,
+    "helper_cases_passed": 36,
+    "x11_mapping_cases_passed": 14,
+    "failed": 0
+  },
+  "coverage": {
+    "maintained_production_methods": 5,
+    "minimum_percent": 80
+  },
+  "complexity_summary": "82 functions; 0 exceed cyclomatic complexity 9",
+  "contract": "Generated EDID serial is instance+1; u32::MAX is rejected instead of wrapping. Cache filename includes instance. Checksum remains valid. Bounded regression covers 1024 consecutive instances and maximum accepted instance. X11 contract fixtures use equal geometry with distinct serials and resolve each to its own output; ambiguity remains rejected.",
+  "ownership": "Mode generation owns a fixed 128-byte vector. Existing transactional temporary-file/fsync/persist owns cache publication, with instance-separated paths; helper command construction starts no process or native capture. No native resource lifecycle changed.",
+  "limits": "No live X11/EVDI/GPU session started. Explicit custom EDIDs preserve user-provided identity."
+}

@@ -363,6 +363,7 @@ impl HelperProcess {
                 edid_fps,
                 config.width_mm,
                 config.height_mm,
+                config.instance,
             )?,
         };
 
