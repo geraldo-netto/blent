@@ -16,6 +16,75 @@ import java.lang.reflect.Proxy
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class RemoteDisplayTest {
+    @Test fun t1561RetryBackoffCapsResetsOnFramesAndCannotOutliveItsClient() = runBlocking {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+        val texture = SurfaceTexture(0)
+        val surface = Surface(texture)
+        val waits = kotlinx.coroutines.channels.Channel<Long>(1)
+        val resume = kotlinx.coroutines.channels.Channel<Unit>(1)
+        val count = java.util.concurrent.atomic.AtomicInteger()
+        val owner = DisplayWorkerOwner(scope)
+        val receiver = RemoteDisplay(RuntimeEnvironment.getApplication(), scope, workers = owner,
+            retryWait = { wait -> waits.send(wait); resume.receive() }) { _, _, report ->
+            val ordinal = count.incrementAndGet()
+            object : LifecycleRun {
+                override suspend fun execute() {
+                    if (ordinal == 9) report(WorkerEvent.Display(true, 30f, 1f, null, null, DecoderDiagnostics()))
+                    error("worker lost")
+                }
+                override fun cancel() {}
+                override suspend fun retire() {}
+            }
+        }
+        try {
+            receiver.token = "a".repeat(64); receiver.setSurface(view(surface)); receiver.start()
+            for (expected in listOf(500L, 1000L, 2000L, 4000L, 8000L, 16000L, 30000L, 30000L)) {
+                assertEquals(expected, withTimeout(3000) { waits.receive() })
+                resume.send(Unit)
+            }
+            assertEquals(500L, withTimeout(3000) { waits.receive() })
+            owner.open() // A different Activity has replaced this client's authority.
+            resume.send(Unit)
+            yield()
+            assertEquals(9, count.get())
+            assertTrue(waits.tryReceive().isFailure)
+        } finally {
+            receiver.stop(); scope.coroutineContext[Job]!!.cancelAndJoin()
+            waits.close(); resume.close(); surface.release(); texture.release()
+        }
+    }
+
+    @Test fun t1561UnexpectedExitRetriesOnlyAfterOriginalRetirementAndStopsOnCutoff() = runBlocking {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+        val texture = SurfaceTexture(0)
+        val surface = Surface(texture)
+        val retired = CompletableDeferred<Unit>()
+        val count = java.util.concurrent.atomic.AtomicInteger()
+        val owner = DisplayWorkerOwner(scope)
+        val receiver = RemoteDisplay(RuntimeEnvironment.getApplication(), scope, workers = owner) { _, _, _ ->
+            val first = count.incrementAndGet() == 1
+            object : LifecycleRun {
+                override suspend fun execute() { if (first) error("worker lost") else awaitCancellation() }
+                override fun cancel() {}
+                override suspend fun retire() { retired.await() }
+            }
+        }
+        try {
+            receiver.token = "a".repeat(64); receiver.setSurface(view(surface)); receiver.start()
+            delay(700)
+            assertEquals("T1561 retry bypassed original retirement", 1, count.get())
+            retired.complete(Unit)
+            withTimeout(3000) { while (count.get() != 2) delay(5) }
+            receiver.stop()
+            delay(700)
+            assertEquals("T1561 stop admitted another display worker", 2, count.get())
+        } finally {
+            retired.complete(Unit); receiver.stop()
+            scope.coroutineContext[Job]!!.cancelAndJoin()
+            surface.release(); texture.release()
+        }
+    }
+
     private fun view(surface: Surface) = object : SurfaceView(RuntimeEnvironment.getApplication()) {
         override fun getHolder(): SurfaceHolder = Proxy.newProxyInstance(SurfaceHolder::class.java.classLoader,
             arrayOf(SurfaceHolder::class.java)) { _, method, _ -> if (method.name == "getSurface") surface else null } as SurfaceHolder

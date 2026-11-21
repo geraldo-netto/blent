@@ -977,6 +977,11 @@ Android's pen-mode UI use the same `control-connected.json` regression fixture.
 `MainActivity` is Android's composition and lifecycle entry point. Its
 `SessionCoordinator` owns control/video transitions, token replacement, user
 settings events and observable state for that Activity instance.
+An unexpectedly ended display worker retries while the display is still wanted,
+with delays from 500 ms to 30 seconds. Connected display status resets the delay.
+The application-owned worker lane still requires original native retirement
+before starting a replacement. Stop, lost surface, changed routes and a newer
+Activity cancel or supersede the old retry; no retry grants new display consent.
 Its `ReleaseCheckOwner` owns the optional update request independently of media
 work. It cancels unfinished requests on stop or when checks are disabled, and
 checks request generations again when queued results reach the UI. Resuming

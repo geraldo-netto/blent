@@ -1,0 +1,241 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+    "name": "<init>",
+    "line": 9,
+    "language": "kotlin",
+    "covered": 16,
+    "total": 16,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay",
+        "name": "<init>",
+        "signature": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;JLcom/blent/DisplayWorkerOwner;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;)V",
+        "line": 11,
+        "covered": 16,
+        "total": 16
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay",
+        "name": "<init>",
+        "signature": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;JLcom/blent/DisplayWorkerOwner;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+        "line": 11,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+    "name": "<lambda>",
+    "line": 15,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 15,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+    "name": "start",
+    "line": 79,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay",
+        "name": "start",
+        "signature": "()V",
+        "line": 80,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+    "name": "stop",
+    "line": 86,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay",
+        "name": "stop",
+        "signature": "()V",
+        "line": 86,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+    "name": "replace",
+    "line": 87,
+    "language": "kotlin",
+    "covered": 21,
+    "total": 21,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay",
+        "name": "replace",
+        "signature": "()V",
+        "line": 88,
+        "covered": 21,
+        "total": 21
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+    "name": "ended",
+    "line": 113,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay",
+        "name": "ended",
+        "signature": "(JLjava/lang/Exception;)V",
+        "line": 114,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+    "name": "<lambda>",
+    "line": 114,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay$ended$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 115,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+    "name": "retryAfterExit",
+    "line": 123,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay",
+        "name": "retryAfterExit",
+        "signature": "()V",
+        "line": 124,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+    "name": "<lambda>",
+    "line": 130,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay$retryAfterExit$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 131,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+    "name": "publish",
+    "line": 145,
+    "language": "kotlin",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+        "owner": "com/blent/RemoteDisplay",
+        "name": "publish",
+        "signature": "(Lcom/blent/WorkerEvent$Display;)V",
+        "line": 146,
+        "covered": 9,
+        "total": 9
+      }
+    ]
+  }
+]

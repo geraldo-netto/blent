@@ -12,6 +12,7 @@ internal class RemoteDisplay(context: Context,
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate),
     initialGeneration: Long = 0,
     private val workers: DisplayWorkerOwner = (context.applicationContext as BlentApplication).displayWorkers,
+    private val retryWait: suspend (Long) -> Unit = { delay(it) },
     private val worker: (MediaTask.Display, Surface, (WorkerEvent) -> Unit) -> LifecycleRun = { task, surface, events -> AndroidWorkerRun(context, task, surface, events) },
 ) : DisplaySession<SurfaceView> {
     private var liveness = false
@@ -43,6 +44,8 @@ internal class RemoteDisplay(context: Context,
     private val snapshots = LatestDispatch(scope) { startupStatus.value = "Display status update failed: ${it.message}" }
     private var client: Any? = null
     private var wanted = false
+    private var retry: Job? = null
+    private var retryMillis = 500L
     private var surface: Surface? = null
     private val generations = GenerationFence(initialGeneration)
     @Volatile private var connected = false
@@ -74,13 +77,16 @@ internal class RemoteDisplay(context: Context,
     }
     override fun onSurfaceDestroyed() { surface = null; replace() }
     override fun start() {
-        if (wanted && workers.owns(client)) return
+        if (wanted && workers.owns(client) && retry == null) return
         client = workers.open()
         wanted = true
+        retryMillis = 500L
         replace()
     }
-    override fun stop() { wanted = false; replace() }
+    override fun stop() { wanted = false; retryMillis = 500L; replace() }
     private fun replace() {
+        retry?.cancel()
+        retry = null
         generations.revoke()
         workers.clear(client)
         disconnect()
@@ -108,11 +114,25 @@ internal class RemoteDisplay(context: Context,
         scope.launch {
             if (current(revision)) {
                 generations.revoke()
-                wanted = false
                 disconnect()
                 startupStatus.value = failure?.message
+                retryAfterExit()
             }
         }
+    }
+    private fun retryAfterExit() {
+        if (!wanted || !generations.available()) {
+            wanted = false
+            return
+        }
+        val wait = retryMillis
+        retryMillis = (wait * 2).coerceAtMost(30_000L)
+        retry = scope.launch(start = CoroutineStart.LAZY) {
+            retryWait(wait)
+            retry = null
+            if (wanted && workers.owns(client)) replace()
+        }
+        retry?.start()
     }
     private fun receive(revision: Long, event: WorkerEvent) {
         if (!current(revision)) return
@@ -123,6 +143,7 @@ internal class RemoteDisplay(context: Context,
         }
     }
     private fun publish(event: WorkerEvent.Display) {
+        if (event.connected) retryMillis = 500L
         startupStatus.value = event.startup
         retirementStatus.value = event.retirement
         decoderDiagnostics.value = event.diagnostics

@@ -1,0 +1,21 @@
+{
+  "issue": "T1561",
+  "regression": "Unexpected worker exit retries only after original retirement; stop prevents readmission. Failed before on both API 27/34, passes after.",
+  "tests": {
+    "cases": 44,
+    "failed": 0,
+    "platforms": "Robolectric API 27 and 34"
+  },
+  "coverage": {
+    "tool": "JaCoCo 0.8.15",
+    "maintained_methods_and_callbacks": 10,
+    "minimum_percent": 100
+  },
+  "complexity": {
+    "tool": "Kotlin PSI 1.9.20 project checker",
+    "functions": 155,
+    "over_9": 0
+  },
+  "ownership": "One Activity-owned retry job, cancelled by replacement/stop/scope loss; original DisplayWorkerOwner ResourceLane remains sole native admission and retirement owner. Unknown native cleanup still blocks replacement.",
+  "limitations": "No physical worker process kill or tablet UI test."
+}
