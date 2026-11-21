@@ -1,0 +1,39 @@
+{
+  "issue": "T1533",
+  "tests": 25,
+  "coverage": [
+    {
+      "file": "common/src/model.rs",
+      "name": "validate",
+      "line": 271,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/model.rs",
+      "name": "sanitize_requested",
+      "line": 334,
+      "language": "rust",
+      "covered": 32,
+      "total": 37,
+      "percent": 86.48648648648648,
+      "passes": true,
+      "missing": [
+        353,
+        354,
+        370,
+        372,
+        374
+      ]
+    }
+  ],
+  "complexity": {
+    "functions": 34,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}

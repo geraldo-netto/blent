@@ -55,7 +55,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1533 | open | low | small | Validate `raw_slots` with the other capacity settings. `common/src/model.rs::sanitize_requested` clamps quality, scale, pipe capacity, conversion threads, encoder workers, tablet count and size, and `validate` checks input mode, pixel clock and ports; neither constrains `raw_slots`, whose only check is `raw_frame::Layout::new` (`2..=MAX_SLOTS`) reached from `host/src/capture/helper.rs` at capture start for shared raw transport. An out-of-range stored value loads, validates and is re-persisted, then every capture start fails with `invalid raw slot count`. Completion: reject or clamp it in the model using the shared maximum, with a failing-first permanent boundary regression. |
 
 ## Installation and distribution
 

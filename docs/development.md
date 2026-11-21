@@ -478,7 +478,8 @@ select `shared_memory`; Auto retains FIFO. The [T787 evaluation](reviews/artifac
 measured the removed pipe boundary and validates native shared-slot encoding.
 VAAPI still uploads CPU pixels; this is not CPU-to-GPU zero-copy.
 `raw_slots` accepts 2–8 (default 4); more slots allow more retained input frames
-and consume more memory, without guaranteeing lower latency. Full slots coalesce
+and consume more memory, without guaranteeing lower latency. Configuration loading
+clamps this range; direct validation rejects values outside it. Full slots coalesce
 pending capture updates instead of overwriting encoder-retained pixels. Switching
 encoders also reconfigures the helper when the automatic transport changes.
 See [T418 measurements and ownership](benchmarks/2026-09-21-shared-capture/README.md).

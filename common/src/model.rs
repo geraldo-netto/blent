@@ -270,6 +270,11 @@ impl FileConfig {
 
     pub fn validate(&self) -> Result<()> {
         self.validate_input_mode()?;
+        anyhow::ensure!(
+            (2..=crate::raw_frame::MAX_SLOTS).contains(&self.raw_slots),
+            "Raw frame slots must be between 2 and {}",
+            crate::raw_frame::MAX_SLOTS
+        );
         crate::display::pixel_clock_10khz(self.width, self.height, self.fps)?;
         slot_ports(self.video_port, self.input_port, self.max_tablets)?;
         Ok(())
@@ -352,6 +357,7 @@ impl FileConfig {
         self.quality = self.quality.clamp(MIN_QUALITY, MAX_QUALITY);
         self.stream_scale = self.stream_scale.clamp(1, 4);
         self.pipe_capacity_mib = validated_pipe_capacity(self.pipe_capacity_mib);
+        self.raw_slots = self.raw_slots.clamp(2, crate::raw_frame::MAX_SLOTS);
         self.conversion_threads = validated_conversion_threads(self.conversion_threads);
         self.encoder_workers = self
             .encoder_workers
@@ -373,6 +379,39 @@ impl FileConfig {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn t1533_raw_slot_validation_rejects_out_of_range_capacity() {
+        for slots in (0..=64).chain([u32::MAX]) {
+            let config = FileConfig {
+                raw_slots: slots,
+                ..Default::default()
+            };
+            assert_eq!(
+                config.validate().is_ok(),
+                (2..=crate::raw_frame::MAX_SLOTS).contains(&slots),
+                "T1533: raw_slots={slots}"
+            );
+        }
+    }
+
+    #[test]
+    fn t1533_raw_slot_sanitization_matches_transport_capacity() {
+        for slots in (0..=64).chain([u32::MAX]) {
+            let mut config = FileConfig {
+                raw_slots: slots,
+                ..Default::default()
+            };
+            config.sanitize_requested();
+            assert_eq!(
+                config.raw_slots,
+                slots.clamp(2, crate::raw_frame::MAX_SLOTS),
+                "T1533: raw_slots={slots}"
+            );
+            config.validate().unwrap();
+            crate::raw_frame::Layout::new(config.width, config.height, config.raw_slots).unwrap();
+        }
+    }
+
     #[test]
     fn t1534_positions_accept_current_names_and_reject_obsolete_aliases() {
         for (text, expected) in [
