@@ -218,6 +218,14 @@ pub fn save_at(config: &FileConfig, path: &Path) -> Result<()> {
 }
 
 fn write_at(config: &FileConfig, path: &Path) -> Result<()> {
+    write_with_sync(config, path, sync_directory)
+}
+
+fn write_with_sync(
+    config: &FileConfig,
+    path: &Path,
+    sync: impl FnOnce(&Path) -> Result<()>,
+) -> Result<()> {
     config.validate()?;
     if let Some(parent) = path.parent() {
         std::fs::create_dir_all(parent)?;
@@ -233,9 +241,19 @@ fn write_at(config: &FileConfig, path: &Path) -> Result<()> {
         .context("write config file")?;
     tmp.as_file().sync_all()?;
     tmp.persist(path).context("replace config file")?;
+    sync(path.parent().context("config directory")?)
+        .context("sync config directory after publication")?;
     if !changed.is_empty() {
         tracing::info!("Config written: {}", changed.join(", "));
     }
+    Ok(())
+}
+
+fn sync_directory(path: &Path) -> Result<()> {
+    #[cfg(unix)]
+    std::fs::File::open(path)?.sync_all()?;
+    #[cfg(not(unix))]
+    let _ = path;
     Ok(())
 }
 

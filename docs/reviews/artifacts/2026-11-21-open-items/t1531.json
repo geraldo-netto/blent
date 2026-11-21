@@ -1,0 +1,46 @@
+{
+  "issue": "T1531",
+  "tests": 25,
+  "coverage": [
+    {
+      "file": "common/src/storage.rs",
+      "name": "write_at",
+      "line": 220,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/storage.rs",
+      "name": "write_with_sync",
+      "line": 224,
+      "language": "rust",
+      "covered": 23,
+      "total": 24,
+      "percent": 95.83333333333333,
+      "passes": true,
+      "missing": [
+        232
+      ]
+    },
+    {
+      "file": "common/src/storage.rs",
+      "name": "sync_directory",
+      "line": 252,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 40,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}

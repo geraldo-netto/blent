@@ -1,6 +1,61 @@
 //! T566: successful-write diagnostics must follow the filesystem commit.
 use super::*;
 
+#[test]
+fn t1531_success_requires_directory_sync_after_complete_publication() {
+    let directory = tempfile::tempdir().unwrap();
+    let path = directory.path().join("config.toml");
+    let config = FileConfig {
+        fps: 30,
+        ..Default::default()
+    };
+    let mut synced = false;
+    write_with_sync(&config, &path, |parent| {
+        assert_eq!(parent, directory.path());
+        let published: FileConfig = toml::from_str(&std::fs::read_to_string(&path)?).unwrap();
+        assert_eq!(published, config, "T1531: sync preceded publication");
+        synced = true;
+        Ok(())
+    })
+    .unwrap();
+    assert!(synced, "T1531: successful save omitted directory sync");
+    assert_eq!(std::fs::read_dir(directory.path()).unwrap().count(), 1);
+}
+
+#[test]
+fn t1531_sync_failure_is_reported_without_undoing_visible_publication() {
+    let directory = tempfile::tempdir().unwrap();
+    let path = directory.path().join("config.toml");
+    let config = FileConfig {
+        fps: 30,
+        ..Default::default()
+    };
+    let result = write_with_sync(&config, &path, |_| anyhow::bail!("injected sync failure"));
+    assert!(result.is_err(), "T1531: failed durability claimed success");
+    assert_eq!(load_at(&path), config);
+    assert_eq!(std::fs::read_dir(directory.path()).unwrap().count(), 1);
+}
+
+#[test]
+fn t1531_rejected_publication_does_not_sync_directory() {
+    let directory = tempfile::tempdir().unwrap();
+    let config = FileConfig::default();
+    let result = write_with_sync(&config, directory.path(), |_| {
+        panic!("T1531: sync after failed rename")
+    });
+    assert!(result.is_err());
+    assert!(directory.path().is_dir());
+    assert_eq!(std::fs::read_dir(directory.path()).unwrap().count(), 0);
+}
+
+#[cfg(unix)]
+#[test]
+fn t1531_native_directory_sync_reports_invalid_directory() {
+    let directory = tempfile::tempdir().unwrap();
+    sync_directory(directory.path()).unwrap();
+    assert!(sync_directory(&directory.path().join("absent")).is_err());
+}
+
 fn recorded_write(config: &FileConfig, path: &Path) -> (Result<()>, String) {
     let log = tempfile::NamedTempFile::new().unwrap();
     let writer = log.reopen().unwrap();
