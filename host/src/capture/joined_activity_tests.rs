@@ -70,7 +70,14 @@ async fn held_resume(
     fixture.active(now + Duration::from_secs(61)).await;
     let fresh = packet(&mut fixture.received).await;
     assert_eq!(fixture.count.load(Ordering::SeqCst), count + 1);
-    assert!(fresh.is_idr && fresh.codec_config.is_some());
+    assert!(
+        fresh.is_idr && fresh.codec_config.is_some(),
+        "T1629 resume: idr={}, config={}, current={}, same_generation={}",
+        fresh.is_idr,
+        fresh.codec_config.is_some(),
+        fresh.generation.load(Ordering::Acquire),
+        Arc::ptr_eq(&first.generation, &fresh.generation)
+    );
     assert!(!first.generation.load(Ordering::Acquire));
     assert!(fresh.generation.load(Ordering::Acquire));
     assert!(!Arc::ptr_eq(&first.generation, &fresh.generation));
