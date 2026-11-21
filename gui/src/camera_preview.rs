@@ -10,6 +10,19 @@ pub(super) struct Preview {
 }
 
 impl Preview {
+    /// Prune independently of camera-tab rendering; the cache owns one texture
+    /// and one thumbnail, and borrows no native capture resources.
+    pub(super) fn maintain(&mut self, context: &egui::Context, live: bool) {
+        let Some(frame) = &self.frame else {
+            return;
+        };
+        if !live || !frame.fresh() {
+            *self = Self::default();
+            return;
+        }
+        context.request_repaint_after(std::time::Duration::from_millis(200));
+    }
+
     pub(super) fn show(&mut self, ui: &mut egui::Ui, frame: Option<Arc<CameraPreview>>) {
         self.update(ui.ctx(), frame);
         ui.label("Preview");

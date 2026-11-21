@@ -26,6 +26,16 @@ impl Default for Panel {
 }
 
 impl Panel {
+    pub(super) fn maintain_preview(&mut self, context: &egui::Context) {
+        let live = self.native_state() == CameraState::Streaming
+            && self
+                .backend
+                .as_ref()
+                .and_then(|backend| backend.preview())
+                .is_some_and(|frame| frame.fresh());
+        self.preview.maintain(context, live);
+    }
+
     pub(super) fn show(&mut self, ui: &mut egui::Ui, options: &mut CameraProfile) {
         ui.vertical(|ui| {
             self.summary(ui, options);
@@ -766,3 +776,6 @@ mod completion_tests {
         }
     }
 }
+
+#[cfg(all(test, target_os = "linux"))]
+mod cache_tests;

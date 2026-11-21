@@ -401,6 +401,7 @@ impl eframe::App for App {
 
 impl App {
     fn show_window(&mut self, ctx: &egui::Context) {
+        self.camera.maintain_preview(ctx);
         #[cfg(target_os = "linux")]
         self.placement.apply(ctx);
         self.poll_action();
