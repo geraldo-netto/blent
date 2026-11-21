@@ -14,14 +14,14 @@ class SavedTrustProcessTest {
         val endpoint = ConnectionWorkerEndpoint().apply { start = {}; killOnExit = false }
         val context = ConnectionWorkerContext(endpoint)
         val worker = AndroidConnectionWorkerRun(context, ConnectionProcessLaunch.Trust(SavedTrustRequest.List),
-            startMillis = 1000, graceMillis = 1, retireMillis = 250)
+            startMillis = 1000, trustMillis = 1000, graceMillis = 1, retireMillis = 250)
         val execution = async(Dispatchers.Default) { runCatching { worker.execute() } }
         val detected: Boolean
         var retained = false
         try {
             withTimeout(5000) { while (!endpoint.codes.contains(ConnectionWorkerIpc.START_TRUST)) delay(1) }
             val result = withTimeoutOrNull(2000) { execution.await() }
-            detected = result?.exceptionOrNull() is TimeoutCancellationException
+            detected = result?.exceptionOrNull() is java.io.IOException
             worker.cancel()
             try { worker.retire() } catch (_: Exception) { retained = endpoint.alive && context.unbinds == 0 }
         } finally {

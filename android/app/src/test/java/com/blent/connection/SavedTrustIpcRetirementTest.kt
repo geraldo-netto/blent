@@ -43,7 +43,7 @@ class SavedTrustIpcRetirementTest {
         try {
             assertTrue(withContext(Dispatchers.IO) { entered.await(5, TimeUnit.SECONDS) })
             val result = withTimeout(5000) { execution.await() }
-            assertEquals(startBlocked, result.exceptionOrNull() is TimeoutCancellationException)
+            assertEquals(startBlocked, result.exceptionOrNull() is java.io.IOException)
             until { !endpoint.alive }
             assertTrue(runCatching { worker.retire() }.isFailure)
             assertEquals("T1151 original native IPC is still blocked", 0, context.unbinds)

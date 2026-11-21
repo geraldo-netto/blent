@@ -119,6 +119,11 @@ that connection owns the physical device, including during discovery refreshes.
 It becomes available only after the connection and its native worker retire.
 Use the connection’s **Disconnect** button to stop it.
 
+Android reports worker binding/startup expiry as a connection failure, rather
+than a normal end. Saved-computer list/forget operations have a separate
+five-second observation budget after startup. Expiry does not prove native
+cleanup: the original binding and IPC calls remain owned until retirement.
+
 Once a computer has remembered peers, its running USB broker automatically tries
 devices already in Android accessory mode on startup and reconnect. Normal USB
 keyboards, cameras, phones and tablets are never switched automatically. Use

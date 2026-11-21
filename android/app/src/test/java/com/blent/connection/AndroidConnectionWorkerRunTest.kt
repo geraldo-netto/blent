@@ -155,7 +155,7 @@ class AndroidConnectionWorkerRunTest {
         val executing = async(Dispatchers.Default) { runCatching { run.execute() } }
         try {
             withContext(Dispatchers.IO) { await(entered) }
-            assertTrue(withTimeout(1000) { executing.await() }.exceptionOrNull() is TimeoutCancellationException)
+            assertTrue(withTimeout(1000) { executing.await() }.exceptionOrNull() is java.io.IOException)
             until { !endpoint.alive }
             assertTrue(runCatching { run.retire() }.isFailure); assertEquals(0, context.unbinds)
         } finally { release.countDown() }

@@ -28,6 +28,7 @@ internal class AndroidConnectionWorkerRun(
     retireMillis: Long? = null,
     generations: WorkerGenerations = sharedGenerations,
     private val transmitDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val trustMillis: Long = 5000,
 ) : ConnectionWorker {
     constructor(
         context: Context, spec: ConnectionWorkerSpec,
@@ -72,6 +73,7 @@ internal class AndroidConnectionWorkerRun(
     @Volatile private var retired = false
     init {
         require(bindMillis in 1..60000 && startMillis in 1..60000)
+        require(trustMillis in 1..60000)
         require(graceMillis == null || graceMillis in 0..60000)
         require(retireMillis == null || retireMillis in 1..60000)
     }
@@ -157,14 +159,14 @@ internal class AndroidConnectionWorkerRun(
                 outgoing = scope.launch(transmitDispatcher, start = CoroutineStart.LAZY) { transmit() }
                 outgoing!!.start()
             }
-            withTimeout(startMillis) { started.await() }
+            connectionWorkerBudget("startup", startMillis) { started.await() }
             observeOperation()
         } finally { cancel() }
     }
     private suspend fun transmit() {
         try {
             bind()
-            val service = withTimeout(bindMillis) { ready.await() }
+            val service = connectionWorkerBudget("binding", bindMillis) { ready.await() }
             currentCoroutineContext().ensureActive()
             check(!stopped.get())
             startExposed = true // START may take effect before transact returns or throws.
@@ -197,7 +199,7 @@ internal class AndroidConnectionWorkerRun(
         } catch (error: Exception) { bound = false; throw error }
     }
     private suspend fun observeOperation() {
-        if (launch is ConnectionProcessLaunch.Trust) withTimeout(startMillis) { observe() }
+        if (launch is ConnectionProcessLaunch.Trust) connectionWorkerBudget("saved-trust operation", trustMillis) { observe() }
         else observe()
     }
     private suspend fun observe() {
