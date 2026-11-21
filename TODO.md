@@ -54,7 +54,6 @@
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
 | T1651 | blocked | low | small | Native Android acceptance for T1563 prompt worker retirement. Hosted API-27/34 regressions prove generation-scoped terminal acknowledgement, original Binder/control-call fences and bounded mailbox behavior; simulated Stop-to-retired samples improved from about 512 ms to 6 ms, which does not measure physical replacement-to-connected time. Missing prerequisite: an idle device validation window with the matching APK or an isolated native instrumentation package. Measure display/camera/audio replacement-to-connected before and after, including held retirement, delayed control calls and process loss; verify no successor before original death and control settlement. Evidence: `docs/reviews/artifacts/2026-11-21-open-items/t1563.json`. Do not interrupt active sessions. |
-| T1570 | open | low | small | Align the tablet bitrate slider with whole megabit values. `SettingsSheet.kt::BitrateControls` uses the range 1–60 with `steps = 10`, giving stops every 59/11 Mbps (1, 6.36, 11.73, 17.09, 22.45, …): the 20 Mbps default cannot be selected again after the first drag, and the label shows a rounded value different from the kilobit value sent and stored. Completion: use a grid that contains the default and derive the label from the value sent, with a permanent regression. |
 
 ## Configuration and diagnostics
 

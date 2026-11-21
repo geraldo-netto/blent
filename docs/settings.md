@@ -47,8 +47,10 @@ prove that opening the device or using a codec will succeed.
 
 **Advanced video settings** contains quality, bitrate, calibration and worker/pipe
 capacity controls. The tablet groups display/input, video, camera and app controls;
-bitrate is under **Advanced video settings**, and update/statistics switches are
-under **App & diagnostics**. The decoder panel shows the active codec, advertised
+bitrate is under **Advanced video settings**, with whole-Mbps stops from 1 to 60
+and a 20 Mbps default. Its label uses the kilobit value submitted by Apply; an
+existing fractional setting remains exact until changed. Update/statistics
+switches are under **App & diagnostics**. The decoder panel shows the active codec, advertised
 capabilities, requested performance hints and watchdog fallback; effective hints
 remain unknown. Camera Start/Stop is explicit and independent of
 display sharing; opening desktop settings or pressing Save does not start capture.

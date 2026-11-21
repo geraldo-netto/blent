@@ -104,5 +104,37 @@ class SettingsControlContractTest {
         }
     }
 
+    @Test fun t1570BitrateGridContainsWholeMegabitsAndReturnsToDefault() {
+        val events = mutableListOf<SettingsEvent>()
+        compose.setContent { BlentTheme {
+            SettingsSheet(SettingsValues(), null, {}, false, {}, onSettingsEvent = events::add)
+        } }
+        compose.onNodeWithText("Advanced video settings").performScrollTo().performClick()
+        val slider = bitrateSlider().performScrollTo()
+        assertEquals("T1570 whole-Mbps grid", 58,
+            slider.fetchSemanticsNode().config[SemanticsProperties.ProgressBarRangeInfo].steps)
+        for (value in listOf(1, 2, 19, 20, 21, 59, 60, 20)) {
+            slider.performSemanticsAction(SemanticsActions.SetProgress) { it(value.toFloat()) }
+            compose.onNodeWithText("Bitrate: $value Mbps").assertExists()
+        }
+        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.runOnIdle { assertTrue(events.contains(SettingsEvent.Stream(20000, Prefs.DEFAULT_FPS))) }
+    }
+
+    @Test fun t1570ExistingFractionalBitrateLabelMatchesSubmittedKilobits() {
+        val events = mutableListOf<SettingsEvent>()
+        compose.setContent { BlentTheme {
+            SettingsSheet(SettingsValues(bitrateKbps = 25005), null, {}, false, {}, onSettingsEvent = events::add)
+        } }
+        compose.onNodeWithText("Advanced video settings").performScrollTo().performClick()
+        compose.onNodeWithText("Bitrate: 25.005 Mbps").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.runOnIdle { assertTrue(events.contains(SettingsEvent.Stream(25005, Prefs.DEFAULT_FPS))) }
+    }
+
+    private fun bitrateSlider() = compose.onNode(SemanticsMatcher("stream bitrate range") {
+        it.config.getOrNull(SemanticsProperties.ProgressBarRangeInfo)?.range == 1f..60f
+    })
+
     private fun toggleBeside(text: String) = compose.onNodeWithContentDescription(text)
 }

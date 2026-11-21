@@ -316,3 +316,12 @@ Without a live daemon session report, doctor now chooses from the observed autho
 The permanent private-ADB regression failed before the fix because zero candidates were returned. All 50 doctor tests pass afterward, including active native/ADB sessions, unavailable inventories, device classification and actual forwarding ports. The existing no-daemon fixture now expects the first USB candidate and asserts that package filtering was not called; its live-session assertions remain unchanged. The maintained diagnostic_sessions function has 100% executable-line coverage. All 99 measured functions in affected source/test files have complexity <=9 (project Rust syn 2.0.119).
 
 Selection borrows the existing device snapshot and owns only the returned diagnostic record. Original command observation/retirement, device-identity evidence and output bounds are unchanged. Tests use a private executable and temporary files; no real ADB endpoint, tablet app or sharing session was changed.
+
+
+## T1570 — use whole-megabit tablet bitrate stops
+
+The tablet bitrate slider now has one stop per whole Mbps from 1 to 60, including the 20 Mbps default. Its label derives from the same rounded kilobit value submitted by Apply, preserving exact existing fractional settings such as 25005 kbit/s until the user changes them. The default, capacity limits and persistence contract are unchanged.
+
+All four regression cases failed before the fix on API 27/34. All 56 selected settings UI tests pass afterward, including lower/upper stops, adjacent whole values, return to default, fractional labels and submitted values. The maintained BitrateControls function has 100% executable-line coverage (JaCoCo 0.8.15); all 102 measured functions in affected source/test files have complexity <=9 (project Kotlin PSI 1.9.20).
+
+Formatting owns only call-scoped managed numeric/string values within the existing composition. Its number comes from the same Int kilobit conversion already used for submission, so decimal storage is bounded; it introduces no native resource, asynchronous callback or retained owner. This fixes the grid/label mismatch. Independent stream-setting synchronization remains T1569.

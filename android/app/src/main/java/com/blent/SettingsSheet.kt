@@ -201,8 +201,10 @@ private fun StreamControls(bitrateMbps: Float, fpsChoice: Int, onBitrateChange: 
 
 @Composable
 private fun BitrateControls(bitrateMbps: Float, onBitrateChange: (Float) -> Unit) {
+    val kilobits = (bitrateMbps * 1000).roundToInt()
+    val label = java.math.BigDecimal.valueOf(kilobits.toLong(), 3).stripTrailingZeros().toPlainString()
     Text(
-        "Bitrate: ${bitrateMbps.roundToInt()} Mbps",
+        "Bitrate: $label Mbps",
         fontSize = 14.sp,
         color = Color(0xFFB0B0C0)
     )
@@ -211,7 +213,7 @@ private fun BitrateControls(bitrateMbps: Float, onBitrateChange: (Float) -> Unit
         onValueChange = onBitrateChange,
         valueRange = (Prefs.MIN_BITRATE_KBPS / 1000).toFloat()..
                 (Prefs.MAX_BITRATE_KBPS / 1000).toFloat(),
-        steps = 10,
+        steps = (Prefs.MAX_BITRATE_KBPS - Prefs.MIN_BITRATE_KBPS) / 1000 - 1,
         colors = SliderDefaults.colors(thumbColor = Accent, activeTrackColor = Accent)
     )
     Text(
