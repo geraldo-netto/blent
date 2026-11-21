@@ -1,0 +1,30 @@
+{
+  "issue": "T1620",
+  "source_checkpoint": "7c30e3ff",
+  "dependencies": {
+    "T1673": "edd93f29",
+    "T1674": "7c30e3ff",
+    "T1675": "ca44c91f"
+  },
+  "acceptance": {
+    "idle_publications_per_simulated_second": {
+      "before": 61,
+      "after": 4,
+      "frames": 60
+    },
+    "unavailable_gpu_inspections": {
+      "before": 1,
+      "after": 0
+    },
+    "encoder_probe": "60 native observations; median 4\u20135 ms once per start; retain fresh probing"
+  },
+  "verification": {
+    "command": "cargo test --offline --locked -p blent --bin blent capture::",
+    "passed": 251,
+    "failed": 0,
+    "ignored": 3,
+    "ignored_scope": "Two pre-existing opt-in timing experiments; T1674 separately executed successfully."
+  },
+  "scope": "No live CPU saving or end-to-end viewer startup claim. Combined source behavior plus private/native fixture evidence; installed sessions unchanged.",
+  "ownership": "Existing revocation, blocked publication, viewer epoch, child wait and native resource retirement tests remain unchanged and pass. Scalar renewal history owns no native grant; skip guard creates no child or connector vector. No additional resources are introduced by integration."
+}
