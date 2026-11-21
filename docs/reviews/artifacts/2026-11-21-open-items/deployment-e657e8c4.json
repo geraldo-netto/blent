@@ -1,0 +1,29 @@
+{
+  "installed_at": "2026-11-21T21:38:50+01:00",
+  "source_commit": "e657e8c4",
+  "installed_directory": "/home/netto/.local/share/blent/appimage/Blent.AppDir",
+  "rollback_directory": "/home/netto/.cache/blent-reload-20261121-e657e8c4.yoVFoW/previous.AppDir",
+  "desktop_install": "success; existing extracted AppImage layout retained",
+  "tablet_install": "adb install -r succeeded; app data retained",
+  "tablet": {
+    "serial": "8002RH1010011900",
+    "package": "io.github.geraldo_netto.blent",
+    "sha256": "38eee36bdfe3238d7638c69f63349be1f6bb1a57cdd17d282d68398b382d96d9",
+    "pid": "30289"
+  },
+  "installed_binary_sha256": {
+    "evdi_helper": "b2a9d7fa8093f0ca3260949bda5eb2e3aeba8f422982ca3420b9cc4a6d481eed",
+    "blent-audio": "a53ba000cd8404abf16894e82ec6a84fbca1da78dfbab2e956d8c98419b3d162",
+    "blent-usb-io": "03c65b6a1563c6bcd953e19384210db78feb5e111f4af7f0bf29d9bef9cce93a",
+    "blent-usb-broker": "2516986255d180f2548ba5c0d83861f32627638ee1c6bb610c640056fbc87cdc",
+    "blent-gui": "9a8ba98eaa78fa307d4d942e7b3913fe5fc888ce7c8599f9dada2e36cab22837",
+    "blent": "6e7a5ea4205672e8bddd29743f0628c71fbec0951e5632cfdfc9ced7b7d21e6b",
+    "libevdi.so.1.15.0": "5ec8b7614074dd10dce5ba4b668203c70e77bf698da6614d839324955aead96a"
+  },
+  "gui_pid": 2783261,
+  "gui_process_count_after_second_launch": 1,
+  "daemon_pid": 2782975,
+  "display_validation": "tablet reconnected over USB ADB; live render ACKs observed after restart",
+  "configuration_keys_changed_by_startup": [],
+  "native_acceptance_limits": "No camera/audio capture, USB unplug/replug, or Windows native acceptance was performed."
+}
