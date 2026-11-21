@@ -1,0 +1,412 @@
+{
+  "coverage": [
+    {
+      "file": "common/src/camera/transform.rs",
+      "name": "new",
+      "line": 13,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/transform.rs",
+      "name": "apply",
+      "line": 22,
+      "language": "rust",
+      "covered": 36,
+      "total": 36,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/transform.rs",
+      "name": "chroma",
+      "line": 70,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/transform.rs",
+      "name": "placement",
+      "line": 79,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/transform.rs",
+      "name": "copy_row",
+      "line": 94,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/transform.rs",
+      "name": "straight",
+      "line": 104,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/transform.rs",
+      "name": "column_offsets",
+      "line": 114,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/transform.rs",
+      "name": "quarter",
+      "line": 132,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/transform.rs",
+      "name": "plane",
+      "line": 161,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "common/src/camera/transform.rs",
+      13,
+      "new",
+      1
+    ],
+    [
+      "common/src/camera/transform.rs",
+      22,
+      "apply",
+      4
+    ],
+    [
+      "common/src/camera/transform.rs",
+      70,
+      "chroma",
+      1
+    ],
+    [
+      "common/src/camera/transform.rs",
+      79,
+      "placement",
+      3
+    ],
+    [
+      "common/src/camera/transform.rs",
+      94,
+      "copy_row",
+      3
+    ],
+    [
+      "common/src/camera/transform.rs",
+      104,
+      "straight",
+      3
+    ],
+    [
+      "common/src/camera/transform.rs",
+      114,
+      "column_offsets",
+      4
+    ],
+    [
+      "common/src/camera/transform.rs",
+      132,
+      "quarter",
+      4
+    ],
+    [
+      "common/src/camera/transform.rs",
+      161,
+      "plane",
+      2
+    ],
+    [
+      "common/src/camera/transform/oracle_tests.rs",
+      5,
+      "destination",
+      5
+    ],
+    [
+      "common/src/camera/transform/oracle_tests.rs",
+      14,
+      "turned",
+      6
+    ],
+    [
+      "common/src/camera/transform/oracle_tests.rs",
+      35,
+      "expected",
+      3
+    ],
+    [
+      "common/src/camera/transform/oracle_tests.rs",
+      49,
+      "verify",
+      5
+    ],
+    [
+      "common/src/camera/transform/oracle_tests.rs",
+      84,
+      "verify_chroma",
+      2
+    ],
+    [
+      "common/src/camera/transform/oracle_tests.rs",
+      104,
+      "t1678_every_plane_matches_forward_rotation_oracle_across_live_changes",
+      2
+    ],
+    [
+      "common/src/camera/transform/oracle_tests.rs",
+      130,
+      "t1678_invalid_frame_bounds_reject_without_modifying_pixels",
+      2
+    ],
+    [
+      "common/src/camera/transform/tests.rs",
+      2,
+      "profile",
+      1
+    ],
+    [
+      "common/src/camera/transform/tests.rs",
+      10,
+      "t1467_identity_mirror_and_half_turn_have_independent_pixel_oracles",
+      7
+    ],
+    [
+      "common/src/camera/transform/tests.rs",
+      36,
+      "t1467_quarter_turns_keep_layout_and_chroma_aligned_letterboxing",
+      3
+    ],
+    [
+      "common/src/camera/transform/tests.rs",
+      57,
+      "t1467_invalid_transform_is_atomic",
+      2
+    ],
+    [
+      "common/src/camera/transform/tests.rs",
+      77,
+      "t1467_quarter_turn_quadrants_match_independent_orientation_oracle",
+      4
+    ],
+    [
+      "common/benches/camera_transform.rs",
+      5,
+      "sample",
+      4
+    ],
+    [
+      "common/benches/camera_transform.rs",
+      38,
+      "main",
+      5
+    ]
+  ],
+  "issue": "T1678",
+  "measurements": [
+    {
+      "width": 1280,
+      "height": 720,
+      "rotation": 0,
+      "mirror": false,
+      "final-before_median_ms": 2.4383333333333334e-05,
+      "final-after_median_ms": 2.37e-05,
+      "checksum_fnv1a64": 9687566452515521389
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "rotation": 0,
+      "mirror": true,
+      "final-before_median_ms": 1.6428698333333334,
+      "final-after_median_ms": 0.09157776666666666,
+      "checksum_fnv1a64": 997346070232478949
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "rotation": 90,
+      "mirror": false,
+      "final-before_median_ms": 0.5320010166666668,
+      "final-after_median_ms": 0.20804038333333333,
+      "checksum_fnv1a64": 12600075767317381063
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "rotation": 90,
+      "mirror": true,
+      "final-before_median_ms": 0.54303145,
+      "final-after_median_ms": 0.20496736666666668,
+      "checksum_fnv1a64": 5962995274832781037
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "rotation": 180,
+      "mirror": false,
+      "final-before_median_ms": 1.71870295,
+      "final-after_median_ms": 0.08323,
+      "checksum_fnv1a64": 15699932335604289585
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "rotation": 180,
+      "mirror": true,
+      "final-before_median_ms": 1.5983831000000002,
+      "final-after_median_ms": 0.04383473333333333,
+      "checksum_fnv1a64": 5070158438044100425
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "rotation": 270,
+      "mirror": false,
+      "final-before_median_ms": 0.53840405,
+      "final-after_median_ms": 0.20563838333333334,
+      "checksum_fnv1a64": 4587658856177274779
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "rotation": 270,
+      "mirror": true,
+      "final-before_median_ms": 0.5344006166666667,
+      "final-after_median_ms": 0.20651298333333334,
+      "checksum_fnv1a64": 762887767613687385
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "rotation": 0,
+      "mirror": false,
+      "final-before_median_ms": 2.3866666666666666e-05,
+      "final-after_median_ms": 2.855e-05,
+      "checksum_fnv1a64": 5841516976333373349
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "rotation": 0,
+      "mirror": true,
+      "final-before_median_ms": 3.67598805,
+      "final-after_median_ms": 0.21191963333333333,
+      "checksum_fnv1a64": 8057932758911498993
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "rotation": 90,
+      "mirror": false,
+      "final-before_median_ms": 1.2048248333333333,
+      "final-after_median_ms": 0.48090184999999996,
+      "checksum_fnv1a64": 2848652030790441314
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "rotation": 90,
+      "mirror": true,
+      "final-before_median_ms": 1.2127330666666667,
+      "final-after_median_ms": 0.47684655,
+      "checksum_fnv1a64": 16128161533668119706
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "rotation": 180,
+      "mirror": false,
+      "final-before_median_ms": 3.99502275,
+      "final-after_median_ms": 0.1974868,
+      "checksum_fnv1a64": 16906440277089331281
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "rotation": 180,
+      "mirror": true,
+      "final-before_median_ms": 3.622234216666667,
+      "final-after_median_ms": 0.1104263,
+      "checksum_fnv1a64": 7400671288121052301
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "rotation": 270,
+      "mirror": false,
+      "final-before_median_ms": 1.2202955666666666,
+      "final-after_median_ms": 0.47605195,
+      "checksum_fnv1a64": 1617776686352667584
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "rotation": 270,
+      "mirror": true,
+      "final-before_median_ms": 1.2259465,
+      "final-after_median_ms": 0.4762798833333334,
+      "checksum_fnv1a64": 17459324883192181661
+    }
+  ],
+  "before_provenance": {
+    "binary_sha256": "538b49b002c355bd0f3b41cbfa790c72f4ff446f35684e874e9f998184009350",
+    "source_base": "61f0b8fd",
+    "production": "common/src/camera/transform.rs unchanged at measurement; benchmark added"
+  },
+  "after_provenance": {
+    "binary_sha256": "71462914a32d8c72ae6c222baddcb554569ede9c7e7cdb1fd4913a11885170db",
+    "production_sha256": "0e3c4f5b13ee5c7827a801cf799bb8ef5b61c07e29b321fcb15356dcdb5af312",
+    "benchmark_sha256": "b0a86cec95eab599d850646dccc5ed43054e511983d80347f01831395e36cdf9"
+  },
+  "tests": {
+    "before_transform_oracles": 6,
+    "after_common_camera": 36,
+    "host_camera": 124,
+    "host_camera_controller": 12
+  },
+  "method": "Final comparison: 80 observations per version, five 60-frame observations per resolution/orientation; release build. Reset source frame before each timed apply; reset copy excluded, production scratch copy included. Ordinary Ryzen 9 7945HX desktop, no concurrent compilation or affinity/governor control. Earlier four sweeps retained as preliminary/control observations, not pooled into final medians.",
+  "correctness": "All final output FNV-1a-64 checksums match across versions; checksums are noncryptographic supporting evidence. Independent permanent forward-rotation/materialized-plane oracles check every byte in all three planes across five fixed geometries, all orientations and repeated live changes. Invalid frame/rotation/profile cases retain atomic rejection. These tests passed before and after this behavior-preserving optimization; no behavioral defect was claimed.",
+  "tools": "Rust native LLVM line counters; project Rust syn 2.0.119 complexity checker. Benchmark code exempt from per-function coverage.",
+  "ownership": "Transform validates profile before allocating its scratch frame and width-element usize table. Maximum added table is 1920 entries, 15360 bytes on 64-bit hosts; scratch remains <=3110400 bytes. Apply exclusively borrows unpublished output, copies source into owned scratch and overwrites every consumed column offset before use. No per-frame allocation, callback, native handle or escaping borrow. Errors precede writes. Borrow completion returns access to the existing frame pool; session Drop frees both buffers. No cycle or background cleanup sponsor is added.",
+  "bounds": "For each admitted plane, 0<=source_x<width and 0<=column_offset<width*height with column_offset divisible by width; their sum is below plane length. Quarter rectangle width is positive and no larger than validated frame width, including chroma. All output spans stay within the independently tested placement rectangle. Exclusive Rust borrows separate scratch, columns and output; this does not claim unrestricted native safety.",
+  "remaining": "Source-only; native tablet feedback and transport effects remain T1577. No installed session changed. No live or Windows performance claim."
+}

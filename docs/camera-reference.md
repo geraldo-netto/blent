@@ -260,3 +260,9 @@ frame, funded per decoder: with N publication slots, raw-frame storage is now
 (N + 2) times frame_bytes (N slots, discard, transform scratch). N defaults to 3
 and is bounded to 2–16; frame_bytes is at most 1920 × 1080 × 3 / 2. No reader lease
 can be overwritten, and pool exhaustion still drains/discards one whole frame.
+
+The orientation transform also owns a reusable column-offset table with at most
+1920 `usize` entries (15 KiB on a 64-bit host). It is allocated after profile
+validation and reused across frames and planes. Mirror/half-turn paths copy or
+reverse whole rows; quarter turns calculate axis coordinates once per row/column.
+No per-frame allocation or additional published-frame lease is introduced.
