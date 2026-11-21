@@ -47,3 +47,19 @@ The native missing-broker test allowed 3 seconds while production settings admit
 ## T1480 — current ADB identity and cleanup fixture
 
 The CLI retry test counted physical-identity queries as Activity launches and its fake failed creator supplied neither an observable mapping nor settlement evidence. The fixture now returns a stable identity, records only actual launch shell requests in launch assertions, models a lost acknowledgement after an observable mapping creation, and awaits original route retirement before retry and final cleanup. A private mode-0700 child runtime isolates native locks. The internal RouteOwner retirement method is crate-visible for this existing CLI owner fixture; its implementation is unchanged. The original permanent T144 failed before correction and now passes its failure/backoff/two-mapping recovery/exact-launch assertions. Unknown native outcomes remain retained in production.
+
+## Review scope and limits
+
+Repository-wide checks cover the supported Rust, Kotlin, C, Python and shell source inventories, the Linux Rust workspace, Android debug JVM suite and tooling/packaging regressions. Manual review follows behavior across domain boundaries: GUI activation and configuration persistence; live camera command/receipt, brightness, transforms and frame freshness; audio/connection admission and retirement; display ADB identity/mapping ownership; USB helper streams and native frame exchange/rings; pairing, trust persistence and wire bounds; service templates, installation and CI composition. Windows entry/input boundaries were inspected as preview code. Historical review artifacts were consulted as evidence, not treated as current implementations.
+
+The baseline inventory contains 12,970 tracked files, predominantly historical documentation/artifacts. This is an inventory count, not a claim that every file or line received manual inspection. Source inspection and automated tests cannot establish absence of all bugs or leaks. Existing Windows native acceptance blockers, subjective face-image quality acceptance (T1452), upstream distribution notice qualification (T1463), and declined platform/measurement scopes retain their recorded dispositions.
+
+Memory/resource review examined authoritative worker/session ownership, bounded commands and frame leases, admission rejection, partial native failure, cancellation, completion acknowledgements and cleanup before reuse. The camera fixes add no native resource owner or queue. Frame-ring retirement continues to depend on original readers/writers and generation checks; deadline expiry is not treated as native settlement. Existing native C ASan/UBSan fixtures run through the tooling suite; no new allocator or physical-erasure claim is made.
+
+Complexity toolchain: repository checker with Rust syn 2.0.119, Kotlin PSI 1.9.20, tree-sitter 0.25.2, tree-sitter-bash 0.25.1 and tree-sitter-c 0.24.2. Final supported inventory: 30,640 measured functions, zero above 9. JavaScript/PowerShell omissions remain explicitly declined under T1397/T1398; this count is not evidence for those languages. Changed production coverage uses JaCoCo 0.8.15 and cargo-llvm-cov 0.8.7 with exact current LLVM test objects.
+
+## T1487 — included source formatting
+
+The authoritative `scripts/format-rust.py` also traverses the Linux supervisor include tree, which ordinary cargo fmt omits. It corrected formatting of the encoder test resolver and preexisting tray regression. Its --check gate passes; only whitespace/layout changed.
+
+Additional T1480 measurement: the unchanged internal retirement implementation, whose visibility was widened for the owning CLI fixture, has 6/7 executable lines covered (85.7%), above the per-function 80% requirement.

@@ -483,9 +483,11 @@ async fn t1475_tray_application_runs_outside_daemon_group() {
         let root = std::path::PathBuf::from(std::env::var_os("HOME").unwrap());
         open_settings();
         launched(&root, "ready").await;
-        assert_ne!(std::fs::read_to_string(root.join("placement")).unwrap(),
-                   std::fs::read_to_string("/proc/self/cgroup").unwrap(),
-                   "T1475 tray application inherits daemon retirement group");
+        assert_ne!(
+            std::fs::read_to_string(root.join("placement")).unwrap(),
+            std::fs::read_to_string("/proc/self/cgroup").unwrap(),
+            "T1475 tray application inherits daemon retirement group"
+        );
         return;
     }
     let root = tempfile::tempdir().unwrap();
@@ -494,8 +496,20 @@ async fn t1475_tray_application_runs_outside_daemon_group() {
     use std::os::unix::fs::PermissionsExt;
     std::fs::set_permissions(&launcher, std::fs::Permissions::from_mode(0o700)).unwrap();
     let output = std::process::Command::new(std::env::current_exe().unwrap())
-        .args(["--exact", "tray::tests::t1475_tray_application_runs_outside_daemon_group", "--nocapture"])
-        .env(CASE, "1").env("HOME", root.path())
-        .env(blent_config::linux::appimage::LAUNCHER, launcher).output().unwrap();
-    assert!(output.status.success(), "{}{}", String::from_utf8_lossy(&output.stdout), String::from_utf8_lossy(&output.stderr));
+        .args([
+            "--exact",
+            "tray::tests::t1475_tray_application_runs_outside_daemon_group",
+            "--nocapture",
+        ])
+        .env(CASE, "1")
+        .env("HOME", root.path())
+        .env(blent_config::linux::appimage::LAUNCHER, launcher)
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
 }

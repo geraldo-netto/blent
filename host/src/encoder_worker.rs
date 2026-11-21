@@ -46,10 +46,15 @@ pub(crate) fn spawn(
 // Locate its owning profile directory rather than assuming a fixed depth.
 #[cfg(test)]
 fn test_executable(executable: &Path) -> Result<std::path::PathBuf> {
-    let profile = executable.ancestors().find(|path| path.join("deps").is_dir())
+    let profile = executable
+        .ancestors()
+        .find(|path| path.join("deps").is_dir())
         .context("Missing Cargo profile directory for production worker")?;
     let binary = profile.join("blent");
-    anyhow::ensure!(binary.is_file(), "Build the production blent binary before running worker tests");
+    anyhow::ensure!(
+        binary.is_file(),
+        "Build the production blent binary before running worker tests"
+    );
     Ok(binary)
 }
 fn spawn_at(
