@@ -708,8 +708,8 @@ certificate and matching private key; publication never replaces an existing fil
 Malformed, unsafe or conflicting state fails closed for explicit repair. Confirmed
 identity reset holds both identity and trust locks and durably removes all approvals
 bound to the former key before allowing new initialization. Interrupted resets finish
-first; the host repair entry remains tracked under T1597. Existing keys never silently
-rotate. [Validation](artifacts/2026-10-10-t867/README.md)
+first. T1597 exposes confirmed offline `--reset trust` and `--reset identity` in the
+Linux broker; the latter resets both stores. Existing keys never silently rotate. [Validation](artifacts/2026-10-10-t867/README.md)
 covers restart, concurrent ownership, bounded invalid input and crash/failure boundaries.
 
 This is storage readiness only: T868 supplies peer trust, T852 composes TLS/pairing,
@@ -736,7 +736,7 @@ until an explicit offline Reset saved computers. Its durable reset marker preced
 all deletion; interrupted resets finish before any trust load. Reset keeps the
 keystore identity and requires a current-view confirmation and exclusive worker
 ownership. T1635 implements equivalent complete-intent/reset storage on Linux;
-T1597 still owns the host repair entry and integrated recovery. Failure before intent
+T1597 exposes the confirmed host repair entry and verifies private broker restart. Failure before intent
 durability cannot promise persistence, and no failed write reports a successful
 revoke. [Original T868 validation](artifacts/2026-10-10-t868/README.md)
 includes shared malformed vectors, per-function counters and an actual API 36 tablet

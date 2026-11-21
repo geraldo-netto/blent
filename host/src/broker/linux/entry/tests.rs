@@ -32,7 +32,10 @@ fn settings(root: &std::path::Path) -> Settings {
 }
 #[tokio::test]
 async fn t853_cli_defaults_and_overrides_reach_capacity_policy() {
-    let defaults = Options::try_parse_from(arguments()).unwrap().settings();
+    let defaults = Options::try_parse_from(arguments())
+        .unwrap()
+        .settings()
+        .unwrap();
     assert_eq!(defaults.control.clients, 16);
     assert_eq!(defaults.control.links, 4);
     assert_eq!(defaults.session.channel_bytes, 262144);
@@ -67,7 +70,7 @@ async fn t853_cli_defaults_and_overrides_reach_capacity_policy() {
         .into_iter()
         .map(OsString::from),
     );
-    let custom = Options::try_parse_from(custom).unwrap().settings();
+    let custom = Options::try_parse_from(custom).unwrap().settings().unwrap();
     assert_eq!(
         (
             custom.control.clients,
@@ -159,14 +162,18 @@ fn cleanup_arguments(root: &std::path::Path, value: &str) -> Vec<OsString> {
 }
 #[tokio::test]
 async fn t1101_cli_cleanup_mapping_and_rejection_precede_native_effects() {
-    let defaults = Options::try_parse_from(arguments()).unwrap().settings();
+    let defaults = Options::try_parse_from(arguments())
+        .unwrap()
+        .settings()
+        .unwrap();
     assert_eq!(defaults.retirement_timeout, Duration::from_secs(5));
     let root = tempfile::tempdir().unwrap();
     for milliseconds in [1u64, 37, 5000, 60_000] {
         let options =
             Options::try_parse_from(cleanup_arguments(root.path(), &milliseconds.to_string()))
                 .unwrap()
-                .settings();
+                .settings()
+                .unwrap();
         assert_eq!(
             options.retirement_timeout,
             Duration::from_millis(milliseconds)
@@ -175,7 +182,8 @@ async fn t1101_cli_cleanup_mapping_and_rejection_precede_native_effects() {
     for value in ["0", "60001", "18446744073709551615"] {
         let options = Options::try_parse_from(cleanup_arguments(root.path(), value))
             .unwrap()
-            .settings();
+            .settings()
+            .unwrap();
         assert!(
             Server::open(options).await.is_err(),
             "T1101 invalid cleanup budget: {value}"
@@ -214,6 +222,7 @@ async fn t1103_resource_timeout_mapping_and_validation_precede_native_effects() 
         Options::try_parse_from(arguments())
             .unwrap()
             .settings()
+            .unwrap()
             .resource_timeout_ms,
         120_000
     );
@@ -222,13 +231,15 @@ async fn t1103_resource_timeout_mapping_and_validation_precede_native_effects() 
         let selected =
             Options::try_parse_from(resource_arguments(root.path(), &milliseconds.to_string()))
                 .unwrap()
-                .settings();
+                .settings()
+                .unwrap();
         assert_eq!(selected.resource_timeout_ms, milliseconds);
     }
     for value in ["0", "600001", "9223372036854775807"] {
         let selected = Options::try_parse_from(resource_arguments(root.path(), value))
             .unwrap()
-            .settings();
+            .settings()
+            .unwrap();
         assert!(
             Server::open(selected).await.is_err(),
             "T1103 invalid admission timeout: {value}"
@@ -264,6 +275,7 @@ async fn t1105_tls_cli_mapping_and_rejection_precede_native_effects() {
         Options::try_parse_from(arguments())
             .unwrap()
             .settings()
+            .unwrap()
             .tls_timeout,
         Duration::from_secs(10)
     );
@@ -272,13 +284,15 @@ async fn t1105_tls_cli_mapping_and_rejection_precede_native_effects() {
         let selected =
             Options::try_parse_from(tls_arguments(root.path(), &milliseconds.to_string()))
                 .unwrap()
-                .settings();
+                .settings()
+                .unwrap();
         assert_eq!(selected.tls_timeout, Duration::from_millis(milliseconds));
     }
     for value in ["0", "60001", "18446744073709551615"] {
         let selected = Options::try_parse_from(tls_arguments(root.path(), value))
             .unwrap()
-            .settings();
+            .settings()
+            .unwrap();
         assert!(
             Server::open(selected).await.is_err(),
             "T1105 invalid TLS budget: {value}"

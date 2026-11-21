@@ -84,11 +84,16 @@ fn arguments() -> Vec<OsString> {
 fn selected(option: &str, value: i64) -> Settings {
     let mut args = arguments();
     args.extend([option.into(), value.to_string().into()]);
-    Options::try_parse_from(args).unwrap().settings()
+    Options::try_parse_from(args).unwrap().settings().unwrap()
 }
 #[tokio::test]
 async fn t898_shared_defaults_and_boundaries_reach_validated_cli_snapshot() {
-    let defaults = values(&Options::try_parse_from(arguments()).unwrap().settings());
+    let defaults = values(
+        &Options::try_parse_from(arguments())
+            .unwrap()
+            .settings()
+            .unwrap(),
+    );
     let ranges = contract();
     assert_eq!(
         defaults.keys().copied().collect::<BTreeSet<_>>(),
@@ -107,7 +112,10 @@ async fn t898_shared_defaults_and_boundaries_reach_validated_cli_snapshot() {
 }
 #[tokio::test]
 async fn t898_shared_out_of_bounds_values_reject_without_altering_current_settings() {
-    let current = Options::try_parse_from(arguments()).unwrap().settings();
+    let current = Options::try_parse_from(arguments())
+        .unwrap()
+        .settings()
+        .unwrap();
     let snapshot = values(&current);
     for range in contract() {
         for value in [range.minimum - 1, range.maximum + 1] {

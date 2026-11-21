@@ -93,6 +93,7 @@ Desktop settings live at `~/.config/blent/config.toml` unless an absolute
 | Use a tablet webcam | [Cameras](docs/cameras.md) |
 | Use tablet microphone/speakers | [Audio](docs/audio.md) |
 | Forget a trusted computer | [Saved computers](docs/saved-computers.md) |
+| Recover interrupted USB trust or identity | [Recovery](docs/troubleshooting.md#interrupted-usb-trust-or-identity) |
 | Tune display quality or resource use | [Settings](docs/settings.md), [video](docs/video-codecs.md), [pipe buffer](docs/pipe-buffer.md), [CPU scheduling](docs/scheduling.md) |
 | Understand measurements | [Benchmarks and measurement limits](docs/benchmarks.md) |
 | Read past investigations and evidence | [Archive guide](docs/history.md) |

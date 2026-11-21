@@ -49,6 +49,48 @@ attachment credentials automatically. Direct USB remembers approved fingerprints
 by default and asks again when the peer fingerprint changes. Delivery retries back off, potentially to ten minutes; reconnecting the
 cable triggers a fresh attempt. Do not include session tokens in public logs.
 
+## Interrupted USB trust or identity
+
+The Linux USB broker resumes a complete interrupted trust update or identity
+publication using the original record. An incomplete or conflicting record fails
+closed. Its launcher now reports an observed startup exit promptly; another elected
+broker still starting keeps the normal readiness wait.
+
+For damaged saved trust, run the matching installation's `blent-usb-broker`
+executable (source installations normally put it in `~/.local/bin`). The state
+path is `$XDG_STATE_HOME/blent/connection`, or `~/.local/state/blent/connection`
+when `XDG_STATE_HOME` is unset. A custom broker uses its explicit `--state` path.
+
+Run repair after the broker for that state directory has exited. A live owner
+causes an in-use error. Request normal termination with SIGTERM to that identified
+broker process and wait for its cleanup before retrying; retain the stable lock
+files. The reset command requires explicit confirmation:
+
+```sh
+blent-usb-broker --state "${XDG_STATE_HOME:-$HOME/.local/state}/blent/connection" \
+  --reset trust --confirm-reset
+```
+
+This removes remembered tablet approvals and interrupted trust files while
+preserving the host certificate/key. Reconnect and approve the tablets again.
+For incomplete or invalid host identity storage, explicitly select the broader
+reset instead:
+
+```sh
+blent-usb-broker --state "${XDG_STATE_HOME:-$HOME/.local/state}/blent/connection" \
+  --reset identity --confirm-reset
+```
+
+Identity reset also removes every approval bound to the former identity. The next
+broker start creates a new identity, which requires renewed approval on the tablets.
+Both resets retain durable intent through interruption and finish it before admitting
+trust. Unsafe file permissions, links or foreign ownership require correcting the
+filesystem problem; a reset reports that failure and preserves its recovery marker.
+
+On Android, use **Settings → Saved computers → Reset saved computers**, then
+confirm. This preserves the tablet identity. See [saved computers](saved-computers.md)
+for cancellation and cleanup behavior. The host repair adapter is Linux-only.
+
 ## Black screen on the tablet
 
 1. Check `blent status` and the connection route shown in the GUI.

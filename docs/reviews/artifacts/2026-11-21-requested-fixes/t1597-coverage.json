@@ -1,0 +1,35 @@
+[
+  {
+    "file": "host/src/broker/linux/entry.rs",
+    "name": "settings",
+    "line": 57,
+    "language": "rust",
+    "covered": 24,
+    "total": 24,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/linux/entry.rs",
+    "name": "run",
+    "line": 83,
+    "language": "rust",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/linux/entry/repair.rs",
+    "name": "reset",
+    "line": 15,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

@@ -1,0 +1,41 @@
+{
+  "issue": "T1597",
+  "children": [
+    "T1635",
+    "T1636",
+    "T1637",
+    "T1638"
+  ],
+  "before": {
+    "tests": 1,
+    "failed": 1,
+    "reason": "--reset was rejected; original damaged state remained unrecoverable",
+    "log": "/tmp/blent-t1597-red.log"
+  },
+  "after": {
+    "tests": 77,
+    "failed": 0,
+    "ignored": 0,
+    "log": "/tmp/blent-t1597-coverage.log",
+    "integration": [
+      "malformed trust blocks broker startup",
+      "confirmed trust reset preserves certificate and permits complete broker startup/shutdown",
+      "unconfirmed reset rejected without mutation",
+      "confirmed identity reset removes bound trust before new broker identity",
+      "live identity/trust owner rejects reset",
+      "invalid modes, paths and unrelated run flags rejected"
+    ]
+  },
+  "coverage": {
+    "methods": 3,
+    "minimum_percent": 100,
+    "tool": "Rust 1.100.0 LLVM, cargo-llvm-cov 0.8.7"
+  },
+  "complexity": {
+    "functions": 38,
+    "over_nine": 0,
+    "tool": "project Rust syn 2.0.119 checker"
+  },
+  "ownership": "Repair is an explicitly confirmed offline Linux CLI workflow using the original stable store locks and durable journals from T1635/T1636. Catchable signal streams register before any state opening. Complete local startup/shutdown fixtures use private roots and an absent inventory helper; no installed process, saved trust or USB device is touched. Reset errors preserve recovery evidence.",
+  "documentation": "docs/troubleshooting.md#interrupted-usb-trust-or-identity"
+}
