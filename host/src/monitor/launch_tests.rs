@@ -71,6 +71,7 @@ async fn inventory(state: &mut Monitor, serial: &str) {
 
 #[tokio::test]
 async fn t445_new_route_probe_preserves_launch_history_until_identity_is_known() {
+    if crate::monitor::tests::isolated("monitor::launch_tests::t445_new_route_probe_preserves_launch_history_until_identity_is_known") { return; }
     let root = tempfile::tempdir().unwrap();
     let adb = adb(root.path());
     let mut state = super::tests::fixture();
@@ -97,6 +98,7 @@ async fn t445_new_route_probe_preserves_launch_history_until_identity_is_known()
 
 #[tokio::test]
 async fn t445_same_attachment_never_reopens_after_route_repair_or_process_loss() {
+    if crate::monitor::tests::isolated("monitor::launch_tests::t445_same_attachment_never_reopens_after_route_repair_or_process_loss") { return; }
     let root = tempfile::tempdir().unwrap();
     let adb = adb(root.path());
     let mut state = super::tests::fixture();
@@ -154,6 +156,7 @@ async fn t445_same_attachment_never_reopens_after_route_repair_or_process_loss()
 
 #[tokio::test]
 async fn t445_forwarding_retry_keeps_the_first_launch_and_disabled_stays_manual() {
+    if crate::monitor::tests::isolated("monitor::launch_tests::t445_forwarding_retry_keeps_the_first_launch_and_disabled_stays_manual") { return; }
     let root = tempfile::tempdir().unwrap();
     let adb = adb(root.path());
     let mut state = super::tests::fixture();
@@ -179,6 +182,11 @@ async fn t445_forwarding_retry_keeps_the_first_launch_and_disabled_stays_manual(
 
 #[tokio::test]
 async fn t445_synthetic_attachment_never_launches_a_real_android_activity() {
+    if crate::monitor::tests::isolated(
+        "monitor::launch_tests::t445_synthetic_attachment_never_launches_a_real_android_activity",
+    ) {
+        return;
+    }
     if !is_fake_serial("fake:t445") {
         let output = std::process::Command::new(std::env::current_exe().unwrap())
             .args(["--exact", "monitor::launch_tests::t445_synthetic_attachment_never_launches_a_real_android_activity", "--nocapture"])
@@ -226,6 +234,7 @@ fi"#;
 
 #[tokio::test]
 async fn t557_ready_attachment_repairs_lost_mappings_without_reopening_android() {
+    if crate::monitor::tests::isolated("monitor::launch_tests::t557_ready_attachment_repairs_lost_mappings_without_reopening_android") { return; }
     let root = tempfile::tempdir().unwrap();
     let adb = t557_adb(root.path());
     let mut state = super::tests::fixture();
@@ -253,6 +262,11 @@ async fn t557_ready_attachment_repairs_lost_mappings_without_reopening_android()
 
 #[tokio::test]
 async fn t609_display_command_reports_spawn_and_exit_failure() {
+    if crate::monitor::tests::isolated(
+        "monitor::launch_tests::t609_display_command_reports_spawn_and_exit_failure",
+    ) {
+        return;
+    }
     assert!(!app_command_using("tablet", "exit\n".into(), "launch", "/missing/t609-adb").await);
     let root = tempfile::tempdir().unwrap();
     let adb = adb(root.path());

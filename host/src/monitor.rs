@@ -732,6 +732,33 @@ mod tests {
         state.stop().await;
     }
 
+    // T1482: native route locks belong to a private fixture namespace.
+    pub(super) fn isolated(name: &str) -> bool {
+        if std::env::var_os("BLENT_T1482_MONITOR").is_some() {
+            return false;
+        }
+        use std::os::unix::fs::PermissionsExt;
+        let root = tempfile::Builder::new()
+            .permissions(std::fs::Permissions::from_mode(0o700))
+            .tempdir()
+            .unwrap();
+        let output = std::process::Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", name, "--nocapture"])
+            .env("BLENT_T1482_MONITOR", "1")
+            .env("XDG_RUNTIME_DIR", root.path())
+            .env("XDG_CONFIG_HOME", root.path())
+            .env("HOME", root.path())
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "T1482: {}{}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
+        true
+    }
+
     pub(super) fn fixture() -> Monitor {
         let (tablet, extra, _stop) = crate::discovery_tests::monitor_inputs(2, (18000, 18001));
         Monitor::new(Config {

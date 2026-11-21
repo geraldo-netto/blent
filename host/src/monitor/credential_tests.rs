@@ -56,6 +56,11 @@ async fn ready(state: &mut Monitor) {
 
 #[tokio::test]
 async fn t444_replacement_removes_both_old_routes_before_slot_reuse() {
+    if crate::monitor::tests::isolated(
+        "monitor::credential_tests::t444_replacement_removes_both_old_routes_before_slot_reuse",
+    ) {
+        return;
+    }
     let root = tempfile::tempdir().unwrap();
     let mut state = fixture(root.path());
     state.change_primary(&Some("USB-A".into()));
@@ -93,6 +98,7 @@ fn authenticated(root: &std::path::Path) -> Monitor {
 
 #[tokio::test]
 async fn t444_changed_physical_identity_on_same_serial_retires_credentials() {
+    if crate::monitor::tests::isolated("monitor::credential_tests::t444_changed_physical_identity_on_same_serial_retires_credentials") { return; }
     let root = tempfile::tempdir().unwrap();
     let mut state = authenticated(root.path());
     state.probe_ready("USB".into(), Some("physical-A".into()));
@@ -112,6 +118,7 @@ async fn t444_changed_physical_identity_on_same_serial_retires_credentials() {
 
 #[tokio::test]
 async fn t444_delivery_rotation_retry_and_known_route_migration_preserve_focus() {
+    if crate::monitor::tests::isolated("monitor::credential_tests::t444_delivery_rotation_retry_and_known_route_migration_preserve_focus") { return; }
     let root = tempfile::tempdir().unwrap();
     let mut state = authenticated(root.path());
     for serial in ["USB-A", "192.0.2.5:5555"] {
@@ -156,6 +163,11 @@ async fn drained(state: &mut Monitor) {
 
 #[tokio::test]
 async fn t444_failed_credential_delivery_retries_before_first_launch() {
+    if crate::monitor::tests::isolated(
+        "monitor::credential_tests::t444_failed_credential_delivery_retries_before_first_launch",
+    ) {
+        return;
+    }
     let root = tempfile::tempdir().unwrap();
     let mut state = authenticated(root.path());
     state.config.auto_launch = true;
@@ -187,6 +199,11 @@ async fn t444_failed_credential_delivery_retries_before_first_launch() {
 
 #[tokio::test]
 async fn t444_unwritable_token_publication_never_prepares_a_route() {
+    if crate::monitor::tests::isolated(
+        "monitor::credential_tests::t444_unwritable_token_publication_never_prepares_a_route",
+    ) {
+        return;
+    }
     let root = tempfile::tempdir().unwrap();
     let mut state = authenticated(root.path());
     state.config.token_dir = Some(root.path().join("missing"));
@@ -206,6 +223,11 @@ async fn t444_unwritable_token_publication_never_prepares_a_route() {
 
 #[tokio::test]
 async fn t444_inflight_creator_settles_before_replacement() {
+    if crate::monitor::tests::isolated(
+        "monitor::credential_tests::t444_inflight_creator_settles_before_replacement",
+    ) {
+        return;
+    }
     let root = tempfile::tempdir().unwrap();
     let mut state = fixture(root.path());
     let adb = root.path().join("adb");
@@ -257,6 +279,7 @@ fi
 
 #[tokio::test]
 async fn t444_auth_retry_uses_current_key_with_bounded_background_delivery() {
+    if crate::monitor::tests::isolated("monitor::credential_tests::t444_auth_retry_uses_current_key_with_bounded_background_delivery") { return; }
     let root = tempfile::tempdir().unwrap();
     let mut state = authenticated(root.path());
     state.change_primary(&Some("USB".into()));
@@ -290,6 +313,7 @@ async fn t444_auth_retry_uses_current_key_with_bounded_background_delivery() {
 
 #[tokio::test]
 async fn t444_failed_owned_job_retires_pending_route_and_rejects_late_completion() {
+    if crate::monitor::tests::isolated("monitor::credential_tests::t444_failed_owned_job_retires_pending_route_and_rejects_late_completion") { return; }
     let root = tempfile::tempdir().unwrap();
     let mut state = fixture(root.path());
     state

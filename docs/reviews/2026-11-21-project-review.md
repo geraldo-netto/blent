@@ -27,3 +27,7 @@ Cargo 1.100 resolves test executables under `debug/build/<package>/<hash>/out`; 
 ## T1481 — pending fixture ownership
 
 Three permanent GUI tests failed because fake camera/audio starts discarded their only Acknowledger while asserting Pending. Fixtures now retain one acknowledger per backend until stop/drop, matching production settlement semantics. The direct owner-state test retains its original acknowledger through pending assertions. The same T1273 owner/workspace and T979 exact-transport regressions pass. No production behavior changed; completion retention is bounded to each fixture backend, with stop/drop as cleanup sponsor. All measured changed test methods remain <=9 complexity.
+
+## T1482 — monitor fixture namespaces
+
+Read-only lock inspection confirmed the live daemon holds display-route stripes 112/113, which the fixtures also selected for ports 18000/18001. Each affected monitor fixture now executes in a private child with an explicit mode-0700 runtime/config/home directory. No global parent environment mutation, live lock removal or production lock relaxation occurs. The initial private-directory attempt was rejected for its default 0775 mode; the explicit private mode fixes that fixture error. All 78 monitor cases now pass, including the previously failing credential/launch/forwarding families. Child completion precedes temporary-directory cleanup; test bodies retain their original route settlement checks.

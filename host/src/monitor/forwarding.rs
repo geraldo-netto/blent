@@ -88,6 +88,11 @@ exit 0
 
     #[tokio::test]
     async fn t557_repairs_only_missing_routes_and_uses_no_rebind() {
+        if crate::monitor::tests::isolated(
+            "monitor::forwarding::tests::t557_repairs_only_missing_routes_and_uses_no_rebind",
+        ) {
+            return;
+        }
         let root = tempfile::tempdir().unwrap();
         let adb = fake_adb(root.path(), b"UsbFfs tcp:8890 tcp:9010\n");
         let (result, actions) = repair(adb.to_str().unwrap(), "USB", (9010, 9011)).await;
@@ -109,6 +114,7 @@ exit 0
 
     #[tokio::test]
     async fn t557_conflicts_malformed_lists_and_backend_failures_never_rebind() {
+        if crate::monitor::tests::isolated("monitor::forwarding::tests::t557_conflicts_malformed_lists_and_backend_failures_never_rebind") { return; }
         let root = tempfile::tempdir().unwrap();
         for listing in [
             b"UsbFfs tcp:8891 tcp:2222\n".as_slice(),
@@ -140,6 +146,7 @@ exit 0
 
     #[tokio::test]
     async fn t557_periodic_repair_preserves_assignment_and_joins_existing_mutations() {
+        if crate::monitor::tests::isolated("monitor::forwarding::tests::t557_periodic_repair_preserves_assignment_and_joins_existing_mutations") { return; }
         let mut state = super::super::tests::fixture();
         state.current = Some("USB".into());
         state.ready.extend(["USB".into(), "unassigned".into()]);
@@ -171,6 +178,11 @@ exit 0
 
     #[tokio::test]
     async fn t557_extra_repair_uses_its_existing_slot_ports() {
+        if crate::monitor::tests::isolated(
+            "monitor::forwarding::tests::t557_extra_repair_uses_its_existing_slot_ports",
+        ) {
+            return;
+        }
         let mut state = super::super::tests::fixture();
         let session = session::Spec {
             capture: capture::CaptureConfig {
