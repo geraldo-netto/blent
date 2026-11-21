@@ -35,3 +35,7 @@ All 256 broker cases pass; all 11 maintained production methods reach at least 9
 ## T1540 — display route refresh
 
 The failing-first regression confirmed that a read-only refresh error discards the original worker. Identity/listing failures during refresh now report the error while retaining live mappings and their original owner. Initial admission errors, failed creation, stop and caller loss still trigger exact cleanup. The regression covers identity and listing failures, subsequent successful refresh, no premature removal and explicit final cleanup. All 60 USB cases pass; five maintained methods have at least 90% line coverage and every measured function is <=9 complexity. [Evidence](artifacts/2026-11-21-requested-fixes/t1540-verification.json). Only fake ADB endpoints were used.
+
+## T1541 — display lease namespaces
+
+A permanent native regression reproduced the collision between `T1541-Aa` and `T1541-BB` with disjoint ports. Display leases now use exact per-port names and a separate SHA-256 device-identity namespace. Same-device/port exclusion and stable-inode retention remain. All five lock tests and all 60 USB tests pass. Both maintained production methods exceed 91% line coverage; all 11 measured functions are <=9 complexity. [Evidence](artifacts/2026-11-21-requested-fixes/t1541-verification.json). Linux tests use private runtime directories. Windows native acceptance remains unmeasured. No installed binary or live lock namespace was changed.

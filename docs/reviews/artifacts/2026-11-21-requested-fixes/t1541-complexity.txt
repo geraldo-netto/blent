@@ -1,0 +1,12 @@
+host/src/usb/route_lock.rs:8	acquire	1
+host/src/usb/route_lock.rs:18	stripe	2
+host/src/usb/route_lock.rs:27	at	1
+host/src/usb/route_lock.rs:47	display	2
+host/src/usb/route_lock.rs:72	display_file	1
+host/src/usb/route_lock.rs:94	t1541_hash_collision_does_not_reserve_an_unrelated_tablet	2
+host/src/usb/route_lock.rs:114	private_runtime	1
+host/src/usb/route_lock.rs:125	t834_native_lease_rejects_overlap_and_retains_stable_bounded_files	2
+host/src/usb/route_lock.rs:141	t1344_native_display_leases_retain_devices_and_local_ports	2
+host/src/usb/route_lock.rs:171	t1344_display_lease_rejects_symlink_without_unlinking	1
+host/src/usb/route_lock.rs:181	t834_native_lease_refuses_symlink	1
+11 functions; 0 exceed cyclomatic complexity 9

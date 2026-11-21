@@ -296,8 +296,10 @@ its original effect, and failed removal retains its outcome. Matching preexistin
 and unrelated mappings remain externally owned. Network aliases require a physical
 tablet identity before admission, and cleanup rechecks that identity. Stable USB
 serial ownership remains available when the device exposes no separate identity.
-Native device/local-port leases use 256 persistent lock stripes; collisions reject
-admission conservatively. Leases remain held through cleanup and original native
+Native display leases use separate device and local-port namespaces: a SHA-256
+identity digest names each device lock, and each port has an exact numeric lock.
+Lock files remain until runtime-directory cleanup so every waiter sees the same
+inode; retained file count follows distinct device identities and ports used. Leases remain held through cleanup and original native
 thread exit. Higher capacity cannot override an unresolved endpoint reservation.
 Linux keeps the original display ticket closed and reserved while route cleanup
 reports failure, including across device reconnect. Graceful monitor shutdown

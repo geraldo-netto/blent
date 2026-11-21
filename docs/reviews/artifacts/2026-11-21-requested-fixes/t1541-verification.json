@@ -1,0 +1,19 @@
+{
+  "finding": "T1541",
+  "red": "T1541-Aa and T1541-BB with disjoint ports collided in the original 256 stripes.",
+  "green": {
+    "route_lock_cases_passed": 5,
+    "usb_cases_passed": 60,
+    "failed": 0
+  },
+  "coverage": {
+    "maintained_production_methods": 2,
+    "minimum_percent": 91.66666666666667
+  },
+  "complexity": {
+    "functions_measured": 11,
+    "above_nine": 0
+  },
+  "ownership": "At most three files per admitted display lease; exact numeric port names and SHA-256 device names occupy distinct namespaces. Same device/port rejection, partial-acquisition RAII and symlink refusal remain. Files are never unlinked while waiters may retain their inode. Persistent count follows distinct device identities/ports used until runtime-directory cleanup.",
+  "limits": "Native Linux file locks tested in private runtime directories. Windows private-directory ownership remains unchanged; Windows runtime validation was not performed. No running installation updated; old running builds retain their old lock namespace."
+}

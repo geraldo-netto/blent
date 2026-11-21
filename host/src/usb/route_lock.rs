@@ -42,30 +42,26 @@ fn at(directory: &Path, address: &str) -> Result<File> {
         .context("Wi-Fi address stripe active in another process")?;
     Ok(file)
 }
-/// Fixed stripes bound persistent lock files. Collisions reject admission;
-/// locks are never unlinked, so waiters cannot acquire a replacement inode.
+/// Device and port namespaces are independent. Retain stable inodes: unlinking
+/// a lock could let a new caller bypass an existing holder on the old inode.
 pub(super) fn display(identity: &str, ports: (u16, u16)) -> Result<Box<dyn Send>> {
+    use sha2::Digest;
     let directory = blent_config::platform::runtime::runtime_dir()?;
     #[cfg(windows)]
     let private = blent_config::windows::private::Directory::create(&directory)?;
     let mut keys = vec![
-        format!("device:{identity}"),
-        format!("port:{}", ports.0),
-        format!("port:{}", ports.1),
+        format!(
+            "display-device-{:x}",
+            sha2::Sha256::digest(identity.as_bytes())
+        ),
+        format!("display-port-{}", ports.0),
+        format!("display-port-{}", ports.1),
     ];
-    let mut stripes: Vec<_> = keys
-        .drain(..)
-        .map(|key| {
-            key.bytes().fold(0u64, |hash, byte| {
-                hash.wrapping_mul(31).wrapping_add(u64::from(byte))
-            }) % 256
-        })
-        .collect();
-    stripes.sort_unstable();
-    stripes.dedup();
-    let files: Result<Vec<_>> = stripes
-        .into_iter()
-        .map(|stripe| display_file(&directory, stripe))
+    keys.sort_unstable();
+    keys.dedup();
+    let files: Result<Vec<_>> = keys
+        .iter()
+        .map(|key| display_file(&directory, key))
         .collect();
     let files = files?;
     #[cfg(windows)]
@@ -73,7 +69,7 @@ pub(super) fn display(identity: &str, ports: (u16, u16)) -> Result<Box<dyn Send>
     #[cfg(not(windows))]
     Ok(Box::new(files))
 }
-fn display_file(directory: &Path, stripe: u64) -> Result<File> {
+fn display_file(directory: &Path, key: &str) -> Result<File> {
     let mut options = OpenOptions::new();
     options.create(true).truncate(false).read(true).write(true);
     #[cfg(target_os = "linux")]
@@ -81,7 +77,7 @@ fn display_file(directory: &Path, stripe: u64) -> Result<File> {
         use std::os::unix::fs::OpenOptionsExt;
         options.mode(0o600).custom_flags(libc::O_NOFOLLOW);
     }
-    let file = options.open(directory.join(format!("display-route-{stripe}.lock")))?;
+    let file = options.open(directory.join(format!("{key}.lock")))?;
     ensure!(
         file.metadata()?.is_file(),
         "Display lease is not a regular file"
@@ -93,6 +89,38 @@ fn display_file(directory: &Path, stripe: u64) -> Result<File> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(target_os = "linux")]
+    #[test]
+    fn t1541_hash_collision_does_not_reserve_an_unrelated_tablet() {
+        if crate::test_logging::isolated(
+            "usb::route_lock::tests::t1541_hash_collision_does_not_reserve_an_unrelated_tablet",
+        ) {
+            return;
+        }
+        let _root = private_runtime();
+        let first = display("T1541-Aa", (61000, 61001)).unwrap();
+        let second = display("T1541-BB", (61002, 61003));
+        assert!(
+            second.is_ok(),
+            "T1541 distinct tablets collide: {:?}",
+            second.err()
+        );
+        assert!(display("T1541-Aa", (61004, 61005)).is_err());
+        assert!(display("T1541-other", (61001, 61006)).is_err());
+        drop(first);
+        assert!(display("T1541-Aa", (61000, 61001)).is_ok());
+    }
+    #[cfg(target_os = "linux")]
+    fn private_runtime() -> tempfile::TempDir {
+        use std::os::unix::fs::PermissionsExt;
+        let root = tempfile::tempdir().unwrap();
+        std::fs::set_permissions(root.path(), std::fs::Permissions::from_mode(0o700)).unwrap();
+        // Only called before starting threads in an isolated test child.
+        unsafe {
+            std::env::set_var("XDG_RUNTIME_DIR", root.path());
+        }
+        root
+    }
     #[test]
     fn t834_native_lease_rejects_overlap_and_retains_stable_bounded_files() {
         let root = tempfile::tempdir().unwrap();
@@ -111,6 +139,14 @@ mod tests {
     }
     #[test]
     fn t1344_native_display_leases_retain_devices_and_local_ports() {
+        #[cfg(target_os = "linux")]
+        if crate::test_logging::isolated(
+            "usb::route_lock::tests::t1344_native_display_leases_retain_devices_and_local_ports",
+        ) {
+            return;
+        }
+        #[cfg(target_os = "linux")]
+        let _root = private_runtime();
         let commands = super::super::NativeCommands("unused".into());
         use super::super::Commands;
         let first = commands
@@ -136,8 +172,8 @@ mod tests {
         let root = tempfile::tempdir().unwrap();
         let target = root.path().join("target");
         std::fs::write(&target, b"preserved").unwrap();
-        std::os::unix::fs::symlink(&target, root.path().join("display-route-0.lock")).unwrap();
-        assert!(display_file(root.path(), 0).is_err());
+        std::os::unix::fs::symlink(&target, root.path().join("display-port-0.lock")).unwrap();
+        assert!(display_file(root.path(), "display-port-0").is_err());
         assert_eq!(std::fs::read(target).unwrap(), b"preserved");
     }
     #[cfg(target_os = "linux")]

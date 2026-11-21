@@ -1,0 +1,26 @@
+[
+  {
+    "file": "host/src/usb/route_lock.rs",
+    "name": "display",
+    "line": 47,
+    "language": "rust",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/usb/route_lock.rs",
+    "name": "display_file",
+    "line": 72,
+    "language": "rust",
+    "covered": 11,
+    "total": 12,
+    "percent": 91.66666666666667,
+    "passes": true,
+    "missing": [
+      83
+    ]
+  }
+]
