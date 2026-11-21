@@ -1,0 +1,13 @@
+{
+  "finding": "T1595",
+  "red": "Private real accept4 EMFILE terminated the server (Too many open files).",
+  "green": {
+    "broker_cases_passed": 256,
+    "failed": 0,
+    "new_regressions": 2
+  },
+  "coverage": "Three maintained production methods >=91.6%, per-method report retained.",
+  "complexity": "21 source/test functions; none >9.",
+  "ownership": "Rejected credentials close the newly accepted descriptor via RAII. Accept errors retain existing clients, links, listener and authority worker. A single monotonic deadline delays only further accepts; clock ticks and existing I/O remain live. Native EMFILE fixture restores original RLIMIT_NOFILE before cleanup and exercises subsequent admission. Credential fixture uses actual SO_PEERCRED with a deliberately different expected UID, without changing process identity.",
+  "native": "Private Linux socket and descriptor fixtures only; no installed broker or hardware touched."
+}

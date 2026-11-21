@@ -1,0 +1,22 @@
+host/src/broker/linux/server.rs:87	open	1
+host/src/broker/linux/server.rs:92	open_in	4
+host/src/broker/linux/server.rs:139	run	2
+host/src/broker/linux/server.rs:154	accepted	3
+host/src/broker/linux/server.rs:168	accept	3
+host/src/broker/linux/server.rs:188	input	6
+host/src/broker/linux/server.rs:201	link_failed	1
+host/src/broker/linux/server.rs:216	reply	4
+host/src/broker/linux/server.rs:226	reject	1
+host/src/broker/linux/server.rs:229	snapshot	2
+host/src/broker/linux/server.rs:239	close_client	5
+host/src/broker/linux/server.rs:258	close_requested	4
+host/src/broker/linux/server.rs:269	tick	1
+host/src/broker/linux/server.rs:277	collect_clients	4
+host/src/broker/linux/server.rs:286	collect_links	4
+host/src/broker/linux/server.rs:306	next	6
+host/src/broker/linux/server.rs:327	inventory_next	3
+host/src/broker/linux/server/tests/accept.rs:6	exhausted	1
+host/src/broker/linux/server/tests/accept.rs:24	drop	1
+host/src/broker/linux/server/tests/accept.rs:30	t1595_native_accept_exhaustion_keeps_existing_clients_served	2
+host/src/broker/linux/server/tests/accept.rs:100	t1595_rejected_native_credentials_preserve_existing_client_service	1
+21 functions; 0 exceed cyclomatic complexity 9

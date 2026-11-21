@@ -66,6 +66,7 @@ enum Input {
 pub struct Server {
     settings: Settings,
     listener: AsyncListener,
+    accept_after: Instant,
     authority: Worker,
     identity: Ready,
     controller: Control,
@@ -117,6 +118,7 @@ impl Server {
         Ok(Self {
             settings,
             listener,
+            accept_after: Instant::now(),
             authority,
             identity,
             controller,
@@ -139,7 +141,7 @@ impl Server {
         clock.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
         loop {
             tokio::select! {
-                accepted = self.listener.accept() => self.accept(accepted?.0)?,
+                accepted = self.listener.accept(), if Instant::now() >= self.accept_after => self.accepted(accepted)?,
                 input = next(&mut self.clients, &mut self.links) => self.input(input)?,
                 reply = self.authority.next() => self.authority_event(reply?)?,
                 inventory = inventory_next(&mut self.inventory) => self.inventory_result(inventory)?,
@@ -147,6 +149,20 @@ impl Server {
             }
             self.close_requested()?;
             self.authorize_next()?;
+        }
+    }
+    fn accepted(
+        &mut self,
+        result: std::io::Result<(super::async_io::AsyncSocket, super::Caller)>,
+    ) -> Result<()> {
+        match result {
+            Ok((socket, _)) => self.accept(socket),
+            Err(error) => {
+                self.accept_after = Instant::now() + Duration::from_millis(100);
+                tracing::warn!(kind = ?error.kind(), code = error.raw_os_error(),
+                    "Broker accept failed; retry delayed while existing clients remain served");
+                Ok(())
+            }
         }
     }
     fn accept(&mut self, socket: super::async_io::AsyncSocket) -> Result<()> {

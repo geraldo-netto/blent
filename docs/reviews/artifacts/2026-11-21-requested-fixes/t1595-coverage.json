@@ -1,0 +1,39 @@
+[
+  {
+    "file": "host/src/broker/linux/server.rs",
+    "name": "open_in",
+    "line": 92,
+    "language": "rust",
+    "covered": 44,
+    "total": 45,
+    "percent": 97.77777777777777,
+    "passes": true,
+    "missing": [
+      108
+    ]
+  },
+  {
+    "file": "host/src/broker/linux/server.rs",
+    "name": "run",
+    "line": 139,
+    "language": "rust",
+    "covered": 11,
+    "total": 12,
+    "percent": 91.66666666666667,
+    "passes": true,
+    "missing": [
+      153
+    ]
+  },
+  {
+    "file": "host/src/broker/linux/server.rs",
+    "name": "accepted",
+    "line": 154,
+    "language": "rust",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]
