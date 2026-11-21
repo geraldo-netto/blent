@@ -6,6 +6,8 @@ use std::sync::{
     Arc, Mutex, OnceLock,
 };
 use tokio::sync::{mpsc, oneshot, watch};
+#[cfg(test)]
+mod identity_tests;
 mod worker;
 
 struct Control {
@@ -37,7 +39,7 @@ impl Routes {
         Self::for_transport(serial, ports)
     }
     pub fn for_transport(serial: &str, ports: (u16, u16)) -> Result<Self> {
-        check_serial(serial)?;
+        blent_config::tablets::validate_adb_serial(serial)?;
         blent_config::slot_ports(ports.0, ports.1, 1)?;
         Ok(Self {
             serial: Arc::new(Mutex::new(serial.into())),
@@ -49,7 +51,7 @@ impl Routes {
     /// Caller proves the physical identity. The worker independently checks a
     /// network alias before mutation; retarget never cancels an original command.
     pub(crate) fn retarget(&mut self, serial: &str) -> Result<()> {
-        check_serial(serial)?;
+        blent_config::tablets::validate_adb_serial(serial)?;
         *self.serial.lock().unwrap() = serial.into();
         Ok(())
     }
@@ -158,13 +160,6 @@ impl Drop for Routes {
             worker.stop.send_replace(true);
         }
     }
-}
-fn check_serial(serial: &str) -> Result<()> {
-    ensure!(
-        !serial.is_empty() && serial.len() <= 1024 && !serial.chars().any(char::is_control),
-        "Invalid ADB serial"
-    );
-    Ok(())
 }
 fn reserve() -> Result<Admission> {
     static POOL: OnceLock<std::io::Result<Pool>> = OnceLock::new();

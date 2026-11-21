@@ -1,0 +1,128 @@
+{
+  "issue": "T1659",
+  "failing_before_tests": 2,
+  "passing_usb_tests": 63,
+  "coverage_tool": "cargo-llvm-cov / LLVM line counters",
+  "coverage_profiles": [
+    "blent-2771859-18225752810140141692_0.profraw",
+    "blent-2771935-18225752810140141692_0.profraw",
+    "blent-2771940-18225752810140141692_0.profraw"
+  ],
+  "coverage": [
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "for_transport",
+      "line": 41,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "retarget",
+      "line": 53,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity_tool": "project Rust syn 2.0.119",
+  "complexity": [
+    [
+      "host/src/usb/routes.rs",
+      37,
+      "new",
+      1
+    ],
+    [
+      "host/src/usb/routes.rs",
+      41,
+      "for_transport",
+      1
+    ],
+    [
+      "host/src/usb/routes.rs",
+      53,
+      "retarget",
+      1
+    ],
+    [
+      "host/src/usb/routes.rs",
+      58,
+      "serial",
+      1
+    ],
+    [
+      "host/src/usb/routes.rs",
+      63,
+      "retain_native",
+      1
+    ],
+    [
+      "host/src/usb/routes.rs",
+      72,
+      "prepare",
+      5
+    ],
+    [
+      "host/src/usb/routes.rs",
+      95,
+      "start",
+      2
+    ],
+    [
+      "host/src/usb/routes.rs",
+      130,
+      "retire",
+      5
+    ],
+    [
+      "host/src/usb/routes.rs",
+      153,
+      "completion",
+      2
+    ],
+    [
+      "host/src/usb/routes.rs",
+      158,
+      "drop",
+      2
+    ],
+    [
+      "host/src/usb/routes.rs",
+      164,
+      "reserve",
+      3
+    ],
+    [
+      "host/src/usb/routes.rs",
+      184,
+      "poll_complete",
+      3
+    ],
+    [
+      "host/src/usb/routes/identity_tests.rs",
+      10,
+      "t1659_route_admission_rejects_direction_controls",
+      2
+    ],
+    [
+      "host/src/usb/routes/identity_tests.rs",
+      18,
+      "t1659_rejected_retarget_preserves_original_serial_and_control",
+      2
+    ],
+    [
+      "host/src/usb/routes/identity_tests.rs",
+      31,
+      "t1659_route_identity_boundaries_preserve_current_valid_forms",
+      3
+    ]
+  ]
+}
