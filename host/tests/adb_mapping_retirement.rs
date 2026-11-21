@@ -92,6 +92,32 @@ async fn listener() -> tokio::net::TcpListener {
 }
 
 #[tokio::test]
+async fn t1672_inventory_query_preserves_unknown_and_confirmed_outcomes() {
+    let root = fixture();
+    let adb = root.path().join("adb");
+    let cases: &[(&[u8], Option<Vec<String>>)] = &[
+        (
+            b"List of devices attached\nUSB\tdevice\nOFF\toffline\n",
+            Some(vec!["USB".into()]),
+        ),
+        (b"List of devices attached\n", Some(vec![])),
+        (b"List of devices attached\npartial", None),
+        (b"\xff", None),
+    ];
+    for (bytes, expected) in cases {
+        std::fs::write(root.path().join("inventory"), bytes).unwrap();
+        assert_eq!(adb_inventory::query(adb.to_str().unwrap()).await, *expected);
+    }
+    std::fs::write(root.path().join("inventory"), b"List of devices attached\n").unwrap();
+    std::fs::write(root.path().join("fail_inventory"), b"").unwrap();
+    assert_eq!(adb_inventory::query(adb.to_str().unwrap()).await, None);
+    assert_eq!(
+        adb_inventory::query(root.path().join("missing-adb").to_str().unwrap()).await,
+        None
+    );
+}
+
+#[tokio::test]
 async fn t1090_drop_retires_the_original_mapping() {
     let root = fixture();
     let bridge = bridge::Bridge::create(
