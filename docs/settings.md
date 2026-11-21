@@ -173,7 +173,11 @@ unavailable inventory cannot clear that suppression. Pairing grants no media con
 On Android, an accessory attachment received during an old connection's cleanup
 is retained until that owner retires. After a successfully authenticated,
 remembered connection ends unexpectedly, the current Activity retries without
-requiring another cable event. Retries wait 2 seconds initially, double after
+requiring another cable event while a supported accessory is still present.
+A missing or unavailable accessory snapshot stops that retry chain; a fresh
+attachment event or explicit Connect can start another connection. Presence
+checks share the original bounded snapshot owner and do not consume attachment
+events or grant media consent. Retries wait 2 seconds initially, double after
 failed attempts up to 30 seconds, and return to 2 seconds after authentication.
 Changed or forgotten peers still require approval; an initial unknown connection
 or an unremembered manual failure does not start a retry loop. Disconnect, Deny

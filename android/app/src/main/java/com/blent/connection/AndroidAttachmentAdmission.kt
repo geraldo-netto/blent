@@ -46,13 +46,23 @@ internal class AndroidAttachmentAdmission(
 
     override suspend fun take(): Boolean {
         currentCoroutineContext().ensureActive()
-        if (!registered) return false
         val candidate = epoch.candidate() ?: return false
+        return observe { epoch.claim(candidate) }
+    }
+
+    override suspend fun present(): Boolean {
+        val observed = epoch.observation()
+        return observe { epoch.unchanged(observed) }
+    }
+
+    private suspend fun observe(confirm: () -> Boolean): Boolean {
+        currentCoroutineContext().ensureActive()
+        if (!registered) return false
         val original = Any()
         if (!snapshot.tryLock(original)) return false
         try {
             return withContext(NonCancellable + dispatcher) {
-                supportedAccessory() && epoch.claim(candidate)
+                supportedAccessory() && confirm()
             }
         } finally { snapshot.unlock(original) }
     }

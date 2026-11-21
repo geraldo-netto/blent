@@ -68,6 +68,7 @@ internal class ConfiguredConnection(
 
     private suspend fun run(identity: Any, request: Request, initial: Selection): Any? {
         if (request == Request.ATTACHMENT && !attachment.take()) return null
+        if (request == Request.RETRY && !attachment.present()) return null
         currentCoroutineContext().ensureActive()
         if (request != Request.MANUAL && !attachmentReady(initial)) return null
         val selected = preferences.load()

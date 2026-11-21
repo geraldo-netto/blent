@@ -4,6 +4,8 @@ package com.blent.connection
  * Manual starts consume the current automatic opportunity but need no fresh event. */
 internal interface AttachmentAdmission {
     suspend fun take(): Boolean
+    /** Current supported accessory observation; never consumes an attach event. */
+    suspend fun present(): Boolean
     fun consume()
 }
 
@@ -13,6 +15,8 @@ internal class AttachmentEpoch {
     private var identity = Any()
     private var consumed = false
     @Synchronized fun candidate(): Any? = identity.takeUnless { consumed }
+    @Synchronized fun observation(): Any = identity
+    @Synchronized fun unchanged(observed: Any): Boolean = observed === identity
     @Synchronized fun claim(candidate: Any): Boolean {
         if (candidate !== identity || consumed) return false
         consumed = true

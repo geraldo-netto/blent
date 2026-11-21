@@ -92,4 +92,50 @@ class AndroidAttachmentAdmissionTest {
             }
         }
     }
+    @Test fun t1521PresenceDoesNotConsumeAttachmentAndRequiresSupportedCurrentDevice() = runBlocking {
+        NativeAttachmentFixture().use { native ->
+            val app = RuntimeEnvironment.getApplication()
+            val owner = AndroidAttachmentAdmission(app, Dispatchers.Unconfined)
+            assertFalse(owner.present())
+            owner.register()
+            try {
+                assertTrue(owner.present())
+                assertTrue(owner.present())
+                assertTrue(owner.take())
+                assertTrue(owner.present())
+                assertFalse(owner.take())
+                native.absent()
+                assertFalse(owner.present())
+                native.reattach()
+                assertTrue(owner.present())
+                shadowOf(app.getSystemService(UsbManager::class.java)).setAttachedUsbAccessory(nativeAccessory())
+                assertFalse(owner.present())
+            } finally { unregister(owner) }
+        }
+    }
+
+    @Test fun t1521PresenceSharesSnapshotOwnershipAndRejectsCutoffDuringNativeCall() = runBlocking {
+        NativeAttachmentFixture().use {
+            val owner = AndroidAttachmentAdmission(RuntimeEnvironment.getApplication())
+            owner.register()
+            val entered = CountDownLatch(1)
+            val release = CountDownLatch(1)
+            AttachmentSnapshotShadow.entered = entered
+            AttachmentSnapshotShadow.release = release
+            val original = async(Dispatchers.Default) { owner.present() }
+            try {
+                assertTrue(entered.await(3, TimeUnit.SECONDS))
+                assertFalse(owner.present())
+                assertFalse(owner.take())
+                owner.consume()
+                release.countDown()
+                assertFalse(original.await())
+                assertTrue(owner.present())
+                assertFalse(owner.take())
+            } finally {
+                release.countDown(); original.cancelAndJoin(); unregister(owner)
+                AttachmentSnapshotShadow.resetGate()
+            }
+        }
+    }
 }

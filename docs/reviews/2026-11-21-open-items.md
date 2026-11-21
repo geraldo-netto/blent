@@ -226,3 +226,12 @@ All three original regressions failed before the fix; all 68 USB tests and 81 mo
 The existing bounded worker remains the cleanup sponsor across every delay, with one bounded inventory string and one serial snapshot per observation. Absence never releases native leases or unknown effects. Conditional eventual cleanup still requires the original native commands to complete and the original tablet to become observable. No real Blent process or tablet was touched. Temporary media adoption remains T1657; physical acceptance remains T1658.
 
 T1656 integration follow-up: the original process-exit fixture now supplies its connected tablet inventory. The portable native-command test and both process-exit tests pass, including normal/error/cancel/panic drains. All eight fixture functions measure <=9 complexity.
+
+
+## T1521 — stop remembered retries when the accessory disappears
+
+Before a remembered retry reads settings or admits a connection, Android now checks for a currently supported accessory. An absent, unsupported or unavailable snapshot ends that retry chain; a fresh attach event or manual Connect remains available. Presence observation does not consume the automatic attach opportunity. Attach and retry observations share one native snapshot slot; a cutoff or detach during a snapshot invalidates its result.
+
+The Activity regression failed on both API 27 and API 34 before the fix. All 41 selected connection, attachment and remembered-retry tests pass afterward, including snapshot exclusion, cancellation, user cutoff, unsupported metadata, retained original retirement and attach-event consumption. All six maintained production methods and three separately measured callbacks have 100% executable-line coverage (JaCoCo 0.8.15). All 70 measured functions in affected source/test files have complexity <=9 (project Kotlin PSI 1.9.20).
+
+The application still owns the receiver and the single native snapshot slot. The snapshot remains sponsored through cancellation until the original call returns; only then is its mutex released. Each observation retains one epoch identity and one bounded accessory snapshot (capacity 32), introduces no native device opening and cannot grant media access. Activity retry state clears when admission returns no attempt. Tests use Robolectric and owned fake workers; physical Android USB acceptance was not performed.

@@ -1,0 +1,643 @@
+{
+  "issue": "T1521",
+  "red": {
+    "API_levels": [
+      27,
+      34
+    ],
+    "failed": 2
+  },
+  "tests": 41,
+  "coverage": [
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      "name": "take",
+      "line": 47,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+          "owner": "com/blent/connection/AndroidAttachmentAdmission",
+          "name": "take",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 48,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      "name": "<lambda>",
+      "line": 50,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+          "owner": "com/blent/connection/AndroidAttachmentAdmission$take$2",
+          "name": "invoke",
+          "signature": "()Ljava/lang/Boolean;",
+          "line": 50,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      "name": "present",
+      "line": 53,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+          "owner": "com/blent/connection/AndroidAttachmentAdmission",
+          "name": "present",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 54,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      "name": "<lambda>",
+      "line": 55,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+          "owner": "com/blent/connection/AndroidAttachmentAdmission$present$2",
+          "name": "invoke",
+          "signature": "()Ljava/lang/Boolean;",
+          "line": 55,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      "name": "observe",
+      "line": 58,
+      "language": "kotlin",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+          "owner": "com/blent/connection/AndroidAttachmentAdmission",
+          "name": "observe",
+          "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 58,
+          "covered": 8,
+          "total": 8
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      "name": "<lambda>",
+      "line": 64,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+          "owner": "com/blent/connection/AndroidAttachmentAdmission$observe$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 65,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      "name": "observation",
+      "line": 18,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+          "owner": "com/blent/connection/AttachmentEpoch",
+          "name": "observation",
+          "signature": "()Ljava/lang/Object;",
+          "line": 18,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      "name": "unchanged",
+      "line": 19,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+          "owner": "com/blent/connection/AttachmentEpoch",
+          "name": "unchanged",
+          "signature": "(Ljava/lang/Object;)Z",
+          "line": 19,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "name": "run",
+      "line": 69,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+          "owner": "com/blent/connection/ConfiguredConnection",
+          "name": "run",
+          "signature": "(Ljava/lang/Object;Lcom/blent/connection/ConfiguredConnection$Request;Lcom/blent/connection/ConfiguredConnection$Selection;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 70,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    }
+  ],
+  "complexity_tool": "project Kotlin PSI 1.9.20",
+  "complexity": [
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      17,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      26,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      27,
+      "onReceive",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      34,
+      "register",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      45,
+      "consume",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      47,
+      "take",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      50,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      53,
+      "present",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      55,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      58,
+      "observe",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      64,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      70,
+      "supportedAccessory",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      81,
+      "get",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      82,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      14,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      17,
+      "candidate",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      17,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      18,
+      "observation",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      19,
+      "unchanged",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      20,
+      "claim",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      25,
+      "consume",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      26,
+      "detached",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      8,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      9,
+      "connectionPreferenceFailure",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      13,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      19,
+      "<clinit>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      20,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      21,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      29,
+      "connect",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      38,
+      "attach",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      43,
+      "observeRemembered",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      45,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      48,
+      "retry",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      50,
+      "admitRetry",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      57,
+      "start",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      59,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      61,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      64,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      69,
+      "run",
+      7
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      79,
+      "admit",
+      8
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      91,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      94,
+      "attachmentReady",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      96,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      100,
+      "finished",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      106,
+      "disconnect",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      25,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      29,
+      "resetGate",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      31,
+      "getAccessoryList",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      41,
+      "t1405MissingNativeAccessoryAndManualCutoffRejectIntentAuthority",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      41,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      42,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      60,
+      "unregister",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      66,
+      "t1405CancellationRetainsOriginalSnapshotAndRejectsStaleNativeResult",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      66,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      67,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      76,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      95,
+      "t1521PresenceDoesNotConsumeAttachmentAndRequiresSupportedCurrentDevice",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      95,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      96,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      117,
+      "t1521PresenceSharesSnapshotOwnershipAndRejectsCutoffDuringNativeCall",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      117,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      118,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/AndroidAttachmentAdmissionTest.kt",
+      125,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/RememberedConnectionActivityTest.kt",
+      16,
+      "t1393AuthenticatedRememberedSessionRetriesWithoutAnotherAttachIntent",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/RememberedConnectionActivityTest.kt",
+      17,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/RememberedConnectionActivityTest.kt",
+      33,
+      "t1521UnpluggedAccessoryStopsRememberedRetry",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/RememberedConnectionActivityTest.kt",
+      34,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/TrustedAttachments.kt",
+      5,
+      "take",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/TrustedAttachments.kt",
+      6,
+      "present",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/TrustedAttachments.kt",
+      7,
+      "consume",
+      1
+    ]
+  ]
+}

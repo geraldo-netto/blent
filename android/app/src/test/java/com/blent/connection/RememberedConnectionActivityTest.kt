@@ -30,4 +30,24 @@ class RememberedConnectionActivityTest {
             } finally { activity.destroy(); CameraOwner.reset(); AudioOwner.reset() }
         }
     }
+    @Test fun t1521UnpluggedAccessoryStopsRememberedRetry() {
+        ConnectionUiFixture().use { fixture ->
+            WorkerTestBridge.install()
+            Prefs(RuntimeEnvironment.getApplication()).checkUpdates = false
+            val activity = Robolectric.buildActivity(MainActivity::class.java).create()
+            try {
+                fixture.connect()
+                val original = fixture.workers.single()
+                original.report(ConnectionWorkerEvent.Peer(fixture.ticket, fixture.tablet, true))
+                original.report(ConnectionWorkerEvent.State(ConnectionWorkerPhase.AUTHENTICATED))
+                fixture.nativeAttachment.absent()
+                original.released.complete(Unit)
+                shadowOf(android.os.Looper.getMainLooper()).idleFor(Duration.ofSeconds(2))
+                assertEquals("T1521: missing accessory must stop retry admission", 1, fixture.workers.size)
+                shadowOf(android.os.Looper.getMainLooper()).idleFor(Duration.ofMinutes(2))
+                assertEquals(1, fixture.workers.size)
+                assertFalse(fixture.binding.state.value.active)
+            } finally { activity.destroy(); CameraOwner.reset(); AudioOwner.reset() }
+        }
+    }
 }
