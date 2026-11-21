@@ -72,6 +72,12 @@ impl Commands for Fake {
     }
     fn execute(&self, args: Vec<String>, _: Option<Vec<u8>>) -> CommandFuture<'_> {
         Box::pin(async move {
+            if args == ["devices"] {
+                return Ok(output(
+                    0,
+                    "List of devices attached\nT1411USB\tdevice\n".into(),
+                ));
+            }
             Ok(match args[2].as_str() {
                 "shell" => output(0, "T1411physical".into()),
                 "reverse" => self.reverse(&args),
