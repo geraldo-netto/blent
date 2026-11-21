@@ -18,7 +18,16 @@ use blent_config::{
         wire::{Channel, Kind},
     },
 };
-use tokio::{io::AsyncWriteExt, sync::oneshot};
+use tokio::{
+    io::{AsyncReadExt, AsyncWriteExt},
+    sync::oneshot,
+};
+
+// T1474: current BLCAM003 capability and control records, independently encoded.
+const CAPS: [u8; 20] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0];
+const CONTROL: [u8; 18] = [
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0x0b, 0xb8, 0x03, 0xe8, 1,
+];
 
 struct Peer {
     wire: Transport<Box<dyn crate::accessory::Stream>>,
@@ -79,6 +88,8 @@ impl Peer {
                     protocol::MAGIC.as_slice(),
                     "ab".repeat(32).as_bytes(),
                     &[0, 3],
+                    &CAPS,
+                    &[0; 9], // revision zero, no pending live-control receipt
                     &4u32.to_be_bytes(),
                     b"unit",
                 ]
@@ -125,8 +136,8 @@ impl Peer {
         } else {
             assert_eq!(channel, Channel::Camera);
             self.feedback.extend_from_slice(&bytes);
-            assert!(self.feedback.len() <= 10);
-            if self.feedback.len() == 10 {
+            assert!(self.feedback.len() <= 28);
+            if self.feedback.len() == 28 {
                 self.received
                     .take()
                     .unwrap()
@@ -205,18 +216,22 @@ async fn t933_private_tls_camera_registration_preserves_protocol_and_delayed_ret
             .unwrap(),
         protocol::Header {
             lens: 0,
-            rotation: 3
+            rotation: 3,
+            capabilities: blent_config::camera::tuning::Capabilities::decode(CAPS).unwrap(),
         }
     );
+    assert_eq!(socket.read_u64().await.unwrap(), 0);
+    assert_eq!(socket.read_u8().await.unwrap(), 0);
     assert_eq!(
         bounded(protocol::packet(&mut socket)).await.unwrap(),
         b"unit"
     );
     socket.write_all(b"OK").await.unwrap();
     socket.write_u64(1).await.unwrap();
+    socket.write_all(&CONTROL).await.unwrap();
     assert_eq!(
         bounded(feedback).await.unwrap(),
-        [b"OK".as_slice(), &1u64.to_be_bytes()].concat()
+        [b"OK".as_slice(), &1u64.to_be_bytes(), &CONTROL].concat()
     );
     assert!(!bridge.retired());
     let close = bridge.close();

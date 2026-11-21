@@ -1,0 +1,9 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+error[E0063]: missing field `capabilities` in initializer of `camera::protocol::Header`
+   --> host/src/broker/linux/server/tests/camera.rs:206:9
+    |
+206 |         protocol::Header {
+    |         ^^^^^^^^^^^^^^^^ missing `capabilities`
+
+For more information about this error, try `rustc --explain E0063`.
