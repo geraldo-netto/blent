@@ -58,6 +58,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
+| T1537 | open | low | small | Apply one display-string hardening rule to device identities. `common/src/connection/control/names.rs::unsafe_character` rejects control and bidirectional-override characters for USB descriptor names, but `common/src/tablets.rs::validate_adb_serial`, `common/src/workspace.rs::Device::new` and `common/src/connection/routes.rs::validate_identity` reject only control characters, so a device-supplied ADB serial containing directional overrides is accepted and shown as a row label. Visible impact in the egui interface is unverified. Completion: reuse the shared predicate in those validators with permanent boundary regressions. |
 
 ## Installation and distribution
 
