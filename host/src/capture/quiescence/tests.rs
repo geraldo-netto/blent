@@ -197,3 +197,73 @@ async fn t1050_idle_capture_wakes_for_original_pause_without_a_display_or_settin
     task.await.unwrap();
     assert!(!fence.complete());
 }
+
+#[tokio::test]
+async fn t1615_already_quiescent_capture_acknowledges_each_new_pause() {
+    if isolated(
+        "capture::quiescence::tests::t1615_already_quiescent_capture_acknowledges_each_new_pause",
+    ) {
+        return;
+    }
+    let mut manager = fixture::manager();
+    let control = bind(&mut manager);
+    let (_activity, activity) = watch::channel(blent_config::host_activity::Publication::Pending);
+    manager.bind_display_work(Arc::new(
+        blent::display_work::View::new(Some(activity), None, false)
+            .with_gate(manager.quiescence.as_ref().unwrap().source()),
+    ));
+    let (_settings, settings) = watch::channel(fixture::settings(&manager.config));
+    let (_display, display) = watch::channel(true);
+    let (stop, stopped) = watch::channel(false);
+    let (video, _receiver) = crate::video_queue::channel(8, Default::default());
+    let mut outcomes = Vec::new();
+    {
+        let stream = manager.stream_frames(video.into(), settings, display, stopped);
+        tokio::pin!(stream);
+        assert!(futures_util::poll!(&mut stream).is_pending());
+        for _ in 0..3 {
+            let fence = control.pause();
+            assert!(futures_util::poll!(&mut stream).is_pending());
+            outcomes.push((fence.complete(), control.resume(&fence)));
+            assert!(futures_util::poll!(&mut stream).is_pending());
+        }
+        stop.send_replace(true);
+        stream.await.unwrap();
+    }
+    manager.shutdown().await;
+    assert_eq!(
+        outcomes,
+        vec![(true, true); 3],
+        "T1615 parked capture lost pause"
+    );
+}
+
+#[tokio::test]
+async fn t1615_pause_during_native_retirement_is_acknowledged_after_settlement() {
+    if isolated("capture::quiescence::tests::t1615_pause_during_native_retirement_is_acknowledged_after_settlement") { return; }
+    let mut manager = fixture::manager();
+    let control = bind(&mut manager);
+    let (native, release) = held_native(None).await;
+    let original = native.completion();
+    manager.helper.pending = Some(original.clone());
+    let fence;
+    {
+        let pause = manager.quiesce_and_publish();
+        tokio::pin!(pause);
+        assert!(futures_util::poll!(&mut pause).is_pending());
+        fence = control.pause();
+        assert!(!fence.complete());
+        assert!(!original.is_complete());
+        drop(release);
+        native.await.unwrap().unwrap();
+        pause.await.unwrap();
+    }
+    let acknowledged = fence.complete();
+    let resumed = control.resume(&fence);
+    manager.shutdown().await;
+    assert!(original.is_complete());
+    assert!(
+        acknowledged && resumed,
+        "T1615 lost pause arriving during quiescence"
+    );
+}

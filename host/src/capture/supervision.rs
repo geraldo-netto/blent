@@ -54,6 +54,8 @@ impl CaptureManager {
         }
         if !*quiescent {
             *quiescent = self.pause_capture(run).await?;
+        } else {
+            self.acknowledge_quiescent();
         }
         wait_demand(run, notice).await;
         Ok(false)
@@ -94,11 +96,10 @@ impl CaptureManager {
         Ok(())
     }
     async fn pause_capture(&mut self, run: &mut CaptureRun) -> Result<bool> {
-        let pause = self.pending_pause();
         let result = Self::while_active(
             &mut run.display_rx,
             &mut run.shutdown_rx,
-            self.quiesce_and_publish(pause),
+            self.quiesce_and_publish(),
         )
         .await;
         match result {

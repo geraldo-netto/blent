@@ -10,10 +10,17 @@ impl CaptureManager {
             .and_then(|participant| participant.pending())
     }
 
-    pub(super) async fn quiesce_and_publish(&mut self, pause: Option<Pause>) -> anyhow::Result<()> {
+    pub(super) async fn quiesce_and_publish(&mut self) -> anyhow::Result<()> {
         self.quiesce_recovering().await;
-        let Some(pause) = pause else {
-            return Ok(());
+        self.acknowledge_quiescent();
+        Ok(())
+    }
+
+    /// Only the capture owner may use its still-quiescent native generation as
+    /// evidence for a pause arriving during or after original cleanup.
+    pub(super) fn acknowledge_quiescent(&self) {
+        let Some(pause) = self.pending_pause() else {
+            return;
         };
         // Recovery returned only after an exact false ACK or original child AND
         // stdout settlement, with the encoder's native generation also retired.
@@ -21,14 +28,13 @@ impl CaptureManager {
             .as_ref()
             .expect("original capture participant")
             .acknowledge(&pause);
-        Ok(())
     }
 
     pub(super) async fn pause_requested(
         &mut self,
         stop: &watch::Receiver<bool>,
     ) -> anyhow::Result<()> {
-        let Some(pause) = self.pending_pause() else {
+        let Some(_) = self.pending_pause() else {
             return Ok(());
         };
         let mut stopped = stop.clone();
@@ -37,7 +43,7 @@ impl CaptureManager {
         }
         tokio::select! { biased;
             _ = stopped.wait_for(|stopped| *stopped) => Ok(()),
-            result = self.quiesce_and_publish(Some(pause)) => result,
+            result = self.quiesce_and_publish() => result,
         }
     }
 }

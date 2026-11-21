@@ -1,0 +1,57 @@
+[
+  {
+    "file": "host/src/capture/quiescence.rs",
+    "name": "quiesce_and_publish",
+    "line": 13,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/capture/quiescence.rs",
+    "name": "acknowledge_quiescent",
+    "line": 21,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/capture/quiescence.rs",
+    "name": "pause_requested",
+    "line": 33,
+    "language": "rust",
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/capture/supervision.rs",
+    "name": "capture_step",
+    "line": 28,
+    "language": "rust",
+    "covered": 29,
+    "total": 29,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/capture/supervision.rs",
+    "name": "pause_capture",
+    "line": 98,
+    "language": "rust",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

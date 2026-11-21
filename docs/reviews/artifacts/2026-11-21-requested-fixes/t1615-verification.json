@@ -1,0 +1,29 @@
+{
+  "finding": "T1615",
+  "red": {
+    "tests": 2,
+    "failed": 2,
+    "log_sha256": "b429001039f380fc5cc6ba72d368d20aca4702208f71c4b39cda08b805120388"
+  },
+  "green_quiescence": {
+    "passed": 6,
+    "failed": 0
+  },
+  "broader_capture": {
+    "passed": 244,
+    "failed": 1,
+    "ignored": 2,
+    "failure": "T1629; first resume packet IDR/config assertion; cause unestablished"
+  },
+  "t1629_rechecks": {
+    "normal_isolated_passes": 20,
+    "instrumented_isolated_passes": 30
+  },
+  "coverage": {
+    "methods": 5,
+    "minimum_percent": 100,
+    "tool": "cargo-llvm-cov 0.8.7; rustc 1.100.0; llvm-cov export of exact current binary"
+  },
+  "ownership": "One authoritative capture owner acknowledges the current pause only while original helper/encoder state is quiescent. No new allocation, queue, native lifetime or timeout-based retirement.",
+  "hardware": "No running daemon, display or tablet session modified."
+}

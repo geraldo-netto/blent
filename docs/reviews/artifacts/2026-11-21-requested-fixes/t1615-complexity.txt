@@ -1,0 +1,23 @@
+host/src/capture/quiescence.rs:7	pending_pause	2
+host/src/capture/quiescence.rs:13	quiesce_and_publish	1
+host/src/capture/quiescence.rs:21	acknowledge_quiescent	1
+host/src/capture/quiescence.rs:33	pause_requested	3
+host/src/capture/quiescence/tests.rs:15	drop	1
+host/src/capture/quiescence/tests.rs:19	held_native	4
+host/src/capture/quiescence/tests.rs:41	bind	1
+host/src/capture/quiescence/tests.rs:50	completed	2
+host/src/capture/quiescence/tests.rs:61	t1050_original_helper_and_encoder_native_cleanup_fence_registration	5
+host/src/capture/quiescence/tests.rs:107	t1050_original_helper_pause_ack_precedes_receipt_and_preserves_monitor	3
+host/src/capture/quiescence/tests.rs:147	t1050_cancelled_observer_never_manufactures_completion_or_affects_sibling	2
+host/src/capture/quiescence/tests.rs:177	t1050_idle_capture_wakes_for_original_pause_without_a_display_or_settings_event	2
+host/src/capture/quiescence/tests.rs:202	t1615_already_quiescent_capture_acknowledges_each_new_pause	3
+host/src/capture/quiescence/tests.rs:242	t1615_pause_during_native_retirement_is_acknowledged_after_settlement	2
+host/src/capture/supervision.rs:7	follow_capture	4
+host/src/capture/supervision.rs:28	capture_step	6
+host/src/capture/supervision.rs:63	capture_attempt	3
+host/src/capture/supervision.rs:81	await_replacement	7
+host/src/capture/supervision.rs:98	pause_capture	4
+host/src/capture/supervision.rs:110	resume_capture	5
+host/src/capture/supervision.rs:136	inactive	2
+host/src/capture/supervision.rs:140	wait_demand	1
+22 functions; 0 exceed cyclomatic complexity 9
