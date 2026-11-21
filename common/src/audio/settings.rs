@@ -53,7 +53,7 @@ impl Default for AudioStatus {
 /// UI-facing manual controller. Native construction belongs in one platform factory.
 pub trait AudioController {
     fn close(self: Box<Self>) -> crate::retirement::Fence;
-    fn start(&self, options: AudioOptions) -> Result<()>;
+    fn start(&self, options: AudioOptions) -> Result<crate::media_start::Start>;
     fn stop(&self);
     fn status(&self) -> AudioStatus;
 }

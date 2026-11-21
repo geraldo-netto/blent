@@ -1,4 +1,5 @@
 //! T543 manual host ownership. Preferences never start capture by themselves.
+use crate::start_request::Request;
 use anyhow::Result;
 use blent_config::camera::{CameraBackend, CameraPreview, CameraProfile, CameraState as State};
 use std::{
@@ -127,7 +128,7 @@ impl Report {
 }
 
 pub struct Controller {
-    command: Option<watch::Sender<Option<CameraProfile>>>,
+    command: Option<watch::Sender<Option<Request<CameraProfile>>>>,
     state: watch::Receiver<State>,
     preview: watch::Receiver<Option<Arc<CameraPreview>>>,
     worker: Option<crate::control_workers::Worker>,
@@ -185,10 +186,11 @@ impl CameraBackend for Controller {
     fn close(self: Box<Self>) -> blent_config::retirement::Fence {
         blent_config::retirement::Fence::Pending((*self).shutdown())
     }
-    fn start(&self, options: CameraProfile) -> Result<()> {
+    fn start(&self, options: CameraProfile) -> Result<blent_config::media_start::Start> {
         options.validate()?;
-        self.command.as_ref().unwrap().send(Some(options))?;
-        Ok(())
+        let (request, start) = Request::new(options);
+        self.command.as_ref().unwrap().send(Some(request))?;
+        Ok(start)
     }
 
     fn stop(&self) {
@@ -210,7 +212,7 @@ impl Drop for Controller {
 }
 
 async fn supervise<F, Fut>(
-    mut commands: watch::Receiver<Option<CameraProfile>>,
+    mut commands: watch::Receiver<Option<Request<CameraProfile>>>,
     status: Report,
     session: F,
 ) where
@@ -234,8 +236,8 @@ async fn supervise<F, Fut>(
 }
 
 async fn manage_session<F, Fut>(
-    options: CameraProfile,
-    commands: &mut watch::Receiver<Option<CameraProfile>>,
+    request: Request<CameraProfile>,
+    commands: &mut watch::Receiver<Option<Request<CameraProfile>>>,
     status: &Report,
     session: &F,
 ) -> bool
@@ -245,6 +247,7 @@ where
 {
     let (stop, stopped) = watch::channel(false);
     status.update(State::Starting);
+    let options = request.begin();
     let scope = crate::report_scope::Owner::default();
     scope.begin();
     let report = status.original(scope.permit().expect("new original camera scope"));
@@ -322,13 +325,18 @@ mod tests {
             events.lock().unwrap().is_empty(),
             "T543 preferences must not start capture"
         );
-        command.send(Some(CameraProfile::default())).unwrap();
+        command
+            .send(Some(Request::new(CameraProfile::default()).0))
+            .unwrap();
         state.wait_for(|s| *s == State::Streaming).await.unwrap();
         command
-            .send(Some(CameraProfile {
-                lens: blent_config::camera::Lens::Rear,
-                ..Default::default()
-            }))
+            .send(Some(
+                Request::new(CameraProfile {
+                    lens: blent_config::camera::Lens::Rear,
+                    ..Default::default()
+                })
+                .0,
+            ))
             .unwrap();
         tokio::time::sleep(Duration::from_millis(20)).await;
         command.send(None).unwrap();
@@ -337,7 +345,9 @@ mod tests {
             *events.lock().unwrap(),
             ["start Front", "stop Front", "start Rear", "stop Rear"]
         );
-        command.send(Some(CameraProfile::default())).unwrap();
+        command
+            .send(Some(Request::new(CameraProfile::default()).0))
+            .unwrap();
         state.wait_for(|s| *s == State::Streaming).await.unwrap();
         drop(command);
         owner.await.unwrap();
@@ -352,7 +362,9 @@ mod tests {
         let owner = tokio::spawn(supervise(commands, status, |_, _, _| async {
             anyhow::bail!("missing webcam")
         }));
-        command.send(Some(CameraProfile::default())).unwrap();
+        command
+            .send(Some(Request::new(CameraProfile::default()).0))
+            .unwrap();
         state
             .wait_for(|s| matches!(s, State::Failed(_)))
             .await

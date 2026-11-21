@@ -65,8 +65,12 @@ impl Panel {
     }
 
     fn state(&mut self) -> CameraState {
-        let state = self.native_state();
-        match self.owner.activity(activity(&state)) {
+        let mut state = CameraState::Stopped;
+        let backend = &self.backend;
+        match self.owner.activity(|| {
+            state = backend.as_ref().map_or(CameraState::Stopped, |b| b.state());
+            activity(&state)
+        }) {
             blent_config::workspace::Activity::Starting => CameraState::Starting,
             blent_config::workspace::Activity::Stopping => CameraState::Stopping,
             _ => state,
@@ -114,20 +118,24 @@ impl Panel {
         {
             return Err("Selected camera transport is unavailable on this backend.".into());
         }
-        let observed = activity(&self.native_state());
-        if self.owner.needs_release(&target, observed) {
+        let backend = &self.backend;
+        if self
+            .owner
+            .needs_release(&target, || observed_activity(backend))
+        {
             self.stop();
         }
         self.owner.prepare(&target)?;
         if self.backend.is_none() {
             self.backend = Some((self.create)()?);
         }
-        self.backend
+        let start = self
+            .backend
             .as_ref()
             .unwrap()
             .start(options)
             .map_err(|e| format!("{e:#}"))?;
-        self.owner.admit(target);
+        self.owner.admit(target, start);
         Ok(())
     }
 
@@ -153,8 +161,10 @@ impl Panel {
         selected: &blent_config::tablets::Identity,
     ) -> blent_config::workspace::ResourceView {
         use blent_config::workspace::{project, Activity, Observation};
-        let observed = activity(&self.native_state());
-        let activity = self.owner.activity(observed);
+        let backend = &self.backend;
+        let activity = self
+            .owner
+            .activity(|| activity(&backend.as_ref().map_or(CameraState::Stopped, |b| b.state())));
         let owner =
             (self.backend.is_some() || activity == Activity::Stopping).then_some(Observation {
                 target: self.owner.target(),
@@ -173,6 +183,12 @@ impl Panel {
     pub(super) fn target(&self) -> Option<&blent_config::tablets::Identity> {
         self.owner.target()
     }
+}
+
+fn observed_activity(
+    backend: &Option<Box<dyn CameraBackend>>,
+) -> blent_config::workspace::Activity {
+    activity(&backend.as_ref().map_or(CameraState::Stopped, |b| b.state()))
 }
 
 fn activity(state: &CameraState) -> blent_config::workspace::Activity {
@@ -419,9 +435,10 @@ mod tests {
             assert_eq!(panel.state(), native);
         }
         *state.borrow_mut() = CameraState::Stopped;
-        panel
-            .owner
-            .admit(Some(blent_config::tablets::Identity::Adb("first".into())));
+        panel.owner.admit(
+            Some(blent_config::tablets::Identity::Adb("first".into())),
+            blent_config::media_start::Start::pending().0,
+        );
         assert_eq!(panel.state(), CameraState::Starting);
         let pool = blent_config::retirement::Pool::new(1).unwrap();
         let admission = pool.reserve().unwrap();
@@ -477,7 +494,7 @@ mod tests {
         fn start(&self, options: CameraProfile) -> blent_config::camera::BackendResult {
             self.profiles.borrow_mut().push(options);
             *self.state.borrow_mut() = CameraState::Streaming;
-            Ok(())
+            Ok(blent_config::media_start::Start::acknowledged())
         }
         fn stop(&self) {
             *self.state.borrow_mut() = CameraState::Stopped;
@@ -710,5 +727,42 @@ mod tests {
         assert_eq!(profiles.borrow().len(), 1);
         panel.stop();
         assert!(panel.target().is_none());
+    }
+}
+
+#[cfg(all(test, target_os = "linux"))]
+mod completion_tests {
+    use super::*;
+    #[test]
+    fn t1455_fast_camera_completion_does_not_stick_starting() {
+        let (done, completed) = std::sync::mpsc::channel();
+        let controller = blent::camera_control::Controller::with_pool(
+            blent::control_workers::WorkerPool::new(1).unwrap(),
+            move |_, _, _| {
+                done.send(()).unwrap();
+                std::future::ready(Ok(()))
+            },
+        )
+        .unwrap();
+        let mut panel = Panel {
+            backend: Some(Box::new(controller)),
+            ..Default::default()
+        };
+        for _ in 0..3 {
+            panel.start(CameraProfile::default()).unwrap();
+            completed.recv().unwrap();
+            while panel.native_state() != CameraState::Stopped {
+                std::thread::yield_now();
+            }
+            assert_eq!(
+                panel.state(),
+                CameraState::Stopped,
+                "T1455 missed terminal acknowledgement"
+            );
+        }
+        panel.stop();
+        while panel.state() == CameraState::Stopping {
+            std::thread::yield_now();
+        }
     }
 }

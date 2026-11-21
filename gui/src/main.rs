@@ -2450,7 +2450,7 @@ mod tests {
                 let mut state = self.0.borrow_mut();
                 state.0 = CameraState::Streaming;
                 state.1.push(options);
-                Ok(())
+                Ok(blent_config::media_start::Start::pending().0)
             }
             fn stop(&self) {
                 self.0.borrow_mut().0 = CameraState::Stopped;
@@ -3447,7 +3447,7 @@ printf '%s' "$((existing + delta))" > "$count""#,
                 let mut calls = self.0.borrow_mut();
                 calls.0 = AudioState::Streaming;
                 calls.1.push(options);
-                Ok(())
+                Ok(blent_config::media_start::Start::pending().0)
             }
             fn stop(&self) {
                 self.0.borrow_mut().0 = AudioState::Stopped;
@@ -3532,7 +3532,7 @@ printf '%s' "$((existing + delta))" > "$count""#,
             }
             fn start(&self, _: CameraProfile) -> blent_config::camera::BackendResult {
                 *self.0.borrow_mut() = CameraState::Starting;
-                Ok(())
+                Ok(blent_config::media_start::Start::pending().0)
             }
             fn stop(&self) {
                 *self.0.borrow_mut() = CameraState::Stopped;
@@ -3581,7 +3581,7 @@ printf '%s' "$((existing + delta))" > "$count""#,
             }
             fn start(&self, _: AudioOptions) -> blent_config::camera::BackendResult {
                 *self.0.borrow_mut() = AudioState::Starting;
-                Ok(())
+                Ok(blent_config::media_start::Start::pending().0)
             }
             fn stop(&self) {
                 *self.0.borrow_mut() = AudioState::Stopped;

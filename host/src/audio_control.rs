@@ -1,4 +1,5 @@
 //! Manual audio ownership: no saved setting restores a capture session.
+use crate::start_request::Request;
 use anyhow::Result;
 use blent_config::audio::{AudioController, AudioOptions, AudioState, AudioStatus};
 use std::{
@@ -90,7 +91,7 @@ impl Report {
 }
 
 pub struct Controller {
-    commands: Option<watch::Sender<Option<AudioOptions>>>,
+    commands: Option<watch::Sender<Option<Request<AudioOptions>>>>,
     status: watch::Receiver<AudioStatus>,
     worker: Option<crate::control_workers::Worker>,
     admitted: Arc<Mutex<bool>>,
@@ -155,13 +156,14 @@ impl AudioController for Controller {
     fn close(self: Box<Self>) -> blent_config::retirement::Fence {
         blent_config::retirement::Fence::Pending((*self).shutdown())
     }
-    fn start(&self, options: AudioOptions) -> Result<()> {
+    fn start(&self, options: AudioOptions) -> Result<blent_config::media_start::Start> {
         options.validate()?;
         let mut admitted = self.admitted.lock().unwrap();
         anyhow::ensure!(!*admitted, "Stop audio before changing an active session");
-        self.commands.as_ref().unwrap().send(Some(options))?;
+        let (request, start) = Request::new(options);
+        self.commands.as_ref().unwrap().send(Some(request))?;
         *admitted = true;
-        Ok(())
+        Ok(start)
     }
     fn stop(&self) {
         let _ = self.commands.as_ref().unwrap().send(None);
@@ -177,7 +179,7 @@ impl Drop for Controller {
 }
 
 async fn supervise<F, Fut>(
-    mut commands: watch::Receiver<Option<AudioOptions>>,
+    mut commands: watch::Receiver<Option<Request<AudioOptions>>>,
     report: Report,
     run: F,
     admitted: Arc<Mutex<bool>>,
@@ -208,8 +210,8 @@ async fn supervise<F, Fut>(
 }
 
 async fn active<F, Fut>(
-    options: AudioOptions,
-    commands: &mut watch::Receiver<Option<AudioOptions>>,
+    request: Request<AudioOptions>,
+    commands: &mut watch::Receiver<Option<Request<AudioOptions>>>,
     report: &Report,
     run: &F,
     admitted: &Mutex<bool>,
@@ -219,6 +221,8 @@ where
     Fut: Future<Output = Result<()>>,
 {
     let (stop, stopped) = watch::channel(false);
+    report.update(AudioState::Starting, "Starting audio…");
+    let options = request.begin();
     let detail = match options.profile.direction {
         blent_config::audio::Direction::Microphone => {
             "Open Blent on the tablet and allow microphone access."

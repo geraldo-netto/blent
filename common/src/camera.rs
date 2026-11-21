@@ -92,11 +92,11 @@ impl CameraState {
     }
 }
 
-pub type BackendResult = Result<()>;
+pub type BackendResult = Result<crate::media_start::Start>;
 
 pub trait CameraBackend {
     fn close(self: Box<Self>) -> crate::retirement::Fence;
-    fn start(&self, options: CameraProfile) -> Result<()>;
+    fn start(&self, options: CameraProfile) -> BackendResult;
     fn stop(&self);
     fn state(&self) -> CameraState;
     fn preview(&self) -> Option<Arc<CameraPreview>>;

@@ -11,7 +11,7 @@ struct Camera(Arc<Mutex<Vec<CameraProfile>>>);
 impl CameraBackend for Camera {
     fn start(&self, options: CameraProfile) -> blent_config::camera::BackendResult {
         self.0.lock().unwrap().push(options);
-        Ok(())
+        Ok(blent_config::media_start::Start::pending().0)
     }
     fn stop(&self) {}
     fn state(&self) -> CameraState {
@@ -28,7 +28,7 @@ struct Audio(Arc<Mutex<Vec<AudioOptions>>>);
 impl AudioController for Audio {
     fn start(&self, options: AudioOptions) -> blent_config::camera::BackendResult {
         self.0.lock().unwrap().push(options);
-        Ok(())
+        Ok(blent_config::media_start::Start::pending().0)
     }
     fn stop(&self) {}
     fn status(&self) -> AudioStatus {

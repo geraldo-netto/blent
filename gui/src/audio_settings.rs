@@ -56,11 +56,14 @@ impl Panel {
     }
 
     fn status(&mut self) -> AudioStatus {
-        let mut status = self
-            .backend
-            .as_ref()
-            .map_or_else(AudioStatus::default, |backend| backend.status());
-        match self.owner.activity(activity(status.state)) {
+        let mut status = AudioStatus::default();
+        let backend = &self.backend;
+        match self.owner.activity(|| {
+            status = backend
+                .as_ref()
+                .map_or_else(AudioStatus::default, |b| b.status());
+            activity(status.state)
+        }) {
             blent_config::workspace::Activity::Starting => {
                 status.state = AudioState::Starting;
                 status.detail = "Starting audio…".into();
@@ -113,23 +116,24 @@ impl Panel {
         {
             return Err("Selected audio transport is unavailable on this backend.".into());
         }
-        let observed = self
-            .backend
-            .as_ref()
-            .map_or(AudioState::Stopped, |backend| backend.status().state);
-        if self.owner.needs_release(&target, activity(observed)) {
+        let backend = &self.backend;
+        if self
+            .owner
+            .needs_release(&target, || observed_activity(backend))
+        {
             self.stop();
         }
         self.owner.prepare(&target)?;
         if self.backend.is_none() {
             self.backend = Some((self.create)()?);
         }
-        self.backend
+        let start = self
+            .backend
             .as_ref()
             .unwrap()
             .start(options)
             .map_err(|e| format!("{e:#}"))?;
-        self.owner.admit(target);
+        self.owner.admit(target, start);
         Ok(())
     }
 
@@ -155,11 +159,8 @@ impl Panel {
         direction: Direction,
     ) -> blent_config::workspace::ResourceView {
         use blent_config::workspace::{project, Activity, Observation};
-        let observed = self
-            .backend
-            .as_ref()
-            .map_or(AudioState::Stopped, |backend| backend.status().state);
-        let activity = self.owner.activity(activity(observed));
+        let backend = &self.backend;
+        let activity = self.owner.activity(|| observed_activity(backend));
         let owner =
             (self.backend.is_some() || activity == Activity::Stopping).then_some(Observation {
                 target: self.owner.target(),
@@ -178,6 +179,16 @@ impl Panel {
     pub(super) fn target(&self) -> Option<&blent_config::tablets::Identity> {
         self.owner.target()
     }
+}
+
+fn observed_activity(
+    backend: &Option<Box<dyn AudioController>>,
+) -> blent_config::workspace::Activity {
+    activity(
+        backend
+            .as_ref()
+            .map_or(AudioState::Stopped, |b| b.status().state),
+    )
 }
 
 fn activity(state: AudioState) -> blent_config::workspace::Activity {
@@ -260,9 +271,10 @@ mod tests {
             assert_eq!(activity(native), expected);
         }
         let mut panel = Panel::default();
-        panel
-            .owner
-            .admit(Some(blent_config::tablets::Identity::Adb("first".into())));
+        panel.owner.admit(
+            Some(blent_config::tablets::Identity::Adb("first".into())),
+            blent_config::media_start::Start::pending().0,
+        );
         assert_eq!(panel.status().state, AudioState::Starting);
         let pool = blent_config::retirement::Pool::new(1).unwrap();
         let admission = pool.reserve().unwrap();
@@ -285,7 +297,7 @@ mod tests {
         }
         fn start(&self, options: AudioOptions) -> blent_config::camera::BackendResult {
             self.0.borrow_mut().push(options);
-            Ok(())
+            Ok(blent_config::media_start::Start::pending().0)
         }
         fn stop(&self) {
             self.0.borrow_mut().clear();
@@ -503,6 +515,43 @@ mod tests {
             assert_eq!(starts.borrow().len(), 1);
             panel.stop();
             assert!(panel.target().is_none());
+        }
+    }
+}
+
+#[cfg(all(test, target_os = "linux"))]
+mod completion_tests {
+    use super::*;
+    #[test]
+    fn t1455_fast_audio_completion_does_not_stick_starting() {
+        let (done, completed) = std::sync::mpsc::channel();
+        let controller = blent::audio_control::Controller::with_pool(
+            blent::control_workers::WorkerPool::new(1).unwrap(),
+            move |_, _, _| {
+                done.send(()).unwrap();
+                std::future::ready(Ok(()))
+            },
+        )
+        .unwrap();
+        let mut panel = Panel {
+            backend: Some(Box::new(controller)),
+            ..Default::default()
+        };
+        for direction in [Direction::Microphone, Direction::Speakers] {
+            panel.start(AudioOptions::new(direction)).unwrap();
+            completed.recv().unwrap();
+            while panel.backend.as_ref().unwrap().status().state != AudioState::Stopped {
+                std::thread::yield_now();
+            }
+            assert_eq!(
+                panel.status().state,
+                AudioState::Stopped,
+                "T1455 missed terminal acknowledgement"
+            );
+        }
+        panel.stop();
+        while panel.status().state == AudioState::Stopping {
+            std::thread::yield_now();
         }
     }
 }
