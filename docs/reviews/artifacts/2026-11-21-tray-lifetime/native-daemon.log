@@ -1,0 +1,51 @@
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.851639Z  INFO blent: 104: Starting blent daemon
+Nov 21 10:00:40 morpheus env[973942]: Blent scheduling: High; CPUWeight=1000 (/user.slice/user-1000.slice/user@1000.service/app.slice/blent.service); all threads and new children
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.886195Z  INFO blent: 1784: === blent daemon starting ===
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.886208Z  INFO blent: 1785:   Resolution: 1280x800 @ 60fps
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.886211Z  INFO blent: 1786:   Encoder: h264_vaapi_baseline
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.886214Z  INFO blent: 1787:   Bitrate: 20000 kbps
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.886217Z  INFO blent: 1788:   Stream port: 8890
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.886220Z  INFO blent: 1789:   Input port: 8891
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.886222Z  INFO blent: 1790:   Input devices: touch=true pen=true pointer=true
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.886285Z  INFO blent::stream: 89: Stream server on tcp://127.0.0.1:8890
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.886296Z  INFO blent::input: 192: Input server on ws://127.0.0.1:8891
+Nov 21 10:00:40 morpheus env[973942]: ================================================
+Nov 21 10:00:40 morpheus env[973942]:   blent daemon running (PID: 973942)
+Nov 21 10:00:40 morpheus env[973942]: ================================================
+Nov 21 10:00:40 morpheus env[973942]:   On your tablet, open the Blent app
+Nov 21 10:00:40 morpheus env[973942]:   ADB ports will be auto-forwarded if possible.
+Nov 21 10:00:40 morpheus env[973942]:   Otherwise, run:
+Nov 21 10:00:40 morpheus env[973942]:     adb reverse tcp:8890 tcp:8890
+Nov 21 10:00:40 morpheus env[973942]:     adb reverse tcp:8891 tcp:8891
+Nov 21 10:00:40 morpheus env[973942]: ================================================
+Nov 21 10:00:40 morpheus env[973942]: 2026-11-21T09:00:40.888847Z  INFO blent::tray: 252: Tray icon registered
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.105864Z  INFO blent::tray: 194: Opened settings from the tray
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.244666Z  INFO blent: 2404: ADB forwarding ready for 8002RH1010011900 (8890, 8891)
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.368615Z  INFO blent::input: 258: Input client: 127.0.0.1:42781
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.377605Z  INFO blent::input::settings: 148: Tablet reports native resolution: 1280x800 (218x136 mm)
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.387109Z  INFO blent: 2013: Settings saved to Ok("/home/netto/.config/blent/config.toml")
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.396366Z  INFO blent: 2450: Blent token delivery command completed on tablet
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.397215Z  INFO blent: 2013: Settings saved to Ok("/home/netto/.config/blent/config.toml")
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.509173Z  INFO blent: 2450: Blent launch command completed on tablet
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.509206Z  INFO blent::monitor: 475: Tablet 1 connected over USB (8002RH1010011900)
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.510854Z  INFO blent::input::linux::cursor: 38: Cinnamon mouse remains visible while Blent touch is attached
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.511063Z  INFO blent::input::linux: 291: uinput touchscreen 'Blent Touch @222cd78e7dbec267202716a2d9ef50d8-0000000000000000' created
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.711349Z  INFO blent::input::linux: 329: uinput pen tablet 'Blent Pen @222cd78e7dbec267202716a2d9ef50d8-0000000000000000' created
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.799215Z  INFO blent: 2013: Settings saved to Ok("/home/netto/.config/blent/config.toml")
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.902821Z  INFO blent::stream: 122: Client connected: 127.0.0.1:45127
+Nov 21 10:00:41 morpheus env[973942]: 2026-11-21T09:00:41.911795Z  INFO blent::input::linux: 359: uinput pointer 'Blent Pointer @222cd78e7dbec267202716a2d9ef50d8-0000000000000000' created
+Nov 21 10:00:42 morpheus env[973942]: 2026-11-21T09:00:42.154053Z  WARN blent::kwin: 99: Cannot reach KWin over D-Bus: neither busctl nor qdbus answered. KWin input mapping and keyboard suppression are unavailable. X11 uses its own xinput mapping; check that backend's mapping result. On KDE, check the session bus and busctl/qdbus installation.
+Nov 21 10:00:42 morpheus env[973942]: 2026-11-21T09:00:42.154068Z  WARN blent::osk: 151: KWin's virtual keyboard mode is unavailable or unsupported — leaving it alone
+Nov 21 10:00:46 morpheus env[973942]: 2026-11-21T09:00:46.905576Z  WARN blent::stream: 425: Codec config not available after 5s, starting stream without it
+Nov 21 10:00:51 morpheus env[973942]: 2026-11-21T09:00:51.859568Z  INFO blent::capture::helper: 407: Helper connected on card0
+Nov 21 10:00:51 morpheus env[973942]: 2026-11-21T09:00:51.859650Z  INFO blent::input::linux: 698: Mode is now second screen — remapping input devices (card0)
+Nov 21 10:00:51 morpheus env[973942]: 2026-11-21T09:00:51.950425Z  INFO blent::capture::helper: 474: Compositor negotiated 1280x800@60Hz on the virtual output
+Nov 21 10:00:51 morpheus env[973942]: 2026-11-21T09:00:51.950682Z  INFO blent::capture::helper: 450: Helper emits 1280x800 frames to the encoder
+Nov 21 10:00:51 morpheus env[973942]: 2026-11-21T09:00:51.955436Z  INFO blent::capture::encoding: 131: Encoder started (PID: 975061)
+Nov 21 10:00:52 morpheus env[973942]: 2026-11-21T09:00:52.022834Z  INFO blent::capture::cli_encoder: 279: Extracted codec configuration: 39 bytes
+Nov 21 10:00:52 morpheus env[973942]: 2026-11-21T09:00:52.323574Z  INFO blent::input::mapping::x11_cache: 55: Mapped 'Blent Touch @222cd78e7dbec267202716a2d9ef50d8-0000000000000000' (listed X11 id 20) to DVI-I-2-1
+Nov 21 10:00:52 morpheus env[973942]: 2026-11-21T09:00:52.373133Z  INFO blent::input::mapping::x11_cache: 55: Mapped 'Blent Pointer @222cd78e7dbec267202716a2d9ef50d8-0000000000000000' (listed X11 id 22) to DVI-I-2-1
+Nov 21 10:00:52 morpheus env[973942]: 2026-11-21T09:00:52.373155Z  WARN blent::input::mapping: 279: X11 exposes an owned input device without pointer capability; mapping skipped for that device
+Nov 21 10:00:57 morpheus env[973942]: 2026-11-21T09:00:57.032875Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.0ms  p95 23.9ms  max 48.8ms  (119 samples, 1 in flight, 0 aged out)
+Nov 21 10:00:57 morpheus env[973942]: 2026-11-21T09:00:57.032892Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 14.8ms  (119 samples)
+Nov 21 10:00:57 morpheus env[973942]: 2026-11-21T09:00:57.032895Z  INFO blent::capture::cli_encoder: 302: Encoder: 120 access units in 5.1s, 0.1 MB/s (778 kbps)

@@ -1,0 +1,30 @@
+{
+  "previous": {
+    "pid": 546310,
+    "seconds": 0.33116202102974057
+  },
+  "gui": {
+    "pid": 973533,
+    "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/blent-priority-973533.scope\n"
+  },
+  "broker": {
+    "pid": 973459,
+    "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/run-rc4236787245e4269a952beba185c5b1b.scope\n"
+  },
+  "restart": {
+    "pid": 973398,
+    "seconds": 0.30863795697223395
+  },
+  "final_daemon": 973942,
+  "shared_adb_pid": 3379,
+  "gui_survived": true,
+  "broker_survived": true,
+  "adb_survived": true,
+  "gui_instances": 1,
+  "binaries": {
+    "blent": "19dc0f99582103d5eab7808c6807f8fbd0172b3f2fabf2ca48b080ecaa2e1ace",
+    "blent-gui": "7b4b3edf1007fd13270ae307fe711ff11dc905e497e1da534ab4b712b0f76a69",
+    "blent-audio": "685bccd3e8a97b75eb397604e1b16e8ed58addf04b07f15ee0acffdff912dddb",
+    "blent-usb-broker": "227ca1e1dd63da27a4d3133c26a720731928fe42c4d766d45bbed6e40bfe16e9"
+  }
+}

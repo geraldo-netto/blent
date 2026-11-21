@@ -1,0 +1,57 @@
+[
+  {
+    "file": "host/src/independent_process.rs",
+    "name": "command",
+    "line": 6,
+    "language": "rust",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/independent_process.rs",
+    "name": "command_with_manager",
+    "line": 13,
+    "language": "rust",
+    "covered": 18,
+    "total": 18,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/tray.rs",
+    "name": "open_release_page",
+    "line": 179,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/tray.rs",
+    "name": "settings_command",
+    "line": 199,
+    "language": "rust",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/linux/client.rs",
+    "name": "spawn",
+    "line": 27,
+    "language": "rust",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

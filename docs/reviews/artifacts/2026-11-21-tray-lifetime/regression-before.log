@@ -1,0 +1,41 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.86s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent/da74baedb8a1d68f/out/blent-da74baedb8a1d68f)
+
+running 1 test
+test tray::tests::t1475_tray_application_runs_outside_daemon_group ... FAILED
+
+failures:
+
+---- tray::tests::t1475_tray_application_runs_outside_daemon_group stdout ----
+
+thread 'tray::tests::t1475_tray_application_runs_outside_daemon_group' (955502) panicked at host/src/tray_tests.rs:499:5:
+
+running 1 test
+test tray::tests::t1475_tray_application_runs_outside_daemon_group ... FAILED
+
+failures:
+
+failures:
+    tray::tests::t1475_tray_application_runs_outside_daemon_group
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 611 filtered out; finished in 0.01s
+
+
+thread 'tray::tests::t1475_tray_application_runs_outside_daemon_group' (955504) panicked at host/src/tray_tests.rs:485:9:
+assertion `left != right` failed: T1475 tray application inherits daemon retirement group
+  left: "0::/user.slice/user-1000.slice/user@1000.service/app.slice/app-com.microsoft.VSCode-2097484.scope\n"
+ right: "0::/user.slice/user-1000.slice/user@1000.service/app.slice/app-com.microsoft.VSCode-2097484.scope\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tray::tests::t1475_tray_application_runs_outside_daemon_group
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 611 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p blent --bin blent`
+error: process didn't exit successfully: `/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo test --manifest-path /backups/disk2/projects/blent/Cargo.toml --target-dir /backups/disk2/projects/blent/target/llvm-cov-target --offline -p blent --bin blent -- t1475` (exit status: 101)

@@ -163,7 +163,9 @@ installed, direct USB remains available. Other ADB startup failures are reported
 
 With a local user manager, the shared USB broker also runs in an independent
 scope. It can serve multiple Blent clients and survives a display-daemon restart;
-its own resource retirement controls shutdown.
+its own resource retirement controls shutdown. Tray-launched settings windows and
+release-page applications also have independent lifetimes, so leaving a window
+open does not prevent the display daemon from restarting.
 
 ### Installed paths
 

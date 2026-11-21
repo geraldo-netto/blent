@@ -32,6 +32,7 @@ fn isolated_tray(test: &str) {
         .args(["--exact", test, "--nocapture"])
         .env("BLENT_T497_TRAY", "1")
         .env("HOME", directory.path())
+        .env("XDG_RUNTIME_DIR", directory.path())
         .env("PATH", tools)
         .env_remove(blent_config::linux::appimage::LAUNCHER)
         .env_remove("DBUS_SESSION_BUS_ADDRESS")
@@ -473,4 +474,28 @@ async fn t537_owner_then_private_bus_exit_does_not_panic() {
         0,
         "T537: an independently spawned tray service panicked after owner/bus exit"
     );
+}
+
+#[tokio::test]
+async fn t1475_tray_application_runs_outside_daemon_group() {
+    const CASE: &str = "BLENT_T1475_TRAY";
+    if std::env::var_os(CASE).is_some() {
+        let root = std::path::PathBuf::from(std::env::var_os("HOME").unwrap());
+        open_settings();
+        launched(&root, "ready").await;
+        assert_ne!(std::fs::read_to_string(root.join("placement")).unwrap(),
+                   std::fs::read_to_string("/proc/self/cgroup").unwrap(),
+                   "T1475 tray application inherits daemon retirement group");
+        return;
+    }
+    let root = tempfile::tempdir().unwrap();
+    let launcher = root.path().join("Blent current image");
+    std::fs::write(&launcher, "#!/bin/sh\n/bin/cat /proc/self/cgroup > \"$HOME/placement\"\nprintf 'ready\\n' > \"$HOME/launches\"\n").unwrap();
+    use std::os::unix::fs::PermissionsExt;
+    std::fs::set_permissions(&launcher, std::fs::Permissions::from_mode(0o700)).unwrap();
+    let output = std::process::Command::new(std::env::current_exe().unwrap())
+        .args(["--exact", "tray::tests::t1475_tray_application_runs_outside_daemon_group", "--nocapture"])
+        .env(CASE, "1").env("HOME", root.path())
+        .env(blent_config::linux::appimage::LAUNCHER, launcher).output().unwrap();
+    assert!(output.status.success(), "{}{}", String::from_utf8_lossy(&output.stdout), String::from_utf8_lossy(&output.stderr));
 }

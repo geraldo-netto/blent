@@ -178,7 +178,7 @@ impl Tray for BlentTray {
 
 fn open_release_page() {
     match crate::config::spawn_reaped(
-        std::process::Command::new("xdg-open").arg(crate::update::RELEASES_PAGE),
+        blent::independent_process::command("xdg-open".as_ref()).arg(crate::update::RELEASES_PAGE),
     ) {
         Ok(_) => info!("Opened the release page"),
         Err(e) => warn!("Could not open {}: {}", crate::update::RELEASES_PAGE, e),
@@ -200,7 +200,7 @@ fn settings_command() -> anyhow::Result<std::process::Command> {
     // T550: the daemon may retain an older extraction after an image update.
     // Re-enter the stable image so its current GUI owns its own runtime lifetime.
     if let Some(launcher) = blent_config::linux::appimage::launcher()? {
-        let mut command = std::process::Command::new(launcher);
+        let mut command = blent::independent_process::command(launcher.as_os_str());
         command.arg("--gui");
         return Ok(command);
     }
@@ -212,7 +212,7 @@ fn settings_command() -> anyhow::Result<std::process::Command> {
         .and_then(|p| p.parent().map(|d| d.join("blent-gui")))
         .filter(|p| p.exists());
     let program = sibling.unwrap_or_else(|| std::path::PathBuf::from("blent-gui"));
-    Ok(std::process::Command::new(program))
+    Ok(blent::independent_process::command(program.as_os_str()))
 }
 
 /// T537: ksni runs its service independently. Dropping Handle alone does not

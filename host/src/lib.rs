@@ -19,6 +19,8 @@ mod control_outcome;
 pub mod control_workers;
 #[cfg(target_os = "linux")]
 pub mod dpms_probe;
+#[cfg(target_os = "linux")]
+pub mod independent_process;
 pub mod owned_task;
 pub mod persistence_port;
 mod session_adapters;

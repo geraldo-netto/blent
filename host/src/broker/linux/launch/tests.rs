@@ -123,10 +123,12 @@ fn t1473_manager_selection_preserves_native_ownership_and_non_systemd_launch() {
         Some("/home/test".into()),
     )
     .unwrap();
-    let direct = launch.command_with_manager(false);
+    let direct =
+        crate::independent_process::command_with_manager(launch.executable.as_os_str(), false);
     assert_eq!(direct.get_program(), launch.executable);
     assert_eq!(direct.get_args().count(), 0);
-    let managed = launch.command_with_manager(true);
+    let managed =
+        crate::independent_process::command_with_manager(launch.executable.as_os_str(), true);
     assert_eq!(managed.get_program(), "/usr/bin/systemd-run");
     let args: Vec<_> = managed.get_args().collect();
     assert_eq!(

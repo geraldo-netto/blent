@@ -1,0 +1,284 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.82s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/build/blent/56fd64be24f9c7f5/out/blent-56fd64be24f9c7f5)
+
+running 249 tests
+test broker::authority_worker::tests::t853_explicit_worker_close_rejects_jobs_and_observes_thread_exit ... ok
+test broker::authority_worker::tests::t853_stalled_persistence_keeps_reactor_live_and_owner_until_thread_exit ... ok
+test broker::authority_worker::tests::t853_worker_authentication_and_revoke_replies_drive_controller ... ok
+test broker::authority_worker::tests::t853_worker_full_queue_returns_exact_pairing_job ... ok
+test broker::authority_worker::tests::t853_worker_initialization_error_is_reported_and_actually_retires ... ok
+test broker::authority_worker::tests::t853_worker_ready_requires_healthy_store_and_reports_saved_peers ... ok
+test broker::authority_worker::tests::t853_worker_storage_error_returns_original_pairing_fail_closed ... ok
+test broker::bridges::tests::t853_all_resource_streams_route_in_descriptor_order_after_admission ... ok
+test broker::bridges::tests::t853_bridge_invalid_limits_and_duplicate_or_stale_state_are_bounded ... ok
+test broker::bridges::tests::t853_cancel_before_commit_destroys_connector_before_lease_retirement ... ok
+test broker::bridges::tests::t853_failed_connector_and_slow_socket_preserve_sibling_progress ... ok
+test broker::bridges::tests::t853_pending_connect_timeout_drops_owned_native_state ... ok
+test broker::bridges::tests::t853_premature_admitted_callback_never_opens_local_socket ... ok
+test broker::bridges::tests::t853_wrong_stream_count_and_local_io_failure_retire_only_owned_resource ... ok
+test broker::connection::tests::t872_failed_native_retirement_does_not_release_link_ownership ... ok
+test broker::connection::tests::t872_native_helper_retirement_observes_actual_child_exit ... ok
+test broker::connection::tests::t872_verified_setup_rechecks_current_pairing_before_install ... ok
+test broker::control::tests::automatic::t1391_automatic_admission_respects_trust_availability_and_bounds ... ok
+test broker::control::tests::automatic::t1391_denial_and_revoke_preserve_explicit_cutoff ... ok
+test broker::control::tests::automatic::t1391_explicit_cutoff_survives_unknown_inventory_until_fresh_attach ... ok
+test broker::control::tests::automatic::t1391_failure_retries_at_boundary_without_duplicate_owners ... ok
+test broker::control::tests::automatic::t1391_startup_and_replug_require_fresh_proof_and_exact_retirement ... ok
+test broker::control::tests::bounds::t853_all_admission_capacities_and_identifier_exhaustion_remain_bounded ... ok
+test broker::control::tests::bounds::t853_bounded_stale_ticket_fuzz_never_changes_current_approval ... ok
+test broker::control::tests::bounds::t853_invalid_capacities_and_duplicate_inventory_do_not_mutate ... ok
+test broker::control::tests::bounds::t853_late_proof_and_authority_callbacks_cannot_replace_current_ticket ... ok
+test broker::control::tests::bounds::t853_timeout_boundaries_and_overflows_reject_before_mutation ... ok
+test broker::control::tests::bounds::t853_unknown_ids_and_invalid_commands_leave_snapshot_unchanged ... ok
+test broker::control::tests::t1337_owned_device_cannot_prepare_a_second_connect ... ok
+test broker::control::tests::t1337_row_unlock_waits_for_native_and_control_retirement ... ok
+test broker::control::tests::t1338_reservation_blocks_both_view_and_broker_until_refresh ... ok
+test broker::control::tests::t853_approval_proof_persistence_and_reconnect_remain_distinct ... ok
+test broker::control::tests::t853_authority_metadata_correlates_exact_job_and_durable_reply ... ok
+test broker::control::tests::t853_denial_stale_callbacks_and_native_start_failure_are_bounded ... ok
+test broker::control::tests::t853_disconnect_and_expiry_reject_delayed_success_without_faking_retirement ... ok
+test broker::control::tests::t853_revoke_during_remember_cancels_before_durable_delete ... ok
+test broker::control::tests::t853_revoke_without_live_pairing_and_failed_delete_stay_fail_closed ... ok
+test broker::control::tests::t853_saved_notice_remains_until_durable_revoke_completes ... ok
+test broker::control::tests::t853_snapshot_ids_and_physical_tombstones_are_exact ... ok
+test broker::control::tests::t853_storage_failure_poison_cancels_all_links_and_keeps_native_ownership ... ok
+test broker::link::tests::factory::t853_cancelled_blocking_factory_keeps_capacity_until_actual_return ... ok
+test broker::link::tests::factory::t853_factory_error_releases_startup_admission ... ok
+test broker::link::tests::factory::t853_factory_retirement_waits_for_inner_native_completion ... ok
+test broker::link::tests::handshake::deadline::t1105_original_link_uses_selected_tls_budget_after_ready ... ok
+test broker::link::tests::handshake::deadline::t1105_ready_approval_wait_does_not_consume_new_tls_budget ... ok
+test broker::link::tests::handshake::ownership::t1134_full_and_closed_queues_return_original_connection_ownership ... ok
+test broker::link::tests::handshake::t853_cancelled_verified_callback_cannot_install_authority_or_release_owner_early ... ok
+test broker::link::tests::handshake::t853_full_hello_tls_window_controller_and_local_display_control_flow ... ok
+test broker::link::tests::handshake::t853_link_command_capacity_returns_exact_unsubmitted_ticket ... ok
+test broker::link::tests::handshake::t853_unexpected_setup_command_during_media_closes_native_owner ... ok
+test broker::link::tests::t853_cancelled_discovery_drops_task_and_native_resource ... ok
+test broker::link::tests::t853_invalid_setup_fails_without_native_leak ... ok
+test broker::link::tests::t853_repeated_link_next_after_task_completion_does_not_panic ... ok
+test broker::link::tests::timeout::t1103_original_dispatch_expiry_preserves_unrelated_active_camera ... ok
+test broker::linux::async_io::tests::t874_async_descriptor_ownership_outlives_client_and_listener ... ok
+test broker::linux::async_io::tests::t874_async_duplex_clients_progress_without_global_io_lock ... ok
+test broker::linux::async_io::tests::t874_backpressure_preserves_bidirectional_progress_and_cancelled_send ... ok
+test broker::linux::async_io::tests::t874_close_wakes_pending_receive_and_accept_cancellation_keeps_election ... ok
+test broker::linux::async_io::tests::t874_invalid_send_closes_socket_without_consuming_caller_descriptors ... ok
+test broker::linux::async_io::tests::t874_malformed_received_packet_retires_transferred_descriptors ... ok
+test broker::linux::async_io::tests::t874_spurious_readiness_clears_then_new_packet_wakes_receiver ... ok
+test broker::linux::client::tests::t1473_shared_broker_launch_leaves_callers_cgroup ... ok
+test broker::linux::client::tests::t853_client_process_fixture ... ok
+test broker::linux::client::tests::t853_competing_clients_start_one_elected_owner_and_exchange ... ok
+test broker::linux::client::tests::t853_existing_owner_needs_no_executable_and_invalid_inputs_fail ... Failed to find executable /tmp/.tmpC09IZU/absent: No such file or directory
+ok
+test broker::linux::client::tests::t853_invalid_socket_path_fails_without_losing_starter_capacity ... Failed to find executable /tmp/.tmpUwdmXx/absent: No such file or directory
+ok
+test broker::linux::client::tests::t853_timed_out_native_starter_retains_capacity_until_actual_return ... ok
+test broker::linux::client::tests::t853_unavailable_or_busy_owner_has_one_absolute_startup_deadline ... ok
+test broker::linux::control_tests::t877_authenticated_control_keeps_connection_ticket_and_snapshot_identity ... ok
+test broker::linux::endpoints::tests::t871_socket_metadata_never_substitutes_another_protocol_or_shared_listener ... ok
+test broker::linux::entry::tests::t1101_cli_cleanup_mapping_and_rejection_precede_native_effects ... ok
+test broker::linux::entry::tests::t1101_cli_exposes_cleanup_observation_budget ... ok
+test broker::linux::entry::tests::t1103_cli_exposes_resource_admission_timeout ... ok
+test broker::linux::entry::tests::t1103_resource_timeout_mapping_and_validation_precede_native_effects ... ok
+test broker::linux::entry::tests::t1105_cli_exposes_tls_setup_deadline ... ok
+test broker::linux::entry::tests::t1105_tls_cli_mapping_and_rejection_precede_native_effects ... ok
+test broker::linux::entry::tests::t853_cli_defaults_and_overrides_reach_capacity_policy ... ok
+test broker::linux::entry::tests::t853_cli_invalid_arguments_fail_without_starting_native_work ... Experimental per-user USB broker for paired display and media
+
+Usage: blent-usb-broker [OPTIONS] --runtime <RUNTIME> --state <STATE> --helper <HELPER>
+
+Options:
+      --runtime <RUNTIME>                              
+      --state <STATE>                                  
+      --helper <HELPER>                                
+      --clients <CLIENTS>                              [default: 16]
+      --links <LINKS>                                  [default: 4]
+      --devices <DEVICES>                              [default: 64]
+      --registrations <REGISTRATIONS>                  [default: 64]
+      --trust-peers <TRUST_PEERS>                      [default: 64]
+      --block-bytes <BLOCK_BYTES>                      [default: 65536]
+      --channel-bytes <CHANNEL_BYTES>                  [default: 262144]
+      --queued-messages <QUEUED_MESSAGES>              [default: 64]
+      --quantum <QUANTUM>                              [default: 65536]
+      --io-timeout-ms <IO_TIMEOUT_MS>                  [default: 5000]
+      --setup-ms <SETUP_MS>                            [default: 60000]
+      --approval-ms <APPROVAL_MS>                      [default: 120000]
+      --retirement-timeout-ms <RETIREMENT_TIMEOUT_MS>  [default: 5000]
+      --resource-timeout-ms <RESOURCE_TIMEOUT_MS>      [default: 120000]
+      --tls-timeout-ms <TLS_TIMEOUT_MS>                [default: 10000]
+  -h, --help                                           Print help
+ok
+test broker::linux::entry::tests::t853_entry_stop_and_failed_stop_retire_the_owner_socket ... ok
+test broker::linux::inventory::tests::t853_cancelled_terminal_wait_keeps_inventory_result_and_join_owned ... ok
+test broker::linux::inventory::tests::t853_inventory_spawn_and_read_failures_stay_bounded ... ok
+test broker::linux::inventory::tests::t853_inventory_terminal_notice_observes_actual_task_retirement ... ok
+test broker::linux::launch::tests::t1473_manager_selection_preserves_native_ownership_and_non_systemd_launch ... ok
+test broker::linux::launch::tests::t894_paths_are_absolute_and_do_not_probe_devices_or_tokens ... ok
+test broker::linux::launch::tests::t924_environment_paths_are_lazy_in_isolated_process ... ok
+test broker::linux::launch::tests::t924_native_source_start_failure_retires_actual_worker ... ok
+test broker::linux::lifetime::tests::t1007_invalid_and_non_socket_inputs_cannot_establish_exit_proof ... ok
+test broker::linux::lifetime::tests::t1007_live_socket_peer_is_pinned_with_close_on_exec ... ok
+test broker::linux::owner::tests::t874_lock_symlink_hardlink_fifo_and_permissions_are_rejected ... ok
+test broker::linux::owner::tests::t874_owner_election_keeps_stable_lock_and_only_removes_own_socket ... ok
+test broker::linux::owner::tests::t874_private_directory_and_backlog_bounds_reject_without_cleanup ... ok
+test broker::linux::owner::tests::t874_renamed_directory_stays_pinned_and_drop_preserves_replacement_socket ... ok
+test broker::linux::owner::tests::t874_socket_hardlinks_are_not_eligible_for_stale_cleanup ... ok
+test broker::linux::owner::tests::t874_stale_socket_cleanup_requires_election_and_preserves_foreign_nodes ... ok
+test broker::linux::peer::tests::t853_closed_dispatch_lanes_retire_native_socket ... ok
+test broker::linux::peer::tests::t853_local_client_duplex_batches_and_actual_retirement ... ok
+test broker::linux::peer::tests::t853_reply_capacity_and_timeout_bounds_reject_invalid_values ... ok
+test broker::linux::peer::tests::t853_stalled_client_writer_does_not_block_sibling ... ok
+test broker::linux::presentation::tests::t901_control_queue_is_bounded_and_close_does_not_wait_for_reply ... ok
+test broker::linux::presentation::tests::t901_dropped_handle_retires_and_old_actions_cannot_cross_reconnection ... ok
+test broker::linux::presentation::tests::t901_explicit_control_waits_for_complete_snapshot_and_durable_results ... ok
+test broker::linux::presentation::tests::t901_factory_admission_waits_for_real_native_thread_retirement ... ok
+test broker::linux::presentation::tests::t901_partial_snapshot_uses_one_absolute_transaction_deadline ... ok
+test broker::linux::presentation::tests::t901_periodic_inspection_refreshes_without_new_threads_or_user_action ... ok
+test broker::linux::presentation::tests::t901_production_broker_snapshot_runs_with_an_isolated_synthetic_inventory ... ok
+test broker::linux::presentation::tests::t901_reply_order_wrong_direction_and_descriptor_injection_fail_closed ... ok
+test broker::linux::presentation::tests::t901_settings_and_request_counters_reject_invalid_boundaries ... ok
+test broker::linux::presentation::tests::t901_shared_status_bounds_errors_and_rejects_late_activation_after_close ... ok
+test broker::linux::presentation::tests::t901_unavailable_startup_and_peer_loss_finish_without_false_retirement ... ok
+test broker::linux::presentation::tests::t903_concurrent_producers_preserve_id_order_and_exact_rejections ... ok
+test broker::linux::presentation::tests::t903_outcomes_are_bounded_and_preserved_through_refresh_and_close ... ok
+test broker::linux::presentation::tests::t903_queued_revoke_is_not_completed_by_refresh_and_its_rejection_survives_polling ... ok
+test broker::linux::presentation::tests::t903_submission_bounds_never_wrap_or_consume_rejected_admission ... ok
+test broker::linux::presentation::tests::t903_success_stale_action_and_cancellation_have_exact_outcomes ... ok
+test broker::linux::presentation::tests::t903_timed_out_submission_is_unconfirmed ... ok
+test broker::linux::presentation::worker::native_failure_tests::t901_runtime_creation_failure_is_contained_in_an_isolated_process ... ok
+test broker::linux::presentation::worker::native_failure_tests::t901_runtime_failure_fixture ... ok
+test broker::linux::presentation::worker::tests::t901_panic_is_reported_before_blocked_native_runtime_cleanup_finishes ... ok
+test broker::linux::presentation::worker::tests::t901_stale_commands_cannot_extend_the_snapshot_refresh_deadline ... ok
+test broker::linux::registration_client::tests::t1007_broker_death_waits_for_actual_local_native_cleanup ... ok
+test broker::linux::registration_client::tests::t1007_broker_process_fixture ... ok
+test broker::linux::registration_client::tests::t1007_dead_original_and_unrelated_process_exit_cannot_release_replacement ... ok
+test broker::linux::registration_client::tests::t1007_original_broker_exit_recovers_lost_ipc_capacity_and_endpoints ... ok
+test broker::linux::registration_client::tests::t1007_unavailable_original_observer_preserves_quarantine ... ok
+test broker::linux::registration_client::tests::t1228_admission_timeout_sends_unregister_and_receives_original_retirement ... ok
+test broker::linux::registration_client::tests::t1234_consent_accepts_the_resource_domain_and_rejects_invalid_boundaries ... ok
+test broker::linux::registration_client::tests::t1234_consent_default_matches_the_shared_resource_policy ... ok
+test broker::linux::registration_client::tests::t911_cancel_during_registration_preserves_descriptors_until_exact_retirement ... ok
+test broker::linux::registration_client::tests::t911_close_while_idle_sends_unregister_without_waiting_for_another_reply ... ok
+test broker::linux::registration_client::tests::t911_drop_sends_cancellation_and_retains_owner_until_broker_proof ... ok
+test broker::linux::registration_client::tests::t911_foreign_reply_revokes_and_keeps_cleanup_channel_for_exact_proof ... ok
+test broker::linux::registration_client::tests::t911_lost_ipc_quarantines_capacity_and_listener_ownership ... ok
+test broker::linux::registration_client::tests::t911_missing_broker_cancels_before_exposure_and_releases_after_native_exit ... ok
+test broker::linux::registration_client::tests::t911_rejected_registration_releases_without_claiming_active ... ok
+test broker::linux::registration_client::tests::t911_remote_retirement_alone_does_not_release_a_blocked_native_owner ... ok
+test broker::linux::registration_client::tests::t911_settings_and_endpoint_inputs_reject_invalid_boundaries ... ok
+test broker::linux::registration_client::tests::t911_timeout_and_repeated_close_cannot_release_uncertain_registration ... ok
+test broker::linux::registration_client::tests::t911_unexpected_descriptor_packet_cannot_replace_the_registered_route ... ok
+test broker::linux::registration_client::worker::tests::t1007_unavailable_socket_observer_cannot_retire_exposed_registration ... ok
+test broker::linux::registration_client::worker::tests::t1234_default_wait_allows_consent_after_thirty_seconds ... ok
+test broker::linux::registration_client::worker::tests::t911_panic_revokes_before_blocked_native_runtime_cleanup_exits ... ok
+test broker::linux::registration_client::worker::tests::t911_wake_cannot_extend_a_blocked_send_cleanup_deadline ... ok
+test broker::linux::server::authority::tests::t1100_cache_preserves_original_pool_and_failed_initialization ... ok
+test broker::linux::server::settings::tests::shared::t898_shared_defaults_and_boundaries_reach_validated_cli_snapshot ... ok
+test broker::linux::server::settings::tests::shared::t898_shared_out_of_bounds_values_reject_without_altering_current_settings ... ok
+test broker::linux::server::settings::tests::t1103_backend_link_mapping_retains_original_snapshot_and_identity ... ok
+test broker::linux::server::settings::tests::t1105_backend_link_mapping_retains_original_tls_budget_separate_from_other_stages ... ok
+test broker::linux::server::tests::audio::duplex::t1000_audio_private_tls_duplex_independent_stop_and_held_remote_proof ... ok
+test broker::linux::server::tests::audio::t992_audio_private_tls_speaker_route_preserves_clock_pcm_and_delayed_remote_retirement ... ok
+test broker::linux::server::tests::audio::t999_audio_private_tls_microphone_preserves_pcm_clock_and_delayed_remote_retirement ... ok
+test broker::linux::server::tests::authority::t1100_default_start_rejects_process_authority_exhaustion_before_effects ... ok
+test broker::linux::server::tests::authority::t1100_withdrawn_initializer_and_destructor_keep_exact_admission_until_join ... ok
+test broker::linux::server::tests::camera::t933_private_tls_camera_registration_preserves_protocol_and_delayed_retirement ... ok
+test broker::linux::server::tests::diagnostics::t1236_native_link_failure_logs_identity_and_kind_without_payload ... ok
+test broker::linux::server::tests::diagnostics::t1236_phase_labels_are_fixed_public_metadata ... ok
+test broker::linux::server::tests::display::t908_real_tls_exported_session_carries_config_frame_ack_and_touch_then_retires ... ok
+test broker::linux::server::tests::identity::t1102_queued_identity_outlives_provider_before_first_task_poll ... ok
+test broker::linux::server::tests::identity::t1102_withdrawn_link_keeps_native_identity_until_original_factory_returns ... ok
+test broker::linux::server::tests::media_client::t911_registration_client_uses_real_broker_tls_and_retained_descriptors ... ok
+test broker::linux::server::tests::media_client::t925_bound_registration_uses_real_broker_tls_and_retained_ports ... ok
+test broker::linux::server::tests::policy::t853_server_authority_revokes_acknowledge_only_completed_storage_job ... ok
+test broker::linux::server::tests::policy::t853_server_local_client_retirement_preserves_capacity_until_task_exit ... ok
+test broker::linux::server::tests::policy::t853_server_rejects_client_replies_unknown_routes_and_unproven_registration ... ok
+test broker::linux::server::tests::policy::t853_server_route_ownership_stale_callbacks_and_closing_are_exact ... ok
+test broker::linux::server::tests::policy::t853_server_settings_validate_all_capacity_and_path_boundaries ... ok
+test broker::linux::server::tests::registration::t853_active_route_cancel_with_closed_link_revokes_connection_authority ... ok
+test broker::linux::server::tests::registration::t853_server_real_tls_remembered_registration_binds_local_descriptors_and_revokes ... ok
+test broker::linux::server::tests::runtime::t1391_automatic_start_failure_keeps_server_alive_and_bounded ... ok
+test broker::linux::server::tests::runtime::t1391_saved_peer_starts_available_usb_without_ui_command ... ok
+test broker::linux::server::tests::runtime::t853_server_run_inspects_native_inventory_and_retires_failed_synthetic_link ... ok
+test broker::linux::server::tests::shutdown::configured::t1101_entry_uses_selected_budget_without_retiring_original_native_obligation ... ok
+test broker::linux::server::tests::shutdown::t853_shutdown_drains_started_inventory_and_queued_durable_revocation ... ok
+test broker::linux::server::tests::shutdown::t853_shutdown_invalid_budgets_leave_live_clients_and_authority_intact ... ok
+test broker::linux::server::tests::shutdown::t853_shutdown_live_authenticated_link_observes_task_native_and_authority_completion ... ok
+test broker::linux::server::tests::shutdown::t853_shutdown_timeout_keeps_native_quarantine_until_actual_completion_and_retry ... ok
+test broker::linux::server::tests::t1336_inventory_names_reach_control_snapshot ... ok
+test broker::linux::server::tests::t853_failed_inventory_rejects_inspect_until_successful_refresh ... ok
+test broker::linux::server::tests::t853_retired_route_reply_failure_still_cancels_every_client_sibling ... ok
+test broker::linux::server::tests::tls::ambiguity::t921_duplicate_authenticated_certificates_do_not_route_media_arbitrarily ... ok
+test broker::linux::server::tests::tls::t855_presentation_commands_pair_real_tls_then_durably_revoke ... ok
+test broker::linux::state::tests::t1102_identity_consumer_retains_original_store_after_provider_state_drop ... ok
+test broker::linux::state::tests::t853_persistent_identity_and_trust_survive_restart_with_exclusive_ownership ... ok
+test broker::linux::state::tests::t853_private_state_rejects_missing_unsafe_and_interrupted_storage ... ok
+test broker::linux::tests::t871_clients_have_distinct_authenticated_lifetimes ... ok
+test broker::linux::tests::t871_failed_retirement_retains_the_only_listener_capability ... ok
+test broker::linux::tests::t871_invalid_local_socket_selection_fails_before_resource_use ... ok
+test broker::linux::tests::t871_native_authenticated_registration_transfers_pinned_display_listeners ... ok
+test broker::linux::tests::t871_nonlisteners_foreign_addresses_and_duplicate_descriptors_are_rejected ... ok
+test broker::linux::tests::t871_shared_port_is_not_an_exclusive_endpoint_capability ... ok
+test broker::linux::tests::t871_typed_boundary_rejects_malformed_messages_and_unexpected_descriptor_ownership ... ok
+test broker::pump::tests::t878_absolute_pending_deadlines_do_not_refresh_or_charge_idle_reads ... ok
+test broker::pump::tests::t878_backpressure_preserves_exact_block_while_receive_continues ... ok
+test broker::pump::tests::t878_invalid_block_and_deadline_rejected_before_io ... ok
+test broker::pump::tests::t878_invalid_extents_eof_and_native_errors_fail_closed ... ok
+test broker::pump::tests::t878_native_socket_duplex_and_drop_retire_exact_local_handle ... ok
+test broker::pump::tests::t878_partial_duplex_keeps_credit_until_flush_and_reuses_buffers ... ok
+test broker::pump::tests::t878_revoked_or_rebound_lease_cannot_complete_pending_consumer ... ok
+test broker::pump::tests::t878_stalled_consumer_expires_without_credit_or_sibling_failure ... ok
+test broker::pump::tests::t878_tiny_endpoint_capacity_never_charges_hidden_vector_growth ... ok
+test broker::session::channels::tests::t872_consumer_boundaries_wraparound_and_exhaustion ... ok
+test broker::session::tests::barriers::t872_early_admitted_waits_for_complete_commit_publication ... ok
+test broker::session::tests::barriers::t872_early_media_credit_waits_for_commit_flush ... ok
+test broker::session::tests::barriers::t872_early_revoked_waits_for_complete_revoke_publication ... ok
+test broker::session::tests::barriers::t872_fragmented_capabilities_and_malformed_management_fail_closed ... ok
+test broker::session::tests::barriers::t872_invalid_runtime_bounds_are_rejected_before_admission ... ok
+test broker::session::tests::barriers::t872_permission_then_preparation_keeps_authority_ungranted ... ok
+test broker::session::tests::barriers::t872_prepared_after_local_cancel_never_installs_channels ... ok
+test broker::session::tests::barriers::t872_rejections_retire_without_consuming_mux_generation ... ok
+test broker::session::tests::barriers::t872_stale_management_keys_never_mutate_live_authority ... ok
+test broker::session::tests::cancellation::t994_late_local_cancel_preserves_sibling_and_replacement_authority ... ok
+test broker::session::tests::cancellation::t994_local_cancel_still_revokes_pending_and_current_exact_original ... ok
+test broker::session::tests::cancellation::t994_stale_local_cancel_never_targets_a_different_full_lease ... ok
+test broker::session::tests::consumer::t872_audio_channels_and_peer_revoke_remain_independent ... ok
+test broker::session::tests::consumer::t872_consumer_completion_reannounces_buffered_remainder ... ok
+test broker::session::tests::consumer::t872_idle_tick_and_stale_readiness_preserve_retirement ... ok
+test broker::session::tests::consumer::t872_local_pairing_retries_do_not_change_peer_wire_namespace ... ok
+test broker::session::tests::consumer::t872_readiness_memory_is_bounded_when_consumer_does_not_poll_events ... ok
+test broker::session::tests::consumer::t872_stale_equal_length_completion_cannot_release_new_borrow ... ok
+test broker::session::tests::consumer::t872_tiny_consumption_does_not_starve_peer_revocation ... ok
+test broker::session::tests::pump::t878_large_requested_block_adapts_to_small_negotiated_window ... ok
+test broker::session::tests::pump::t878_session_adapter_keeps_exact_consumer_and_channel_authority ... ok
+test broker::session::tests::t872_awaited_event_uses_current_time_for_resource_deadline ... ok
+test broker::session::tests::t872_disconnect_retains_resource_until_native_callback ... ok
+test broker::session::tests::t872_disconnect_settles_already_retired_native_consumer ... ok
+test broker::session::tests::t872_display_and_camera_have_independent_bounded_consumers ... ok
+test broker::session::tests::t872_expired_commit_drains_without_double_close ... ok
+test broker::session::tests::t872_peer_media_terminal_revokes_resource ... ok
+test broker::session::tests::t872_pre_admission_payload_becomes_readable_on_admission ... ok
+test broker::session::tests::t872_premature_media_terminal_cannot_corrupt_inactive_generation ... ok
+test broker::session::tests::t872_revoke_waits_for_peer_and_actual_native_retirement ... ok
+test broker::session::tests::tls::t872_stock_mutual_tls_carries_admitted_duplex_control ... ok
+test broker::transport::tests::t872_receive_gate_rejects_invalid_generations_without_mutation ... ok
+test broker::transport::tests::t873_borrowed_reservation_preserves_original_buffer_and_revocation ... ok
+test broker::transport::tests::t873_bounded_invalid_declared_lengths_never_reach_allocation ... ok
+test broker::transport::tests::t873_cancellation_does_not_restart_partial_read_deadline ... ok
+test broker::transport::tests::t873_deadline_bounds_and_closed_channel_drain_are_explicit ... ok
+test broker::transport::tests::t873_fragmented_reads_writes_preserve_reservations_and_payload ... ok
+test broker::transport::tests::t873_idle_read_has_no_deadline_but_partial_body_does ... ok
+test broker::transport::tests::t873_invalid_headers_eof_and_native_errors_poison_connection ... ok
+test broker::transport::tests::t873_payload_is_unavailable_until_complete_frame_event ... ok
+test broker::transport::tests::t873_pending_write_services_read_and_pending_consumer_services_write ... ok
+test broker::transport::tests::t873_real_duplex_handles_bidirectional_fragmentation ... ok
+test broker::transport::tests::t873_revocation_during_body_must_drain_completed_frame ... ok
+test broker::transport::tests::t873_stopping_transfers_stream_for_explicit_shutdown ... ok
+test broker::transport::tests::t873_writer_deadline_includes_flush_and_cancelled_waits ... ok
+test broker::window::tests::t875_absolute_deadline_includes_partial_writes_and_reads ... ok
+test broker::window::tests::t875_bad_reply_truncation_role_and_expansion_rejected ... ok
+test broker::window::tests::t875_different_local_limits_agree_and_preserve_next_frame ... ok
+test broker::window::tests::t875_invalid_local_settings_send_no_bytes_and_closed_stream_fails ... ok
+
+test result: ok. 249 passed; 0 failed; 0 ignored; 0 measured; 982 filtered out; finished in 7.31s
+

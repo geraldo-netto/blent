@@ -25,7 +25,7 @@ impl Launch {
         Ok(())
     }
     fn spawn(&self) -> Result<()> {
-        let mut command = self.command();
+        let mut command = crate::independent_process::command(self.executable.as_os_str());
         command
             .args(["--runtime"])
             .arg(&self.runtime)
