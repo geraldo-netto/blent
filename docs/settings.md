@@ -39,7 +39,10 @@ keeps encoder, frame rate and resolution visible;
 **Video → Encoding GPU** selects a stable Linux VAAPI adapter or CPU encoders.
 Automatic preserves existing device choices; requested and active devices appear
 separately. **Save & restart all displays** is required. Missing devices and unsupported codecs
-use software fallback; this does not move desktop composition.
+use software fallback; this does not move desktop composition. Discovery checks
+current read/write permissions without opening render nodes. It reuses GPU labels
+until device identities or driver metadata change. Permission evidence does not
+prove that opening the device or using a codec will succeed.
 
 
 **Advanced video settings** contains quality, bitrate, calibration and worker/pipe

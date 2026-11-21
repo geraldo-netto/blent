@@ -214,3 +214,62 @@ fn exercise_display_actions() {
     app.display_action(&status, &target, true);
     assert!(!app.busy());
 }
+
+#[test]
+fn t1574_native_capability_refresh_keeps_independent_evidence() {
+    if std::env::var_os("BLENT_T1574_CHILD").is_none() {
+        t1574_isolated_capabilities();
+        return;
+    }
+    let mut platform = Platform::default();
+    for _ in 0..2 {
+        let capabilities = platform.capabilities();
+        assert!(capabilities.adb && capabilities.ffmpeg);
+        assert!(!capabilities.autostart);
+        assert!(capabilities.diagnostics.is_none());
+        assert!(platform
+            .gpus
+            .iter()
+            .all(|device| device.node.starts_with("/dev/dri")));
+    }
+    let root = std::path::PathBuf::from(std::env::var_os("HOME").unwrap());
+    assert_eq!(
+        std::fs::read_to_string(root.join("calls")).unwrap(),
+        "query\nquery\n"
+    );
+}
+
+fn t1574_isolated_capabilities() {
+    use std::os::unix::fs::PermissionsExt;
+    let root = tempfile::tempdir().unwrap();
+    for name in ["adb", "ffmpeg", "systemctl"] {
+        let path = root.path().join(name);
+        std::fs::write(
+            &path,
+            "#!/bin/sh\nprintf 'query\\n' >> \"$HOME/calls\"\nexit 1\n",
+        )
+        .unwrap();
+        std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o700)).unwrap();
+    }
+    let output = Command::new(std::env::current_exe().unwrap())
+        .args([
+            "--exact",
+            "status_poll::linux::tests::t1574_native_capability_refresh_keeps_independent_evidence",
+            "--nocapture",
+        ])
+        .env("BLENT_T1574_CHILD", "1")
+        .env("HOME", root.path())
+        .env("PATH", root.path())
+        .env("XDG_CONFIG_HOME", root.path())
+        .env("XDG_RUNTIME_DIR", root.path())
+        .env_remove("APPIMAGE")
+        .env_remove("APPDIR")
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+}

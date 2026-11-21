@@ -1,0 +1,164 @@
+{
+  "issue": "T1574",
+  "tests": {
+    "common": 10,
+    "gui": 6,
+    "failing_before": 2
+  },
+  "fixture": {
+    "queries": 30,
+    "database_bytes": 1703962,
+    "before": {
+      "database_read_opens": 30,
+      "render_read_write_opens": 30,
+      "permission_checks": 0,
+      "traced_elapsed_us": 29458
+    },
+    "after": {
+      "database_read_opens": 1,
+      "render_read_write_opens": 0,
+      "permission_checks": 30,
+      "traced_elapsed_us": 11770
+    }
+  },
+  "native_power_acceptance": "T1652",
+  "coverage": [
+    {
+      "file": "common/src/linux/gpu.rs",
+      "name": "device_label",
+      "line": 29,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/linux/gpu/discovery.rs",
+      "name": "discover",
+      "line": 21,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/linux/gpu/discovery.rs",
+      "name": "permissions",
+      "line": 26,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/linux/gpu/discovery.rs",
+      "name": "refresh",
+      "line": 42,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/linux/gpu/discovery.rs",
+      "name": "refresh_in",
+      "line": 56,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/linux/gpu/discovery.rs",
+      "name": "rebuild",
+      "line": 78,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/linux/gpu/discovery.rs",
+      "name": "device",
+      "line": 95,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/linux/gpu/discovery.rs",
+      "name": "sources",
+      "line": 108,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/linux/gpu/discovery.rs",
+      "name": "source",
+      "line": 122,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/linux/gpu/discovery.rs",
+      "name": "event",
+      "line": 141,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/status_poll/linux.rs",
+      "name": "capabilities",
+      "line": 32,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/gpu_settings.rs",
+      "name": "choices",
+      "line": 22,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 47,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}

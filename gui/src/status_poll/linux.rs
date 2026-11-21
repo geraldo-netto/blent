@@ -7,6 +7,7 @@ use std::process::Command;
 pub(super) struct Platform {
     daemon: daemon::StatusProbe,
     gpus: Vec<blent_config::linux::gpu::Device>,
+    gpu_discovery: blent_config::linux::gpu::Discovery,
     inventory: Vec<blent_config::workspace::Device>,
     inventory_error: Option<String>,
     display: Option<blent_config::linux::display_control::Client>,
@@ -29,7 +30,7 @@ impl Source for Platform {
         }
     }
     fn capabilities(&mut self) -> Capabilities {
-        self.gpus = blent_config::linux::gpu::discover();
+        self.gpus = self.gpu_discovery.refresh();
         Capabilities {
             daemon_binary: crate::find_blent_bin().is_some(),
             ffmpeg: command_exists("ffmpeg"),

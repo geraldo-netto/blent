@@ -11,15 +11,10 @@ pub struct Device {
     pub node: PathBuf,
 }
 
-pub fn discover() -> Vec<Device> {
-    discover_in(Path::new("/dev/dri"), Path::new("/sys/class/drm"), |node| {
-        std::fs::OpenOptions::new()
-            .read(true)
-            .write(true)
-            .open(node)
-            .is_ok()
-    })
-}
+mod discovery;
+#[cfg(test)]
+use discovery::permissions;
+pub use discovery::{discover, Discovery};
 
 pub fn catalog(devices: &[Device]) -> Catalog {
     Catalog {
@@ -29,54 +24,6 @@ pub fn catalog(devices: &[Device]) -> Catalog {
             .map(|device| device.adapter.clone())
             .collect(),
     }
-}
-
-fn discover_in(dri: &Path, sys: &Path, accessible: impl Fn(&Path) -> bool) -> Vec<Device> {
-    let Ok(entries) = std::fs::read_dir(dri.join("by-path")) else {
-        return Vec::new();
-    };
-    let database = pci_database(&[
-        Path::new("/usr/share/misc/pci.ids"),
-        Path::new("/usr/share/hwdata/pci.ids"),
-    ]);
-    let mut devices: Vec<_> = entries
-        .take(256)
-        .flatten()
-        .filter_map(|entry| device(&entry.path(), dri, sys, &database, &accessible))
-        .collect();
-    devices.sort_by(|a, b| a.adapter.id.cmp(&b.adapter.id));
-    devices.dedup_by(|a, b| a.adapter.id == b.adapter.id);
-    devices
-}
-
-fn device(
-    alias: &Path,
-    dri: &Path,
-    sys: &Path,
-    database: &str,
-    accessible: &impl Fn(&Path) -> bool,
-) -> Option<Device> {
-    let identity = alias.file_name()?.to_str()?;
-    if !identity.ends_with("-render") || identity.len() > 200 {
-        return None;
-    }
-    let node = std::fs::canonicalize(alias).ok()?;
-    if node.parent()? != std::fs::canonicalize(dri).ok()? {
-        return None;
-    }
-    let name = node.file_name()?.to_str()?;
-    name.strip_prefix("renderD")?.parse::<u32>().ok()?;
-    let event = std::fs::read_to_string(sys.join(name).join("device/uevent")).unwrap_or_default();
-    let label = device_label(identity, &event, database);
-    Some(Device {
-        adapter: Adapter {
-            id: format!("vaapi:{identity}"),
-            label,
-            backend: Backend::Vaapi,
-            accessible: accessible(&node),
-        },
-        node,
-    })
 }
 
 fn device_label(identity: &str, event: &str, database: &str) -> String {
@@ -95,6 +42,8 @@ fn device_label(identity: &str, event: &str, database: &str) -> String {
         .find_map(|line| line.strip_prefix("DRIVER="))
         .unwrap_or("unknown driver");
     let product = pci_product(database, pci).unwrap_or(pci);
+    let product: String = product.chars().take(256).collect();
+    let driver: String = driver.chars().take(128).collect();
     format!("{vendor} {product} · {driver} · {identity}")
 }
 

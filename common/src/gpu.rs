@@ -7,7 +7,7 @@ pub struct Adapter {
     pub id: String,
     pub label: String,
     pub backend: Backend,
-    /// Device access only; encoder/format support still needs a real encode probe.
+    /// Current permission evidence only; opening and encoding still require native admission.
     pub accessible: bool,
 }
 

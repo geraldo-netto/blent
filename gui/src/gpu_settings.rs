@@ -36,7 +36,7 @@ fn choices(ui: &mut egui::Ui, request: &mut String, catalog: &blent_config::gpu:
                     })
                     .response
                     .on_hover_text(if adapter.accessible {
-                        "Device access verified; encoder support is checked when used."
+                        "Read/write permissions checked; device access and encoder support are checked when used."
                     } else {
                         "Device access denied or unavailable."
                     });
