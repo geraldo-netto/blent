@@ -76,14 +76,16 @@ retaining the last camera image. Select **180°** when the tablet is upside down
 the rotation applies live while preserving the exported webcam dimensions.
 
 The camera helper is embedded in the host GUI through a reusable host library.
-No separate helper command or display daemon is needed. Keep the host window
-open while sharing. On Linux, tray clicks and repeated GUI launches restore the
+No separate helper command or display daemon is needed. Closing the host window
+while camera or audio sharing is active minimizes it and retains the original
+session. Restore it from the taskbar, or on Linux use the tray or application
+launcher: tray clicks and repeated GUI launches restore the
 existing window and its camera/audio state. Admission remains held through native
 shutdown; launching again during cleanup does not create a replacement owner.
 Window focus remains subject to the desktop compositor. This activation requires
 the updated GUI to have started first; it cannot attach to a pre-update instance.
-**Stop camera** or closing that window requests capture
-cleanup and black output. A replacement waits for the original output workers
+**Stop camera** requests capture cleanup and black output. Closing an idle
+window exits it normally. A replacement waits for the original output workers
 and FFmpeg decoder and, for direct USB, the original registration to retire.
 Unconfirmed cleanup keeps replacement pending; Stop also cancels that pending
 start. ADB mappings remain owned through cleanup under the

@@ -26,6 +26,7 @@ mod platform_diagnostics;
 mod resource_workspace;
 mod settings;
 mod stream_settings;
+mod window_lifecycle;
 #[cfg(target_os = "linux")]
 mod window_placement;
 mod workspace_style;
@@ -424,6 +425,7 @@ impl App {
 
     fn show_window(&mut self, ctx: &egui::Context) {
         self.maintain_media(ctx);
+        self.handle_close(ctx);
         #[cfg(target_os = "linux")]
         self.placement.apply(ctx);
         self.poll_action();
@@ -1322,6 +1324,7 @@ mod tests {
     include!("config_refresh_tests.rs");
     mod about;
     mod busy_controls;
+    mod close_tests;
     mod connection_guidance;
     mod coverage;
     mod media_validation;

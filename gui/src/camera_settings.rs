@@ -33,6 +33,10 @@ impl Default for Panel {
 }
 
 impl Panel {
+    pub(super) fn is_sharing(&mut self) -> bool {
+        self.pending.is_some() || self.state().is_active()
+    }
+
     pub(super) fn maintain_preview(&mut self, context: &egui::Context) {
         let live = self.native_state() == CameraState::Streaming
             && self
@@ -117,7 +121,7 @@ impl Panel {
         }
         self.buttons(ui, options, &state);
         ui.label(egui::RichText::new("Image adjustments apply live. Save remembers preferences. Other changes show Restart required. Display sharing is unaffected.").weak().size(11.0));
-        ui.label(egui::RichText::new("Keep this window open while sharing. Select Blent Front or Blent Rear in your video call; only the selected lens is live.").weak().size(11.0));
+        ui.label(egui::RichText::new("Closing this window while sharing minimizes it. Use Stop camera to end sharing. Select Blent Front or Blent Rear in your video call; only the selected lens is live.").weak().size(11.0));
         ui.add_space(10.0);
     }
 
@@ -895,3 +899,31 @@ mod completion_tests {
 
 #[cfg(all(test, target_os = "linux"))]
 mod cache_tests;
+
+#[cfg(test)]
+mod close_tests {
+    use super::*;
+
+    #[test]
+    fn t1669_camera_close_retains_pending_start_and_original_retirement() {
+        let mut panel = Panel::default();
+        panel.pending = Some(CameraProfile::default());
+        assert!(panel.is_sharing());
+        panel.pending = None;
+        let (start, acknowledgement) = blent_config::media_start::Start::pending();
+        panel.owner.admit(None, start);
+        assert!(panel.is_sharing());
+        acknowledgement.acknowledge();
+        assert!(!panel.is_sharing());
+        let pool = blent_config::retirement::Pool::new(1).unwrap();
+        let admission = pool.reserve().unwrap();
+        panel
+            .owner
+            .release(blent_config::retirement::Fence::Pending(
+                admission.completion(),
+            ));
+        assert!(panel.is_sharing());
+        drop(admission);
+        assert!(!panel.is_sharing());
+    }
+}

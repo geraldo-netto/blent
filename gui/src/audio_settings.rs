@@ -30,6 +30,10 @@ impl Default for Panel {
     }
 }
 impl Panel {
+    pub(super) fn is_sharing(&mut self) -> bool {
+        self.pending.is_some() || self.status().state.is_active()
+    }
+
     pub(super) fn show(
         &mut self,
         ui: &mut egui::Ui,
@@ -622,5 +626,36 @@ mod completion_tests {
         while panel.status().state == AudioState::Stopping {
             std::thread::yield_now();
         }
+    }
+}
+
+#[cfg(test)]
+mod close_tests {
+    use super::*;
+
+    #[test]
+    fn t1669_audio_close_retains_pending_start_and_original_retirement() {
+        let mut panel = Panel::default();
+        panel.pending = Some(Pending {
+            direction: Direction::Microphone,
+            options: AudioOptions::new(Direction::Microphone),
+        });
+        assert!(panel.is_sharing());
+        panel.pending = None;
+        let (start, acknowledgement) = blent_config::media_start::Start::pending();
+        panel.owner.admit(None, start);
+        assert!(panel.is_sharing());
+        acknowledgement.acknowledge();
+        assert!(!panel.is_sharing());
+        let pool = blent_config::retirement::Pool::new(1).unwrap();
+        let admission = pool.reserve().unwrap();
+        panel
+            .owner
+            .release(blent_config::retirement::Fence::Pending(
+                admission.completion(),
+            ));
+        assert!(panel.is_sharing());
+        drop(admission);
+        assert!(!panel.is_sharing());
     }
 }

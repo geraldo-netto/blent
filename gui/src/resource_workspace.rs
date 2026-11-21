@@ -145,7 +145,7 @@ impl App {
             return;
         };
         ui.small(format!("Selected tablet: {}", selected.label()));
-        ui.small("Each Start/Stop affects only this tablet and resource. Keep this window open for camera and audio.");
+        ui.small("Start/Stop affects only this tablet and resource. Close minimizes during camera/audio sharing.");
         self.show_feedback(ui, crate::FeedbackArea::Display);
         let resources = [
             Resource::Display,

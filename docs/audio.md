@@ -120,3 +120,8 @@ queued audio; they did not measure sound reaching a listener.
 
 For exact packet schemas, deadlines, ownership rules and regression evidence,
 see the [audio technical reference](audio-reference.md).
+
+Closing the desktop window while camera or audio sharing is active minimizes it
+and keeps the original sessions running. Restore it from the taskbar or, on
+Linux, the Blent tray/application launcher. Use the resource’s Stop button to end
+sharing; closing an idle window exits normally.
