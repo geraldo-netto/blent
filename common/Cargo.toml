@@ -6,7 +6,7 @@ edition = "2021"
 [features]
 default = ["storage", "commands", "platform", "native-entropy"]
 native-entropy = ["dep:getrandom"]
-storage = ["dep:tempfile"]
+storage = ["dep:tempfile", "dep:libc"]
 commands = ["dep:tempfile", "dep:tokio", "dep:libc"]
 platform = ["storage", "commands", "native-entropy", "dep:libc", "dep:clap"]
 

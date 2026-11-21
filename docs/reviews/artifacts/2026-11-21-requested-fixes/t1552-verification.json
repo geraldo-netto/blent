@@ -1,0 +1,26 @@
+{
+  "issue": "T1552",
+  "red": {
+    "cases": 1,
+    "failed": 1,
+    "sha256": "82c7c777520cd75e27dad3478dae7c4b63ec4703dc93800313b5ae4bfbfdd117"
+  },
+  "green": {
+    "gui_cases": 229,
+    "storage_cases": 4,
+    "private_entry_cases": 2,
+    "failed": 0
+  },
+  "coverage": {
+    "tool": "cargo-llvm-cov 0.8.7; rustc 1.100.0; exact current GUI test/actual entry/config test objects",
+    "methods": 9,
+    "minimum_percent": 90.0
+  },
+  "complexity": {
+    "tool": "project syn Rust/Python AST checker",
+    "functions": 205,
+    "over_9": 0
+  },
+  "ownership": "Existing background worker admits a 1 MiB regular-file snapshot; its local file closes on success/rejection. Status retains one immutable Arc; UI borrows/clones only during merge. Save cutoff prevents stale observation reuse; no new native owner.",
+  "native": "Private Linux Xvfb entry verified; Windows evidence remains T1271. Installed instances untouched."
+}

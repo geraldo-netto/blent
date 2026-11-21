@@ -5,6 +5,7 @@ use std::path::{Path, PathBuf};
 mod diff;
 #[cfg(test)]
 mod merge_tests;
+mod observe;
 #[cfg(test)]
 mod write_tests;
 

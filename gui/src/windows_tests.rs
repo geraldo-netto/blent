@@ -17,6 +17,7 @@ fn app(store: ConfigStore) -> App {
         save: None,
         cfg: cfg.clone(),
         saved_cfg: cfg,
+        config_observed_after: None,
         status: Arc::new(Mutex::new(Status::default())),
         message: String::new(),
         feedback_area: FeedbackArea::default(),

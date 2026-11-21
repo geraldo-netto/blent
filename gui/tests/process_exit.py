@@ -24,10 +24,11 @@ def isolate_devices(root):
 def environment(root):
     config = root / 'config/blent/config.toml'
     config.parent.mkdir(parents=True)
-    config.write_text('check_updates = false\ninput_touch = false\ninput_pen = false\ninput_pointer = false\n')
+    config.write_text('check_updates = true\ninput_touch = false\ninput_pen = false\ninput_pointer = false\n')
     tools = root / 'bin'
     tools.mkdir()
-    for name, body in [('adb', "printf 'List of devices attached\\n\\n'"), ('systemctl', 'exit 1')]:
+    for name, body in [('adb', "printf 'List of devices attached\\n\\n'"), ('systemctl', 'exit 1'),
+                       ('curl', "printf '%s' '{\"tag_name\":\"v99.0.0\"}'")]:
         path = tools / name
         path.write_text('#!/bin/sh\n' + body + '\n')
         path.chmod(0o700)

@@ -35,7 +35,7 @@ under **App & diagnostics**. The decoder panel shows the active codec, advertise
 capabilities, requested performance hints and watchdog fallback; effective hints
 remain unknown. Camera Start/Stop is explicit and independent of
 display sharing; opening desktop settings or pressing Save does not start capture.
-Save/Discard controls appear in preference editors. Workspace resource Start uses
+Save/Discard controls appear in preference editors. The existing two-second background poll also observes saved configuration changes, including tablet settings persisted by the daemon. It rebases unsaved local edits onto the latest valid snapshot; Discard uses that new baseline. Missing, malformed, non-regular or over-1-MiB snapshots do not replace the draft. A read started before a completed GUI save cannot overwrite that save. Workspace resource Start uses
 the exact selected tablet without rewriting saved target preferences. Explicit
 Start in a camera/audio editor uses its target fields. Stop preserves the original
 resource owner until native cleanup completes; selection changes cannot retarget

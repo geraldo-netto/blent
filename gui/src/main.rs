@@ -30,6 +30,7 @@ mod stream_settings;
 mod window_placement;
 mod workspace_style;
 use platform::*;
+mod config_refresh;
 mod status_poll;
 mod status_worker;
 #[cfg(all(test, windows))]
@@ -47,8 +48,9 @@ use std::process::Command;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-#[derive(Default, Clone, PartialEq, Eq)]
+#[derive(Default, Clone, PartialEq)]
 struct Status {
+    config: Option<config_refresh::Snapshot>,
     gpus: blent_config::gpu::Catalog,
     active_gpus: Vec<String>,
     daemon_running: bool,
@@ -91,6 +93,28 @@ fn dispatch_action(
     receiver
 }
 
+fn start_status_worker(
+    observed_store: ConfigStore,
+    status: Arc<Mutex<Status>>,
+    repaint: egui::Context,
+) -> status_worker::StatusWorker {
+    let mut sampler = status_poll::StatusPoller::default();
+    status_worker::StatusWorker::start(
+        move |force| {
+            let mut current = sampler.poll(force);
+            current.config = config_refresh::Snapshot::read(&observed_store);
+            if let Ok(mut guard) = status.lock() {
+                let changed = *guard != current;
+                *guard = current;
+                if changed || force {
+                    repaint.request_repaint();
+                }
+            }
+        },
+        Duration::from_secs(2),
+    )
+}
+
 struct App {
     #[cfg(target_os = "linux")]
     placement: platform::placement::Initial,
@@ -109,6 +133,7 @@ struct App {
     save: Option<settings::PendingSave>,
     cfg: FileConfig,
     saved_cfg: FileConfig,
+    config_observed_after: Option<std::time::Instant>,
     status: Arc<Mutex<Status>>,
     message: String,
     feedback_area: FeedbackArea,
@@ -240,7 +265,8 @@ fn check_for_update() -> Option<String> {
 impl App {
     fn new(cc: &eframe::CreationContext<'_>, scheduling_status: String) -> Self {
         workspace_style::configure(&cc.egui_ctx);
-        let cfg = blent_config::storage::ConfigStore::default().load();
+        let store = ConfigStore::default();
+        let cfg = store.load();
         let status = Arc::new(Mutex::new(Status::default()));
 
         let update = Arc::new(Mutex::new(None));
@@ -257,22 +283,7 @@ impl App {
             });
         }
 
-        // Background poller: daemon + adb state every 2 seconds
-        let status_bg = status.clone();
-        let repaint = cc.egui_ctx.clone();
-        let mut sampler = status_poll::StatusPoller::default();
-        let worker = status_worker::StatusWorker::start(
-            move |force| {
-                let s = sampler.poll(force);
-                if let Ok(mut guard) = status_bg.lock() {
-                    if *guard != s {
-                        *guard = s;
-                        repaint.request_repaint();
-                    }
-                }
-            },
-            Duration::from_secs(2),
-        );
+        let worker = start_status_worker(store.clone(), status.clone(), cc.egui_ctx.clone());
 
         #[cfg(windows)]
         let (monitors, monitor_worker) = {
@@ -296,8 +307,9 @@ impl App {
             microphone: audio_settings::Panel::default(),
             speakers: audio_settings::Panel::default(),
             _status_worker: Some(worker),
-            store: ConfigStore::default(),
+            store,
             save: None,
+            config_observed_after: None,
             saved_cfg: cfg.clone(),
             cfg,
             status,
@@ -352,6 +364,7 @@ impl App {
                     self.cfg = edited;
                 }
                 self.saved_cfg = saved.config;
+                self.config_observed_after = Some(std::time::Instant::now());
             }
             Err(error) => self.message = error,
         }
@@ -406,6 +419,7 @@ impl App {
         self.placement.apply(ctx);
         self.poll_action();
         let status = self.status.lock().map(|s| s.clone()).unwrap_or_default();
+        self.refresh_config(status.config.as_ref());
         if !matches!(self.tab, Tab::Overview | Tab::Connections | Tab::About) {
             self.show_footer(ctx, &status);
         }
@@ -1291,6 +1305,7 @@ fn native_options() -> eframe::NativeOptions {
 
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
+    include!("config_refresh_tests.rs");
     mod about;
     mod connection_guidance;
     mod coverage;
@@ -1606,6 +1621,7 @@ mod tests {
                 save: None,
                 cfg,
                 saved_cfg,
+                config_observed_after: None,
                 tab,
                 message: String::new(),
                 feedback_area: FeedbackArea::default(),

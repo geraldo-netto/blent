@@ -34,3 +34,10 @@ pub trait SettingsEdits: Send + Sync {
         publish: Publication<'_>,
     ) -> PersistenceResult<FileConfig>;
 }
+
+pub trait ObservedSnapshots: Send + Sync {
+    /// Observe a current sanitized, validated snapshot. Missing, malformed or
+    /// unavailable storage is an error, never an implicit default publication.
+    /// Call on a background worker; the filesystem adapter bounds text to 1 MiB.
+    fn observe(&self) -> PersistenceResult<FileConfig>;
+}
