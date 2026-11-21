@@ -86,7 +86,7 @@ internal class AndroidWorkerRun(
                 }
             }
             start.await()
-            observe()
+            withContext(Dispatchers.Default) { observe() }
         } finally { cancel() }
     }
     private suspend fun startNative() {
@@ -107,7 +107,7 @@ internal class AndroidWorkerRun(
     }
     private suspend fun observe() {
         while (!stopped.get()) {
-            val event = WorkerEventJson.decode(mailbox.receive())
+            val event = mailbox.receive().event
             if (event is WorkerEvent.Ended) {
                 event.failure?.let { throw IOException(it) }
                 return

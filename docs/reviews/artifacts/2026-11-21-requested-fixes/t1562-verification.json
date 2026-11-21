@@ -1,0 +1,28 @@
+{
+  "issue": "T1562",
+  "regressions": "Mailbox render overflow and callback dispatcher both failed before on API 27/34; pass after. Ordered events retain their capacity and priority; close drops pending receipts.",
+  "tests": {
+    "cases": 100,
+    "failed": 0,
+    "platforms": "Robolectric API 27 and 34"
+  },
+  "paused_dispatcher_measurement": {
+    "receipts_offered_per_case": 1000,
+    "latest_received": 1000,
+    "additional_UI_callbacks": 0,
+    "UI_report_callbacks": 0,
+    "cases": 2
+  },
+  "coverage": {
+    "tool": "JaCoCo 0.8.15",
+    "authored_methods_and_callbacks": 17,
+    "minimum_percent": 100
+  },
+  "complexity": {
+    "tool": "Kotlin PSI 1.9.20 project checker",
+    "functions": 281,
+    "over_9": 0
+  },
+  "ownership": "Each worker boundary owns 32 ordered records/512 KiB encoded text and one conflated receipt/512 KiB encoded text, plus its currently processed record. Immutable text/event representations share no mutable/native ownership. Close fences admission and drops pending receipt; exact original process retirement remains unchanged. These text bounds are not total heap measurements.",
+  "limits": "No physical Android UI CPU-time measurement or native process-kill test; retained under T1631."
+}

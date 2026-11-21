@@ -14,6 +14,63 @@ import java.util.concurrent.CopyOnWriteArrayList
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class AndroidWorkerRunTest {
+    private class PausedUi : CoroutineDispatcher() {
+        private val pending = java.util.concurrent.ConcurrentLinkedQueue<Runnable>()
+        var executed = 0
+            private set
+        override fun dispatch(context: kotlin.coroutines.CoroutineContext, block: Runnable) { pending.add(block) }
+        fun drain() {
+            while (true) {
+                val next = pending.poll() ?: return
+                executed++
+                next.run()
+            }
+        }
+    }
+
+    @Test fun t1562PausedUiStillDeliversLatestReceiptWithoutAnotherUiCallback() = runBlocking {
+        val ui = PausedUi()
+        val scope = CoroutineScope(SupervisorJob() + ui)
+        val latest = java.util.concurrent.atomic.AtomicInteger(-1)
+        val callerReports = java.util.concurrent.atomic.AtomicInteger()
+        val caller = Thread.currentThread().id
+        val endpoint = Endpoint().apply { start = { it.emit(WorkerEvent.Rendered(0, 1, null)) } }
+        val run = AndroidWorkerRun(Context(endpoint), task, report = {
+            if (Thread.currentThread().id == caller) callerReports.incrementAndGet()
+            latest.set((it as WorkerEvent.Rendered).sequence)
+        }, graceMillis = 1)
+        val active = scope.async { runCatching { run.execute() } }
+        try {
+            withTimeout(3000) { while (latest.get() < 0) { ui.drain(); delay(1) } }
+            val before = ui.executed
+            repeat(1000) { endpoint.emit(WorkerEvent.Rendered(it + 1, 1, null)) }
+            withTimeout(3000) { while (latest.get() != 1000) delay(1) }
+            assertEquals(before, ui.executed)
+            assertEquals(0, callerReports.get())
+            assertTrue(active.isActive)
+            println("T1562 receipts=1000 latest=1000 additional_ui_callbacks=${ui.executed - before} ui_report_callbacks=${callerReports.get()}")
+        } finally {
+            run.cancel()
+            withTimeout(3000) { while (!active.isCompleted) { ui.drain(); delay(1) } }
+            run.retire(); scope.cancel(); ui.drain()
+        }
+    }
+
+    @Test fun t1562RenderedCallbacksDoNotRunOnTheCallingUiDispatcher() = runBlocking {
+        val caller = Thread.currentThread().id
+        val reported = CompletableDeferred<Long>()
+        val endpoint = Endpoint().apply { start = { it.emit(WorkerEvent.Rendered(1, 1, null)) } }
+        val run = AndroidWorkerRun(Context(endpoint), task,
+            report = { reported.complete(Thread.currentThread().id) }, graceMillis = 1)
+        val active = async { runCatching { run.execute() } }
+        try {
+            val thread = withTimeout(3000) { reported.await() }
+            assertNotEquals("T1562 render acknowledgement used the caller/UI dispatcher", caller, thread)
+        } finally {
+            run.cancel(); active.await(); run.retire()
+        }
+    }
+
     private val task = MediaTask.Metadata(640, 480, 30)
     private class Endpoint : Binder() {
         val deaths = CopyOnWriteArrayList<IBinder.DeathRecipient>()

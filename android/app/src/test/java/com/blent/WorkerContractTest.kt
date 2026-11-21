@@ -11,6 +11,33 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class WorkerContractTest {
+    @Test fun t1562OrderedCapacityAndCloseRemainIndependentOfRenderedReceipts() = runBlocking {
+        val mailbox = WorkerMailbox()
+        repeat(32) { assertTrue(mailbox.offer(WorkerEvent.Status("$it"))) }
+        repeat(1000) { assertTrue(mailbox.offer(WorkerEvent.Rendered(it, 1, null))) }
+        assertFalse(mailbox.offer(WorkerEvent.Status("full")))
+        repeat(32) {
+            val message = mailbox.receive()
+            assertEquals(WorkerEvent.Status("$it"), message.event)
+            assertEquals(message.event, WorkerEventJson.decode(message.text))
+        }
+        mailbox.close()
+        assertFalse(mailbox.offer(WorkerEvent.Rendered(1000, 1, null)))
+        assertTrue(runCatching { mailbox.receive() }.isFailure)
+    }
+
+    @Test fun t1562RenderedBacklogIsLossyAndCannotStarveOrderedEvents() = runBlocking {
+        val mailbox = WorkerMailbox()
+        repeat(100) { sequence ->
+            assertTrue("T1562 replaceable frame acknowledgement exhausted the mailbox",
+                mailbox.offer(WorkerEventJson.encode(WorkerEvent.Rendered(sequence, 1, null))))
+        }
+        assertTrue(mailbox.offer(WorkerEventJson.encode(WorkerEvent.Status("ready"))))
+        assertEquals(WorkerEvent.Status("ready"), mailbox.receive().event)
+        assertEquals(WorkerEvent.Rendered(99, 1, null), mailbox.receive().event)
+        mailbox.close()
+    }
+
     private val token = "a".repeat(64)
     private fun audio(direction: Int = 1) = MediaTask.Audio(AudioEndpoint(token, 1234, direction, 1, 40, false), AudioPreferences())
     @Test fun t809_requestsRoundTripWithoutNativeTypesOrFrameCopies() {
@@ -79,12 +106,14 @@ class WorkerContractTest {
     @Test fun t809_mailboxBoundsBytesCountAndReleasesCapacity() = runBlocking {
         val mailbox = WorkerMailbox()
         assertFalse(mailbox.offer("x".repeat(262145)))
-        val large = "x".repeat(262144)
-        assertTrue(mailbox.offer(large)); assertFalse(mailbox.offer("a"))
-        assertEquals(large, mailbox.receive())
-        repeat(32) { assertTrue(mailbox.offer("$it")) }
-        assertFalse(mailbox.offer("overflow"))
-        repeat(32) { assertEquals("$it", mailbox.receive()) }
+        val overhead = WorkerEventJson.encode(WorkerEvent.Result("")).length
+        val large = WorkerEvent.Result("x".repeat(262144 - overhead))
+        assertTrue(mailbox.offer(WorkerEventJson.encode(large)))
+        assertFalse(mailbox.offer(WorkerEventJson.encode(WorkerEvent.Status("a"))))
+        assertEquals(large, mailbox.receive().event)
+        repeat(32) { assertTrue(mailbox.offer(WorkerEventJson.encode(WorkerEvent.Status("$it")))) }
+        assertFalse(mailbox.offer(WorkerEventJson.encode(WorkerEvent.Status("overflow"))))
+        repeat(32) { assertEquals(WorkerEvent.Status("$it"), mailbox.receive().event) }
         mailbox.close(); assertFalse(mailbox.offer("closed"))
         assertTrue(runCatching { mailbox.receive() }.isFailure)
     }

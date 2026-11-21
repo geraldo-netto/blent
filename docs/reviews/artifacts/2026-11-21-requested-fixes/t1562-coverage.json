@@ -1,0 +1,411 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "<init>",
+    "line": 6,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMessage",
+        "name": "<init>",
+        "signature": "(Lcom/blent/WorkerEvent;Ljava/lang/String;)V",
+        "line": 8,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "<init>",
+    "line": 10,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox$Ordered",
+        "name": "<init>",
+        "signature": "(Lcom/blent/WorkerMessage;I)V",
+        "line": 14,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox",
+        "name": "<init>",
+        "signature": "()V",
+        "line": 13,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "<init>",
+    "line": 14,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox$Ordered",
+        "name": "<init>",
+        "signature": "(Lcom/blent/WorkerMessage;I)V",
+        "line": 14,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "offer",
+    "line": 19,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox",
+        "name": "offer",
+        "signature": "(Ljava/lang/String;)Z",
+        "line": 20,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "offer",
+    "line": 23,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox",
+        "name": "offer",
+        "signature": "(Lcom/blent/WorkerEvent;)Z",
+        "line": 24,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "admit",
+    "line": 27,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox",
+        "name": "admit",
+        "signature": "(Lcom/blent/WorkerMessage;)Z",
+        "line": 28,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "receive",
+    "line": 36,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox",
+        "name": "receive",
+        "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+        "line": 36,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "<lambda>",
+    "line": 36,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox$receive$2$2",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 38,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox$receive$2$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 37,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "<lambda>",
+    "line": 37,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox$receive$2$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 37,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "<lambda>",
+    "line": 38,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox$receive$2$2",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 38,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "consumed",
+    "line": 40,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox",
+        "name": "consumed",
+        "signature": "(Lcom/blent/WorkerMailbox$Ordered;)V",
+        "line": 40,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+    "name": "close",
+    "line": 41,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WorkerMailbox.kt",
+        "owner": "com/blent/WorkerMailbox",
+        "name": "close",
+        "signature": "(Ljava/lang/Exception;)V",
+        "line": 42,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+    "name": "execute",
+    "line": 77,
+    "language": "kotlin",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+        "owner": "com/blent/AndroidWorkerRun",
+        "name": "execute",
+        "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+        "line": 78,
+        "covered": 13,
+        "total": 13
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+    "name": "observe",
+    "line": 108,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+        "owner": "com/blent/AndroidWorkerRun",
+        "name": "observe",
+        "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+        "line": 109,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaWorkerService.kt",
+    "name": "deliver",
+    "line": 58,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaWorkerService.kt",
+        "owner": "com/blent/MediaWorkerService",
+        "name": "deliver",
+        "signature": "(Landroid/os/IBinder;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+        "line": 59,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaWorkerService.kt",
+    "name": "publish",
+    "line": 62,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaWorkerService.kt",
+        "owner": "com/blent/MediaWorkerService",
+        "name": "publish",
+        "signature": "(Lcom/blent/WorkerEvent;)V",
+        "line": 63,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+    "name": "<lambda>",
+    "line": 89,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+        "owner": "com/blent/AndroidWorkerRun$execute$3",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 89,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  }
+]

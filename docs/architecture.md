@@ -982,6 +982,15 @@ with delays from 500 ms to 30 seconds. Connected display status resets the delay
 The application-owned worker lane still requires original native retirement
 before starting a replacement. Stop, lost surface, changed routes and a newer
 Activity cancel or supersede the old retry; no retry grants new display consent.
+Worker-event mailboxes keep 32 ordered events within a 512 KiB encoded-text
+budget and one replaceable rendered receipt within its own 512 KiB encoded-text
+budget. These are serialized-text bounds, not total JVM heap measurements.
+The worker encodes once and the receiving Binder thread decodes once. Event
+consumption runs on the default coroutine dispatcher; render acknowledgements
+reach the synchronized control sender directly, while presentation adapters
+dispatch status to their existing UI owners. Ordered-event exhaustion still
+fails closed; receipt replacement cannot exhaust that queue. Native retirement
+continues to require the original worker's settlement.
 Its `ReleaseCheckOwner` owns the optional update request independently of media
 work. It cancels unfinished requests on stop or when checks are disabled, and
 checks request generations again when queued results reach the UI. Resuming

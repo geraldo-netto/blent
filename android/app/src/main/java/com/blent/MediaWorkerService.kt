@@ -56,11 +56,11 @@ abstract class MediaWorkerService : Service() {
         execution = scope.launch { execute(task, surface) }
     }
     private suspend fun deliver(remote: IBinder, revision: Long) {
-        try { while (currentCoroutineContext().isActive) WorkerIpc.event(remote, revision, events.receive()) }
+        try { while (currentCoroutineContext().isActive) WorkerIpc.event(remote, revision, events.receive().text) }
         catch (_: Exception) { terminate() }
     }
     private fun publish(event: WorkerEvent) {
-        try { check(events.offer(WorkerEventJson.encode(event))) }
+        try { check(events.offer(event)) }
         catch (_: Exception) { terminate() }
     }
     private suspend fun execute(task: MediaTask, surface: Surface?) {
