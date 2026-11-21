@@ -1,0 +1,48 @@
+{
+  "issue": "T1559",
+  "tests": 36,
+  "coverage": [
+    {
+      "file": "gui/src/main.rs",
+      "name": "show_video_settings",
+      "line": 1138,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "show_advanced_video_settings",
+      "line": 1155,
+      "language": "rust",
+      "covered": 14,
+      "total": 17,
+      "percent": 82.3529411764706,
+      "passes": true,
+      "missing": [
+        1159,
+        1167,
+        1170
+      ]
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "show_page_content",
+      "line": 1219,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 180,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}

@@ -1135,10 +1135,10 @@ impl App {
         ui.end_row();
     }
 
-    fn show_video_settings(&mut self, ui: &mut egui::Ui) {
+    fn show_video_settings(&mut self, ui: &mut egui::Ui, status: &Status) {
         settings_grid(ui, "video-basics", |ui| {
             self.setting_encoder(ui);
-            gpu_settings::show(ui, &mut self.cfg, &self.status.lock().unwrap());
+            gpu_settings::show(ui, &mut self.cfg, status);
             self.setting_frame_rate(ui);
             self.setting_resolution(ui);
         });
@@ -1147,12 +1147,12 @@ impl App {
             .id_salt("video-advanced")
             .show(ui, |ui| {
                 settings_grid(ui, "video-advanced-grid", |ui| {
-                    self.show_advanced_video_settings(ui)
+                    self.show_advanced_video_settings(ui, status)
                 });
             });
     }
 
-    fn show_advanced_video_settings(&mut self, ui: &mut egui::Ui) {
+    fn show_advanced_video_settings(&mut self, ui: &mut egui::Ui, status: &Status) {
         if capabilities().display {
             self.setting_calibration(ui);
             self.setting_adaptive_idle(ui);
@@ -1166,8 +1166,7 @@ impl App {
             conversion_settings::encoder_workers(ui, &mut self.cfg.encoder_workers);
         }
         if capabilities().pipe_capacity {
-            let status = self.status.lock().unwrap().clone();
-            pipe_settings::show(ui, &mut self.cfg.pipe_capacity_mib, &status);
+            pipe_settings::show(ui, &mut self.cfg.pipe_capacity_mib, status);
         }
     }
 
@@ -1220,7 +1219,7 @@ impl App {
     fn show_page_content(&mut self, ui: &mut egui::Ui, status: &Status) {
         match self.tab {
             Tab::Overview => self.show_overview(ui, status),
-            Tab::Video => self.show_video_settings(ui),
+            Tab::Video => self.show_video_settings(ui, status),
             Tab::Connections => self.connection.show(ui),
             Tab::About => self.show_about(ui, status),
             Tab::Audio => self.show_audio_settings(ui),
@@ -1325,6 +1324,7 @@ mod tests {
     mod coverage;
     mod media_validation;
     mod overview;
+    mod video_snapshot;
     use super::*;
     use blent_config::commands::daemon_command_timeout;
     use std::os::unix::fs::PermissionsExt;
