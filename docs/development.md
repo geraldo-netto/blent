@@ -638,8 +638,10 @@ by the separate build workflow, not this container.
 The Docker base image is pinned by digest; Cargo uses `Cargo.lock`. Debian
 security package updates remain enabled. Build/test tools include `dpkg-dev`,
 `fakeroot`, `patchelf` and `squashfs-tools`.
-AppImage packaging downloads checksum-pinned AppImage tools and exact Debian
-source packages, so matching `deb-src` indexes and network access are needed.
+AppImage packaging downloads checksum-pinned appimagetool and builds its patched
+runtime from pinned sources. The runtime recipe needs Autoconf, Automake, Libtool,
+Meson and Ninja. Exact Debian corresponding sources also require matching
+`deb-src` indexes and network access. See [runtime ownership and reproduction](appimage-plan.md#extraction-runtime-ownership-t1622).
 These tools are not dependencies for running an installed Blent package.
 
 From the checkout, reproduce the CI environment and suite with:

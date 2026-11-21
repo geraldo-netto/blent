@@ -1,0 +1,338 @@
+{
+  "issue": "T1622",
+  "red": "Pinned runtime native fixture fails: invocations share an extraction directory. Live sentinel remains present; deletion was not reproduced. Pinned musl nftw budget zero explains absent cleanup.",
+  "validation": [
+    "Actual runtime built from all pinned sources using the production recipe; explicit-flag concurrent sibling, SIGTERM forwarding, original child retention/reap and directory removal pass.",
+    "40 AppImage Python test cases pass; native C lifecycle fault harness is part of normal discovery.",
+    "GCC AddressSanitizer/UndefinedBehaviorSanitizer and leak detection pass for native lifecycle harness."
+  ],
+  "tools": {
+    "gcc": "13.3.0",
+    "gcov": "13.3.0",
+    "python": "3.12",
+    "meson": "1.6.1"
+  },
+  "functions": [
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "extraction_signals",
+      "covered": 14,
+      "executable": 14,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "extraction_restore",
+      "covered": 4,
+      "executable": 4,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "extraction_directory",
+      "covered": 15,
+      "executable": 17,
+      "percent": 88.24
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "extraction_release",
+      "covered": 10,
+      "executable": 10,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "blent_extraction_begin",
+      "covered": 22,
+      "executable": 23,
+      "percent": 95.65
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "blent_extraction_spawn",
+      "covered": 9,
+      "executable": 9,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "blent_extraction_child",
+      "covered": 8,
+      "executable": 8,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "extraction_wait_error",
+      "covered": 6,
+      "executable": 6,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "extraction_signal",
+      "covered": 8,
+      "executable": 8,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "blent_extraction_wait",
+      "covered": 15,
+      "executable": 15,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "extraction_remove_entry",
+      "covered": 7,
+      "executable": 7,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "extraction_remove",
+      "covered": 7,
+      "executable": 7,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime/extraction.c",
+      "name": "blent_extraction_finish",
+      "covered": 11,
+      "executable": 11,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "unpack",
+      "covered": 8,
+      "executable": 8,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "run",
+      "covered": 2,
+      "executable": 2,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "make_install",
+      "covered": 2,
+      "executable": 2,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "toolchain",
+      "covered": 5,
+      "executable": 5,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "compression",
+      "covered": 7,
+      "executable": 7,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "fuse",
+      "covered": 6,
+      "executable": 6,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "squash",
+      "covered": 9,
+      "executable": 9,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "compile_runtime",
+      "covered": 9,
+      "executable": 9,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "bundle_depth",
+      "covered": 4,
+      "executable": 4,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "record",
+      "covered": 10,
+      "executable": 10,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "build",
+      "covered": 14,
+      "executable": 14,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/runtime_build.py",
+      "name": "arguments",
+      "covered": 6,
+      "executable": 6,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/build.py",
+      "name": "build",
+      "covered": 21,
+      "executable": 21,
+      "percent": 100.0
+    },
+    {
+      "file": "packaging/appimage/sources.py",
+      "name": "runtime_sources",
+      "covered": 4,
+      "executable": 4,
+      "percent": 100.0
+    }
+  ],
+  "complexity": [
+    "packaging/appimage/runtime_build.py:12\tunpack\t3",
+    "packaging/appimage/runtime_build.py:23\trun\t1",
+    "packaging/appimage/runtime_build.py:28\tmake_install\t1",
+    "packaging/appimage/runtime_build.py:33\ttoolchain\t1",
+    "packaging/appimage/runtime_build.py:43\tcompression\t1",
+    "packaging/appimage/runtime_build.py:55\tfuse\t1",
+    "packaging/appimage/runtime_build.py:66\tsquash\t2",
+    "packaging/appimage/runtime_build.py:79\tcompile_runtime\t2",
+    "packaging/appimage/runtime_build.py:95\tbundle_depth\t4",
+    "packaging/appimage/runtime_build.py:103\trecord\t3",
+    "packaging/appimage/runtime_build.py:116\tbuild\t2",
+    "packaging/appimage/runtime_build.py:133\targuments\t1",
+    "packaging/appimage/build.py:17\tcopy\t2",
+    "packaging/appimage/build.py:24\tstage\t4",
+    "packaging/appimage/build.py:52\tstock_paths\t2",
+    "packaging/appimage/build.py:57\tstage_stock\t2",
+    "packaging/appimage/build.py:69\tstage_metadata\t2",
+    "packaging/appimage/build.py:87\tbuild\t4",
+    "packaging/appimage/build.py:115\targuments\t2",
+    "packaging/appimage/sources.py:17\tpackage_for\t4",
+    "packaging/appimage/sources.py:28\tpackage_info\t4",
+    "packaging/appimage/sources.py:36\tdebian_sources\t3",
+    "packaging/appimage/sources.py:50\tdownload_debian_source\t3",
+    "packaging/appimage/sources.py:62\tsource_checksums\t7",
+    "packaging/appimage/sources.py:78\trust_sources\t2",
+    "packaging/appimage/sources.py:87\tcopy_crate\t1",
+    "packaging/appimage/sources.py:92\tarchive_crate\t6",
+    "packaging/appimage/sources.py:111\truntime_sources\t1",
+    "packaging/appimage/sources.py:119\truntime_dependencies\t6",
+    "packaging/appimage/sources.py:137\tverify_evdi\t4",
+    "packaging/appimage/sources.py:148\tcollect\t2",
+    "packaging/appimage/runtime/extraction.c:21\textraction_signals\t3",
+    "packaging/appimage/runtime/extraction.c:42\textraction_restore\t3",
+    "packaging/appimage/runtime/extraction.c:49\textraction_directory\t6",
+    "packaging/appimage/runtime/extraction.c:78\textraction_release\t4",
+    "packaging/appimage/runtime/extraction.c:93\tblent_extraction_begin\t6",
+    "packaging/appimage/runtime/extraction.c:129\tblent_extraction_spawn\t4",
+    "packaging/appimage/runtime/extraction.c:145\tblent_extraction_child\t4",
+    "packaging/appimage/runtime/extraction.c:158\textraction_wait_error\t2",
+    "packaging/appimage/runtime/extraction.c:168\textraction_signal\t8",
+    "packaging/appimage/runtime/extraction.c:186\tblent_extraction_wait\t6",
+    "packaging/appimage/runtime/extraction.c:212\textraction_remove_entry\t5",
+    "packaging/appimage/runtime/extraction.c:229\textraction_remove\t5",
+    "packaging/appimage/runtime/extraction.c:246\tblent_extraction_finish\t6",
+    "scripts/tests/appimage_extraction_test.c:19\tfault\t2",
+    "scripts/tests/appimage_extraction_test.c:30\ttest_mask\t2",
+    "scripts/tests/appimage_extraction_test.c:35\ttest_action\t2",
+    "scripts/tests/appimage_extraction_test.c:40\ttest_close\t2",
+    "scripts/tests/appimage_extraction_test.c:46\ttest_allocate\t2",
+    "scripts/tests/appimage_extraction_test.c:51\ttest_create\t2",
+    "scripts/tests/appimage_extraction_test.c:56\ttest_open\t2",
+    "scripts/tests/appimage_extraction_test.c:61\ttest_fork\t2",
+    "scripts/tests/appimage_extraction_test.c:66\ttest_wait\t2",
+    "scripts/tests/appimage_extraction_test.c:71\ttest_signal\t2",
+    "scripts/tests/appimage_extraction_test.c:76\ttest_kill\t2",
+    "scripts/tests/appimage_extraction_test.c:81\ttest_stat\t2",
+    "scripts/tests/appimage_extraction_test.c:86\ttest_lstat\t2",
+    "scripts/tests/appimage_extraction_test.c:91\ttest_walk\t2",
+    "scripts/tests/appimage_extraction_test.c:96\ttest_remove\t2",
+    "scripts/tests/appimage_extraction_test.c:124\tbegin\t1",
+    "scripts/tests/appimage_extraction_test.c:132\tinvalid_states\t1",
+    "scripts/tests/appimage_extraction_test.c:147\tbegin_faults\t2",
+    "scripts/tests/appimage_extraction_test.c:159\tcleanup_entries\t1",
+    "scripts/tests/appimage_extraction_test.c:180\tcleanup_faults\t2",
+    "scripts/tests/appimage_extraction_test.c:199\treplaced_identity\t1",
+    "scripts/tests/appimage_extraction_test.c:213\tretained_choice\t1",
+    "scripts/tests/appimage_extraction_test.c:224\tchild_case\t4",
+    "scripts/tests/appimage_extraction_test.c:247\tfork_failure\t1",
+    "scripts/tests/appimage_extraction_test.c:255\tchild_release_failure\t3",
+    "scripts/tests/appimage_extraction_test.c:269\tmain\t1",
+    "packaging/appimage/runtime/verify.py:13\tbuild_image\t1",
+    "packaging/appimage/runtime/verify.py:34\tready\t5",
+    "packaging/appimage/runtime/verify.py:45\tcheck_sibling\t1",
+    "packaging/appimage/runtime/verify.py:55\tcheck_signal\t1",
+    "packaging/appimage/runtime/verify.py:62\tretire\t2",
+    "packaging/appimage/runtime/verify.py:79\tverify\t1",
+    "scripts/tests/test_appimage_runtime.py:18\tsetUp\t1",
+    "scripts/tests/test_appimage_runtime.py:23\ttest_t1622_native_lifecycle_and_failures\t1",
+    "scripts/tests/test_appimage_runtime.py:30\ttest_t1622_depth_admission\t2",
+    "scripts/tests/test_appimage_runtime.py:41\ttest_t1622_pins_before_unpacking\t1",
+    "scripts/tests/test_appimage_runtime.py:58\ttest_t1622_recipe_commands_and_failure_propagation\t1",
+    "scripts/tests/test_appimage_runtime.py:76\ttest_t1622_mandatory_native_gate_and_source_record\t2",
+    "scripts/tests/test_appimage_runtime.py:92\ttest_t1622_recipe_arguments\t1",
+    "scripts/tests/test_appimage_runtime.py:98\ttest_t1622_corresponding_recipe_and_digest\t1",
+    "scripts/tests/test_appimage.py:28\tsetUp\t1",
+    "scripts/tests/test_appimage.py:42\twrite\t1",
+    "scripts/tests/test_appimage.py:48\tinvoke\t2",
+    "scripts/tests/test_appimage.py:52\ttest_t308_dispatch_uses_stable_outer_path_without_global_loader_overrides\t3",
+    "scripts/tests/test_appimage.py:67\tinstaller_fixture\t1",
+    "scripts/tests/test_appimage.py:75\ttest_t308_user_registration_has_stable_quoted_paths_and_preserves_settings\t1",
+    "scripts/tests/test_appimage.py:96\ttest_t308_registration_rejects_running_daemon_and_unknown_options\t2",
+    "scripts/tests/test_appimage.py:105\ttest_t551_gui_upgrade_uses_registered_distribution_and_retains_rollback\t2",
+    "scripts/tests/test_appimage.py:128\ttest_t551_gui_registration_preserves_unrelated_symlink_target_and_rejects_directory\t1",
+    "scripts/tests/test_appimage.py:147\ttest_t551_failed_gui_link_restores_the_previous_launcher\t1",
+    "scripts/tests/test_appimage.py:156\ttest_t308_image_copy_survives_source_deletion_and_keeps_preferences\t1",
+    "scripts/tests/test_appimage.py:166\ttest_t308_stock_wrappers_reject_unknown_programs_and_preserve_arguments\t3",
+    "scripts/tests/test_appimage.py:178\ttest_t308_invalid_elf_names_and_abi_fail_closed\t3",
+    "scripts/tests/test_appimage.py:194\ttest_t308_dependency_closure_terminates_cycles_and_excludes_host_glibc\t1",
+    "scripts/tests/test_appimage.py:205\ttest_t308_pinned_tool_validation_download_and_bounds\t2",
+    "scripts/tests/test_appimage.py:225\ttest_t308_daemon_extraction_survives_gui_exit\t3",
+    "scripts/tests/test_appimage.py:263\ttest_t308_autostart_redirect_and_nested_destination\t1",
+    "scripts/tests/test_appimage.py:281\ttest_t536_registration_preserves_managed_login_without_graphical_target\t4",
+    "scripts/tests/test_appimage.py:297\ttest_t308_loader_index_and_commands\t1",
+    "scripts/tests/test_appimage.py:310\ttest_t308_pinned_cache_and_malformed_metadata_fuzz\t2",
+    "scripts/tests/test_appimage.py:325\ttest_t308_source_descriptor_corruption_and_path_bounds\t2",
+    "scripts/tests/test_appimage.py:332\ttest_t308_source_collection_uses_exact_version_and_checksums\t1",
+    "scripts/tests/test_appimage.py:349\ttest_t308_crate_sources_preserve_notices\t1",
+    "scripts/tests/test_appimage.py:367\ttest_t308_package_ownership_and_evdi_provenance\t2",
+    "scripts/tests/test_appimage.py:383\ttest_t308_version_argument_bounds\t2",
+    "scripts/tests/test_appimage.py:391\ttest_t308_interrupted_install_preserves_previous_directory\t1",
+    "scripts/tests/test_appimage.py:414\tt497_archive\t2",
+    "scripts/tests/test_appimage.py:423\ttest_t497_runtime_source_licenses_are_bounded_regular_files\t3",
+    "scripts/tests/test_appimage.py:447\ttest_t497_runtime_dependency_sources_keep_pins_and_reject_license_links\t2",
+    "scripts/tests/test_appimage.py:465\ttest_t497_debian_sources_deduplicate_packages_but_preserve_binary_notices\t1",
+    "scripts/tests/test_appimage.py:483\ttest_t497_corresponding_source_collection_mirrors_complete_manifest\t1",
+    "scripts/tests/test_appimage.py:497\tt497_bundle\t2",
+    "scripts/tests/test_appimage.py:505\ttest_t497_staging_keeps_stock_tools_unmodified_and_evdi_replaceable\t2",
+    "scripts/tests/test_appimage.py:527\ttest_t497_build_replaces_stale_assets_and_archives_corresponding_sources\t1",
+    "scripts/tests/test_appimage.py:453\tdownload\t1",
+    "scripts/tests/test_appimage.py:470\tcopy_notice\t1",
+    "scripts/tests/test_appimage.py:535\tcollect\t1",
+    "scripts/tests/test_appimage.py:220\tread\t1",
+    "scripts/tests/test_appimage.py:434\tdownload\t1",
+    "123 functions; 0 exceed cyclomatic complexity 9"
+  ],
+  "limits": [
+    "One original AppRun child per extraction; eventual cleanup assumes child retirement and filesystem removal success.",
+    "63 nested directory levels, 64 traversal descriptors plus one root pin.",
+    "SIGKILL/host crash/NO_CLEANUP can retain trees. No physical FUSE mount or installed instance exercised.",
+    "T1630 argv and T1639 portable-path bounds remain separately tracked."
+  ]
+}

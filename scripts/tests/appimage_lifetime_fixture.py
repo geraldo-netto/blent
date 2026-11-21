@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Model the runtime's per-invocation extraction and cleanup, without FUSE."""
+"""Model the extraction ownership contract; actual runtime qualification is separate."""
 import os
 from pathlib import Path
 import shutil

@@ -109,20 +109,11 @@ def archive_crate(package, source, destination, notices, provenance):
 
 
 def runtime_sources(destination, notices):
-    from tools import transfer
-    target = destination / 'appimage-runtime-20251108.tar.gz'
-    url = 'https://codeload.github.com/AppImage/type2-runtime/tar.gz/refs/tags/20251108'
-    with urllib.request.urlopen(url, timeout=60) as response, target.open('wb') as output:
-        transfer(response, output)
-    # Reading one known regular file avoids extracting an untrusted tar tree.
-    with tarfile.open(target) as archive:
-        member = archive.getmember('type2-runtime-20251108/LICENSE')
-        if not member.isfile() or member.size > 1024 * 1024:
-            raise ValueError('invalid AppImage runtime license')
-        with archive.extractfile(member) as stream:
-            (notices / 'AppImage-runtime-LICENSE').write_bytes(stream.read())
     dependencies = runtime_dependencies(destination, notices)
-    return dict(url=url, sha256=digest(target), dependencies=dependencies)
+    runtime = dependencies['appimage-runtime-20251108.tar.gz']
+    shutil.copyfile(notices / 'appimage-runtime-20251108.tar.gz.LICENSE',
+                    notices / 'AppImage-runtime-LICENSE')
+    return dict(url=runtime['url'], sha256=runtime['sha256'], dependencies=dependencies)
 
 
 def runtime_dependencies(destination, notices):

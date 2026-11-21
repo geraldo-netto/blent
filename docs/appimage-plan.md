@@ -204,3 +204,40 @@ The publisher verifies the AppImage, source archive, Arch recipe, Linux tar,
 APK and `SHA256SUMS` as one complete asset set before publishing. Legacy Debian
 metadata remains only for historical regression coverage and is not a release
 format. Maintainer: [Geraldo Netto](https://github.com/geraldo-netto).
+
+### Extraction runtime ownership (T1622)
+
+The runtime is built from checksum-pinned type2-runtime 20251108 and its pinned
+musl, zlib, zstd, FUSE and squashfuse sources. Blent's extraction lifecycle patch
+is included in the corresponding-source asset under `blent-runtime-build/`, with
+its build recipe, tool versions, runtime checksum and native qualification fixture.
+The runtime uses musl's allocator; it does not link mimalloc.
+
+Each extraction invocation owns a private `mkdtemp` directory and pins its inode
+with one descriptor. The original AppRun child borrows that tree. The parent
+blocks and synchronously forwards TERM/INT/HUP while observing that exact child;
+it removes the tree only after reaping the child, including nonzero exits.
+Unknown wait outcomes retain ownership and report the failure. A failed extraction
+or fork has no child borrow and can clean up immediately. Cleanup checks the
+pinned root identity and never follows symlinks. Packaging admits at most 63 nested
+directory levels, funding musl's 64-descriptor traversal plus the root pin.
+
+Successful cleanup assumes the filesystem permits removal and the original child
+eventually retires. Cleanup errors return failure and name the retained directory
+for manual removal; `NO_CLEANUP` explicitly requests retention. SIGKILL, a host
+crash or a child that never retires can leave an extraction behind. No deadline
+makes live files safe to remove. The actual-runtime fixture checks concurrent
+invocations, signal forwarding, retention before retirement and removal afterward;
+it runs before every AppImage assembly. Native fault tests run in the normal
+Python tooling suite. These checks do not exercise a physical FUSE mount.
+
+To reproduce only the runtime from an unpacked corresponding-source asset:
+
+```sh
+python3 sources/blent-runtime-build/runtime_build.py \
+  --sources sources --workspace /tmp/blent-runtime-reproduction --jobs 2
+```
+
+Use a fresh workspace. Build tools are GCC, Make, Autoconf, Automake, Libtool,
+Meson, Ninja, pkg-config, patch, Python and mksquashfs. They are packaging tools,
+not new requirements for an installed Blent application.

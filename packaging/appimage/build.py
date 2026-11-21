@@ -11,6 +11,7 @@ import elf
 import ffmpeg_bundle
 import sources
 import tools
+import runtime_build
 
 
 def copy(source, target, mode=None):
@@ -99,11 +100,14 @@ def build(args):
     source_dir = work / 'sources'
     sources.collect(repo, paths, source_dir, appdir / 'usr/share/doc/blent/bundled',
                     args.evdi_source, args.source_cache.resolve(), ffmpeg_prefix.resolve())
+    runtime_build.bundle_depth(appdir)
+    runtime = runtime_build.build(source_dir, work / 'runtime-build')
+    shutil.copytree(work / 'runtime-build/blent-runtime-build', source_dir / 'blent-runtime-build')
     with tarfile.open(output / f'blent-{args.version}-AppImage-sources.tar.gz', 'w:gz') as archive:
         archive.add(source_dir, arcname='sources')
     pinned = tools.prepare(args.tool_cache)
     subprocess.run([str(pinned['appimagetool']), '--appimage-extract-and-run', '--no-appstream',
-                    '--runtime-file', str(pinned['runtime-x86_64']), '--mksquashfs-opt', '-processors',
+                    '--runtime-file', str(runtime), '--mksquashfs-opt', '-processors',
                     '--mksquashfs-opt', '2', str(appdir), str(output / f'blent-{args.version}-x86_64.AppImage')],
                    check=True, env=dict(os.environ, ARCH='x86_64'))
 

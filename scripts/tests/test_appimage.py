@@ -427,13 +427,19 @@ root.with_suffix('.gui').write_text(os.environ['APPDIR'])
         for payload, kind, valid in [(b'fixture license', tarfile.REGTYPE, True),
                                       (b'x'*(1024*1024+1), tarfile.REGTYPE, False),
                                       (b'', tarfile.SYMTYPE, False)]:
-            stream = io.BytesIO(self.t497_archive(name, payload, kind))
-            with patch.object(sources.urllib.request, 'urlopen', return_value=stream), \
-                    patch.object(sources, 'runtime_dependencies', return_value={'fixture': 'pinned'}):
+            archive = self.t497_archive(name, payload, kind)
+            entry = dict(url='https://example.invalid/runtime',
+                         sha256=hashlib.sha256(archive).hexdigest(), license=name)
+            inputs = {'appimage-runtime-20251108.tar.gz': entry}
+            def download(_entry, target):
+                self.assertEqual(_entry, entry)
+                target.write_bytes(archive)
+            with patch.object(sources.json, 'loads', return_value=inputs), \
+                    patch.object(tools, 'fetch', side_effect=download):
                 if valid:
                     row = sources.runtime_sources(destination, notices)
                     self.assertEqual(row['sha256'], tools.digest(destination/'appimage-runtime-20251108.tar.gz'))
-                    self.assertEqual(row['dependencies'], {'fixture': 'pinned'})
+                    self.assertEqual(row['dependencies'], inputs)
                     self.assertEqual((notices/'AppImage-runtime-LICENSE').read_bytes(), payload)
                 else:
                     with self.assertRaisesRegex(ValueError, 'license'): sources.runtime_sources(destination, notices)
@@ -531,8 +537,14 @@ root.with_suffix('.gui').write_text(os.environ['APPDIR'])
             destination.mkdir(parents=True)
             (destination/'LICENSE').write_text('source fixture')
         with patch.object(build, 'stage', return_value=[]), patch.object(sources, 'collect', side_effect=collect), \
-                patch.object(tools, 'prepare', return_value={'appimagetool': tool, 'runtime-x86_64': self.root/'runtime'}):
+                patch.object(tools, 'prepare', return_value={'appimagetool': tool}), \
+                patch.object(build.runtime_build, 'build', return_value=self.root/'runtime') as runtime, \
+                patch.object(build.runtime_build, 'bundle_depth') as depth, \
+                patch.object(build.shutil, 'copytree') as recipe:
             build.build(args)
+        runtime.assert_called_once_with(args.output/'appimage-work/sources', args.output/'appimage-work/runtime-build')
+        recipe.assert_called_once_with(args.output/'appimage-work/runtime-build/blent-runtime-build', args.output/'appimage-work/sources/blent-runtime-build')
+        depth.assert_called_once_with(args.output/'appimage-work/Blent.AppDir')
         self.assertFalse((args.output/'appimage-work/stale').exists())
         self.assertEqual(image.read_text(), 'image')
         with tarfile.open(args.output/'blent-1.2.3-AppImage-sources.tar.gz') as archive:

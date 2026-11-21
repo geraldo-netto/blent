@@ -1,0 +1,126 @@
+--- a/src/runtime/runtime.c
++++ b/src/runtime/runtime.c
+@@ -928,50 +927,0 @@
+-int rm_recursive_callback(const char* path, const struct stat* stat, const int type, struct FTW* ftw) {
+-    (void) stat;
+-    (void) ftw;
+-
+-    switch (type) {
+-        case FTW_NS:
+-        case FTW_DNR:
+-            fprintf(stderr, "%s: ftw error: %s\n",
+-                    path, strerror(errno));
+-            return 1;
+-
+-        case FTW_D:
+-            // ignore directories at first, will be handled by FTW_DP
+-            break;
+-
+-        case FTW_F:
+-        case FTW_SL:
+-        case FTW_SLN:
+-            if (remove(path) != 0) {
+-                fprintf(stderr, "Failed to remove %s: %s\n", path, strerror(errno));
+-                return false;
+-            }
+-            break;
+-
+-
+-        case FTW_DP:
+-            if (rmdir(path) != 0) {
+-                fprintf(stderr, "Failed to remove directory %s: %s\n", path, strerror(errno));
+-                return false;
+-            }
+-            break;
+-
+-        default:
+-            fprintf(stderr, "Unexpected fts_info\n");
+-            return 1;
+-    }
+-
+-    return 0;
+-};
+-
+-bool rm_recursive(const char* const path) {
+-    // FTW_DEPTH: perform depth-first search to make sure files are deleted before the containing directories
+-    // FTW_MOUNT: prevent deletion of files on other mounted filesystems
+-    // FTW_PHYS: do not follow symlinks, but report symlinks as such; this way, the symlink targets, which might point
+-    //           to locations outside path will not be deleted accidentally (attackers might abuse this)
+-    int rv = nftw(path, &rm_recursive_callback, 0, FTW_DEPTH | FTW_MOUNT | FTW_PHYS);
+-
+-    return rv == 0;
+-}
+-
+@@ -1465,0 +1416,2 @@
++#include "extraction.h"
++
+@@ -1581,31 +1533,6 @@
+-        char* hexlified_digest = NULL;
+-
+-        // calculate MD5 hash of file, and use it to make extracted directory name "content-aware"
+-        // see https://github.com/AppImage/AppImageKit/issues/841 for more information
+-        {
+-            FILE* f = fopen(appimage_path, "rb");
+-            if (f == NULL) {
+-                perror("Failed to open AppImage file");
+-                exit(EXIT_EXECERROR);
+-            }
+-
+-            Md5Context ctx;
+-            Md5Initialise(&ctx);
+-
+-            char buf[4096];
+-            size_t bytes_read;
+-            while ((bytes_read = fread(buf, sizeof(char), sizeof(buf), f)) > 0) {
+-                Md5Update(&ctx, buf, (uint32_t) bytes_read);
+-            }
+-
+-            MD5_HASH digest;
+-            Md5Finalise(&ctx, &digest);
+-
+-            hexlified_digest = appimage_hexlify((const char*)digest.bytes, sizeof(digest.bytes));
+-        }
+-
+-        char* prefix = malloc(strlen(temp_base) + 20 + strlen(hexlified_digest) + 2);
+-        strcpy(prefix, temp_base);
+-        strcat(prefix, "/appimage_extracted_");
+-        strcat(prefix, hexlified_digest);
+-        free(hexlified_digest);
++        struct blent_extraction extraction = {0};
++        if (blent_extraction_begin(&extraction, temp_base) < 0) {
++            perror("create private extraction");
++            exit(EXIT_EXECERROR);
++        }
++        char* prefix = extraction.path;
+@@ -1615 +1542 @@
+-            exit(EXIT_EXECERROR);
++            exit(blent_extraction_finish(&extraction, EXIT_EXECERROR));
+@@ -1619 +1546 @@
+-        if ((pid = fork()) == -1) {
++        if ((pid = blent_extraction_spawn(&extraction)) == -1) {
+@@ -1622 +1549 @@
+-            exit(EXIT_EXECERROR);
++            exit(blent_extraction_finish(&extraction, EXIT_EXECERROR));
+@@ -1623,0 +1551,3 @@
++            if (blent_extraction_child(&extraction) < 0) {
++                _exit(EXIT_EXECERROR);
++            }
+@@ -1657,16 +1587,2 @@
+-        int status = 0;
+-        int rv = waitpid(pid, &status, 0);
+-        status = rv > 0 && WIFEXITED (status) ? WEXITSTATUS (status) : EXIT_EXECERROR;
+-
+-        if (getenv("NO_CLEANUP") == NULL) {
+-            if (!rm_recursive(prefix)) {
+-                fprintf(stderr, "Failed to clean up cache directory\n");
+-                if (status == 0)        /* avoid messing existing failure exit status */
+-                    status = EXIT_EXECERROR;
+-            }
+-        }
+-
+-        // template == prefix, must be freed only once
+-        free(prefix);
+-
+-        exit(status);
++        int status = blent_extraction_wait(&extraction);
++        exit(blent_extraction_finish(&extraction, status));
