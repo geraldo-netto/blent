@@ -18,10 +18,7 @@ async fn complete(proof: &Completion) {
 fn t1441_cached_pool_failure_preserves_error_and_success_keeps_one_slot() {
     let failed = OnceLock::new();
     failed
-        .set(Err(io::Error::new(
-            io::ErrorKind::Other,
-            "original failure",
-        )))
+        .set(Err(io::Error::other("original failure")))
         .unwrap();
     for _ in 0..2 {
         let error = pool(&failed).unwrap_err();

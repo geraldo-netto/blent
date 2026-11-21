@@ -80,13 +80,13 @@ impl AutoBrightness {
 
 fn curve(gamma: f32, strength: u8) -> [u8; 256] {
     let mut table = std::array::from_fn(|value| value as u8);
-    for value in 16..=235 {
+    for (value, entry) in table.iter_mut().enumerate().take(236).skip(16) {
         let normalized = (value - 16) as f32 / 219.0;
         let lift = (normalized.powf(gamma) - normalized)
             * (1.0 - normalized).powi(2)
             * f32::from(strength)
             / 100.0;
-        table[value] = (16.0 + 219.0 * (normalized + lift)).round() as u8;
+        *entry = (16.0 + 219.0 * (normalized + lift)).round() as u8;
     }
     table
 }

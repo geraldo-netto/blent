@@ -10,31 +10,6 @@ pub(super) struct RetiringSession {
     proof: Completion,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn t1410_original_physical_identity_blocks_alias_reuse() {
-        let native = blent_config::retirement::Pool::new(1)
-            .unwrap()
-            .reserve()
-            .unwrap();
-        let mut retiring = RetiringSession {
-            index: 0,
-            serial: Some("wifi:5555".into()),
-            identity: Some("tablet".into()),
-            routes: None,
-            proof: native.completion(),
-        };
-        assert!(retiring.matches("wifi:5555", None));
-        assert!(retiring.matches("USB", Some(&"tablet".into())));
-        assert!(!retiring.matches("USB", Some(&"different".into())));
-        assert!(!retiring.matches("USB", None));
-        retiring.identity = None;
-        assert!(!retiring.matches("USB", None));
-        assert!(retiring.matches("wifi:5555", None));
-    }
-}
 impl RetiringSession {
     pub(super) fn matches(&self, serial: &str, identity: Option<&String>) -> bool {
         self.serial.as_deref() == Some(serial)
@@ -80,5 +55,31 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
             tokio::time::sleep(Duration::from_millis(5)).await;
             self.settle_sessions();
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn t1410_original_physical_identity_blocks_alias_reuse() {
+        let native = blent_config::retirement::Pool::new(1)
+            .unwrap()
+            .reserve()
+            .unwrap();
+        let mut retiring = RetiringSession {
+            index: 0,
+            serial: Some("wifi:5555".into()),
+            identity: Some("tablet".into()),
+            routes: None,
+            proof: native.completion(),
+        };
+        assert!(retiring.matches("wifi:5555", None));
+        assert!(retiring.matches("USB", Some(&"tablet".into())));
+        assert!(!retiring.matches("USB", Some(&"different".into())));
+        assert!(!retiring.matches("USB", None));
+        retiring.identity = None;
+        assert!(!retiring.matches("USB", None));
+        assert!(retiring.matches("wifi:5555", None));
     }
 }

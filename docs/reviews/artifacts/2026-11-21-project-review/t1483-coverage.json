@@ -1,0 +1,57 @@
+[
+  {
+    "file": "common/src/camera/brightness.rs",
+    "name": "curve",
+    "line": 81,
+    "language": "rust",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/camera/transform.rs",
+    "name": "placement",
+    "line": 73,
+    "language": "rust",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/camera/transform.rs",
+    "name": "point",
+    "line": 88,
+    "language": "rust",
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/camera/transform.rs",
+    "name": "plane",
+    "line": 107,
+    "language": "rust",
+    "covered": 24,
+    "total": 24,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/usb/monitor.rs",
+    "name": "sessions",
+    "line": 51,
+    "language": "rust",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

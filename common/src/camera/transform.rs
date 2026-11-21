@@ -71,7 +71,7 @@ impl Rect {
     }
 }
 fn placement(width: usize, height: usize, rotation: u16) -> Rect {
-    let (w, h) = if rotation % 180 == 0 {
+    let (w, h) = if rotation.is_multiple_of(180) {
         (width, height)
     } else if width > height {
         ((height * height / width).max(2) & !1, height)
@@ -86,7 +86,7 @@ fn placement(width: usize, height: usize, rotation: u16) -> Rect {
     }
 }
 fn point(x: usize, y: usize, width: usize, height: usize, image: Image) -> usize {
-    let turned_width = if image.rotation % 180 == 0 {
+    let turned_width = if image.rotation.is_multiple_of(180) {
         width
     } else {
         height
@@ -114,7 +114,7 @@ fn plane(
 ) {
     output.fill(black);
     let (width, height) = size;
-    let (turned_width, turned_height) = if image.rotation % 180 == 0 {
+    let (turned_width, turned_height) = if image.rotation.is_multiple_of(180) {
         (width, height)
     } else {
         (height, width)
