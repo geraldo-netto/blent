@@ -7,7 +7,7 @@ fn t413_package_probe_requires_known_exit_and_response_shape() {
     use std::os::unix::process::ExitStatusExt;
     for (code, stdout, stderr, expected) in [
         (0, "package:/base.apk\npackage:/split.apk\n", "", Some(true)),
-        (0, "", "", Some(false)),
+        (0, "", "", None),
         (1, "", "", Some(false)),
         (1, "", "error: offline", None),
         (9, "", "", None),

@@ -1,0 +1,30 @@
+{
+  "issue": "T1653",
+  "tests": {
+    "host_library": 47,
+    "linux_monitor": 3,
+    "failing_before": 2
+  },
+  "coverage": [
+    {
+      "file": "host/src/adb_inventory.rs",
+      "name": "package_presence",
+      "line": 85,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 23,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  },
+  "reference": {
+    "url": "https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/services/core/java/com/android/server/pm/PackageManagerShellCommand.java",
+    "blob": "aa235c2258ac152037b0bc33edf860de20624a7a"
+  }
+}

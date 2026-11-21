@@ -137,3 +137,13 @@ Both permanent regressions failed before the fix: unchanged scans called the dat
 For the same 30 immediate scans against an owned fixture and a 1,703,962-byte PCI database, strace recorded 30 database-read opens and 30 render-node read/write opens before; afterward it recorded one database-read open, zero render-node opens and 30 permission checks. Single traced debug-test timings were 29,458 µs before and 11,770 µs after; these are fixture observations, not native GUI power/latency claims. T1652 retains discrete-GPU runtime-suspend and open/closed GUI acceptance. No installed process was restarted.
 
 The cache owns at most 256 current records; aliases are limited to 200 bytes, cached uevent reads to 4096 bytes and displayed product/driver names to 256/128 characters. The at-most-4 MiB PCI database is temporary and released after rebuilding labels. A rebuild temporarily retains old and new bounded records; published device snapshots own their derived copies. Removal/rejection replaces or clears cached records. Files and permission-path borrows settle synchronously; no render descriptor or native worker is retained.
+
+## T1653 — reject obsolete empty-success package replies
+
+Additional compatibility removal: current [Android package-path reporting](https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/services/core/java/com/android/server/pm/PackageManagerShellCommand.java) returns exit 1 for absence and exit 0 with paths for presence (observed source blob aa235c2258ac152037b0bc33edf860de20624a7a). Empty success now remains unconfirmed. The old exit-0/empty fixture was retargeted to that contract; current absence, split-package presence, stderr and invalid-output rules remain covered.
+
+Both new regressions failed before the fix. All 47 selected host-library inventory/USB tests and three Linux monitor package-probe tests pass. The permanent matrix covers every exit code 0–255, empty/whitespace output, invalid UTF-8, partial paths and stderr. The maintained parser has 100% line coverage; all 23 functions measured in affected parser/test files have complexity <=9 (project Rust syn 2.0.119). Parsing borrows the caller-owned bounded command output within the call, adds no retained resource and leaves original command/route retirement unchanged.
+
+## Broad checkpoint through T1574
+
+At implementation commit 33810de2, all 490 common-library tests and all 249 GUI tests passed. This includes private-display and private-process fixtures; it does not imply physical tablet or Windows native acceptance. Later increments retain their own scoped validation below.

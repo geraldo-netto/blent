@@ -87,10 +87,9 @@ pub fn package_presence(out: &std::process::Output) -> Option<bool> {
         return None;
     }
     let text = std::str::from_utf8(&out.stdout).ok()?.trim();
-    // Android PackageManagerShellCommand.displayPackageFilePath returns 1
-    // with empty output when absent. Older adapters also return 0/empty.
-    if text.is_empty() && matches!(out.status.code(), Some(0 | 1)) {
-        return Some(false);
+    // Current PackageManagerShellCommand reports absence with exit 1 and no paths.
+    if text.is_empty() {
+        return (out.status.code() == Some(1)).then_some(false);
     }
     if out.status.success() && text.lines().all(|line| line.starts_with("package:/")) {
         return Some(true);
@@ -101,6 +100,8 @@ pub fn package_presence(out: &std::process::Output) -> Option<bool> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    mod package;
 
     #[test]
     fn t1545_unknown_state_is_present_but_not_ready() {
