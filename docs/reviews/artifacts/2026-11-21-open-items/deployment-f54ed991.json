@@ -1,0 +1,63 @@
+{
+  "source_commit": "f54ed991",
+  "installed_at": "2026-11-21T23:20:36.304629+01:00",
+  "installed_directory": "/home/netto/.local/share/blent/appimage/Blent.AppDir",
+  "rollback_directory": "/home/netto/.cache/blent-reload-20261121-f54ed991.q8weqhdu/previous.AppDir",
+  "desktop_install": "success; extracted AppImage registration retained",
+  "tablet_install": "adb install -r succeeded; app data retained",
+  "tablet": {
+    "serial": "8002RH1010011900",
+    "package": "io.github.geraldo_netto.blent",
+    "sha256": "adc8866b71d0863e7154794733678ab33470c22f81bb063a0faf2cb614a6a567",
+    "pid": "23761"
+  },
+  "running_binaries": [
+    {
+      "pid": 3258545,
+      "program": "blent",
+      "sha256": "08907d6f51d6401a22ab397c0d502e78e84fdb8216b0e4505b6a195375c6fd06"
+    },
+    {
+      "pid": 3258608,
+      "program": "blent-usb-broker",
+      "sha256": "63fbe02ed0d55e8aab780f635617e9993ab7462207dc8fd71afc4fc58e7589d8"
+    },
+    {
+      "pid": 3258610,
+      "program": "blent",
+      "sha256": "08907d6f51d6401a22ab397c0d502e78e84fdb8216b0e4505b6a195375c6fd06"
+    },
+    {
+      "pid": 3258668,
+      "program": "blent-gui",
+      "sha256": "adba7f6b59caec9907903ae6d9b1f19df1374f63e9e1a1d39480a96c54d00c17"
+    },
+    {
+      "pid": 3258812,
+      "program": "evdi_helper",
+      "sha256": "b2a9d7fa8093f0ca3260949bda5eb2e3aeba8f422982ca3420b9cc4a6d481eed"
+    }
+  ],
+  "installed_binary_sha256": {
+    "blent": "08907d6f51d6401a22ab397c0d502e78e84fdb8216b0e4505b6a195375c6fd06",
+    "blent-gui": "adba7f6b59caec9907903ae6d9b1f19df1374f63e9e1a1d39480a96c54d00c17",
+    "blent-audio": "031ba54461306e98b8ff637b8636e0e49371afdca34f836f7c340594f6335eeb",
+    "blent-usb-broker": "63fbe02ed0d55e8aab780f635617e9993ab7462207dc8fd71afc4fc58e7589d8",
+    "blent-usb-io": "a527dc6dc3031d9960e5dddc4be642b9a95820d8b24431b38cac137111ede074",
+    "evdi_helper": "b2a9d7fa8093f0ca3260949bda5eb2e3aeba8f422982ca3420b9cc4a6d481eed",
+    "libevdi.so.1.15.0": "5ec8b7614074dd10dce5ba4b668203c70e77bf698da6614d839324955aead96a"
+  },
+  "configuration_semantically_unchanged": true,
+  "second_gui_launch_same_process": true,
+  "display_observations": [
+    "Nov 21 23:20:21 morpheus env[3258545]: 2026-11-21T22:20:21.556217Z  INFO blent::latency: 407: Latency packet-ready\u2192render-ACK (host clock): p50 19.9ms  p95 21.7ms  max 34.8ms  (246 samples, 2 in flight, 0 aged out)",
+    "Nov 21 23:20:26 morpheus env[3258545]: 2026-11-21T22:20:26.556637Z  INFO blent::latency: 407: Latency packet-ready\u2192render-ACK (host clock): p50 19.6ms  p95 21.3ms  max 38.1ms  (248 samples, 2 in flight, 0 aged out)",
+    "Nov 21 23:20:31 morpheus env[3258545]: 2026-11-21T22:20:31.558861Z  INFO blent::latency: 407: Latency packet-ready\u2192render-ACK (host clock): p50 19.4ms  p95 21.6ms  max 53.8ms  (240 samples, 1 in flight, 0 aged out)"
+  ],
+  "limitations": [
+    "Local Linux build, not a portable release",
+    "No camera or microphone started",
+    "No physical unplug/replug acceptance",
+    "No Windows native acceptance"
+  ]
+}
