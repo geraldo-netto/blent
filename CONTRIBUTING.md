@@ -24,9 +24,12 @@ the daemon can change the live display configuration.
 
 ## Compatibility and design
 
-Blent does not require backward compatibility (owner decision, October 20, 2026).
-Update current callers, formats, documentation and tests together. Do not retain
-obsolete aliases, migrations, wrappers or fallbacks solely for old callers.
+Blent has no backward-compatibility requirement of any kind (owner decision,
+October 20, reaffirmed November 21, 2026): APIs, CLI, configuration, persisted
+state, file layouts and wire protocols may change. Remove compatibility-only
+shims, aliases, migrations, wrappers and fallback branches, including in tooling
+and packaging. Update current callers, formats, documentation and tests together;
+reject obsolete contracts instead of silently preserving them.
 This does not permit weakening current correctness, native ownership or tests.
 
 Keep public contracts independent of UI, storage and operating-system adapters.
