@@ -55,10 +55,12 @@ prevents attachment preparation rather than disabling authentication.
 The host delivers credentials over adb on stdin, rather than in process
 arguments. Initial attachment and authentication retries use the protected
 TokenReceiver broadcast; only an enabled, fresh-attachment auto-launch may open
-an Activity. The host attempts to remove both old reverse routes before reusing
-the slot, waiting for owned device work and extra-session teardown. An offline
-device may not acknowledge cleanup: the revoked token still rejects its late
-connections. Video and input authenticate before receiving video or injecting
+an Activity. The host retains the tablet serial and port slot until original
+reverse-route creation/cleanup, owned device work and extra-session teardown
+have settled. An offline device may not acknowledge cleanup; the slot remains
+reserved while the revoked token rejects late connections. A deadline or an
+empty mapping snapshot alone does not retire an unacknowledged creator.
+Video and input authenticate before receiving video or injecting
 input; disabling authentication is no longer an application setting.
 
 Direct USB pairing remembers approved certificate fingerprints by default.
