@@ -1,0 +1,278 @@
+{
+  "coverage": [
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "filters",
+      "line": 10,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/output_device/abi.rs",
+      "name": "validate_color",
+      "line": 34,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/output_device/abi.rs",
+      "name": "new",
+      "line": 63,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/output_device/abi.rs",
+      "name": "validate",
+      "line": 86,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "host/src/camera/decoder.rs",
+      10,
+      "filters",
+      6
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      23,
+      "command",
+      1
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      71,
+      "connection",
+      3
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      104,
+      "transfer",
+      4
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      156,
+      "retire",
+      2
+    ],
+    [
+      "host/src/camera/output_device/abi.rs",
+      34,
+      "validate_color",
+      1
+    ],
+    [
+      "host/src/camera/output_device/abi.rs",
+      63,
+      "new",
+      1
+    ],
+    [
+      "host/src/camera/output_device/abi.rs",
+      86,
+      "validate",
+      1
+    ],
+    [
+      "host/src/camera/output_device/abi.rs",
+      136,
+      "new",
+      1
+    ],
+    [
+      "host/src/camera/output_device/abi.rs",
+      150,
+      "matches",
+      1
+    ],
+    [
+      "host/src/camera/output_device/abi.rs",
+      163,
+      "can_set",
+      1
+    ],
+    [
+      "host/src/camera/output_device/tests/abi.c",
+      8,
+      "layout",
+      1
+    ],
+    [
+      "host/src/camera/output_device/tests/abi.c",
+      20,
+      "colors",
+      1
+    ],
+    [
+      "host/src/camera/output_device/tests/abi.c",
+      26,
+      "snapshot",
+      3
+    ],
+    [
+      "host/src/camera/output_device/tests/abi.c",
+      49,
+      "main",
+      6
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      4,
+      "admitted",
+      5
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      12,
+      "t1143_invalid_and_out_of_bounds_profiles_never_form_a_native_request",
+      5
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      31,
+      "image_fields",
+      8
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      45,
+      "t1143_adjusted_image_fields_reject_before_rate_or_writer_admission",
+      3
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      65,
+      "gcd",
+      2
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      73,
+      "exact",
+      3
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      82,
+      "t1143_queried_rate_boundaries_and_unknown_types_fail_closed",
+      6
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      104,
+      "rate_fields",
+      4
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      112,
+      "t1143_set_rate_readback_uses_exact_fraction_and_bounded_wide_arithmetic",
+      4
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      131,
+      "color_fields",
+      6
+    ],
+    [
+      "host/src/camera/output_device/tests/corpus.rs",
+      144,
+      "t1456_native_color_metadata_is_explicit_and_substitution_is_rejected",
+      3
+    ],
+    [
+      "host/src/camera/output_device/tests/oracle.rs",
+      3,
+      "compile",
+      1
+    ],
+    [
+      "host/src/camera/output_device/tests/oracle.rs",
+      18,
+      "numbers",
+      2
+    ],
+    [
+      "host/src/camera/output_device/tests/oracle.rs",
+      31,
+      "t1143_uapi_matches_installed_independent_c_headers",
+      1
+    ],
+    [
+      "host/src/camera/output_device/tests/oracle.rs",
+      59,
+      "boundary_source",
+      1
+    ],
+    [
+      "host/src/camera/output_device/tests/oracle.rs",
+      95,
+      "t1143_ioctl_boundary_accepts_signed_and_unsigned_native_request_widths",
+      2
+    ],
+    [
+      "host/src/camera/output_device/tests/oracle.rs",
+      116,
+      "t1456_color_contract_matches_independent_native_headers",
+      1
+    ],
+    [
+      "host/src/camera/output_device/tests/virtual_driver.rs",
+      11,
+      "t1143_virtual_output_process_fixture",
+      2
+    ],
+    [
+      "host/src/camera/output_device/tests/virtual_driver.rs",
+      60,
+      "t1144_virtual_frame_transfer_fixture",
+      2
+    ],
+    [
+      "host/src/camera/output_device/tests/virtual_driver.rs",
+      69,
+      "transfer",
+      3
+    ],
+    [
+      "host/src/camera/tests/color.rs",
+      3,
+      "encoded_color",
+      3
+    ],
+    [
+      "host/src/camera/tests/color.rs",
+      53,
+      "check_color",
+      5
+    ],
+    [
+      "host/src/camera/tests/color.rs",
+      84,
+      "t1456_tagged_matrices_and_ranges_share_exported_color_contract",
+      2
+    ]
+  ]
+}

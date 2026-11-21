@@ -46,6 +46,11 @@ fn t1143_virtual_output_process_fixture() {
             ]
         );
         assert_eq!(observed[6] * u64::from(fps), observed[7]);
+        assert_eq!(
+            &observed[8..],
+            &[1, 1, 2, 1, 0xfeedcafe],
+            "T1456 native color metadata"
+        );
         assert_eq!(output.write(&vec![128; 115200]).unwrap(), 115200);
         println!("T1143 configured/wrote/independently queried 320x240@{fps}");
     }

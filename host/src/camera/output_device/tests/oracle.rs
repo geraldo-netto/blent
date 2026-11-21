@@ -111,3 +111,29 @@ fn t1143_ioctl_boundary_accepts_signed_and_unsigned_native_request_widths() {
         );
     }
 }
+
+#[test]
+fn t1456_color_contract_matches_independent_native_headers() {
+    let root = tempfile::tempdir().unwrap();
+    let oracle = compile(root.path());
+    let expected = numbers(
+        std::process::Command::new(oracle)
+            .arg("--colors")
+            .output()
+            .unwrap(),
+    );
+    let format = abi::Format::new(spec());
+    let pixels = unsafe { format.image.pixels };
+    assert_eq!(
+        [
+            pixels.colorspace,
+            pixels.encoding,
+            pixels.quantization,
+            pixels.transfer,
+            pixels.private
+        ]
+        .map(u64::from)
+        .as_slice(),
+        expected
+    );
+}

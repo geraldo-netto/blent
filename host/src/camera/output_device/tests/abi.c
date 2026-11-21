@@ -17,6 +17,12 @@ static void layout(void)
            V4L2_PIX_FMT_YUV420, V4L2_FIELD_NONE, V4L2_BUF_TYPE_VIDEO_OUTPUT, V4L2_CAP_TIMEPERFRAME);
 }
 
+static void colors(void)
+{
+    printf("%u %u %u %u %u\n", V4L2_COLORSPACE_SMPTE170M, V4L2_YCBCR_ENC_601,
+           V4L2_QUANTIZATION_LIM_RANGE, V4L2_XFER_FUNC_709, V4L2_PIX_FMT_PRIV_MAGIC);
+}
+
 static int snapshot(void)
 {
     struct v4l2_format format;
@@ -31,10 +37,12 @@ static int snapshot(void)
         perror("T1143 native snapshot");
         return 1;
     }
-    printf("%u %u %u %u %u %u %u %u\n", format.fmt.pix.width, format.fmt.pix.height,
+    printf("%u %u %u %u %u %u %u %u %u %u %u %u %u\n", format.fmt.pix.width, format.fmt.pix.height,
            format.fmt.pix.pixelformat, format.fmt.pix.field, format.fmt.pix.bytesperline,
            format.fmt.pix.sizeimage, parameters.parm.output.timeperframe.numerator,
-           parameters.parm.output.timeperframe.denominator);
+           parameters.parm.output.timeperframe.denominator, format.fmt.pix.colorspace,
+           format.fmt.pix.ycbcr_enc, format.fmt.pix.quantization, format.fmt.pix.xfer_func,
+           format.fmt.pix.priv);
     return 0;
 }
 
@@ -48,6 +56,11 @@ int main(int argc, char **argv)
     if (argc == 2 && strcmp(argv[1], "--snapshot") == 0)
     {
         return snapshot();
+    }
+    if (argc == 2 && strcmp(argv[1], "--colors") == 0)
+    {
+        colors();
+        return 0;
     }
     return 2;
 }

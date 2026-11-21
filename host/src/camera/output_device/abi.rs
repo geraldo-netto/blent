@@ -6,6 +6,12 @@ pub(super) const OUTPUT: u32 = 2;
 pub(super) const YUV420: u32 = u32::from_le_bytes(*b"YU12");
 const PROGRESSIVE: u32 = 1;
 const TIME_PER_FRAME: u32 = 0x1000;
+// Linux UAPI mapping of docs/camera-reference.md#exported-color-contract's fixed SDR export contract.
+const SMPTE170M: u32 = 1;
+const BT601: u32 = 1;
+const LIMITED: u32 = 2;
+const REC709_TRANSFER: u32 = 1;
+const EXTENDED_PIXELS: u32 = 0xfeedcafe;
 
 #[repr(C)]
 #[derive(Clone, Copy, Default)]
@@ -22,6 +28,20 @@ pub(super) struct Pixels {
     pub encoding: u32,
     pub quantization: u32,
     pub transfer: u32,
+}
+
+impl Pixels {
+    fn validate_color(&self) -> Result<()> {
+        ensure!(
+            self.colorspace == SMPTE170M
+                && self.encoding == BT601
+                && self.quantization == LIMITED
+                && self.transfer == REC709_TRANSFER
+                && self.private == EXTENDED_PIXELS,
+            "camera output changed the BT.601 limited-range color contract"
+        );
+        Ok(())
+    }
 }
 
 #[repr(C)]
@@ -49,6 +69,11 @@ impl Format {
             field: PROGRESSIVE,
             stride: spec.width,
             bytes: spec.bytes,
+            colorspace: SMPTE170M,
+            encoding: BT601,
+            quantization: LIMITED,
+            transfer: REC709_TRANSFER,
+            private: EXTENDED_PIXELS,
             ..Pixels::default()
         };
         Self {
@@ -74,7 +99,7 @@ impl Format {
             pixels.stride == spec.width && pixels.bytes == spec.bytes,
             "camera output requires incompatible frame padding"
         );
-        Ok(())
+        pixels.validate_color()
     }
 }
 

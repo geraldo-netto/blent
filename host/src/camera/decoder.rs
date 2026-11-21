@@ -16,7 +16,7 @@ pub fn filters(rotation: u8, options: &CameraProfile) -> String {
         _ => "",
     };
     let mirror = if options.mirror { "hflip," } else { "" };
-    format!("{turn}{mirror}scale={}:{}:force_original_aspect_ratio=decrease,pad={}:{}:(ow-iw)/2:(oh-ih)/2,format=yuv420p",
+    format!("{turn}{mirror}scale={}:{}:force_original_aspect_ratio=decrease:in_color_matrix=auto:out_color_matrix=bt601:in_range=auto:out_range=tv,pad={}:{}:(ow-iw)/2:(oh-ih)/2,format=yuv420p",
         options.width, options.height, options.width, options.height)
 }
 

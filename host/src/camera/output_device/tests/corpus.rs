@@ -127,3 +127,44 @@ fn t1143_set_rate_readback_uses_exact_fraction_and_bounded_wide_arithmetic() {
         }
     }
 }
+
+fn color_fields() -> [(u32, ImageChange); 5] {
+    [
+        (1, |format, value| format.image.pixels.colorspace = value),
+        (1, |format, value| format.image.pixels.encoding = value),
+        (2, |format, value| format.image.pixels.quantization = value),
+        (1, |format, value| format.image.pixels.transfer = value),
+        (0xfeedcafe, |format, value| {
+            format.image.pixels.private = value
+        }),
+    ]
+}
+
+#[test]
+fn t1456_native_color_metadata_is_explicit_and_substitution_is_rejected() {
+    let format = abi::Format::new(spec());
+    let pixels = unsafe { format.image.pixels };
+    assert_eq!(
+        [
+            pixels.colorspace,
+            pixels.encoding,
+            pixels.quantization,
+            pixels.transfer,
+            pixels.private
+        ],
+        [1, 1, 2, 1, 0xfeedcafe]
+    );
+    let file = File::open("/dev/null").unwrap();
+    for (expected, change) in color_fields() {
+        for value in [0, 1, 2, 3, 4, u32::MAX, expected] {
+            let control = Control {
+                image: Some((change, value)),
+                ..Default::default()
+            };
+            assert_eq!(
+                configure_with(&control, file.try_clone().unwrap(), spec()).is_ok(),
+                value == expected
+            );
+        }
+    }
+}

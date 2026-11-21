@@ -5,6 +5,28 @@ specifies the stream format, freshness policy, native cleanup and evidence limit
 An owner retains responsibility for its exact devices/workers until their actual
 completion; a Stop request or timeout is not that completion.
 
+## Exported color contract
+
+Decoded camera frames use planar 8-bit Y, Cb, Cr (YUV420), the BT.601
+Y′CbCr matrix and limited range: nominal Y 16–235 and Cb/Cr 16–240,
+with neutral chroma 128. The decoder normalizes the input's signalled matrix
+and range before publishing pixels. Preview conversion and automatic brightness
+consume this same normalized buffer. Frame dimensions and allocation bounds
+remain those of the selected camera profile.
+
+The Linux output adapter requests SMPTE 170M colorspace, BT.601 encoding,
+limited quantization and the Rec.709 transfer function explicitly, using the
+extended-pixel-format marker. It rejects a driver that changes these fields,
+before admitting frame writes. Black frames use Y=16, Cb=Cr=128.
+
+This SDR encoding contract does not establish calibrated sensor colorimetry or
+HDR/wide-gamut conversion. Untagged input uses FFmpeg's input autodetection;
+incorrect or absent source metadata cannot establish the original camera's
+colorimetry. Physical image quality remains device-specific.
+
+The adapter follows the [V4L2 pixel-format contract](https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/pixfmt-v4l2.html);
+normalization uses the [FFmpeg scale filter](https://ffmpeg.org/ffmpeg-filters.html#scale-1).
+
 ## Pipeline and wire format
 
 Linux uses one owned native writer per virtual camera and an FFmpeg decoder for

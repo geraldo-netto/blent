@@ -871,3 +871,5 @@ async fn t1450_real_decoder_exports_brightened_pixels_to_preview() {
     };
     assert!(preview(&adjusted).rgba()[0] > preview(&original).rgba()[0]);
 }
+
+mod color;
