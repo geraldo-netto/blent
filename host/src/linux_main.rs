@@ -18,6 +18,7 @@ use blent::config;
 mod daemon_activity;
 mod daemon_pid;
 mod daemon_shutdown;
+mod daemon_supervision;
 mod desktop;
 use blent::device_tasks;
 mod discovery;
@@ -1911,7 +1912,8 @@ where
         &primary,
         listeners,
     );
-    let mut adb_handle = tokio::spawn(monitor::run(monitor));
+    let (monitor_report, monitor_failure) = watch::channel(None);
+    let mut adb_handle = tokio::spawn(monitor::run(monitor, monitor_report));
 
     println!();
     println!("================================================");
@@ -1924,7 +1926,16 @@ where
     println!("================================================");
     println!();
 
-    shutdown(shutdown_tx.subscribe()).await?;
+    let result = daemon_supervision::wait(
+        primary.status.clone(),
+        monitor_failure,
+        shutdown(shutdown_tx.subscribe()),
+    )
+    .await;
+    blent::runtime_owner::request_shutdown();
+    if let Err(error) = &result {
+        warn!("Daemon liveness failed; stopping original sessions: {error:#}");
+    }
     info!("Shutting down...");
 
     // Ask the capture pipeline to wind down, and give it a bounded moment to
@@ -1959,7 +1970,7 @@ where
     }
 
     info!("blent daemon stopped");
-    Ok(())
+    result
 }
 
 async fn wait_for_shutdown(mut quit_rx: watch::Receiver<bool>) {
@@ -2330,17 +2341,20 @@ async fn adb_monitor_using(
     extra: ExtraSessionTemplate,
     adb: &str,
 ) {
-    monitor::run(monitor::Config {
-        ports: (video_port, input_port),
-        auto_launch,
-        tablet: tablet_tx,
-        token_dir,
-        relaunch,
-        extra,
-        adb: adb.to_owned(),
-        #[cfg(feature = "accessory-transport")]
-        usb: None,
-    })
+    monitor::run(
+        monitor::Config {
+            ports: (video_port, input_port),
+            auto_launch,
+            tablet: tablet_tx,
+            token_dir,
+            relaunch,
+            extra,
+            adb: adb.to_owned(),
+            #[cfg(feature = "accessory-transport")]
+            usb: None,
+        },
+        watch::channel(None).0,
+    )
     .await;
 }
 

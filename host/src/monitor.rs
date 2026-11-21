@@ -7,6 +7,7 @@ use tokio::task::JoinSet;
 mod admission;
 mod control;
 mod credentials;
+mod failure;
 mod forwarding;
 mod launch_policy;
 mod preparation;
@@ -677,7 +678,10 @@ pub(crate) fn with_usb(
     config
 }
 
-pub(crate) async fn run(config: Config) {
+pub(crate) async fn run(
+    config: Config,
+    failure: watch::Sender<Option<blent::session_state::Failure>>,
+) {
     let mut shutdown = config.extra.shutdown_rx.clone();
     let mut state = Monitor::new(config);
     match control::Control::bind() {
@@ -689,6 +693,9 @@ pub(crate) async fn run(config: Config) {
     interval.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
     let mut usb_interval = tokio::time::interval(Duration::from_millis(100));
     while !*shutdown.borrow() {
+        if state.report_failure(&failure) {
+            break;
+        }
         let event = state
             .event(&mut interval, &mut usb_interval, &mut shutdown)
             .await;

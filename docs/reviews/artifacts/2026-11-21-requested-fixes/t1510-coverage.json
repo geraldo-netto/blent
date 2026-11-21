@@ -1,0 +1,96 @@
+[
+  {
+    "file": "host/src/daemon_supervision.rs",
+    "name": "wait",
+    "line": 6,
+    "language": "rust",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/daemon_supervision.rs",
+    "name": "session_failure",
+    "line": 19,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/daemon_supervision.rs",
+    "name": "primary_failed",
+    "line": 30,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/daemon_supervision.rs",
+    "name": "monitor_failed",
+    "line": 42,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/monitor/failure.rs",
+    "name": "report_failure",
+    "line": 6,
+    "language": "rust",
+    "covered": 14,
+    "total": 15,
+    "percent": 93.33333333333333,
+    "passes": true,
+    "missing": [
+      20
+    ]
+  },
+  {
+    "file": "host/src/monitor.rs",
+    "name": "run",
+    "line": 681,
+    "language": "rust",
+    "covered": 22,
+    "total": 25,
+    "percent": 88.0,
+    "passes": true,
+    "missing": [
+      689,
+      697,
+      704
+    ]
+  },
+  {
+    "file": "host/src/linux_main.rs",
+    "name": "run_daemon_with",
+    "line": 1714,
+    "language": "rust",
+    "covered": 205,
+    "total": 215,
+    "percent": 95.34883720930233,
+    "passes": true,
+    "missing": [
+      1740,
+      1836,
+      1841,
+      1859,
+      1860,
+      1861,
+      1938,
+      1954,
+      1955,
+      1969
+    ]
+  }
+]

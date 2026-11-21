@@ -360,7 +360,12 @@ capture FIFO inode leases survive unconfirmed native retirement. FIFO replacemen
 requires the previous capture retirement tickets to be complete.
 
 Session state can be `Retiring` after control returns, followed by `Stopped` when
-all owned session task handles finish. Cleanup failures publish `Failed`, including
+all owned session task handles finish. The Linux daemon observes primary-session failure,
+extra ADB-session failure and unexpected connection-monitor loss (T1510).
+It logs the cause, closes new admission, runs original cleanup and returns an
+error so the service unit's `Restart=on-failure` can act. A simultaneous explicit
+shutdown takes precedence. Extra ADB liveness is checked on the existing monitor
+turns; reporting failure precedes its potentially delayed native cleanup. Cleanup failures publish `Failed`, including
 late failures observed by retirement ownership; a prior failure is preserved.
 These tickets describe their particular owner: nested native children/tasks retain
 their own admissions and completion tickets. An already-committing configuration

@@ -1,0 +1,27 @@
+{
+  "issue": "T1510",
+  "red": {
+    "cases": 2,
+    "failed": 2,
+    "sha256": "f043c3ed50008ee0b5329cd2230a13ce99218cd1c56ec63688103826bd32eee3"
+  },
+  "green": {
+    "targeted_cases": 6,
+    "broader_daemon_monitor_cases": 105,
+    "actual_entry_cases": 3,
+    "failed": 0
+  },
+  "coverage": {
+    "tool": "cargo-llvm-cov 0.8.7; rustc 1.100.0; exact current binary",
+    "methods": 7,
+    "minimum_percent": 88.0,
+    "counter_note": "Namespace subprocess profile collision resolved by rerunning the current error/cleanup case with a fresh raw-profile prefix."
+  },
+  "complexity": {
+    "tool": "project syn Rust checker",
+    "functions": 171,
+    "over_9": 0
+  },
+  "ownership": "Pure watch observers hold cloned failure values only. Original Runtime/Monitor/native retirement ownership remains. Monitor publishes failure before cleanup; daemon closes admission, cleans up and propagates the error.",
+  "limitations": "Fake capture/input/ADB fixtures only; no physical device or installed daemon changed."
+}

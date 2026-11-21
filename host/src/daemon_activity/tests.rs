@@ -426,3 +426,41 @@ async fn t1509_daemon_identity_survives_workflow_return() {
         "T1509 daemon identity disappeared before entry drain"
     );
 }
+
+#[tokio::test]
+async fn t1510_failure_waits_for_original_cleanup_then_returns_error() {
+    if isolated_daemon(
+        "daemon_activity::tests::t1510_failure_waits_for_original_cleanup_then_returns_error",
+    ) {
+        return;
+    }
+    let cli = daemon_config().await;
+    let (factory, release) = fixture(Default::default());
+    let observed = factory.clone();
+    let owned = factory.clone();
+    let mut daemon = tokio::spawn(async move {
+        crate::run_daemon_with(
+            cli,
+            owned,
+            move |_| async move {
+                until(|| observed.state.created.load(Ordering::Acquire) == 1).await;
+                anyhow::bail!("T1510 injected liveness failure")
+            },
+            &mut None,
+        )
+        .await
+    });
+    tokio::select! {
+        _ = until(|| factory.state.stopped.load(Ordering::Acquire)) => {},
+        result = &mut daemon => panic!("T1510 failure skipped original cleanup: {result:?}"),
+    }
+    let premature = daemon.is_finished();
+    drop(release);
+    let result = daemon.await.unwrap();
+    assert!(!premature);
+    assert_eq!(
+        result.unwrap_err().to_string(),
+        "T1510 injected liveness failure"
+    );
+    assert!(!crate::get_pid_path().exists());
+}
