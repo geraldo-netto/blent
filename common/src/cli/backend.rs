@@ -68,6 +68,7 @@ mod tests {
     fn capabilities(supported: bool) -> Capabilities {
         Capabilities {
             camera: supported,
+            audio: supported,
             daemon: true,
             display: supported,
             input: supported,

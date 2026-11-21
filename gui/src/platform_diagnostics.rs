@@ -34,6 +34,7 @@ mod tests {
     fn t533_gui_uses_the_cli_evidence_and_keeps_pending_state_explicit() {
         let caps = Capabilities {
             camera: false,
+            audio: false,
             daemon: false,
             display: false,
             input: false,

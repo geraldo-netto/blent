@@ -141,6 +141,7 @@ pub fn backend_lines(caps: Capabilities) -> Vec<String> {
         ),
         ("Daemon lifecycle", caps.daemon),
         ("Cameras", caps.camera),
+        ("Audio", caps.audio),
         ("Autostart", caps.autostart),
         ("System setup", caps.system_setup),
         ("Pipe capacity", caps.pipe_capacity),

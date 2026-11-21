@@ -21,6 +21,7 @@ impl Probe for Fake {
 fn unsupported() -> blent_config::platform::Capabilities {
     blent_config::platform::Capabilities {
         camera: false,
+        audio: false,
         daemon: false,
         display: false,
         input: false,
@@ -127,4 +128,26 @@ fn t533_malformed_bounded_output_never_establishes_readiness() {
         .lines()
         .join("\n")
         .contains("Display: unverified (backend implemented; runtime not checked)"));
+}
+
+#[test]
+fn t1535_audio_backend_is_reported_without_claiming_runtime_readiness() {
+    for (capabilities, implemented) in [
+        (unsupported(), false),
+        (
+            blent_config::platform::capabilities(),
+            cfg!(target_os = "linux"),
+        ),
+    ] {
+        let lines = blent_config::diagnostics::backend_lines(capabilities);
+        let expected = if implemented {
+            "Audio: unverified (backend implemented; runtime not checked)"
+        } else {
+            "Audio: unavailable (unsupported)"
+        };
+        assert!(
+            lines.iter().any(|line| line == expected),
+            "T1535: {lines:?}"
+        );
+    }
 }

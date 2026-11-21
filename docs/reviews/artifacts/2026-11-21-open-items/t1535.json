@@ -1,0 +1,40 @@
+{
+  "issue": "T1535",
+  "tests": {
+    "common_integration": 4,
+    "common_unit": 3,
+    "gui": 1,
+    "failing_before": 1
+  },
+  "windows_gnu_test_check": "passed after T1654",
+  "native_windows": "T1271",
+  "coverage": [
+    {
+      "file": "common/src/platform.rs",
+      "name": "capabilities",
+      "line": 27,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/diagnostics.rs",
+      "name": "backend_lines",
+      "line": 134,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 32,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}

@@ -25,6 +25,7 @@ and permanent tests remain. Windows stylus support stays unavailable.
 | Authenticated ADB USB/Wi-Fi connection | Preview |
 | Touch/mouse on a selected existing monitor | Opt-in preview; physical tablet qualification remains separate |
 | Tablet extended display, capture and camera | Unavailable |
+| Microphone and speaker sharing | Unavailable; Audio is reported as unsupported |
 | Direct USB without ADB | Unsupported on Windows |
 | Stylus | Declined; unavailable |
 | Installer/release package | Not completed |
