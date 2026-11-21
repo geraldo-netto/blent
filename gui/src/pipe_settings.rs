@@ -61,7 +61,7 @@ fn show_limit_help(ui: &mut egui::Ui, ceiling: Option<u32>) {
         ui.monospace("cat /proc/sys/fs/pipe-max-size");
         ui.label("Until reboot (run in a terminal):"); command(ui, TEMPORARY);
         ui.label("Persist on systems that load /etc/sysctl.d:"); command(ui, PERSISTENT);
-        ui.label("Choose a buffer size and Apply. No display restart is needed. Per-user pipe-memory limits can still refuse an increase; check effective capacity.");
+        ui.label("Choose a buffer size and Save. No display restart is needed. Per-user pipe-memory limits can still refuse an increase; check effective capacity.");
         ui.label("Undo: remove /etc/sysctl.d/90-blent-pipe.conf if you created it, then restore the recorded value with sudo sysctl -w fs.pipe-max-size=OLD_VALUE. Existing pipes are not automatically shrunk.");
     });
 }

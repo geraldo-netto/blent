@@ -1519,6 +1519,13 @@ mod tests {
             text.iter().any(|(label, _)| label == "Capture pipe buffer"),
             "T415: {text:?}"
         );
+        click_settings_text(&mut app, &ctx, "Linux pipe limits", video_test_frame);
+        let text = video_test_frame(&mut app, &ctx, vec![]);
+        assert!(
+            text.iter()
+                .any(|(label, _)| label.starts_with("Choose a buffer size and Save.")),
+            "T1556 expanded pipe help must name the current Save button"
+        );
     }
 
     #[test]

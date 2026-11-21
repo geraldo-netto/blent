@@ -3,11 +3,11 @@ use blent_config::model::MAX_CONVERSION_THREADS;
 use eframe::egui;
 
 pub(super) fn show(ui: &mut egui::Ui, capacity: &mut u32) {
-    capacity_control(ui, "Conversion capacity", "conversion-capacity", capacity, " participants", "Auto reserves two available CPUs. Manual allows 1–128 participants per tablet, including the calling thread. Small updates use fewer workers. Apply & restart to change.");
+    capacity_control(ui, "Conversion capacity", "conversion-capacity", capacity, " participants", "Auto reserves two available CPUs. Manual allows 1–128 participants per tablet, including the calling thread. Small updates use fewer workers. Save & restart all displays to change.");
 }
 
 pub(super) fn encoder_workers(ui: &mut egui::Ui, capacity: &mut u32) {
-    capacity_control(ui, "Software encoder workers", "encoder-workers", capacity, " workers", "Auto compares 1, 2 and 4 workers with tablet feedback, keeping one worker as fallback. Manual fixes 1–128 workers for software H.264. More workers can increase CPU, memory and latency. Apply & restart to change.");
+    capacity_control(ui, "Software encoder workers", "encoder-workers", capacity, " workers", "Auto compares 1, 2 and 4 workers with tablet feedback, keeping one worker as fallback. Manual fixes 1–128 workers for software H.264. More workers can increase CPU, memory and latency. Save & restart all displays to change.");
 }
 
 fn capacity_control(

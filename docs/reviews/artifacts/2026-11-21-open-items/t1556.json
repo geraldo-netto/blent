@@ -1,0 +1,52 @@
+{
+  "id": "T1556",
+  "passed_existing_settings_tests": 4,
+  "coverage": [
+    {
+      "file": "gui/src/conversion_settings.rs",
+      "name": "show",
+      "line": 5,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/conversion_settings.rs",
+      "name": "encoder_workers",
+      "line": 9,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/gpu_settings.rs",
+      "name": "show",
+      "line": 4,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/pipe_settings.rs",
+      "name": "show_limit_help",
+      "line": 57,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "classification": "UI help text correction; existing disclosure coverage extended",
+  "complexity_summary": "190 functions; 0 exceed cyclomatic complexity 9"
+}

@@ -7,12 +7,12 @@ pub(crate) fn show(ui: &mut egui::Ui, config: &mut FileConfig, status: &Status) 
         choices(ui, &mut config.encoding_gpu, &status.gpus);
         let policy = status.gpus.policy(&config.encoding_gpu);
         if policy.encoder(&config.encoder) != config.encoder {
-            ui.label("This GPU cannot serve the requested encoder; Apply uses H.264 software fallback.");
+            ui.label("This GPU cannot serve the requested encoder; Save & restart all displays uses H.264 software fallback.");
         }
         if !config.encoding_gpu.is_empty() && policy == blent_config::gpu::Policy::Software {
-            ui.label("CPU policy or unavailable GPU: hardware encoding is disabled after Apply.");
+            ui.label("CPU policy or unavailable GPU: hardware encoding is disabled after Save & restart all displays.");
         }
-        ui.small("Apply & restart changes encoding only. Desktop composition and capture stay on their existing GPU.");
+        ui.small("Save & restart all displays changes encoding only. Desktop composition and capture stay on their existing GPU.");
         ui.small("Explicit GPU selection: Linux VAAPI. NVENC and other native selectors are unsupported; Automatic preserves existing encoder behavior. Device access does not prove codec support.");
         active(ui, status);
     });
