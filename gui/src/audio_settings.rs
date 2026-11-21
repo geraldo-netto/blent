@@ -271,9 +271,10 @@ mod tests {
             assert_eq!(activity(native), expected);
         }
         let mut panel = Panel::default();
+        let (start, _acknowledger) = blent_config::media_start::Start::pending();
         panel.owner.admit(
             Some(blent_config::tablets::Identity::Adb("first".into())),
-            blent_config::media_start::Start::pending().0,
+            start,
         );
         assert_eq!(panel.status().state, AudioState::Starting);
         let pool = blent_config::retirement::Pool::new(1).unwrap();
@@ -289,7 +290,10 @@ mod tests {
     }
     use blent_config::audio::Direction;
     use std::{cell::RefCell, rc::Rc};
-    struct Backend(Rc<RefCell<Vec<AudioOptions>>>);
+    struct Backend(
+        Rc<RefCell<Vec<AudioOptions>>>,
+        RefCell<Option<blent_config::media_start::Acknowledger>>,
+    );
     impl AudioController for Backend {
         fn close(self: Box<Self>) -> blent_config::retirement::Fence {
             self.stop();
@@ -297,10 +301,13 @@ mod tests {
         }
         fn start(&self, options: AudioOptions) -> blent_config::camera::BackendResult {
             self.0.borrow_mut().push(options);
-            Ok(blent_config::media_start::Start::pending().0)
+            let (start, acknowledger) = blent_config::media_start::Start::pending();
+            *self.1.borrow_mut() = Some(acknowledger);
+            Ok(start)
         }
         fn stop(&self) {
             self.0.borrow_mut().clear();
+            self.1.borrow_mut().take();
         }
         fn status(&self) -> AudioStatus {
             AudioStatus::default()
@@ -310,7 +317,7 @@ mod tests {
     fn t718_audio_controls_preserve_passive_preferences_and_validate_start() {
         let starts = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone()))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
             error: Some("fixture failure".into()),
             ..Default::default()
         };
@@ -330,7 +337,7 @@ mod tests {
     fn t979_invalid_full_audio_targets_never_reach_even_a_permissive_backend() {
         let starts = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone()))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
             ..Default::default()
         };
         for direction in [Direction::Microphone, Direction::Speakers] {
@@ -396,7 +403,7 @@ mod tests {
     fn t979_exact_speaker_usb_and_microphone_adb_options_reach_only_selected_backend() {
         let starts = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone()))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
             ..Default::default()
         };
         let mut speaker = AudioOptions::new(Direction::Speakers);
@@ -409,7 +416,7 @@ mod tests {
         microphone.serial = Some("exact adb serial".into());
         assert!(panel.start(microphone.clone()).is_err());
         let mut microphone_panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone()))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
             ..Default::default()
         };
         microphone_panel.start(microphone.clone()).unwrap();
@@ -420,7 +427,7 @@ mod tests {
         usb_microphone.profile.processing = Processing::Raw;
         assert!(microphone_panel.start(usb_microphone.clone()).is_err());
         let mut usb_panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone()))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
             ..Default::default()
         };
         usb_panel.start(usb_microphone.clone()).unwrap();
@@ -430,7 +437,7 @@ mod tests {
     fn t979_bounded_profile_and_nonhex_target_inputs_never_reach_backend() {
         let starts = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone()))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
             ..Default::default()
         };
         for direction in [Direction::Microphone, Direction::Speakers] {
@@ -490,7 +497,7 @@ mod tests {
         for direction in [Direction::Microphone, Direction::Speakers] {
             let starts = Rc::new(RefCell::new(Vec::new()));
             let mut panel = Panel {
-                backend: Some(Box::new(Backend(starts.clone()))),
+                backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
                 transports: |_| blent_config::connection::media::Transports {
                     adb: true,
                     usb: true,

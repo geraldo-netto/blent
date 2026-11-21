@@ -23,3 +23,7 @@ Permanent T1477 regression failed with current bitrate 5000 instead of retained 
 ## T1479 — production worker lookup in tests
 
 Cargo 1.100 resolves test executables under `debug/build/<package>/<hash>/out`; fixed parent traversal found no production encoder worker. The test-only resolver now locates the owning Cargo profile via its deps directory and requires the separately built production binary. The script prerequisite fixture uses an explicit production executable path. Existing T819 native worker tests failed with ENOENT before the fix and pass afterward; permanent T1479 covers both artifact depths, missing binary and outside-profile rejection. All 10 offline-runner Python tests pass. This changes test composition only, preserving production spawn, original child/reader retirement and native identity checks. The new resolver and regression satisfy the <=9 complexity gate.
+
+## T1481 — pending fixture ownership
+
+Three permanent GUI tests failed because fake camera/audio starts discarded their only Acknowledger while asserting Pending. Fixtures now retain one acknowledger per backend until stop/drop, matching production settlement semantics. The direct owner-state test retains its original acknowledger through pending assertions. The same T1273 owner/workspace and T979 exact-transport regressions pass. No production behavior changed; completion retention is bounded to each fixture backend, with stop/drop as cleanup sponsor. All measured changed test methods remain <=9 complexity.

@@ -7,7 +7,10 @@ use blent_config::{
 };
 use std::sync::{Arc, Mutex};
 
-struct Camera(Arc<Mutex<Vec<CameraProfile>>>);
+struct Camera(
+    Arc<Mutex<Vec<CameraProfile>>>,
+    Mutex<Option<blent_config::media_start::Acknowledger>>,
+);
 impl CameraBackend for Camera {
     fn adjust(
         &self,
@@ -17,9 +20,13 @@ impl CameraBackend for Camera {
     }
     fn start(&self, options: CameraProfile) -> blent_config::camera::BackendResult {
         self.0.lock().unwrap().push(options);
-        Ok(blent_config::media_start::Start::pending().0)
+        let (start, acknowledger) = blent_config::media_start::Start::pending();
+        *self.1.lock().unwrap() = Some(acknowledger);
+        Ok(start)
     }
-    fn stop(&self) {}
+    fn stop(&self) {
+        self.1.lock().unwrap().take();
+    }
     fn state(&self) -> CameraState {
         CameraState::Stopped
     }
@@ -30,13 +37,20 @@ impl CameraBackend for Camera {
         None
     }
 }
-struct Audio(Arc<Mutex<Vec<AudioOptions>>>);
+struct Audio(
+    Arc<Mutex<Vec<AudioOptions>>>,
+    Mutex<Option<blent_config::media_start::Acknowledger>>,
+);
 impl AudioController for Audio {
     fn start(&self, options: AudioOptions) -> blent_config::camera::BackendResult {
         self.0.lock().unwrap().push(options);
-        Ok(blent_config::media_start::Start::pending().0)
+        let (start, acknowledger) = blent_config::media_start::Start::pending();
+        *self.1.lock().unwrap() = Some(acknowledger);
+        Ok(start)
     }
-    fn stop(&self) {}
+    fn stop(&self) {
+        self.1.lock().unwrap().take();
+    }
     fn status(&self) -> AudioStatus {
         AudioStatus::default()
     }
@@ -141,9 +155,9 @@ fn t1273_tablet_workspace_retains_drafts_and_stops_only_selected_resource() {
     let (_root, mut app) = settings_test_app(Tab::Overview);
     let camera = Arc::new(Mutex::new(Vec::new()));
     let audio = Arc::new(Mutex::new(Vec::new()));
-    app.camera.backend = Some(Box::new(Camera(camera.clone())));
-    app.microphone.backend = Some(Box::new(Audio(audio.clone())));
-    app.speakers.backend = Some(Box::new(Audio(audio.clone())));
+    app.camera.backend = Some(Box::new(Camera(camera.clone(), Mutex::new(None))));
+    app.microphone.backend = Some(Box::new(Audio(audio.clone(), Mutex::new(None))));
+    app.speakers.backend = Some(Box::new(Audio(audio.clone(), Mutex::new(None))));
     {
         let mut status = app.status.lock().unwrap();
         status.tablets = devices();
@@ -197,7 +211,7 @@ fn t1273_tablet_workspace_retains_drafts_and_stops_only_selected_resource() {
 fn t1273_pointer_gesture_cannot_cross_tablet_selection() {
     let (_root, mut app) = settings_test_app(Tab::Overview);
     let starts = Arc::new(Mutex::new(Vec::new()));
-    app.camera.backend = Some(Box::new(Camera(starts.clone())));
+    app.camera.backend = Some(Box::new(Camera(starts.clone(), Mutex::new(None))));
     app.status.lock().unwrap().tablets = devices();
     let context = egui::Context::default();
     window_test_frame(&mut app, &context, vec![]);
@@ -482,7 +496,7 @@ fn t1289_resource_grid_reflows_without_unbounded_card_widths() {
 fn t1295_invalid_projection_keeps_existing_owner_stoppable() {
     let (_root, mut app) = settings_test_app(Tab::Overview);
     let camera = Arc::new(Mutex::new(Vec::new()));
-    app.camera.backend = Some(Box::new(Camera(camera.clone())));
+    app.camera.backend = Some(Box::new(Camera(camera.clone(), Mutex::new(None))));
     let original = Identity::Adb("original".into());
     app.camera.start_for(&original, &CameraProfile::default());
     let status = Status {
