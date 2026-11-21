@@ -1,0 +1,100 @@
+{
+  "issue": "T1677",
+  "red": "Existing permanent test failed because obsolete prebuilt-runtime fixture did not provide the current source-build inputs. See t1677-red.log.gz.",
+  "green": "All 16 FFmpeg bundle/identity Python tests pass, including unchanged prefix/job/source assertions and new runtime build/packaging assertions.",
+  "production_change": false,
+  "complexity_tool": "project Python AST 3.12",
+  "complexity": [
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      24,
+      "setUp",
+      1
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      29,
+      "library",
+      1
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      36,
+      "test_t563_bundled_codecs_win_over_conflicting_host_library",
+      2
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      59,
+      "test_t563_package_tools_come_from_pinned_prefix",
+      1
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      65,
+      "test_t563_recipe_and_bounded_malformed_inputs",
+      4
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      86,
+      "archive",
+      2
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      94,
+      "test_t563_extract_rejects_links_bounds_and_traversal_before_writing",
+      2
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      113,
+      "test_t563_cached_sources_are_rehashed_and_bad_downloads_rejected",
+      3
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      131,
+      "test_t563_compilation_uses_pinned_headers_and_configurable_job_bound",
+      1
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      145,
+      "prefix",
+      2
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      159,
+      "test_t563_reuse_validates_manifest_binary_version_and_codec_inventory",
+      2
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      178,
+      "test_t563_isolation_keeps_driver_libraries_out_of_codec_directory",
+      4
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      190,
+      "test_t563_prepare_retains_verified_sources_notices_and_rejects_tampering",
+      4
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      219,
+      "test_t563_builder_prepares_codec_unless_verified_prefix_is_supplied",
+      1
+    ],
+    [
+      "scripts/tests/test_ffmpeg_bundle.py",
+      225,
+      "collect",
+      1
+    ]
+  ],
+  "ownership": "Existing private TemporaryDirectory and scoped mocks; no real compiler, download, runtime build or packaging process admitted by this fixture. Mocks restore before original temporary owner cleanup."
+}

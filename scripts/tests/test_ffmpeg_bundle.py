@@ -228,11 +228,19 @@ class FFmpegBundleTests(unittest.TestCase):
         with patch.object(codec, 'prepare', return_value=prefix) as prepare, \
                 patch.object(build, 'stage', return_value=[]) as stage, \
                 patch.object(sources, 'collect', side_effect=collect), \
-                patch.object(build.tools, 'prepare', return_value={'appimagetool': Path('/bin/true'),
-                                                                  'runtime-x86_64': self.root/'runtime'}):
+                patch.object(build.tools, 'prepare', return_value={'appimagetool': Path('/bin/true')}), \
+                patch.object(build.runtime_build, 'build', return_value=self.root/'runtime') as runtime, \
+                patch.object(build.shutil, 'copytree') as recipe, \
+                patch.object(build.subprocess, 'run') as package:
             build.build(args)
             prepare.assert_called_once_with(args.ffmpeg_cache.resolve(), 3)
             self.assertEqual(stage.call_args.args[-1], prefix)
+        # T1677: current runtime source build supplies the packaging input.
+        work = args.output / 'appimage-work'
+        runtime.assert_called_once_with(work/'sources', work/'runtime-build')
+        recipe.assert_called_once_with(work/'runtime-build/blent-runtime-build', work/'sources/blent-runtime-build')
+        command = package.call_args.args[0]
+        self.assertEqual(command[command.index('--runtime-file') + 1], str(self.root/'runtime'))
 
 
 if __name__ == '__main__':
