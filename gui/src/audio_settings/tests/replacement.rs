@@ -39,15 +39,37 @@ fn options() -> AudioOptions {
 }
 
 #[test]
+fn t1650_wrong_direction_cannot_consume_the_original_backend_or_queue_intent() {
+    let (mut panel, admission) = prepared();
+    assert!(panel.start(options(), Direction::Speakers).is_err());
+    assert!(
+        panel.backend.is_some(),
+        "T1650: invalid request consumed the old backend"
+    );
+    assert!(panel.pending.is_none());
+    assert_eq!(panel.target(), Some(&Identity::Adb("first".into())));
+    panel.start(options(), Direction::Microphone).unwrap();
+    assert_eq!(
+        panel.pending.as_ref().unwrap().direction,
+        Direction::Microphone
+    );
+    drop(admission);
+    panel.status();
+    assert!(panel.backend.is_some());
+    assert!(panel.pending.is_none());
+    panel.stop();
+}
+
+#[test]
 fn t1549_retained_start_waits_for_exact_original_retirement() {
     let (mut panel, admission) = prepared();
     assert!(
-        panel.start(options()).is_ok(),
+        panel.start(options(), Direction::Microphone).is_ok(),
         "T1549 discarded requested successor"
     );
     assert!(panel.backend.is_none());
     assert!(
-        panel.start(options()).is_err(),
+        panel.start(options(), Direction::Microphone).is_err(),
         "T1549 replaced already queued intent"
     );
     panel.status();
@@ -64,7 +86,7 @@ fn t1549_retained_start_waits_for_exact_original_retirement() {
 #[test]
 fn t1549_stop_cancels_queued_start_without_retiring_original_early() {
     let (mut panel, admission) = prepared();
-    panel.start(options()).unwrap();
+    panel.start(options(), Direction::Microphone).unwrap();
     panel.stop();
     panel.status();
     assert_eq!(panel.target(), Some(&Identity::Adb("first".into())));
@@ -78,7 +100,7 @@ fn t1549_stop_cancels_queued_start_without_retiring_original_early() {
 fn t1549_successor_failure_is_reported_once_after_retirement() {
     let (mut panel, admission) = prepared();
     panel.create = || Err("successor unavailable".into());
-    panel.start(options()).unwrap();
+    panel.start(options(), Direction::Microphone).unwrap();
     drop(admission);
     panel.status();
     assert_eq!(panel.error(), Some("successor unavailable"));
@@ -93,7 +115,7 @@ fn t1549_hidden_panel_keeps_progress_and_settles_without_another_click() {
     let (mut panel, admission) = prepared();
     let context = egui::Context::default();
     panel.maintain_start(&context);
-    panel.start(options()).unwrap();
+    panel.start(options(), Direction::Microphone).unwrap();
     panel.maintain_start(&context);
     assert!(panel.backend.is_none());
     drop(admission);
@@ -108,7 +130,11 @@ fn t1549_immediate_retirement_preserves_successor_failure_feedback() {
     let (mut panel, admission) = prepared();
     drop(admission);
     panel.create = || Err("successor unavailable".into());
-    panel.start_for(&Identity::Adb("second".into()), &options());
+    panel.start_for(
+        &Identity::Adb("second".into()),
+        &options(),
+        Direction::Microphone,
+    );
     panel.status();
     assert_eq!(panel.error(), Some("successor unavailable"));
 }

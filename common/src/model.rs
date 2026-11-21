@@ -280,11 +280,7 @@ impl FileConfig {
         crate::display::pixel_clock_10khz(self.width, self.height, self.fps)?;
         slot_ports(self.video_port, self.input_port, self.max_tablets)?;
         self.camera.options.validate().context("Camera settings")?;
-        self.audio
-            .microphone
-            .validate()
-            .context("Microphone settings")?;
-        self.audio.speakers.validate().context("Speaker settings")?;
+        self.audio.validate()?;
         Ok(())
     }
 

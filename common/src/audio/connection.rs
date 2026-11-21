@@ -14,6 +14,14 @@ impl AudioOptions {
         self.target()?;
         Ok(())
     }
+
+    pub fn validate_for(&self, direction: Direction) -> Result<()> {
+        anyhow::ensure!(
+            self.profile.direction == direction,
+            "Audio request direction does not match the selected resource"
+        );
+        self.validate()
+    }
 }
 
 impl AudioProfile {

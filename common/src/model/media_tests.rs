@@ -1,6 +1,28 @@
 //! T1553: persistence validates each media target before publication.
 use super::*;
 
+#[test]
+fn t1650_saved_audio_direction_must_match_its_resource() {
+    use crate::audio::Direction;
+    for microphone in [false, true] {
+        let mut config = FileConfig::default();
+        if microphone {
+            config.audio.microphone.profile.direction = Direction::Speakers;
+        } else {
+            config.audio.speakers.profile.direction = Direction::Microphone;
+        }
+        let restored: FileConfig = toml::from_str(&toml::to_string(&config).unwrap()).unwrap();
+        assert!(
+            restored.validate().is_err(),
+            "T1650: inconsistent audio resource admitted"
+        );
+        let directory = tempfile::tempdir().unwrap();
+        let path = directory.path().join("config.toml");
+        assert!(crate::storage::save_at(&restored, &path).is_err());
+        assert!(!path.exists());
+    }
+}
+
 fn target(resource: u8, serial: Option<String>, peer: Option<String>) -> FileConfig {
     let mut config = FileConfig::default();
     let (saved_serial, saved_peer) = match resource {

@@ -1,5 +1,5 @@
 use super::{AudioProfile, AudioState, Direction};
-use anyhow::Result;
+use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -33,6 +33,18 @@ impl Default for AudioSettings {
             microphone: AudioOptions::new(Direction::Microphone),
             speakers: AudioOptions::new(Direction::Speakers),
         }
+    }
+}
+
+impl AudioSettings {
+    pub fn validate(&self) -> Result<()> {
+        self.microphone
+            .validate_for(Direction::Microphone)
+            .context("Microphone settings")?;
+        self.speakers
+            .validate_for(Direction::Speakers)
+            .context("Speaker settings")?;
+        Ok(())
     }
 }
 

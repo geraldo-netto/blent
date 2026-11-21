@@ -5,6 +5,21 @@ use crate::{
 };
 
 #[test]
+fn t1650_audio_request_direction_is_checked_against_its_owner() {
+    for expected in [Direction::Microphone, Direction::Speakers] {
+        for requested in [Direction::Microphone, Direction::Speakers] {
+            let mut options = AudioOptions::new(requested);
+            assert_eq!(
+                options.validate_for(expected).is_ok(),
+                requested == expected
+            );
+            options.profile.buffer_ms = 0;
+            assert!(options.validate_for(expected).is_err());
+        }
+    }
+}
+
+#[test]
 fn t977_transport_selection_is_explicit_and_independent_per_direction() {
     for direction in [Direction::Microphone, Direction::Speakers] {
         let mut options = AudioOptions::new(direction);

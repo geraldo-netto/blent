@@ -1242,9 +1242,12 @@ impl App {
     }
 
     fn show_audio_settings(&mut self, ui: &mut egui::Ui) {
-        self.microphone.show(ui, &mut self.cfg.audio.microphone);
+        use blent_config::audio::Direction;
+        self.microphone
+            .show(ui, &mut self.cfg.audio.microphone, Direction::Microphone);
         ui.separator();
-        self.speakers.show(ui, &mut self.cfg.audio.speakers);
+        self.speakers
+            .show(ui, &mut self.cfg.audio.speakers, Direction::Speakers);
     }
 }
 
@@ -3427,7 +3430,13 @@ printf '%s' "$((existing + delta))" > "$count""#,
         events: Vec<egui::Event>,
     ) -> Vec<(String, egui::Rect)> {
         settings_test_frame(app, ctx, events, |app, ui| {
-            ui.vertical(|ui| app.microphone.show(ui, &mut app.cfg.audio.microphone));
+            ui.vertical(|ui| {
+                app.microphone.show(
+                    ui,
+                    &mut app.cfg.audio.microphone,
+                    blent_config::audio::Direction::Microphone,
+                )
+            });
         })
     }
 
@@ -3442,7 +3451,13 @@ printf '%s' "$((existing + delta))" > "$count""#,
         events: Vec<egui::Event>,
     ) -> Vec<(String, egui::Rect)> {
         settings_test_frame(app, ctx, events, |app, ui| {
-            ui.vertical(|ui| app.speakers.show(ui, &mut app.cfg.audio.speakers));
+            ui.vertical(|ui| {
+                app.speakers.show(
+                    ui,
+                    &mut app.cfg.audio.speakers,
+                    blent_config::audio::Direction::Speakers,
+                )
+            });
         })
     }
 

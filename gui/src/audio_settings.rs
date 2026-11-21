@@ -6,11 +6,16 @@ use eframe::egui;
 
 pub(super) struct Panel {
     owner: crate::media_owner::Owner,
-    pending: Option<AudioOptions>,
+    pending: Option<Pending>,
     pub(super) backend: Option<Box<dyn AudioController>>,
     error: Option<String>,
     create: fn() -> Result<Box<dyn AudioController>, String>,
     transports: fn(Direction) -> blent_config::connection::media::Transports,
+}
+
+struct Pending {
+    direction: Direction,
+    options: AudioOptions,
 }
 impl Default for Panel {
     fn default() -> Self {
@@ -25,8 +30,13 @@ impl Default for Panel {
     }
 }
 impl Panel {
-    pub(super) fn show(&mut self, ui: &mut egui::Ui, options: &mut AudioOptions) {
-        let microphone = options.profile.direction == Direction::Microphone;
+    pub(super) fn show(
+        &mut self,
+        ui: &mut egui::Ui,
+        options: &mut AudioOptions,
+        direction: Direction,
+    ) {
+        let microphone = direction == Direction::Microphone;
         let (label, selector) = if microphone {
             ("Microphone", "input")
         } else {
@@ -39,7 +49,7 @@ impl Panel {
         if let Some(error) = &self.error {
             ui.colored_label(ui.visuals().error_fg_color, error);
         }
-        self.buttons(ui, options, status.state);
+        self.buttons(ui, options, status.state, direction);
         super::settings_grid(
             ui,
             if microphone {
@@ -49,7 +59,7 @@ impl Panel {
             },
             |ui| {
                 preferences(ui, options);
-                connection(ui, options, (self.transports)(options.profile.direction));
+                connection(ui, options, (self.transports)(direction));
             },
         );
         ui.label("Start applies these settings. Save saves preferences; it never starts audio or restarts display sharing.");
@@ -79,9 +89,15 @@ impl Panel {
         }
         status
     }
-    fn buttons(&mut self, ui: &mut egui::Ui, options: &AudioOptions, state: AudioState) {
+    fn buttons(
+        &mut self,
+        ui: &mut egui::Ui,
+        options: &AudioOptions,
+        state: AudioState,
+        direction: Direction,
+    ) {
         let active = state.is_active();
-        let label = if options.profile.direction == Direction::Microphone {
+        let label = if direction == Direction::Microphone {
             "microphone"
         } else {
             "speakers"
@@ -89,12 +105,12 @@ impl Panel {
         ui.horizontal(|ui| {
             if ui
                 .add_enabled(
-                    !active && (self.transports)(options.profile.direction).available(),
+                    !active && (self.transports)(direction).available(),
                     egui::Button::new(format!("Start {label}")),
                 )
                 .clicked()
             {
-                self.error = self.start(options.clone()).err();
+                self.error = self.start(options.clone(), direction).err();
             }
             if ui
                 .add_enabled(active, egui::Button::new(format!("Stop {label}")))
@@ -107,34 +123,35 @@ impl Panel {
             ui.ctx()
                 .request_repaint_after(std::time::Duration::from_millis(100));
         }
-        if !(self.transports)(options.profile.direction).available() {
+        if !(self.transports)(direction).available() {
             ui.label("Audio backend unavailable on this operating system.");
         }
     }
     fn validate_start(
         &self,
         options: &AudioOptions,
+        direction: Direction,
     ) -> Result<Option<blent_config::tablets::Identity>, String> {
         if self.pending.is_some() {
             return Err("A replacement start is already waiting for cleanup.".into());
         }
-        options.validate().map_err(|e| e.to_string())?;
+        options.validate_for(direction).map_err(|e| e.to_string())?;
         let target = options.target().map_err(|e| e.to_string())?;
-        if !(self.transports)(options.profile.direction).supports(&target) {
+        if !(self.transports)(direction).supports(&target) {
             return Err("Selected audio transport is unavailable on this backend.".into());
         }
         Ok(crate::media_owner::identity(target))
     }
 
-    fn start(&mut self, options: AudioOptions) -> Result<(), String> {
-        let target = self.validate_start(&options)?;
+    fn start(&mut self, options: AudioOptions, direction: Direction) -> Result<(), String> {
+        let target = self.validate_start(&options, direction)?;
         let backend = &self.backend;
         if self
             .owner
             .needs_release(&target, || observed_activity(backend))
         {
             self.stop();
-            self.pending = Some(options);
+            self.pending = Some(Pending { options, direction });
             return Ok(());
         }
         self.owner.prepare(&target)?;
@@ -159,8 +176,8 @@ impl Panel {
     }
 
     fn resume(&mut self) {
-        if let Some(options) = self.owner.take_ready(&mut self.pending) {
-            self.error = self.start(options).err();
+        if let Some(pending) = self.owner.take_ready(&mut self.pending) {
+            self.error = self.start(pending.options, pending.direction).err();
         }
     }
 
@@ -175,10 +192,11 @@ impl Panel {
         &mut self,
         selected: &blent_config::tablets::Identity,
         options: &AudioOptions,
+        direction: Direction,
     ) {
         let mut options = options.clone();
         crate::resource_workspace::set_target(selected, &mut options.serial, &mut options.usb_peer);
-        self.error = self.start(options).err();
+        self.error = self.start(options, direction).err();
     }
 
     pub(super) fn view(
@@ -284,6 +302,7 @@ fn preferences(ui: &mut egui::Ui, options: &mut AudioOptions) {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
+    mod identity;
     mod replacement;
 
     #[test]
@@ -354,13 +373,15 @@ mod tests {
         let mut options = AudioOptions::new(Direction::Microphone);
         let context = egui::Context::default();
         let _ = context.run(Default::default(), |ctx| {
-            egui::CentralPanel::default().show(ctx, |ui| panel.show(ui, &mut options));
+            egui::CentralPanel::default().show(ctx, |ui| {
+                panel.show(ui, &mut options, Direction::Microphone)
+            });
         });
         assert!(starts.borrow().is_empty());
-        panel.start(options.clone()).unwrap();
+        panel.start(options.clone(), Direction::Microphone).unwrap();
         assert_eq!(starts.borrow()[0], options);
         options.profile.buffer_ms = 1;
-        assert!(panel.start(options).is_err());
+        assert!(panel.start(options, Direction::Microphone).is_err());
         drop(factory().unwrap());
     }
     #[test]
@@ -378,7 +399,7 @@ mod tests {
                 let mut options = AudioOptions::new(direction);
                 options.usb_peer = Some("a".repeat(length));
                 assert!(
-                    panel.start(options).is_err(),
+                    panel.start(options, direction).is_err(),
                     "T979 malformed full USB target reached backend"
                 );
             }
@@ -386,7 +407,7 @@ mod tests {
             options.usb_peer = Some("ab".repeat(32));
             options.serial = Some("other-tablet".into());
             assert!(
-                panel.start(options).is_err(),
+                panel.start(options, direction).is_err(),
                 "T979 ambiguous serial/peer reached backend"
             );
         }
@@ -404,7 +425,7 @@ mod tests {
                 let mut options = AudioOptions::new(direction);
                 options.usb_peer = usb.then(|| "ab".repeat(32));
                 assert_eq!(
-                    panel.start(options).unwrap_err(),
+                    panel.start(options, direction).unwrap_err(),
                     "Selected audio transport is unavailable on this backend."
                 );
             }
@@ -414,7 +435,7 @@ mod tests {
         panel.create = || Err("T979 private constructor failed".into());
         assert_eq!(
             panel
-                .start(AudioOptions::new(Direction::Speakers))
+                .start(AudioOptions::new(Direction::Speakers), Direction::Speakers)
                 .unwrap_err(),
             "T979 private constructor failed"
         );
@@ -423,7 +444,7 @@ mod tests {
         microphone.usb_peer = Some("ab".repeat(32));
         panel.transports = |_| Default::default();
         assert_eq!(
-            panel.start(microphone).unwrap_err(),
+            panel.start(microphone, Direction::Microphone).unwrap_err(),
             "Selected audio transport is unavailable on this backend."
         );
         assert!(transport_capabilities(Direction::Speakers).usb);
@@ -441,26 +462,34 @@ mod tests {
         speaker.profile.buffer_ms = 80;
         speaker.profile.background = true;
         speaker.profile.processing = Processing::Raw;
-        panel.start(speaker.clone()).unwrap();
+        panel.start(speaker.clone(), Direction::Speakers).unwrap();
         let mut microphone = AudioOptions::new(Direction::Microphone);
         microphone.serial = Some("exact adb serial".into());
-        assert!(panel.start(microphone.clone()).is_err());
+        assert!(panel
+            .start(microphone.clone(), Direction::Microphone)
+            .is_err());
         let mut microphone_panel = Panel {
             backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None), None))),
             ..Default::default()
         };
-        microphone_panel.start(microphone.clone()).unwrap();
+        microphone_panel
+            .start(microphone.clone(), Direction::Microphone)
+            .unwrap();
         let mut usb_microphone = AudioOptions::new(Direction::Microphone);
         usb_microphone.usb_peer = Some("cd".repeat(32));
         usb_microphone.profile.buffer_ms = 80;
         usb_microphone.profile.background = true;
         usb_microphone.profile.processing = Processing::Raw;
-        assert!(microphone_panel.start(usb_microphone.clone()).is_err());
+        assert!(microphone_panel
+            .start(usb_microphone.clone(), Direction::Microphone)
+            .is_err());
         let mut usb_panel = Panel {
             backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None), None))),
             ..Default::default()
         };
-        usb_panel.start(usb_microphone.clone()).unwrap();
+        usb_panel
+            .start(usb_microphone.clone(), Direction::Microphone)
+            .unwrap();
         assert_eq!(*starts.borrow(), vec![speaker, microphone, usb_microphone]);
     }
     #[test]
@@ -477,7 +506,7 @@ mod tests {
                 }
                 let mut options = AudioOptions::new(direction);
                 options.profile.buffer_ms = buffer_ms;
-                assert!(panel.start(options).is_err());
+                assert!(panel.start(options, direction).is_err());
             }
         }
         for byte in 0..=255u8 {
@@ -488,7 +517,7 @@ mod tests {
             value[31] = byte;
             let mut options = AudioOptions::new(Direction::Speakers);
             options.usb_peer = Some(String::from_utf8_lossy(&value).into());
-            assert!(panel.start(options).is_err());
+            assert!(panel.start(options, Direction::Speakers).is_err());
         }
         assert!(starts.borrow().is_empty());
     }
@@ -513,7 +542,8 @@ mod tests {
                         ..Default::default()
                     },
                     |ctx| {
-                        egui::CentralPanel::default().show(ctx, |ui| panel.show(ui, &mut options));
+                        egui::CentralPanel::default()
+                            .show(ctx, |ui| panel.show(ui, &mut options, direction));
                     },
                 );
                 assert_eq!(options, original);
@@ -542,13 +572,13 @@ mod tests {
             ] {
                 let mut options = AudioOptions::new(direction);
                 options.serial = Some(serial);
-                assert!(panel.start(options).is_err());
+                assert!(panel.start(options, direction).is_err());
                 assert!(panel.target().is_none());
             }
             assert!(starts.borrow().is_empty());
             let mut options = AudioOptions::new(direction);
             options.serial = Some("é".repeat(512));
-            panel.start(options).unwrap();
+            panel.start(options, direction).unwrap();
             assert_eq!(starts.borrow().len(), 1);
             panel.stop();
             assert!(panel.target().is_none());
@@ -575,7 +605,9 @@ mod completion_tests {
             ..Default::default()
         };
         for direction in [Direction::Microphone, Direction::Speakers] {
-            panel.start(AudioOptions::new(direction)).unwrap();
+            panel
+                .start(AudioOptions::new(direction), direction)
+                .unwrap();
             completed.recv().unwrap();
             while panel.backend.as_ref().unwrap().status().state != AudioState::Stopped {
                 std::thread::yield_now();

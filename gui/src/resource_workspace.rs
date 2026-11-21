@@ -230,13 +230,19 @@ impl App {
     }
 
     fn start_resource(&mut self, status: &Status, selected: &Identity, resource: Resource) {
+        use blent_config::audio::Direction;
         match resource {
             Resource::Display => self.display_action(status, selected, true),
             Resource::Camera => self.camera.start_for(selected, &self.cfg.camera.options),
-            Resource::Microphone => self
-                .microphone
-                .start_for(selected, &self.cfg.audio.microphone),
-            Resource::Speakers => self.speakers.start_for(selected, &self.cfg.audio.speakers),
+            Resource::Microphone => self.microphone.start_for(
+                selected,
+                &self.cfg.audio.microphone,
+                Direction::Microphone,
+            ),
+            Resource::Speakers => {
+                self.speakers
+                    .start_for(selected, &self.cfg.audio.speakers, Direction::Speakers)
+            }
         }
     }
 

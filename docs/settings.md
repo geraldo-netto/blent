@@ -21,7 +21,9 @@ valid configuration. On Unix, saves report success only after syncing both the
 file and its parent directory.
 Save also validates camera, microphone and speaker settings. Incomplete USB
 fingerprints, invalid ADB serials or incompatible target selectors disable Save
-and show the resource and validation reason beside it.
+and show the resource and validation reason beside it. Audio profiles must match
+their microphone or speaker resource; Start also checks that identity before
+admitting a backend or queuing a replacement.
 
 ## Desktop workspace and resource controls
 

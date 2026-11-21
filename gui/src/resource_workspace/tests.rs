@@ -1,4 +1,5 @@
 use super::*;
+mod media_identity;
 use crate::tests::{click_settings_text, settings_test_app, sized_window_frame, window_test_frame};
 use blent_config::{
     audio::{AudioController, AudioOptions, AudioStatus},
