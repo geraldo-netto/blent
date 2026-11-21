@@ -3,6 +3,7 @@ use crate::usb::{Adb, Commands};
 use anyhow::Result;
 use blent_config::persistence_contract::{Snapshots, Transactions};
 mod attempt;
+mod connect_reply;
 pub use attempt::ProcessExit;
 mod outcome;
 mod policy;

@@ -258,6 +258,12 @@ async fn connect_route<C: Commands>(
         output.status.success() && output.stdout.len() <= 65536,
         "ADB network connection outcome unconfirmed"
     );
+    if super::connect_reply::not_created(&output.stdout, address) {
+        // A completed server socket refusal precedes transport registration.
+        // Generic connect/authentication failures can follow registration and
+        // must retain their original uncertain creator instead.
+        *creation = Creation::NotStarted;
+    }
     ensure!(
         super::policy::connected(&output.stdout, address),
         "ADB did not confirm network connection"

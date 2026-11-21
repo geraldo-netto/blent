@@ -55,7 +55,7 @@ impl Commands for Fake {
         })
     }
 }
-async fn quiet(owners: &Owners) {
+pub(super) async fn quiet(owners: &Owners) {
     tokio::time::timeout(Duration::from_secs(2), async {
         while owners.pool.active() != 0 {
             tokio::time::sleep(Duration::from_millis(1)).await;

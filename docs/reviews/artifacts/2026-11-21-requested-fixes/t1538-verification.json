@@ -1,0 +1,33 @@
+{
+  "finding": "T1538",
+  "red": "The explicit socket refusal retained Uncertain; DNS reply matrix also failed before DNS classification.",
+  "green": {
+    "wifi_cases_passed": 39,
+    "failed": 0
+  },
+  "coverage": {
+    "maintained_production_methods": 4,
+    "minimum_percent": 100
+  },
+  "complexity": {
+    "functions_measured": 40,
+    "above_nine": 0
+  },
+  "source": {
+    "base": "https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/",
+    "retrieved": "2026-11-21",
+    "sha256": {
+      "client-commandline.cpp": "b3d72ecd57b00fc65827136fc2bc37cb260d4df15be6cd786f08db1e8da973ff",
+      "sysdeps_unix.cpp": "3021c9c17a01959c2ebc8dab550c3310cade0fb2dadb30083a8a603b3084a620",
+      "transport.cpp": "cb78f8275ee859875cfb0ac73bdd398114ec45631d532adafd5152730fb785ab",
+      "socket_spec.cpp": "d5513943279d0159a232417176cd8192c7b57d4dbf36d28a0f6183e5da2fa91a",
+      "services.cpp": "73a0b30d9d4d5b81e148b7b60a636cd1192003c11465096d4a556654ee3b72cb",
+      "sysdeps-posix-network.cpp": "8f518269061cff8eb1dd617d5088fe2174c50f467ed0b1ce9a2362b27bb7fd02",
+      "client-adb_client.cpp": "48a931322850092e8b67ae1538fd799a169019e2e3c05d3af14ebaa6b111247e",
+      "sysdeps_win32.cpp": "3641b927b4e1ab93c833b12b06ecac916df6b0f553190f7bf556b5134ee8b8e2",
+      "client-transport_emulator.cpp": "ab1ce7de6539adf863524dd4fc51d6fa79cc611251091b42a2df1a136721940e"
+    }
+  },
+  "limits": "No live server connect or Windows native validation. Only bounded successful-command explicit socket/DNS failures settle noncreation. Generic failed-connect can follow transport registration; timeout, kill, oversized, malformed and foreign replies remain uncertain. These adb connect reply forms are not adb reverse replies.",
+  "ownership": "Original command completion precedes classification. Proven noncreation releases the existing attempt slot. Unknown creator, child and collector ownership remains retained; private fixture confirms one-slot retry and shutdown after a refusal."
+}

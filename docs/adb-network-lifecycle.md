@@ -39,8 +39,23 @@ Before connecting, a valid inventory distinguishes a preexisting endpoint from a
 new creator. Preexisting transports are preserved without issuing connect or
 compensating disconnect. Otherwise the owner marks creation uncertain before
 calling the native adapter. A spawn rejection proved by that adapter can release
-the attempt; errors, oversized replies and unrecognized replies after possible
-creation cannot. Empty inventories do not settle a possible delayed creator.
+the attempt. A successful, fully collected command carrying an exact socket
+refusal for that endpoint also proves non-creation: `failed to connect to
+'HOST:PORT': REASON` on POSIX or `cannot connect to HOST:PORT: REASON` on Windows.
+The corresponding exact DNS failure forms (`failed to resolve host: 'HOST':
+REASON` and `cannot resolve host 'HOST' and port PORT: REASON`) also prove that
+creation did not begin. These replies originate before transport registration, so the attempt releases
+its slot and address without polling inventory or issuing disconnect; a later
+reconnect tick can try again. T1538 tests this refusal/retry/shutdown sequence.
+The classifier rejects foreign endpoints, empty reasons, malformed UTF-8,
+multiline replies and replies over 64 KiB.
+
+Generic `failed to connect to HOST:PORT` and authentication failures may occur
+after registration and remain uncertain. A non-zero command exit, deadline,
+signal, oversized reply or unrecognized reply is also insufficient. Empty
+inventories do not settle a possible delayed creator. This distinction follows
+ADB's [connect workflow](https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/client/transport_emulator.cpp)
+and [POSIX socket failure replies](https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/sysdeps/posix/network.cpp).
 The owner waits to observe its exclusively owned endpoint, removes it once, then
 waits for confirmed absence. Explicit Wi-Fi-off uses the same removal owner.
 T1364 tests exercise effects both before and after acknowledgement failure,

@@ -160,6 +160,10 @@ device before any mode switch, reset, or interface claim.
 - **Wi-Fi** — `blent wifi` once, with the cable in: it switches the tablet
   over, remembers the address and reconnects to it by itself whenever the
   cable is out. `blent wifi --off` forgets the address and attempts to disconnect.
+  An explicit socket refusal releases the attempt for a later retry. A timeout
+  or unknown creation outcome retains the endpoint until its original outcome
+  can be settled; automatic retry is suspended during that interval. See
+  [network ADB ownership](adb-network-lifecycle.md).
   It reports a confirmed disconnect separately from forgetting an address when
   ADB is unavailable, and returns an error if cleanup cannot be admitted or
   confirmed. It does not disable the tablet's network adb listener. See [SECURITY.md](../SECURITY.md).

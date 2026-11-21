@@ -1,0 +1,46 @@
+[
+  {
+    "file": "host/src/wifi/connect_reply.rs",
+    "name": "not_created",
+    "line": 4,
+    "language": "rust",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/wifi/connect_reply.rs",
+    "name": "reply_line",
+    "line": 22,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/wifi/connect_reply.rs",
+    "name": "error_target",
+    "line": 34,
+    "language": "rust",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/wifi/attempt.rs",
+    "name": "connect_route",
+    "line": 238,
+    "language": "rust",
+    "covered": 30,
+    "total": 30,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

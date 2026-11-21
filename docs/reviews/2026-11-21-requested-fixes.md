@@ -15,3 +15,9 @@ The broader instrumented capture run passed 244 cases, failed one existing resum
 ## T1489 — VAAPI quality option
 
 Confirmed against installed FFmpeg option tables and [FFmpeg 6.1.1 rate-control source](https://github.com/FFmpeg/FFmpeg/blob/n6.1.1/libavcodec/vaapi_encode.c#L1807-L1816). VP9/AV1 VAAPI now receive `-global_quality`; H.264/HEVC retain `-qp`. The configured value is passed unchanged and the documentation distinguishes codec quantizer scales. The permanent regression failed before the fix and now covers all five VAAPI profiles at minimum/default-example/maximum values. All 14 existing encoding unit cases pass. Both maintained production methods have 100% line coverage; all 26 measured source/test functions are <=9 complexity. [Evidence](artifacts/2026-11-21-requested-fixes/t1489-verification.json). No hardware encode was run.
+
+## T1538 — explicit ADB refusal settlement
+
+Confirmed with failing-first socket and DNS reply regressions. A completed successful `adb connect` command with an exact bounded socket/DNS failure reply now proves noncreation; a private one-slot attempt test confirms later reconnection and shutdown without cleanup polling. All 39 Wi-Fi cases pass, four maintained production methods have 100% line coverage and all 40 measured functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1538-verification.json).
+
+Upstream ADB distinguishes these failures before transport registration from generic connection/authentication failures after registration. The latter, timeouts, nonzero command exits and malformed replies remain uncertain and can still suspend recovery until their original outcome settles. Documentation now states this limitation. No live server connection or Windows native test was performed. The recognized connect reply strings do not apply to reverse-map creation.

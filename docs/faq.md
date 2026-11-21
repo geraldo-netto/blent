@@ -41,7 +41,9 @@ These controls are separate from the stream's frame rate and bitrate.
 Yes, through the ADB route. Install `adb`, enable USB debugging and authorize
 the computer first. Run `blent wifi` once with the cable plugged in: it puts
 the tablet's adb on the network, remembers the address, and from then on the
-daemon reconnects on its own whenever the cable is out. The tablet goes back
+daemon retries on its own whenever the cable is out. Explicit socket refusals
+allow another attempt; timeouts or unknown creation outcomes suspend retries
+until the original attempt is settled (see [network ADB ownership](adb-network-lifecycle.md)). The tablet goes back
 to USB-only when it reboots, so that one command has to be repeated after a
 tablet restart. `blent wifi --off` forgets the address and attempts to disconnect.
 Its output distinguishes confirmed disconnection from unavailable ADB; failed
