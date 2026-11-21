@@ -533,8 +533,9 @@ files separately, while the existing injected-syscall harness retains the full
 helper regressions, including sanitizer checks and FIFO recovery integration.
 
 T405 replaces avoidable periodic checks with event or deadline waits. Capture
-polls until its next work deadline (or the existing 250 ms pending-update
-watchdog); EVDI events can wake it earlier. A writer with a cached frame waits
+polls until its next work deadline or the pending-update watchdog. Consecutive
+empty recoveries double its interval from 250 ms to one second (T1607); an
+update notification or non-empty grab restores 250 ms. EVDI events wake it earlier. A writer with a cached frame waits
 until the 200 ms keepalive deadline, while one without a cached frame waits for
 publication or shutdown. Native FIFO writes try nonblocking output first and
 wait on `POLLOUT` only after `EAGAIN`; the one-second continuous-stall limit and

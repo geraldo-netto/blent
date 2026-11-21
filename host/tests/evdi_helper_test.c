@@ -1065,17 +1065,17 @@ static void test_t623(void) {
     assert(t623_request_calls == 2 && g_capture.update_pending);
     /* Driver sent readiness but its event was lost. Retry must restart capture. */
     t623_ready = 1;
-    mock_monotonic_ms = 1500;
-    recover_capture_if_stalled(&g_capture, 1500, &fallback);
-    request_capture_if_due(&g_capture, g_capture.handle, 1500, 16);
+    mock_monotonic_ms = 1750;
+    recover_capture_if_stalled(&g_capture, 1750, &fallback);
+    request_capture_if_due(&g_capture, g_capture.handle, 1750, 16);
     assert(t623_request_calls == 3 && !g_capture.update_pending);
     assert(mock_grab_calls == 3 && "T623 lost readiness still recovers to immediate captures");
     t623_ready = 0;
-    request_capture_if_due(&g_capture, g_capture.handle, 1516, 16);
+    request_capture_if_due(&g_capture, g_capture.handle, 1766, 16);
     assert(g_capture.update_pending);
     on_update_ready(0, &g_capture);
     assert(!g_capture.update_pending && mock_grab_calls == 4);
-    recover_capture_if_stalled(&g_capture, 2500, &fallback);
+    recover_capture_if_stalled(&g_capture, 2750, &fallback);
     assert(mock_grab_calls == 5 && "T623 independent one-second fallback remains available");
     mock_monotonic_ms = -1;
     mock_grab_calls = -1;
@@ -1085,6 +1085,7 @@ static void test_t623(void) {
 static void test_t294(void) {
     g_capture.have_mode = 1;
     for (long long elapsed = 249; elapsed <= 251; elapsed++) {
+        g_capture.watchdog_ms = 250;
         mock_grab_calls = 0;
         g_capture.update_pending = 1;
         g_capture.last_request_ms = 1000;
@@ -1549,6 +1550,7 @@ static void test_t415_rounding(void) {
 #include "capture_pause.c"
 #include "display_progress.c"
 #include "capture_diagnostics.c"
+#include "capture_watchdog.c"
 
 static void canonical_format_fixture(const char *id) {
     if (!strncmp(id, "T752", 4) || !strcmp(id, "T779") || !strcmp(id, "T780")) g_capture.normalize_rgba = 1;
@@ -1563,6 +1565,7 @@ int main(int argc, char **argv)
     assert(argc == 2);
     canonical_format_fixture(argv[1]);
     static const struct { const char *id; void (*run)(void); } cases[] = {
+        {"T1607", test_t1607_empty_watchdog},
         {"T1284", test_t1284_shutdown_registration},
         {"T1186-trace", test_t1186_trace},
         {"T1186-admission", test_t1186_admission},

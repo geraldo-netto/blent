@@ -52,6 +52,7 @@ typedef struct {
     int immediate_n;
     int empty_n;
     long long last_request_ms;
+    int watchdog_ms; /* event-loop-owned idle recovery delay, bounded to 250..1000 ms */
     long long last_fallback_grab_ms; /* capture-owner pacing, including resume snapshots */
     capture_progress_trace_t display_progress_trace;
     int buffer_registered;

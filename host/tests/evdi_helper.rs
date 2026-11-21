@@ -9,6 +9,11 @@ use std::{path::PathBuf, process::Command};
 struct Harness(tempfile::TempDir);
 
 #[test]
+fn t1607_empty_capture_watchdog_backs_off_without_losing_recovery() {
+    Harness::build("T1607").run("T1607");
+}
+
+#[test]
 fn t1284_shutdown_retires_registered_storage() {
     Harness::build("T1284").run("T1284");
 }
@@ -218,6 +223,7 @@ impl Harness {
         } else if matches!(
             case,
             "T1021"
+                | "T1607"
                 | "T752"
                 | "T753"
                 | "T760"

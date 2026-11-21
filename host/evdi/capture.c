@@ -366,6 +366,7 @@ static void grab_snapshot(capture_context_t *capture, int full)
         capture->empty_n++;
     if (num_rects > 0)
     {
+        capture->watchdog_ms = 250;
         capture->grab_count++;
         capture->grab_us = grabbed_us;
         /* Under the swap lock: the writer thread reassigns the mask pointers
@@ -397,6 +398,7 @@ static void on_update_ready(int buffer_to_be_updated, void *user_data)
         capture->wait_n++;
     }
     capture->update_pending = 0;
+    capture->watchdog_ms = 250;
     grab_now(capture);
     /* GRABPIX acknowledges the pending flip before any subsequent request
        (T599). Keep the request's deadline: an early ready callback must not
@@ -468,6 +470,13 @@ static long capture_period_ms(capture_context_t *capture) {
     return (long)((1000 + fps - 1) / fps);
 }
 
+static int watchdog_delay(const capture_context_t *capture)
+{
+    if (capture->watchdog_ms < 250)
+        return 250;
+    return capture->watchdog_ms > 1000 ? 1000 : capture->watchdog_ms;
+}
+
 static int capture_poll_timeout(capture_context_t *capture, long request_period_ms)
 {
     if (!capture_active(capture))
@@ -496,8 +505,9 @@ static int capture_poll_timeout(capture_context_t *capture, long request_period_
            Sleep until the watchdog is due instead. update_ready wakes poll
            the moment it arrives, so nothing is delayed when the
            compositor is actually running. */
-        long long left = capture->last_request_ms + 250 - capture_now_ms();
-        timeout_ms = left < 0 ? 0 : (left > 250 ? 250 : (int)left);
+        int delay = watchdog_delay(capture);
+        long long left = capture->last_request_ms + delay - capture_now_ms();
+        timeout_ms = left < 0 ? 0 : (left > delay ? delay : (int)left);
     }
     else
     {
@@ -514,36 +524,56 @@ static int capture_poll_timeout(capture_context_t *capture, long request_period_
     return (int)timeout_ms;
 }
 
-static void request_capture_if_due(capture_context_t *capture, evdi_handle handle, long long now, long request_period_ms) {
+static void request_capture_if_due(capture_context_t *capture, evdi_handle handle, long long now, long request_period_ms)
+{
     /* Core capture cycle: request a fresh frame from the compositor at
        the target fps. If the kernel says pixels are ready right away,
        grab immediately; otherwise update_ready will fire and grab. */
-    if (!capture->update_pending && (now - capture->last_request_ms) >= request_period_ms) {
+    if (!capture->update_pending && (now - capture->last_request_ms) >= request_period_ms)
+    {
         capture->last_request_ms = now;
         capture->req_us = capture_now_us();
-        if (evdi_request_update(handle, 0)) {
+        if (evdi_request_update(handle, 0))
+        {
+            capture->watchdog_ms = 250;
             capture->immediate_n++;
             grab_now(capture);
-        } else {
+        }
+        else
+        {
             capture->update_pending = 1;
         }
     }
 
 }
 
-static void recover_capture_if_stalled(capture_context_t *capture, long long now, long long *last_fallback_grab_ms) {
+static void recover_pending_update(capture_context_t *capture)
+{
+    long long previous = capture->grab_count;
+    capture->update_pending = 0;
+    grab_now(capture);
+    if (capture->grab_count == previous)
+    {
+        int delay = watchdog_delay(capture) * 2;
+        capture->watchdog_ms = delay > 1000 ? 1000 : delay;
+    }
+}
+
+static void recover_capture_if_stalled(capture_context_t *capture, long long now, long long *last_fallback_grab_ms)
+{
     /* Watchdog: if a request got lost (compositor hiccup), don't stay
        stuck waiting for update_ready forever. */
-    if (capture->update_pending && (now - capture->last_request_ms) >= 250) {
-        capture->update_pending = 0;
-        grab_now(capture);
+    if (capture->update_pending && (now - capture->last_request_ms) >= watchdog_delay(capture))
+    {
+        recover_pending_update(capture);
         /* This recovery also satisfies the fallback deadline. A second grab
          * on the same tick has no intervening update and only repeats work. */
         (*last_fallback_grab_ms) = now;
     }
 
     /* Fallback grab once a second in case no events flow at all */
-    if ((now - (*last_fallback_grab_ms)) >= 1000) {
+    if ((now - (*last_fallback_grab_ms)) >= 1000)
+    {
         (*last_fallback_grab_ms) = now;
         if (!capture->update_pending)
             grab_now(capture);

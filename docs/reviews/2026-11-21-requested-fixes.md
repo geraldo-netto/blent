@@ -91,3 +91,9 @@ All 52 Rust audio cases and 14 Android audio cases pass, including 475 Rust and 
 Failing-first API-27/34 regressions confirmed replaceable receipt overflow and callbacks running on the caller dispatcher. Both IPC boundaries now retain one conflated receipt independently of the ordered-event capacity. The worker encodes once; the receiving Binder callback decodes once. Consumption runs on the default dispatcher, with presentation still passed to existing UI owners. Ordered failure/end events retain priority and exact native retirement is unchanged.
 
 All 100 Android cases pass. In each paused-dispatcher case, 1,000 offered receipts reached the latest acknowledgement with zero additional UI callbacks and zero UI report callbacks. Seventeen maintained methods/callbacks have 100% JaCoCo coverage; all 281 measured functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1562-verification.json). These are host JVM dispatch measurements; physical Android UI CPU-time acceptance remains T1631. The bounded immutable mailbox records own no native resources.
+
+## T1607 — empty EVDI watchdog backoff
+
+The permanent regression failed at the second empty recovery. Consecutive empty recoveries now double the interval from 250 ms to one second; notifications, immediate readiness and non-empty grabs restore 250 ms. Lost-event recovery and same-tick fallback coalescing remain. Sixty simulated idle seconds produce 60 recovery grabs after backoff; this is a deterministic harness count, not a live kernel measurement.
+
+All 71 helper cases pass, and the dedicated new case passes ASan/UBSan. Seven maintained C methods reach at least 81.25% line coverage; all 235 measured C/Rust functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1607-verification.json). The existing capture context owns one bounded integer, with no new native lifetime. Live kernel-log and wakeup comparison remains T1632.

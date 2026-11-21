@@ -1,0 +1,31 @@
+{
+  "issue": "T1607",
+  "red": {
+    "cases": 1,
+    "failed": 1,
+    "sha256": "5eb92de525e9dd4046a858b53c28eb3351dc544f5bc89b95cc2b5a5a3c12f9c8"
+  },
+  "green": {
+    "cases": 71,
+    "failed": 0,
+    "ignored": 0
+  },
+  "sanitizers": "Dedicated T1607 native harness passed ASan/UBSan, including owned framebuffer/exchange cleanup.",
+  "bounded_idle": {
+    "simulated_seconds": 60,
+    "recoveries": 60,
+    "steady_interval_ms": 1000
+  },
+  "coverage": {
+    "tool": "GCC/gcov 13.3.0, -O0 --coverage",
+    "methods": 7,
+    "minimum_percent": 81.25
+  },
+  "complexity": {
+    "tool": "project tree-sitter C and syn Rust checker",
+    "functions": 235,
+    "over_9": 0
+  },
+  "ownership": "One scalar belongs to the existing event-loop capture context; no new allocation, queue, native owner or retirement rule.",
+  "native_acceptance": "Kernel log lines and helper wakeups before/after remain T1632; running installed sessions untouched."
+}

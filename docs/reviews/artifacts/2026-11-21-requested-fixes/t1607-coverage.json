@@ -1,0 +1,67 @@
+[
+  {
+    "file": "host/evdi/capture.c",
+    "function": "grab_snapshot",
+    "covered": 20,
+    "total": 22,
+    "percent": 90.9090909090909,
+    "missing": [
+      354,
+      377
+    ]
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "function": "on_update_ready",
+    "covered": 9,
+    "total": 10,
+    "percent": 90.0,
+    "missing": [
+      394
+    ]
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "function": "watchdog_delay",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "missing": []
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "function": "capture_poll_timeout",
+    "covered": 13,
+    "total": 16,
+    "percent": 81.25,
+    "missing": [
+      483,
+      494,
+      521
+    ]
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "function": "request_capture_if_due",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "missing": []
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "function": "recover_pending_update",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "missing": []
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "function": "recover_capture_if_stalled",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "missing": []
+  }
+]
