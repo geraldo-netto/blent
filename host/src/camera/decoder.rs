@@ -9,20 +9,12 @@ mod flow_tests;
 #[cfg(test)]
 mod retirement_tests;
 
-pub fn filters(rotation: u8, options: &CameraProfile) -> String {
-    let rotation = (rotation + (options.rotation / 90) as u8) % 4;
-    let turn = match rotation {
-        1 => "transpose=clock,",
-        2 => "hflip,vflip,",
-        3 => "transpose=cclock,",
-        _ => "",
-    };
-    let mirror = if options.mirror { "hflip," } else { "" };
-    format!("{turn}{mirror}scale={}:{}:force_original_aspect_ratio=decrease,colorspace=all=smpte170m:trc=bt709:range=tv:format=yuv420p,pad={}:{}:(ow-iw)/2:(oh-ih)/2,format=yuv420p",
+pub fn filters(options: &CameraProfile) -> String {
+    format!("scale={}:{}:force_original_aspect_ratio=decrease,colorspace=all=smpte170m:trc=bt709:range=tv:format=yuv420p,pad={}:{}:(ow-iw)/2:(oh-ih)/2,format=yuv420p",
         options.width, options.height, options.width, options.height)
 }
 
-fn command(ffmpeg: &Path, rotation: u8, options: &CameraProfile) -> Result<Command> {
+fn command(ffmpeg: &Path, options: &CameraProfile) -> Result<Command> {
     // FFmpeg also checks aligned decoder buffers against max_pixels. Allow
     // SIMD/macroblock padding while keeping the decode allocation bounded.
     let capture = options.invitation_profile()?;
@@ -55,7 +47,7 @@ fn command(ffmpeg: &Path, rotation: u8, options: &CameraProfile) -> Result<Comma
             "pipe:0",
             "-an",
             "-vf",
-            &filters(rotation, options),
+            &filters(options),
             "-threads",
             "1",
             "-f",
@@ -88,12 +80,20 @@ pub async fn connection(
         header.lens == selected,
         "camera lens was not selected by host"
     );
-    let mut command = command(ffmpeg, header.rotation, options)?;
+    let mut command = command(ffmpeg, options)?;
     let original = status.reserve_native(crate::camera_control::NativeResource::Decoder)?;
     let mut decoder =
         blent_config::commands::OwnedChild::spawn(&mut command).context("start camera decoder")?;
     original.bind(decoder.completion());
-    let result = transfer(&mut socket, &mut decoder, options, &outputs[header.lens]).await;
+    let result = transfer(
+        &mut socket,
+        &mut decoder,
+        options,
+        &outputs[header.lens],
+        status.live.clone(),
+        header.rotation,
+    )
+    .await;
     outputs[header.lens].send_replace(None);
     let retired = retire(decoder).await;
     anyhow::ensure!(
@@ -108,6 +108,8 @@ async fn transfer(
     decoder: &mut tokio::process::Child,
     options: &CameraProfile,
     frames: &Frames,
+    live: Option<std::sync::Arc<crate::camera_live::Session>>,
+    rotation: u8,
 ) -> Result<()> {
     let mut input = decoder
         .stdin
@@ -118,6 +120,10 @@ async fn transfer(
         .take()
         .context("camera decoder stdout missing")?;
     let mut pool = super::frame_pool::Pool::for_profile(options)?;
+    pool.orient(rotation)?;
+    if let Some(live) = live {
+        pool.attach(live);
+    }
     socket.write_all(b"OK").await?;
     let receive = receive_packets(
         socket,

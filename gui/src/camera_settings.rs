@@ -2,6 +2,8 @@
 use blent_config::camera::{CameraBackend, CameraProfile, CameraState, Lens};
 use eframe::egui;
 mod connection;
+#[cfg(all(test, target_os = "linux"))]
+mod live_tests;
 
 pub(super) struct Panel {
     owner: crate::media_owner::Owner,
@@ -53,6 +55,34 @@ impl Panel {
                     });
                 });
         });
+        self.live_adjustments(ui, options);
+    }
+
+    fn live_adjustments(&mut self, ui: &mut egui::Ui, options: &CameraProfile) {
+        if !self.native_state().is_active() {
+            return;
+        }
+        let Some(backend) = self.backend.as_ref() else {
+            return;
+        };
+        match backend.adjust(options) {
+            Ok(status) => {
+                if status.restart_required {
+                    ui.label("Restart required for camera session changes");
+                }
+                if status.pending {
+                    ui.label("Applying image adjustments…");
+                    ui.ctx()
+                        .request_repaint_after(std::time::Duration::from_millis(50));
+                }
+                if let Some(error) = status.error {
+                    ui.colored_label(ui.visuals().error_fg_color, error);
+                }
+            }
+            Err(error) => {
+                ui.colored_label(ui.visuals().error_fg_color, error.to_string());
+            }
+        }
     }
 
     fn summary(&mut self, ui: &mut egui::Ui, options: &CameraProfile) {
@@ -63,7 +93,7 @@ impl Panel {
             ui.colored_label(ui.visuals().error_fg_color, error);
         }
         self.buttons(ui, options, &state);
-        ui.label(egui::RichText::new("Start/Restart camera applies these settings. Save only saves preferences. Camera changes never restart display sharing.").weak().size(11.0));
+        ui.label(egui::RichText::new("Image adjustments apply live. Save remembers preferences. Other changes show Restart required. Display sharing is unaffected.").weak().size(11.0));
         ui.label(egui::RichText::new("Keep this window open while sharing. Select Blent Front or Blent Rear in your video call; only the selected lens is live.").weak().size(11.0));
         ui.add_space(10.0);
     }
@@ -515,6 +545,12 @@ mod tests {
         profiles: Rc<RefCell<Vec<CameraProfile>>>,
     }
     impl CameraBackend for Fixture {
+        fn adjust(
+            &self,
+            _: &blent_config::camera::CameraProfile,
+        ) -> blent_config::camera::AdjustmentResult {
+            Ok(Default::default())
+        }
         fn close(self: Box<Self>) -> blent_config::retirement::Fence {
             self.stop();
             blent_config::retirement::Fence::Complete

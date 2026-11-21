@@ -221,3 +221,21 @@ only the broker's limit does not extend the client's budget. Expiry ends the
 invitation; it never proves native cleanup or permits an automatic restart.
 
 [Native regression and per-function evidence](reviews/artifacts/2026-10-11-t933/README.md).
+
+## Live host image controls
+
+Shadow correction, strength, rotation and mirror use a latest-value mailbox owned
+by the original camera session. Each revision is acknowledged after processing a
+complete unpublished frame. A replacement has a distinct mailbox; stopped owners
+reject updates, and invalid edits do not change the last admitted settings. The
+GUI distinguishes pending image updates from session changes requiring restart.
+Save persists preferences without issuing another camera start.
+
+Sensor and user rotations are composed once, followed by output mirroring. A
+quarter turn preserves the exported format through aspect-preserving letterboxing;
+viewport edges align to the original YUV420 chroma grid. Preview and webcam output
+consume the same immutable adjusted frame. Rotation uses one additional scratch
+frame, funded per decoder: with N publication slots, raw-frame storage is now
+(N + 2) times frame_bytes (N slots, discard, transform scratch). N defaults to 3
+and is bounded to 2–16; frame_bytes is at most 1920 × 1080 × 3 / 2. No reader lease
+can be overwritten, and pool exhaustion still drains/discards one whole frame.

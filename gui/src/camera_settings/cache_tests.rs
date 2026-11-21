@@ -7,6 +7,12 @@ struct Backend {
     frame: Rc<RefCell<Option<Arc<CameraPreview>>>>,
 }
 impl CameraBackend for Backend {
+    fn adjust(
+        &self,
+        _: &blent_config::camera::CameraProfile,
+    ) -> blent_config::camera::AdjustmentResult {
+        Ok(Default::default())
+    }
     fn close(self: Box<Self>) -> blent_config::retirement::Fence {
         self.stop();
         blent_config::retirement::Fence::Complete

@@ -3,7 +3,7 @@ use super::*;
 
 #[tokio::test]
 async fn t1460_failed_cleanup_rejects_replacement_without_restarting() {
-    let (first, _) = Request::new(CameraProfile::default());
+    let (first, _) = Request::new(Session::new(CameraProfile::default()));
     let (command, commands) = watch::channel(Some(first));
     let (sender, mut state) = watch::channel(State::Stopped);
     let report = Report::new(sender, watch::channel(None).0);
@@ -29,7 +29,7 @@ async fn t1460_failed_cleanup_rejects_replacement_without_restarting() {
         .wait_for(|value| *value == State::Starting)
         .await
         .unwrap();
-    let (next, receipt) = Request::new(CameraProfile::default());
+    let (next, receipt) = Request::new(Session::new(CameraProfile::default()));
     command.send(Some(next)).unwrap();
     state
         .wait_for(|value| *value == State::Stopping)

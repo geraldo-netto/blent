@@ -5,8 +5,11 @@ use tokio::io::{AsyncRead, AsyncReadExt};
 const MAX_BYTES: usize = 1920 * 1080 * 3 / 2;
 
 pub(super) struct Pool {
+    sensor_rotation: u8,
     slots: Vec<Arc<Vec<u8>>>,
     discard: Vec<u8>,
+    transform: Option<blent_config::camera::transform::Transform>,
+    live: Option<Arc<crate::camera_live::Session>>,
     brightness: Option<blent_config::camera::brightness::AutoBrightness>,
 }
 impl Pool {
@@ -15,9 +18,19 @@ impl Pool {
         pool.brightness = Some(blent_config::camera::brightness::AutoBrightness::new(
             profile,
         )?);
+        pool.transform = Some(blent_config::camera::transform::Transform::new(profile)?);
+        pool.live = Some(crate::camera_live::Session::new(profile.clone()));
         Ok(pool)
     }
 
+    pub(super) fn orient(&mut self, rotation: u8) -> Result<()> {
+        ensure!(rotation <= 3, "Invalid camera sensor orientation");
+        self.sensor_rotation = rotation;
+        Ok(())
+    }
+    pub(super) fn attach(&mut self, live: Arc<crate::camera_live::Session>) {
+        self.live = Some(live);
+    }
     pub(super) fn configured(bytes: usize) -> Result<Self> {
         let slots = blent_config::retirement_limits::configured("BLENT_CAMERA_FRAME_SLOTS", 3, 16)?;
         Self::new(bytes, slots)
@@ -32,9 +45,12 @@ impl Pool {
             "Camera frame slots must be 2..16"
         );
         Ok(Self {
+            sensor_rotation: 0,
             slots: (0..slots).map(|_| Arc::new(vec![0; bytes])).collect(),
             discard: vec![0; bytes],
             brightness: None,
+            transform: None,
+            live: None,
         })
     }
     pub(super) async fn read(
@@ -44,8 +60,16 @@ impl Pool {
         for slot in &mut self.slots {
             if let Some(bytes) = Arc::get_mut(slot) {
                 input.read_exact(bytes).await?;
-                if let Some(brightness) = &mut self.brightness {
+                if let Some(live) = &self.live {
+                    let (revision, image) = live.snapshot();
+                    self.transform
+                        .as_mut()
+                        .unwrap()
+                        .apply(image.oriented(self.sensor_rotation)?, bytes)?;
+                    let brightness = self.brightness.as_mut().unwrap();
+                    brightness.update(image.shadows, image.strength)?;
                     brightness.apply(bytes)?;
+                    live.applied(revision);
                 }
                 return Ok(Some(slot.clone()));
             }

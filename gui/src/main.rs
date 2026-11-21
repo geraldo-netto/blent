@@ -2443,6 +2443,12 @@ mod tests {
         use std::{cell::RefCell, rc::Rc};
         struct Backend(Rc<RefCell<(CameraState, Vec<CameraProfile>)>>);
         impl CameraBackend for Backend {
+            fn adjust(
+                &self,
+                _: &blent_config::camera::CameraProfile,
+            ) -> blent_config::camera::AdjustmentResult {
+                Ok(Default::default())
+            }
             fn close(self: Box<Self>) -> blent_config::retirement::Fence {
                 self.stop();
                 blent_config::retirement::Fence::Complete
@@ -3527,6 +3533,12 @@ printf '%s' "$((existing + delta))" > "$count""#,
         use std::{cell::RefCell, rc::Rc};
         struct Backend(Rc<RefCell<CameraState>>);
         impl CameraBackend for Backend {
+            fn adjust(
+                &self,
+                _: &blent_config::camera::CameraProfile,
+            ) -> blent_config::camera::AdjustmentResult {
+                Ok(Default::default())
+            }
             fn close(self: Box<Self>) -> blent_config::retirement::Fence {
                 self.stop();
                 blent_config::retirement::Fence::Complete

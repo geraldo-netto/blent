@@ -8,6 +8,7 @@ pub mod audio_control;
 #[cfg(target_os = "linux")]
 pub mod camera;
 pub mod camera_control;
+mod camera_live;
 pub mod camera_registration;
 pub mod capture_contract;
 mod capture_retirement;

@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 pub mod adjustments;
 pub mod brightness;
+pub mod transform;
 pub use adjustments::ShadowMode;
 pub mod connection;
 mod preview;
@@ -98,12 +99,15 @@ impl CameraState {
     }
 }
 
+pub type AdjustmentResult = Result<adjustments::Status>;
+
 pub type BackendResult = Result<crate::media_start::Start>;
 
 pub trait CameraBackend {
     fn close(self: Box<Self>) -> crate::retirement::Fence;
     fn start(&self, options: CameraProfile) -> BackendResult;
     fn stop(&self);
+    fn adjust(&self, profile: &CameraProfile) -> Result<adjustments::Status>;
     fn state(&self) -> CameraState;
     fn preview(&self) -> Option<Arc<CameraPreview>>;
 }

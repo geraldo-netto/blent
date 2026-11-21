@@ -133,3 +133,35 @@ async fn t1450_disabled_adjustment_preserves_exact_bytes_and_rejects_invalid_pro
     })
     .is_err());
 }
+
+#[tokio::test]
+async fn t1467_live_shadow_and_mirror_updates_preserve_reader_and_pool() {
+    let mut profile = blent_config::camera::CameraProfile {
+        width: 160,
+        height: 120,
+        shadow_mode: blent_config::camera::ShadowMode::Off,
+        ..Default::default()
+    };
+    let live = crate::camera_live::Session::new(profile.clone());
+    let mut pool = Pool::for_profile(&profile).unwrap();
+    pool.attach(live.clone());
+    let mut source = vec![128; profile.frame_bytes().unwrap()];
+    source[..19200].fill(40);
+    source[159] = 200;
+    let retained = pool.read(&mut source.as_slice()).await.unwrap().unwrap();
+    let frozen = (*retained).clone();
+    profile.mirror = true;
+    profile.shadow_mode = blent_config::camera::ShadowMode::Manual;
+    assert!(live.update(&profile).unwrap().pending);
+    let updated = pool.read(&mut source.as_slice()).await.unwrap().unwrap();
+    assert_eq!(updated[0], 200);
+    assert!(updated[159] > 40);
+    assert!(!live.status().pending);
+    assert_eq!(*retained, frozen);
+    assert!(pool.orient(4).is_err());
+    pool.orient(2).unwrap();
+    drop(updated);
+    let rotated = pool.read(&mut source.as_slice()).await.unwrap().unwrap();
+    assert_eq!(rotated[19199], 200);
+    assert_eq!(pool.slots.len(), 3);
+}

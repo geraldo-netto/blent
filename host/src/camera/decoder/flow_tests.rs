@@ -36,9 +36,16 @@ async fn t1461_incomplete_decoder_pipes_fail_and_child_is_retired() {
         }
         let mut child = blent_config::commands::OwnedChild::spawn(&mut command).unwrap();
         let frames = tokio::sync::watch::channel(None).0;
-        let error = transfer(&mut client, &mut child, &CameraProfile::default(), &frames)
-            .await
-            .unwrap_err();
+        let error = transfer(
+            &mut client,
+            &mut child,
+            &CameraProfile::default(),
+            &frames,
+            None,
+            0,
+        )
+        .await
+        .unwrap_err();
         let retired = retire(child).await;
         assert!(retired.completion.is_complete());
         let pipe = if piped { "stdout" } else { "stdin" };

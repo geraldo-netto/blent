@@ -9,6 +9,12 @@ use std::sync::{Arc, Mutex};
 
 struct Camera(Arc<Mutex<Vec<CameraProfile>>>);
 impl CameraBackend for Camera {
+    fn adjust(
+        &self,
+        _: &blent_config::camera::CameraProfile,
+    ) -> blent_config::camera::AdjustmentResult {
+        Ok(Default::default())
+    }
     fn start(&self, options: CameraProfile) -> blent_config::camera::BackendResult {
         self.0.lock().unwrap().push(options);
         Ok(blent_config::media_start::Start::pending().0)

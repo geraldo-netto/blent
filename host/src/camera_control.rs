@@ -1,4 +1,5 @@
 //! T543 manual host ownership. Preferences never start capture by themselves.
+use crate::camera_live::Session;
 use crate::start_request::Request;
 use anyhow::Result;
 use blent_config::camera::{CameraBackend, CameraPreview, CameraProfile, CameraState as State};
@@ -22,6 +23,7 @@ pub struct Report {
     permit: Option<crate::report_scope::Permit>,
     original: Option<crate::report_scope::Permit>,
     native: Arc<Mutex<native::Tracker>>,
+    pub(crate) live: Option<Arc<Session>>,
 }
 impl Report {
     pub fn new(
@@ -34,6 +36,7 @@ impl Report {
             permit: None,
             original: None,
             native: Arc::new(Mutex::new(Default::default())),
+            live: None,
         }
     }
     /// Native callbacks receive only their original attempt's publication permit.
@@ -44,6 +47,7 @@ impl Report {
             permit: Some(permit),
             original: self.original.clone(),
             native: self.native.clone(),
+            live: self.live.clone(),
         }
     }
     fn original(&self, permit: crate::report_scope::Permit) -> Self {
@@ -130,7 +134,8 @@ impl Report {
 }
 
 pub struct Controller {
-    command: Option<watch::Sender<Option<Request<CameraProfile>>>>,
+    active: Mutex<Option<Arc<Session>>>,
+    command: Option<watch::Sender<Option<Request<Arc<Session>>>>>,
     state: watch::Receiver<State>,
     preview: watch::Receiver<Option<Arc<CameraPreview>>>,
     worker: Option<crate::control_workers::Worker>,
@@ -167,6 +172,7 @@ impl Controller {
             );
         })?;
         Ok(Self {
+            active: Mutex::new(None),
             command: Some(command),
             state,
             preview,
@@ -179,6 +185,9 @@ impl Controller {
         complete
     }
     fn retire(&mut self) {
+        if let Some(session) = self.active.get_mut().unwrap().take() {
+            session.close();
+        }
         drop(self.command.take());
         drop(self.worker.take());
     }
@@ -190,12 +199,27 @@ impl CameraBackend for Controller {
     }
     fn start(&self, options: CameraProfile) -> Result<blent_config::media_start::Start> {
         options.validate()?;
-        let (request, start) = Request::new(options);
+        let session = Session::new(options);
+        let (request, start) = Request::new(session.clone());
+        let mut active = self.active.lock().unwrap();
         self.command.as_ref().unwrap().send(Some(request))?;
+        if let Some(original) = active.replace(session) {
+            original.close();
+        }
         Ok(start)
     }
 
+    fn adjust(&self, profile: &CameraProfile) -> Result<blent_config::camera::adjustments::Status> {
+        let active = self.active.lock().unwrap();
+        active
+            .as_ref()
+            .ok_or_else(|| anyhow::anyhow!("Camera is not running"))?
+            .update(profile)
+    }
     fn stop(&self) {
+        if let Some(session) = self.active.lock().unwrap().take() {
+            session.close();
+        }
         let _ = self.command.as_ref().unwrap().send(None);
     }
 
@@ -214,7 +238,7 @@ impl Drop for Controller {
 }
 
 async fn supervise<F, Fut>(
-    mut commands: watch::Receiver<Option<Request<CameraProfile>>>,
+    mut commands: watch::Receiver<Option<Request<Arc<Session>>>>,
     status: Report,
     session: F,
 ) where
@@ -238,8 +262,8 @@ async fn supervise<F, Fut>(
 }
 
 async fn manage_session<F, Fut>(
-    request: Request<CameraProfile>,
-    commands: &mut watch::Receiver<Option<Request<CameraProfile>>>,
+    request: Request<Arc<Session>>,
+    commands: &mut watch::Receiver<Option<Request<Arc<Session>>>>,
     status: &Report,
     session: &F,
 ) -> bool
@@ -249,14 +273,17 @@ where
 {
     let (stop, stopped) = watch::channel(false);
     status.update(State::Starting);
-    let options = request.begin();
+    let live = request.begin();
+    let options = live.profile.clone();
     let scope = crate::report_scope::Owner::default();
     scope.begin();
-    let report = status.original(scope.permit().expect("new original camera scope"));
+    let mut report = status.original(scope.permit().expect("new original camera scope"));
+    report.live = Some(live.clone());
     let work = crate::control_outcome::run(|| session(options, stopped, report));
     tokio::pin!(work);
     tokio::select! {
         result = &mut work => {
+            live.close();
             scope.revoke();
             status.wait_native().await;
             status.update(match result {
@@ -267,6 +294,7 @@ where
             commands.changed().await.is_ok()
         }
         changed = commands.changed() => {
+            live.close();
             scope.revoke();
             status.update(State::Stopping);
             stop.send_replace(true);
@@ -284,7 +312,7 @@ where
 }
 
 /// Reject the latest queued command after failed cleanup; require a fresh action.
-fn reject_replacement(commands: &mut watch::Receiver<Option<Request<CameraProfile>>>) {
+fn reject_replacement(commands: &mut watch::Receiver<Option<Request<Arc<Session>>>>) {
     if let Some(request) = commands.borrow_and_update().as_ref() {
         request.reject();
     }
@@ -336,15 +364,15 @@ mod tests {
             "T543 preferences must not start capture"
         );
         command
-            .send(Some(Request::new(CameraProfile::default()).0))
+            .send(Some(Request::new(Session::new(CameraProfile::default())).0))
             .unwrap();
         state.wait_for(|s| *s == State::Streaming).await.unwrap();
         command
             .send(Some(
-                Request::new(CameraProfile {
+                Request::new(Session::new(CameraProfile {
                     lens: blent_config::camera::Lens::Rear,
                     ..Default::default()
-                })
+                }))
                 .0,
             ))
             .unwrap();
@@ -356,7 +384,7 @@ mod tests {
             ["start Front", "stop Front", "start Rear", "stop Rear"]
         );
         command
-            .send(Some(Request::new(CameraProfile::default()).0))
+            .send(Some(Request::new(Session::new(CameraProfile::default())).0))
             .unwrap();
         state.wait_for(|s| *s == State::Streaming).await.unwrap();
         drop(command);
@@ -373,7 +401,7 @@ mod tests {
             anyhow::bail!("missing webcam")
         }));
         command
-            .send(Some(Request::new(CameraProfile::default()).0))
+            .send(Some(Request::new(Session::new(CameraProfile::default())).0))
             .unwrap();
         state
             .wait_for(|s| matches!(s, State::Failed(_)))

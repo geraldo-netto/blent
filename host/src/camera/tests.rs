@@ -259,16 +259,12 @@ async fn t539_bridge_invitation_and_mapping_ownership() {
 #[test]
 fn t539_rotation_and_mirroring_are_bounded_filter_choices() {
     let mut profile = options();
-    for (rotation, prefix) in [
-        (0, "scale="),
-        (1, "transpose=clock,"),
-        (2, "hflip,vflip,"),
-        (3, "transpose=cclock,"),
-    ] {
-        assert!(decoder::filters(rotation, &profile.profile).starts_with(prefix));
+    for rotation in [0, 90, 180, 270] {
+        profile.rotation = rotation;
+        profile.mirror = true;
+        assert!(decoder::filters(&profile.profile).starts_with("scale="));
+        assert!(!decoder::filters(&profile.profile).contains("transpose"));
     }
-    profile.mirror = true;
-    assert!(decoder::filters(0, &profile.profile).starts_with("hflip,scale="));
     assert!(executable("blent-t539-missing-executable").is_err());
 }
 
@@ -565,19 +561,20 @@ fn t543_desktop_rotation_combines_sensor_orientation_before_mirroring() {
     let mut profile = options();
     for host in [0, 90, 180, 270] {
         profile.rotation = host;
+        profile.mirror = true;
         for sensor in 0..4 {
-            let expected = match (sensor + (host / 90) as u8) % 4 {
-                0 => "scale=",
-                1 => "transpose=clock,",
-                2 => "hflip,vflip,",
-                _ => "transpose=cclock,",
-            };
-            assert!(decoder::filters(sensor, &profile.profile).starts_with(expected));
+            let image = blent_config::camera::adjustments::Image::from_profile(&profile.profile)
+                .oriented(sensor)
+                .unwrap();
+            assert_eq!(image.rotation, (host + u16::from(sensor) * 90) % 360);
+            assert!(image.mirror);
         }
     }
-    profile.rotation = 180;
-    profile.mirror = true;
-    assert!(decoder::filters(0, &profile.profile).starts_with("hflip,vflip,hflip,"));
+    assert!(
+        blent_config::camera::adjustments::Image::from_profile(&profile.profile)
+            .oriented(4)
+            .is_err()
+    );
 }
 
 async fn transformed_test_frame(

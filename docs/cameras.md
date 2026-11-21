@@ -45,13 +45,16 @@ not face detection or sensor exposure control; it cannot recover missing detail
 and can make captured noise more visible. The bounded luma pass owns only scalar
 state and a 256-entry lookup table. The CLI controls are
 `blent cameras --shadow-mode auto --shadow-strength 40`.
-For now, **Start/Restart camera** applies the controls and **Save** persists them.
+**Shadow correction**, strength, mirror and rotation apply to the next processed
+frame of the current session; they do not reopen the camera, decoder or transport.
+**Save** persists preferences. Lens, dimensions, FPS, transport and background
+policy changes display **Restart required** and wait for **Restart camera**.
 
 The small live preview shows the selected webcam’s exported image, including
 rotation, mirroring and automatic brightness. It uses a thumbnail at up to five updates per second; it
 does not open a second camera. Stopped or stale previews clear rather than
 retaining the last camera image. Select **180°** when the tablet is upside down,
-then **Restart camera** to apply the change.
+the rotation applies live while preserving the exported webcam dimensions.
 
 The camera helper is embedded in the host GUI through a reusable host library.
 No separate helper command or display daemon is needed. Keep the host window
