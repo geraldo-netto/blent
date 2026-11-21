@@ -1,0 +1,29 @@
+{
+  "source_commit": "43d0af25",
+  "kind": "local Linux build; not a portable AppImage",
+  "native_execution": "CLI version only; no sharing restarted",
+  "tests": {
+    "common_library_passed": 490,
+    "gui_full_before_T1654_passed": 249,
+    "gui_T1654_focused_passed": 58,
+    "host_library_passed": 1318,
+    "host_library_opt_in_benchmarks_ignored": 3,
+    "android_full_before_T1520_passed": 2933,
+    "android_T1520_focused_passed": 44
+  },
+  "checks": [
+    "Android lintDebug",
+    "designated release APK signer and identity",
+    "all seven staged ELF dependency lists resolve locally"
+  ],
+  "sha256": {
+    "bin/blent": "75662c0a9965098b7ecfcd2cab3ba861db9ba8ba6cbb0380979758530f73da01",
+    "bin/blent-audio": "700b0935279705775f73b3e66f793a5ff810603efb79cd8edd3e65789163fdef",
+    "bin/blent-gui": "1775f5521c09a32949d6f27e94a04e547dba5052934347170fd36fd81954f590",
+    "bin/blent-usb-broker": "b73f310732d246397730d785472ebcc1d1b18d4f4254a65a358daa70ce923a91",
+    "bin/blent-usb-io": "59335d9a490c9d015064bfe3f53f8b5153bb0aca45bf55d758020aae37259aa6",
+    "bin/evdi_helper": "4089729bdc143ffdab1511a13a4d485270db4dd572e06308cbeb385bcc74e08e",
+    "bin/libevdi.so.1.15.0": "5ec8b7614074dd10dce5ba4b668203c70e77bf698da6614d839324955aead96a",
+    "blent.apk": "38eee36bdfe3238d7638c69f63349be1f6bb1a57cdd17d282d68398b382d96d9"
+  }
+}
