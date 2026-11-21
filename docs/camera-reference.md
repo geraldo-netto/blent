@@ -174,8 +174,8 @@ staging stage, not end-to-end camera latency.
 Camera connection defaults to ADB for existing profiles. In **Advanced camera
 settings**, choose **Direct USB** and paste the full **Tablet** fingerprint from
 **USB connection** controls. Selecting USB clears the camera's ADB serial; choosing
-ADB clears its USB peer. Apply saves only; Start/Restart applies the camera profile
-without restarting display. Invalid or unavailable targets fail before backend
+ADB clears its USB peer. Save remembers preferences; image adjustments apply live.
+Changing the connection requires Restart camera and does not restart display. Invalid or unavailable targets fail before backend
 creation. Direct USB remains labelled experimental, with physical acceptance
 scoped to the API36 RugKing Pad 2 Pro described below. T932 implements
 Android's original-consent/isolated-capture composition for direct USB. T973 exposes
