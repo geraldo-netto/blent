@@ -37,6 +37,7 @@ rcgen = { version = "0.14.10", optional = true, default-features = false, featur
 blent-config = { path = "../common" }
 tokio = { version = "1", features = ["full"] }
 anyhow = "1"
+h264-reader = "0.9"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
 clap = { version = "4", features = ["derive"] }

@@ -20,8 +20,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1461 | open | low | small | Exported color metadata still mislabels ordinary SDR primaries. `decoder.rs::filters` converts YCbCr coefficients/range only, while `output_device/abi.rs::Format::new` unconditionally advertises SMPTE 170M primaries/Rec.709 transfer. Fully tagged BT.709 synthetic input through the exact production filter retains BT.709 primaries and yields YUV [113,165,95]; full SMPTE 170M conversion yields [112,166,92]. Kernel V4L2 documentation specifies different SMPTE 170M versus BT.709 primary chromaticities. The camera reference disclaims HDR/calibration, but that does not reconcile this ordinary SDR metadata contradiction. Normalize the supported SDR primaries/transfer consistently with native labels and preview, or preserve accurate source colorimetry through an explicit contract; define handling of missing metadata. Add permanent fully tagged mixed-primary and transfer fixtures before fixing; current T1456 tests set matrix/range but not source primaries/transfer. Evidence: `docs/reviews/artifacts/2026-11-21-followup-review/color.json`; no physical camera color claim. |
-| T1452 | blocked | low | small | Review T1450 automatic brightness and T1456 normalized camera color with the physical tablet in the owner’s actual lighting after the call, when restarting the GUI/camera is permitted. The owner explicitly prohibits touching running instances during the call, so changes remain uninstalled. Synthetic H.264 output/preview, bounded central metering, smoothing, frame ownership and CLI/GUI/save tests pass; they do not establish subjective face brightness, noise or physical camera quality. Completion: start the updated GUI, enable the option, restart only the intended camera and confirm exported-call image quality; adjust the bounded policy if needed. |
+| T1452 | blocked | low | small | Review T1450 automatic brightness and T1461 normalized camera color with the physical tablet in the owner’s actual lighting. Owner authorized reinstall/reload on 2026-11-21; that interruption restriction is lifted. Installation and native smoke checks are underway; subjective lighting acceptance remains separate. Synthetic H.264 output/preview, bounded central metering, smoothing, frame ownership and CLI/GUI/save tests pass; they do not establish subjective face brightness, noise or physical camera quality. Completion: start the updated GUI, enable the option, restart only the intended camera and confirm exported-call image quality; adjust the bounded policy if needed. |
 
 ## Desktop interface
 
@@ -50,6 +49,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
+| T1463 | open | low | small | Qualify the upstream license-notice gap in newly introduced transitive `hex-slice` 0.1.4 and `mp4ra-rust` 0.6.0 before publishing a distributable release. Their checksum-locked crates declare MIT and MIT/Apache-2.0 respectively and name their authors in `Cargo.toml.orig`, but contain no standalone license text; original manifests/READMEs are retained in `licenses/camera-color/`. Obtain an authoritative matching upstream notice or select a dependency without this gap, then add exact source/hash provenance to the AppImage notice collector and verify distribution. Local build/install is not release-notice qualification; no fabricated upstream license or copyright text. This external package evidence task is a cohesive small outcome; no publication is requested. |
 
 ## Engineering verification
 

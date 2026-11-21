@@ -1,0 +1,179 @@
+{
+  "scope": "New locked dependencies for H.264 camera color normalization; unmodified upstream crates",
+  "packages": [
+    {
+      "name": "bitstream-io",
+      "version": "4.10.0",
+      "crate_sha256": "7eff00be299a18769011411c9def0d827e8f2d7bf0c3dbf53633147a8867fd1f",
+      "declared_license": "MIT/Apache-2.0",
+      "authors": [
+        "Brian Langenberger <bjl@usa.net>"
+      ],
+      "notices": [
+        {
+          "path": "bitstream-io-4.10.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "bitstream-io-4.10.0/LICENSE-MIT",
+          "sha256": "7a65c85c057a5538fdd8215b7aa2f3e0353f3b07c3e00bb409070b2b81375895",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ],
+      "license_text_present": true
+    },
+    {
+      "name": "four-cc",
+      "version": "0.4.0",
+      "crate_sha256": "795cbfc56d419a7ce47ccbb7504dd9a5b7c484c083c356e797de08bd988d9629",
+      "declared_license": "MIT/Apache-2.0",
+      "authors": [
+        "David Holroyd <dave@badgers-in-foil.co.uk>"
+      ],
+      "notices": [
+        {
+          "path": "four-cc-0.4.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "four-cc-0.4.0/LICENSE-MIT",
+          "sha256": "dea4b0f988296a5d89651e94c7e367a8815960498fb5678de839061702b056e6",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ],
+      "license_text_present": true
+    },
+    {
+      "name": "h264-reader",
+      "version": "0.9.0",
+      "crate_sha256": "131aec76030da5ef1abb6cc2690e6a003d99ab1a4a75abb1c30974c76d900e79",
+      "declared_license": "MIT/Apache-2.0",
+      "authors": [
+        "David Holroyd <dave@badgers-in-foil.co.uk>"
+      ],
+      "notices": [
+        {
+          "path": "h264-reader-0.9.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "h264-reader-0.9.0/LICENSE-MIT",
+          "sha256": "4e3bb87ac051c5742d1c0c9ceffb71a9ec81a6ec006c79d236d4b6733111b80d",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ],
+      "license_text_present": true
+    },
+    {
+      "name": "hex-slice",
+      "version": "0.1.4",
+      "crate_sha256": "5491a308e0214554f07a81d8944abe45f552871c12e3c3c6e7e5d354039a6c4c",
+      "declared_license": "MIT",
+      "authors": [
+        "Ceri Storey <cez@necrofish.org.uk>"
+      ],
+      "notices": [
+        {
+          "path": "hex-slice-0.1.4/Cargo.toml.orig",
+          "sha256": "d09714ae4e444d26c5d277a9514db318891057d7aac36e077f0c4511d3c1a5af",
+          "source": "cached crate Cargo.toml.orig"
+        },
+        {
+          "path": "hex-slice-0.1.4/README.md",
+          "sha256": "26f78dfdfca3ff69fbccb90e2fa38ad0ee9e3fbc175a472d16818363962ac3ca",
+          "source": "cached crate README.md"
+        }
+      ],
+      "license_text_present": false
+    },
+    {
+      "name": "mp4ra-rust",
+      "version": "0.6.0",
+      "crate_sha256": "50e73e22289737589d1575517eefead53c7bbd7e11546437f97b3859694c1a08",
+      "declared_license": "MIT/Apache-2.0",
+      "authors": [
+        "David Holroyd <dave@badgers-in-foil.co.uk>"
+      ],
+      "notices": [
+        {
+          "path": "mp4ra-rust-0.6.0/Cargo.toml.orig",
+          "sha256": "b08c954c6dd0f3d078ccfd90f887cefe50169891a8205fdc3ab5dda555401f6d",
+          "source": "cached crate Cargo.toml.orig"
+        },
+        {
+          "path": "mp4ra-rust-0.6.0/README.md",
+          "sha256": "8327243d3fb14ddc4ee2d7c6122b027cd00f48b4f538f43ec7bae001fca76841",
+          "source": "cached crate README.md"
+        }
+      ],
+      "license_text_present": false
+    },
+    {
+      "name": "mpeg4-audio-const",
+      "version": "0.3.0",
+      "crate_sha256": "3720a0d1569be60cd7b0ff00d31c8e1397f6928957a5d9ad0724592f3e78f24c",
+      "declared_license": "MIT/Apache-2.0",
+      "authors": [
+        "David Holroyd <dave@badgers-in-foil.co.uk>"
+      ],
+      "notices": [
+        {
+          "path": "mpeg4-audio-const-0.3.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "mpeg4-audio-const-0.3.0/LICENSE-MIT",
+          "sha256": "dea4b0f988296a5d89651e94c7e367a8815960498fb5678de839061702b056e6",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ],
+      "license_text_present": true
+    },
+    {
+      "name": "no_std_io2",
+      "version": "0.9.4",
+      "crate_sha256": "418abd1b6d34fbf6cae440dc874771b0525a604428704c76e48b29a5e67b8003",
+      "declared_license": "Apache-2.0 OR MIT",
+      "authors": [],
+      "notices": [
+        {
+          "path": "no_std_io2-0.9.4/LICENSE-APACHE",
+          "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "no_std_io2-0.9.4/LICENSE-MIT",
+          "sha256": "f21c3bfdc47749b5912eb55f0661b2b8fd9696b3e09e7d97a1fc78fb52c3eb1b",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ],
+      "license_text_present": true
+    },
+    {
+      "name": "rfc6381-codec",
+      "version": "0.3.0",
+      "crate_sha256": "b15c8fb4f251c208093b36c763c5b455303c9297033b1c3e4d7e92c6aba3c579",
+      "declared_license": "MIT/Apache-2.0",
+      "authors": [
+        "David Holroyd <dave@badgers-in-foil.co.uk>"
+      ],
+      "notices": [
+        {
+          "path": "rfc6381-codec-0.3.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "rfc6381-codec-0.3.0/LICENSE-MIT",
+          "sha256": "4e3bb87ac051c5742d1c0c9ceffb71a9ec81a6ec006c79d236d4b6733111b80d",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ],
+      "license_text_present": true
+    }
+  ]
+}

@@ -5,6 +5,8 @@ use std::{path::Path, process::Stdio, time::Duration};
 use tokio::{io::AsyncWriteExt, net::TcpStream, process::Command};
 
 #[cfg(test)]
+mod flow_tests;
+#[cfg(test)]
 mod retirement_tests;
 
 pub fn filters(rotation: u8, options: &CameraProfile) -> String {
@@ -16,7 +18,7 @@ pub fn filters(rotation: u8, options: &CameraProfile) -> String {
         _ => "",
     };
     let mirror = if options.mirror { "hflip," } else { "" };
-    format!("{turn}{mirror}scale={}:{}:force_original_aspect_ratio=decrease:in_color_matrix=auto:out_color_matrix=bt601:in_range=auto:out_range=tv,pad={}:{}:(ow-iw)/2:(oh-ih)/2,format=yuv420p",
+    format!("{turn}{mirror}scale={}:{}:force_original_aspect_ratio=decrease,colorspace=all=smpte170m:trc=bt709:range=tv:format=yuv420p,pad={}:{}:(ow-iw)/2:(oh-ih)/2,format=yuv420p",
         options.width, options.height, options.width, options.height)
 }
 
@@ -117,40 +119,47 @@ async fn transfer(
         .context("camera decoder stdout missing")?;
     let mut pool = super::frame_pool::Pool::for_profile(options)?;
     socket.write_all(b"OK").await?;
-    let receive = async {
-        let mut sequence = 0u64;
-        loop {
-            let packet =
-                tokio::time::timeout(Duration::from_secs(5), protocol::packet(socket)).await??;
-            tokio::time::timeout(
-                Duration::from_millis(options.freshness_ms.into()),
-                input.write_all(&packet),
-            )
+    let receive = receive_packets(
+        socket,
+        &mut input,
+        Duration::from_millis(options.freshness_ms.into()),
+    );
+    let decode = decode_frames(&mut pool, &mut output, frames);
+    tokio::select! { result = receive => result, result = decode => result }
+}
+
+async fn receive_packets(
+    socket: &mut TcpStream,
+    input: &mut tokio::process::ChildStdin,
+    budget: Duration,
+) -> Result<()> {
+    let mut sequence = 0u64;
+    loop {
+        let packet =
+            tokio::time::timeout(Duration::from_secs(5), protocol::packet(socket)).await??;
+        let packet = super::source_color::normalize(&packet)?;
+        tokio::time::timeout(budget, input.write_all(&packet))
             .await
             .context("camera decoder input stalled")??;
-            sequence = sequence
-                .checked_add(1)
-                .context("camera sequence exhausted")?;
-            tokio::time::timeout(
-                Duration::from_millis(options.freshness_ms.into()),
-                socket.write_u64(sequence),
-            )
+        sequence = sequence
+            .checked_add(1)
+            .context("camera sequence exhausted")?;
+        tokio::time::timeout(budget, socket.write_u64(sequence))
             .await
             .context("camera feedback stalled")??;
+    }
+}
+
+async fn decode_frames(
+    pool: &mut super::frame_pool::Pool,
+    output: &mut (impl tokio::io::AsyncRead + Unpin),
+    frames: &Frames,
+) -> Result<()> {
+    loop {
+        if let Some(bytes) = pool.read(output).await? {
+            frames.send_replace(Some(super::outputs::Frame::new(bytes)));
         }
-        #[allow(unreachable_code)]
-        Ok::<(), anyhow::Error>(())
-    };
-    let decode = async {
-        loop {
-            if let Some(bytes) = pool.read(&mut output).await? {
-                frames.send_replace(Some(super::outputs::Frame::new(bytes)));
-            }
-        }
-        #[allow(unreachable_code)]
-        Ok::<(), anyhow::Error>(())
-    };
-    tokio::select! { result = receive => result, result = decode => result }
+    }
 }
 
 pub(super) async fn retire(

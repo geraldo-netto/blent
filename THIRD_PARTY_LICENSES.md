@@ -15,6 +15,13 @@ unchanged. Packaging a component does not establish device support.
   distribution collector. Linux bundles carry both `blent-usb-broker` and
   `blent-usb-io` as executable siblings. Runtime/device acceptance remains T846;
   packaging does not qualify physical pairing/media or API 27/28 providers.
+- Camera color normalization uses unmodified `h264-reader` and its locked
+  dependencies to read/write bounded SPS metadata. Exact versions, checksums and
+  upstream notices are in [the camera-color inventory](licenses/camera-color/inventory.json).
+  `hex-slice` 0.1.4 and `mp4ra-rust` 0.6.0 declare MIT and MIT/Apache-2.0
+  respectively but publish no standalone license text; their original manifests
+  and READMEs are retained. Full release-notice
+  qualification remains tracked in T1463.
 - Android APKs carry project notices, the Apache-2.0 runtime dependency license,
   the MPL-2.0 public-suffix data license and its upstream source notice in
   `assets/licenses/`. The reviewed dependency coordinates and artifact hashes

@@ -1,0 +1,267 @@
+{
+  "finding": "T1461",
+  "coverage": [
+    {
+      "file": "host/src/camera/source_color.rs",
+      "name": "sps",
+      "line": 9,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/source_color.rs",
+      "name": "defaults",
+      "line": 25,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/source_color.rs",
+      "name": "unspecified",
+      "line": 45,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/source_color.rs",
+      "name": "append",
+      "line": 51,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/source_color.rs",
+      "name": "normalize",
+      "line": 61,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "filters",
+      "line": 12,
+      "language": "rust",
+      "covered": 10,
+      "total": 12,
+      "percent": 83.33333333333333,
+      "passes": true,
+      "missing": [
+        16,
+        19
+      ]
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "transfer",
+      "line": 106,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "receive_packets",
+      "line": 131,
+      "language": "rust",
+      "covered": 16,
+      "total": 20,
+      "percent": 80.0,
+      "passes": true,
+      "missing": [
+        132,
+        133,
+        137,
+        138
+      ]
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "decode_frames",
+      "line": 153,
+      "language": "rust",
+      "covered": 9,
+      "total": 11,
+      "percent": 81.81818181818181,
+      "passes": true,
+      "missing": [
+        158,
+        162
+      ]
+    }
+  ],
+  "complexity": [
+    [
+      "host/src/camera/source_color.rs",
+      9,
+      "sps",
+      3
+    ],
+    [
+      "host/src/camera/source_color.rs",
+      25,
+      "defaults",
+      2
+    ],
+    [
+      "host/src/camera/source_color.rs",
+      45,
+      "unspecified",
+      2
+    ],
+    [
+      "host/src/camera/source_color.rs",
+      51,
+      "append",
+      1
+    ],
+    [
+      "host/src/camera/source_color.rs",
+      61,
+      "normalize",
+      7
+    ],
+    [
+      "host/src/camera/source_color/tests.rs",
+      4,
+      "parse",
+      1
+    ],
+    [
+      "host/src/camera/source_color/tests.rs",
+      9,
+      "t1461_unspecified_fields_get_defaults_and_signalled_fields_survive",
+      3
+    ],
+    [
+      "host/src/camera/source_color/tests.rs",
+      51,
+      "t1461_packet_rewrite_preserves_other_nals_and_is_idempotent",
+      1
+    ],
+    [
+      "host/src/camera/source_color/tests.rs",
+      77,
+      "t1461_malformed_and_oversized_metadata_stays_bounded",
+      4
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      12,
+      "filters",
+      6
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      25,
+      "command",
+      1
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      73,
+      "connection",
+      3
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      106,
+      "transfer",
+      1
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      131,
+      "receive_packets",
+      2
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      153,
+      "decode_frames",
+      3
+    ],
+    [
+      "host/src/camera/decoder.rs",
+      165,
+      "retire",
+      2
+    ],
+    [
+      "host/src/camera/decoder/flow_tests.rs",
+      4,
+      "t1461_decoder_discards_exhausted_frames_and_releases_borrows_at_eof",
+      1
+    ],
+    [
+      "host/src/camera/decoder/flow_tests.rs",
+      26,
+      "t1461_incomplete_decoder_pipes_fail_and_child_is_retired",
+      4
+    ],
+    [
+      "host/src/camera/tests/color.rs",
+      3,
+      "encoded_color",
+      3
+    ],
+    [
+      "host/src/camera/tests/color.rs",
+      63,
+      "check_color",
+      5
+    ],
+    [
+      "host/src/camera/tests/color.rs",
+      94,
+      "t1456_tagged_matrices_and_ranges_share_exported_color_contract",
+      2
+    ],
+    [
+      "host/src/camera/tests/color.rs",
+      108,
+      "t1461_fully_tagged_bt709_primaries_are_converted_to_export_primaries",
+      2
+    ],
+    [
+      "host/src/camera/tests/color.rs",
+      123,
+      "t1461_sdr_transfer_and_mixed_primaries_are_normalized",
+      3
+    ]
+  ],
+  "tool": "scripts/complexity/check.py (Rust syn); cargo-llvm-cov 0.8.7",
+  "sources": {
+    "host/src/camera/source_color.rs": "cab6ffa5956d064de8762f0fa567e47140b7d069e057c13bf49f875dc475b61e",
+    "host/src/camera/source_color/tests.rs": "cc733e26ec5622a47bb43ff40023adb27176fef2bba4e7635810f4af6a9ebe73",
+    "host/src/camera/decoder.rs": "b1e89783f76d767837489f9ab93f40542350468ab9e64a9f17180dd9b8b17a21",
+    "host/src/camera/decoder/flow_tests.rs": "cb2f223377e26f62885bb9cdf95254b73c62dbeaba2451a61a7b703d524c4263",
+    "host/src/camera/tests/color.rs": "d634fcf1ad927eeda213bdceabc43963a065232934fcd7dc26ef617c9ee594da"
+  },
+  "tests": "116 host camera tests; 6 color tests also passed against bundled FFmpeg 6.1.6. Permanent fully tagged regression fails before fix. No physical color-calibration claim.",
+  "ownership": "Packet normalization is stateless: borrowed input <=2 MiB, optional owned output <=2 MiB, single SPS scratch/serialized output <=4096 bytes each. The transfer future owns temporaries through write completion or cancellation. Existing bounded frame pool, immutable Arc borrows and native child retirement fence remain authoritative; exhaustion drops incoming frames without modifying borrowed storage. Truncation/single-bit mutation/boundary, retained-frame and missing-pipe regressions pass. Parser internal bounded SPS fields were inspected. No unrestricted leak-freedom claim.",
+  "fixture": "camera-color-sps.h264 contains only a synthetic SPS extracted from an FFmpeg-generated solid-color H.264 frame; no camera or personal imagery.",
+  "release_notice_gap": "T1463 retains missing standalone upstream notices for hex-slice and mp4ra-rust; local install is not publication qualification."
+}

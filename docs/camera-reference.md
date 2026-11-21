@@ -9,8 +9,9 @@ completion; a Stop request or timeout is not that completion.
 
 Decoded camera frames use planar 8-bit Y, Cb, Cr (YUV420), the BT.601
 Y′CbCr matrix and limited range: nominal Y 16–235 and Cb/Cr 16–240,
-with neutral chroma 128. The decoder normalizes the input's signalled matrix
-and range before publishing pixels. Preview conversion and automatic brightness
+with neutral chroma 128, SMPTE 170M primaries and the Rec.709 transfer function.
+The decoder converts the input's signalled SDR primaries, transfer, matrix and
+range before publishing pixels. Preview conversion and automatic brightness
 consume this same normalized buffer. Frame dimensions and allocation bounds
 remain those of the selected camera profile.
 
@@ -20,12 +21,20 @@ extended-pixel-format marker. It rejects a driver that changes these fields,
 before admitting frame writes. Black frames use Y=16, Cb=Cr=128.
 
 This SDR encoding contract does not establish calibrated sensor colorimetry or
-HDR/wide-gamut conversion. Untagged input uses FFmpeg's input autodetection;
-incorrect or absent source metadata cannot establish the original camera's
-colorimetry. Physical image quality remains device-specific.
+HDR tone mapping. Missing H.264 metadata defaults to SMPTE 170M primaries,
+Rec.709 transfer, BT.601 matrix and limited range; each signalled field takes
+precedence over its default. Unsupported transfer characteristics fail decoding.
+The host fills only absent/unspecified SPS fields before decoding, retaining
+signalled values and other parameter-set fields. Each packet carries complete
+Annex-B NAL units, as supplied by Android's encoder. An SPS is capped at 4 KiB;
+normalized packets retain the 2 MiB packet limit. Packets without SPS borrow their
+existing storage; rewriting admits at most one extra packet buffer and a 4 KiB
+scratch buffer, one serialized SPS up to 4 KiB, and bounded parsed parameter-set
+storage. These are released after decoder-input acceptance or failure.
+Incorrect or absent metadata cannot establish the original camera's colorimetry. Physical image quality remains device-specific.
 
 The adapter follows the [V4L2 pixel-format contract](https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/pixfmt-v4l2.html);
-normalization uses the [FFmpeg scale filter](https://ffmpeg.org/ffmpeg-filters.html#scale-1).
+normalization uses the [FFmpeg colorspace filter](https://ffmpeg.org/ffmpeg-filters.html#colorspace).
 
 ## Pipeline and wire format
 

@@ -15,6 +15,7 @@ pub mod probe;
 pub(crate) mod protocol;
 #[cfg(test)]
 mod retirement_tests;
+mod source_color;
 #[cfg(test)]
 mod status_tests;
 #[cfg(test)]
