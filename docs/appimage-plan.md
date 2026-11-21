@@ -241,3 +241,8 @@ python3 sources/blent-runtime-build/runtime_build.py \
 Use a fresh workspace. Build tools are GCC, Make, Autoconf, Automake, Libtool,
 Meson, Ninja, pkg-config, patch, Python and mksquashfs. They are packaging tools,
 not new requirements for an installed Blent application.
+
+T1630 also qualifies explicit `--appimage-extract-and-run` and environment-only
+`APPIMAGE_EXTRACT_AND_RUN` invocation against ordinary and bounds-instrumented
+runtime builds. The instrumented executable is a packaging test artifact; the
+shipped runtime reserves the argument terminator without sanitizer dependencies.

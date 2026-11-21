@@ -1,0 +1,55 @@
+{
+  "issue": "T1630",
+  "red": "Bounds-instrumented actual runtime passes explicit flag but traps SIGILL before AppRun readiness in environment-only mode; runtime returns 127.",
+  "green": "Same permanent fixture passes both modes in ordinary and bounds-instrumented native runtimes after reserving argc+1 pointers.",
+  "functions": [
+    {
+      "name": "compile_runtime",
+      "covered": 9,
+      "executable": 9
+    },
+    {
+      "name": "compile_variant",
+      "covered": 2,
+      "executable": 2
+    },
+    {
+      "name": "build",
+      "covered": 15,
+      "executable": 15
+    }
+  ],
+  "complexity": [
+    "packaging/appimage/runtime_build.py:12\tunpack\t3",
+    "packaging/appimage/runtime_build.py:23\trun\t1",
+    "packaging/appimage/runtime_build.py:28\tmake_install\t1",
+    "packaging/appimage/runtime_build.py:33\ttoolchain\t1",
+    "packaging/appimage/runtime_build.py:43\tcompression\t1",
+    "packaging/appimage/runtime_build.py:55\tfuse\t1",
+    "packaging/appimage/runtime_build.py:66\tsquash\t2",
+    "packaging/appimage/runtime_build.py:79\tcompile_runtime\t3",
+    "packaging/appimage/runtime_build.py:92\tcompile_variant\t1",
+    "packaging/appimage/runtime_build.py:101\tbundle_depth\t4",
+    "packaging/appimage/runtime_build.py:109\trecord\t3",
+    "packaging/appimage/runtime_build.py:122\tbuild\t3",
+    "packaging/appimage/runtime_build.py:140\targuments\t1",
+    "packaging/appimage/runtime/verify.py:14\tbuild_image\t1",
+    "packaging/appimage/runtime/verify.py:35\tready\t5",
+    "packaging/appimage/runtime/verify.py:46\tinvocation\t2",
+    "packaging/appimage/runtime/verify.py:51\tcheck_sibling\t1",
+    "packaging/appimage/runtime/verify.py:61\tcheck_signal\t1",
+    "packaging/appimage/runtime/verify.py:68\tretire\t2",
+    "packaging/appimage/runtime/verify.py:85\tverify\t2",
+    "scripts/tests/test_appimage_runtime.py:18\tsetUp\t1",
+    "scripts/tests/test_appimage_runtime.py:23\ttest_t1622_native_lifecycle_and_failures\t1",
+    "scripts/tests/test_appimage_runtime.py:30\ttest_t1622_depth_admission\t2",
+    "scripts/tests/test_appimage_runtime.py:41\ttest_t1622_pins_before_unpacking\t1",
+    "scripts/tests/test_appimage_runtime.py:58\ttest_t1622_recipe_commands_and_failure_propagation\t1",
+    "scripts/tests/test_appimage_runtime.py:78\ttest_t1622_mandatory_native_gate_and_source_record\t2",
+    "scripts/tests/test_appimage_runtime.py:95\ttest_t1622_recipe_arguments\t1",
+    "scripts/tests/test_appimage_runtime.py:101\ttest_t1622_corresponding_recipe_and_digest\t1",
+    "28 functions; 0 exceed cyclomatic complexity 9"
+  ],
+  "scope": "Blent recipe functions measured; upstream runtime dependency validated through native entry fixture. Instrumentation is GCC 13.3.0 bounds sanitizer with trap-on-error, linked against pinned musl.",
+  "tests": "Seven recipe/native unit cases pass; production recipe applies both patches to a freshly extracted pinned source and builds/qualifies both binaries."
+}

@@ -1,0 +1,5 @@
+--- a/src/runtime/runtime.c
++++ b/src/runtime/runtime.c
+@@ -1561 +1561 @@
+-            char* new_argv[argc];
++            char* new_argv[argc + 1];

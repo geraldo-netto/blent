@@ -4,6 +4,7 @@ import ctypes
 import os
 from pathlib import Path
 import signal
+import resource
 import subprocess
 import sys
 import tempfile
@@ -35,16 +36,21 @@ def ready(child, record):
     end = time.monotonic() + 5
     while not record.is_file() or record.stat().st_size == 0:
         if child.poll() is not None:
-            raise AssertionError('runtime exited before AppRun readiness')
+            raise AssertionError(f'runtime exited before AppRun readiness: {child.returncode}')
         if time.monotonic() >= end:
             raise AssertionError('AppRun readiness protocol expired')
         time.sleep(0.01)
     return Path(record.read_text().strip())
 
 
+def invocation(image, env, argument):
+    flags = [] if 'APPIMAGE_EXTRACT_AND_RUN' in env else ['--appimage-extract-and-run']
+    return [str(image), *flags, argument]
+
+
 def check_sibling(image, env, original):
     record = Path(env['BLENT_PROBE_ROOT']) / 'sibling'
-    subprocess.run([str(image), '--appimage-extract-and-run', 'probe'],
+    subprocess.run(invocation(image, env, 'probe'),
                    env=dict(env, BLENT_APPDIR_RECORD=str(record)), check=True)
     sibling = Path(record.read_text().strip())
     assert (original / 'bundled-tool').is_file(), 'T1622 sibling deleted the live bundled tool'
@@ -76,7 +82,8 @@ def retire(child, root):
                 break
 
 
-def verify(runtime):
+def verify(runtime, environment=False):
+    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     assert ctypes.CDLL(None, use_errno=True).prctl(36, 1, 0, 0, 0) == 0
     with tempfile.TemporaryDirectory(prefix='blent-t1622-runtime-') as directory:
         root = Path(directory)
@@ -86,8 +93,10 @@ def verify(runtime):
         env = dict(os.environ, TMPDIR=str(temporary), BLENT_PROBE_ROOT=str(root),
                    BLENT_APPDIR_RECORD=str(root / 'holder'))
         env.pop('APPIMAGE_EXTRACT_AND_RUN', None)
+        if environment:
+            env['APPIMAGE_EXTRACT_AND_RUN'] = '1'
         env.pop('NO_CLEANUP', None)
-        child = subprocess.Popen([str(image), '--appimage-extract-and-run', 'hold'],
+        child = subprocess.Popen(invocation(image, env, 'hold'),
                                  env=env, start_new_session=True)
         try:
             original = ready(child, root / 'holder')
@@ -102,3 +111,4 @@ def verify(runtime):
 
 if __name__ == '__main__':
     verify(Path(sys.argv[1]).resolve())
+    verify(Path(sys.argv[1]).resolve(), environment=True)

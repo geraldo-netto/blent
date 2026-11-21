@@ -69,6 +69,8 @@ class RuntimeTest(unittest.TestCase):
             self.assertIn(['make', '-j2'], commands)
             self.assertIn(['ninja', '-C', 'build', 'install'], commands)
             self.assertIn('extraction.c', commands[-1])
+            self.assertIn('-fsanitize=bounds', commands[-1])
+            self.assertIn('-fsanitize-undefined-trap-on-error', commands[-1])
         with patch.object(runtime_build.subprocess, 'run', side_effect=subprocess.CalledProcessError(7, 'fixture')):
             with self.assertRaises(subprocess.CalledProcessError):
                 runtime_build.run(['fixture'], self.root, env)
@@ -82,7 +84,8 @@ class RuntimeTest(unittest.TestCase):
             binary = self.root / 'runtime'
             mocks[5].return_value = binary
             self.assertEqual(runtime_build.build(self.root, self.root / 'build'), binary)
-            self.assertEqual(mocks[6].call_args.args[0][-1], binary)
+            self.assertEqual([call.args[0][-1] for call in mocks[6].call_args_list],
+                             [binary, binary.with_name('runtime-bounds')])
             self.assertTrue(str(mocks[6].call_args.args[0][1]).endswith('runtime/verify.py'))
             mocks[7].assert_called_once_with((self.root / 'build').resolve(), binary, dict(os.environ))
         for jobs in [0, 129]:

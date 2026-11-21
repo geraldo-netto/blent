@@ -78,18 +78,24 @@ def squash(workspace, env, jobs):
 
 def compile_runtime(workspace, runtime, env):
     adapter = Path(__file__).with_name('runtime')
-    run(['patch', '-p1', '-i', adapter / 'lifecycle.patch'], runtime, env)
+    for name in ('lifecycle.patch', 'arguments.patch'):
+        run(['patch', '-p1', '-i', adapter / name], runtime, env)
     source = runtime / 'src/runtime'
     for name in ('extraction.c', 'extraction.h'):
         shutil.copyfile(adapter / name, source / name)
-    prefix = workspace / 'sysroot'
-    flags = ['-std=gnu99', '-Os', '-D_FILE_OFFSET_BITS=64', '-DGIT_COMMIT="20251108-blent-t1622"',
+    compile_variant(workspace / 'sysroot', source, env, 'runtime', [])
+    compile_variant(workspace / 'sysroot', source, env, 'runtime-bounds',
+                    ['-fsanitize=bounds', '-fsanitize-undefined-trap-on-error'])
+    return source / 'runtime'
+
+
+def compile_variant(prefix, source, env, output, instrumentation):
+    flags = ['-std=gnu99', '-Os', '-D_FILE_OFFSET_BITS=64', '-DGIT_COMMIT="20251108-blent"',
              '-T', 'data_sections.ld', '-ffunction-sections', '-fdata-sections', '-Wl,--gc-sections',
              '-static', '-Wall', '-static-pie', f'-I{prefix}/include/squashfuse',
              f'-I{prefix}/include/fuse3', f'-L{prefix}/lib']
-    run([env['CC'], *flags, 'runtime.c', 'extraction.c', '-lsquashfuse', '-lsquashfuse_ll',
-         '-lzstd', '-lz', '-lfuse3', '-o', 'runtime'], source, env)
-    return source / 'runtime'
+    run([env['CC'], *flags, *instrumentation, 'runtime.c', 'extraction.c', '-lsquashfuse', '-lsquashfuse_ll',
+         '-lzstd', '-lz', '-lfuse3', '-o', output], source, env)
 
 
 def bundle_depth(appdir):
@@ -125,7 +131,8 @@ def build(sources, workspace, jobs=2):
     squash(workspace, env, jobs)
     binary = compile_runtime(workspace, runtime, env)
     fixture = Path(__file__).with_name('runtime') / 'verify.py'
-    run(['python3', fixture, binary], workspace, env)
+    for candidate in (binary, binary.with_name('runtime-bounds')):
+        run(['python3', fixture, candidate], workspace, env)
     record(workspace, binary, env)
     return binary
 
