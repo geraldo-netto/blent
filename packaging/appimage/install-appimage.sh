@@ -11,7 +11,17 @@ absolute_base() {
 DATA_BASE=$(absolute_base "${XDG_DATA_HOME:-}" "$HOME/.local/share")
 CONFIG_BASE=$(absolute_base "${XDG_CONFIG_HOME:-}" "$HOME/.config")
 DEST="$DATA_BASE/blent/appimage"
-TOOLS="$APPDIR/usr/share/blent"
+
+configure_application_directory() {
+    local entry directory
+    entry=$(readlink -f -- "${BASH_SOURCE[0]}") || return
+    directory=$(readlink -f -- "${entry%/*}/../../..") || return
+    if [[ $(readlink -f -- "${APPDIR:-}" 2>/dev/null || :) != "$directory" ]]; then
+        unset APPIMAGE
+    fi
+    export APPDIR="$directory"
+    TOOLS="$APPDIR/usr/share/blent"
+}
 
 # This subshell owns staging through renderer failure, interruption and rename.
 # -T protects the exact destination even if its type changes after inspection.
@@ -157,6 +167,7 @@ check_destination() {
     esac
 }
 
+configure_application_directory
 check_stopped
 check_destination
 lock_installation

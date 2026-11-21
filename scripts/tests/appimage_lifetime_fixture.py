@@ -11,6 +11,6 @@ source = Path(os.environ['BLENT_TEST_TEMPLATE'])
 with tempfile.TemporaryDirectory(prefix='blent-runtime-') as root:
     app = Path(root) / 'AppDir'
     shutil.copytree(source, app)
-    env = dict(os.environ, APPIMAGE=os.path.realpath(__file__))
+    env = dict(os.environ, APPIMAGE=os.path.realpath(__file__), APPDIR=str(app))
     result = subprocess.run([app / 'AppRun', *sys.argv[1:]], env=env)
     raise SystemExit(result.returncode)

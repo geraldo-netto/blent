@@ -94,6 +94,9 @@ extract-and-run copies the original image. The launcher propagates extraction
 mode to children. Every independently launched daemon invokes the outer image
 again and owns its own runtime lifetime; closing the GUI cannot unmount the
 daemon's files. Manually extracted execution uses the persistent directory.
+Both launch and registration accept `APPIMAGE` only when the inherited `APPDIR`
+resolves to the executing Blent directory. Foreign inherited values are discarded,
+so launching an extracted Blent from another AppImage cannot register that program.
 
 `usr/bin/libevdi.so.1.15.0` remains unmodified and replaceable, with the
 `libevdi.so.1` link beside the helper. Use an extracted directory to replace it

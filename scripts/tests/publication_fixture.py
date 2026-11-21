@@ -24,7 +24,7 @@ def destination(root, relative, kind):
 def execute(root, adapter, command, overrides=''):
     path = ROOT / ('scripts/install.sh' if adapter == 'source' else
                    'packaging/appimage/install-appimage.sh')
-    source = path.read_text().removesuffix('main "$@"\n').split('\ncheck_stopped\n')[0]
+    source = path.read_text().removesuffix('main "$@"\n').split('\nconfigure_application_directory\n')[0]
     setup = '''
 CONFIG_BASE=$HOME
 DATA_BASE=$HOME

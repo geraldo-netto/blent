@@ -1,0 +1,36 @@
+{
+  "issue": "T1623",
+  "tests": {
+    "appimage": 45,
+    "publication": 16
+  },
+  "coverage": [
+    {
+      "file": "packaging/appimage/AppRun",
+      "name": "configure_application_directory",
+      "line": 4,
+      "language": "shell",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "configure_application_directory",
+      "line": 15,
+      "language": "shell",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 30,
+    "all_at_most_nine": true,
+    "tool": "project tree-sitter shell and Python AST"
+  }
+}

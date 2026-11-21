@@ -1,9 +1,16 @@
 #!/bin/sh
 # Each daemon invocation owns its runtime mount/extraction independently.
 set -eu
-APPDIR=$(readlink -f -- "$0")
-APPDIR=${APPDIR%/*}
-export APPDIR
+configure_application_directory() {
+    blent_entry=$(readlink -f -- "$0")
+    blent_directory=${blent_entry%/*}
+    if [ "$(readlink -f -- "${APPDIR:-}" 2>/dev/null || :)" != "$blent_directory" ]; then
+        unset APPIMAGE
+    fi
+    APPDIR=$blent_directory
+    export APPDIR
+}
+configure_application_directory
 if [ -n "${APPIMAGE:-}" ] && [ -x "$APPIMAGE" ]; then
     BLENT_APPIMAGE_LAUNCHER=$APPIMAGE
 else
