@@ -177,7 +177,7 @@ async fn serve(
 type StartOutput = fn(
     Arc<std::fs::File>,
     &CameraProfile,
-    watch::Receiver<Option<Arc<Vec<u8>>>>,
+    watch::Receiver<Option<outputs::Frame>>,
     &Report,
 ) -> Result<(
     crate::owned_task::Task,
@@ -323,19 +323,22 @@ async fn frame_status(frames: &[outputs::Frames; 2], options: &CameraOptions, st
             }
         }
         let frame = selected.borrow_and_update().clone();
-        let Some(frame) = frame else {
+        let Some(frame) =
+            frame.filter(|frame| frame.published.elapsed() < outputs::FRESH_FRAME_AGE)
+        else {
             expires = None;
             status.update(State::Waiting);
             continue;
         };
-        expires = Some(tokio::time::Instant::now() + outputs::FRESH_FRAME_AGE);
+        expires = Some(frame.published + outputs::FRESH_FRAME_AGE);
         status.update(State::Streaming);
         if tokio::time::Instant::now() >= next_preview {
             let preview = blent_config::camera::CameraPreview::from_yuv420(
                 options.lens,
                 options.width,
                 options.height,
-                &frame,
+                &frame.pixels,
+                frame.published.into_std(),
             )
             .ok()
             .map(std::sync::Arc::new);

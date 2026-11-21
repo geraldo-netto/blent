@@ -87,7 +87,7 @@ async fn creator(root: PathBuf) {
     let options = tests::options();
     let mut frame = vec![16; options.frame_bytes().unwrap()];
     frame[..6].copy_from_slice(b"pixels");
-    let (_frames, input) = watch::channel(Some(Arc::new(frame)));
+    let (_frames, input) = watch::channel(Some(outputs::Frame::new(Arc::new(frame))));
     let report = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);
     let (producer, _original) =
         output_worker::start_with(lease, &options.profile, input, &report, configured).unwrap();

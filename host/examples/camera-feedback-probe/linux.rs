@@ -139,7 +139,7 @@ async fn connections(
 }
 
 async fn observe(
-    mut received: watch::Receiver<Option<Arc<Vec<u8>>>>,
+    mut received: watch::Receiver<Option<probe::Frame>>,
     samples: &mut samples::Samples,
     started: Instant,
 ) -> Result<()> {

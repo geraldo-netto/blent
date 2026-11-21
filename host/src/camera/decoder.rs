@@ -144,7 +144,7 @@ async fn transfer(
     let decode = async {
         loop {
             if let Some(bytes) = pool.read(&mut output).await? {
-                frames.send_replace(Some(bytes));
+                frames.send_replace(Some(super::outputs::Frame::new(bytes)));
             }
         }
         #[allow(unreachable_code)]

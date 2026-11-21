@@ -30,7 +30,9 @@ impl CameraPreview {
         })
     }
     pub fn fresh(&self) -> bool {
-        self.created.elapsed() < std::time::Duration::from_secs(2)
+        std::time::Instant::now()
+            .checked_duration_since(self.created)
+            .is_some_and(|age| age < super::FRESH_FRAME_AGE)
     }
     pub fn lens(&self) -> Lens {
         self.lens
@@ -42,7 +44,13 @@ impl CameraPreview {
         &self.rgba
     }
 
-    pub fn from_yuv420(lens: Lens, width: u32, height: u32, bytes: &[u8]) -> Result<Self> {
+    pub fn from_yuv420(
+        lens: Lens,
+        width: u32,
+        height: u32,
+        bytes: &[u8],
+        published: std::time::Instant,
+    ) -> Result<Self> {
         validate_yuv(width, height, bytes.len())?;
         let (width, height) = (width as usize, height as usize);
         let longest = width.max(height);
@@ -62,7 +70,9 @@ impl CameraPreview {
                 ));
             }
         }
-        Self::new(lens, size, rgba)
+        let mut preview = Self::new(lens, size, rgba)?;
+        preview.created = published;
+        Ok(preview)
     }
 }
 
@@ -102,8 +112,14 @@ mod tests {
     use super::*;
     #[test]
     fn t543_preview_bounds_colours_and_shape_preserve_exported_pixels() {
-        let mut frame =
-            CameraPreview::from_yuv420(Lens::Rear, 2, 2, &[16, 235, 81, 145, 128, 128]).unwrap();
+        let mut frame = CameraPreview::from_yuv420(
+            Lens::Rear,
+            2,
+            2,
+            &[16, 235, 81, 145, 128, 128],
+            std::time::Instant::now(),
+        )
+        .unwrap();
         assert!(frame.fresh());
         frame.created -= std::time::Duration::from_secs(2);
         assert!(!frame.fresh());
@@ -111,15 +127,30 @@ mod tests {
         assert_eq!(frame.lens(), Lens::Rear);
         assert_eq!(&frame.rgba()[..4], &[0, 0, 0, 255]);
         assert_eq!(&frame.rgba()[80 * 4..80 * 4 + 4], &[255, 255, 255, 255]);
-        let red =
-            CameraPreview::from_yuv420(Lens::Front, 2, 2, &[81, 81, 81, 81, 90, 240]).unwrap();
+        let red = CameraPreview::from_yuv420(
+            Lens::Front,
+            2,
+            2,
+            &[81, 81, 81, 81, 90, 240],
+            std::time::Instant::now(),
+        )
+        .unwrap();
         assert!(red.rgba()[0] >= 250 && red.rgba()[1] < 3 && red.rgba()[2] < 3);
-        let wide = CameraPreview::from_yuv420(Lens::Front, 4, 2, &[128; 12]).unwrap();
+        let wide =
+            CameraPreview::from_yuv420(Lens::Front, 4, 2, &[128; 12], std::time::Instant::now())
+                .unwrap();
         assert_eq!(wide.size(), [160, 80]);
         for width in [0, 1, 2, 3, 1920, 1921, u32::MAX] {
             for length in [0, 1, 5, 6, 7, 100] {
                 assert_eq!(
-                    CameraPreview::from_yuv420(Lens::Front, width, 2, &vec![128; length]).is_ok(),
+                    CameraPreview::from_yuv420(
+                        Lens::Front,
+                        width,
+                        2,
+                        &vec![128; length],
+                        std::time::Instant::now()
+                    )
+                    .is_ok(),
                     width == 2 && length == 6
                 );
             }
@@ -127,5 +158,35 @@ mod tests {
         for size in [[0, 1], [1, 0], [161, 1], [usize::MAX, usize::MAX], [1, 1]] {
             assert!(CameraPreview::new(Lens::Front, size, vec![]).is_err());
         }
+    }
+}
+
+#[cfg(test)]
+mod publication_tests {
+    use super::*;
+    #[test]
+    fn t1457_thumbnail_conversion_does_not_renew_source_age() {
+        let published = std::time::Instant::now() - super::super::FRESH_FRAME_AGE;
+        let preview =
+            CameraPreview::from_yuv420(Lens::Front, 2, 2, &[16, 16, 16, 16, 128, 128], published)
+                .unwrap();
+        assert!(!preview.fresh(), "T1457 conversion renewed source lifetime");
+        assert_eq!(preview.created, published);
+    }
+}
+
+#[cfg(test)]
+mod invalid_publication_tests {
+    use super::*;
+    #[test]
+    fn t1457_future_publication_cannot_extend_freshness() {
+        let published = std::time::Instant::now() + std::time::Duration::from_secs(60);
+        let preview =
+            CameraPreview::from_yuv420(Lens::Front, 2, 2, &[16, 16, 16, 16, 128, 128], published)
+                .unwrap();
+        assert!(
+            !preview.fresh(),
+            "T1457 future timestamp extended freshness"
+        );
     }
 }

@@ -182,7 +182,8 @@ async fn t1145_initial_black_live_frames_and_stop_black_keep_full_frame_boundari
     rig.start(configured).unwrap();
     length(&rig.path("original"), 115200).await;
     let live = Arc::new(vec![99; 115200]);
-    rig.frames.send_replace(Some(live.clone()));
+    rig.frames
+        .send_replace(Some(outputs::Frame::new(live.clone())));
     length(&rig.path("original"), 230400).await;
     rig.settle().await;
     let actual = std::fs::read(rig.path("original")).unwrap();
@@ -199,7 +200,8 @@ async fn t1145_initial_black_live_frames_and_stop_black_keep_full_frame_boundari
 async fn t1145_invalid_received_frame_lengths_never_reach_native_output() {
     for count in [0, 1, 115199, 115201, 230400] {
         let mut rig = Rig::new();
-        rig.frames.send_replace(Some(Arc::new(vec![31; count])));
+        rig.frames
+            .send_replace(Some(outputs::Frame::new(Arc::new(vec![31; count]))));
         rig.start(configured).unwrap();
         let result = rig.controller.take().unwrap().await.unwrap();
         rig.settle().await;
@@ -453,3 +455,37 @@ async fn t1145_invalid_profile_boundaries_never_admit_native_configuration() {
 }
 
 mod operation_tests;
+
+#[tokio::test(start_paused = true)]
+async fn t1457_delayed_output_observation_cannot_renew_frame_age() {
+    let root = tempfile::tempdir().unwrap();
+    let path = root.path().join("output");
+    let configured = output_device::configure_fixture(
+        File::create(&path).unwrap(),
+        Spec::from_profile(&profile()).unwrap(),
+    )
+    .unwrap();
+    let (frames, input) = watch::channel(None);
+    let (stop, stopped) = watch::channel(false);
+    let black = outputs::blank(&profile()).unwrap();
+    frames.send_replace(Some(outputs::Frame::new(Arc::new(vec![99; black.len()]))));
+    tokio::time::advance(Duration::from_millis(1500)).await;
+    let mut work = Box::pin(feed(
+        Writer::new(configured),
+        input,
+        stopped,
+        black.clone(),
+        watch::channel(None).0,
+    ));
+    assert!(work.as_mut().now_or_never().is_none());
+    tokio::time::advance(Duration::from_millis(500)).await;
+    assert!(work.as_mut().now_or_never().is_none());
+    let written = std::fs::read(&path).unwrap();
+    assert_eq!(
+        &written[written.len() - black.len()..],
+        &black,
+        "T1457 stale publication replayed"
+    );
+    stop.send_replace(true);
+    work.await.unwrap();
+}

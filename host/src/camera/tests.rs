@@ -167,7 +167,7 @@ async fn t539_real_h264_upload_decodes_only_to_selected_endpoint() {
             .unwrap()
             .unwrap();
         assert_eq!(
-            front_rx.borrow().as_ref().unwrap().len(),
+            front_rx.borrow().as_ref().unwrap().pixels.len(),
             profile.frame_bytes().unwrap()
         );
         assert!(rear_rx.borrow().is_none());
@@ -525,7 +525,9 @@ async fn t543_host_reports_frames_and_rejects_unselected_lens() {
     tokio::pin!(monitor);
     let checks = async {
         tokio::task::yield_now().await;
-        frames[0].send_replace(Some(std::sync::Arc::new(outputs::blank(&profile).unwrap())));
+        frames[0].send_replace(Some(outputs::Frame::new(std::sync::Arc::new(
+            outputs::blank(&profile).unwrap(),
+        ))));
         state.wait_for(|s| *s == State::Streaming).await.unwrap();
         assert!(status.preview().is_some());
         frames[0].send_replace(None);
@@ -604,7 +606,7 @@ async fn transformed_test_frame(
     };
     tokio::select! {
         result = decoder::connection(server, &token, &ffmpeg, &profile.profile, &frames, new_report()) => panic!("{result:?}"),
-        frame = upload => frame,
+        frame = upload => frame.pixels,
     }
 }
 
@@ -689,6 +691,7 @@ async fn t543_real_output_and_preview_rotate_the_same_asymmetric_picture() {
             profile.width,
             profile.height,
             &bytes,
+            std::time::Instant::now(),
         )
         .unwrap();
         let channel = |point: (usize, usize), c: usize| {
@@ -784,7 +787,7 @@ fn t938_invalid_black_frame_dimensions_are_rejected_before_allocation() {
 fn fail_after_clients(
     lease: Arc<std::fs::File>,
     profile: &CameraProfile,
-    frames: watch::Receiver<Option<Arc<Vec<u8>>>>,
+    frames: watch::Receiver<Option<outputs::Frame>>,
     report: &Report,
 ) -> Result<(
     crate::owned_task::Task,
@@ -862,6 +865,7 @@ async fn t1450_real_decoder_exports_brightened_pixels_to_preview() {
             profile.width,
             profile.height,
             bytes,
+            std::time::Instant::now(),
         )
         .unwrap()
     };

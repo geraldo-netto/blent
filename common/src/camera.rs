@@ -9,6 +9,7 @@ pub mod connection;
 mod preview;
 pub mod stop;
 pub use preview::CameraPreview;
+pub const FRESH_FRAME_AGE: std::time::Duration = std::time::Duration::from_secs(2);
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "platform", derive(ValueEnum))]

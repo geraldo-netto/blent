@@ -13,7 +13,22 @@ use std::{
 };
 use tokio::sync::watch;
 
-pub type Frames = watch::Sender<Option<Arc<Vec<u8>>>>;
+/// Immutable publication metadata travels with the original pixel lease.
+#[derive(Clone)]
+pub struct Frame {
+    pub(super) pixels: Arc<Vec<u8>>,
+    pub(super) published: tokio::time::Instant,
+}
+impl Frame {
+    pub fn new(pixels: Arc<Vec<u8>>) -> Self {
+        Self {
+            pixels,
+            published: tokio::time::Instant::now(),
+        }
+    }
+}
+
+pub type Frames = watch::Sender<Option<Frame>>;
 
 pub fn open_device(path: &Path, label: &str) -> Result<File> {
     let file = std::fs::OpenOptions::new()
@@ -57,7 +72,7 @@ pub fn blank(options: &CameraProfile) -> Result<Vec<u8>> {
     Ok(frame)
 }
 
-pub(super) const FRESH_FRAME_AGE: Duration = Duration::from_secs(2);
+pub(super) use blent_config::camera::FRESH_FRAME_AGE;
 
 pub(super) fn current_frame<'a>(
     frame: Option<&'a [u8]>,

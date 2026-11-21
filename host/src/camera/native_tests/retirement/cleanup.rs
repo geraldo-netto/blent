@@ -27,7 +27,7 @@ fn endpoint() -> (Arc<File>, tokio::net::UnixDatagram) {
 fn start(
     lease: Arc<File>,
     profile: &CameraProfile,
-    frames: watch::Receiver<Option<Arc<Vec<u8>>>>,
+    frames: watch::Receiver<Option<outputs::Frame>>,
     report: &Report,
 ) -> Result<(
     crate::owned_task::Task,

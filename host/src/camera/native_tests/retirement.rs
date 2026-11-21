@@ -188,7 +188,7 @@ async fn partial(root: &std::path::Path, front: PathBuf, rear: PathBuf) {
 fn gated_start(
     lease: Arc<File>,
     profile: &CameraProfile,
-    frames: watch::Receiver<Option<Arc<Vec<u8>>>>,
+    frames: watch::Receiver<Option<outputs::Frame>>,
     report: &Report,
 ) -> Result<(
     crate::owned_task::Task,

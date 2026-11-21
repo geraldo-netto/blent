@@ -20,7 +20,7 @@ use tokio::{
 mod progress;
 
 type Configure = fn(File, Spec) -> Result<ConfiguredOutput>;
-type Frames = watch::Receiver<Option<Arc<Vec<u8>>>>;
+type Frames = watch::Receiver<Option<outputs::Frame>>;
 
 /// Admit both observations before effects. Dropping the returned controller
 /// closes the worker's stop authority; Completion fences actual native return,
@@ -113,12 +113,18 @@ enum Event {
     Tick,
     Stop,
 }
-async fn next(frames: &mut Frames, stop: &mut watch::Receiver<bool>, tick: &mut Interval) -> Event {
+async fn next(
+    frames: &mut Frames,
+    stop: &mut watch::Receiver<bool>,
+    tick: &mut Interval,
+    expires: Option<Instant>,
+) -> Event {
     tokio::select! {
         biased;
         _ = crate::camera_control::cancelled(stop) => Event::Stop,
         change = frames.changed() => if change.is_ok() { Event::Frame } else { Event::Stop },
         _ = tick.tick() => Event::Tick,
+        _ = async { tokio::time::sleep_until(expires.unwrap()).await }, if expires.is_some() => Event::Tick,
     }
 }
 async fn feed(
@@ -128,19 +134,24 @@ async fn feed(
     black: Vec<u8>,
     mut operation: progress::Sender,
 ) -> Result<()> {
-    let mut last_frame = Instant::now();
     let mut tick = tokio::time::interval(Duration::from_secs(1));
+    let mut expires = None;
     loop {
-        match next(&mut frames, &mut stop, &mut tick).await {
+        match next(&mut frames, &mut stop, &mut tick, expires).await {
             Event::Stop => return write_frame(&mut writer, &black, &mut operation),
-            Event::Frame => last_frame = Instant::now(),
-            Event::Tick => {}
+            Event::Frame | Event::Tick => {}
         }
         let newest = frames.borrow_and_update().clone();
+        expires = newest
+            .as_ref()
+            .map(|frame| frame.published + outputs::FRESH_FRAME_AGE)
+            .filter(|deadline| *deadline > Instant::now());
         let bytes = outputs::current_frame(
-            newest.as_deref().map(Vec::as_slice),
+            newest.as_ref().map(|frame| frame.pixels.as_slice()),
             &black,
-            last_frame.elapsed(),
+            newest
+                .as_ref()
+                .map_or(outputs::FRESH_FRAME_AGE, |frame| frame.published.elapsed()),
         );
         write_frame(&mut writer, bytes, &mut operation)?;
     }

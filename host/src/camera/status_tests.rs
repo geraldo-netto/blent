@@ -33,7 +33,10 @@ impl Fixture {
     }
 
     async fn publish(&self, lens: usize) {
-        self.frames[lens].send_replace(Some(Arc::new(vec![128; 160 * 120 * 3 / 2])));
+        self.frames[lens].send_replace(Some(outputs::Frame::new(Arc::new(vec![
+            128;
+            160 * 120 * 3 / 2
+        ]))));
         tokio::task::yield_now().await;
     }
 
@@ -84,4 +87,36 @@ async fn t704_stop_and_lens_replacement_cannot_inherit_a_previous_deadline() {
     rear.publish(1).await;
     rear.advance(2000, State::Waiting).await;
     rear.stop().await;
+}
+
+#[tokio::test(start_paused = true)]
+async fn t1457_delayed_status_observation_cannot_renew_frame_age() {
+    use futures_util::FutureExt;
+    let options = CameraOptions {
+        profile: CameraProfile {
+            width: 160,
+            height: 120,
+            ..Default::default()
+        },
+        ..Default::default()
+    };
+    let frames = [watch::channel(None).0, watch::channel(None).0];
+    let report = Report::new(watch::channel(State::Waiting).0, watch::channel(None).0);
+    let mut work = Box::pin(frame_status(&frames, &options, &report));
+    assert!(work.as_mut().now_or_never().is_none());
+    frames[0].send_replace(Some(outputs::Frame::new(Arc::new(vec![
+        128;
+        160 * 120 * 3 / 2
+    ]))));
+    tokio::time::advance(Duration::from_millis(1500)).await;
+    assert!(work.as_mut().now_or_never().is_none());
+    assert_eq!(report.state(), State::Streaming);
+    tokio::time::advance(Duration::from_millis(500)).await;
+    assert!(work.as_mut().now_or_never().is_none());
+    assert_eq!(
+        report.state(),
+        State::Waiting,
+        "T1457 status renewed stale publication"
+    );
+    assert!(report.preview().is_none());
 }
