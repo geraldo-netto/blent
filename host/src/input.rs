@@ -1825,7 +1825,7 @@ fi
             },
         ];
         map_devices_using(
-            &crate::native_commands::AcknowledgedCommands,
+            &crate::native_commands::AcknowledgedCommands.x11(xinput.to_str().unwrap()),
             false,
             &DeviceIdentity::for_instance(1).unwrap(),
             Some(9),
@@ -1852,7 +1852,7 @@ fi
         );
         std::fs::remove_file(root.join("mapped")).unwrap();
         map_devices_using(
-            &crate::native_commands::AcknowledgedCommands,
+            &crate::native_commands::AcknowledgedCommands.x11(xinput.to_str().unwrap()),
             true,
             &DeviceIdentity::for_instance(0).unwrap(),
             Some(8),

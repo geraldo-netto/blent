@@ -27,7 +27,15 @@ pub(crate) trait CommandPort: Sync {
     ) -> Pin<Box<dyn Future<Output = io::Result<()>> + Send + '_>> {
         Box::pin(async { Err(io::ErrorKind::Unsupported.into()) })
     }
+    fn map_output<'a>(
+        &'a self,
+        _device: &'a str,
+        _output: &'a str,
+    ) -> Pin<Box<dyn Future<Output = io::Result<()>> + Send + 'a>> {
+        Box::pin(async { Err(io::ErrorKind::Unsupported.into()) })
+    }
     /// Query-only ports cannot authorize a mutation without an owning sponsor.
+    #[cfg(test)]
     fn mutate<'a>(
         &'a self,
         _program: &'a str,
@@ -55,9 +63,24 @@ impl CommandPort for SystemCommands {
 }
 
 mod dbus;
+mod mapping;
 mod mutation;
 mod property;
+mod x11;
 pub(crate) use property::Property;
+
+enum NativeRequest {
+    Property(Property),
+    Mapping(mapping::Mapping),
+}
+impl NativeRequest {
+    async fn execute(self) -> mutation::Report {
+        match self {
+            Self::Property(request) => dbus::execute(request).await,
+            Self::Mapping(request) => x11::execute(request).await,
+        }
+    }
+}
 
 /// One command/mutation slot, funded by the owning input payload or OSK operation.
 /// That owner must retain this port until complete(), including caller loss.
@@ -104,6 +127,7 @@ impl ObservedCommands {
     fn reserve(&self) -> io::Result<[Reservation; 2]> {
         self.state().reserve()
     }
+    #[cfg(test)]
     fn start_mutation(
         &self,
         program: &str,
@@ -118,6 +142,7 @@ impl ObservedCommands {
         state.mutation = Some(operation);
         Ok(Some(result))
     }
+    #[cfg(test)]
     async fn mutation_result(&self, program: &str, args: &[&str]) -> io::Result<Output> {
         loop {
             if let Some(result) = self.start_mutation(program, args)? {
@@ -128,6 +153,7 @@ impl ObservedCommands {
             tokio::time::sleep(Duration::from_millis(1)).await;
         }
     }
+    #[cfg(test)]
     async fn mutate_bounded(&self, program: &str, args: &[&str]) -> io::Result<Output> {
         tokio::time::timeout(COMMAND_TIMEOUT, self.mutation_result(program, args))
             .await
@@ -138,37 +164,38 @@ impl ObservedCommands {
                 ))
             })
     }
-    fn start_property(
+    fn start_native(
         &self,
-        request: &mut Option<Property>,
+        request: &mut Option<NativeRequest>,
     ) -> Option<tokio::sync::oneshot::Receiver<io::Result<()>>> {
         let mut state = self.state();
         if !state.complete() {
             return None;
         }
-        let (operation, result) =
-            mutation::Operation::property(request.take().expect("one property admission"));
+        let (operation, result) = mutation::Operation::acknowledged(
+            request.take().expect("one native admission").execute(),
+        );
         state.mutation = Some(operation);
         Some(result)
     }
-    async fn property_result(&self, request: Property) -> io::Result<()> {
+    async fn native_result(&self, request: NativeRequest) -> io::Result<()> {
         let mut request = Some(request);
         loop {
-            if let Some(result) = self.start_property(&mut request) {
+            if let Some(result) = self.start_native(&mut request) {
                 return result
                     .await
-                    .unwrap_or_else(|_| Err(io::Error::other("original property result lost")));
+                    .unwrap_or_else(|_| Err(io::Error::other("original native result lost")));
             }
             tokio::time::sleep(Duration::from_millis(1)).await;
         }
     }
-    async fn property_bounded(&self, request: Property) -> io::Result<()> {
-        tokio::time::timeout(COMMAND_TIMEOUT, self.property_result(request))
+    async fn native_bounded(&self, request: NativeRequest) -> io::Result<()> {
+        tokio::time::timeout(COMMAND_TIMEOUT, self.native_result(request))
             .await
             .unwrap_or_else(|_| {
                 Err(io::Error::new(
                     io::ErrorKind::TimedOut,
-                    "property reply deadline; original operation remains owned",
+                    "native reply deadline; original operation remains owned",
                 ))
             })
     }
@@ -199,7 +226,19 @@ impl CommandPort for ObservedCommands {
         &self,
         request: Property,
     ) -> Pin<Box<dyn Future<Output = io::Result<()>> + Send + '_>> {
-        Box::pin(self.property_bounded(request))
+        Box::pin(self.native_bounded(NativeRequest::Property(request)))
+    }
+    fn map_output<'a>(
+        &'a self,
+        device: &'a str,
+        output: &'a str,
+    ) -> Pin<Box<dyn Future<Output = io::Result<()>> + Send + 'a>> {
+        Box::pin(async move {
+            self.native_bounded(NativeRequest::Mapping(mapping::Mapping::new(
+                device, output,
+            )?))
+            .await
+        })
     }
     fn output<'a>(
         &'a self,
@@ -208,6 +247,7 @@ impl CommandPort for ObservedCommands {
     ) -> Pin<Box<dyn Future<Output = io::Result<Output>> + Send + 'a>> {
         Box::pin(self.run(program, args))
     }
+    #[cfg(test)]
     fn mutate<'a>(
         &'a self,
         program: &'a str,
@@ -226,6 +266,6 @@ mod mutation_tests;
 #[cfg(test)]
 mod test_port;
 #[cfg(test)]
-pub(crate) use test_port::AcknowledgedCommands;
+pub(crate) use test_port::{AcknowledgedCommands, ScriptedX11};
 #[cfg(test)]
 mod osk_tests;

@@ -3,20 +3,7 @@ use super::property::{Property, Scalar};
 use std::io;
 use zbus::{Connection, Message};
 
-pub(super) struct Report {
-    pub settled: bool,
-    pub result: io::Result<()>,
-}
-impl Report {
-    fn rejected() -> Self {
-        Self {
-            settled: true,
-            result: Err(io::Error::other(
-                "KWin property request rejected before dispatch",
-            )),
-        }
-    }
-}
+use super::mutation::Report;
 
 pub(super) async fn execute(request: Property) -> Report {
     let connection = match connect().await {

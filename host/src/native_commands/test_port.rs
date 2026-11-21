@@ -69,3 +69,48 @@ fn property_command(
     };
     (backend.name(), arguments)
 }
+
+pub(crate) struct ScriptedX11<'a> {
+    pub commands: &'a dyn CommandPort,
+    pub program: &'a str,
+}
+impl AcknowledgedCommands {
+    pub(crate) fn x11<'a>(&'a self, program: &'a str) -> ScriptedX11<'a> {
+        ScriptedX11 {
+            commands: self,
+            program,
+        }
+    }
+}
+impl CommandPort for ScriptedX11<'_> {
+    fn output<'a>(
+        &'a self,
+        program: &'a str,
+        args: &'a [&'a str],
+    ) -> Pin<Box<dyn Future<Output = io::Result<Output>> + Send + 'a>> {
+        self.commands.output(program, args)
+    }
+    fn map_output<'a>(
+        &'a self,
+        device: &'a str,
+        output: &'a str,
+    ) -> Pin<Box<dyn Future<Output = io::Result<()>> + Send + 'a>> {
+        Box::pin(async move {
+            let result = self
+                .commands
+                .mutate(self.program, &["map-to-output", device, output])
+                .await?;
+            if result.status.success() {
+                Ok(())
+            } else {
+                Err(io::ErrorKind::Other.into())
+            }
+        })
+    }
+    fn set_property(
+        &self,
+        request: Property,
+    ) -> Pin<Box<dyn Future<Output = io::Result<()>> + Send + '_>> {
+        self.commands.set_property(request)
+    }
+}

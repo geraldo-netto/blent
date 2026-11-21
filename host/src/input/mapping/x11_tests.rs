@@ -184,7 +184,7 @@ async fn t730_missing_kwin_does_not_override_x11_mapping_results() {
     .unwrap();
     let randr = tool(root.path(), "xrandr", "print((root/'outputs').read_text())");
     map_devices_using(
-        &crate::native_commands::AcknowledgedCommands,
+        &crate::native_commands::AcknowledgedCommands.x11(&input_tool(root.path(), 1)),
         false,
         &DeviceIdentity::for_instance(0).unwrap(),
         Some(1),
@@ -222,7 +222,7 @@ async fn t730_unavailable_x11_mapper_reports_its_own_failure() {
     std::env::set_var("PATH", root.path());
     assert!(crate::kwin::backend().await.is_none());
     map_devices_using(
-        &crate::native_commands::AcknowledgedCommands,
+        &crate::native_commands::AcknowledgedCommands.x11("xinput"),
         false,
         &DeviceIdentity::for_instance(0).unwrap(),
         Some(1),
@@ -260,7 +260,7 @@ print((root/'outputs').read_text())
 "#,
     );
     map_x11_devices(
-        &crate::native_commands::AcknowledgedCommands,
+        &crate::native_commands::AcknowledgedCommands.x11(&input_tool(root.path(), 3)),
         false,
         &DeviceIdentity::for_instance(0).unwrap(),
         Some(1),
@@ -308,7 +308,7 @@ print((root/('wanted' if n >= 2 else 'foreign')).read_text())
 "#,
     );
     map_x11_devices(
-        &crate::native_commands::AcknowledgedCommands,
+        &crate::native_commands::AcknowledgedCommands.x11(&input_tool(root.path(), 1)),
         false,
         &DeviceIdentity::for_instance(0).unwrap(),
         Some(1),
@@ -360,7 +360,7 @@ else:
 "#,
     );
     map_x11_devices(
-        &crate::native_commands::AcknowledgedCommands,
+        &crate::native_commands::AcknowledgedCommands.x11(&input),
         false,
         &DeviceIdentity::for_instance(0).unwrap(),
         Some(1),
@@ -425,7 +425,11 @@ if sys.argv[1] == 'map-to-output':
         name: "screen".into(),
         topology: "same".into(),
     };
-    assert!(!map_x11_list(&commands, devices, &ident, &program, &output, 3, &mut cache).await);
+    let scripted = crate::native_commands::ScriptedX11 {
+        commands: &commands,
+        program: &program,
+    };
+    assert!(!map_x11_list(&scripted, devices, &ident, &program, &output, 3, &mut cache).await);
     let invoked = std::fs::read_to_string(root.path().join("mapped")).unwrap();
     assert_eq!(
         invoked, "Blent Touch\nBlent Pointer\n",

@@ -96,7 +96,7 @@ else:
     assert!(
         cache
             .map(
-                &crate::native_commands::AcknowledgedCommands,
+                &crate::native_commands::AcknowledgedCommands.x11(program),
                 program,
                 "10",
                 "Blent Touch",
@@ -107,7 +107,7 @@ else:
     assert!(
         cache
             .map(
-                &crate::native_commands::AcknowledgedCommands,
+                &crate::native_commands::AcknowledgedCommands.x11(program),
                 program,
                 "10",
                 "Blent Touch",
@@ -128,7 +128,7 @@ else:
         assert!(
             cache
                 .map(
-                    &crate::native_commands::AcknowledgedCommands,
+                    &crate::native_commands::AcknowledgedCommands.x11(program),
                     program,
                     "10",
                     "Blent Touch",
@@ -141,7 +141,7 @@ else:
     assert!(
         cache
             .map(
-                &crate::native_commands::AcknowledgedCommands,
+                &crate::native_commands::AcknowledgedCommands.x11(program),
                 program,
                 "10",
                 "Blent Touch",
@@ -158,7 +158,7 @@ else:
     assert!(
         !cache
             .map(
-                &crate::native_commands::AcknowledgedCommands,
+                &crate::native_commands::AcknowledgedCommands.x11(program),
                 program,
                 "10",
                 "Blent Touch",
@@ -169,7 +169,7 @@ else:
     assert!(
         !cache
             .map(
-                &crate::native_commands::AcknowledgedCommands,
+                &crate::native_commands::AcknowledgedCommands.x11("/nonexistent-t625"),
                 "/nonexistent-t625",
                 "10",
                 "Blent Touch",
@@ -208,14 +208,15 @@ impl crate::native_commands::CommandPort for CreationQueries {
     > {
         Box::pin(async move { self.record(false, args) })
     }
-    fn mutate<'a>(
+    fn map_output<'a>(
         &'a self,
-        _: &'a str,
-        args: &'a [&'a str],
-    ) -> std::pin::Pin<
-        Box<dyn std::future::Future<Output = std::io::Result<std::process::Output>> + Send + 'a>,
-    > {
-        Box::pin(async move { self.record(true, args) })
+        device: &'a str,
+        output: &'a str,
+    ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::io::Result<()>> + Send + 'a>> {
+        Box::pin(async move {
+            self.record(true, &["map-to-output", device, output])
+                .map(|_| ())
+        })
     }
 }
 #[tokio::test]
@@ -234,4 +235,63 @@ async fn t1446_cached_readback_resolves_creation_name_in_each_current_registry()
             (false, name.to_owned()),
         ]
     );
+}
+
+#[tokio::test]
+async fn t1641_native_rejection_allows_later_mapping_and_retirement() {
+    const TEST: &str = "input::mapping::x11_cache::tests::t1641_native_rejection_allows_later_mapping_and_retirement";
+    if std::env::var_os("BLENT_T1641_PRIVATE_X11").is_none() {
+        let output = std::process::Command::new("xvfb-run")
+            .args(["-a", "-s", "-screen 0 128x96x24 -nolisten tcp"])
+            .arg(std::env::current_exe().unwrap())
+            .args(["--exact", TEST, "--nocapture"])
+            .env("BLENT_T1641_PRIVATE_X11", "1")
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "{}{}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
+        return;
+    }
+    let commands = crate::native_commands::ObservedCommands::default();
+    let mut cache = Mappings::default();
+    assert!(
+        !cache
+            .map(
+                &commands,
+                "/usr/bin/xinput",
+                "2",
+                "Virtual core pointer",
+                "missing-output-t1641"
+            )
+            .await
+    );
+    tokio::time::timeout(std::time::Duration::from_millis(200), async {
+        while !commands.complete() {
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .expect("T1641 negative mapping result never settled");
+    assert!(
+        cache
+            .map(
+                &commands,
+                "/usr/bin/xinput",
+                "2",
+                "Virtual core pointer",
+                "screen"
+            )
+            .await
+    );
+    tokio::time::timeout(std::time::Duration::from_secs(1), async {
+        while !commands.complete() {
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
 }

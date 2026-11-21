@@ -44,10 +44,7 @@ impl Mappings {
             }
         }
         self.devices.remove(id);
-        let ok = commands
-            .mutate(program, &["map-to-output", name, output])
-            .await
-            .is_ok_and(|out| out.status.success());
+        let ok = commands.map_output(name, output).await.is_ok();
         if ok {
             if let Some(readback) = properties(commands, program, name).await {
                 self.devices.insert(id.into(), (name.into(), readback));

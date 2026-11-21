@@ -134,7 +134,8 @@ the relevant topic when implementing or diagnosing that part.
    pressure/tilt/eraser/button pen, and an absolute pointer used with the pen.
    `input_touch`, `input_pen` and `input_pointer` control creation; the pointer
    also requires the pen. KDE Wayland mapping uses KWin D-Bus; X11 uses
-   `xinput`/`xrandr`. Other desktops need their own mapping facilities.
+   native XInput/RandR writes, with `xinput`/`xrandr` discovery and readback.
+   Other desktops need their own mapping facilities.
    Before touch creation on Cinnamon/X11, the Linux adapter installs a scoped
    cursor-visibility policy through Cinnamon D-Bus. It keeps the physical mouse
    visible during touch use and removes its signal handlers when that exact
@@ -234,13 +235,15 @@ required after cutoff. Failed/unknown cleanup retains the original grant and
 identity, while successful cleanup permits replacement.
 
 The shared keyboard gate has a fixed two-receipt pool: one serialized operation
-plus its predecessor's completion-publication gap. Before each OSK command, two
-bounded observations are reserved for its original child and output collector.
-Cancellation retains both proofs and the original keyboard-operation gate until
-settlement; a command failure/deadline does not permit another keyboard effect.
+plus its predecessor's completion-publication gap. Read-only queries reserve two
+bounded observations for their original child and output collector. Property writes
+retain one original native D-Bus worker and its reply. Cancellation retains the
+original keyboard-operation gate until settlement; an acknowledged rejection
+settles, while a lost reply does not permit another keyboard effect.
 Input-owned final restoration inherits the existing input admission after process
-cutoff. Its command receipts are distinct from its task completion, avoiding a
-self-wait; the cleanup task holds no reference back to its input lifetime.
+cutoff. Query receipts and mutation settlement are distinct from cleanup-task
+completion, avoiding a self-wait; the task holds no reference back to its input
+lifetime.
 Direct daemon restoration reserves its separate one-slot process sponsor after
 configuration validation and before startup effects. Shutdown consumes that existing
 reservation after cutoff; it never admits a replacement cleanup owner. The direct
@@ -253,20 +256,21 @@ unchanged five-second command-result wait described below.
 
 Native input/OSK mutations use one operation slot per observed command port,
 funded by the existing input lifetime or keyboard-operation admission. The caller
-still has a five-second result deadline. Cancellation or expiry ends that wait;
-the original reply-capable command, collector, task and outcome remain owned.
-The next operation waits for the original native proofs, actual task join and
-acknowledged outcome. Spawn rejection before a child exists proves no effect.
-Successful busctl/qdbus replies and successful xinput completion (after its XSync)
-settle the corresponding mutation. Generic post-spawn nonzero exit, signal,
-transport loss or collector failure cannot prove whether a remote effect occurred;
-they are logged and retain bounded quarantine rather than freeing identity or gate
-ownership. CLI status alone does not distinguish every explicit remote rejection
-from lost acknowledgment, so this classification is deliberately conservative.
-Isolated test ports may model definitively acknowledged rejection separately.
-Busctl mutations request an infinite native reply timeout; qdbus retains its own
-finite protocol timeout, whose failure remains unknown. Neither changes the
-five-second caller result deadline or native byte/admission bounds.
+has a five-second result deadline. Cancellation or expiry ends that wait; the
+original native worker, connection, request and outcome remain owned. Reuse requires
+its actual join and acknowledged outcome. Bounded requests own their text fields
+(at most 4096 bytes each); no caller or input-payload borrow escapes.
+
+KWin writes resolve the service's unique D-Bus identity and await the original
+Set reply. Positive and negative replies from that service settle; broker errors
+proving rejection before dispatch also settle. X11 writes resolve the exact creation
+name and active output on one connection, validate the matrix property, then await
+the original XIChangeProperty check. Pre-dispatch errors and original X11 success
+or protocol error settle. Lost transport, foreign D-Bus replies and broker NoReply
+remain uncertain and retain bounded ownership. An elapsed deadline or generic
+subprocess exit is not a settlement proof. Read-only discovery still uses CLI tools;
+production writes no longer invoke busctl, qdbus or xinput. Actual native settlement
+allows the input payload, keyboard gate and process retirement to complete.
 
 X11 input payloads add a creation-specific suffix to the checked instance names;
 product IDs retain the fixed 0..4095 instance range. One process-owned issuer
@@ -284,12 +288,11 @@ copies only after the mapper future is cut off; any original mutation owns its
 copied arguments. Stale creation names and nonmatching foreign names cannot satisfy the current
 creation's expected kinds. KWin keeps its stable names and does not consume this
 issuer, since it persists settings by vendor/product/name. Each X11 mutation and
-property helper resolves the exact observed creation name in its current registry;
+property reader resolves the exact observed creation name in its current registry;
 numeric IDs remain snapshot cache/diagnostic data and are never reused as later
-command selectors. This protects the boundary between helper connections without
-claiming atomicity against arbitrary registry changes between name lookup and
-effect inside one helper. Ambiguous or otherwise unconfirmed native CLI outcomes
-retain the existing bounded quarantine policy.
+mutation selectors. Name resolution and the write share one connection; this does
+not claim atomicity against arbitrary registry changes between lookup and effect.
+Ambiguous names reject before dispatch; unacknowledged writes retain ownership.
 
 Display ADB routes keep one original worker through creation, repair and cleanup.
 Caller cancellation and Activity/session stop do not settle an unacknowledged ADB

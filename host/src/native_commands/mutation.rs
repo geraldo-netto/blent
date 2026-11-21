@@ -1,10 +1,22 @@
 //! A funded port retains one original mutation result independently of its waiter.
 use super::*;
 use futures_util::FutureExt;
-use std::sync::{
-    atomic::{AtomicUsize, Ordering},
-    Arc,
-};
+#[cfg(test)]
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::Arc;
+
+pub(super) struct Report {
+    pub settled: bool,
+    pub result: io::Result<()>,
+}
+impl Report {
+    pub(super) fn rejected() -> Self {
+        Self {
+            settled: true,
+            result: Err(io::Error::other("native mutation rejected before dispatch")),
+        }
+    }
+}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum Outcome {
@@ -18,6 +30,7 @@ pub(super) struct Operation {
     outcome: Arc<Mutex<Outcome>>,
 }
 impl Operation {
+    #[cfg(test)]
     pub(super) fn start(
         program: &str,
         args: &[&str],
@@ -40,14 +53,14 @@ impl Operation {
             result,
         )
     }
-    pub(super) fn property(
-        request: Property,
+    pub(super) fn acknowledged(
+        work: impl Future<Output = Report> + Send + 'static,
     ) -> (Self, tokio::sync::oneshot::Receiver<io::Result<()>>) {
         let outcome = Arc::new(Mutex::new(Outcome::Pending));
         let completion = outcome.clone();
         let (send, result) = tokio::sync::oneshot::channel();
         let worker = tokio::spawn(async move {
-            let report = super::dbus::execute(request).await;
+            let report = work.await;
             *completion.lock().unwrap() = if report.settled {
                 Outcome::Settled
             } else {
@@ -79,6 +92,7 @@ impl Operation {
         *self.outcome.lock().unwrap() == Outcome::Settled
     }
 }
+#[cfg(test)]
 async fn execute(
     program: &str,
     args: &[String],
@@ -109,6 +123,7 @@ async fn execute(
     *outcome.lock().unwrap() = observed;
     result
 }
+#[cfg(test)]
 fn classify(result: &io::Result<Output>, reported: usize) -> Outcome {
     if reported < 2 {
         return Outcome::Settled;

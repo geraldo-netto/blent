@@ -149,6 +149,14 @@ async fn t1444_query_only_port_cannot_start_mutation() {
         .unwrap_err();
     assert_eq!(error.kind(), io::ErrorKind::Unsupported);
     assert!(!marker.exists());
+    assert_eq!(
+        SystemCommands
+            .map_output("device", "output")
+            .await
+            .unwrap_err()
+            .kind(),
+        io::ErrorKind::Unsupported
+    );
     let error = SystemCommands
         .set_property(Property::new("/fixture", "org.blent.Fixture", "mode", "i", "1").unwrap())
         .await

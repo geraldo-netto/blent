@@ -111,8 +111,8 @@ repeat a session-crashing attachment on your working desktop; see below.
 
 ## Touch or pen land on the wrong screen
 
-KDE Wayland mapping uses KWin D-Bus. X11 mapping uses `xinput` and `xrandr`;
-install both. Mapping runs on attachment and mode changes, and graphics-tablet
+KDE Wayland mapping uses KWin D-Bus. X11 writes use native XInput/RandR;
+install `xinput` and `xrandr` for discovery and readback. Mapping runs on attachment and mode changes, and graphics-tablet
 mode targets a physical screen. KDE selection honors the enabled physical
 output's current KScreen priority; the former priority bug (T299) has regression
 coverage. Check mapping after mode changes. Other Wayland desktops need manual
