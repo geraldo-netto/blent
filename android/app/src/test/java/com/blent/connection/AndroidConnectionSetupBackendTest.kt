@@ -41,7 +41,7 @@ class AndroidConnectionSetupBackendTest {
         try {
             assertSame(native.local, backend.localIdentity()); assertSame(native.local, backend.localIdentity())
             assertEquals(1, calls); assertSame(native.remote, backend.discover(100))
-            backend.ready(native.remote, 100); assertEquals(native.proof, backend.authenticate(native.remote))
+            backend.ready(native.remote, 100); assertEquals(native.proof, backend.authenticate(native.remote, 100))
             assertEquals(4096, backend.negotiate(4096, 100)); assertSame(native.stream, backend.io {})
             assertFalse(backend.retired())
         } finally { backend.close(); accessoryAwait(backend::retired) }

@@ -62,7 +62,7 @@ class IdentityTlsTest {
         }
         try {
             val raw = Socket(InetAddress.getLoopbackAddress(), listener.localPort)
-            SecureConnection(identity.keyManagers(), fixture("host.der")).connect(raw).use {
+            SecureConnection(identity.keyManagers(), fixture("host.der")).connect(raw) { 3000 }.use {
                 it.getOutputStream().write(42); it.getOutputStream().flush()
             }
             peer.get(5, TimeUnit.SECONDS)

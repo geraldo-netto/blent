@@ -109,4 +109,20 @@ class ConnectionSetupDeadlineTest {
             owner.stop(); backend.discoverGate.countDown(); setupAwait { owner.retired() }
         }
     }
+    @Test fun t1522NativeTlsBudgetCannotExceedRemainingApproval() {
+        for ((native, approval, elapsed) in listOf(Triple(1L, 1000L, 0L), Triple(25000L, 60000L, 1000L),
+            Triple(60000L, 30000L, 2000L), Triple(60000L, 600000L, 1000L))) {
+            val backend = SetupBackend().apply { readyGate = CountDownLatch(1); authenticateGate = CountDownLatch(1) }
+            SetupRig(backend, limits = ConnectionSetupLimits(4096, approval, native, 50)).use { rig ->
+                assertTrue(rig.owner.decide(rig.ticket(), true, false))
+                assertTrue(backend.readyEntered.await(2, TimeUnit.SECONDS))
+                rig.clock.set(10 + elapsed)
+                backend.readyGate.countDown()
+                assertTrue(backend.entered.await(2, TimeUnit.SECONDS))
+                val expected = minOf(native, approval - elapsed)
+                assertEquals(expected, backend.authenticationTimeout)
+                assertEquals(ConnectionDeadline.at(10 + elapsed + expected), rig.owner.nextDeadline())
+            }
+        }
+    }
 }

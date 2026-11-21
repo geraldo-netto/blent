@@ -186,7 +186,7 @@ internal class ConnectionSetupOwner(
         require(time < approvalDeadline) { "Approval expired during readiness" }
         val tlsDeadline = minOf(approvalDeadline, until(time, limits.nativeTimeoutMs))
         stageUntil(tlsDeadline, ConnectionWorkerPhase.OPENING)
-        return backend.authenticate(identity)
+        return backend.authenticate(identity, tlsDeadline - now())
     }
 
     private fun awaitApproval(pairing: ConnectionPairing, ticket: ConnectionTicket, local: ConnectionPeer) {

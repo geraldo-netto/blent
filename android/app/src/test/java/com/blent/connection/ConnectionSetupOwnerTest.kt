@@ -22,6 +22,7 @@ internal class SetupBackend : ConnectionSetupBackend {
     var closeFailure: Exception? = null
     var proof = setupPeer(remote)
     var capacity = 4096
+    @Volatile var authenticationTimeout = 0L
     @Volatile var closed = false
     @Volatile var ioMade = false
     val stream = SetupIo()
@@ -32,7 +33,8 @@ internal class SetupBackend : ConnectionSetupBackend {
     override fun ready(peer: ConnectionIdentity, readinessTimeoutMs: Long) {
         readyEntered.countDown(); check(readyGate.await(3, TimeUnit.SECONDS))
     }
-    override fun authenticate(peer: ConnectionIdentity): ConnectionPeer {
+    override fun authenticate(peer: ConnectionIdentity, timeoutMs: Long): ConnectionPeer {
+        authenticationTimeout = timeoutMs
         entered.countDown(); check(authenticateGate.await(3, TimeUnit.SECONDS)); return proof
     }
     override fun negotiate(capacity: Int, timeoutMs: Long) = this.capacity

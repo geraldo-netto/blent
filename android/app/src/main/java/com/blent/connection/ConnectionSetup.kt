@@ -15,7 +15,8 @@ internal interface ConnectionSetupBackend : ConnectionSetupLifetime {
     fun localIdentity(): ConnectionIdentity
     fun discover(timeoutMs: Long): ConnectionIdentity
     fun ready(peer: ConnectionIdentity, readinessTimeoutMs: Long)
-    fun authenticate(peer: ConnectionIdentity): ConnectionPeer
+    /** Remaining setup stage budget, including TLS and the authenticated preface. */
+    fun authenticate(peer: ConnectionIdentity, timeoutMs: Long): ConnectionPeer
     fun negotiate(capacity: Int, timeoutMs: Long): Int
     fun io(wake: () -> Unit): ConnectionIo
 }

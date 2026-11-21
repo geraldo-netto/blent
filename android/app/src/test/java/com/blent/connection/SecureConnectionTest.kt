@@ -40,7 +40,7 @@ class SecureConnectionTest {
         val managers = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply { init(trust) }
         return SSLContext.getInstance("TLS").apply { init(keys("host"), managers.trustManagers, null) }
     }
-    private fun trial(clientPeer: String = "host", serverPeer: String = "tablet", protocol: String? = "blent-usb/1", readTimeout: Int = 0, preface: ByteArray = fixture("protocol-v1.bin"), sendPreface: Boolean = true, tls12: Boolean = false): Boolean {
+    private fun trial(clientPeer: String = "host", serverPeer: String = "tablet", protocol: String? = "blent-usb/1", readTimeout: Int = 0, preface: ByteArray = fixture("protocol-v1.bin"), sendPreface: Boolean = true, tls12: Boolean = false, setupTimeout: Int = 3000, remaining: () -> Int = { setupTimeout }): Boolean {
         val listener = serverContext(serverPeer).serverSocketFactory.createServerSocket(0, 1, InetAddress.getLoopbackAddress()) as SSLServerSocket
         listener.soTimeout = 3000
         listener.needClientAuth = true
@@ -63,16 +63,17 @@ class SecureConnectionTest {
             } }.isSuccess
         }
         try {
-            val transport = Socket(InetAddress.getLoopbackAddress(), listener.localPort).apply { soTimeout = readTimeout }
+            val transport = TimeoutSocket(listener.localPort).apply { soTimeout = readTimeout }
             var admitted = false
             val result = runCatching {
-                SecureConnection(keys("tablet"), fixture("$clientPeer.der")).connect(transport).use {
+                SecureConnection(keys("tablet"), fixture("$clientPeer.der")).connect(transport, remaining).use {
                     admitted = true
                     assertEquals("T846: handshake timeout must not leak into established streams", readTimeout, it.soTimeout)
                     it.getOutputStream().write(42); it.getOutputStream().flush()
                     assertEquals(43, it.getInputStream().read())
                 }
             }
+            if (admitted) assertTrue("T1522: TLS ignored configured setup budget: ${transport.timeouts}", setupTimeout in transport.timeouts)
             if (!sendPreface || !preface.contentEquals(fixture("protocol-v1.bin"))) {
                 assertFalse("Invalid protocol must reject before returning any application stream", admitted)
             }
@@ -80,6 +81,13 @@ class SecureConnectionTest {
             val accepted = server.get(5, TimeUnit.SECONDS)
             return result.isSuccess && accepted
         } finally { listener.close(); executor.shutdownNow(); assertTrue(executor.awaitTermination(5, TimeUnit.SECONDS)) }
+    }
+    private class TimeoutSocket(port: Int) : Socket(InetAddress.getLoopbackAddress(), port) {
+        val timeouts = mutableListOf<Int>()
+        override fun setSoTimeout(timeout: Int) { super.setSoTimeout(timeout); timeouts.add(timeout) }
+    }
+    @Test fun t1522TlsReadTimeoutUsesConfiguredSetupBudget() {
+        assertTrue(trial(readTimeout = 321, setupTimeout = 25000))
     }
     @Test fun t846MutualTlsTransfersBytesOnlyForApprovedIdentities() {
         assertTrue(trial())
@@ -118,7 +126,24 @@ class SecureConnectionTest {
     }
     @Test fun t846InvalidTransportClosesOwnedSocket() {
         val socket = Socket()
-        assertThrows(Exception::class.java) { SecureConnection(keys("tablet"), fixture("host.der")).connect(socket) }
+        assertThrows(Exception::class.java) { SecureConnection(keys("tablet"), fixture("host.der")).connect(socket) { 3000 } }
         assertTrue(socket.isClosed)
+    }
+    @Test fun t1522InvalidTlsBudgetsCloseTransportBeforeAdmission() {
+        for (budget in listOf(Int.MIN_VALUE, -1, 0, 60001, Int.MAX_VALUE)) {
+            assertFalse(trial(setupTimeout = budget))
+        }
+        assertTrue(trial(setupTimeout = 60000))
+    }
+    @Test fun t1522ExpiredBudgetRejectsBeforeAndAfterPrefaceWithoutAdmittingStream() {
+        for (expiryCall in 2..4) {
+            var calls = 0
+            assertFalse(trial(setupTimeout = 25000, remaining = {
+                calls++
+                if (calls == expiryCall) throw java.net.SocketTimeoutException("T1522 stage expired")
+                25000
+            }))
+            assertEquals(expiryCall, calls)
+        }
     }
 }

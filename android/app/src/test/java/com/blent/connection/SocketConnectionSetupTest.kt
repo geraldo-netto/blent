@@ -33,9 +33,9 @@ class SocketConnectionSetupTest {
             assertArrayEquals(local.certificate(), backend.localIdentity().certificate())
             val peer = backend.discover(3000)
             assertArrayEquals(SocketSetupFixture.bytes("host.der"), peer.certificate())
-            rejected { backend.authenticate(peer) }
+            rejected { backend.authenticate(peer, 3000) }
             backend.ready(peer, 3000); rejected { backend.ready(peer, 3000) }
-            assertEquals(64, backend.authenticate(peer).fingerprint.length)
+            assertEquals(64, backend.authenticate(peer, 3000).fingerprint.length)
             assertEquals(4096, backend.negotiate(4096, 3000))
             val owned = backend.io {}; io = owned
             rejected { backend.io {} }; rejected { backend.negotiate(4096, 3000) }
@@ -136,10 +136,10 @@ class SocketConnectionSetupTest {
         val late = SetupMemorySocket().apply { closeFailure = true }
         val raw = SetupMemorySocket(SocketSetupFixture.hello() + ConnectionReady.encode(true))
         lateinit var backend: SocketConnectionSetup
-        backend = SocketConnectionSetup(raw, SocketSetupFixture::identity, secure = { _, _, _ -> backend.close(); late })
+        backend = SocketConnectionSetup(raw, SocketSetupFixture::identity, secure = { _, _, _, _ -> backend.close(); late })
         val peer = backend.discover(1000)
         backend.ready(peer, 1000)
-        rejected { backend.authenticate(peer) }
+        rejected { backend.authenticate(peer, 3000) }
         assertTrue(late.closed); assertFalse(backend.retired())
     }
     @Test fun t886RetirementIncludesUnderlyingBridgeAndLateTlsResult() {
@@ -150,17 +150,39 @@ class SocketConnectionSetupTest {
             override fun close() {}
             override fun retired() = bridgeRetired
         }
-        val backend = SocketConnectionSetup(raw, SocketSetupFixture::identity, lifetime, secure = { _, _, _ ->
+        val backend = SocketConnectionSetup(raw, SocketSetupFixture::identity, lifetime, secure = { _, _, _, _ ->
             entered.countDown(); check(release.await(3, TimeUnit.SECONDS)); late
         })
         val peer = backend.discover(1000); backend.ready(peer, 1000)
         val pool = Executors.newSingleThreadExecutor()
-        val result = pool.submit<Boolean> { runCatching { backend.authenticate(peer) }.isFailure }
+        val result = pool.submit<Boolean> { runCatching { backend.authenticate(peer, 3000) }.isFailure }
         try {
             assertTrue(entered.await(2, TimeUnit.SECONDS)); backend.close()
             assertFalse(backend.retired()); release.countDown()
             assertTrue(result.get(2, TimeUnit.SECONDS)); assertTrue(late.closed)
             bridgeRetired = true; assertTrue(backend.retired())
         } finally { release.countDown(); backend.close(); pool.shutdownNow(); assertTrue(pool.awaitTermination(3, TimeUnit.SECONDS)) }
+    }
+    @Test fun t1522TlsReadsShareOneAbsoluteStageDeadline() {
+        for (budget in listOf(1L, 25000L, 60000L)) {
+            val clock = AtomicLong()
+            val raw = SetupMemorySocket(SocketSetupFixture.hello() + ConnectionReady.encode(true))
+            val done = IllegalStateException("T1522 checked timeout provider")
+            val backend = SocketConnectionSetup(raw, SocketSetupFixture::identity, clock = clock::get,
+                secure = { _, _, _, remaining ->
+                    assertEquals(budget.toInt(), remaining())
+                    clock.addAndGet(1)
+                    assertEquals(budget.toInt(), remaining())
+                    clock.set(budget * 1000000)
+                    assertThrows(SocketTimeoutException::class.java) { remaining() }
+                    throw done
+                })
+            try {
+                val peer = backend.discover(3000)
+                backend.ready(peer, 3000)
+                assertSame(done, runCatching { backend.authenticate(peer, budget) }.exceptionOrNull())
+            } finally { backend.close() }
+            assertTrue(raw.closed)
+        }
     }
 }

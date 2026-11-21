@@ -16,8 +16,8 @@ internal class SocketConnectionSetup(
     private val identity: () -> ClientTlsIdentity,
     private val lifetime: ConnectionSetupLifetime? = null,
     private val clock: () -> Long = System::nanoTime,
-    private val secure: (ClientTlsIdentity, ByteArray, Socket) -> Socket = { local, peer, raw ->
-        SecureConnection(local.keyManagers(), peer).connect(raw)
+    private val secure: (ClientTlsIdentity, ByteArray, Socket, () -> Int) -> Socket = { local, peer, raw, remaining ->
+        SecureConnection(local.keyManagers(), peer).connect(raw, remaining)
     },
 ) : ConnectionSetupBackend {
     private val gate = Any()
@@ -102,10 +102,11 @@ internal class SocketConnectionSetup(
         ConnectionReady.decode(read(ConnectionReady.BYTES, end), true)
         coordinated = true
     }
-    override fun authenticate(peer: ConnectionIdentity): ConnectionPeer {
+    override fun authenticate(peer: ConnectionIdentity, timeoutMs: Long): ConnectionPeer {
         live(); check(coordinated && !authenticated)
         val expected = approved(peer)
-        val secured = secure(checkNotNull(loaded), expected, socket)
+        val end = deadline(timeoutMs)
+        val secured = secure(checkNotNull(loaded), expected, socket) { remaining(end) }
         adopt(secured)
         val certificate = (secured as SSLSocket).session.peerCertificates.first().encoded
         val proven = ConnectionIdentity(certificate).fingerprint()

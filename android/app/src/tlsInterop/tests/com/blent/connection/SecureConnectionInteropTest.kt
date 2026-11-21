@@ -85,7 +85,7 @@ class SecureConnectionInteropTest {
 
     private fun resourceMode(mode: String): Boolean = mode == "session" || mode == "setup"
     private fun fixtureStream(socket: Socket, peer: String, mode: String): Socket =
-        if (mode == "setup") socket else client(peer).connect(socket)
+        if (mode == "setup") socket else client(peer).connect(socket) { 3000 }
 
     private fun rawExchange(socket: Socket) {
         socket.getOutputStream().write("fixture".toByteArray()); socket.getOutputStream().flush()

@@ -60,7 +60,7 @@ internal class AndroidConnectionSetupBackend(
     }
     override fun discover(timeoutMs: Long): ConnectionIdentity = current().discover(timeoutMs)
     override fun ready(peer: ConnectionIdentity, readinessTimeoutMs: Long) = current().ready(peer, readinessTimeoutMs)
-    override fun authenticate(peer: ConnectionIdentity): ConnectionPeer = current().authenticate(peer)
+    override fun authenticate(peer: ConnectionIdentity, timeoutMs: Long): ConnectionPeer = current().authenticate(peer, timeoutMs)
     override fun negotiate(capacity: Int, timeoutMs: Long): Int = current().negotiate(capacity, timeoutMs)
     override fun io(wake: () -> Unit): ConnectionIo = current().io(wake)
     override fun close() {

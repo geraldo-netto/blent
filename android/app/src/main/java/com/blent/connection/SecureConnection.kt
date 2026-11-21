@@ -2,7 +2,6 @@ package com.blent.connection
 
 import android.os.Build
 import java.io.ByteArrayInputStream
-import java.io.DataInputStream
 import java.net.Socket
 import java.security.KeyStore
 import java.security.MessageDigest
@@ -48,16 +47,16 @@ internal class SecureConnection(keys: Array<KeyManager>, approvedCertificate: By
 
     /** Takes socket ownership even on failure. Its supervisor must bound native
      * close and retain ownership until the worker has actually retired. */
-    fun connect(socket: Socket): Socket {
+    fun connect(socket: Socket, remaining: () -> Int): Socket {
         var owned = socket
         try {
             val readTimeout = socket.soTimeout
             val secured = context.socketFactory.createSocket(socket, HOSTNAME, socket.port, true) as SSLSocket
             owned = secured
-            configure(secured)
+            configure(secured, timeout(remaining))
             secured.startHandshake()
             verify(secured)
-            protocol(secured)
+            protocol(secured, remaining)
             secured.soTimeout = readTimeout
             return secured
         } catch (failure: Exception) {
@@ -66,9 +65,9 @@ internal class SecureConnection(keys: Array<KeyManager>, approvedCertificate: By
         }
     }
 
-    private fun configure(socket: SSLSocket) {
+    private fun configure(socket: SSLSocket, timeoutMs: Int) {
         socket.useClientMode = true
-        socket.soTimeout = 10000
+        socket.soTimeout = timeoutMs
         socket.enabledProtocols = socket.supportedProtocols.filter { it == "TLSv1.3" || it == "TLSv1.2" }.toTypedArray()
         socket.sslParameters = socket.sslParameters.apply {
             endpointIdentificationAlgorithm = "HTTPS"
@@ -77,12 +76,29 @@ internal class SecureConnection(keys: Array<KeyManager>, approvedCertificate: By
         }
     }
 
-    private fun protocol(socket: SSLSocket) {
+    private fun timeout(remaining: () -> Int): Int = remaining().also {
+        require(it in 1..60000) { "TLS setup timeout must be within 1–60000 ms" }
+    }
+
+    private fun protocol(socket: SSLSocket, remaining: () -> Int) {
+        timeout(remaining)
         socket.outputStream.write(PREFACE)
         socket.outputStream.flush()
+        check(receive(socket, remaining).contentEquals(PREFACE)) { "Unexpected authenticated protocol preface" }
+    }
+
+    private fun receive(socket: SSLSocket, remaining: () -> Int): ByteArray {
         val received = ByteArray(PREFACE.size)
-        DataInputStream(socket.inputStream).readFully(received)
-        check(received.contentEquals(PREFACE)) { "Unexpected authenticated protocol preface" }
+        val input = socket.inputStream
+        var count = 0
+        while (count < received.size) {
+            socket.soTimeout = timeout(remaining)
+            val amount = input.read(received, count, received.size - count)
+            check(amount in 1..(received.size - count)) { "Truncated authenticated protocol preface" }
+            count += amount
+        }
+        timeout(remaining)
+        return received
     }
 
     private fun verify(socket: SSLSocket) {

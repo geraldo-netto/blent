@@ -188,6 +188,13 @@ Destroying the Activity cancels its retry observer; an established application-o
 link remains owned. This does not promise unattended recovery after application
 process death or certify physical tablet/display behavior.
 
+Android’s **Native setup timeout (ms)** also bounds TLS handshake and authenticated
+protocol setup reads. Its range is 1–60000 ms, with a 10000 ms default. TLS uses
+the remaining setup budget and cannot extend the remaining approval window.
+Preface fragments share that deadline; successful setup restores the caller’s
+stream read timeout. These setup limits do not set the lifetime of an established
+connection.
+
 While a device advertises USB debugging, its row shows **Reserved for USB
 debugging** and disables **Connect**. Use **Tablets** for ADB display sharing.
 To use debugging-free USB instead, turn USB debugging off on the tablet and
