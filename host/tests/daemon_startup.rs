@@ -10,6 +10,11 @@ fn t1428_failed_startup_removes_owned_pid() {
     run_fixture("pid_cleanup.py");
 }
 
+#[test]
+fn t1509_actual_daemon_retains_pid_and_reports_pending_cleanup() {
+    run_fixture("drain.py");
+}
+
 fn run_fixture(script: &str) {
     let output = std::process::Command::new("/usr/bin/unshare")
         .args([

@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import sys
+import time
 
 
 def reverse(root, args):
@@ -16,6 +17,8 @@ def reverse(root, args):
         routes[args[4]] = args[5]
         path.write_text(json.dumps(routes))
     elif action == '--remove':
+        while (root / 'hold-removal').exists():
+            time.sleep(0.01)
         routes.pop(args[4], None)
         path.write_text(json.dumps(routes))
     else:

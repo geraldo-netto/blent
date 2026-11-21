@@ -251,8 +251,7 @@ fn t1027_primary_and_adb_usb_extra_builders_forward_the_original_channel() {
         .is_none());
 }
 
-fn isolated_daemon() -> bool {
-    const TEST: &str = "daemon_activity::tests::t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests";
+pub(crate) fn isolated_daemon(test: &str) -> bool {
     if std::env::var_os("BLENT_T1027_DAEMON").is_some() {
         return false;
     }
@@ -274,7 +273,7 @@ fn isolated_daemon() -> bool {
             "--mount-proc",
         ])
         .arg(std::env::current_exe().unwrap())
-        .args(["--exact", TEST, "--nocapture"])
+        .args(["--exact", test, "--nocapture"])
         .env("BLENT_T1027_DAEMON", "1")
         .env("HOME", root.path())
         .env("XDG_RUNTIME_DIR", root.path())
@@ -340,20 +339,25 @@ async fn shutdown_requests() {
 }
 #[tokio::test]
 async fn t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests() {
-    if isolated_daemon() {
+    if isolated_daemon("daemon_activity::tests::t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests") {
         return;
     }
     let cli = daemon_config().await;
     let (factory, release) = fixture(Default::default());
     let observed = factory.clone();
-    let mut daemon = tokio::spawn(crate::run_daemon_with(
-        cli,
-        factory.clone(),
-        move |_| async move {
-            until(|| observed.state.created.load(Ordering::Acquire) == 1).await;
-            Ok(())
-        },
-    ));
+    let owned_factory = factory.clone();
+    let mut daemon = tokio::spawn(async move {
+        crate::run_daemon_with(
+            cli,
+            owned_factory,
+            move |_| async move {
+                until(|| observed.state.created.load(Ordering::Acquire) == 1).await;
+                Ok(())
+            },
+            &mut None,
+        )
+        .await
+    });
     tokio::select! {
         _ = until(|| factory.state.stopped.load(Ordering::Acquire)) => {},
         result = &mut daemon => panic!("T1027 daemon returned before source retirement: {result:?}"),
@@ -386,4 +390,39 @@ fn t1045_extra_adb_usb_sessions_keep_saved_viewer_preferences() {
             assert_eq!(extra.activity_preferences, template.activity_preferences);
         }
     }
+}
+
+#[tokio::test]
+async fn t1509_daemon_identity_survives_workflow_return() {
+    if isolated_daemon("daemon_activity::tests::t1509_daemon_identity_survives_workflow_return") {
+        return;
+    }
+    let cli = daemon_config().await;
+    let (factory, release) = fixture(Default::default());
+    let stopped = factory.clone();
+    let release_task = tokio::spawn(async move {
+        until(|| stopped.state.stopped.load(Ordering::Acquire)).await;
+        drop(release);
+    });
+    let observed = factory.clone();
+    let mut publication = None;
+    crate::run_daemon_with(
+        cli,
+        factory,
+        move |_| async move {
+            until(|| observed.state.created.load(Ordering::Acquire) == 1).await;
+            Ok(())
+        },
+        &mut publication,
+    )
+    .await
+    .unwrap();
+    release_task.await.unwrap();
+    let retained = crate::get_pid_path().exists();
+    drop(publication);
+    assert!(!crate::get_pid_path().exists());
+    assert!(
+        retained,
+        "T1509 daemon identity disappeared before entry drain"
+    );
 }

@@ -17,4 +17,4 @@ pub(super) async fn retire(source: Following) {
 }
 
 #[cfg(test)]
-mod tests;
+pub(crate) mod tests;

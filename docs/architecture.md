@@ -393,6 +393,12 @@ between pool release and completion publication. The pools remain the resource o
 original completion observations. Failed cleanup keeps the process alive and
 prevents new admission. Eventual exit requires original cleanup to succeed and
 native/task retirement to become observable; a deadline does not grant release.
+The daemon entry retains its PID publication and signal listener through this
+drain, including failed startup and unwinding. Pending observations are logged
+immediately and every five seconds, grouped by their admission source locations.
+These groups identify code ownership sites, not independently enumerated kernel
+objects. Repeated SIGTERM/SIGINT requests log that original retirement is still
+pending; they do not release resources or escalate to a forced kill (T1509).
 Only after this drain does the final Tokio shutdown budget apply. Any unrelated,
 unadmitted blocking work still running after that budget ends with process exit,
 as covered by the separate bounded-runtime fixture; this is not a successful

@@ -1,0 +1,136 @@
+[
+  {
+    "file": "host/src/process_retirement.rs",
+    "name": "reap",
+    "line": 25,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/process_retirement.rs",
+    "name": "reserve",
+    "line": 36,
+    "language": "rust",
+    "covered": 17,
+    "total": 17,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/process_retirement.rs",
+    "name": "settled",
+    "line": 72,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/process_retirement.rs",
+    "name": "report_pending",
+    "line": 77,
+    "language": "rust",
+    "covered": 15,
+    "total": 17,
+    "percent": 88.23529411764706,
+    "passes": true,
+    "missing": [
+      83,
+      95
+    ]
+  },
+  {
+    "file": "host/src/process_retirement.rs",
+    "name": "drain",
+    "line": 98,
+    "language": "rust",
+    "covered": 10,
+    "total": 11,
+    "percent": 90.9090909090909,
+    "passes": true,
+    "missing": [
+      106
+    ]
+  },
+  {
+    "file": "host/src/linux_main.rs",
+    "name": "run_daemon_with",
+    "line": 1713,
+    "language": "rust",
+    "covered": 196,
+    "total": 205,
+    "percent": 95.60975609756098,
+    "passes": true,
+    "missing": [
+      1739,
+      1835,
+      1840,
+      1858,
+      1859,
+      1860,
+      1943,
+      1944,
+      1958
+    ]
+  },
+  {
+    "file": "host/src/daemon_shutdown.rs",
+    "name": "new",
+    "line": 21,
+    "language": "rust",
+    "covered": 16,
+    "total": 19,
+    "percent": 84.21052631578948,
+    "passes": true,
+    "missing": [
+      33,
+      39,
+      45
+    ]
+  },
+  {
+    "file": "host/src/linux_main.rs",
+    "name": "main",
+    "line": 85,
+    "language": "rust",
+    "covered": 9,
+    "total": 10,
+    "percent": 90.0,
+    "passes": true,
+    "missing": [
+      87
+    ]
+  },
+  {
+    "file": "host/src/linux_main.rs",
+    "name": "run_cli",
+    "line": 99,
+    "language": "rust",
+    "covered": 13,
+    "total": 15,
+    "percent": 86.66666666666667,
+    "passes": true,
+    "missing": [
+      111,
+      112
+    ]
+  },
+  {
+    "file": "host/src/linux_main.rs",
+    "name": "run_daemon",
+    "line": 1700,
+    "language": "rust",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

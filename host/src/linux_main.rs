@@ -93,16 +93,17 @@ fn main() -> Result<()> {
     if let Some(result) = encoder_worker::dispatch(std::env::args_os().skip(1)) {
         return result;
     }
-    blent::runtime_owner::run(run_cli())?
+    let mut lifetime = daemon_shutdown::Lifetime::default();
+    blent::runtime_owner::run(run_cli(&mut lifetime))?
 }
-async fn run_cli() -> Result<()> {
+async fn run_cli(lifetime: &mut daemon_shutdown::Lifetime) -> Result<()> {
     let cli = Cli::parse();
     setup_logging();
 
     match &cli.command {
         Some(Commands::Start) | None => {
             info!("Starting blent daemon");
-            run_daemon(cli).await?;
+            run_daemon(cli, lifetime).await?;
         }
         Some(Commands::Stop) => stop_daemon().await?,
         Some(Commands::Status) => show_status().await?,
@@ -314,7 +315,10 @@ exit 1
             if saved_fps == 60 {
                 cli.fps = Some(90);
             }
-            let error = run_daemon(cli).await.unwrap_err().to_string();
+            let error = run_daemon(cli, &mut daemon_shutdown::Lifetime::default())
+                .await
+                .unwrap_err()
+                .to_string();
             assert!(error.contains("655.35 MHz"), "T332: {error}");
             assert_eq!(std::fs::read_dir(dir.path()).unwrap().count(), 0);
         }
@@ -341,7 +345,10 @@ exit 1
             let mut cli =
                 Cli::try_parse_from(["blent", "--helper", "/nonexistent-t288-helper"]).unwrap();
             cli.pen_only = !saved_mode;
-            let error = run_daemon(cli).await.unwrap_err().to_string();
+            let error = run_daemon(cli, &mut daemon_shutdown::Lifetime::default())
+                .await
+                .unwrap_err()
+                .to_string();
             assert!(error.contains("requires Pen"), "T288: {error}");
             assert_eq!(std::fs::read_dir(dir.path()).unwrap().count(), 0);
         }
@@ -369,9 +376,12 @@ exit 1
                 if explicit {
                     args.extend(["--encoder", encoder]);
                 }
-                let error = run_daemon(Cli::try_parse_from(args).unwrap())
-                    .await
-                    .unwrap_err();
+                let error = run_daemon(
+                    Cli::try_parse_from(args).unwrap(),
+                    &mut daemon_shutdown::Lifetime::default(),
+                )
+                .await
+                .unwrap_err();
                 assert!(
                     error
                         .to_string()
@@ -1687,12 +1697,14 @@ printf '%s\n' "$2" >> "$0.log"
     }
 }
 
-async fn run_daemon(cli: Cli) -> Result<()> {
-    let shutdown = daemon_shutdown::Listener::new()?;
+async fn run_daemon(cli: Cli, lifetime: &mut daemon_shutdown::Lifetime) -> Result<()> {
+    lifetime.signals = Some(daemon_shutdown::Listener::new()?);
+    let shutdown = lifetime.signals.as_ref().unwrap();
     let result = run_daemon_with(
         cli,
         std::sync::Arc::new(blent::activity::Factory::default()),
         |quit| shutdown.wait(quit),
+        &mut lifetime.publication,
     )
     .await;
     shutdown.finish(result)
@@ -1702,6 +1714,7 @@ async fn run_daemon_with<S, F>(
     cli: Cli,
     activity_factory: std::sync::Arc<dyn blent_config::host_activity::SourceFactory>,
     shutdown: S,
+    publication: &mut Option<daemon_pid::Publication>,
 ) -> Result<()>
 where
     S: FnOnce(watch::Receiver<bool>) -> F,
@@ -1730,8 +1743,8 @@ where
     blent_config::scheduling::apply_configured();
     blent_config::scheduling::apply_shared_adb(file_cfg.scheduling_priority);
 
-    // T1428: retire our publication on every exit from startup or shutdown.
-    let _pid_file = daemon_pid::Publication::new(pid_path)?;
+    // T1509: entry retains identity through success, error and unwind drain.
+    *publication = Some(daemon_pid::Publication::new(pid_path)?);
 
     heal_config(&file_cfg);
     blent_config::linux::pipe::publish_current()?;

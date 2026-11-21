@@ -1,0 +1,28 @@
+{
+  "issue": "T1509",
+  "red": {
+    "drain": "6e3605fe2081cacb4b58ac43603a974821a5177f6cdbf066b31649eb4012fd6a",
+    "pid": "9e9f8e34652b62f64d1ec5c601396cbcec45515f6d2c29bafed95693d7768ff7",
+    "signal": "beb9cb8576925d7aa8d0ee4d20fe3f56b5065362c41694e12b5614e8a397ba45"
+  },
+  "green": {
+    "registry_filter_cases": 5,
+    "daemon_filter_cases": 22,
+    "integration_cases": 7,
+    "failed": 0,
+    "additional_private_cli_programs": 5
+  },
+  "native": "Actual private daemon: held fake ADB removal beyond five seconds, entry drain logged, PID retained, repeated signal logged, release settled routes and PID.",
+  "coverage": {
+    "tool": "cargo-llvm-cov 0.8.7, rustc 1.100.0; exact lib/bin-test/actual binary objects",
+    "methods": 10,
+    "minimum_percent": 84.21052631578948
+  },
+  "complexity": {
+    "tool": "project syn Rust/Python AST checker",
+    "functions": 162,
+    "over_9": 0
+  },
+  "ownership": "Existing pool ownership, native completion and runtime drain remain authoritative. Entry guards outlive work and drain. Source-location metadata and transient reporting map are bounded by 12421 admissions. Observer task owns only signal streams and is retired by runtime shutdown/guard drop.",
+  "limitations": "Physical device cleanup not invoked; no forced-retirement deadline introduced."
+}

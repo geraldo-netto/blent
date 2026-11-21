@@ -1,4 +1,4 @@
-//! T1428: the daemon workflow owns its PID publication through every return path.
+//! T1428/T1509: entry owns the PID publication through workflow and exit drain.
 use std::{
     io::{self, Write},
     path::{Path, PathBuf},

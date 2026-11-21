@@ -6,6 +6,13 @@ use tokio::{
     task::JoinHandle,
 };
 
+/// The entry owns these guards outside runtime_owner::run, including its drain.
+#[derive(Default)]
+pub(crate) struct Lifetime {
+    pub(crate) publication: Option<crate::daemon_pid::Publication>,
+    pub(crate) signals: Option<Listener>,
+}
+
 pub(crate) struct Listener {
     requested: watch::Receiver<bool>,
     task: JoinHandle<()>,
@@ -17,13 +24,24 @@ impl Listener {
         let mut interrupt = signal(SignalKind::interrupt())?;
         let (request, requested) = watch::channel(false);
         let task = tokio::spawn(async move {
-            tokio::select! {
-                _ = terminate.recv() => {},
-                _ = interrupt.recv() => {},
+            loop {
+                let event = tokio::select! {
+                    event = terminate.recv() => event,
+                    event = interrupt.recv() => event,
+                };
+                if event.is_none() {
+                    break;
+                }
+                // Publish before cutoff; repeated signals remain observable.
+                let repeated = request.send_replace(true);
+                if repeated {
+                    tracing::warn!(
+                        "Termination requested again; waiting for original native retirement"
+                    );
+                } else {
+                    blent::runtime_owner::request_shutdown();
+                }
             }
-            // Publish first so admission rejection cannot outrun its stop reason.
-            request.send_replace(true);
-            blent::runtime_owner::request_shutdown();
         });
         Ok(Self { requested, task })
     }
@@ -113,6 +131,28 @@ mod tests {
             blent::runtime_owner::AdmissionClosed.to_string(),
             "Process resource admission is closed"
         );
+    }
+
+    #[tokio::test]
+    async fn t1509_repeated_signal_remains_observable_during_drain() {
+        if crate::daemon_activity::tests::isolated_daemon(
+            "daemon_shutdown::tests::t1509_repeated_signal_remains_observable_during_drain",
+        ) {
+            return;
+        }
+        let listener = Listener::new().unwrap();
+        let mut requests = listener.requested.clone();
+        for signal in [libc::SIGTERM, libc::SIGINT, libc::SIGTERM] {
+            assert_eq!(unsafe { libc::kill(libc::getpid(), signal) }, 0);
+            let result =
+                tokio::time::timeout(std::time::Duration::from_secs(3), requests.changed()).await;
+            assert!(
+                matches!(result, Ok(Ok(()))),
+                "T1509 later termination signal was swallowed: {result:?}"
+            );
+            assert!(*requests.borrow_and_update());
+        }
+        drop(listener);
     }
 
     #[tokio::test]

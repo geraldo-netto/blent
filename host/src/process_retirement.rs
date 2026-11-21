@@ -15,7 +15,16 @@ pub(crate) static PROCESS: LazyLock<Registry> = LazyLock::new(Registry::default)
 #[derive(Default)]
 struct State {
     closed: bool,
-    pending: Vec<Completion>,
+    pending: Vec<Pending>,
+}
+struct Pending {
+    proof: Completion,
+    origin: &'static std::panic::Location<'static>,
+}
+impl State {
+    fn reap(&mut self) {
+        self.pending.retain(|pending| !pending.proof.is_complete());
+    }
 }
 #[derive(Default)]
 pub(crate) struct Registry {
@@ -23,10 +32,11 @@ pub(crate) struct Registry {
     stopping: CancellationToken,
 }
 impl Registry {
+    #[track_caller]
     pub(crate) fn reserve(&self, pool: &Pool) -> std::io::Result<Admission> {
         let mut state = self.state.lock().unwrap();
         Self::require_open(state.closed)?;
-        state.pending.retain(|proof| !proof.is_complete());
+        state.reap();
         if state.pending.len() >= 12421 {
             return Err(std::io::Error::new(
                 std::io::ErrorKind::WouldBlock,
@@ -34,7 +44,10 @@ impl Registry {
             ));
         }
         let admission = pool.reserve()?;
-        state.pending.push(admission.completion());
+        state.pending.push(Pending {
+            proof: admission.completion(),
+            origin: std::panic::Location::caller(),
+        });
         Ok(admission)
     }
     pub(crate) async fn cancelled(&self) {
@@ -58,12 +71,39 @@ impl Registry {
     }
     fn settled(&self) -> bool {
         let mut state = self.state.lock().unwrap();
-        state.pending.retain(|proof| !proof.is_complete());
+        state.reap();
         state.pending.is_empty()
+    }
+    fn report_pending(&self) {
+        let mut locations = std::collections::BTreeMap::new();
+        let mut state = self.state.lock().unwrap();
+        state.reap();
+        let pending = state.pending.len();
+        if pending == 0 {
+            return;
+        }
+        for original in &state.pending {
+            let origin = original.origin;
+            *locations
+                .entry((origin.file(), origin.line(), origin.column()))
+                .or_insert(0usize) += 1;
+        }
+        drop(state);
+        tracing::warn!(
+            pending,
+            ?locations,
+            "Waiting for native retirement; process is still stopping"
+        );
     }
     pub(crate) async fn drain(&self) {
         self.close();
+        let mut next_report = tokio::time::Instant::now();
         while !self.settled() {
+            let now = tokio::time::Instant::now();
+            if now >= next_report {
+                self.report_pending();
+                next_report = now + std::time::Duration::from_secs(5);
+            }
             tokio::time::sleep(std::time::Duration::from_millis(5)).await;
         }
     }
@@ -134,3 +174,6 @@ mod tests {
         registry.drain().await;
     }
 }
+
+#[cfg(test)]
+mod diagnostic_tests;
