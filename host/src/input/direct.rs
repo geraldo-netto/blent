@@ -72,7 +72,7 @@ struct Gate {
 struct Message {
     command: Command,
     authority: Arc<Authority>,
-    reply: Option<tokio::sync::oneshot::Sender<Result<()>>>,
+    reply: tokio::sync::oneshot::Sender<Result<()>>,
     _admission: Arc<tokio::sync::OwnedSemaphorePermit>,
 }
 enum Request {
@@ -172,7 +172,7 @@ impl Sink {
     fn admit(
         &self,
         command: Command,
-        reply: Option<tokio::sync::oneshot::Sender<Result<()>>>,
+        reply: tokio::sync::oneshot::Sender<Result<()>>,
     ) -> Result<(Arc<Authority>, Arc<tokio::sync::OwnedSemaphorePermit>)> {
         let admission = Arc::new(
             self.commands
@@ -198,7 +198,7 @@ impl Sink {
     }
     fn request(&self, command: Command) -> Result<super::backend::DirectReply> {
         let (reply, response) = tokio::sync::oneshot::channel();
-        let (authority, admission) = self.admit(command, Some(reply))?;
+        let (authority, admission) = self.admit(command, reply)?;
         let mut cancelled = authority.0.subscribe();
         let mut pending = Pending {
             wake: self.sender.clone(),
@@ -234,13 +234,9 @@ impl InputSink for Sink {
         gate.status.negotiated = false;
         let _ = self.sender.try_send(Request::Wake);
     }
-    fn touch(&self, (x, y, _): (f64, f64, f64), action: u8, slot: u8) {
-        if let Err(error) =
-            legacy_touch(x, y, action, slot).and_then(|command| self.admit(command, None))
-        {
-            self.release_all();
-            tracing::warn!("Touch rejected: {error}");
-        }
+    fn touch(&self, _: (f64, f64, f64), _: u8, _: u8) {
+        // This backend admits touch through acknowledged direct commands only.
+        self.release_all();
     }
     fn pen(&self, _: PenSample, _: bool) {
         self.release_all();
@@ -257,7 +253,7 @@ impl InputSink for Sink {
     }
 }
 
-pub(super) fn legacy_touch(x: f64, y: f64, action: u8, slot: u8) -> Result<Command> {
+pub(super) fn touch_command(x: f64, y: f64, action: u8, slot: u8) -> Result<Command> {
     let phase = match action {
         0 => Phase::Down,
         1 => Phase::Up,

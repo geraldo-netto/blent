@@ -1,0 +1,101 @@
+{
+  "issue": "T1503",
+  "red": [
+    "Obsolete direct touch wire accepted.",
+    "Unacknowledged touch entry admitted input instead of revoking authority."
+  ],
+  "green": {
+    "shared": 6,
+    "host": 26
+  },
+  "coverage": [
+    {
+      "file": "host/src/input/direct.rs",
+      "name": "admit",
+      "line": 172,
+      "language": "rust",
+      "covered": 25,
+      "total": 26,
+      "percent": 96.15384615384616,
+      "passes": true,
+      "missing": [
+        196
+      ]
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "name": "request",
+      "line": 199,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "name": "touch",
+      "line": 237,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "name": "touch_command",
+      "line": 256,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "name": "apply",
+      "line": 70,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input.rs",
+      "name": "dispatch_event",
+      "line": 651,
+      "language": "rust",
+      "covered": 16,
+      "total": 18,
+      "percent": 88.88888888888889,
+      "passes": true,
+      "missing": [
+        674,
+        675
+      ]
+    }
+  ],
+  "complexity": [
+    "common/src/direct_input/tests.rs:14\ttouch\t1",
+    "common/src/direct_input/tests.rs:60\ttouch\t1",
+    "common/src/direct_input/tests.rs:259\tt1503_direct_event_wire_rejects_internal_touch\t2",
+    "host/src/input/direct.rs:172\tadmit\t3",
+    "host/src/input/direct.rs:199\trequest\t1",
+    "host/src/input/direct.rs:237\ttouch\t1",
+    "host/src/input/direct.rs:256\ttouch_command\t5",
+    "host/src/input/direct/worker.rs:70\tapply\t6",
+    "host/src/input/direct/tests.rs:17\ttouch\t1",
+    "host/src/input/direct/tests.rs:169\tt673_wire_dispatch_accepts_negotiated_touch_and_rejects_pen_and_failed_input\t3",
+    "host/src/input/direct/tests.rs:216\tt673_negotiation_modes_bounds_and_failed_delivery_retire_owned_input\t3",
+    "host/src/input/direct/tests.rs:313\tt673_disabled_modes_and_seeded_wire_values_never_reach_devices\t5",
+    "host/src/input/direct/tests.rs:434\tt1503_non_command_touch_entry_revokes_direct_authority\t1",
+    "host/src/input.rs:651\tdispatch_event\t6",
+    "14 functions; 0 exceed cyclomatic complexity 9"
+  ]
+}

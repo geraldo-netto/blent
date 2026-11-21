@@ -60,6 +60,8 @@ impl Button {
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Event {
+    // Touch arrives through the control touch record; this variant is domain-only.
+    #[serde(skip)]
     Touch {
         x: f64,
         y: f64,

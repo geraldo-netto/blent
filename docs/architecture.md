@@ -1165,6 +1165,9 @@ Examples of individual client messages (one JSON object per WebSocket message):
 {"type":"rendered","seq":1234,"decode_us":14200}
 ```
 
+Touch uses the top-level `touch` record on every backend. Direct-input `event`
+records carry mouse events only; internal touch commands are not a second wire format.
+
 Coordinates are normalized to 0–1; wire tilt values are degrees. Touch actions
 are 0 down, 1 up, 2 move; pen adds 3 hover, 4 exit/cancel, 5/6 stylus-button
 down/up. Pen tip-up publishes its final axes and releases pressure/touch while

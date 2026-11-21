@@ -254,3 +254,21 @@ fn t673_preferences_validate_monitor_identity_modes_and_device_masks() {
         }
     }
 }
+
+#[test]
+fn t1503_direct_event_wire_rejects_internal_touch() {
+    for slot in 0..=255 {
+        let wire = format!(r#"{{"type":"touch","x":0.5,"y":0.5,"slot":{slot},"phase":"down"}}"#);
+        assert!(
+            serde_json::from_str::<Event>(&wire).is_err(),
+            "T1503 obsolete touch wire accepted"
+        );
+        assert!(serde_json::to_string(&touch(slot, Phase::Down)).is_err());
+    }
+    let current = mouse(Some(Button::Left), Phase::Down);
+    let wire = serde_json::to_string(&current).unwrap();
+    assert!(matches!(
+        serde_json::from_str::<Event>(&wire).unwrap(),
+        Event::Mouse { .. }
+    ));
+}

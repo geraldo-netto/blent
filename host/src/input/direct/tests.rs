@@ -204,9 +204,11 @@ async fn t673_wire_dispatch_accepts_negotiated_touch_and_rejects_pen_and_failed_
         .await
     );
     evidence.fail.store(true, Ordering::SeqCst);
-    assert!(!dispatch(
-        r#"{"type":"direct_input","command":{"type":"event","event":{"type":"touch","x":0.5,"y":0.5,"slot":0,"phase":"down"}}}"#
-    ).finish().await);
+    assert!(
+        !dispatch(r#"{"type":"touch","x":0.5,"y":0.5,"pressure":1,"action":0,"slot":0}"#)
+            .finish()
+            .await
+    );
     assert!(!sink.direct_status().unwrap().negotiated);
 }
 
@@ -239,12 +241,19 @@ async fn t673_negotiation_modes_bounds_and_failed_delivery_retire_owned_input() 
         calls.iter().position(|v| v == "retire").unwrap()
             < calls.iter().position(|v| v == "create Touch").unwrap()
     );
-    sink.touch((0.5, 0.5, 1.0), 0, 0);
-    sink.touch((0.75, 0.5, 1.0), 2, 0);
-    sink.touch((0.75, 0.5, 0.0), 1, 0);
+    execute(&*sink, touch_command(0.5, 0.5, 0, 0).unwrap())
+        .await
+        .unwrap();
+    execute(&*sink, touch_command(0.75, 0.5, 2, 0).unwrap())
+        .await
+        .unwrap();
+    execute(&*sink, touch_command(0.75, 0.5, 1, 0).unwrap())
+        .await
+        .unwrap();
     wait_touches(&e).await;
     assert!(e.calls.lock().unwrap().iter().any(|v| v.contains("touch")));
-    sink.touch((0.5, 0.5, 1.0), 255, 255);
+    assert!(touch_command(0.5, 0.5, 255, 255).is_err());
+    sink.release_all();
     assert!(!sink.direct_status().unwrap().negotiated);
     for x in [
         f64::NAN,
@@ -311,12 +320,15 @@ async fn t673_disabled_modes_and_seeded_wire_values_never_reach_devices() {
         assert!(e.calls.lock().unwrap().is_empty());
     }
     for value in -32..=300 {
-        let text = format!(
-            r#"{{"type":"event","event":{{"type":"touch","x":0,"y":1,"slot":{value},"phase":"down"}}}}"#
-        );
-        let parsed = serde_json::from_str::<Command>(&text);
+        let text =
+            format!(r#"{{"type":"touch","x":0,"y":1,"pressure":1,"slot":{value},"action":0}}"#);
+        let parsed = serde_json::from_str::<super::super::InputEvent>(&text);
         assert_eq!(parsed.is_ok(), (0..=255).contains(&value));
-        if let Ok(command) = parsed {
+        if let Ok(super::super::InputEvent::Touch {
+            x, y, action, slot, ..
+        }) = parsed
+        {
+            let command = touch_command(x, y, action, slot).unwrap();
             let (backend, _) = backend(Mode::Touch, true, false);
             let sink = backend.sink();
             negotiate(&sink).await;
@@ -417,3 +429,22 @@ async fn t673_authenticated_owner_replacement_and_disconnect_retire_buttons() {
 
 mod cleanup;
 mod responsiveness;
+
+#[tokio::test]
+async fn t1503_non_command_touch_entry_revokes_direct_authority() {
+    let (backend, evidence) = backend(Mode::Touch, true, false);
+    let sink = backend.sink();
+    negotiate(&sink).await;
+    sink.touch((0.5, 0.5, 1.0), 0, 0);
+    assert!(
+        !sink.direct_status().unwrap().negotiated,
+        "T1503 unreachable entry admitted touch"
+    );
+    wait_retired(&*sink).await;
+    assert!(!evidence
+        .calls
+        .lock()
+        .unwrap()
+        .iter()
+        .any(|call| call.contains("touch")));
+}

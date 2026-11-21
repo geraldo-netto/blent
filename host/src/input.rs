@@ -661,7 +661,7 @@ fn dispatch_event(
         } if devices.direct_status().is_some() => {
             latency.note_interaction();
             Dispatch::Direct(
-                direct::legacy_touch(x, y, action, slot)
+                direct::touch_command(x, y, action, slot)
                     .and_then(|command| devices.direct(command)),
             )
         }

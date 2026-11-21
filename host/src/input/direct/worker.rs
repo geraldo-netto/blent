@@ -83,10 +83,8 @@ fn apply<E: Environment>(
         message.authority.cancel();
     }
     publish(gate, &message.authority, &state.status);
-    if let Some(reply) = message.reply {
-        if reply.send(result).is_err() {
-            message.authority.cancel();
-        }
+    if message.reply.send(result).is_err() {
+        message.authority.cancel();
     }
     if failed {
         settle(state, gate);
