@@ -10,7 +10,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'android/app/src/main/java/com/blent'
-SHARED = ['DecoderSession.kt', 'VideoTiming.kt', 'DecoderOutputWatchdog.kt', 'CodecLifetime.kt', 'NativeDeadline.kt', 'NativeQueryLane.kt',
+SHARED = ['DecoderSession.kt', 'VideoTiming.kt', 'DecoderOutputWatchdog.kt', 'CodecLifetime.kt', 'NativeDeadline.kt', 'NativeQueryLane.kt', 'GenerationFence.kt',
           'DecoderDiagnostics.kt', 'DecoderInput.kt', 'DecoderMailbox.kt', 'CallbackDecoder.kt', 'DecoderConfiguration.kt',
           'ChannelPacketReader.kt', 'VideoPacketReader.kt', 'DecodedOutputDrainer.kt', 'VideoCodec.kt',
           'MediaProfiles.kt', 'MediaInventory.kt', 'DecoderSelection.kt', 'JsonNumbers.kt',
@@ -48,10 +48,6 @@ internal fun applyProfile(decoder: DecoderSession, name: String) {
     }
 }
 '''
-LEGACY_BRIDGE = '''package com.blent.benchmark
-import com.blent.DecoderSession
-internal fun applyProfile(decoder: DecoderSession, name: String) { require(name == "legacy") }
-'''
 SOCKET_BRIDGE = '''
 internal fun createReplayInput(decoder: DecoderSession, profile: String, active: () -> Boolean): ReplayInput? = when (profile) {
     "socket-heap" -> SocketReplay(decoder, false, active)
@@ -59,12 +55,21 @@ internal fun createReplayInput(decoder: DecoderSession, profile: String, active:
     else -> null
 }
 '''
-NO_SOCKET_BRIDGE = '''
-internal fun createReplayInput(decoder: DecoderSession, profile: String, active: () -> Boolean): ReplayInput? {
-    require(!profile.startsWith("socket-")) { "Source revision has no direct input experiment" }
-    return null
+CURRENT_BRIDGE = """
+internal fun discardedOutputs(decoder: DecoderSession): Long = decoder.discardedOutputs
+internal fun observeReplayCodec(decoder: DecoderSession, observe: (android.media.MediaCodec, String) -> Unit) {
+    val create = decoder.createCodec
+    decoder.createCodec = { request -> create(request).also { observe(it, request.mimeType) } }
 }
-'''
+internal fun replayFormat(clip: ReplayClip, selection: org.json.JSONObject?): DecoderFormat =
+    requestFormat(clip.mime, clip.width, clip.height, clip.fps, selection)
+internal fun requestFormat(mime: String, width: Int, height: Int, fps: Int, selection: org.json.JSONObject?): DecoderFormat {
+    val base = DecoderFormat(mime, width, height, fps)
+    return if (selection == null) base else base.copy(selection = DecoderSelectionJson.read(selection))
+}
+internal fun replayReceipt(decoder: DecoderSession): String? = decoder.configuredSelectionReceipt
+internal fun replayRetirementPending(): Boolean = CodecLifetime.retirementPending()
+"""
 
 
 def source(name, revision):
@@ -78,19 +83,15 @@ def source(name, revision):
 def shared_sources(directory, revision):
     originals = directory / 'originals'
     originals.mkdir()
-    copied = []
     for name in SHARED:
         text = source(name, revision)
         if text is None:
-            continue
+            raise ValueError(f"Current decoder dependency missing: {name}")
         (originals / name).write_text(text)
         text = re.sub(r'((?:\w+\.)?codec)\.dequeueInputBuffer\(', r'BenchMetrics.input(\1, ', text)
         text = re.sub(r'((?:\w+\.)?codec)\.dequeueOutputBuffer\(', r'BenchMetrics.output(\1, ', text)
         text = instrument_timing(name, text)
         (directory / 'app/src/main/java' / name).write_text(text)
-        copied.append(name)
-    assert all(name in copied for name in SHARED[:3]), 'incomplete decoder source'
-    return 'DecoderConfiguration.kt' in copied
 
 
 def instrument_timing(name, text):
@@ -111,46 +112,10 @@ def instrument_timing(name, text):
 
 def instrument_cache(text):
     hit = 'if (cached >= 0 && valid[cached] && arrivalSeq[cached] == seq) return cached'
-    if hit not in text:  # Older source snapshots predate the timing cache.
-        return text
+    if text.count(hit) != 1:
+        raise ValueError("Current timing cache hook missing or ambiguous")
     return text.replace(hit, 'if (cached >= 0 && valid[cached] && arrivalSeq[cached] == seq) { '
                         'BenchMetrics.timingLookup(true); return cached }\n        BenchMetrics.timingLookup(false)')
-
-
-def codec_observer(directory):
-    source = (directory / 'originals/DecoderSession.kt').read_text()
-    mime = 'request.mimeType' if 'var createCodec: (DecoderFormat)' in source else 'request'
-    return '''
-internal fun observeReplayCodec(decoder: DecoderSession, observe: (android.media.MediaCodec, String) -> Unit) {
-    val create = decoder.createCodec
-    decoder.createCodec = { request -> create(request).also { observe(it, MIME) } }
-}
-'''.replace('MIME', mime)
-
-
-def selection_bridge(directory):
-    rich = (directory / 'originals/DecoderSelection.kt').exists()
-    reader = 'DecoderSelectionJson' if (directory / 'originals/DecoderSelectionJson.kt').exists() else 'DecoderSelection'
-    expression = f'base.copy(selection = {reader}.read(selection))' if rich else 'error("Revision lacks rich negotiation")'
-    receipt = 'decoder.configuredSelectionReceipt' if 'configuredSelectionReceipt' in (directory / 'originals/DecoderSession.kt').read_text() else 'null'
-    return '''
-internal fun replayFormat(clip: ReplayClip, selection: org.json.JSONObject?): DecoderFormat {
-    return requestFormat(clip.mime, clip.width, clip.height, clip.fps, selection)
-}
-internal fun requestFormat(mime: String, width: Int, height: Int, fps: Int, selection: org.json.JSONObject?): DecoderFormat {
-    val base = DecoderFormat(mime, width, height, fps)
-    if (selection == null) return base
-    return EXPRESSION
-}
-internal fun replayReceipt(decoder: DecoderSession): String? = RECEIPT
-'''.replace('EXPRESSION', expression).replace('RECEIPT', receipt)
-
-
-def retirement_bridge(directory):
-    lifetime = directory / 'originals/CodecLifetime.kt'
-    pending = lifetime.exists() and 'fun retirementPending()' in lifetime.read_text()
-    expression = 'CodecLifetime.retirementPending()' if pending else 'false'
-    return '\ninternal fun replayRetirementPending(): Boolean = ' + expression + '\n'
 
 
 def prepare(args):
@@ -161,35 +126,21 @@ def prepare(args):
         shutil.copy2(ROOT / 'android' / filename, directory / filename)
     (directory / 'app/build.gradle.kts').write_text(BUILD.replace('PACKAGE', args.package))
     (directory / 'app/src/main/AndroidManifest.xml').write_text(MANIFEST)
-    profiles = shared_sources(directory, args.revision)
-    direct_input = (directory / 'originals/ChannelPacketReader.kt').exists()
-    copy_replay_sources(directory, direct_input)
-    bridge = (BRIDGE if profiles else LEGACY_BRIDGE) + (SOCKET_BRIDGE if direct_input else NO_SOCKET_BRIDGE)
-    latest = (directory / 'originals/DecodedOutputDrainer.kt').exists()
-    if latest:
-        bridge = bridge.replace('"sync-normal" ->', '"render-latest" -> DecoderProfile(renderLatest = true)\n        "sync-normal" ->')
-    bridge += '\ninternal fun discardedOutputs(decoder: DecoderSession): Long = ' + ('decoder.discardedOutputs' if latest else '0L') + '\n'
-    bridge += codec_observer(directory)
-    bridge += selection_bridge(directory)
-    bridge += retirement_bridge(directory)
+    shared_sources(directory, args.revision)
+    copy_replay_sources(directory)
+    bridge = BRIDGE.replace('"sync-normal" ->',
+                            '"render-latest" -> DecoderProfile(renderLatest = true)\n        "sync-normal" ->')
+    bridge += SOCKET_BRIDGE + CURRENT_BRIDGE
     (directory / 'app/src/main/java/ProfileBridge.kt').write_text(bridge)
     return directory
 
 
-def copy_replay_sources(directory, direct_input):
+def copy_replay_sources(directory):
+    production = (directory / 'originals/DecoderSession.kt').read_text()
+    if 'fun rendered(receipt: RenderAcknowledgement)' not in production:
+        raise ValueError('Current render acknowledgement contract required')
     for path in (ROOT / 'scripts/benchmarks/android-decoder').rglob('*.kt'):
-        if path.name == 'NegotiatedInventory.kt' and not (directory / 'originals/MediaInventory.kt').exists():
-            continue
-        if path.name == 'SocketReplay.kt' and not direct_input:
-            continue
-        text = path.read_text()
-        production = (directory / 'originals/DecoderSession.kt').read_text()
-        if 'fun rendered(receipt: RenderAcknowledgement)' not in production:
-            text = text.replace('override fun rendered(receipt: RenderAcknowledgement) {\n'
-                '            if (!receipt.current()) return\n'
-                '            val sequence = receipt.sequence; val decodeMicros = receipt.decodeMicros',
-                'override fun rendered(sequence: Int, decodeMicros: Int) {')
-        (directory / 'app/src/main/java' / path.name).write_text(text)
+        shutil.copy2(path, directory / 'app/src/main/java' / path.name)
 
 
 def main():

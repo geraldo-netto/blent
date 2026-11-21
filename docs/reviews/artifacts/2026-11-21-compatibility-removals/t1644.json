@@ -1,0 +1,23 @@
+{
+  "issue": "T1644",
+  "red": "Missing CodecLifetime.kt accepted before removal; required ValueError not raised.",
+  "green": "8 generator/dependency tests passed; generated APK assembleDebug succeeded, 33 tasks.",
+  "complexity": [
+    "scripts/benchmarks/decoder-project.py:75\tsource\t4",
+    "scripts/benchmarks/decoder-project.py:83\tshared_sources\t3",
+    "scripts/benchmarks/decoder-project.py:97\tinstrument_timing\t3",
+    "scripts/benchmarks/decoder-project.py:113\tinstrument_cache\t2",
+    "scripts/benchmarks/decoder-project.py:121\tprepare\t2",
+    "scripts/benchmarks/decoder-project.py:138\tcopy_replay_sources\t3",
+    "scripts/benchmarks/decoder-project.py:146\tmain\t4",
+    "scripts/tests/test_benchmark_decoder.py:19\ttest_t1644_missing_current_dependency_rejects_old_snapshot\t2",
+    "scripts/tests/test_benchmark_decoder.py:32\ttest_t569_generated_replay_preserves_json_number_dependency\t2",
+    "scripts/tests/test_benchmark_decoder.py:47\ttest_t479_selection_reaches_replay_as_exact_bounded_request\t1",
+    "scripts/tests/test_benchmark_decoder.py:54\ttest_t460_replay_can_remain_visible_over_the_same_keyguard_as_blent\t3",
+    "scripts/tests/test_benchmark_decoder.py:70\ttest_t803_render_receipts_preserve_current_identity_and_reject_old_api\t1",
+    "scripts/tests/test_benchmark_decoder.py:87\ttest_t458_generated_replay_includes_current_decoder_dependencies\t2",
+    "scripts/tests/test_benchmark_decoder.py:112\ttest_t386_selected_variants_match_provenance_and_trials\t1",
+    "14 functions; 0 exceed cyclomatic complexity 9"
+  ],
+  "coverage": "Benchmark tooling exempt by project policy."
+}

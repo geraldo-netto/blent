@@ -16,6 +16,19 @@ SPEC.loader.exec_module(BENCH)
 
 
 class DecoderBenchmarkTests(unittest.TestCase):
+    def test_t1644_missing_current_dependency_rejects_old_snapshot(self):
+        spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
+        project = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(project)
+        source = project.source
+        with tempfile.TemporaryDirectory() as directory:
+            args = SimpleNamespace(directory=Path(directory) / 'replay', revision=None,
+                                   package='com.blent.decoderbench.candidate')
+            with patch.object(project, 'source', side_effect=lambda name, revision:
+                              None if name == 'CodecLifetime.kt' else source(name, revision)):
+                with self.assertRaisesRegex(ValueError, 'CodecLifetime'):
+                    project.prepare(args)
+
     def test_t569_generated_replay_preserves_json_number_dependency(self):
         path = PATH.with_name('decoder-project.py')
         spec = importlib.util.spec_from_file_location('decoder_project', path)
@@ -54,7 +67,7 @@ class DecoderBenchmarkTests(unittest.TestCase):
                              'T460: keyguard must not retire the benchmark Surface at launch')
         self.assertEqual(replay.get(android + 'permission'), 'android.permission.DUMP')
 
-    def test_t803_render_receipt_adapter_preserves_historical_replay(self):
+    def test_t803_render_receipts_preserve_current_identity_and_reject_old_api(self):
         spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
         project = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(project)
@@ -67,9 +80,9 @@ class DecoderBenchmarkTests(unittest.TestCase):
             original = output / 'originals/DecoderSession.kt'
             original.write_text(original.read_text().replace('fun rendered(receipt: RenderAcknowledgement)',
                 'fun rendered(sequence: Int, decodeMicros: Int)'))
-            project.copy_replay_sources(output, True)
-            self.assertIn('override fun rendered(sequence: Int, decodeMicros: Int)', replay.read_text())
-            self.assertNotIn('receipt.current()', replay.read_text())
+            with self.assertRaisesRegex(ValueError, 'render acknowledgement'):
+                project.copy_replay_sources(output)
+            self.assertIn('if (!receipt.current()) return', replay.read_text())
 
     def test_t458_generated_replay_includes_current_decoder_dependencies(self):
         path = PATH.with_name('decoder-project.py')
@@ -85,7 +98,7 @@ class DecoderBenchmarkTests(unittest.TestCase):
             self.assertIn('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3',
                           (output / 'app/build.gradle.kts').read_text())
             for name in ['MediaProfiles.kt', 'MediaInventory.kt', 'DecoderSelection.kt', 'VideoContract.kt',
-                         'VideoProfiles.kt', 'DecoderCapabilities.kt', 'NativeQueryLane.kt', 'DecoderSelectionJson.kt',
+                         'VideoProfiles.kt', 'DecoderCapabilities.kt', 'NativeQueryLane.kt', 'GenerationFence.kt', 'DecoderSelectionJson.kt',
                          'DecoderSelectionAndroid.kt']:
                 self.assertEqual((output / 'app/src/main/java' / name).read_text(),
                                  (project.SOURCE / name).read_text(), 'T478: missing production negotiation dependency')
@@ -93,10 +106,8 @@ class DecoderBenchmarkTests(unittest.TestCase):
                           (output / 'app/src/main/java/ProfileBridge.kt').read_text(), 'T822: replay must use JSON adapter')
             probe = output / 'app/src/main/java/NegotiatedInventory.kt'
             self.assertTrue(probe.exists())
-            probe.unlink()
-            (output / 'originals/MediaInventory.kt').unlink()
-            project.copy_replay_sources(output, True)
-            self.assertFalse(probe.exists(), 'T478: historical decoder cannot import newer inventory API')
+            self.assertIn('MediaInventory.kt', project.SHARED)
+            self.assertIn('object VideoWire', (output / 'app/src/main/java/VideoContract.kt').read_text())
 
     def test_t386_selected_variants_match_provenance_and_trials(self):
         with tempfile.TemporaryDirectory() as directory:
