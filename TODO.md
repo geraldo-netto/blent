@@ -58,6 +58,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
+| T1535 | open | low | small | Report audio backend capability explicitly. `common/src/platform.rs::Capabilities` and `common/src/diagnostics.rs::backend_lines` list display, input, touch/mouse preview, daemon lifecycle, cameras, autostart, system setup, pipe capacity and conversion pool but have no audio entry, although microphone and speaker commands are unsupported on Windows (`host/src/windows_main.rs` rejects them with the generic unsupported message). The maintainer rule requires unavailable backends to be visibly unsupported. Completion: add an audio capability and report line, with a permanent regression per platform configuration. |
 
 ## Installation and distribution
 
