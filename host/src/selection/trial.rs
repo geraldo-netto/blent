@@ -6,6 +6,9 @@ use blent_config::negotiation::DecoderChoice;
 use std::{future::Future, time::Duration};
 use tokio::sync::watch;
 
+#[cfg(test)]
+mod window_tests;
+
 /// Capture startup has its own bound; it must not consume a candidate's window.
 pub(super) async fn capture_ready(tracker: &LatencyTracker, key: &Key) -> bool {
     let mut updates = tracker.activity_updates();
@@ -38,6 +41,7 @@ pub(super) async fn observe(
     let before = tracker.encoder_evidence().map(|e| (e.epoch, e.rendered()));
     let mut updates = tracker.activity_updates();
     let mut resources = super::resources::Window::default();
+    let mut startup = Startup::default();
     tokio::time::timeout(Duration::from_secs(6), async {
         loop {
             if let Some(evidence) = tracker.encoder_evidence().filter(|e| e.workers == workers) {
@@ -48,9 +52,15 @@ pub(super) async fn observe(
                     started.elapsed(),
                     &super::resources::linux::Process,
                 );
-                if let Some(mut result) =
-                    observations(&evidence, key, encoder, decoder, before, started)
-                {
+                if let Some(mut result) = observations(
+                    &evidence,
+                    key,
+                    encoder,
+                    decoder,
+                    before,
+                    started,
+                    &mut startup,
+                ) {
                     result.resources = resources.finish();
                     return Some(result);
                 }
@@ -72,6 +82,7 @@ fn observations(
     decoder: Option<&DecoderChoice>,
     before: Option<(u64, u64)>,
     started: tokio::time::Instant,
+    startup: &mut Startup,
 ) -> Option<Observation> {
     if !evidence.active()
         || evidence.name != encoder
@@ -84,17 +95,44 @@ fn observations(
         .filter(|&(epoch, _)| epoch == evidence.epoch)
         .map_or(0, |(_, count)| count);
     let samples = evidence.samples_after(floor);
-    let first = samples.first()?;
-    if first.ordinal != floor + 1 {
-        return None;
-    }
-    let mut result = Observation::from_samples(samples.get(3..)?, started)?;
-    result.startup_us = first
-        .at
-        .saturating_duration_since(started)
-        .as_micros()
-        .min(u64::MAX as u128) as u64;
+    let startup_us = startup.observe(evidence.epoch, floor, &samples, started)?;
+    let warmup = floor.checked_add(3)?;
+    let begin = samples.partition_point(|sample| sample.ordinal <= warmup);
+    let mut result = Observation::from_samples(&samples[begin..], started)?;
+    result.startup_us = startup_us;
     Some(result)
+}
+
+/// One trial-owned epoch/timestamp anchor survives bounded sample eviction.
+/// Missing the original first ACK cannot invent startup evidence.
+#[derive(Default)]
+struct Startup(Option<(u64, tokio::time::Instant)>);
+impl Startup {
+    fn observe(
+        &mut self,
+        epoch: u64,
+        floor: u64,
+        samples: &[RenderSample],
+        started: tokio::time::Instant,
+    ) -> Option<u64> {
+        if self.0.is_some_and(|(previous, _)| previous != epoch) {
+            self.0 = None;
+        }
+        if self.0.is_none() {
+            let first = samples.first()?;
+            if first.ordinal != floor.checked_add(1)? {
+                return None;
+            }
+            self.0 = Some((epoch, first.at));
+        }
+        Some(
+            self.0?
+                .1
+                .saturating_duration_since(started)
+                .as_micros()
+                .min(u64::MAX as u128) as u64,
+        )
+    }
 }
 
 pub(super) async fn quiet(updates: &mut watch::Receiver<Option<tokio::time::Instant>>) -> bool {

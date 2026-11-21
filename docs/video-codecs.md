@@ -220,7 +220,10 @@ evidence retains H.264 fallback.
   disabled and the next compatible named decoder.
 - Each trial gets at most six seconds. Ignore its first three ACKs; require at
   least 12 more samples spanning two seconds and at least 90% ACK coverage
-  relative to produced output. Keep at most 256 samples per encoder generation.
+  relative to produced output in the retained sample window. Keep at most 256
+  samples per encoder generation. Retain the first fresh ACK timestamp separately
+  for startup measurement, so sample eviction does not shorten the six-second
+  trial. The first three ACK ordinals remain warmup even after buffer eviction.
   Sparse streams are allowed; too little activity produces no speed result.
 - Compare packet-ready→render-ACK p95, keeping ACK rates within 0.8–1.25×.
   A latency replacement must improve p95 by more than both 2 ms and 10%, without

@@ -1,0 +1,188 @@
+{
+  "issue": "T1491",
+  "coverage": [
+    {
+      "file": "host/src/selection/trial.rs",
+      "name": "observe",
+      "line": 33,
+      "language": "rust",
+      "covered": 39,
+      "total": 40,
+      "percent": 97.5,
+      "passes": true,
+      "missing": [
+        69
+      ]
+    },
+    {
+      "file": "host/src/selection/trial.rs",
+      "name": "observations",
+      "line": 78,
+      "language": "rust",
+      "covered": 25,
+      "total": 26,
+      "percent": 96.15384615384616,
+      "passes": true,
+      "missing": [
+        92
+      ]
+    },
+    {
+      "file": "host/src/selection/trial.rs",
+      "name": "observe",
+      "line": 111,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "profiles": [
+    "target/llvm-cov-target/blent-3057891-10016387517116324396_0.profraw",
+    "target/llvm-cov-target/blent-3053090-10016387517116324396_0.profraw",
+    "target/llvm-cov-target/blent-3053027-10016387517116324396_0.profraw",
+    "target/llvm-cov-target/blent-3051086-10016387517116324396_0.profraw"
+  ],
+  "complexity_tool": "project Rust syn 2.0.119",
+  "complexity": [
+    [
+      "host/src/selection/trial.rs",
+      13,
+      "capture_ready",
+      7
+    ],
+    [
+      "host/src/selection/trial.rs",
+      33,
+      "observe",
+      7
+    ],
+    [
+      "host/src/selection/trial.rs",
+      78,
+      "observations",
+      8
+    ],
+    [
+      "host/src/selection/trial.rs",
+      111,
+      "observe",
+      5
+    ],
+    [
+      "host/src/selection/trial.rs",
+      138,
+      "quiet",
+      2
+    ],
+    [
+      "host/src/selection/trial.rs",
+      155,
+      "uninterrupted",
+      1
+    ],
+    [
+      "host/src/selection/trial.rs",
+      180,
+      "from_samples",
+      6
+    ],
+    [
+      "host/src/selection/trial.rs",
+      208,
+      "improves",
+      2
+    ],
+    [
+      "host/src/selection/trial.rs",
+      213,
+      "similar_speed",
+      2
+    ],
+    [
+      "host/src/selection/trial.rs",
+      217,
+      "comparable",
+      3
+    ],
+    [
+      "host/src/selection/trial.rs",
+      230,
+      "t627_capture_readiness_rejects_missing_retired_and_wrong_format_output",
+      5
+    ],
+    [
+      "host/src/selection/trial.rs",
+      263,
+      "acknowledge",
+      2
+    ],
+    [
+      "host/src/selection/trial.rs",
+      277,
+      "t479_restarted_generation_needs_its_own_warmup_and_window",
+      1
+    ],
+    [
+      "host/src/selection/trial.rs",
+      312,
+      "t479_tablet_interaction_cancels_work_and_quiet_wait_is_bounded",
+      2
+    ],
+    [
+      "host/src/selection/trial.rs",
+      337,
+      "samples",
+      2
+    ],
+    [
+      "host/src/selection/trial.rs",
+      350,
+      "t479_measured_tail_improves_over_a_host_only_winner",
+      1
+    ],
+    [
+      "host/src/selection/trial.rs",
+      361,
+      "t479_sparse_stalled_dropped_and_too_short_trials_are_not_speed_proof",
+      2
+    ],
+    [
+      "host/src/selection/trial.rs",
+      374,
+      "t479_noise_unmatched_rates_and_worse_tail_do_not_displace_incumbent",
+      1
+    ],
+    [
+      "host/src/selection/trial/window_tests.rs",
+      5,
+      "t1491_trial_can_recover_after_more_than_256_render_acknowledgements",
+      2
+    ],
+    [
+      "host/src/selection/trial/window_tests.rs",
+      11,
+      "recover",
+      5
+    ],
+    [
+      "host/src/selection/trial/window_tests.rs",
+      56,
+      "sample",
+      1
+    ],
+    [
+      "host/src/selection/trial/window_tests.rs",
+      67,
+      "t1491_startup_requires_exact_first_ack_and_resets_for_each_encoder_epoch",
+      2
+    ]
+  ],
+  "verification": {
+    "red_tests": 1,
+    "red_failures": 1,
+    "selected_tests": 99
+  }
+}
