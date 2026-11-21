@@ -77,12 +77,14 @@ pub async fn run(arguments: impl IntoIterator<Item = OsString>) -> Result<()> {
             return Ok(());
         }
     };
-    serve(options.settings(), stop_signal()).await
+    serve(options.settings(), stop_signal()?).await
 }
 pub async fn serve(
     settings: Settings,
     stop: impl std::future::Future<Output = Result<()>>,
 ) -> Result<()> {
+    #[cfg(test)]
+    startup_tests::pause().await;
     serve_opened(Server::open(settings).await?, stop).await
 }
 /// Coordinate one admitted backend owner; startup and policy validation precede
@@ -92,20 +94,29 @@ pub(super) async fn serve_opened(
     stop: impl std::future::Future<Output = Result<()>>,
 ) -> Result<()> {
     let result = tokio::select! {
-        result = server.run() => result,
+        biased;
         stopped = stop => stopped,
+        result = server.run() => result,
     };
     server.shutdown_configured().await?;
     result
 }
-async fn stop_signal() -> Result<()> {
+fn stop_signal() -> Result<impl std::future::Future<Output = Result<()>>> {
+    // Register eagerly: constructing an async fn would defer registration until
+    // after Server::open. Streams retain a stop while original startup settles.
     let mut terminate = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())?;
-    tokio::select! {
-        result = tokio::signal::ctrl_c() => result?,
-        _ = terminate.recv() => (),
-    }
-    Ok(())
+    let mut interrupt = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::interrupt())?;
+    Ok(async move {
+        tokio::select! {
+            _ = interrupt.recv() => (),
+            _ = terminate.recv() => (),
+        }
+        Ok(())
+    })
 }
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod startup_tests;

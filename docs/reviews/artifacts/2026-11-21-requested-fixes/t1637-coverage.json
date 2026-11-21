@@ -1,0 +1,46 @@
+[
+  {
+    "file": "host/src/broker/linux/entry.rs",
+    "name": "run",
+    "line": 71,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/linux/entry.rs",
+    "name": "serve",
+    "line": 82,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/linux/entry.rs",
+    "name": "serve_opened",
+    "line": 92,
+    "language": "rust",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/linux/entry.rs",
+    "name": "stop_signal",
+    "line": 104,
+    "language": "rust",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

@@ -1,0 +1,13 @@
+host/src/broker/linux/entry.rs:51	settings	1
+host/src/broker/linux/entry.rs:71	run	4
+host/src/broker/linux/entry.rs:82	serve	1
+host/src/broker/linux/entry.rs:92	serve_opened	1
+host/src/broker/linux/entry.rs:104	stop_signal	1
+host/src/broker/linux/entry/startup_tests.rs:8	pause	2
+host/src/broker/linux/entry/startup_tests.rs:20	t1637_startup_child	1
+host/src/broker/linux/entry/startup_tests.rs:50	start	1
+host/src/broker/linux/entry/startup_tests.rs:65	ready	2
+host/src/broker/linux/entry/startup_tests.rs:79	signal_and_finish	3
+host/src/broker/linux/entry/startup_tests.rs:100	drop	1
+host/src/broker/linux/entry/startup_tests.rs:107	t1637_signals_during_startup_wait_for_original_owner_then_shutdown	2
+12 functions; 0 exceed cyclomatic complexity 9

@@ -139,3 +139,9 @@ All 46 selected host security cases pass, covering eight failed and eight crashe
 The failing-first restart regression confirmed rejection of a complete original key. Recovery now validates that certificate/key and publishes it without generating or replacing a key. Invalid or conflicting records require explicit reset. Identity reset holds both stable store locks, removes all identity-bound approvals, and leaves a durable marker that blocks trust until recovery completes.
 
 All 54 selected host security cases pass, including nine failed and nine crashed reset checkpoints, two interrupted recovery checkpoints, every truncated prefix of one generated identity record, mismatched keys, conflicting records and held original locks. Eight maintained methods reach at least 95% line coverage; all 54 measured functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1636-verification.json). Tests use private native filesystem/process fixtures. Parent T1597 remains open for the confirmed repair command, startup behavior and integrated acceptance.
+
+## T1637 — broker signals before startup, part of T1597
+
+The failing-first native fixture showed SIGTERM killing a broker paused before state initialization. Signal streams now register eagerly before startup; pending termination survives until the original startup settles. A ready stop takes priority over server dispatch, followed by normal owned shutdown.
+
+All 11 selected entry cases pass. Private native child fixtures now survive both SIGTERM and SIGINT during the startup gate, complete original initialization and retire the original listener. Four maintained methods have 100% line coverage; all 12 measured functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1637-verification.json). No installed process received a signal. Uncatchable termination and power loss still use journal recovery.

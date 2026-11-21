@@ -1,0 +1,31 @@
+{
+  "issue": "T1637",
+  "parent": "T1597",
+  "before": {
+    "tests": 1,
+    "failed": 1,
+    "native_result": "SIGTERM killed the paused startup process",
+    "log": "/tmp/blent-t1637-red.log"
+  },
+  "after": {
+    "tests": 11,
+    "failed": 0,
+    "ignored": 0,
+    "native_signals": [
+      "SIGTERM",
+      "SIGINT"
+    ],
+    "log": "/tmp/blent-t1637-coverage.log"
+  },
+  "coverage": {
+    "methods": 4,
+    "minimum_percent": 100,
+    "tool": "Rust 1.100.0 LLVM, cargo-llvm-cov 0.8.7"
+  },
+  "complexity": {
+    "functions": 12,
+    "over_nine": 0,
+    "tool": "project Rust syn 2.0.119 checker"
+  },
+  "ownership": "Two signal streams register before Server::open and retain catchable stop events while original startup settles. A ready stop wins before server dispatch; normal configured shutdown retains the admitted server owner. Streams add no native child or queue; receipt does not cancel original persistence. Native fixtures target only their original child PID in private temporary directories and reap it before directory deletion. SIGKILL and power loss still require journal recovery."
+}
