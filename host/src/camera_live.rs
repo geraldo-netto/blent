@@ -155,4 +155,5 @@ impl State {
     }
 }
 #[cfg(test)]
+#[path = "camera_live/tests.rs"]
 mod tests;

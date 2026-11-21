@@ -1,5 +1,7 @@
 //! T816: paired allocation/CPU/latency measurements over the actual pool.
 #![cfg(target_os = "linux")]
+#[path = "../src/camera_live.rs"]
+mod camera_live;
 #[path = "../src/camera/frame_pool.rs"]
 mod frame_pool;
 use std::{

@@ -12,6 +12,8 @@ use tokio::sync::watch;
 pub(crate) mod native;
 pub use native::Resource as NativeResource;
 #[cfg(test)]
+mod live_tests;
+#[cfg(test)]
 mod restart_tests;
 #[cfg(test)]
 mod retirement_tests;
