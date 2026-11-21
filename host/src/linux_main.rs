@@ -832,6 +832,7 @@ exit 1
             &adb,
             r#"#!/bin/sh
 printf '%s\n' "$*" >> "$0.log"
+if [ "$1" = devices ]; then printf 'List of devices attached\nPRIMARY\tdevice\nEXTRA\tdevice\n'; exit 0; fi
 if [ "$4" = getprop ]; then echo "$2"; exit 0; fi
 if [ "$3" = reverse ]; then
     routes="$0.$2.routes"

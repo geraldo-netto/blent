@@ -375,3 +375,8 @@ The RugKing Pad 2 Pro reconnected over USB ADB. Capture initialization completed
 ## T1662 — keep native Wi-Fi fixtures on the current reply contract
 
 The private native ADB fixture now emits `connected to <requested endpoint>` on success. Its rejected `disconnected` reply remains unchanged. The existing T105 test failed before the correction and now passes its original saved-address replacement, Wi-Fi-off and exact command-log assertions. The T691 rejected-connect control also passes. No production contract or assertion was relaxed. The temporary fixture owns only its script, route/log files and the existing bounded command children; no installed ADB state is touched. The fixture function measures complexity 2 with the project Rust syn 2.0.119 checker.
+
+
+## T1663 — expose connected inventory in the display retry fixture
+
+The retained T144 native fixture now answers `adb devices` with its actual PRIMARY and EXTRA identities. Its original regression failed because the stricter cleanup correctly refused the fixture's empty, invalid inventory. It now passes unchanged lost-acknowledgement, retry-backoff, both-port, launch-count and original-retirement assertions. This is a fixture correction; production unknown-inventory retention is unchanged. Private route files and child processes retain their existing cleanup sponsor and original completion boundaries. The maintained fixture method remains within complexity 9 under the project Rust syn 2.0.119 checker.
