@@ -1,0 +1,15 @@
+{
+  "finding": "T1540",
+  "red": "Failed refresh returned Display route worker unavailable on the next request.",
+  "green": {
+    "usb_cases_passed": 60,
+    "failed": 0
+  },
+  "coverage": {
+    "maintained_production_methods": 5,
+    "minimum_percent": 90
+  },
+  "complexity_summary": "24 functions; 0 exceed cyclomatic complexity 9",
+  "ownership": "Read-only refresh errors send the error but retain the original worker, two mapping obligations and device/port reservation. Initial admission failure, any creation failure, stop, process cancellation and caller loss still enter original cleanup. No new resource or asynchronous owner.",
+  "limits": "Private fake ADB commands; no live mapping modified."
+}

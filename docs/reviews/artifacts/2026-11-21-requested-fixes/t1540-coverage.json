@@ -1,0 +1,63 @@
+[
+  {
+    "file": "host/src/usb/routes/worker.rs",
+    "name": "run",
+    "line": 11,
+    "language": "rust",
+    "covered": 18,
+    "total": 20,
+    "percent": 90.0,
+    "passes": true,
+    "missing": [
+      19,
+      20
+    ]
+  },
+  {
+    "file": "host/src/usb/routes/worker.rs",
+    "name": "serve",
+    "line": 74,
+    "language": "rust",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/usb/routes/worker.rs",
+    "name": "respond",
+    "line": 91,
+    "language": "rust",
+    "covered": 16,
+    "total": 16,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/usb/routes/worker.rs",
+    "name": "missing",
+    "line": 110,
+    "language": "rust",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/usb/routes/worker.rs",
+    "name": "prepare",
+    "line": 116,
+    "language": "rust",
+    "covered": 20,
+    "total": 22,
+    "percent": 90.9090909090909,
+    "passes": true,
+    "missing": [
+      126,
+      138
+    ]
+  }
+]

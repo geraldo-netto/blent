@@ -173,3 +173,39 @@ async fn t1344_network_without_physical_identity_fails_before_mutation() {
         .iter()
         .any(|(args, _)| args.iter().any(|arg| arg == "--no-rebind")));
 }
+
+#[tokio::test]
+async fn t1540_failed_refresh_keeps_live_mappings_and_the_original_worker() {
+    for failure in ["getprop", "reverse --list"] {
+        let fake = Fake::default();
+        fake.0
+            .lock()
+            .unwrap()
+            .identities
+            .insert("USB".into(), "original".into());
+        let adb = Adb(fake.clone());
+        let mut routes = Routes::new("USB", (18000, 18001)).unwrap();
+        routes.prepare(&adb).await.unwrap();
+        fake.0.lock().unwrap().fail = Some(failure.into());
+        assert!(routes.prepare(&adb).await.is_err());
+        fake.0.lock().unwrap().fail = None;
+        let recovered = routes.prepare(&adb).await;
+        let removed = fake
+            .0
+            .lock()
+            .unwrap()
+            .calls
+            .iter()
+            .any(|(args, _)| args.iter().any(|arg| arg == "--remove"));
+        routes.retire(&adb).await.unwrap();
+        assert!(
+            recovered.is_ok(),
+            "T1540 refresh lost its original worker: {recovered:?}"
+        );
+        assert!(
+            !removed,
+            "T1540 read-only refresh failure removed a live tunnel"
+        );
+        assert!(fake.0.lock().unwrap().routes.is_empty());
+    }
+}

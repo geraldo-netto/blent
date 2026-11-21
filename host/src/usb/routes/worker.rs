@@ -21,7 +21,7 @@ pub(super) async fn run<C: Commands>(
     };
     match State::new(adb, control.clone()).await {
         Ok(mut state) => {
-            let active = state.respond(first, &stop).await;
+            let active = state.respond(first, &stop, false).await;
             if active {
                 state.serve(&mut requests, &mut stop).await;
             }
@@ -83,7 +83,7 @@ impl<C: Commands> State<C> {
                 _ = stop.changed() => break,
                 next = requests.recv() => {
                     let Some(reply) = next else { break; };
-                    if !self.respond(reply, stop).await { break; }
+                    if !self.respond(reply, stop, true).await { break; }
                 }
             }
         }
@@ -92,22 +92,34 @@ impl<C: Commands> State<C> {
         &mut self,
         reply: oneshot::Sender<Result<(), String>>,
         stop: &watch::Receiver<bool>,
+        refresh: bool,
     ) -> bool {
+        let (serial, missing) = match self.missing().await {
+            Ok(routes) => routes,
+            // Read-only refresh failure does not revoke existing mappings. A
+            // failed first admission still retires its original reservation.
+            Err(error) => return reply.send(Err(error.to_string())).is_ok() && refresh,
+        };
         let result = self
-            .prepare(&reply, stop)
+            .prepare(&serial, missing, &reply, stop)
             .await
             .map_err(|error| error.to_string());
         let active = result.is_ok();
         reply.send(result).is_ok() && active
     }
-    async fn prepare(
-        &mut self,
-        reply: &oneshot::Sender<Result<(), String>>,
-        stop: &watch::Receiver<bool>,
-    ) -> Result<()> {
+    async fn missing(&self) -> Result<(String, Vec<(u16, u16)>)> {
         let serial = self.serial().await?;
         let listing = listing(&self.adb, &serial).await?;
         let missing = blent_config::adb_reverse::missing(&listing, &self.control.expected)?;
+        Ok((serial, missing))
+    }
+    async fn prepare(
+        &mut self,
+        serial: &str,
+        missing: Vec<(u16, u16)>,
+        reply: &oneshot::Sender<Result<(), String>>,
+        stop: &watch::Receiver<bool>,
+    ) -> Result<()> {
         for route in missing {
             ensure!(
                 !*stop.borrow() && !reply.is_closed(),
@@ -119,7 +131,7 @@ impl<C: Commands> State<C> {
                 .iter()
                 .position(|expected| *expected == route)
                 .unwrap();
-            self.create(index, &serial).await?;
+            self.create(index, serial).await?;
         }
         ensure!(
             !*stop.borrow() && !reply.is_closed(),

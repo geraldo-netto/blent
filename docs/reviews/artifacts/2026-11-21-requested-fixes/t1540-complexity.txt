@@ -1,0 +1,25 @@
+host/src/usb/routes/worker.rs:11	run	4
+host/src/usb/routes/worker.rs:38	new	3
+host/src/usb/routes/worker.rs:60	serial	3
+host/src/usb/routes/worker.rs:74	serve	2
+host/src/usb/routes/worker.rs:91	respond	6
+host/src/usb/routes/worker.rs:110	missing	1
+host/src/usb/routes/worker.rs:116	prepare	3
+host/src/usb/routes/worker.rs:142	create	2
+host/src/usb/routes/worker.rs:168	cleanup	7
+host/src/usb/routes/worker.rs:187	cleanup_once	5
+host/src/usb/routes/worker.rs:205	cleanup_route	4
+host/src/usb/routes/worker.rs:232	checked	1
+host/src/usb/routes/worker.rs:241	listing	1
+host/src/usb/routes/worker.rs:244	physical	1
+host/src/usb/tests/route_ownership.rs:15	execute	4
+host/src/usb/tests/route_ownership.rs:37	removed	3
+host/src/usb/tests/route_ownership.rs:51	t1344_lost_creation_acknowledgement_keeps_mapping_owned	1
+host/src/usb/tests/route_ownership.rs:66	t1344_cancelled_waiter_and_owner_drop_retain_late_creator	1
+host/src/usb/tests/route_ownership.rs:90	execute	3
+host/src/usb/tests/route_ownership.rs:99	complete	2
+host/src/usb/tests/route_ownership.rs:110	t1344_empty_snapshot_cannot_release_unacknowledged_creator	1
+host/src/usb/tests/route_ownership.rs:130	t1344_caller_loss_cannot_delete_a_different_physical_tablet	1
+host/src/usb/tests/route_ownership.rs:162	t1344_network_without_physical_identity_fails_before_mutation	1
+host/src/usb/tests/route_ownership.rs:178	t1540_failed_refresh_keeps_live_mappings_and_the_original_worker	4
+24 functions; 0 exceed cyclomatic complexity 9
