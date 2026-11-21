@@ -42,18 +42,16 @@ internal fun formatDecoderReport(version: Int, inventory: Array<MediaCodecInfo>?
 private fun decoderInventory(codecs: Array<MediaCodecInfo>?, mime: String): String {
     if (codecs == null) return "unknown"
     return try {
-        val entries = codecs.filter { !it.isEncoder && mime in it.supportedTypes }
+        val entries = codecs.filter { !it.isEncoder }
             .mapNotNull { decoderEntry(it, mime) }.distinct().sorted()
         if (entries.isEmpty()) "none" else entries.joinToString(",")
     } catch (_: Exception) { "unknown" }
 }
 
 private fun decoderEntry(codec: MediaCodecInfo, mime: String): String? {
-    val capabilities = codec.getCapabilitiesForType(mime)
-    if (capabilities.isFeatureRequired(MediaCodecInfo.CodecCapabilities.FEATURE_SecurePlayback) ||
-        capabilities.isFeatureRequired(MediaCodecInfo.CodecCapabilities.FEATURE_TunneledPlayback)) {
-        return null
-    }
+    val advertised = DecoderEligibility.type(codec.supportedTypes, mime) ?: return null
+    val capabilities = codec.getCapabilitiesForType(advertised)
+    if (!DecoderEligibility.usable(capabilities)) return null
     val acceleration = decoderAcceleration(codec)
     return if (mime == "video/hevc") acceleration + hevcDepth(capabilities) else if (acceleration == "unknown") "unclassified" else acceleration
 }

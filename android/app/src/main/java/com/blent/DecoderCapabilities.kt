@@ -47,12 +47,14 @@ internal object DecoderCapabilities {
         val rows = JSONArray()
         for ((codec, mime) in VideoCodec.types) {
             val seen = HashSet<String>()
+            var included = 0
             for (entry in decoders[mime].orEmpty()) {
                 val name = entry.info.name
                 if (!VideoProfiles.identifier(name) || !seen.add(name)) continue
                 val row = MediaInventory.describe(entry.info, codec, width, height, fps, { entry.caps }) ?: continue
                 rows.put(row)
-                if (rows.length() == 16) return rows
+                included++
+                if (included == 4) break
             }
         }
         return rows
@@ -94,10 +96,10 @@ internal object DecoderCapabilities {
     private fun matching(format: MediaFormat, mime: String, inventory: List<Entry>,
         readCapabilities: (MediaCodecInfo, String) -> MediaCodecInfo.CodecCapabilities,
     ): List<Compatible> = inventory.mapNotNull { entry ->
-        if (entry.types.none { it.equals(mime, ignoreCase = true) }) return@mapNotNull null
+        val advertised = DecoderEligibility.type(entry.types, mime) ?: return@mapNotNull null
         try {
-            val caps = readCapabilities(entry.info, mime)
-            if (caps.isFormatSupported(format)) Compatible(entry.info, caps) else null
+            val caps = readCapabilities(entry.info, advertised)
+            if (DecoderEligibility.usable(caps) && caps.isFormatSupported(format)) Compatible(entry.info, caps) else null
         } catch (_: Exception) { null }
     }
 }

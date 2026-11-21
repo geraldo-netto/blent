@@ -125,8 +125,11 @@ The shared vector is [decoder-capabilities-v2.json](../testdata/decoder-capabili
 Each entry describes the report's exact dimensions and FPS; supported rate is
 not measured throughput. API 27 leaves hardware identity unknown, and API <30
 leaves standard low latency unknown. Unknown profiles/levels are omitted rather
-than guessed. Reports are bounded to four families, 16 decoders, 32 profile
-entries per decoder and 128 ASCII bytes per name, inside the 64 KiB message limit.
+than guessed. Shell and negotiation inventories share case-insensitive MIME
+matching and exclude decoders that require secure or tunneled playback. Negotiation
+reserves up to four unique decoder entries per family, preserving platform order
+within each family, so an earlier family cannot exhaust later families' detail space.
+Reports are bounded to four families, 16 decoders total, 32 profile entries per decoder and 128 ASCII bytes per name, inside the 64 KiB message limit.
 
 Only current scoped protocol-2 reports are accepted; there is no version-1
 contract or downgrade. Missing/invalid offers do not start inventory work. A

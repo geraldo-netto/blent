@@ -81,8 +81,8 @@ class MetadataSnapshotTest {
         val inventory = (invalid + listOf(valid.first(), valid.first()) + valid).toTypedArray()
         val report = DecoderCapabilities.report(640, 480, 30, { inventory }, { info, mime -> info.getCapabilitiesForType(mime) })
         val details = report.getJSONArray("details")
-        assertEquals(16, details.length())
-        for (index in 0 until 16) assertEquals("vendor.avc.$index", details.getJSONObject(index).getString("name"))
+        assertEquals("T1566 reserves four detail rows per codec family", 4, details.length())
+        for (index in 0 until 4) assertEquals("vendor.avc.$index", details.getJSONObject(index).getString("name"))
     }
 
     @Test fun t802_unknownProfileRangesAndNativeFailuresNeverBecomePositiveClaims() {

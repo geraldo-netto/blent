@@ -1,0 +1,852 @@
+{
+  "finding": "T1566",
+  "red": {
+    "tests": 8,
+    "failed": 6,
+    "passed": 2,
+    "scope": "Verified fixture with original production inventories; named-selection safety already passes"
+  },
+  "green": {
+    "tests": 72,
+    "failures": 0
+  },
+  "coverage": [
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderEligibility.kt",
+      "name": "type",
+      "line": 8,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderEligibility.kt",
+          "owner": "com/blent/DecoderEligibility",
+          "name": "type",
+          "signature": "([Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "line": 9,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderEligibility.kt",
+      "name": "usable",
+      "line": 11,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderEligibility.kt",
+          "owner": "com/blent/DecoderEligibility",
+          "name": "usable",
+          "signature": "(Landroid/media/MediaCodecInfo$CodecCapabilities;)Z",
+          "line": 12,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+      "name": "details",
+      "line": 46,
+      "language": "kotlin",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+          "owner": "com/blent/DecoderCapabilities",
+          "name": "details",
+          "signature": "(Ljava/util/Map;III)Lorg/json/JSONArray;",
+          "line": 47,
+          "covered": 12,
+          "total": 12
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+      "name": "<lambda>",
+      "line": 54,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+          "owner": "com/blent/DecoderCapabilities$details$row$1",
+          "name": "invoke",
+          "signature": "()Landroid/media/MediaCodecInfo$CodecCapabilities;",
+          "line": 54,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+      "name": "matching",
+      "line": 96,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+          "owner": "com/blent/DecoderCapabilities",
+          "name": "matching",
+          "signature": "(Landroid/media/MediaFormat;Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function2;)Ljava/util/List;",
+          "line": 98,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+      "name": "decoderInventory",
+      "line": 42,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+          "owner": "com/blent/CodecReportReceiverKt",
+          "name": "decoderInventory",
+          "signature": "([Landroid/media/MediaCodecInfo;Ljava/lang/String;)Ljava/lang/String;",
+          "line": 43,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+      "name": "decoderEntry",
+      "line": 51,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+          "owner": "com/blent/CodecReportReceiverKt",
+          "name": "decoderEntry",
+          "signature": "(Landroid/media/MediaCodecInfo;Ljava/lang/String;)Ljava/lang/String;",
+          "line": 52,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    }
+  ],
+  "complexity": {
+    "tool": "project Kotlin PSI 1.9.20",
+    "limit": 9,
+    "functions": [
+      [
+        "android/app/src/main/java/com/blent/DecoderEligibility.kt",
+        8,
+        "type",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderEligibility.kt",
+        9,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderEligibility.kt",
+        11,
+        "usable",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        13,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        14,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        16,
+        "report",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        19,
+        "report",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        22,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        26,
+        "unavailable",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        27,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        30,
+        "snapshotReport",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        35,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        38,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        38,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        39,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        40,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        46,
+        "details",
+        6
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        54,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        63,
+        "describe",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        64,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        65,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        70,
+        "hardware",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        73,
+        "snapshot",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        74,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        81,
+        "compatible",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        89,
+        "decoderName",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        90,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        93,
+        "nativeCapabilities",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        94,
+        "nativeInventory",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        96,
+        "matching",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderCapabilities.kt",
+        98,
+        "<lambda>",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        12,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        13,
+        "onReceive",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        17,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        20,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        26,
+        "decoderReport",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        28,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        35,
+        "formatDecoderReport",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        37,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        42,
+        "decoderInventory",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        45,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        46,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        51,
+        "decoderEntry",
+        4
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        59,
+        "hevcDepth",
+        4
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        60,
+        "<lambda>",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CodecReportReceiver.kt",
+        68,
+        "decoderAcceleration",
+        8
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        17,
+        "resetInventory",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        19,
+        "t1566RequiredSecureAndTunneledPlaybackNeverBecomeSelectable",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        19,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        24,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        24,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        30,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        38,
+        "t1566EveryFamilyRetainsDetailsWhenEarlierFamiliesFillTheirLimit",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        38,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        39,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        40,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        42,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        42,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        46,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        49,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        53,
+        "t1566ShellInventoryUsesTheSameCaseInsensitiveMimeComparison",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        53,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        55,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        56,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        56,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        62,
+        "t1566NamedSelectionRevalidatesOrdinaryPlaybackEligibility",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        67,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        75,
+        "required",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        76,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        78,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        79,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        81,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        84,
+        "profile",
+        6
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        92,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        95,
+        "codec",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        97,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderEligibilityTest.kt",
+        98,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        17,
+        "capability",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        19,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        22,
+        "codec",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        26,
+        "t802_reportEnumeratesOnceAndReusesExactMimeCapabilities",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        26,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        30,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        30,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        40,
+        "t802_duplicateAndUnsupportedProfilesDoNotSpendDetailWorkPastSupportedCap",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        44,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        45,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        45,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        45,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        49,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        49,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        60,
+        "t802_eachReportRescansAndPreservesExactFormatAndFailureResults",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        60,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        63,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        64,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        71,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        73,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        78,
+        "t802_detailCapPreservesFirstSupportedUniqueEntriesAfterInvalidNames",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        78,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        79,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        80,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        82,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        82,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        88,
+        "t802_unknownProfileRangesAndNativeFailuresNeverBecomePositiveClaims",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        91,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        91,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        92,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        93,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        95,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        95,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/MetadataSnapshotTest.kt",
+        98,
+        "<lambda>",
+        1
+      ]
+    ]
+  },
+  "limits": [
+    "Robolectric API 27/34; no physical restricted-decoder inventory observed",
+    "Existing metadata snapshot lifetime; no native codec allocation"
+  ]
+}
