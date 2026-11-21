@@ -1,0 +1,30 @@
+{
+  "source_commit": "e657e8c4",
+  "android_source_commit": "43d0af25; Android sources unchanged through e657e8c4",
+  "kind": "local Linux build; not a portable AppImage",
+  "installed_or_reloaded": false,
+  "native_execution": "CLI version only; sharing acceptance remains separate",
+  "latest_scoped_tests": {
+    "T1543_monitor": 81,
+    "T1537_common_library": 490,
+    "T1537_integration": 10,
+    "T1655_wifi_and_cadence": 54,
+    "T1659_usb": 63
+  },
+  "checks": [
+    "Linux release build with native-audio and accessory-transport",
+    "Windows GNU host-library compile with accessory-transport (not native execution)",
+    "Android release identity/signature and lint checks",
+    "all seven staged ELF dependency lists resolve locally"
+  ],
+  "sha256": {
+    "bin/blent": "55c7a76f482ea8cf97cc799f0af05d738b2cfc9e6a14a816582193ed14b6c8c1",
+    "bin/blent-audio": "7c9ce1d2912c348fd7b8b9321752d560f96094870622bc410078e0ad26d62329",
+    "bin/blent-gui": "9c5e4c4ab9e34acbd73d319b31990a69c46f2e9ec567717a58e10ea95ceba22b",
+    "bin/blent-usb-broker": "4129757cca1edbd5d8a18b1b64e951bc0d8c433ceff21b155bd63ccbf792d10a",
+    "bin/blent-usb-io": "59335d9a490c9d015064bfe3f53f8b5153bb0aca45bf55d758020aae37259aa6",
+    "bin/evdi_helper": "4089729bdc143ffdab1511a13a4d485270db4dd572e06308cbeb385bcc74e08e",
+    "bin/libevdi.so.1.15.0": "5ec8b7614074dd10dce5ba4b668203c70e77bf698da6614d839324955aead96a",
+    "blent.apk": "38eee36bdfe3238d7638c69f63349be1f6bb1a57cdd17d282d68398b382d96d9"
+  }
+}
