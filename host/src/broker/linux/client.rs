@@ -24,7 +24,7 @@ impl Launch {
         );
         Ok(())
     }
-    fn spawn(&self) -> Result<()> {
+    fn spawn(&self) -> Result<blent_config::commands::Spawned> {
         let mut command = crate::independent_process::command(self.executable.as_os_str());
         command
             .args(["--runtime"])
@@ -38,8 +38,7 @@ impl Launch {
             .stderr(Stdio::inherit());
         // The elected broker survives the requesting client's exit. Its own
         // lifecycle, not this startup request, governs attached resources.
-        blent_config::commands::spawn_reaped(&mut command).context("start local USB broker")?;
-        Ok(())
+        blent_config::commands::spawn_reaped(&mut command).context("start local USB broker")
     }
     fn connect(&self) -> io::Result<AsyncSocket> {
         AsyncSocket::new(Socket::connect(
@@ -74,32 +73,35 @@ impl Connector {
             "invalid broker startup deadline"
         );
         let deadline = Instant::now() + timeout;
-        match self.launch.connect() {
+        let started = match self.launch.connect() {
             Ok(socket) => return Ok(socket),
-            Err(error) if missing(&error) => self.start(deadline).await?,
-            Err(error) if busy(&error) => (),
+            Err(error) if missing(&error) => Some(self.start(deadline).await?),
+            Err(error) if busy(&error) => None,
             Err(error) => return Err(error.into()),
-        }
-        self.wait(deadline).await
+        };
+        self.wait(deadline, started).await
     }
-    async fn start(&self, deadline: Instant) -> Result<()> {
+    async fn start(&self, deadline: Instant) -> Result<blent_config::commands::Spawned> {
         let launch = self.launch.clone();
         self.start_with(deadline, move || launch.spawn()).await
     }
-    async fn start_with(
+    async fn start_with<T: Send + 'static>(
         &self,
         deadline: Instant,
-        operation: impl FnOnce() -> Result<()> + Send + 'static,
-    ) -> Result<()> {
+        operation: impl FnOnce() -> Result<T> + Send + 'static,
+    ) -> Result<T> {
         let permit = timeout_at(deadline, self.starters.clone().acquire_owned()).await??;
         let task = tokio::task::spawn_blocking(move || {
             let _permit = permit;
             operation()
         });
-        timeout_at(deadline, task).await???;
-        Ok(())
+        timeout_at(deadline, task).await??
     }
-    async fn wait(&self, deadline: Instant) -> Result<AsyncSocket> {
+    async fn wait(
+        &self,
+        deadline: Instant,
+        started: Option<blent_config::commands::Spawned>,
+    ) -> Result<AsyncSocket> {
         loop {
             ensure!(Instant::now() < deadline, "broker startup deadline expired");
             match self.launch.connect() {
@@ -107,8 +109,24 @@ impl Connector {
                 Err(error) if missing(&error) || busy(&error) => (),
                 Err(error) => return Err(error.into()),
             }
+            self.check_starter(started.as_ref())?;
             timeout_at(deadline, tokio::time::sleep(Duration::from_millis(20))).await?;
         }
+    }
+    fn check_starter(&self, started: Option<&blent_config::commands::Spawned>) -> Result<()> {
+        let Some(started) = started else {
+            return Ok(());
+        };
+        let Some(status) = *started.exit.borrow() else {
+            return Ok(());
+        };
+        ensure!(
+            super::owner::occupied(&self.launch.runtime)?,
+            "USB broker launcher {} exited before readiness: {}",
+            started.pid,
+            status
+        );
+        Ok(())
     }
 }
 fn missing(error: &io::Error) -> bool {

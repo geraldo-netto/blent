@@ -201,3 +201,81 @@ fn t1473_shared_broker_launch_leaves_callers_cgroup() {
     );
     assert!(actual.contains(".scope"));
 }
+
+#[tokio::test]
+async fn t1638_failed_broker_reports_exit_before_startup_deadline() {
+    let root = root();
+    let program = root.path().join("rejected-broker");
+    std::fs::write(&program, b"#!/bin/sh\nexit 7\n").unwrap();
+    std::fs::set_permissions(&program, std::fs::Permissions::from_mode(0o700)).unwrap();
+    let connector = Connector::new(launch(root.path(), program), 1).unwrap();
+    let result = tokio::time::timeout(
+        Duration::from_secs(1),
+        connector.connect(Duration::from_secs(10)),
+    )
+    .await
+    .expect("T1638 exited broker still consumes the full startup deadline");
+    let failure = result
+        .err()
+        .expect("T1638 failed broker was connected")
+        .to_string();
+    assert!(
+        failure.contains("7"),
+        "T1638 original exit status missing: {failure}"
+    );
+    assert_eq!(connector.starters.available_permits(), 1);
+}
+
+#[tokio::test]
+async fn t1638_exited_starter_waits_for_the_other_elected_owner() {
+    use std::os::unix::fs::OpenOptionsExt;
+    let root = root();
+    let lock = std::fs::OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .mode(0o600)
+        .open(root.path().join("broker.lock"))
+        .unwrap();
+    lock.try_lock().unwrap();
+    let mut child =
+        blent_config::commands::spawn_reaped(&mut std::process::Command::new("/bin/false"))
+            .unwrap();
+    tokio::time::timeout(Duration::from_secs(1), child.exit.wait_for(Option::is_some))
+        .await
+        .unwrap()
+        .unwrap();
+    let connector = Connector::new(launch(root.path(), "/bin/false".into()), 1).unwrap();
+    let connection = connector.wait(Instant::now() + Duration::from_secs(2), Some(child));
+    tokio::pin!(connection);
+    assert!(
+        tokio::time::timeout(Duration::from_millis(50), &mut connection)
+            .await
+            .is_err(),
+        "T1638 losing starter discarded an initializing owner"
+    );
+    drop(lock);
+    let owner = Owner::bind(root.path(), 2).unwrap();
+    let socket = connection.await.unwrap();
+    drop(socket);
+    drop(owner);
+}
+
+#[tokio::test]
+async fn t1638_dead_starter_without_runtime_reports_original_status() {
+    let root = root();
+    let mut child =
+        blent_config::commands::spawn_reaped(&mut std::process::Command::new("/bin/false"))
+            .unwrap();
+    tokio::time::timeout(Duration::from_secs(1), child.exit.wait_for(Option::is_some))
+        .await
+        .unwrap()
+        .unwrap();
+    let connector =
+        Connector::new(launch(&root.path().join("absent"), "/bin/false".into()), 1).unwrap();
+    let result = connector
+        .wait(Instant::now() + Duration::from_secs(10), Some(child))
+        .await;
+    assert!(result.err().unwrap().to_string().contains("exit status: 1"));
+    assert!(connector.check_starter(None).is_ok());
+}

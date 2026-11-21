@@ -26,11 +26,7 @@ impl Owner {
         if !path.is_absolute() || !(1..=1024).contains(&backlog) {
             return Err(invalid("invalid broker directory or backlog"));
         }
-        let directory = OpenOptions::new()
-            .read(true)
-            .custom_flags(libc::O_DIRECTORY | libc::O_NOFOLLOW | libc::O_CLOEXEC)
-            .open(path)?;
-        validate_directory(&directory)?;
+        let directory = open_directory(path)?;
         let lock = acquire(&directory)?;
         remove_stale(&directory)?;
         let pinned = format!("/proc/self/fd/{}/broker.sock", directory.as_raw_fd());
@@ -64,6 +60,30 @@ impl Drop for Owner {
             }
         }
     }
+}
+
+/// A losing starter may exit while the elected owner is still initializing.
+/// Observe the same stable election lock; never unlink it or infer readiness.
+pub(super) fn occupied(path: &Path) -> io::Result<bool> {
+    let directory = match open_directory(path) {
+        Ok(directory) => directory,
+        Err(error) if error.kind() == io::ErrorKind::NotFound => return Ok(false),
+        Err(error) => return Err(error),
+    };
+    match acquire(&directory) {
+        Ok(_) => Ok(false),
+        Err(error) if error.kind() == io::ErrorKind::WouldBlock => Ok(true),
+        Err(error) => Err(error),
+    }
+}
+
+fn open_directory(path: &Path) -> io::Result<File> {
+    let directory = OpenOptions::new()
+        .read(true)
+        .custom_flags(libc::O_DIRECTORY | libc::O_NOFOLLOW | libc::O_CLOEXEC)
+        .open(path)?;
+    validate_directory(&directory)?;
+    Ok(directory)
 }
 
 fn invalid(message: &'static str) -> io::Error {

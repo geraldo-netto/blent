@@ -135,3 +135,14 @@ fn t874_socket_hardlinks_are_not_eligible_for_stale_cleanup() {
     assert!(Owner::bind(root.path(), 1).is_err());
     assert!(endpoint.exists());
 }
+
+#[test]
+fn t1638_election_observation_rejects_unsafe_directory_and_lock() {
+    let root = tempfile::tempdir().unwrap();
+    assert!(!super::occupied(&root.path().join("missing")).unwrap());
+    std::fs::set_permissions(root.path(), std::fs::Permissions::from_mode(0o755)).unwrap();
+    assert!(super::occupied(root.path()).is_err());
+    std::fs::set_permissions(root.path(), std::fs::Permissions::from_mode(0o700)).unwrap();
+    std::fs::create_dir(root.path().join("broker.lock")).unwrap();
+    assert!(super::occupied(root.path()).is_err());
+}

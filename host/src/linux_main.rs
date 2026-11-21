@@ -1653,7 +1653,9 @@ printf '%s\n' "$2" >> "$0.log"
 
     #[tokio::test]
     async fn t072_launched_children_are_reaped_after_exit() {
-        let pid = config::spawn_reaped(&mut std::process::Command::new("true")).unwrap();
+        let pid = config::spawn_reaped(&mut std::process::Command::new("true"))
+            .unwrap()
+            .pid;
         let path = format!("/proc/{pid}");
         let reaped = tokio::time::timeout(std::time::Duration::from_millis(300), async {
             while std::path::Path::new(&path).exists() {

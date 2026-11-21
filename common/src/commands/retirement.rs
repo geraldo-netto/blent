@@ -17,10 +17,19 @@ pub(super) fn reserve() -> io::Result<Admission> {
     .map_err(|error| io::Error::new(error.kind(), error.to_string()))?
     .reserve()
 }
-pub(super) struct SyncChild(pub std::process::Child);
+pub(super) struct SyncChild {
+    pub child: std::process::Child,
+    pub report: Option<tokio::sync::watch::Sender<Option<std::process::ExitStatus>>>,
+}
 impl Observe for SyncChild {
     fn poll_complete(&mut self) -> bool {
-        matches!(self.0.try_wait(), Ok(Some(_)))
+        let Ok(Some(status)) = self.child.try_wait() else {
+            return false;
+        };
+        if let Some(report) = self.report.take() {
+            report.send_replace(Some(status));
+        }
+        true
     }
 }
 pub(super) struct AsyncChild {

@@ -145,3 +145,9 @@ All 54 selected host security cases pass, including nine failed and nine crashed
 The failing-first native fixture showed SIGTERM killing a broker paused before state initialization. Signal streams now register eagerly before startup; pending termination survives until the original startup settles. A ready stop takes priority over server dispatch, followed by normal owned shutdown.
 
 All 11 selected entry cases pass. Private native child fixtures now survive both SIGTERM and SIGINT during the startup gate, complete original initialization and retire the original listener. Four maintained methods have 100% line coverage; all 12 measured functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1637-verification.json). No installed process received a signal. Uncatchable termination and power loss still use journal recovery.
+
+## T1638 — prompt broker startup failure, part of T1597
+
+The failing-first native fixture confirmed that an exited launcher consumed the full ten-second startup wait. Independent launches now return an original-child exit receipt from the existing bounded reaper. The connector reports that exit promptly when no elected owner remains; a competing owner still initializing retains the normal readiness deadline. Socket success has priority. Launcher exit is not treated as delegated-service cleanup proof.
+
+All 17 host cases, 37 shared command cases and the existing entry reaping case pass. Fourteen measured methods (12 maintained and two adjacent adapters) reach at least 83% line coverage; all 75 measured functions have complexity <=9. [Evidence](artifacts/2026-11-21-requested-fixes/t1638-verification.json). Receipt loss preserves original child ownership, and one optional watch slot per existing child admission bounds retained state. Shared Windows native acceptance remains T1271. Parent T1597 still owns the confirmed repair command and integrated acceptance.

@@ -17,14 +17,26 @@ mod retirement;
 mod windows;
 pub use owned::{OwnedChild, Retirement, RetirementError, RetirementPhase};
 
-pub fn spawn_reaped(command: &mut std::process::Command) -> std::io::Result<u32> {
+/// Observes one original independent child. Dropping this receipt neither kills
+/// the child nor releases its bounded native reaper admission. PID is diagnostic;
+/// only the retained child's try_wait result publishes an exit status.
+pub struct Spawned {
+    pub pid: u32,
+    pub exit: tokio::sync::watch::Receiver<Option<ExitStatus>>,
+}
+
+pub fn spawn_reaped(command: &mut std::process::Command) -> std::io::Result<Spawned> {
     #[cfg(windows)]
     windows::child_priority(command, 0);
     let admission = retirement::reserve()?;
     let child = command.spawn()?;
     let pid = child.id();
-    admission.retain(retirement::SyncChild(child));
-    Ok(pid)
+    let (report, exit) = tokio::sync::watch::channel(None);
+    admission.retain(retirement::SyncChild {
+        child,
+        report: Some(report),
+    });
+    Ok(Spawned { pid, exit })
 }
 
 pub const COMMAND_TIMEOUT: Duration = Duration::from_secs(5);
@@ -137,7 +149,10 @@ fn reap_reserved(
         }
         std::thread::sleep(Duration::from_millis(1));
     }
-    admission.retain(retirement::SyncChild(child));
+    admission.retain(retirement::SyncChild {
+        child,
+        report: None,
+    });
 }
 
 impl SyncCommandExt for Command {
@@ -329,3 +344,6 @@ mod observation_tests;
 #[cfg(all(test, target_os = "linux"))]
 #[path = "commands/retained_tests.rs"]
 mod retained_tests;
+
+#[cfg(all(test, target_os = "linux"))]
+mod spawn_tests;

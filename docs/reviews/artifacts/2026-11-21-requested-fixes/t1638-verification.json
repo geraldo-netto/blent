@@ -1,0 +1,39 @@
+{
+  "issue": "T1638",
+  "parent": "T1597",
+  "before": {
+    "tests": 1,
+    "failed": 1,
+    "log": "/tmp/blent-t1638-red.log",
+    "failure": "An already exited launcher still used the ten-second startup deadline; one-second response assertion expired."
+  },
+  "after": {
+    "host_cases": 17,
+    "shared_command_cases": 37,
+    "entry_reaping_cases": 1,
+    "failed": 0,
+    "ignored": 0,
+    "logs": [
+      "/tmp/blent-t1638-host-coverage.log",
+      "/tmp/blent-t1638-common-coverage.log",
+      "/tmp/blent-t1638-entry-coverage.log"
+    ]
+  },
+  "coverage": {
+    "measured_methods": 14,
+    "maintained_methods": 12,
+    "additional_unchanged_methods": [
+      "Launch::connect",
+      "AsyncChild::poll_complete"
+    ],
+    "minimum_percent": 83.3333,
+    "tool": "Rust 1.100.0 LLVM, cargo-llvm-cov 0.8.7"
+  },
+  "complexity": {
+    "functions": 75,
+    "over_nine": 0,
+    "tool": "project Rust syn 2.0.119 checker"
+  },
+  "ownership": "Each bounded independent-child reaper admission owns one optional exit watch slot, published only by original Child::try_wait. Receipt loss neither kills nor releases child ownership. Startup observes the direct launcher exit, not delegated service completion; it never cancels an independent broker. The same stable election lock distinguishes another initializing owner from an exited starter; observing it never unlinks the lock or claims readiness. Existing 128-default/4096-max child admission bounds fund the added one-slot observations. Unknown reap outcomes remain owned.",
+  "native_limit": "Linux private process/election fixtures passed; shared Windows spawn/receipt acceptance remains T1271. Parent T1597 retains repair-command integration."
+}
