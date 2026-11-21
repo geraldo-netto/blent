@@ -65,6 +65,11 @@ Its CRF quality target is combined with the configured bitrate target/maxrate;
 quality numbers are not visually equivalent across codecs. VAAPI uses CQP and
 is intentionally uncapped; the Linux UI disables its bitrate control and
 retains that preference for other encoders. See [rate-control policy](development.md#encoder-tuning).
+H.264/HEVC VAAPI receive the configured quality as `-qp`; VP9/AV1 VAAPI
+receive it unchanged as `-global_quality`, their supported CQP quantizer-index
+control. The configured 12–32 range therefore selects indices 12–32 on the
+VP9/AV1 0–255 scale; it is not a visual-quality conversion from H.264/HEVC.
+This option mapping follows [FFmpeg 6.1.1's VAAPI rate-control contract](https://github.com/FFmpeg/FFmpeg/blob/n6.1.1/libavcodec/vaapi_encode.c#L1807-L1816).
 
 AV1 uses Main profile, 8-bit 4:2:0. The libaom profile selects realtime usage,
 CPU-used 8, row threading, zero lookahead and no alternate-reference generation;

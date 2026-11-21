@@ -1,0 +1,24 @@
+[
+  {
+    "file": "common/src/encoding.rs",
+    "name": "codec_options",
+    "line": 186,
+    "language": "rust",
+    "covered": 53,
+    "total": 53,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/encoding.rs",
+    "name": "vaapi_quality_key",
+    "line": 242,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

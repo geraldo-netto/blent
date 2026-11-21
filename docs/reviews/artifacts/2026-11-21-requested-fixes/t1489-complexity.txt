@@ -1,0 +1,27 @@
+common/src/encoding.rs:9	rank	1
+common/src/encoding.rs:106	ffmpeg_name	3
+common/src/encoding.rs:113	find	2
+common/src/encoding.rs:120	validate_inproc	1
+common/src/encoding.rs:144	validate_numbers	1
+common/src/encoding.rs:161	new	5
+common/src/encoding.rs:181	with_workers	1
+common/src/encoding.rs:186	codec_options	9
+common/src/encoding.rs:242	vaapi_quality_key	2
+common/src/encoding.rs:251	cli_options	4
+common/src/encoding.rs:270	cli_controls	7
+common/src/encoding.rs:290	cli_profile	5
+common/src/encoding.rs:304	baseline_profile	2
+common/src/encoding.rs:314	inproc_options	4
+common/src/encoding.rs:337	t839_profile_rejects_bitrate_overflow_before_arithmetic	1
+common/src/encoding.rs:342	t839_numeric_boundaries_match_low_level_profile_contract	8
+common/src/encoding.rs:399	t787_shared_vaapi_preserves_explicit_low_latency_policy	3
+common/src/encoding.rs:423	t612_manual_workers_use_shared_policy_and_preserve_default	2
+common/src/encoding.rs:452	t613_x264_defaults_to_one_worker_in_both_adapters	3
+common/src/encoding.rs:476	t433_av1_profiles_use_framed_stock_cli_and_reject_inproc	2
+common/src/encoding.rs:489	t400_low_latency_vaapi_is_distinct_from_stock_encoder_name	1
+common/src/encoding.rs:510	t373_registry_preserves_current_profiles_and_adapter_capabilities	3
+common/src/encoding.rs:528	t1193_obsolete_encoder_alias_cannot_admit_a_profile	3
+common/src/encoding.rs:555	t1193_bounded_invalid_alias_variants_never_resolve	4
+common/src/encoding.rs:572	t1193_obsolete_encoder_configuration_follows_current_unknown_value_policy	1
+common/tests/encoding_quality.rs:5	t1489_each_vaapi_codec_receives_its_supported_quality_option	3
+26 functions; 0 exceed cyclomatic complexity 9

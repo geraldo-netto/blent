@@ -198,7 +198,7 @@ impl Profile {
                 ],
                 "cq",
             ),
-            Backend::Vaapi => (&[("rc_mode", "CQP")], "qp"),
+            Backend::Vaapi => (&[("rc_mode", "CQP")], self.vaapi_quality_key()),
             Backend::X264 => (
                 &[
                     ("preset", "ultrafast"),
@@ -237,6 +237,14 @@ impl Profile {
         }
         options.push((quality_key, self.quality.to_string()));
         options
+    }
+
+    fn vaapi_quality_key(&self) -> &'static str {
+        if crate::video::Codec::from_encoder(self.encoder.name).framed() {
+            "global_quality"
+        } else {
+            "qp"
+        }
     }
 
     /// CLI syntax and explicit CLI-only controls. The caller limits ten_bit to HEVC.

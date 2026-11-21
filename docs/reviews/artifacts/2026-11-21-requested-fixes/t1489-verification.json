@@ -1,0 +1,23 @@
+{
+  "finding": "T1489",
+  "red": {
+    "tests": 1,
+    "failed": 1,
+    "detail": "vp9_vaapi emitted -qp 12; expected supported -global_quality 12"
+  },
+  "green": {
+    "regression_passed": 1,
+    "encoding_unit_cases_passed": 14
+  },
+  "coverage": {
+    "production_methods": 2,
+    "minimum_percent": 100
+  },
+  "complexity": {
+    "functions_measured": 26,
+    "above_nine": 0
+  },
+  "native_probe": "Installed FFmpeg 6.1.1 -h encoder=vp9_vaapi and av1_vaapi expose no qp AVOption. No VAAPI encode or live display was started.",
+  "source": "https://github.com/FFmpeg/FFmpeg/blob/n6.1.1/libavcodec/vaapi_encode.c#L1807-L1816",
+  "ownership": "Stateless bounded option selection; returned strings are static, the existing options vector belongs to the caller. No new native owner or queue."
+}
