@@ -1,0 +1,768 @@
+{
+  "finding": "T1565",
+  "red": {
+    "tests": 2,
+    "failed": 2
+  },
+  "green": {
+    "tests": 58,
+    "failures": 0
+  },
+  "coverage": [
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+      "name": "<init>",
+      "line": 3,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+          "owner": "com/blent/DecoderOutputWatchdog",
+          "name": "<init>",
+          "signature": "()V",
+          "line": 4,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+      "name": "<init>",
+      "line": 9,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+          "owner": "com/blent/DecoderOutputWatchdog$Stall",
+          "name": "<init>",
+          "signature": "(IJZ)V",
+          "line": 9,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+      "name": "restarted",
+      "line": 19,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+          "owner": "com/blent/DecoderOutputWatchdog",
+          "name": "restarted",
+          "signature": "(J)V",
+          "line": 21,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+      "name": "output",
+      "line": 26,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+          "owner": "com/blent/DecoderOutputWatchdog",
+          "name": "output",
+          "signature": "(J)V",
+          "line": 27,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+      "name": "queued",
+      "line": 41,
+      "language": "kotlin",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+          "owner": "com/blent/DecoderOutputWatchdog",
+          "name": "queued",
+          "signature": "(J)Lcom/blent/DecoderOutputWatchdog$Stall;",
+          "line": 44,
+          "covered": 8,
+          "total": 8
+        }
+      ]
+    }
+  ],
+  "complexity": {
+    "tool": "project Kotlin PSI 1.9.20",
+    "limit": 9,
+    "functions": [
+      [
+        "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+        4,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+        9,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+        20,
+        "restarted",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+        26,
+        "output",
+        5
+      ],
+      [
+        "android/app/src/main/java/com/blent/DecoderOutputWatchdog.kt",
+        41,
+        "queued",
+        6
+      ],
+      [
+        "android/app/src/test/java/com/blent/SparseDecoderWindowTest.kt",
+        8,
+        "t1107_sparseCompletedPicturesDoNotManufactureWatchdogStalls",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/SparseDecoderWindowTest.kt",
+        13,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/SparseDecoderWindowTest.kt",
+        22,
+        "t1565IdleBurstReceivesItsOwnOutputObservationWindow",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/SparseDecoderWindowTest.kt",
+        28,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/SparseDecoderWindowTest.kt",
+        30,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/SparseDecoderWindowTest.kt",
+        39,
+        "t1565UnansweredBurstStillExpiresAtItsOwnBoundary",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/SparseDecoderWindowTest.kt",
+        43,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/SparseDecoderWindowTest.kt",
+        51,
+        "t1107_sparsePolicyCannotHideAdmittedUncompletedPictures",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/SparseDecoderWindowTest.kt",
+        54,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        26,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        27,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        28,
+        "<clinit>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        33,
+        "configure",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        34,
+        "setVideoScalingMode",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        35,
+        "setOnFrameRenderedListener",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        38,
+        "start",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        39,
+        "stop",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        40,
+        "release",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        41,
+        "dequeueInputBuffer",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        42,
+        "getInputBuffer",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        43,
+        "queueInputBuffer",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        44,
+        "releaseOutputBuffer",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        45,
+        "dequeueOutputBuffer",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        47,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        55,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        57,
+        "t803_renderCallbackDoesNotOwnReceiverMonitor",
+        3
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        61,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        62,
+        "rendered",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        66,
+        "invalidated",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        67,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        78,
+        "t484_renderReceiptsFollowPublishedCodecConfiguration",
+        3
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        83,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        84,
+        "rendered",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        85,
+        "invalidated",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        86,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        87,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        106,
+        "t376_retiredCodecCallbacksCannotAcknowledgeReplacement",
+        3
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        114,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        115,
+        "rendered",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        116,
+        "invalidated",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        117,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        119,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        144,
+        "t404_codecReplacementRetiresTimingHistory",
+        3
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        147,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        148,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        149,
+        "rendered",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        150,
+        "invalidated",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        151,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        166,
+        "t404_inflightCallbackCannotAcknowledgeReplacement",
+        4
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        172,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        180,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        181,
+        "rendered",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        182,
+        "invalidated",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        183,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        193,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        195,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        207,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        211,
+        "t386_retiredOutputCannotUpdateReplacementWatchdog",
+        4
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        215,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        216,
+        "rendered",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        217,
+        "invalidated",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        218,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        219,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        233,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        242,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        244,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        254,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        263,
+        "set",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        264,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        265,
+        "restart",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        272,
+        "output",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        279,
+        "stall",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        280,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        283,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        287,
+        "assertHints",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        297,
+        "close",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        300,
+        "t417_diagnosticsTrackCodecChangesRetirementAndWatchdogFallback",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        301,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        329,
+        "repeatedStalls",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        330,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        331,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        334,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        341,
+        "t339_zeroFrameStallsReachFallback",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        342,
+        "t339_oneFrameStallsReachFallback",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        344,
+        "t339_sustainedOutputResetsStallHistory",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        345,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        350,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        360,
+        "t339_aShortBurstIsNotSustainedRecovery",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        361,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        365,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        372,
+        "t339_gapsBetweenIsolatedFramesDoNotClearFailures",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        373,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        377,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        384,
+        "t339_eachReplacementNeedsItsOwnRecoveryWindow",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        385,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        390,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        401,
+        "t339_fallbackSurvivesRecoveryStopStartAndCodecChanges",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        402,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        403,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/DecoderWatchdogTest.kt",
+        406,
+        "<lambda>",
+        1
+      ]
+    ]
+  },
+  "limits": [
+    "Virtual monotonic clock and Robolectric; no physical timing measurement",
+    "Only admitted pictures create watchdog obligations; existing native ownership unchanged"
+  ]
+}

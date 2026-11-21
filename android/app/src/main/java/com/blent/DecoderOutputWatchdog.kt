@@ -9,6 +9,7 @@ internal class DecoderOutputWatchdog {
     data class Stall(val queued: Int, val silentNanos: Long, val droppedHints: Boolean)
 
     private var queued = 0
+    private var pendingSince = 0L
     private var lastOutput = 0L
     private var recoveryStart = 0L
     private var recoveryFrames = 0
@@ -38,8 +39,11 @@ internal class DecoderOutputWatchdog {
     }
 
     @Synchronized fun queued(now: Long): Stall? {
+        // An idle decoder owes no output. Start at the first admitted picture
+        // after restart/output, using the same monotonic clock as recovery.
+        if (queued == 0) pendingSince = now
         queued++
-        val silentNanos = now - lastOutput
+        val silentNanos = now - pendingSince
         if (queued < MIN_FRAMES || silentNanos <= WINDOW_NANOS) return null
         stalls = (stalls + 1).coerceAtMost(2)
         val dropHints = stalls >= 2 && lowLatencyHints

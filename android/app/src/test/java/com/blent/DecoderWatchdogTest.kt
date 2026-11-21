@@ -277,8 +277,11 @@ class DecoderWatchdogTest {
             assertTrue("T339: output worker did not finish a frame", barrier.await(2, TimeUnit.SECONDS))
         }
         fun stall() {
-            now.addAndGet(2_000_000_000)
-            synchronized(receiver) { repeat(4) { receiver.decoder.checkOutputProgress() } }
+            synchronized(receiver) {
+                receiver.decoder.checkOutputProgress()
+                now.addAndGet(2_000_000_000)
+                repeat(3) { receiver.decoder.checkOutputProgress() }
+            }
             assertTrue("T339: watchdog did not retire the socket", socket.isClosed)
         }
         fun assertHints(enabled: Boolean) {

@@ -124,7 +124,9 @@ the relevant topic when implementing or diagnosing that part.
    of these requests confirms effective latency or throughput. MediaCodec
    selection does not guarantee a hardware decoder; support is device-dependent.
    The output watchdog reconnects after four queued frames and more than 1.5
-   seconds without output. Two stalls disable latency hints. Only four output
+   seconds without output, measured from the first picture submitted after the
+   last output or restart. Idle time before that picture creates no obligation.
+   Two stalls disable latency hints. Only four output
    frames spanning at least 1.5 seconds, with no gap longer than that window,
    clear the failure streak. Recreating the codec starts a new recovery window;
    once selected, the hint fallback persists for that receiver's lifetime,
