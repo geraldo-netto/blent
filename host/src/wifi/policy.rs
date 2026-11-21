@@ -72,8 +72,7 @@ pub async fn reconnect<C: Commands + Clone + 'static>(
 pub(super) fn connected(bytes: &[u8], address: &str) -> bool {
     let text = String::from_utf8_lossy(bytes);
     // Exact ADB success prefixes; "failed to connect" cannot authorize a route.
-    text.trim() == "connected"
-        || text.trim() == format!("connected to {address}")
+    text.trim() == format!("connected to {address}")
         || text.trim() == format!("already connected to {address}")
 }
 pub async fn setup<C: Commands + Clone + 'static>(

@@ -113,6 +113,20 @@ fn fixture() -> (tempfile::TempDir, ConfigStore, Adb<Fake>) {
     }
     (root, store, Adb(fake))
 }
+
+#[test]
+fn t1649_success_reply_must_identify_its_endpoint() {
+    for reply in [
+        "connected",
+        "connected\n",
+        "connected to other:5",
+        "already connected",
+    ] {
+        assert!(!connected(reply.as_bytes(), "host:5"), "T1649: {reply:?}");
+    }
+    assert!(connected(b"connected to host:5", "host:5"));
+    assert!(connected(b"already connected to host:5", "host:5"));
+}
 #[tokio::test]
 async fn t691_setup_off_and_stale_connect_preserve_configuration_ownership() {
     let (_root, store, adb) = fixture();
@@ -207,11 +221,7 @@ fn t691_address_and_reply_bounds_are_permanent() {
         let text = String::from_utf8_lossy(&[byte; 64]).into_owned();
         let _ = valid_address(&text);
     }
-    for good in [
-        "connected",
-        "connected to host:5",
-        "already connected to host:5",
-    ] {
+    for good in ["connected to host:5", "already connected to host:5"] {
         assert!(connected(good.as_bytes(), "host:5"));
     }
     for bad in [

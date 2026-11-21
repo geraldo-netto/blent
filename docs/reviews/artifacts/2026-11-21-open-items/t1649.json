@@ -1,0 +1,23 @@
+{
+  "issue": "T1649",
+  "additional_finding": true,
+  "tests": 18,
+  "coverage": [
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "connected",
+      "line": 72,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 37,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}
