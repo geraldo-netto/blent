@@ -11,6 +11,7 @@ pub trait Snapshots: Send + Sync {
     /// Best-effort sanitized snapshot; unavailable/malformed storage uses the
     /// same domain defaults as a missing configuration. This does not authorize
     /// an update to overwrite an unreadable persisted value.
+    /// Missing storage is quiet; other read/parse failures must be diagnosed.
     fn snapshot(&self) -> FileConfig;
 }
 

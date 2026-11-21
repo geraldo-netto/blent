@@ -1,0 +1,22 @@
+{
+  "issue": "T1532",
+  "tests": 27,
+  "coverage": [
+    {
+      "file": "common/src/storage.rs",
+      "name": "load_at",
+      "line": 163,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 36,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}

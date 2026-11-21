@@ -55,7 +55,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1532 | open | low | small | Report unreadable configuration instead of silently using defaults. `common/src/storage.rs::load_at` maps every read error to `FileConfig::default()` without a diagnostic, whereas a parse error is logged and `update_locked_at` distinguishes `NotFound` from other errors and fails. With an unreadable or non-UTF-8 `config.toml` the daemon and GUI start with default ports, resolution and encoder and log nothing; the first later update then fails with `read config before update`. Completion: default only for a missing file, report other read errors, and add a failing-first permanent regression. |
 
 ## Installation and distribution
 

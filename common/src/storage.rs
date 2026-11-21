@@ -4,6 +4,8 @@ use anyhow::{Context, Result};
 use std::path::{Path, PathBuf};
 mod diff;
 #[cfg(test)]
+mod load_tests;
+#[cfg(test)]
 mod merge_tests;
 mod observe;
 #[cfg(test)]
@@ -164,7 +166,15 @@ pub fn load_at(path: &Path) -> FileConfig {
             tracing::warn!("Invalid config at {:?}: {} — using defaults", path, e);
             FileConfig::default()
         }),
-        Err(_) => FileConfig::default(),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => FileConfig::default(),
+        Err(error) => {
+            tracing::warn!(
+                "Cannot read config at {:?}: {} — using defaults",
+                path,
+                error
+            );
+            FileConfig::default()
+        }
     };
     cfg.sanitize();
     cfg

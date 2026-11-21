@@ -14,6 +14,12 @@ empty or relative values use the default. The tablet’s ⚙
 sheet stores app preferences locally; **Apply** sends its shared streaming
 settings to the host. Brightness/refresh preferences take effect immediately.
 
+At startup, a missing host configuration uses defaults silently. Unreadable or
+malformed configuration also uses defaults, with a warning identifying the file
+and error. Loading never overwrites that file; partial updates require a readable,
+valid configuration. On Unix, saves report success only after syncing both the
+file and its parent directory.
+
 ## Desktop workspace and resource controls
 
 The desktop workspace adapts between a tablet sidebar and a compact selector.
