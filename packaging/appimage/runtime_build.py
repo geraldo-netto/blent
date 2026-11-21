@@ -78,10 +78,10 @@ def squash(workspace, env, jobs):
 
 def compile_runtime(workspace, runtime, env):
     adapter = Path(__file__).with_name('runtime')
-    for name in ('lifecycle.patch', 'arguments.patch'):
+    for name in ('lifecycle.patch', 'arguments.patch', 'paths.patch'):
         run(['patch', '-p1', '-i', adapter / name], runtime, env)
     source = runtime / 'src/runtime'
-    for name in ('extraction.c', 'extraction.h'):
+    for name in ('extraction.c', 'extraction.h', 'paths.c', 'paths.h'):
         shutil.copyfile(adapter / name, source / name)
     compile_variant(workspace / 'sysroot', source, env, 'runtime', [])
     compile_variant(workspace / 'sysroot', source, env, 'runtime-bounds',
@@ -92,9 +92,9 @@ def compile_runtime(workspace, runtime, env):
 def compile_variant(prefix, source, env, output, instrumentation):
     flags = ['-std=gnu99', '-Os', '-D_FILE_OFFSET_BITS=64', '-DGIT_COMMIT="20251108-blent"',
              '-T', 'data_sections.ld', '-ffunction-sections', '-fdata-sections', '-Wl,--gc-sections',
-             '-static', '-Wall', '-static-pie', f'-I{prefix}/include/squashfuse',
+             '-static', '-Wall', '-Werror', '-static-pie', f'-I{prefix}/include/squashfuse',
              f'-I{prefix}/include/fuse3', f'-L{prefix}/lib']
-    run([env['CC'], *flags, *instrumentation, 'runtime.c', 'extraction.c', '-lsquashfuse', '-lsquashfuse_ll',
+    run([env['CC'], *flags, *instrumentation, 'runtime.c', 'extraction.c', 'paths.c', '-lsquashfuse', '-lsquashfuse_ll',
          '-lzstd', '-lz', '-lfuse3', '-o', output], source, env)
 
 

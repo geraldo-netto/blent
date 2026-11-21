@@ -109,6 +109,30 @@ def verify(runtime, environment=False):
         assert not list(temporary.iterdir()), 'T1622 runtime left extraction resources'
 
 
+def verify_paths(runtime):
+    """T1639: native entry rejects oversized environment/argv/portable paths."""
+    with tempfile.TemporaryDirectory(prefix='blent-t1639-') as directory:
+        root = Path(directory)
+        image = build_image(runtime, root)
+        for variable in ('TMPDIR', 'TARGET_APPIMAGE'):
+            result = subprocess.run([str(image), '--appimage-version'],
+                                    env=dict(os.environ, **{variable: '/' + 'x' * 4096}), capture_output=True)
+            assert result.returncode == 127 and b'AppImage path' in result.stderr, variable
+        result = subprocess.run(['x' * 4096, '--appimage-version'], executable=str(image), capture_output=True)
+        assert result.returncode == 127 and b'AppImage path' in result.stderr, 'oversized argv[0]'
+        parent = root
+        while len(str(parent)) < 3900:
+            parent /= 'd' * 200
+            parent.mkdir()
+        name = 'i' * (4092 - len(str(parent)) - 1)
+        long_image = parent / name
+        long_image.write_bytes(image.read_bytes())
+        long_image.chmod(0o700)
+        result = subprocess.run([str(long_image), '--appimage-portable-home'], capture_output=True)
+        assert result.returncode == 127 and b'AppImage path' in result.stderr, 'portable suffix overflow'
+
+
 if __name__ == '__main__':
     verify(Path(sys.argv[1]).resolve())
     verify(Path(sys.argv[1]).resolve(), environment=True)
+    verify_paths(Path(sys.argv[1]).resolve())

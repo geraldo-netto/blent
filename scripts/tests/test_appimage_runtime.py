@@ -27,6 +27,13 @@ class RuntimeTest(unittest.TestCase):
         subprocess.run([str(binary), str(self.root)], check=True)
         self.assertEqual(list(self.root.iterdir()), [binary])
 
+    def test_t1639_native_path_boundaries(self):
+        binary = self.root / 'test'
+        subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
+                        str(REPO / 'scripts/tests/appimage_paths_test.c'), '-o', str(binary)], check=True)
+        subprocess.run([str(binary), str(self.root)], check=True)
+        self.assertEqual(list(self.root.iterdir()), [binary])
+
     def test_t1622_depth_admission(self):
         nested = self.root
         for _ in range(63):

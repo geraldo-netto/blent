@@ -1,0 +1,46 @@
+--- a/src/runtime/runtime.c
++++ b/src/runtime/runtime.c
+@@ -718,0 +719,2 @@
++#include "paths.h"
++
+@@ -721 +723 @@
+-    sprintf(option, "appimage-portable-%s", name);
++    blent_path_required(option, sizeof(option), "appimage-portable-", name);
+@@ -727 +729 @@
+-        ssize_t length = readlink(appimage_path, fullpath, sizeof(fullpath));
++        ssize_t length = blent_readlink(appimage_path, fullpath, sizeof(fullpath));
+@@ -734 +736,3 @@
+-        sprintf(portable_dir, "%s.%s", fullpath, name);
++        char suffix[32];
++        blent_path_required(suffix, sizeof(suffix), ".", name);
++        blent_path_required(portable_dir, sizeof(portable_dir), fullpath, suffix);
+@@ -1400,2 +1404 @@
+-    strcpy(portable_home_dir, basepath);
+-    strcat(portable_home_dir, ".home");
++    blent_path_required(portable_home_dir, sizeof(portable_home_dir), basepath, ".home");
+@@ -1408,2 +1411 @@
+-    strcpy(portable_config_dir, basepath);
+-    strcat(portable_config_dir, ".config");
++    blent_path_required(portable_config_dir, sizeof(portable_config_dir), basepath, ".config");
+@@ -1435,2 +1437,2 @@
+-        strcpy(appimage_path, "/proc/self/exe");
+-        strcpy(argv0_path, argv[0]);
++        blent_path_required(appimage_path, sizeof(appimage_path), "/proc/self/exe", "");
++        blent_path_required(argv0_path, sizeof(argv0_path), argv[0], "");
+@@ -1438,2 +1440,2 @@
+-        strcpy(appimage_path, getenv("TARGET_APPIMAGE"));
+-        strcpy(argv0_path, getenv("TARGET_APPIMAGE"));
++        blent_path_required(appimage_path, sizeof(appimage_path), getenv("TARGET_APPIMAGE"), "");
++        blent_path_required(argv0_path, sizeof(argv0_path), getenv("TARGET_APPIMAGE"), "");
+@@ -1449 +1451 @@
+-            strcpy(temp_base, getenv("TMPDIR"));
++            blent_path_required(temp_base, sizeof(temp_base), getenv("TMPDIR"), "");
+@@ -1466 +1468 @@
+-        ssize_t length = readlink(appimage_path, fullpath, sizeof(fullpath));
++        ssize_t length = blent_readlink(appimage_path, fullpath, sizeof(fullpath));
+@@ -1516 +1518 @@
+-        ssize_t len = readlink(appimage_path, fullpath, sizeof(fullpath));
++        ssize_t len = blent_readlink(appimage_path, fullpath, sizeof(fullpath));
+@@ -1528 +1530 @@
+-        strcpy(fullpath, abspath);
++        blent_path_required(fullpath, sizeof(fullpath), abspath, "");
