@@ -380,3 +380,122 @@ else:
     assert_eq!(mapped.matches("map-to-output Blent Pen ").count(), 3);
     assert!(!mapped.contains("map-to-output Blent Touch 2 "));
 }
+
+#[test]
+fn t1464_keyboard_and_unknown_classes_cannot_admit_pointer_mapping() {
+    let ident = DeviceIdentity::for_instance(0).unwrap();
+    for class in [
+        "slave keyboard (3)",
+        "master pointer (3)",
+        "floating slave",
+        "bogus",
+        "",
+    ] {
+        let line = format!("    ↳ {} id=21 [{class}]", ident.pen);
+        assert!(
+            x11_list_entry(&line, &ident).is_none(),
+            "T1464 unsupported mapping admitted: {class}"
+        );
+    }
+    let line = format!("    ↳ {} id=20 [slave  pointer  (2)]", ident.touch);
+    assert_eq!(
+        x11_list_entry(&line, &ident),
+        Some(("20", ident.touch.as_str(), ident.touch.as_str()))
+    );
+}
+
+#[tokio::test]
+async fn t1464_keyboard_rejection_does_not_quarantine_input_retirement() {
+    let root = tempfile::tempdir().unwrap();
+    let program = tool(
+        root.path(),
+        "xinput",
+        r#"
+if sys.argv[1] == 'map-to-output':
+ with (root/'mapped').open('a') as f: f.write(sys.argv[2]+'\n')
+ if sys.argv[2] == 'Blent Pen':
+  print('unable to find device Blent Pen',file=sys.stderr); sys.exit(1)
+"#,
+    );
+    let commands = crate::native_commands::ObservedCommands::default();
+    let devices="Blent Touch id=20 [slave pointer (2)]\nBlent Pointer id=22 [slave pointer (2)]\nBlent Pen id=21 [slave keyboard (3)]";
+    let mut cache = x11_cache::Mappings::default();
+    let ident = DeviceIdentity::for_instance(0).unwrap();
+    let output = x11_cache::Target {
+        name: "screen".into(),
+        topology: "same".into(),
+    };
+    assert!(!map_x11_list(&commands, devices, &ident, &program, &output, 3, &mut cache).await);
+    let invoked = std::fs::read_to_string(root.path().join("mapped")).unwrap();
+    assert_eq!(
+        invoked, "Blent Touch\nBlent Pointer\n",
+        "T1464 keyboard call creates permanent unknown mutation debt"
+    );
+    tokio::time::timeout(std::time::Duration::from_secs(2), async {
+        while !commands.complete() {
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .expect("T1464 original command ownership did not retire");
+}
+
+#[test]
+fn t1464_incomplete_inventory_keeps_discovery_pending() {
+    let ident = DeviceIdentity::for_instance(0).unwrap();
+    let keyboard = "Blent Pen id=21 [slave keyboard (3)]";
+    assert!(!x11_unsupported_inventory(keyboard, &ident, 3));
+    assert!(x11_unsupported_inventory(keyboard, &ident, 1));
+    for line in [
+        "foreign id=20 [slave pointer]",
+        "Blent Touch id=20 [slave pointer]",
+        "Blent Pen id=bogus [slave keyboard]",
+    ] {
+        assert!(!x11_unsupported_inventory(line, &ident, 1));
+    }
+    for line in [
+        "Blent Touch id=20",
+        "Blent Touch id=20 [slave pointer",
+        "Blent Touch id=overflow [slave pointer]",
+    ] {
+        assert!(x11_list_entry(line, &ident).is_none());
+    }
+}
+
+#[tokio::test]
+async fn t1464_unsupported_class_ends_discovery_without_mapping_success() {
+    let root = tempfile::tempdir().unwrap();
+    let owned = connector(1, "DVI-I-1", 1280);
+    std::fs::write(
+        root.path().join("outputs"),
+        output("DVI-I-2-1", false, &owned.edid),
+    )
+    .unwrap();
+    let randr = tool(root.path(), "xrandr", "print((root/'outputs').read_text())");
+    let input = tool(
+        root.path(),
+        "xinput",
+        r#"
+if sys.argv[1] == 'list':
+ with (root/'lists').open('a') as f: f.write('listed\n')
+ print('Blent Pen id=21 [slave keyboard (3)]')
+else:
+ raise Exception('T1464 keyboard must never admit a pointer command')
+"#,
+    );
+    map_x11_devices(
+        &crate::native_commands::ObservedCommands::default(),
+        false,
+        &DeviceIdentity::for_instance(0).unwrap(),
+        Some(1),
+        1,
+        &input,
+        &randr,
+        Some(&[owned]),
+    )
+    .await;
+    assert_eq!(
+        std::fs::read_to_string(root.path().join("lists")).unwrap(),
+        "listed\n"
+    );
+}

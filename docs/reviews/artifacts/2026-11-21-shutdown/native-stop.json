@@ -1,0 +1,11 @@
+{
+  "pid": 489627,
+  "exited": true,
+  "elapsed_seconds": 0.3260444470215589,
+  "children": {
+    "489691": false,
+    "489703": true
+  },
+  "adb_pid": 3379,
+  "adb_cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/blent-adb-shared.scope\n"
+}

@@ -1,0 +1,60 @@
+[
+  {
+    "file": "host/src/input/mapping.rs",
+    "name": "map_x11_devices",
+    "line": 227,
+    "language": "rust",
+    "covered": 48,
+    "total": 50,
+    "percent": 96.0,
+    "passes": true,
+    "missing": [
+      263,
+      283
+    ]
+  },
+  {
+    "file": "host/src/input/mapping.rs",
+    "name": "x11_list_entry",
+    "line": 364,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/input/mapping.rs",
+    "name": "x11_pointer_class",
+    "line": 374,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/input/mapping.rs",
+    "name": "x11_owned_entry",
+    "line": 385,
+    "language": "rust",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/input/mapping.rs",
+    "name": "x11_unsupported_inventory",
+    "line": 399,
+    "language": "rust",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

@@ -1,0 +1,33 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 46.45s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/build/blent/71c49429767bef11/out/blent-71c49429767bef11)
+
+running 2 tests
+test input::mapping::x11_tests::t1464_keyboard_and_unknown_classes_cannot_admit_pointer_mapping ... FAILED
+test input::mapping::x11_tests::t1464_keyboard_rejection_does_not_quarantine_input_retirement ... FAILED
+
+failures:
+
+---- input::mapping::x11_tests::t1464_keyboard_and_unknown_classes_cannot_admit_pointer_mapping stdout ----
+
+thread 'input::mapping::x11_tests::t1464_keyboard_and_unknown_classes_cannot_admit_pointer_mapping' (4025907) panicked at host/src/input/mapping/x11_tests.rs:395:9:
+T1464 unsupported mapping admitted: slave keyboard (3)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- input::mapping::x11_tests::t1464_keyboard_rejection_does_not_quarantine_input_retirement stdout ----
+
+thread 'input::mapping::x11_tests::t1464_keyboard_rejection_does_not_quarantine_input_retirement' (4025908) panicked at host/src/input/mapping/x11_tests.rs:430:5:
+assertion `left == right` failed: T1464 keyboard call creates permanent unknown mutation debt
+  left: "Blent Touch\nBlent Pointer\nBlent Pen\n"
+ right: "Blent Touch\nBlent Pointer\n"
+
+
+failures:
+    input::mapping::x11_tests::t1464_keyboard_and_unknown_classes_cannot_admit_pointer_mapping
+    input::mapping::x11_tests::t1464_keyboard_rejection_does_not_quarantine_input_retirement
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 906 filtered out; finished in 0.49s
+
+error: test failed, to rerun pass `-p blent --lib`
+error: process didn't exit successfully: `/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo test --manifest-path /backups/disk2/projects/blent/Cargo.toml --target-dir /backups/disk2/projects/blent/target/llvm-cov-target --offline -p blent --lib -- t1464` (exit status: 101)

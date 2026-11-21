@@ -275,6 +275,10 @@ pub(super) async fn map_x11_devices(
         {
             return;
         }
+        if x11_unsupported_inventory(&String::from_utf8_lossy(&devices.stdout), ident, expected) {
+            warn!("X11 exposes an owned input device without pointer capability; mapping skipped for that device");
+            return;
+        }
     }
     warn!("X11 output or input devices not ready after 10s; check xrandr providers and xinput");
 }
@@ -361,6 +365,27 @@ pub(super) fn x11_list_entry<'a, 'b>(
     line: &'a str,
     ident: &'b DeviceIdentity,
 ) -> Option<(&'a str, &'a str, &'b str)> {
+    if !x11_pointer_class(line) {
+        return None;
+    }
+    x11_owned_entry(line, ident)
+}
+
+fn x11_pointer_class(line: &str) -> bool {
+    let Some((_, class)) = line.rsplit_once('[') else {
+        return false;
+    };
+    let Some(class) = class.trim_end().strip_suffix(']') else {
+        return false;
+    };
+    let mut words = class.split_whitespace();
+    words.next() == Some("slave") && words.next() == Some("pointer")
+}
+
+fn x11_owned_entry<'a, 'b>(
+    line: &'a str,
+    ident: &'b DeviceIdentity,
+) -> Option<(&'a str, &'a str, &'b str)> {
     let start = line.find("Blent ")?;
     let (name, rest) = line[start..].split_once("id=")?;
     let kind = x11_device_kind(name.trim(), ident)?;
@@ -369,6 +394,18 @@ pub(super) fn x11_list_entry<'a, 'b>(
         .next()
         .filter(|s| s.parse::<u32>().is_ok())?;
     Some((id, name.trim(), kind))
+}
+
+fn x11_unsupported_inventory(text: &str, ident: &DeviceIdentity, expected: usize) -> bool {
+    let mut owned = std::collections::HashSet::new();
+    let mut unsupported = false;
+    for line in text.lines() {
+        if let Some((_, _, kind)) = x11_owned_entry(line, ident) {
+            owned.insert(kind);
+            unsupported |= !x11_pointer_class(line);
+        }
+    }
+    unsupported && owned.len() >= expected
 }
 
 async fn map_x11_list(
