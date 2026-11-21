@@ -538,8 +538,7 @@ async fn diagnostic_sessions(
             );
             let mut identities = std::collections::HashMap::new();
             let devices = crate::unique_devices(devices, None, &mut identities, adb).await;
-            crate::pick_device_with(&devices, None, adb)
-                .await
+            crate::select_tablet(&devices, None)
                 .into_iter()
                 .map(|serial| crate::runtime::TabletSession {
                     identity: blent_config::tablets::Identity::Adb(serial),
@@ -2026,7 +2025,9 @@ exit 0
             None,
         )
         .await;
-        assert_eq!(selected, ["TABLET"]);
+        // T1516 diagnostics include an authorized tablet without the app.
+        assert_eq!(selected, ["PHONE"]);
+        assert!(!std::fs::read_to_string(&log).unwrap().contains("pm path"));
         assert!(report.messages.borrow().join("\n").contains("candidate"));
     }
 

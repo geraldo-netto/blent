@@ -6,6 +6,11 @@ EVDI creates the extra Linux display. Doctor offers diagnostic suggestions;
 it does not certify every desktop or encoding combination. Include the exact
 fork commit as well as host/app version numbers in a report.
 
+Doctor checks the daemon's reported tablet sessions when available. Without a
+live session report, it selects an authorized ADB candidate, preferring USB,
+even if the tablet app is absent; the package check then reports installation
+instructions. This diagnostic selection does not start sharing or install anything.
+
 ## "Failed to start helper" / "evdi-helper exited prematurely"
 
 Read the preceding error. Possible causes include a missing/incompatible
