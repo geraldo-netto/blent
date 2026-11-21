@@ -35,3 +35,12 @@ GUI/broker contenders keep the existing exact reaper paths. The unchanged broker
 suite covers delayed native callbacks, caller loss and bounded starter admission.
 This validates the reported lifecycle paths; it does not establish universal leak
 freedom or subjective camera image quality (T1452).
+
+Final installation identifies source commit 2c702d0c. Running daemon, GUI and
+broker executable hashes match the installed optimized binaries. Both Android
+package hashes match their previously verified builds; this Linux-only fix does
+not change the Android wire contract. The local AppRun now persists the SDK
+plugin directories already recorded in local-runtime.json, so tray launches
+inherit the same local runtime selection as manual launches. The GUI was reopened
+once for that environment update; display streaming stayed running. The final
+installation record pins its new PID, one-instance count and launcher hash.

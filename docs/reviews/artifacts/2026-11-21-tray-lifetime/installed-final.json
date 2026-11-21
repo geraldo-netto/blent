@@ -1,0 +1,20 @@
+{
+  "source_commit": "2c702d0c182b8ef5fb86b3e0637b85c8aab37022",
+  "daemon_pid": 973942,
+  "gui_pid": 992815,
+  "gui_instances": 1,
+  "gui_cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/blent-priority-992815.scope\n",
+  "shared_broker_pid": 973459,
+  "shared_adb_pid": 3379,
+  "android_packages_verified": 2,
+  "android_packages_expected": 2,
+  "local_launcher_sha256": "a8b3b1d2d257b6a8fb244da571cc52f437e86a328a3ba04c1bb9737a30e622c5",
+  "desktop_sha256": {
+    "blent": "19dc0f99582103d5eab7808c6807f8fbd0172b3f2fabf2ca48b080ecaa2e1ace",
+    "blent-gui": "7b4b3edf1007fd13270ae307fe711ff11dc905e497e1da534ab4b712b0f76a69",
+    "blent-audio": "685bccd3e8a97b75eb397604e1b16e8ed58addf04b07f15ee0acffdff912dddb",
+    "blent-usb-broker": "227ca1e1dd63da27a4d3133c26a720731928fe42c4d766d45bbed6e40bfe16e9",
+    "evdi_helper": "9a2a5c8cf0fe9100ff9e6a8b3957049efa96716ef24aee75442c2a43cb1c7bb0",
+    "blent-usb-io": "09a1aba3c42c122a7e9902ce0310f732a903bdf4e5402983000ea61ee5d497fe"
+  }
+}
