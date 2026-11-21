@@ -67,7 +67,8 @@ fn t1268_navigation_retains_drafts_without_starting_media() {
         "Video",
         "Display & input",
         "Cameras",
-        "Audio",
+        "Microphone",
+        "Speakers",
         "Settings",
         "Tablets",
     ] {

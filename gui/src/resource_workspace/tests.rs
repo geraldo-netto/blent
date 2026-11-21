@@ -345,8 +345,8 @@ fn t1273_workspace_selection_and_configuration_preserve_unrelated_settings() {
     for (resource, tab) in [
         (Resource::Display, Tab::Display),
         (Resource::Camera, Tab::Camera),
-        (Resource::Microphone, Tab::Audio),
-        (Resource::Speakers, Tab::Audio),
+        (Resource::Microphone, Tab::Audio(AudioDirection::Microphone)),
+        (Resource::Speakers, Tab::Audio(AudioDirection::Speakers)),
     ] {
         app.resource_action(&status, &first, resource, Action::Configure);
         assert!(app.tab == tab);
@@ -568,4 +568,22 @@ fn t1551_idle_display_keeps_its_stop_button() {
             .any(|(label, _)| label == "Stop display & input"),
         "T1551 repaint policy changed the display action: {text:?}"
     );
+}
+
+#[test]
+fn t1664_overview_configure_opens_the_selected_audio_resource() {
+    let (_root, mut app) = settings_test_app(Tab::Overview);
+    let selected = Identity::Adb("T1664-tablet".into());
+    let status = Status::default();
+    let draft = app.cfg.clone();
+    for (resource, title) in [
+        (Resource::Microphone, "Microphone"),
+        (Resource::Speakers, "Speakers"),
+    ] {
+        app.resource_action(&status, &selected, resource, Action::Configure);
+        assert_eq!(app.tab.title(), title);
+        assert_eq!(app.cfg, draft);
+        assert!(app.microphone.backend.is_none());
+        assert!(app.speakers.backend.is_none());
+    }
 }

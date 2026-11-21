@@ -46,7 +46,7 @@ fn mismatch(app: &mut App, resource: Resource) {
 #[test]
 fn t1650_workspace_rejects_opposite_audio_direction_before_native_start() {
     for resource in [Resource::Microphone, Resource::Speakers] {
-        let (_root, mut app) = settings_test_app(Tab::Audio);
+        let (_root, mut app) = settings_test_app(resource_tab(resource));
         let starts = install_backend(&mut app, resource);
         mismatch(&mut app, resource);
         let status = app.status.lock().unwrap().clone();

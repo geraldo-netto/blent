@@ -1,5 +1,5 @@
 //! Stateless frame presentation; owners and native effects stay in their panels.
-use crate::{App, Status, Tab};
+use crate::{App, AudioDirection, Status, Tab};
 use blent_config::workspace::{Catalog, Device, Presence};
 use blent_config::{
     connection::media::Transports,
@@ -319,7 +319,8 @@ fn resource_tab(resource: Resource) -> Tab {
     match resource {
         Resource::Display => Tab::Display,
         Resource::Camera => Tab::Camera,
-        Resource::Microphone | Resource::Speakers => Tab::Audio,
+        Resource::Microphone => Tab::Audio(AudioDirection::Microphone),
+        Resource::Speakers => Tab::Audio(AudioDirection::Speakers),
     }
 }
 

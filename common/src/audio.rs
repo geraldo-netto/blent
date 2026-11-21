@@ -23,7 +23,7 @@ pub const BLOCK_FRAMES: usize = 480;
 pub const MAX_SAMPLES: usize = BLOCK_FRAMES * 2;
 pub const MAX_DRIFT_PPM: i32 = 1_000;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 #[cfg_attr(feature = "platform", derive(clap::ValueEnum))]
 #[repr(u8)]

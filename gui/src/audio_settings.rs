@@ -4,6 +4,13 @@ use blent_config::audio::{
 };
 use eframe::egui;
 
+pub(super) fn label(direction: Direction) -> &'static str {
+    match direction {
+        Direction::Microphone => "Microphone",
+        Direction::Speakers => "Speakers",
+    }
+}
+
 pub(super) struct Panel {
     owner: crate::media_owner::Owner,
     pending: Option<Pending>,
@@ -41,11 +48,8 @@ impl Panel {
         direction: Direction,
     ) {
         let microphone = direction == Direction::Microphone;
-        let (label, selector) = if microphone {
-            ("Microphone", "input")
-        } else {
-            ("Speakers", "output")
-        };
+        let label = label(direction);
+        let selector = if microphone { "input" } else { "output" };
         ui.heading(format!("{label} sharing"));
         ui.label(format!("Select Blent {label} in your computer’s {selector} selector. Existing defaults stay unchanged."));
         let status = self.status();

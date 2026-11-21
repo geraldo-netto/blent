@@ -39,6 +39,7 @@ mod test_shapes;
 #[cfg(all(test, windows))]
 mod windows_tests;
 
+use blent_config::audio::Direction as AudioDirection;
 use blent_config::commands::SyncCommandExt;
 use blent_config::model::{
     FileConfig, MAX_BITRATE_KBPS, MAX_DIMENSION, MAX_QUALITY, MIN_BITRATE_KBPS, MIN_QUALITY,
@@ -158,20 +159,21 @@ enum Tab {
     /// Security, updates, plug & play.
     Settings,
     Camera,
-    Audio,
+    Audio(AudioDirection),
     Connections,
     About,
 }
 
 impl Tab {
-    const ALL: [Self; 8] = [
+    const ALL: [Self; 9] = [
         Self::Overview,
         Self::Connections,
         Self::About,
         Self::Video,
         Self::Display,
         Self::Camera,
-        Self::Audio,
+        Self::Audio(AudioDirection::Microphone),
+        Self::Audio(AudioDirection::Speakers),
         Self::Settings,
     ];
 
@@ -191,7 +193,7 @@ impl Tab {
             Self::Video => "Video",
             Self::Display => "Display & input",
             Self::Camera => "Cameras",
-            Self::Audio => "Audio",
+            Self::Audio(direction) => audio_settings::label(direction),
             Self::Settings => "Settings",
         }
     }
@@ -1226,7 +1228,7 @@ impl App {
             Tab::Video => self.show_video_settings(ui, status),
             Tab::Connections => self.connection.show(ui),
             Tab::About => self.show_about(ui, status),
-            Tab::Audio => self.show_audio_settings(ui),
+            Tab::Audio(direction) => self.show_audio_settings(ui, direction),
             Tab::Camera => self.camera.show(ui, &mut self.cfg.camera.options),
             Tab::Display => self.show_display_settings(ui),
             Tab::Settings => self.show_general_settings(ui, status),
@@ -1244,13 +1246,17 @@ impl App {
         });
     }
 
-    fn show_audio_settings(&mut self, ui: &mut egui::Ui) {
-        use blent_config::audio::Direction;
-        self.microphone
-            .show(ui, &mut self.cfg.audio.microphone, Direction::Microphone);
-        ui.separator();
-        self.speakers
-            .show(ui, &mut self.cfg.audio.speakers, Direction::Speakers);
+    fn show_audio_settings(&mut self, ui: &mut egui::Ui, direction: AudioDirection) {
+        match direction {
+            AudioDirection::Microphone => {
+                self.microphone
+                    .show(ui, &mut self.cfg.audio.microphone, direction)
+            }
+            AudioDirection::Speakers => {
+                self.speakers
+                    .show(ui, &mut self.cfg.audio.speakers, direction)
+            }
+        }
     }
 }
 
@@ -1323,6 +1329,7 @@ fn native_options() -> eframe::NativeOptions {
 mod tests {
     include!("config_refresh_tests.rs");
     mod about;
+    mod audio_tabs;
     mod busy_controls;
     mod close_tests;
     mod connection_guidance;
@@ -1614,7 +1621,8 @@ mod tests {
             Tab::Display,
             Tab::Settings,
             Tab::Camera,
-            Tab::Audio,
+            Tab::Audio(AudioDirection::Microphone),
+            Tab::Audio(AudioDirection::Speakers),
         ] {
             app.tab = tab;
             window_test_frame(&mut app, &ctx, vec![]);
@@ -2601,7 +2609,8 @@ mod tests {
             (Tab::Display, "Input devices"),
             (Tab::Settings, "Security"),
             (Tab::Camera, "Camera sharing"),
-            (Tab::Audio, "Microphone sharing"),
+            (Tab::Audio(AudioDirection::Microphone), "Microphone sharing"),
+            (Tab::Audio(AudioDirection::Speakers), "Speakers sharing"),
         ] {
             for height in [560.0, 1800.0] {
                 let (_settings_directory, mut app) = settings_test_app(tab);
@@ -3509,7 +3518,7 @@ printf '%s' "$((existing + delta))" > "$count""#,
             }
         }
         let directory = tempfile::tempdir().unwrap();
-        let (_settings_directory, mut app) = settings_test_app(Tab::Audio);
+        let (_settings_directory, mut app) = settings_test_app(Tab::Audio(direction));
         app.cfg = app.saved_cfg.clone();
         app.store = ConfigStore::new(directory.path().join("config.toml"));
         let calls = Rc::new(RefCell::new((AudioState::Stopped, Vec::new())));
@@ -3648,7 +3657,7 @@ printf '%s' "$((existing + delta))" > "$count""#,
                 }
             }
         }
-        let (_directory, mut app) = settings_test_app(Tab::Audio);
+        let (_directory, mut app) = settings_test_app(Tab::Audio(direction));
         let preferences = app.cfg.clone();
         let state = Rc::new(RefCell::new(AudioState::Paused));
         let (frame, label) = match direction {

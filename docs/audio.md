@@ -23,7 +23,7 @@ flowchart LR
   (`libpipewire-0.3-dev`, `libspa-0.2-dev`, `libclang-dev` on Debian-family systems).
   AppImage uses the host's PipeWire runtime to match its modules.
 - Choose the connection separately for microphone and speakers in the desktop
-  **Audio** tab. ADB is the default. For **Direct USB**, use the full **Tablet**
+  **Microphone** or **Speakers** tab. ADB is the default. For **Direct USB**, use the full **Tablet**
   fingerprint shown by USB connection controls. A USB target and ADB serial
   cannot be selected together. USB never silently falls back to ADB.
 - Direct USB requires an `accessory-transport` build and remains experimental.
@@ -35,7 +35,7 @@ until cleanup finishes. Other ADB operations and unrelated mappings remain usabl
 
 ## Start sharing
 
-1. In the desktop **Audio** tab, select the direction, connection and preferences.
+1. In the desktop **Microphone** or **Speakers** tab, select the connection and preferences for that resource.
    **Save** only saves them; it does not start audio or restart the display.
 2. Open Blent on the tablet and choose **Start** for that direction on the
    computer. Direct USB requires local Start for the offered session. An authorized
