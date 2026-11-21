@@ -10,6 +10,7 @@
 
 use crate::config::{self, FileConfig, MAX_BITRATE_KBPS, MAX_FPS, MIN_BITRATE_KBPS, MIN_FPS};
 use crate::runtime::fifo_path_for;
+mod autostart;
 mod codecs;
 use crate::vdisplay;
 use anyhow::Result;
@@ -831,7 +832,7 @@ async fn check_kwin_input(r: &mut Report) {
 
 /// Whether plugging the cable in is actually enough on its own.
 async fn check_autostart(r: &mut Report) {
-    let enabled = output_of("systemctl", &["--user", "is-enabled", "blent.service"]).await;
+    let enabled = autostart::state().await;
     let load_state = output_of(
         "systemctl",
         &[
@@ -845,10 +846,34 @@ async fn check_autostart(r: &mut Report) {
     )
     .await
     .unwrap_or_default();
-    report_autostart(r, load_state.trim(), enabled);
+    report_autostart(r, load_state.trim(), enabled, autostart::desktop());
 }
 
-fn report_autostart(r: &mut Report, load_state: &str, enabled: Option<String>) {
+fn report_autostart(
+    r: &mut Report,
+    load_state: &str,
+    enabled: Option<String>,
+    desktop: Option<bool>,
+) {
+    if desktop == Some(true) {
+        r.line(
+            Level::Ok,
+            "start with the desktop",
+            "enabled by desktop entry",
+        );
+        return;
+    }
+    if desktop.is_none() {
+        r.line(
+            Level::Warn,
+            "desktop autostart",
+            "could not inspect the desktop entry",
+        );
+    }
+    report_service_autostart(r, load_state, enabled);
+}
+
+fn report_service_autostart(r: &mut Report, load_state: &str, enabled: Option<String>) {
     if load_state == "not-found" {
         r.line(
             Level::Warn,
@@ -858,11 +883,11 @@ fn report_autostart(r: &mut Report, load_state: &str, enabled: Option<String>) {
         r.hint("reinstall the Blent package or run scripts/install.sh from the release tarball to install blent.service");
         return;
     }
-    match enabled {
-        Some(v) if v.trim() == "enabled" => {
+    match enabled.as_deref().map(str::trim) {
+        Some("enabled") => {
             r.line(Level::Ok, "start with the desktop", "enabled");
         }
-        Some(_) => {
+        Some("disabled") => {
             r.line(
                 Level::Warn,
                 "start with the desktop",
@@ -870,7 +895,16 @@ fn report_autostart(r: &mut Report, load_state: &str, enabled: Option<String>) {
             );
             r.hint("systemctl --user enable --now blent.service");
         }
-        None => {}
+        Some(state) => r.line(
+            Level::Warn,
+            "start with the desktop",
+            &format!("systemd state: {state}"),
+        ),
+        None => r.line(
+            Level::Warn,
+            "start with the desktop",
+            "could not query systemd autostart",
+        ),
     }
 }
 
@@ -2142,7 +2176,7 @@ exit 0
     #[test]
     fn t060_missing_service_is_distinguished_from_disabled_service() {
         let mut r = Report::new();
-        report_autostart(&mut r, "not-found", Some(String::new()));
+        report_autostart(&mut r, "not-found", Some(String::new()), Some(false));
         let messages = r.messages.borrow().join("\n");
         assert!(messages.contains("not installed"), "{messages}");
         assert!(!messages.contains("enable --now"));
@@ -2151,3 +2185,6 @@ exit 0
 
 #[cfg(test)]
 mod native_status_tests;
+
+#[cfg(test)]
+mod autostart_tests;

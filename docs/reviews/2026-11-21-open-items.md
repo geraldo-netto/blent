@@ -341,3 +341,14 @@ The process owns its USB state, lock and both native directions. One scalar mode
 ## Android integration checkpoint
 
 The complete Android unit suite passes all 2970 cases, with zero failures, errors or skips, after the decoder retirement, inventory, watchdog, TLS and bitrate changes. This is Robolectric/JVM evidence. T1486 remains open: the earlier joined-speaker failure was not reproduced or explained, and another successful full run does not establish its cause or resolution. Installed host/tablet applications were not changed during these source fixes.
+
+
+## T1515 — report actual service and desktop autostart observations
+
+Doctor now reads a bounded systemctl state even when is-enabled exits nonzero. Disabled service state retains its enable hint; static, masked and enabled-runtime are reported by name instead of being mislabeled disabled. Missing command evidence is explicit. A valid desktop login entry uses the shared XDG parser and reports enabled without requiring a systemd unit. Unreadable desktop entries remain unavailable rather than silently disabled.
+
+All four command-path regressions failed before the fix. All 59 doctor tests and both shared autostart tests pass afterward. Six private subprocess fixtures exercise the real observation path with isolated PATH/configuration; additional cases cover every invalid internal byte, the 64-character state limit, malformed/hidden entries, invalid UTF-8, nonregular files, missing paths, and exact 64 KiB desktop-file bounds. No live service or login setting was modified.
+
+All eight maintained production functions meet the per-function executable-line requirement: state observation is 87.5%, desktop-file observation is 84%, and the other six are 100%. All 136 measured functions in affected production/test files have complexity <=9 (project Rust syn 2.0.119).
+
+Native commands retain their existing bounded child/output ownership. The desktop observer owns one nonblocking-opened regular-file descriptor, reads at most 64 KiB plus one sentinel byte into call-scoped storage, validates size again after reading, and drops the descriptor on every return. This is an input-length bound; allocator capacity and metadata overhead are separate. The shared parser borrows the call-scoped text; no setting, process, callback or native handle survives the observation. Missing measurements for Windows remain outside this Linux-only doctor change.

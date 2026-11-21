@@ -332,10 +332,10 @@ fn t497_connector_and_autostart_reports_preserve_unknown_states() {
         ("not-found", Some("enabled"), 1),
         ("loaded", Some("enabled\n"), 0),
         ("loaded", Some("disabled"), 1),
-        ("loaded", None, 0),
+        ("loaded", None, 1),
     ] {
         let mut report = Report::new();
-        report_autostart(&mut report, load, enabled.map(str::to_owned));
+        report_autostart(&mut report, load, enabled.map(str::to_owned), Some(false));
         assert_eq!(report.warnings, warnings);
         assert_eq!(report.failures, 0);
     }

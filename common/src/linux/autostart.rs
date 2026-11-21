@@ -43,7 +43,8 @@ pub fn enabled() -> bool {
             .is_some_and(|text| desktop_enabled(&text))
 }
 
-fn desktop_enabled(text: &str) -> bool {
+/// Parse one XDG entry; observation adapters own I/O and input storage bounds.
+pub fn desktop_enabled(text: &str) -> bool {
     let mut properties = std::collections::BTreeMap::new();
     let mut active = false;
     for line in text.lines().map(str::trim) {

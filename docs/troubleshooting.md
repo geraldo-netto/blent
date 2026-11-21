@@ -11,6 +11,11 @@ live session report, it selects an authorized ADB candidate, preferring USB,
 even if the tablet app is absent; the package check then reports installation
 instructions. This diagnostic selection does not start sharing or install anything.
 
+Autostart diagnostics recognize both the systemd user service and an enabled
+desktop login entry. States such as `static`, `masked` and `enabled-runtime` are
+reported by name; a failed or unreadable observation is reported as unavailable.
+Doctor does not enable, disable or rewrite either autostart route.
+
 ## "Failed to start helper" / "evdi-helper exited prematurely"
 
 Read the preceding error. Possible causes include a missing/incompatible
