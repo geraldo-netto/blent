@@ -50,7 +50,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1478 | open | low | small | Embed the newly checked-in camera-color notices in the GUI About documents. `gui/src/about/documents.rs` embeds 64 documents while the authoritative inventory now contains 81; the permanent T1277 exact-inventory regression fails. Add the 17 missing verbatim documents and retain the exact inventory/content checks. This resolves embedding only; upstream notice qualification remains T1463. |
 | T1463 | open | low | small | Qualify the upstream license-notice gap in newly introduced transitive `hex-slice` 0.1.4 and `mp4ra-rust` 0.6.0 before publishing a distributable release. Their checksum-locked crates declare MIT and MIT/Apache-2.0 respectively and name their authors in `Cargo.toml.orig`, but contain no standalone license text; original manifests/READMEs are retained in `licenses/camera-color/`. Obtain an authoritative matching upstream notice or select a dependency without this gap, then add exact source/hash provenance to the AppImage notice collector and verify distribution. Local build/install is not release-notice qualification; no fabricated upstream license or copyright text. This external package evidence task is a cohesive small outcome; no publication is requested. |
 
 ## Engineering verification
