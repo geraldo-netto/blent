@@ -413,8 +413,15 @@ impl eframe::App for App {
 }
 
 impl App {
-    fn show_window(&mut self, ctx: &egui::Context) {
+    fn maintain_media(&mut self, ctx: &egui::Context) {
+        self.camera.maintain_start(ctx);
+        self.microphone.maintain_start(ctx);
+        self.speakers.maintain_start(ctx);
         self.camera.maintain_preview(ctx);
+    }
+
+    fn show_window(&mut self, ctx: &egui::Context) {
+        self.maintain_media(ctx);
         #[cfg(target_os = "linux")]
         self.placement.apply(ctx);
         self.poll_action();

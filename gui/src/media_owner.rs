@@ -66,6 +66,16 @@ impl Owner {
         }
     }
 
+    /// Consume at most one successor only after the original native fence settles.
+    pub(super) fn take_ready<T>(&mut self, pending: &mut Option<T>) -> Option<T> {
+        self.settle();
+        if self.fence.is_some() {
+            None
+        } else {
+            pending.take()
+        }
+    }
+
     pub(super) fn activity(&mut self, observed: impl FnOnce() -> Activity) -> Activity {
         self.settle();
         if self.fence.is_some() {

@@ -6,6 +6,7 @@ use eframe::egui;
 
 pub(super) struct Panel {
     owner: crate::media_owner::Owner,
+    pending: Option<AudioOptions>,
     pub(super) backend: Option<Box<dyn AudioController>>,
     error: Option<String>,
     create: fn() -> Result<Box<dyn AudioController>, String>,
@@ -15,6 +16,7 @@ impl Default for Panel {
     fn default() -> Self {
         Self {
             owner: Default::default(),
+            pending: None,
             backend: None,
             error: None,
             create: factory,
@@ -56,6 +58,7 @@ impl Panel {
     }
 
     fn status(&mut self) -> AudioStatus {
+        self.resume();
         let mut status = AudioStatus::default();
         let backend = &self.backend;
         match self.owner.activity(|| {
@@ -108,20 +111,31 @@ impl Panel {
             ui.label("Audio backend unavailable on this operating system.");
         }
     }
-    fn start(&mut self, options: AudioOptions) -> Result<(), String> {
+    fn validate_start(
+        &self,
+        options: &AudioOptions,
+    ) -> Result<Option<blent_config::tablets::Identity>, String> {
+        if self.pending.is_some() {
+            return Err("A replacement start is already waiting for cleanup.".into());
+        }
         options.validate().map_err(|e| e.to_string())?;
-        let target = crate::media_owner::identity(options.target().map_err(|e| e.to_string())?);
-        if !(self.transports)(options.profile.direction)
-            .supports(&options.target().map_err(|e| e.to_string())?)
-        {
+        let target = options.target().map_err(|e| e.to_string())?;
+        if !(self.transports)(options.profile.direction).supports(&target) {
             return Err("Selected audio transport is unavailable on this backend.".into());
         }
+        Ok(crate::media_owner::identity(target))
+    }
+
+    fn start(&mut self, options: AudioOptions) -> Result<(), String> {
+        let target = self.validate_start(&options)?;
         let backend = &self.backend;
         if self
             .owner
             .needs_release(&target, || observed_activity(backend))
         {
             self.stop();
+            self.pending = Some(options);
+            return Ok(());
         }
         self.owner.prepare(&target)?;
         if self.backend.is_none() {
@@ -138,8 +152,22 @@ impl Panel {
     }
 
     pub(super) fn stop(&mut self) {
+        self.pending = None;
         if let Some(backend) = self.backend.take() {
             self.owner.release(backend.close());
+        }
+    }
+
+    fn resume(&mut self) {
+        if let Some(options) = self.owner.take_ready(&mut self.pending) {
+            self.error = self.start(options).err();
+        }
+    }
+
+    pub(super) fn maintain_start(&mut self, context: &egui::Context) {
+        self.resume();
+        if self.pending.is_some() {
+            context.request_repaint_after(std::time::Duration::from_millis(50));
         }
     }
 
@@ -256,6 +284,7 @@ fn preferences(ui: &mut egui::Ui, options: &mut AudioOptions) {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
+    mod replacement;
 
     #[test]
     fn t1273_audio_states_preserve_pending_and_retiring_ownership() {
@@ -293,11 +322,12 @@ mod tests {
     struct Backend(
         Rc<RefCell<Vec<AudioOptions>>>,
         RefCell<Option<blent_config::media_start::Acknowledger>>,
+        Option<blent_config::retirement::Fence>,
     );
     impl AudioController for Backend {
         fn close(self: Box<Self>) -> blent_config::retirement::Fence {
             self.stop();
-            blent_config::retirement::Fence::Complete
+            self.2.unwrap_or(blent_config::retirement::Fence::Complete)
         }
         fn start(&self, options: AudioOptions) -> blent_config::camera::BackendResult {
             self.0.borrow_mut().push(options);
@@ -317,7 +347,7 @@ mod tests {
     fn t718_audio_controls_preserve_passive_preferences_and_validate_start() {
         let starts = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None), None))),
             error: Some("fixture failure".into()),
             ..Default::default()
         };
@@ -337,7 +367,7 @@ mod tests {
     fn t979_invalid_full_audio_targets_never_reach_even_a_permissive_backend() {
         let starts = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None), None))),
             ..Default::default()
         };
         for direction in [Direction::Microphone, Direction::Speakers] {
@@ -403,7 +433,7 @@ mod tests {
     fn t979_exact_speaker_usb_and_microphone_adb_options_reach_only_selected_backend() {
         let starts = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None), None))),
             ..Default::default()
         };
         let mut speaker = AudioOptions::new(Direction::Speakers);
@@ -416,7 +446,7 @@ mod tests {
         microphone.serial = Some("exact adb serial".into());
         assert!(panel.start(microphone.clone()).is_err());
         let mut microphone_panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None), None))),
             ..Default::default()
         };
         microphone_panel.start(microphone.clone()).unwrap();
@@ -427,7 +457,7 @@ mod tests {
         usb_microphone.profile.processing = Processing::Raw;
         assert!(microphone_panel.start(usb_microphone.clone()).is_err());
         let mut usb_panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None), None))),
             ..Default::default()
         };
         usb_panel.start(usb_microphone.clone()).unwrap();
@@ -437,7 +467,7 @@ mod tests {
     fn t979_bounded_profile_and_nonhex_target_inputs_never_reach_backend() {
         let starts = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
-            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
+            backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None), None))),
             ..Default::default()
         };
         for direction in [Direction::Microphone, Direction::Speakers] {
@@ -497,7 +527,7 @@ mod tests {
         for direction in [Direction::Microphone, Direction::Speakers] {
             let starts = Rc::new(RefCell::new(Vec::new()));
             let mut panel = Panel {
-                backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None)))),
+                backend: Some(Box::new(Backend(starts.clone(), RefCell::new(None), None))),
                 transports: |_| blent_config::connection::media::Transports {
                     adb: true,
                     usb: true,

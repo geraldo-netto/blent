@@ -8,6 +8,7 @@ mod tuning;
 
 pub(super) struct Panel {
     owner: crate::media_owner::Owner,
+    pending: Option<CameraProfile>,
     pub(super) backend: Option<Box<dyn CameraBackend>>,
     error: Option<String>,
     capabilities: Option<blent_config::camera::tuning::Capabilities>,
@@ -20,6 +21,7 @@ impl Default for Panel {
     fn default() -> Self {
         Self {
             owner: Default::default(),
+            pending: None,
             backend: None,
             error: None,
             capabilities: None,
@@ -126,6 +128,7 @@ impl Panel {
     }
 
     fn state(&mut self) -> CameraState {
+        self.resume();
         let mut state = CameraState::Stopped;
         let backend = &self.backend;
         match self.owner.activity(|| {
@@ -175,21 +178,31 @@ impl Panel {
         }
     }
 
-    fn start(&mut self, options: CameraProfile) -> Result<(), String> {
+    fn validate_start(
+        &self,
+        options: &CameraProfile,
+    ) -> Result<Option<blent_config::tablets::Identity>, String> {
+        if self.pending.is_some() {
+            return Err("A replacement start is already waiting for cleanup.".into());
+        }
         options.validate().map_err(|e| e.to_string())?;
-        let target = crate::media_owner::identity(options.target().map_err(|e| e.to_string())?);
-        if !self
-            .transports
-            .supports(&options.target().map_err(|e| e.to_string())?)
-        {
+        let target = options.target().map_err(|e| e.to_string())?;
+        if !self.transports.supports(&target) {
             return Err("Selected camera transport is unavailable on this backend.".into());
         }
+        Ok(crate::media_owner::identity(target))
+    }
+
+    fn start(&mut self, options: CameraProfile) -> Result<(), String> {
+        let target = self.validate_start(&options)?;
         let backend = &self.backend;
         if self
             .owner
             .needs_release(&target, || observed_activity(backend))
         {
             self.stop();
+            self.pending = Some(options);
+            return Ok(());
         }
         self.owner.prepare(&target)?;
         if self.backend.is_none() {
@@ -206,10 +219,24 @@ impl Panel {
     }
 
     pub(super) fn stop(&mut self) {
+        self.pending = None;
         self.preview = Default::default();
         self.capabilities = None;
         if let Some(backend) = self.backend.take() {
             self.owner.release(backend.close());
+        }
+    }
+
+    fn resume(&mut self) {
+        if let Some(options) = self.owner.take_ready(&mut self.pending) {
+            self.error = self.start(options).err();
+        }
+    }
+
+    pub(super) fn maintain_start(&mut self, context: &egui::Context) {
+        self.resume();
+        if self.pending.is_some() {
+            context.request_repaint_after(std::time::Duration::from_millis(50));
         }
     }
 
@@ -407,6 +434,7 @@ fn resolution(ui: &mut egui::Ui, options: &mut CameraProfile) {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
+    mod replacement;
 
     #[test]
     fn t1450_brightness_checkbox_changes_only_camera_preference() {
@@ -497,6 +525,7 @@ mod tests {
         let state = std::rc::Rc::new(std::cell::RefCell::new(CameraState::Stopped));
         let mut panel = Panel {
             backend: Some(Box::new(Fixture {
+                fence: None,
                 state: state.clone(),
                 profiles: Default::default(),
             })),
@@ -542,6 +571,7 @@ mod tests {
         let profiles = std::rc::Rc::new(std::cell::RefCell::new(Vec::new()));
         let mut panel = Panel {
             backend: Some(Box::new(Fixture {
+                fence: None,
                 state: std::rc::Rc::new(std::cell::RefCell::new(CameraState::Stopped)),
                 profiles: profiles.clone(),
             })),
@@ -568,6 +598,7 @@ mod tests {
     use std::{cell::RefCell, rc::Rc};
 
     struct Fixture {
+        fence: Option<blent_config::retirement::Fence>,
         state: Rc<RefCell<CameraState>>,
         profiles: Rc<RefCell<Vec<CameraProfile>>>,
     }
@@ -580,7 +611,8 @@ mod tests {
         }
         fn close(self: Box<Self>) -> blent_config::retirement::Fence {
             self.stop();
-            blent_config::retirement::Fence::Complete
+            self.fence
+                .unwrap_or(blent_config::retirement::Fence::Complete)
         }
         fn start(&self, options: CameraProfile) -> blent_config::camera::BackendResult {
             self.profiles.borrow_mut().push(options);
@@ -659,6 +691,7 @@ mod tests {
         let profiles = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
             backend: Some(Box::new(Fixture {
+                fence: None,
                 state: Rc::new(RefCell::new(CameraState::Stopped)),
                 profiles: profiles.clone(),
             })),
@@ -734,6 +767,7 @@ mod tests {
         let profiles = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
             backend: Some(Box::new(Fixture {
+                fence: None,
                 state: state.clone(),
                 profiles: profiles.clone(),
             })),
@@ -785,6 +819,7 @@ mod tests {
         let profiles = Rc::new(RefCell::new(Vec::new()));
         let mut panel = Panel {
             backend: Some(Box::new(Fixture {
+                fence: None,
                 state: Rc::new(RefCell::new(CameraState::Stopped)),
                 profiles: profiles.clone(),
             })),

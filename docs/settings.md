@@ -40,6 +40,10 @@ the exact selected tablet without rewriting saved target preferences. Explicit
 Start in a camera/audio editor uses its target fields. Stop preserves the original
 resource owner until native cleanup completes; selection changes cannot retarget
 queued or retiring work. Global display-service controls remain in **Settings**.
+If a camera/audio run has already ended and you start it on another tablet,
+Blent retains that request until the original worker finishes cleanup. This also
+progresses while its editor is hidden. Stop cancels the queued start; a failed
+successor reports its error without an automatic retry.
 
 When USB media is authenticated without a streaming desktop, the tablet shows
 **USB media connected** and **Open camera and audio controls**. That button opens
