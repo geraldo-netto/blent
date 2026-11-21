@@ -325,3 +325,14 @@ The tablet bitrate slider now has one stop per whole Mbps from 1 to 60, includin
 All four regression cases failed before the fix on API 27/34. All 56 selected settings UI tests pass afterward, including lower/upper stops, adjacent whole values, return to default, fractional labels and submitted values. The maintained BitrateControls function has 100% executable-line coverage (JaCoCo 0.8.15); all 102 measured functions in affected source/test files have complexity <=9 (project Kotlin PSI 1.9.20).
 
 Formatting owns only call-scoped managed numeric/string values within the existing composition. Its number comes from the same Int kilobit conversion already used for submission, so decimal storage is bounded; it introduces no native resource, asynchronous callback or retained owner. This fixes the grid/label mismatch. Independent stream-setting synchronization remains T1569.
+
+
+## T1614 — terminate concurrent USB failures without exit handlers
+
+The USB stream helper enters a fatal-error mode before creating its reader thread. Errors still print their diagnostic, then terminate all process threads with _Exit(2), avoiding concurrent exit-handler execution. Single-threaded discovery/probe phases retain ordinary diagnostic exit handling. Normal stream completion continues to use _Exit(0).
+
+The permanent regression starts both native failure paths behind a pthread barrier and registers an exit-handler marker. Before the fix, both error diagnostics and that marker appeared. Afterward, all 39 accessory/probe tests pass, including 16 simultaneous-failure executions with exit status 2 and no handler marker. The fixtures compile with GCC 13.3.0, warnings as errors, ASan and UBSan. They use fake USB operations and real private process/thread lifetimes, never physical devices.
+
+The three maintained production functions have 100%, 85.71% and 100% executable-line coverage (GCC/gcov 13.3.0). The fatal _Exit statement is exercised by the subprocess regression but cannot flush its own coverage counters; this remains visible as the one uncovered line. All 49 measured functions in affected production/test files have complexity <=9 (project tree-sitter 0.25.2, C grammar 0.24.2, Python AST 3.12).
+
+The process owns its USB state, lock and both native directions. One scalar mode is set by the main thread before pthread creation and remains immutable afterward. No thread frees shared libusb state while another transfer can access it; process exit ends both directions, and the existing supervisor retains admission until original process retirement is observed. The fixture's barrier and callbacks are process-scoped. No physical disconnect acceptance or unrestricted native safety claim is made.

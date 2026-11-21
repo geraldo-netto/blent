@@ -10,9 +10,25 @@
 #include <string.h>
 #include <time.h>
 
-void accessory_require(int condition, const char *message) {
-    if (!condition) { fprintf(stderr, "USB probe failed: %s\n", message); exit(2); }
+/* Set once by the main thread before publishing a native stream reader.
+ * Single-threaded probes retain their ordinary diagnostic exit handlers. */
+static int stream_errors;
+
+void accessory_stream_errors(void)
+{
+    stream_errors = 1;
 }
+
+void accessory_require(int condition, const char *message)
+{
+    if (condition)
+        return;
+    fprintf(stderr, "USB probe failed: %s\n", message);
+    if (stream_errors)
+        _Exit(2);
+    exit(2);
+}
+
 uint64_t accessory_clock(void) {
     struct timespec time;
     accessory_require(clock_gettime(CLOCK_MONOTONIC, &time)==0, "monotonic clock");

@@ -16,6 +16,8 @@ void accessory_open(accessory_usb *usb, accessory_target target);
 void accessory_open_selected(accessory_usb *usb, accessory_target target, accessory_selection selected);
 void accessory_transfer(accessory_usb *usb, int receive, unsigned char *data, int length);
 void accessory_close(accessory_usb *usb);
+/* Enter once on the main thread, before starting concurrent native I/O. */
+void accessory_stream_errors(void);
 void accessory_require(int condition, const char *message);
 uint64_t accessory_clock(void);
 enum { ACCESSORY_AVAILABLE = 0, ACCESSORY_DEBUGGING = 1, ACCESSORY_UNKNOWN = 2 };

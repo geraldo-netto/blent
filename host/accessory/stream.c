@@ -57,20 +57,29 @@ static void send_bytes(accessory_usb *usb) {
         send_usb(usb,bytes,(int)count);
     }
 }
-int main(int argc,char **argv) {
-    if (argc==3 && !strcmp(argv[1],"--list")) return accessory_list(argv[2]);
-    int selected=argc==7 && !strcmp(argv[1],"--selected");
-    accessory_require(argc==3 || selected,"usage: blent-usb-io [--selected] BUS PORT.PATH [ADDRESS VENDOR PRODUCT]");
-    int offset=selected?2:1;
-    accessory_target target=accessory_parse_target(argv[offset],argv[offset+1]);
-    accessory_selection expected={0};
-    if(selected) expected=accessory_parse_selection(argv[4],argv[5],argv[6]);
-    int lock=accessory_lock(target);
-    accessory_usb usb={0};
-    if(selected) accessory_open_selected(&usb,target,expected);
-    else accessory_open(&usb,target);
+
+int main(int argc, char **argv)
+{
+    if (argc == 3 && !strcmp(argv[1], "--list"))
+        return accessory_list(argv[2]);
+    int selected = argc == 7 && !strcmp(argv[1], "--selected");
+    accessory_require(argc == 3 || selected,
+                      "usage: blent-usb-io [--selected] BUS PORT.PATH [ADDRESS VENDOR PRODUCT]");
+    int offset = selected ? 2 : 1;
+    accessory_target target = accessory_parse_target(argv[offset], argv[offset + 1]);
+    accessory_selection expected = {0};
+    if (selected)
+        expected = accessory_parse_selection(argv[4], argv[5], argv[6]);
+    int lock = accessory_lock(target);
+    accessory_usb usb = {0};
+    if (selected)
+        accessory_open_selected(&usb, target, expected);
+    else
+        accessory_open(&usb, target);
+    accessory_stream_errors();
     pthread_t reader;
-    accessory_require(pthread_create(&reader,NULL,receive_bytes,&usb)==0,"USB reader unavailable");
+    accessory_require(pthread_create(&reader, NULL, receive_bytes, &usb) == 0,
+                      "USB reader unavailable");
     send_bytes(&usb);
     (void)lock;
     /* Exit all threads together; no libusb cleanup racing its reader. The

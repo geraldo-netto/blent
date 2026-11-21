@@ -219,6 +219,20 @@ class AccessoryStreamTest(unittest.TestCase):
                         str(ROOT / 'scripts/tests/fixtures/aoa/stream_fixture.c'),
                         str(ROOT / 'host/accessory/contract.c'), '-pthread', '-o', str(cls.binary)], check=True)
 
+    def test_t1614_simultaneous_stream_failures_skip_exit_handlers(self):
+        binary = Path(self.directory.name) / 'simultaneous-failure'
+        subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
+                        '-fsanitize=address,undefined',
+                        '-I' + str(ROOT / 'scripts/tests/fixtures/aoa'),
+                        '-I' + str(ROOT / 'host/accessory'),
+                        str(ROOT / 'scripts/tests/fixtures/aoa/simultaneous_failure.c'),
+                        str(ROOT / 'host/accessory/contract.c'), '-pthread', '-o', str(binary)], check=True)
+        for _ in range(16):
+            result = subprocess.run([binary], capture_output=True)
+            self.assertEqual(result.returncode, 2, result.stderr)
+            self.assertIn(b'USB probe failed:', result.stderr)
+            self.assertNotIn(b'T1614_UNSAFE_EXIT_HANDLER', result.stderr)
+
     def test_t876_inventory_dispatch_does_not_enter_usb_streaming(self):
         result = subprocess.run([self.binary, '24'], capture_output=True, timeout=3)
         self.assertEqual(result.returncode, 0, result.stderr)

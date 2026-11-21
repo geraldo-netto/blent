@@ -1,0 +1,353 @@
+{
+  "issue": "T1614",
+  "coverage": [
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_stream_errors",
+      "line": 17,
+      "language": "c",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_require",
+      "line": 22,
+      "language": "c",
+      "covered": 6,
+      "total": 7,
+      "percent": 85.71428571428571,
+      "passes": true,
+      "missing": [
+        28
+      ]
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "main",
+      "line": 61,
+      "language": "c",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity_tool": "project tree-sitter 0.25.2 / C grammar 0.24.2 / Python AST 3.12",
+  "complexity": [
+    [
+      "host/accessory/contract.c",
+      17,
+      "accessory_stream_errors",
+      1
+    ],
+    [
+      "host/accessory/contract.c",
+      22,
+      "accessory_require",
+      3
+    ],
+    [
+      "host/accessory/contract.c",
+      32,
+      "accessory_clock",
+      1
+    ],
+    [
+      "host/accessory/contract.c",
+      37,
+      "number",
+      4
+    ],
+    [
+      "host/accessory/contract.c",
+      43,
+      "accessory_parse_target",
+      3
+    ],
+    [
+      "host/accessory/contract.c",
+      54,
+      "selected_number",
+      6
+    ],
+    [
+      "host/accessory/contract.c",
+      61,
+      "accessory_parse_selection",
+      1
+    ],
+    [
+      "host/accessory/contract.c",
+      70,
+      "accessory_lock",
+      3
+    ],
+    [
+      "host/accessory/stream.c",
+      13,
+      "output_all",
+      4
+    ],
+    [
+      "host/accessory/stream.c",
+      22,
+      "read_usb",
+      5
+    ],
+    [
+      "host/accessory/stream.c",
+      31,
+      "receive_bytes",
+      3
+    ],
+    [
+      "host/accessory/stream.c",
+      40,
+      "send_usb",
+      5
+    ],
+    [
+      "host/accessory/stream.c",
+      50,
+      "send_bytes",
+      5
+    ],
+    [
+      "host/accessory/stream.c",
+      61,
+      "main",
+      8
+    ],
+    [
+      "scripts/tests/fixtures/aoa/simultaneous_failure.c",
+      19,
+      "simultaneous_failure",
+      2
+    ],
+    [
+      "scripts/tests/fixtures/aoa/simultaneous_failure.c",
+      25,
+      "failed_read",
+      2
+    ],
+    [
+      "scripts/tests/fixtures/aoa/simultaneous_failure.c",
+      34,
+      "libusb_bulk_transfer",
+      3
+    ],
+    [
+      "scripts/tests/fixtures/aoa/simultaneous_failure.c",
+      45,
+      "fixture_lock",
+      3
+    ],
+    [
+      "scripts/tests/fixtures/aoa/simultaneous_failure.c",
+      51,
+      "accessory_open_selected",
+      3
+    ],
+    [
+      "scripts/tests/fixtures/aoa/simultaneous_failure.c",
+      59,
+      "accessory_open",
+      1
+    ],
+    [
+      "scripts/tests/fixtures/aoa/simultaneous_failure.c",
+      66,
+      "accessory_transfer",
+      1
+    ],
+    [
+      "scripts/tests/fixtures/aoa/simultaneous_failure.c",
+      75,
+      "accessory_list",
+      1
+    ],
+    [
+      "scripts/tests/fixtures/aoa/simultaneous_failure.c",
+      81,
+      "unsafe_handler",
+      1
+    ],
+    [
+      "scripts/tests/fixtures/aoa/simultaneous_failure.c",
+      87,
+      "main",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      13,
+      "setUpClass",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      34,
+      "build_echo_fixture",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      77,
+      "run_target",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      80,
+      "test_t846_physical_path_boundaries",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      86,
+      "test_t846_invalid_paths_reject_without_usb_dependency",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      92,
+      "test_t846_bounded_invalid_numeric_fuzz",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      99,
+      "test_t846_c_wire_golden_vector_payload_boundaries_and_corruption",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      107,
+      "setUpClass",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      118,
+      "test_t846_usb_zero_length_packets_are_bounded_read_events",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      132,
+      "run_probe",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      136,
+      "test_t1225_transient_io_during_mode_switch_recovers",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      143,
+      "test_t846_transient_access_and_disappearance_recover",
+      3
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      150,
+      "test_t879_replaced_selection_never_sends_control_transfers",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      157,
+      "test_t854_production_metadata_matches_android_filter",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      171,
+      "test_t879_exact_selection_allows_expected_reenumeration",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      177,
+      "test_t846_persistent_open_error_is_bounded",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      184,
+      "test_t1225_persistent_io_remains_bounded",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      190,
+      "test_t1225_other_open_errors_fail_without_retries",
+      3
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      199,
+      "test_t846_initial_open_and_nontransient_errors_remain_strict",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      211,
+      "setUpClass",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      222,
+      "test_t1614_simultaneous_stream_failures_skip_exit_handlers",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      236,
+      "test_t876_inventory_dispatch_does_not_enter_usb_streaming",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      240,
+      "test_t879_stream_entry_preserves_selected_descriptor_arguments",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      244,
+      "test_t846_packet_aligned_usb_writes_terminate_pending_device_read",
+      3
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      250,
+      "test_t846_usb_duplex_bounds_timeouts_partial_io_and_process_retirement",
+      3
+    ]
+  ],
+  "red": {
+    "tests": 1,
+    "failed": 1,
+    "evidence": "Both native error diagnostics and T1614_UNSAFE_EXIT_HANDLER appeared"
+  },
+  "green": {
+    "tests": 39,
+    "failures": 0,
+    "simultaneous_failure_processes": 16
+  },
+  "compiler": "GCC 13.3.0 / gcov 13.3.0; ASan and UBSan",
+  "limits": [
+    "Fake USB; real private native threads/processes",
+    "Fatal _Exit executed by regression but does not flush coverage counters",
+    "Existing supervisor process-retirement ownership unchanged"
+  ]
+}
