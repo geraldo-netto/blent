@@ -1,0 +1,82 @@
+{
+  "issue": "T1642",
+  "deployment": {
+    "source_commit": "b560da7f6021dae74c11c475179fc0a5829f5c6c",
+    "daemon_stop": {
+      "pid": 973942,
+      "seconds": 0.32745596900349483,
+      "pidfd_exit": true
+    },
+    "gui_stop": [],
+    "broker_stop": [
+      {
+        "pid": 973459,
+        "seconds": 0.014954270969610661,
+        "pidfd_exit": true
+      }
+    ],
+    "linux_sha256": {
+      "blent": "940f3adc21753b21df45a134e5d02e1483b6a7750f30687a1b4fd4de419e8b76",
+      "blent-gui": "00b42a467d5702d5fd12fc36f3cff674001147a8fc040be6f0fd7a62b95d096c",
+      "blent-audio": "21cbeef89b516a2730f39eeb722b7dffdada22b24cc2a03e38a7557bf703b04c",
+      "blent-usb-broker": "6935312f4a2885c58a9089c71b3838b77e14c4315248ce90a04cf62afd2f2b3c",
+      "evdi_helper": "4089729bdc143ffdab1511a13a4d485270db4dd572e06308cbeb385bcc74e08e",
+      "blent-usb-io": "52214a4a5b3de7971d04cfe1bc094e78c7a21045106e2c8d9aff870f3651a366"
+    },
+    "gui_launcher_pid": 2027224,
+    "shared_adb": {
+      "pid": 3379,
+      "original_still_alive": true
+    }
+  },
+  "acceptance": {
+    "daemon_pid": 2027265,
+    "processes": [
+      {
+        "pid": 2027265,
+        "name": "blent",
+        "sha256": "940f3adc21753b21df45a134e5d02e1483b6a7750f30687a1b4fd4de419e8b76",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/blent.service"
+      },
+      {
+        "pid": 2027325,
+        "name": "blent-usb-broker",
+        "sha256": "6935312f4a2885c58a9089c71b3838b77e14c4315248ce90a04cf62afd2f2b3c",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/run-r9ebcd7c84d664087a28283c5d6bf48d9.scope"
+      },
+      {
+        "pid": 2027328,
+        "name": "blent",
+        "sha256": "940f3adc21753b21df45a134e5d02e1483b6a7750f30687a1b4fd4de419e8b76",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/blent.service"
+      },
+      {
+        "pid": 2027595,
+        "name": "evdi_helper",
+        "sha256": "4089729bdc143ffdab1511a13a4d485270db4dd572e06308cbeb385bcc74e08e",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/blent.service"
+      },
+      {
+        "pid": 2030946,
+        "name": "blent-gui",
+        "sha256": "00b42a467d5702d5fd12fc36f3cff674001147a8fc040be6f0fd7a62b95d096c",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/blent-priority-2030946.scope"
+      }
+    ],
+    "gui_instances": 1,
+    "visible_gui_windows": 1,
+    "tray_repeat_reused_original": true,
+    "render_ack_reports": [
+      "Nov 21 17:25:57 morpheus env[2027265]: 2026-11-21T16:25:57.342911Z  INFO blent::latency: 407: Latency packet-ready\u2192render-ACK (host clock): p50 20.1ms  p95 21.4ms  max 33.1ms  (134 samples, 1 in flight, 0 aged out)",
+      "Nov 21 17:26:02 morpheus env[2027265]: 2026-11-21T16:26:02.360567Z  INFO blent::latency: 407: Latency packet-ready\u2192render-ACK (host clock): p50 19.8ms  p95 22.1ms  max 32.5ms  (137 samples, 1 in flight, 0 aged out)"
+    ],
+    "service": [
+      "NRestarts=0",
+      "ActiveState=active"
+    ],
+    "shared_adb_pid": 3379
+  },
+  "build": "Optimized offline workspace build with native-audio/accessory-transport; both C helpers rebuilt. Existing local SDK/sysroot/runtime selected; six ELF dependency checks pass. Local deployment, not a portable/public release.",
+  "ownership": "Original daemon exit observed through pidfd after 0.327s; original broker through pidfd after 0.015s. No GUI existed at cutoff. Six complete staged executables atomically replaced after original owners retired. Shared original ADB process remained alive; trust/configuration not reset. Replacement GUI launched through native tray and lives outside daemon service; repeat activation reuses same process and one visible window. Backups retained in private /tmp/blent-final-update.",
+  "limits": "Live touch/pointer map to DVI-I-2-1. Existing Xorg pen classification remains the separately declined pen scope. Actual static-display kernel warning/wakeup comparison T1632 and Android fault-injection T1631/T1634 are not claimed by this installation smoke test."
+}
