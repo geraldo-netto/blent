@@ -59,6 +59,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
+| T1515 | open | low | small | Correct the doctor's autostart report. `host/src/doctor.rs::output_of` returns `None` for a non-zero exit, and `systemctl --user is-enabled` exits non-zero for `disabled`, `masked` and similar states, so `report_autostart` prints nothing for an installed but disabled service — the case its `systemctl --user enable --now` hint targets — while zero-exit states such as `static` or `enabled-runtime` are reported as disabled. Desktop-entry autostart honoured by `common/src/linux/autostart.rs` is ignored and reported as a missing service with reinstall advice. Existing unit tests pass `Some("disabled")`, which the production path cannot produce. Completion: read the reported state regardless of exit status or reuse the shared autostart policy including the desktop entry, with failing-first permanent regressions driven through the command result. |
 
 ## Installation and distribution
 
