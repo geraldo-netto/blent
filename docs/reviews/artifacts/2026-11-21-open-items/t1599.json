@@ -1,0 +1,27 @@
+{
+  "id": "T1599",
+  "red_integration_tests": 1,
+  "passed_integration_tests": 1,
+  "passed_unit_tests": 1,
+  "coverage": [
+    {
+      "file": "host/src/bin/usb_broker.rs",
+      "name": "main",
+      "line": 2,
+      "language": "rust",
+      "covered": 8,
+      "total": 9,
+      "percent": 88.88888888888889,
+      "passes": true,
+      "missing": [
+        9
+      ]
+    }
+  ],
+  "scope": "maintained Linux entry; unchanged non-Linux rejection not measured",
+  "complexity": {
+    "functions": 6,
+    "above_nine": 0,
+    "tool": "project Rust syn 2.0.119"
+  }
+}

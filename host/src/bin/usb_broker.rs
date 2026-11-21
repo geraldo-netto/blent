@@ -1,6 +1,7 @@
 #[cfg(target_os = "linux")]
 fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt()
+        .with_writer(std::io::stderr)
         .with_max_level(tracing::Level::WARN)
         .with_ansi(false)
         .try_init()
