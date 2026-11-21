@@ -56,6 +56,7 @@
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
 | T1531 | open | low | small | Make configuration publication durable. `common/src/storage.rs::write_at` syncs the temporary file and renames it over `config.toml` but never syncs the parent directory, so a save reported as successful can revert to the previous file after power loss; the trust storage contract explicitly requires synced publication. Completion: sync the parent directory after the rename on Unix and add a permanent regression through an injectable publication step. |
+| T1532 | open | low | small | Report unreadable configuration instead of silently using defaults. `common/src/storage.rs::load_at` maps every read error to `FileConfig::default()` without a diagnostic, whereas a parse error is logged and `update_locked_at` distinguishes `NotFound` from other errors and fails. With an unreadable or non-UTF-8 `config.toml` the daemon and GUI start with default ports, resolution and encoder and log nothing; the first later update then fails with `read config before update`. Completion: default only for a missing file, report other read errors, and add a failing-first permanent regression. |
 
 ## Installation and distribution
 
