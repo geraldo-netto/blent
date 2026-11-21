@@ -19,6 +19,9 @@ malformed configuration also uses defaults, with a warning identifying the file
 and error. Loading never overwrites that file; partial updates require a readable,
 valid configuration. On Unix, saves report success only after syncing both the
 file and its parent directory.
+Save also validates camera, microphone and speaker settings. Incomplete USB
+fingerprints, invalid ADB serials or incompatible target selectors disable Save
+and show the resource and validation reason beside it.
 
 ## Desktop workspace and resource controls
 

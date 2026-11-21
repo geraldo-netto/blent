@@ -1,0 +1,38 @@
+{
+  "issue": "T1553",
+  "tests": {
+    "common": 481,
+    "gui": 17
+  },
+  "coverage": [
+    {
+      "file": "common/src/model.rs",
+      "name": "validate",
+      "line": 273,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "show_validation_error",
+      "line": 507,
+      "language": "rust",
+      "covered": 5,
+      "total": 6,
+      "percent": 83.33333333333333,
+      "passes": true,
+      "missing": [
+        509
+      ]
+    }
+  ],
+  "complexity": {
+    "functions": 220,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  }
+}

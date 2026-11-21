@@ -3,6 +3,8 @@ use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 #[cfg(test)]
 mod diagnostic_tests;
+#[cfg(test)]
+mod media_tests;
 mod merge;
 
 /// Maximum accepted configured bitrate, in kbps. This is a project policy
@@ -277,6 +279,12 @@ impl FileConfig {
         );
         crate::display::pixel_clock_10khz(self.width, self.height, self.fps)?;
         slot_ports(self.video_port, self.input_port, self.max_tablets)?;
+        self.camera.options.validate().context("Camera settings")?;
+        self.audio
+            .microphone
+            .validate()
+            .context("Microphone settings")?;
+        self.audio.speakers.validate().context("Speaker settings")?;
         Ok(())
     }
 
@@ -485,7 +493,13 @@ mod tests {
         let mut invalid_camera = restored;
         invalid_camera.camera.options.fps = 0;
         assert!(invalid_camera.camera.options.validate().is_err());
-        invalid_camera.validate().unwrap(); // independent display policy remains valid
+        assert!(invalid_camera.validate().is_err()); // full persistence includes media policy
+        crate::display::pixel_clock_10khz(
+            invalid_camera.width,
+            invalid_camera.height,
+            invalid_camera.fps,
+        )
+        .unwrap();
         let mut latest = baseline.clone();
         latest.fps = 30;
         let merged = edited.merge_edits(&baseline, latest).unwrap();

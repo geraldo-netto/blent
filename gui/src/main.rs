@@ -508,7 +508,7 @@ impl App {
         match self.cfg.validate() {
             Ok(()) => true,
             Err(error) => {
-                ui.label(egui::RichText::new(error.to_string()).color(egui::Color32::LIGHT_RED));
+                ui.label(egui::RichText::new(format!("{error:#}")).color(egui::Color32::LIGHT_RED));
                 false
             }
         }
@@ -1320,6 +1320,7 @@ mod tests {
     mod busy_controls;
     mod connection_guidance;
     mod coverage;
+    mod media_validation;
     mod overview;
     use super::*;
     use blent_config::commands::daemon_command_timeout;
