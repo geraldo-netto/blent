@@ -14,7 +14,15 @@ pub(crate) struct Instance(UnixDatagram);
 pub(crate) fn run(work: impl FnOnce(Rc<Instance>) -> eframe::Result) -> eframe::Result {
     let directory = blent_config::linux::runtime::runtime_dir()
         .map_err(|cause| error(io::Error::other(cause.to_string())))?;
-    run_at(directory.join("gui").as_os_str().as_encoded_bytes(), work)
+    run_at(&endpoint(&directory), work)
+}
+
+// Hash the complete canonical owner path: fixed width without truncating identity.
+fn endpoint(directory: &std::path::Path) -> Vec<u8> {
+    use sha2::{Digest, Sha256};
+    let mut name = b"blent-gui:".to_vec();
+    name.extend(Sha256::digest(directory.as_os_str().as_encoded_bytes()));
+    name
 }
 
 pub(crate) fn run_at(

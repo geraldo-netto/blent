@@ -1,0 +1,168 @@
+{
+  "coverage": [
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "run",
+      "line": 14,
+      "language": "rust",
+      "covered": 4,
+      "total": 5,
+      "percent": 80.0,
+      "passes": true,
+      "missing": [
+        16
+      ]
+    },
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "endpoint",
+      "line": 21,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "run_at",
+      "line": 28,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        41
+      ]
+    },
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "notify",
+      "line": 45,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "requested",
+      "line": 57,
+      "language": "rust",
+      "covered": 10,
+      "total": 11,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        66
+      ]
+    },
+    {
+      "file": "gui/src/platform/activation.rs",
+      "name": "error",
+      "line": 73,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "gui/src/platform/activation.rs",
+      14,
+      "run",
+      2
+    ],
+    [
+      "gui/src/platform/activation.rs",
+      21,
+      "endpoint",
+      1
+    ],
+    [
+      "gui/src/platform/activation.rs",
+      28,
+      "run_at",
+      4
+    ],
+    [
+      "gui/src/platform/activation.rs",
+      45,
+      "notify",
+      4
+    ],
+    [
+      "gui/src/platform/activation.rs",
+      57,
+      "requested",
+      5
+    ],
+    [
+      "gui/src/platform/activation.rs",
+      73,
+      "error",
+      1
+    ],
+    [
+      "gui/src/platform/activation/tests.rs",
+      3,
+      "name",
+      1
+    ],
+    [
+      "gui/src/platform/activation/tests.rs",
+      13,
+      "t1449_repeated_launch_keeps_original_state_owner",
+      3
+    ],
+    [
+      "gui/src/platform/activation/tests.rs",
+      32,
+      "t1449_flood_and_invalid_messages_are_bounded",
+      6
+    ],
+    [
+      "gui/src/platform/activation/tests.rs",
+      55,
+      "t1449_error_unwind_and_repeated_reuse_release_descriptors",
+      6
+    ],
+    [
+      "gui/src/platform/activation/tests.rs",
+      72,
+      "t1449_cross_process_activation_has_no_new_state_owner",
+      2
+    ],
+    [
+      "gui/src/platform/activation/tests.rs",
+      96,
+      "t1449_secondary_fixture",
+      3
+    ],
+    [
+      "gui/src/platform/activation/tests.rs",
+      106,
+      "t1454_long_runtime_entry_preserves_single_owner",
+      1
+    ],
+    [
+      "gui/src/platform/activation/tests.rs",
+      134,
+      "t1454_runtime_child",
+      5
+    ],
+    [
+      "gui/src/platform/activation/tests.rs",
+      148,
+      "t1454_long_home_paths_and_suffixes_remain_distinct",
+      5
+    ]
+  ]
+}
