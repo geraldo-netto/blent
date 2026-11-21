@@ -1,0 +1,68 @@
+{
+  "id": "T1596",
+  "red_tests": 4,
+  "passed_broker_tests": 32,
+  "coverage": [
+    {
+      "file": "host/src/broker/control/inventory.rs",
+      "name": "replace_devices",
+      "line": 6,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/inventory.rs",
+      "name": "validate_inventory",
+      "line": 19,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/inventory.rs",
+      "name": "replacement",
+      "line": 29,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/inventory.rs",
+      "name": "inventory_changed",
+      "line": 55,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/inventory.rs",
+      "name": "same_metadata",
+      "line": 66,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "functions": 16,
+    "above_nine": 0,
+    "tool": "project Rust syn 2.0.119"
+  },
+  "scope": "isolated controller tests; no live USB operation"
+}

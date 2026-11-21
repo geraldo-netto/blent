@@ -130,7 +130,7 @@ fn t853_all_admission_capacities_and_identifier_exhaustion_remain_bounded() {
     assert_eq!(rig.control.admit_client().unwrap(), MAX_COUNTER);
     rig.control.drop_client(MAX_COUNTER);
     assert!(rig.control.admit_client().is_err());
-    assert!(rig.control.replace_devices(vec![device(1)]).is_err());
+    assert!(rig.control.replace_devices(vec![device(5)]).is_err());
     rig.control.revision = MAX_COUNTER;
     assert!(rig.control.replace_devices(vec![]).is_err());
     assert!(rig.control.tick(0).is_err());

@@ -618,3 +618,5 @@ fn t1338_reservation_blocks_both_view_and_broker_until_refresh() {
         );
     }
 }
+
+mod inventory;

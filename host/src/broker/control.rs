@@ -14,6 +14,7 @@ use std::collections::{BTreeMap, BTreeSet};
 mod authority;
 mod automatic;
 mod commands;
+mod inventory;
 mod lifecycle;
 pub use authority::{Admission, AuthorityJob, AuthorityKind, AuthorityOperation, AuthorityReply};
 
@@ -161,27 +162,6 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
     /// client's registrations and bounded outgoing IPC queue.
     pub fn drop_client(&mut self, client: u64) -> bool {
         self.clients.remove(&client)
-    }
-    pub fn replace_devices(&mut self, devices: Vec<Device<K, T>>) -> Result<()> {
-        self.editable()?;
-        ensure!(
-            devices.len() <= self.limits.devices,
-            "device capacity reached"
-        );
-        let keys: BTreeSet<_> = devices.iter().map(|device| &device.key).collect();
-        ensure!(keys.len() == devices.len(), "duplicate physical device");
-        ensure!(
-            self.next <= MAX_COUNTER - devices.len() as u64 + 1,
-            "broker identifiers exhausted"
-        );
-        let mut replacement = BTreeMap::new();
-        for device in devices {
-            replacement.insert(self.fresh()?, device);
-        }
-        self.automatic
-            .retain(|key, _| replacement.values().any(|device| &device.key == key));
-        self.devices = replacement;
-        self.changed()
     }
     pub fn snapshot(&self) -> Vec<Notice> {
         let revision = self.revision;
