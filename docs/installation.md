@@ -161,6 +161,10 @@ ADB unavailable instead of starting a replacement in its own process group;
 restart Blent to recreate the server in an independent scope. If ADB is not
 installed, direct USB remains available. Other ADB startup failures are reported.
 
+With a local user manager, the shared USB broker also runs in an independent
+scope. It can serve multiple Blent clients and survives a display-daemon restart;
+its own resource retirement controls shutdown.
+
 ### Installed paths
 
 | Files | Location |

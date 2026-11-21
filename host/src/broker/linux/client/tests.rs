@@ -165,3 +165,39 @@ async fn t853_timed_out_native_starter_retains_capacity_until_actual_return() {
     .unwrap();
     assert_eq!(connector.starters.available_permits(), 1);
 }
+
+#[test]
+fn t1473_shared_broker_launch_leaves_callers_cgroup() {
+    let root = root();
+    let script = root.path().join("broker-placement");
+    let report = root.path().join("group");
+    std::fs::write(
+        &script,
+        format!(
+            "#!/bin/sh\n/bin/cat /proc/self/cgroup > {}\n",
+            quote(report.as_os_str())
+        ),
+    )
+    .unwrap();
+    std::fs::set_permissions(&script, std::fs::Permissions::from_mode(0o700)).unwrap();
+    launch(root.path(), script).spawn().unwrap();
+    let deadline = std::time::Instant::now() + Duration::from_secs(5);
+    let actual = loop {
+        if let Ok(text) = std::fs::read_to_string(&report) {
+            if !text.is_empty() {
+                break text;
+            }
+        }
+        assert!(
+            std::time::Instant::now() < deadline,
+            "T1473 broker did not publish placement"
+        );
+        std::thread::sleep(Duration::from_millis(10));
+    };
+    assert_ne!(
+        actual,
+        std::fs::read_to_string("/proc/self/cgroup").unwrap(),
+        "T1473 shared broker inherited client retirement group"
+    );
+    assert!(actual.contains(".scope"));
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "file": "host/src/broker/linux/client.rs",
+    "name": "spawn",
+    "line": 27,
+    "language": "rust",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/linux/launch.rs",
+    "name": "command",
+    "line": 7,
+    "language": "rust",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/linux/launch.rs",
+    "name": "command_with_manager",
+    "line": 13,
+    "language": "rust",
+    "covered": 18,
+    "total": 18,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

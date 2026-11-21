@@ -25,7 +25,7 @@ impl Launch {
         Ok(())
     }
     fn spawn(&self) -> Result<()> {
-        let mut command = std::process::Command::new(&self.executable);
+        let mut command = self.command();
         command
             .args(["--runtime"])
             .arg(&self.runtime)

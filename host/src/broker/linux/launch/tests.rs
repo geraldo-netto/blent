@@ -113,3 +113,33 @@ fn t924_environment_paths_are_lazy_in_isolated_process() {
     assert!(String::from_utf8_lossy(&output.stdout).contains("1 passed; 0 failed"));
     assert_eq!(std::fs::read_dir(root.path()).unwrap().count(), 0);
 }
+
+#[test]
+fn t1473_manager_selection_preserves_native_ownership_and_non_systemd_launch() {
+    let launch = Launch::from_paths(
+        "/opt/Blent space/gui".into(),
+        Some("/run/user/42".into()),
+        None,
+        Some("/home/test".into()),
+    )
+    .unwrap();
+    let direct = launch.command_with_manager(false);
+    assert_eq!(direct.get_program(), launch.executable);
+    assert_eq!(direct.get_args().count(), 0);
+    let managed = launch.command_with_manager(true);
+    assert_eq!(managed.get_program(), "/usr/bin/systemd-run");
+    let args: Vec<_> = managed.get_args().collect();
+    assert_eq!(
+        args,
+        [
+            "--user",
+            "--scope",
+            "--quiet",
+            "--property=KillMode=mixed",
+            "--property=SendSIGKILL=no",
+            "--property=TimeoutStopSec=infinity",
+            "--",
+            "/opt/Blent space/blent-usb-broker"
+        ]
+    );
+}

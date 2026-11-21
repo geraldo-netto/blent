@@ -1,0 +1,26 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 35.32s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/build/blent/56fd64be24f9c7f5/out/blent-56fd64be24f9c7f5)
+
+running 1 test
+test broker::linux::client::tests::t1473_shared_broker_launch_leaves_callers_cgroup ... FAILED
+
+failures:
+
+---- broker::linux::client::tests::t1473_shared_broker_launch_leaves_callers_cgroup stdout ----
+
+thread 'broker::linux::client::tests::t1473_shared_broker_launch_leaves_callers_cgroup' (509062) panicked at host/src/broker/linux/client/tests.rs:197:5:
+assertion `left != right` failed: T1473 shared broker inherited client retirement group
+  left: "0::/user.slice/user-1000.slice/user@1000.service/app.slice/app-com.microsoft.VSCode-2097484.scope\n"
+ right: "0::/user.slice/user-1000.slice/user@1000.service/app.slice/app-com.microsoft.VSCode-2097484.scope\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    broker::linux::client::tests::t1473_shared_broker_launch_leaves_callers_cgroup
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1228 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent --lib`
+error: process didn't exit successfully: `/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo test --manifest-path /backups/disk2/projects/blent/Cargo.toml --target-dir /backups/disk2/projects/blent/target/llvm-cov-target --offline -p blent --features accessory-transport --lib -- t1473` (exit status: 101)
