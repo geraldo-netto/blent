@@ -140,6 +140,93 @@ async fn t492_controller_trials_current_receipts_then_restores_cadence_on_stall(
 }
 
 #[tokio::test(start_paused = true)]
+async fn t1673_sixty_fps_receipts_do_not_publish_the_lease_per_frame() {
+    let dir = private_root();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let activity = tracker.encoder_activity(evidence.clone());
+    let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone()).await;
+    for sequence in 0..60 {
+        ack(
+            &handle,
+            &tracker,
+            &evidence,
+            sequence,
+            i64::from(sequence) * 16667,
+        )
+        .await;
+        tokio::time::advance(Duration::from_micros(6667)).await;
+    }
+    let publications = handle._lease.publication_calls.load(Ordering::SeqCst);
+    let original = handle.completion();
+    drop(handle);
+    drop(activity);
+    idle_completed(&original).await;
+    eprintln!("T1673 {publications} publications for 60 frames in one second");
+    assert!(
+        publications > 0,
+        "T1673 worker never published its initial state"
+    );
+    assert!(
+        publications <= 6,
+        "T1673 {publications} publications for 60 frames in one second"
+    );
+}
+
+#[tokio::test(start_paused = true)]
+async fn t1673_rejection_clears_even_a_recently_published_compatible_state() {
+    let dir = private_root();
+    let lease = lease(dir.path());
+    lease.publish(500).unwrap();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let subjects = subjects::Subjects::new(Mode::Adaptive, Arc::new(AtomicU64::new(0)));
+    let mut policy = Policy::new(Mode::Compatible, false, false);
+    let mut renewal = Renewal::default();
+    renewal.published(COMPATIBLE_MS, 0);
+    publish_policy(
+        &lease,
+        &mut policy,
+        Mode::Adaptive,
+        &subjects,
+        &evidence,
+        Instant::now(),
+        &mut renewal,
+    )
+    .unwrap();
+    assert!(
+        !lease.path.exists(),
+        "T1673 rejection waited for a renewal deadline"
+    );
+}
+
+#[tokio::test(start_paused = true)]
+async fn t1673_failed_publication_does_not_advance_renewal_history() {
+    let dir = private_root();
+    let lease = lease(dir.path());
+    lease.stop.revoke();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let subjects = subjects::Subjects::new(Mode::Adaptive, Arc::new(AtomicU64::new(0)));
+    let mut adaptive = blent_config::idle::Policy::new(true);
+    adaptive.phase = blent_config::idle::Phase::Trial;
+    let mut policy = Policy::Adaptive(adaptive);
+    let mut renewal = Renewal::default();
+    assert!(publish_policy(
+        &lease,
+        &mut policy,
+        Mode::Adaptive,
+        &subjects,
+        &evidence,
+        Instant::now(),
+        &mut renewal
+    )
+    .is_err());
+    assert!(renewal.due(500, 0));
+    assert!(!lease.path.exists());
+}
+
+#[tokio::test(start_paused = true)]
 async fn t492_retired_stream_and_cancellation_cannot_publish_into_successor() {
     let dir = private_root();
     let tracker = LatencyTracker::new();

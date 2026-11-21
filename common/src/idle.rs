@@ -3,6 +3,7 @@
 //! A certificate is never persisted or transferred to another encoder epoch.
 
 pub mod control;
+pub mod renewal;
 pub mod unchanged;
 
 /// Requested policy for one original session, never a qualification or grant.

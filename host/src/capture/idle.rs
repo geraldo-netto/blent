@@ -3,6 +3,7 @@ use super::CaptureConfig;
 use crate::latency::{EncoderEvidence, LatencyTracker};
 use anyhow::{Context, Result};
 use blent_config::idle::control::{Cadence, LEASE_US};
+use blent_config::idle::renewal::{Renewal, RENEW_US};
 use blent_config::idle::{unchanged::Conditions, Mode, Sample, COMPATIBLE_MS};
 use policy::{Phase, Policy};
 use std::{
@@ -203,7 +204,8 @@ async fn run(
     subjects: subjects::Subjects,
 ) {
     let mut updates = tracker.activity_updates();
-    let mut timer = tokio::time::interval(Duration::from_millis(250));
+    let mut timer = tokio::time::interval(Duration::from_micros(RENEW_US));
+    let mut renewal = Renewal::default();
     let mut ordinal = 0;
     let recipe = mode != Mode::Unchanged || policy::recipe(&evidence);
     let mut policy = Policy::new(mode, recipe, evidence.decoder.is_some());
@@ -236,8 +238,15 @@ async fn run(
             );
             previous = policy.phase();
         }
-        if let Err(error) = publish_policy(&lease, &mut policy, mode, &subjects, &evidence, origin)
-        {
+        if let Err(error) = publish_policy(
+            &lease,
+            &mut policy,
+            mode,
+            &subjects,
+            &evidence,
+            origin,
+            &mut renewal,
+        ) {
             tracing::warn!("Idle policy restored compatibility: {error}");
             lease.clear();
             return;
@@ -257,14 +266,24 @@ fn publish_policy(
     subjects: &subjects::Subjects,
     evidence: &EncoderEvidence,
     origin: Instant,
+    renewal: &mut Renewal,
 ) -> Result<()> {
-    lease.publish_while(policy.interval_ms(), || {
+    let interval = policy.interval_ms();
+    let attempted = micros(origin, Instant::now());
+    if policy.phase() != Phase::Rejected && !renewal.due(interval, attempted) {
+        return Ok(());
+    }
+    lease.publish_while(interval, || {
         policy.tick(
             subjects.current(mode, evidence, &lease.stop),
             micros(origin, Instant::now()),
         );
         policy.phase() != Phase::Rejected && subjects.permits(mode, evidence, &lease.stop)
-    })
+    })?;
+    // Native IO must not move an already-due renewal into the future. Retain
+    // the attempt's original timestamp only after its publication succeeds.
+    renewal.published(interval, attempted);
+    Ok(())
 }
 
 fn consume(
@@ -325,6 +344,8 @@ struct Lease {
     directory: directory::Directory,
     #[cfg(test)]
     publication_observer: Mutex<Option<Arc<publication_tests::Hook>>>,
+    #[cfg(test)]
+    publication_calls: std::sync::atomic::AtomicU64,
 }
 impl Lease {
     fn open(fifo: &Path, stop: Arc<worker::Stop>) -> Result<Self> {
@@ -352,6 +373,8 @@ impl Lease {
             directory,
             #[cfg(test)]
             publication_observer: Mutex::new(None),
+            #[cfg(test)]
+            publication_calls: std::sync::atomic::AtomicU64::new(0),
         })
     }
 }
@@ -382,6 +405,9 @@ impl Lease {
     // Predicate is a synchronous original observation, never a native fence.
     // Recheck after native waits and staging IO, before the advisory rename.
     fn publish_while(&self, interval: u32, mut current: impl FnMut() -> bool) -> Result<()> {
+        #[cfg(test)]
+        self.publication_calls
+            .fetch_add(1, std::sync::atomic::Ordering::SeqCst);
         if interval == COMPATIBLE_MS {
             self.clear();
             return Ok(());

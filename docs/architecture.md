@@ -1264,6 +1264,16 @@ delay for H.264 High; Constrained Baseline stayed responsive. Lower idle work
 therefore needs coordinated keyframe scheduling and profile-aware validation.
 This does not enable arbitrary encoded-reference dropping.
 
+The Linux idle worker consumes receipt and viewer changes on every wake, but
+repeats native lease publication only after a 250 ms renewal interval or a cadence
+change. Rejection clears immediately, including when the last published cadence
+was already compatible. Native publication still checks the original admission
+after blocking filesystem work; the request expires after 1.5 seconds. The
+publication clock is per worker, advances only after successful IO and owns no
+resource or retirement proof. It adds no frame queue and does not delay Stop or
+viewer-epoch revocation. Scheduling or IO delays can still expire a request and
+restore the compatible cadence.
+
 <details>
 <summary>CPU conversion and native C ownership reference</summary>
 
