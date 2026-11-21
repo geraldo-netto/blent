@@ -324,6 +324,15 @@ internal class DecoderSession(
 
     fun retireOutput() { codecAlive = false; lifetime?.closeAdmission(); callbackDecoder?.close() }
 
+    /** Observe the original native retirement without holding the receiver lock.
+     * Expiry retains the owner and keeps replacement admission closed. */
+    fun awaitRetirement(milliseconds: Long): Boolean {
+        require(milliseconds in 1..60_000)
+        val owner = synchronized(monitor) { retiring } ?: return true
+        owner.awaitRetirement(milliseconds)
+        return owner.finished
+    }
+
     /** Tear the decoder down without touching the surface or the socket. */
     fun releaseCodec() {
         synchronized(monitor) {

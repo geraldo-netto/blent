@@ -136,4 +136,85 @@ class FramedDecoderTest {
             assertNotNull(receiver.decoder.mediaCodec)
         } finally { receiver.stop(); surface.release() }
     }
+    @Test fun t1564SecondFramedConfigurationWaitsForOriginalNativeRetirement() {
+        replacementAfterRetirement("video/x-vnd.on2.vp9", 3)
+        replacementAfterRetirement("video/av01", 4)
+    }
+
+    @Test fun t1564RetirementExpiryKeepsOriginalOwnerAndRejectsInvalidWaitBounds() {
+        replacementAfterRetirement("video/av01", 4) { receiver ->
+            val decoder = receiver.decoder
+            assertFalse(decoder.awaitRetirement(1))
+            assertTrue(CodecLifetime.retirementPending())
+            assertNull(decoder.mediaCodec)
+            for (invalid in listOf(Long.MIN_VALUE, -1L, 0L, 60_001L, Long.MAX_VALUE)) {
+                assertThrows(IllegalArgumentException::class.java) { decoder.awaitRetirement(invalid) }
+            }
+        }
+        val receiver = VideoReceiver { error("T1564 must not connect") }
+        assertTrue(receiver.decoder.awaitRetirement(1))
+        assertTrue(receiver.decoder.awaitRetirement(60_000))
+    }
+
+    @Test fun t1564StopDuringRetirementRejectsReplacementWithoutBlockingReceiverLock() {
+        replacementAfterRetirement("video/x-vnd.on2.vp9", 3, false) { it.stop() }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Test fun t1564RetiredSurfaceDuringRetirementRejectsReplacement() {
+        replacementAfterRetirement("video/av01", 4, false) {
+            (field("pendingSurface").get(it) as AtomicReference<Surface?>).set(null)
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun replacementAfterRetirement(
+        mime: String, id: Byte, replaced: Boolean = true,
+        duringRetirement: (VideoReceiver) -> Unit = {},
+    ) {
+        StartupCodecShadow.stage = ""
+        val receiver = VideoReceiver { error("T1564 must not connect") }
+        receiver.mimeType = mime
+        val surface = Surface(SurfaceTexture(1))
+        (field("pendingSurface").get(receiver) as AtomicReference<Surface?>).set(surface)
+        (field("surfaceReady").get(receiver) as AtomicBoolean).set(true)
+        field("isRunning").set(receiver, true)
+        val allocations = java.util.concurrent.atomic.AtomicInteger()
+        receiver.decoder.createCodec = { allocations.incrementAndGet(); MediaCodec.createDecoderByType(it.mimeType) }
+        val bytes = ByteBuffer.allocate(13).putInt(0x424c4e31).put(id).putInt(640).putInt(400).array()
+        val entered = java.util.concurrent.CountDownLatch(1)
+        val release = java.util.concurrent.CountDownLatch(1)
+        val pool = java.util.concurrent.Executors.newSingleThreadExecutor()
+        var borrower: Thread? = null
+        try {
+            packets(receiver, 0).configuration(bytes, 0, bytes.size)
+            val original = checkNotNull(receiver.decoder.mediaCodec)
+            val owner = DecoderSession::class.java.getDeclaredField("lifetime")
+                .apply { isAccessible = true }.get(receiver.decoder) as CodecLifetime
+            borrower = Thread { owner.use { entered.countDown(); release.await() } }.also { it.start() }
+            assertTrue(entered.await(2, java.util.concurrent.TimeUnit.SECONDS))
+            val replacement = pool.submit { packets(receiver, 0).configuration(bytes, 0, bytes.size) }
+            val began = System.nanoTime()
+            while (!owner.retired) {
+                check(System.nanoTime() - began < 2_000_000_000) { "T1564 retirement did not begin" }
+                Thread.sleep(1)
+            }
+            Thread.sleep(50)
+            val premature = replacement.isDone
+            val whileBorrowed = allocations.get()
+            duringRetirement(receiver)
+            release.countDown()
+            borrower.join(2000)
+            val result = runCatching { replacement.get(2, java.util.concurrent.TimeUnit.SECONDS) }
+            assertFalse("T1564 second configuration finished before original native retirement", premature)
+            assertEquals(1, whileBorrowed)
+            assertEquals("T1564 unexpected replacement: ${result.exceptionOrNull()}", replaced, result.isSuccess)
+            assertEquals(if (replaced) 2 else 1, allocations.get())
+            assertNotSame(original, receiver.decoder.mediaCodec)
+        } finally {
+            release.countDown(); borrower?.join(2000)
+            pool.shutdownNow(); assertTrue(pool.awaitTermination(2, java.util.concurrent.TimeUnit.SECONDS))
+            receiver.stop(); awaitDecoderRetirement(receiver.decoder); surface.release()
+        }
+    }
 }

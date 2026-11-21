@@ -348,6 +348,7 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
         require(selected.selection == null || (selected.width == formatWidth && selected.height == formatHeight)) {
             "Framed dimensions differ from negotiated decoder selection"
         }
+        check(decoder.awaitRetirement(500)) { "Previous framed video decoder cleanup remains pending" }
         check(decoder.setupCodec(surface, selected) {
             isCurrent(generation) && surfaceReady.get() && pendingSurface.get() === surface
         }) { "Unable to configure framed video decoder" }
