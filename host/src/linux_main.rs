@@ -805,13 +805,32 @@ exit 1
     #[tokio::test]
     async fn t144_primary_and_extra_wait_for_both_reverse_mappings_and_retry() {
         use std::os::unix::fs::PermissionsExt;
+        if isolated_config_test(
+            "cli_tests::t144_primary_and_extra_wait_for_both_reverse_mappings_and_retry",
+        ) {
+            return;
+        }
+        let runtime = tempfile::Builder::new()
+            .permissions(std::fs::Permissions::from_mode(0o700))
+            .tempdir()
+            .unwrap();
+        std::env::set_var("XDG_RUNTIME_DIR", runtime.path());
         let root = tempfile::tempdir().unwrap();
         let adb = root.path().join("adb");
         std::fs::write(
             &adb,
             r#"#!/bin/sh
 printf '%s\n' "$*" >> "$0.log"
+if [ "$4" = getprop ]; then echo "$2"; exit 0; fi
 if [ "$3" = reverse ]; then
+    routes="$0.$2.routes"
+    touch "$routes"
+    case "$4" in
+        --list) cat "$routes"; exit 0 ;;
+        --remove) awk -v remote="$5" '$2 != remote' "$routes" > "$routes.next"; mv "$routes.next" "$routes"; exit 0 ;;
+        --no-rebind) printf 'UsbFfs %s %s\n' "$5" "$6" >> "$routes" ;;
+    esac
+    # Lost acknowledgement after an observable original effect.
     case "$2:$4:$5" in PRIMARY:--no-rebind:tcp:8890|EXTRA:--no-rebind:tcp:8891)
         if [ ! -e "$0.$2.failed" ]; then touch "$0.$2.failed"; exit 1; fi;;
     esac
@@ -838,7 +857,9 @@ fi
             assert!(!ready, "T144 {serial} became ready after a failed reverse");
             let log = adb.with_extension("log");
             let failed = std::fs::read_to_string(&log).unwrap();
-            assert!(!failed.contains(&format!("-s {serial} shell")));
+            assert!(!failed
+                .lines()
+                .any(|line| line == format!("-s {serial} shell")));
             if !ready {
                 ready = request
                     .prepare(&mut retry, now + std::time::Duration::from_secs(1))
@@ -850,6 +871,8 @@ fi
                 failed,
                 "retry must back off"
             );
+            // T1480: a failed creator replies before its original cleanup joins.
+            request.routes.retire(adb.to_str().unwrap()).await.unwrap();
             if !ready {
                 ready = request
                     .prepare(&mut retry, now + std::time::Duration::from_secs(5))
@@ -864,7 +887,14 @@ fi
                 "-s {serial} reverse --no-rebind tcp:8891 tcp:{}",
                 port + 1
             )));
-            assert_eq!(passed.matches(&format!("-s {serial} shell")).count(), 1);
+            assert_eq!(
+                passed
+                    .lines()
+                    .filter(|line| *line == format!("-s {serial} shell"))
+                    .count(),
+                1
+            );
+            request.routes.retire(adb.to_str().unwrap()).await.unwrap();
         }
     }
 

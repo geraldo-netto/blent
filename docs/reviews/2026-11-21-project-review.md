@@ -43,3 +43,7 @@ The standalone pool target failed compilation because its production source now 
 ## T1484 — startup deadline fixture
 
 The native missing-broker test allowed 3 seconds while production settings admitted a 10-second startup interval. Independent systemd launch exposed this mismatch because successful launcher creation does not prove successful broker startup. The fixture now explicitly selects a 100 ms startup deadline and retains its 3-second observation bound. The same permanent T894 failure/retirement/no-files assertions pass. Production deadlines and process ownership are unchanged.
+
+## T1480 — current ADB identity and cleanup fixture
+
+The CLI retry test counted physical-identity queries as Activity launches and its fake failed creator supplied neither an observable mapping nor settlement evidence. The fixture now returns a stable identity, records only actual launch shell requests in launch assertions, models a lost acknowledgement after an observable mapping creation, and awaits original route retirement before retry and final cleanup. A private mode-0700 child runtime isolates native locks. The internal RouteOwner retirement method is crate-visible for this existing CLI owner fixture; its implementation is unchanged. The original permanent T144 failed before correction and now passes its failure/backoff/two-mapping recovery/exact-launch assertions. Unknown native outcomes remain retained in production.

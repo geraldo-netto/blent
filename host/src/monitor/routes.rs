@@ -36,7 +36,7 @@ impl RouteOwner {
         }
     }
 
-    pub(super) async fn retire(&self, adb: &str) -> Result<()> {
+    pub(crate) async fn retire(&self, adb: &str) -> Result<()> {
         let mut owned = self.0.lock().await;
         if let Some(routes) = owned.as_mut() {
             routes.retire(&Adb(NativeCommands(adb.into()))).await?;
