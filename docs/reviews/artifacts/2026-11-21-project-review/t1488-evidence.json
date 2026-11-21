@@ -1,0 +1,20 @@
+{
+  "finding": "T1488",
+  "regression": "gui/tests/startup.rs::t078_workspace_gui_and_accessibility_start_without_worker_panics",
+  "before": {
+    "passed": 0,
+    "failed": 1,
+    "error": "unsafe runtime directory permissions 775: /tmp/blent-gui-startup-2904862/blent"
+  },
+  "after": {
+    "passed": 1,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "change": "Explicit 0700 on the fixture-owned blent subdirectory; production validation unchanged.",
+  "complexity": {
+    "tool": "repository checker; Rust syn 2.0.119",
+    "stub": 1,
+    "t078_workspace_gui_and_accessibility_start_without_worker_panics": 2
+  }
+}

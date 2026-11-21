@@ -67,3 +67,7 @@ Additional T1480 measurement: the unchanged internal retirement implementation, 
 ## T1486 — unresolved intermittent speaker regression
 
 The first uncontended full Android run completed 2,869 cases with one API-27 failure: the speaker offer was null before the blocked-renderer test requested Stop. The affected class then passed; 20 isolated invocations covering both API levels passed all 40 cases; a second full run passed all 2,869 cases. The original native-retirement/display-independence assertions remain unchanged, with additional state diagnostics on the failing offer assertion. No root cause or production defect is established. T1486 remains open; passing reruns do not resolve the observed failure. Permanent evidence records the original failure and bounded rechecks.
+
+## T1488 — private GUI startup fixture
+
+The permanent T078 startup smoke test failed before creating a window because its shared config/runtime fixture precreated `blent/` with umask-dependent mode 0775. The fixture now explicitly sets both owned directories to 0700; production singleton validation remains unchanged. The same startup/accessibility/update/close regression passes afterward. The two fixture functions measure complexity 1 and 2; the authoritative formatter passes. This adds no production method or resource owner.
