@@ -99,7 +99,9 @@ impl Bridges {
         match state {
             State::PermissionRequired => (),
             State::Admitted => {
-                ensure!(session.current(lease), "local resource not admitted");
+                if !session.current(lease) {
+                    return Ok(());
+                }
                 ensure!(
                     !entry.closing && !entry.admitted,
                     "duplicate or closed admission"

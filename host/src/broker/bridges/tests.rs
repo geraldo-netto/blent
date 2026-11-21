@@ -430,3 +430,57 @@ async fn t853_bridge_invalid_limits_and_duplicate_or_stale_state_are_bounded() {
         .state(&mut rig.host, &lease, State::Closing)
         .is_err());
 }
+
+fn queued_admission(bridges: &mut Bridges, rig: &mut Rig, lease: &Lease) -> Event {
+    dispatch(bridges, rig, 0);
+    rig.message(Message::Prepared(lease.key));
+    dispatch(bridges, rig, 1);
+    rig.message(Message::Result(lease.key, Outcome::Admitted));
+    rig.pump(2)
+        .unwrap()
+        .into_iter()
+        .find(|event| matches!(event, Event::State(current, State::Admitted) if current == lease))
+        .expect("T1602 original admission notice")
+}
+
+#[tokio::test]
+async fn t1602_cancelled_admission_preserves_link_and_sibling_native_streams() {
+    for closing_first in [false, true] {
+        let mut rig = Rig::new();
+        let mut bridges = Bridges::new(16, Duration::from_secs(1)).unwrap();
+        let (connect, display_probe) = connector(2, false, false);
+        let display = register(&mut bridges, &mut rig, Resource::DisplaySession, connect);
+        admit(&mut bridges, &mut rig, &display);
+        let _ = poll(&mut bridges, &mut rig);
+        let (connect, camera_probe) = connector(1, false, false);
+        let camera = register(&mut bridges, &mut rig, Resource::Camera, connect);
+        let notice = queued_admission(&mut bridges, &mut rig, &camera);
+        rig.host.cancel(&camera, Reason::Requested).unwrap();
+        if closing_first {
+            dispatch(&mut bridges, &mut rig, 3);
+        }
+        let Event::State(lease, state) = notice else {
+            unreachable!()
+        };
+        let accepted = bridges.state(&mut rig.host, &lease, state).is_ok();
+        let _ = poll(&mut bridges, &mut rig);
+        assert!(
+            accepted,
+            "T1602 cancellation converted a queued admission into link failure"
+        );
+        assert!(rig.host.current(&display));
+        assert!(!rig.host.current(&camera));
+        assert_eq!(display_probe.socket_drops.load(Ordering::SeqCst), 0);
+        assert_eq!(camera_probe.polls.load(Ordering::SeqCst), 0);
+        dispatch(&mut bridges, &mut rig, 4);
+        assert_eq!(camera_probe.connector_drops.load(Ordering::SeqCst), 1);
+        assert_eq!(camera_probe.socket_drops.load(Ordering::SeqCst), 1);
+        rig.message(Message::Result(camera.key, Outcome::Revoked));
+        dispatch(&mut bridges, &mut rig, 5);
+        assert!(bridges.entries[1].is_none());
+        assert!(rig.host.current(&display));
+        bridges.disconnect(&mut rig.host).unwrap();
+        finish_disconnect(&mut bridges, &mut rig);
+        assert_eq!(display_probe.socket_drops.load(Ordering::SeqCst), 2);
+    }
+}
