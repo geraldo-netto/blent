@@ -10,6 +10,39 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class CameraRecoveryTest {
+    @Test fun t1462_transportRetryWaitsBeyondBackoffForOriginalDevice() {
+        val original = Any()
+        val requested = java.util.concurrent.CountDownLatch(1)
+        val closure = CameraClosure<Any> { requested.countDown() }
+        closure.bind(original)
+        val calls = java.util.concurrent.atomic.AtomicInteger()
+        val owner = CameraResources()
+        val executor = java.util.concurrent.Executors.newSingleThreadExecutor()
+        val worker = executor.submit {
+            runBlocking {
+                try {
+                    CameraRecovery.run(owner) { resources ->
+                        if (calls.incrementAndGet() == 1) {
+                            resources.own { closure.close(original) }
+                            throw CameraTransportException("retry")
+                        }
+                        error("second attempt reached")
+                    }
+                } catch (_: IllegalStateException) {} finally { owner.close() }
+            }
+        }
+        try {
+            assertTrue(requested.await(5, java.util.concurrent.TimeUnit.SECONDS))
+            assertThrows(java.util.concurrent.TimeoutException::class.java) {
+                worker.get(350, java.util.concurrent.TimeUnit.MILLISECONDS)
+            }
+            assertEquals(1, calls.get())
+            closure.completed(original)
+            worker.get(5, java.util.concurrent.TimeUnit.SECONDS)
+            assertEquals(2, calls.get())
+        } finally { closure.completed(original); executor.shutdown(); executor.awaitTermination(5, java.util.concurrent.TimeUnit.SECONDS) }
+    }
+
     @Test fun t707_nativeFailureCannotBecomeATransportRetry() = runBlocking {
         val owner = CameraResources()
         var attempts = 0

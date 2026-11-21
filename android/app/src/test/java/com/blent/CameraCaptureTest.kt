@@ -70,6 +70,7 @@ class CameraManagerCaptureShadow {
         val camera = org.robolectric.shadow.api.Shadow.newInstanceOf(
             Class.forName("android.hardware.camera2.impl.CameraDeviceImpl")) as CameraDevice
         created = camera
+        org.robolectric.shadow.api.Shadow.extract<CameraDeviceCaptureShadow>(camera).onClosed = { callback.onClosed(camera) }
         handler.post {
             beforeOpen()
             when (failure) {
@@ -93,6 +94,9 @@ class CameraSessionCaptureShadow {
 @Implements(className = "android.hardware.camera2.impl.CameraDeviceImpl", isInAndroidSdk = false)
 class CameraDeviceCaptureShadow {
     var closes = 0
+    var deferClosed = false
+    var onClosed: () -> Unit = {}
+    val closeRequested = CountDownLatch(1)
     // T1072: native shadow signature; this fixture does not inspect every platform argument.
     @Suppress("UNUSED_PARAMETER")
     @Implementation(maxSdk = 27) fun __constructor__(id: String, callback: CameraDevice.StateCallback, handler: Handler, metadata: CameraCharacteristics, target: Int) {}
@@ -124,7 +128,11 @@ class CameraDeviceCaptureShadow {
         }
         return org.robolectric.util.ReflectionHelpers.callConstructor(CaptureRequest.Builder::class.java, *arguments.toTypedArray())
     }
-    @Implementation fun close() { closes++ }
+    @Implementation fun close() {
+        closes++
+        closeRequested.countDown()
+        if (!deferClosed) onClosed()
+    }
 }
 
 @RunWith(RobolectricTestRunner::class)

@@ -1,0 +1,1462 @@
+{
+  "finding": "T1462",
+  "cases": 54,
+  "coverage": [
+    {
+      "file": "android/app/src/main/java/com/blent/CameraClosure.kt",
+      "name": "<init>",
+      "line": 3,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraClosure.kt",
+          "owner": "com/blent/CameraClosure",
+          "name": "<init>",
+          "signature": "(Lkotlin/jvm/functions/Function1;)V",
+          "line": 4,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraClosure.kt",
+      "name": "bind",
+      "line": 10,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraClosure.kt",
+          "owner": "com/blent/CameraClosure",
+          "name": "bind",
+          "signature": "(Ljava/lang/Object;)V",
+          "line": 10,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraClosure.kt",
+      "name": "completed",
+      "line": 15,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraClosure.kt",
+          "owner": "com/blent/CameraClosure",
+          "name": "completed",
+          "signature": "(Ljava/lang/Object;)V",
+          "line": 15,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraClosure.kt",
+      "name": "close",
+      "line": 21,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraClosure.kt",
+          "owner": "com/blent/CameraClosure",
+          "name": "close",
+          "signature": "(Ljava/lang/Object;)V",
+          "line": 22,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      "name": "<init>",
+      "line": 6,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+          "owner": "com/blent/CameraDeviceStartup",
+          "name": "<init>",
+          "signature": "(Lcom/blent/CameraResources;Lkotlinx/coroutines/CancellableContinuation;)V",
+          "line": 7,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      "name": "onOpened",
+      "line": 11,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+          "owner": "com/blent/CameraDeviceStartup",
+          "name": "onOpened",
+          "signature": "(Landroid/hardware/camera2/CameraDevice;)V",
+          "line": 12,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      "name": "onDisconnected",
+      "line": 16,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+          "owner": "com/blent/CameraDeviceStartup",
+          "name": "onDisconnected",
+          "signature": "(Landroid/hardware/camera2/CameraDevice;)V",
+          "line": 16,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      "name": "onError",
+      "line": 17,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+          "owner": "com/blent/CameraDeviceStartup",
+          "name": "onError",
+          "signature": "(Landroid/hardware/camera2/CameraDevice;I)V",
+          "line": 17,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      "name": "onClosed",
+      "line": 18,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+          "owner": "com/blent/CameraDeviceStartup",
+          "name": "onClosed",
+          "signature": "(Landroid/hardware/camera2/CameraDevice;)V",
+          "line": 18,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      "name": "failed",
+      "line": 20,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+          "owner": "com/blent/CameraDeviceStartup",
+          "name": "failed",
+          "signature": "(Landroid/hardware/camera2/CameraDevice;Ljava/lang/String;)V",
+          "line": 21,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      "name": "abort",
+      "line": 25,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+          "owner": "com/blent/CameraDeviceStartup",
+          "name": "abort",
+          "signature": "(Ljava/lang/Exception;)V",
+          "line": 25,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraCapture.kt",
+      "name": "open",
+      "line": 88,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 5,
+      "percent": 80.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraCapture.kt",
+          "owner": "com/blent/CameraCapture",
+          "name": "open",
+          "signature": "(Ljava/lang/String;Lcom/blent/CameraResources;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 89,
+          "covered": 4,
+          "total": 5
+        }
+      ]
+    }
+  ],
+  "complexity": [
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      4,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      10,
+      "bind",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      10,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      11,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      15,
+      "completed",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      15,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      21,
+      "close",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      22,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      23,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      24,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraClosure.kt",
+      27,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      7,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      11,
+      "onOpened",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      16,
+      "onDisconnected",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      17,
+      "onError",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      18,
+      "onClosed",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      20,
+      "failed",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraDeviceStartup.kt",
+      25,
+      "abort",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      17,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      17,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      21,
+      "run",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      21,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      23,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      33,
+      "stream",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      35,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      45,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      47,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      48,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      53,
+      "cameraId",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      55,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      59,
+      "validateSize",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      61,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      64,
+      "frameRate",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      66,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      66,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      70,
+      "encoder",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      72,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      73,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      84,
+      "closeEncoder",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      89,
+      "open",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      89,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      96,
+      "session",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      96,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      99,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      100,
+      "onConfigured",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      101,
+      "onConfigureFailed",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      106,
+      "repeat",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      107,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      114,
+      "drain",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      127,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      131,
+      "sendBuffer",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      132,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      138,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      142,
+      "sendFrame",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      156,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      163,
+      "updateBitrate",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      165,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      169,
+      "sendConfiguration",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/CameraCapture.kt",
+      177,
+      "rotation",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      9,
+      "t1462_onlyOriginalIdentityCanRetireAllWaitingClosers",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      12,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      17,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      18,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      21,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      22,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      25,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      26,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      35,
+      "t1462_closeFailureDoesNotFabricateRetirementOrRepeatNativeRequest",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      38,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraClosureTest.kt",
+      40,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      20,
+      "open",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      21,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      28,
+      "opened",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      37,
+      "t1462_synchronousOpenFailureReleasesStartupWithoutWaitingForClosure",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      37,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      39,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      40,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      48,
+      "t1462_deviceRetirementWaitsForOriginalOnClosed",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      50,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      54,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      54,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraDeviceRetirementTest.kt",
+      57,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      13,
+      "t1462_transportRetryWaitsBeyondBackoffForOriginalDevice",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      16,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      21,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      22,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      24,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      26,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      36,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      46,
+      "t707_nativeFailureCannotBecomeATransportRetry",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      46,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      49,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      50,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      61,
+      "t617_retriesRetireEveryGenerationAndStopAtBound",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      61,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      66,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      69,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      78,
+      "t617_cancellationAndNonTransportFailureNeverRestart",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      78,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      83,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      85,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      86,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      97,
+      "t617_stopDuringBackoffCannotOpenAnotherCamera",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      97,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      101,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      102,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      103,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      29,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      30,
+      "<clinit>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      30,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      31,
+      "createInputSurface",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      34,
+      "dequeueOutputBuffer",
+      6
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      47,
+      "setParameters",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      53,
+      "getOutputBuffer",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      54,
+      "getOutputFormat",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      54,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      57,
+      "releaseOutputBuffer",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      61,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      62,
+      "<clinit>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      62,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      64,
+      "addCamera",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      65,
+      "getCameraIdList",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      66,
+      "getCameraCharacteristics",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      69,
+      "openCamera",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      73,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      74,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      86,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      90,
+      "setRepeatingRequest",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      91,
+      "close",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      95,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      98,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      102,
+      "__constructor__",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      105,
+      "__constructor__",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      106,
+      "getId",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      107,
+      "<clinit>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      107,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      110,
+      "createCaptureSession",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      114,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      118,
+      "createCaptureRequest",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      131,
+      "close",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      144,
+      "get:deviceCloses",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      144,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      147,
+      "get:sessionCloses",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      147,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      151,
+      "setup",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      157,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      160,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      160,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      164,
+      "addCamera",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      175,
+      "exercise",
+      8
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      178,
+      "<lambda>",
+      8
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      180,
+      "<lambda>",
+      5
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      181,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      183,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      190,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      200,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      201,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      202,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      203,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      204,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      206,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      220,
+      "idleUntil",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      228,
+      "t805_codecLeaseEndsBeforeDelayedOrInvalidAcknowledgement",
+      5
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      233,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      234,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      235,
+      "read",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      243,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      244,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      254,
+      "t805_delayedAckSweepRecordsBufferHold",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      256,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      259,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      262,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      263,
+      "read",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      269,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      277,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      282,
+      "t805_failedNativeReleaseIsNeverRetried",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      284,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      286,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      287,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      290,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      293,
+      "sendOwned",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      302,
+      "t618_transportRetryStartsNewConfigurationAndFeedbackSequence",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      310,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      313,
+      "t618_sustainedQueuePressureLowersCodecTarget",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      314,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      326,
+      "t616_staleGapDiscardsDependentFramesUntilFreshKeyframe",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      327,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      343,
+      "t539_nativeAdaptersSendConfigurationAndFramedCameraBytes",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      353,
+      "t539_frontCameraUsesFacingRatherThanNumericId",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      358,
+      "t539_unavailableCameraAndUnsupportedSizeFailBeforeOpening",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      364,
+      "t539_unsupportedFrameRateRetiresOpenedResources",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      369,
+      "t539_cameraOpenAndSessionFailuresStopCapture",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      380,
+      "t539_cancelledOpenClosesTheLateCameraCallback",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      387,
+      "t539_cancelledConfigurationClosesLateSessionAndCamera",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      394,
+      "t539_cancelledActiveEncoderReleasesItsCameraAndSession",
+      1
+    ]
+  ],
+  "tool": "JaCoCo 0.8.15; repo Kotlin compiler inventory; inline bodies measured in their enclosing methods",
+  "sources": {
+    "android/app/src/main/java/com/blent/CameraClosure.kt": "42d33cfc157aa911f8a5ba5845cb419d11e1db7058571e3edda434ce9d6ad112",
+    "android/app/src/main/java/com/blent/CameraDeviceStartup.kt": "dad71027dba1a6bfb7017b2d915a1993bce913695dee024550f53ddcd041aeab",
+    "android/app/src/main/java/com/blent/CameraCapture.kt": "b1a9491b670ac107850a43618b1355e25be95707f9004d44b42bd895ef1739c8"
+  },
+  "ownership": "One CameraClosure owns one device identity, one close request and one onClosed fence. Capture worker waits while callback handler signals; session close is requested before device shutdown, and surface/codec destruction follows device closure. Startup leases prevent late ownership from blocking the callback handler. Duplicate/foreign completion cannot release another device. Native close failure remains owned by the worker/process fence. No deadline is retirement proof.",
+  "limits": "Hosted tests use Android SDK 27/34 Robolectric. Physical deployment smoke test follows separately."
+}

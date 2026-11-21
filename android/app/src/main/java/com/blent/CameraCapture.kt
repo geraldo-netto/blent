@@ -87,14 +87,9 @@ internal class CameraCapture(context: Context, private val nowUs: () -> Long = {
 
     @android.annotation.SuppressLint("MissingPermission")
     private suspend fun open(id: String, resources: CameraResources): CameraDevice = suspendCancellableCoroutine { continuation ->
-        val startup = CameraStartup(resources, continuation, CameraDevice::close)
-        try {
-            manager.openCamera(id, object : CameraDevice.StateCallback() {
-                override fun onOpened(camera: CameraDevice) = startup.opened(camera)
-                override fun onDisconnected(camera: CameraDevice) = startup.failed(camera, "Camera disconnected")
-                override fun onError(camera: CameraDevice, error: Int) = startup.failed(camera, "Camera error $error")
-            }, handler)
-        } catch (error: Exception) { startup.abort(error) }
+        val startup = CameraDeviceStartup(resources, continuation)
+        try { manager.openCamera(id, startup, handler) }
+        catch (error: Exception) { startup.abort(error) }
     }
 
     @Suppress("DEPRECATION")
