@@ -45,6 +45,25 @@ class SavedTrustBindingTest {
         suspend fun settled() { scope.coroutineContext[Job]!!.join() }
     }
 
+    @Test fun t1518ResetRejectsStaleViewRequestAndUnsettledOwnership() = runBlocking {
+        val f = Fixture()
+        try {
+            assertTrue(f.client.refresh()); f.finish()
+            val request = f.binding.state.value.request
+            assertTrue(f.client.refresh()); f.finish()
+            assertFalse(f.client.reset(request))
+            val current = f.binding.state.value.request
+            assertTrue(f.client.reset(current))
+            assertEquals(SavedTrustRequest.Reset, f.requests.last())
+            assertFalse(f.client.reset(f.binding.state.value.request))
+            f.finish(0)
+            val replacement = f.binding.attach()
+            assertFalse(f.client.reset(f.binding.state.value.request))
+            assertTrue(replacement.reset(f.binding.state.value.request))
+            f.finish(0); replacement.close()
+        } finally { f.close(); f.settled() }
+    }
+
     @Test fun t1168CompleteListAndConditionalForgetUseOnlyCurrentViewAndSnapshot() = runBlocking {
         val f = Fixture()
         try {

@@ -26,6 +26,32 @@ class SavedComputerControlsTest {
     private fun open() { compose.onNodeWithText("Saved computers").performClick() }
     private fun select() { compose.onNodeWithText("Forget ${savedPeer(1).fingerprint}").performClick() }
 
+    @Test fun t1518ResetRequiresCurrentConfirmationAndOriginalCleanup() {
+        ConnectionUiFixture().use { f ->
+            render(f); open()
+            compose.onNodeWithText("Reset saved computers").assertIsNotEnabled()
+            compose.runOnIdle { f.savedRuns.single().apply {
+                failure = IllegalStateException("interrupted trust"); complete()
+            } }
+            compose.onNodeWithText("Reset saved computers").performClick()
+            val stale = checkNotNull(compose.onNodeWithText("Confirm reset saved computers")
+                .fetchSemanticsNode().config[SemanticsActions.OnClick].action)
+            compose.onNodeWithText("Keep saved computers").performClick()
+            compose.runOnIdle { stale(); assertEquals(1, f.savedRequests.size) }
+            compose.onNodeWithText("Reset saved computers").performClick()
+            compose.onNodeWithText("Confirm reset saved computers").performClick()
+            compose.runOnIdle {
+                assertEquals(SavedTrustRequest.Reset, f.savedRequests.last())
+                f.savedRuns.last().complete(0, retire = false)
+            }
+            compose.onNodeWithText("Reset saved computers").assertIsNotEnabled()
+            compose.onNodeWithText("Connect USB").assertIsNotEnabled()
+            compose.runOnIdle { f.savedRuns.last().release.complete(Unit) }
+            compose.onNodeWithText("No saved computers.").assertExists()
+            compose.onNodeWithText("Reset saved computers").assertIsEnabled()
+        }
+    }
+
     @Test fun t1169ExplicitOfflineForgetShowsFullFingerprintAndReleasesOnlyAfterCleanup() {
         ConnectionUiFixture().use { f ->
             render(f); open()

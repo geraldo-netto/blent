@@ -13,6 +13,7 @@ internal object SavedTrustCodec {
         DataOutputStream(bytes).use { out ->
             out.writeByte(1)
             when (value) {
+                SavedTrustRequest.Reset -> out.writeByte(2)
                 SavedTrustRequest.List -> out.writeByte(0)
                 is SavedTrustRequest.Forget -> {
                     out.writeByte(1)
@@ -29,6 +30,7 @@ internal object SavedTrustCodec {
         val input = DataInputStream(ByteArrayInputStream(bytes))
         require(input.readUnsignedByte() == 1)
         val value = when (input.readUnsignedByte()) {
+            2 -> SavedTrustRequest.Reset
             0 -> SavedTrustRequest.List
             1 -> SavedTrustRequest.Forget(SavedComputerSelection(
                 ConnectionAuthorityCodec.peer(input), input.readLong(), ConnectionAuthorityCodec.peer(input),

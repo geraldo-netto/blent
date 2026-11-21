@@ -45,7 +45,7 @@ internal class NioTrustFileAccess private constructor(
 
     private fun path(name: String): Path {
         check(!closed)
-        require(name in setOf("trust.lock", "trust.pending", "trust.tmp", "trust.bin"))
+        require(name in setOf("trust.lock", "trust.pending", "trust.tmp", "trust.bin", "trust.reset"))
         return directory.resolve(name)
     }
 
@@ -102,7 +102,7 @@ internal class NioTrustFileAccess private constructor(
     }
 
     override fun syncDirectory() { check(!closed); directoryChannel.force(true) }
-    override fun remove(name: String) { Files.delete(path(name)) }
+    override fun remove(name: String) { val selected = path(name); validate(selected); Files.delete(selected) }
 
     override fun close() {
         if (closed) return

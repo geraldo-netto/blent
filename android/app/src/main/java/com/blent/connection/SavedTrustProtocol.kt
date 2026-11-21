@@ -1,7 +1,8 @@
 package com.blent.connection
 
-/** One private-process transaction; neither variant selects USB or grants media. */
+/** One private-process transaction; no variant selects USB or grants media. */
 internal sealed interface SavedTrustRequest {
+    data object Reset : SavedTrustRequest
     data object List : SavedTrustRequest
     data class Forget(val selected: SavedComputerSelection) : SavedTrustRequest
 }

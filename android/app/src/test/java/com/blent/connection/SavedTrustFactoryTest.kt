@@ -91,5 +91,23 @@ class SavedTrustFactoryTest {
         AndroidPeerTrustStore.open(directory).close()
     }
 
+    @Test fun t1518ConfirmedResetRepairsStorageWithoutChangingIdentityOrOpeningUsb() = runBlocking<Unit> {
+        val provider = provider()
+        check(Security.insertProviderAt(provider, 1) == 1)
+        try {
+            val directory = AndroidConnectionFactory(::context).directory()
+            NioTrustFileAccess.open(directory).use { files ->
+                files.lock(); files.writeNew("trust.pending", byteArrayOf(1))
+            }
+            val events = mutableListOf<ConnectionWorkerEvent>()
+            val worker = AndroidSavedTrustFactory(::context).create(SavedTrustRequest.Reset, events::add)
+            try { worker.execute() } finally { worker.retire() }
+            val page = (events.single() as ConnectionWorkerEvent.SavedComputers).page
+            assertEquals(expectedFingerprint, page.local!!.fingerprint)
+            assertEquals(0, page.total)
+            AndroidPeerTrustStore.open(directory).use { assertNull(it.load()) }
+        } finally { Security.removeProvider(provider.name) }
+    }
+
     companion object { const val expectedFingerprint = "931f7dfd81d060aa0364636f80958d12b384d41a40be5aa658e27f7f7c4b3b35" }
 }

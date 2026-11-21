@@ -31,6 +31,37 @@ class AndroidPeerTrustStoreTest {
         override fun close() { delegate.close(); check(!failClose) }
     }
 
+    @Test fun t1518ResetFailureStaysPoisonedUntilOwnerClosesAndRecoverySettles() {
+        val root = directory()
+        try {
+            privateFile(root.resolve("trust.pending"), byteArrayOf(1))
+            val files = Faults(NioTrustFileAccess.open(root)).apply { selected = "sync1" }
+            val store = AndroidPeerTrustStore.open(files)
+            rejected { store.reset() }; rejected { store.load() }; rejected { store.reset() }
+            rejected { AndroidPeerTrustStore.open(root) }
+            store.close(); rejected { store.reset() }
+            AndroidPeerTrustStore.open(root).use { assertNull(it.load()); it.reset() }
+        } finally { cleanup(root) }
+    }
+
+    @Test fun t1518RestartCompletesEveryAdmittedRevocation() {
+        for (point in listOf("sync1", "trust.tmp", "rename", "sync2", "remove", "sync3")) {
+            val root = directory()
+            try {
+                AndroidPeerTrustStore.open(root).use { it.replace(record()) }
+                val files = Faults(NioTrustFileAccess.open(root)).apply { selected = point }
+                AndroidPeerTrustStore.open(files).use { store ->
+                    rejected { store.replace(record(2, emptyList())) }
+                }
+                AndroidPeerTrustStore.open(root).use { store ->
+                    assertArrayEquals("T1518 at $point", record(2, emptyList()), store.load())
+                    store.replace(record(3))
+                    assertArrayEquals(record(3), store.load())
+                }
+            } finally { cleanup(root) }
+        }
+    }
+
     @Test fun t868PrivateStoreRestartAndLifetimeOwnership() {
         val root = directory()
         try {
@@ -83,8 +114,7 @@ class AndroidPeerTrustStoreTest {
         AndroidPeerTrustStore.open(root).use { reopened ->
             when (point) {
                 "trust.pending" -> assertArrayEquals(record(), reopened.load()) // No durable intent: failure explicitly reported.
-                "sync3" -> assertArrayEquals(record(2, emptyList()), reopened.load()) // Replacement durable before marker removal.
-                else -> rejected { reopened.load() }
+                else -> assertArrayEquals(record(2, emptyList()), reopened.load()) // Complete intent rolls forward, never restores approval.
             }
         }
     }

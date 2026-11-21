@@ -24,9 +24,7 @@ internal class AndroidPeerTrustStore private constructor(private val files: Trus
 
     private fun ready() {
         check(!closed && !failed)
-        check(!files.exists("trust.pending") && !files.exists("trust.tmp")) {
-            "Interrupted trust publication; preserve storage for explicit recovery"
-        }
+        TrustPublication(files).recover()
     }
 
     override fun load(): ByteArray? {
@@ -39,15 +37,15 @@ internal class AndroidPeerTrustStore private constructor(private val files: Trus
     override fun replace(record: ByteArray) {
         try {
             ready()
-            ConnectionTrustCodec.decode(record)
-            files.writeNew("trust.pending", byteArrayOf(1))
-            files.syncDirectory()
-            files.writeNew("trust.tmp", record)
-            files.replace("trust.tmp", "trust.bin")
-            files.syncDirectory()
-            files.remove("trust.pending")
-            files.syncDirectory()
+            TrustPublication(files).replace(record)
         } catch (failure: Exception) { failed = true; throw failure }
+    }
+
+    /** Explicit offline reset; keeps the keystore identity and stable lock. */
+    fun reset() {
+        check(!closed && !failed)
+        try { TrustPublication(files).reset() }
+        catch (failure: Exception) { failed = true; throw failure }
     }
 
     override fun close() {

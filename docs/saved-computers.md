@@ -20,6 +20,22 @@ again. **No saved computers** can also mean this tablet has no initialized
 identity; reading the list does not create a key. The store holds at most 1,024
 peers. Corrupt or mismatched identity/trust reports an error and preserves data.
 
+## Repair interrupted updates
+
+A restart completes a valid saved-trust intent, including a pending revocation.
+An incomplete or invalid intent fails closed instead of restoring old approvals.
+After disconnecting USB and waiting for cleanup, choose **Reset saved computers**
+and **Confirm reset saved computers** to erase all remembered approvals and repair
+interrupted trust storage. **Keep saved computers** cancels. Reset remains available
+when loading the list fails, but not while another operation owns the store.
+
+Reset keeps the tablet's existing certificate/key and separate media permissions.
+Every computer needs approval again. It does not repair an invalid keystore key or
+unsafe filesystem permissions. An accepted reset survives panel closure; if the
+worker exits during reset, the next store open finishes it before allowing trust.
+The recovery and reset paths have automated storage and API 27/34 UI coverage;
+the earlier physical-device acceptance below did not exercise these new paths.
+
 ## Closing, cancellation and cleanup
 
 Closing the panel or settings does not undo an accepted read or forget. Accepted

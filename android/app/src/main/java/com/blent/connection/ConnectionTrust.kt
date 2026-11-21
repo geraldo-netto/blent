@@ -1,7 +1,7 @@
 package com.blent.connection
 
 /** Exclusive storage ownership lasts until close. Failed publication must leave
- * an explicit interrupted-operation marker; no implicit repair is permitted. */
+ * a recoverable complete intent or fail closed for explicit reset. */
 internal interface PeerTrustStore : AutoCloseable {
     fun load(): ByteArray?
     fun replace(record: ByteArray)

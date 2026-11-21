@@ -723,11 +723,16 @@ authentication. Revocation invalidates live pairing first; a failed write poison
 reconnect admission. A multi-link broker must revoke all matching pairings in its
 single serialized command owner. Saved approval alone never grants media authority.
 
-Linux and Android private-file adapters retain exclusive stable locks and reject
-interrupted pending/temp state. A durable intent marker precedes complete atomic
-publication; synchronized publication precedes marker removal. Failure before intent
-durability cannot promise persistence, and no failure reports a successful revoke.
-Both adapters preserve existing evidence for explicit repair. [Validation](artifacts/2026-10-10-t868/README.md)
+Linux and Android private-file adapters retain exclusive stable locks. At T868,
+interrupted pending/temp state failed closed for explicit repair. T1518 now gives
+Android a bounded complete intent: restart validates and publishes that intended
+snapshot, never the superseded approval list. Invalid intents remain unchanged
+until an explicit offline Reset saved computers. Its durable reset marker precedes
+all deletion; interrupted resets finish before any trust load. Reset keeps the
+keystore identity and requires a current-view confirmation and exclusive worker
+ownership. Host recovery remains tracked separately by T1597. Failure before intent
+durability cannot promise persistence, and no failed write reports a successful
+revoke. [Original T868 validation](artifacts/2026-10-10-t868/README.md)
 includes shared malformed vectors, per-function counters and an actual API 36 tablet
 filesystem probe run without installing/restarting the app. T852 still composes these
 stores with stock TLS; production presentation and resources remain separate work.
@@ -1364,8 +1369,9 @@ Construction captures suppliers only. `AndroidConnectionSetupBackend` opens USB
 and the retained socket bridge on the setup authority thread, then loads the
 AndroidKeyStore identity and app-private trust storage. Native work, including
 late factory results, remains owned through cancellation. Existing identity/trust
-files are preserved; an invalid directory or interrupted trust record fails
-explicitly instead of silently repairing, rotating or deleting state.
+identity files are preserved; an invalid directory fails explicitly. T1518 resumes
+validated complete trust intents and confirmed resets. Invalid trust intent bytes
+remain untouched until explicit reset; no automatic key rotation occurs.
 
 `AndroidConnectionWorker` serializes bounded commands and events with a conflated
 wake channel and independent timer. It composes T886 authenticated setup with T888

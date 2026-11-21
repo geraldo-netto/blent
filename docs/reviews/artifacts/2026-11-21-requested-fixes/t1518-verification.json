@@ -1,0 +1,31 @@
+{
+  "issue": "T1518",
+  "regression_before": {
+    "case": "AndroidPeerTrustStoreTest.t1518RestartCompletesEveryAdmittedRevocation",
+    "tests": 1,
+    "failed": 1,
+    "log": "/tmp/blent-t1518-red.log"
+  },
+  "verification": {
+    "tests": 107,
+    "failed": 0,
+    "skipped": 0,
+    "log": "/tmp/blent-t1518-final-coverage.log",
+    "publication_fault_transitions": 7,
+    "recovery_fault_transitions": 7,
+    "reset_fault_transitions": 8,
+    "truncated_intents": 88
+  },
+  "coverage": {
+    "tool": "JaCoCo 0.8.15, Kotlin PSI 1.9.20 inventory",
+    "maintained_functions_and_callbacks": 63,
+    "minimum_percent": 100.0
+  },
+  "complexity": {
+    "tool": "project Kotlin PSI 1.9.20 checker",
+    "functions": 452,
+    "over_nine": 0
+  },
+  "ownership": "Existing private worker and stable trust.lock own all bounded I/O; failed stores remain poisoned. Complete intent and temporary record each bounded by MAX_RECORD=65624 bytes. Reset marker is empty; no native resource or queue is added. Reset reuses the exclusive process lane and current-view/request cutoff, preserves identity and never bypasses uncertain cleanup. Eventual repair requires successful filesystem I/O and original-owner retirement.",
+  "native_limit": "Host JVM and Linux filesystem fixtures only; Android native recovery acceptance remains T1634."
+}

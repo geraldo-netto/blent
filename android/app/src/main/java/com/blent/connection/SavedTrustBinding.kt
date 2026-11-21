@@ -32,6 +32,10 @@ internal class SavedTrustBinding(
 
     @Synchronized fun attach(): SavedTrustClient = SavedTrustClient(this, presentation.attach())
     @Synchronized internal fun detach(viewer: Any) = presentation.detach(viewer)
+    @Synchronized internal fun reset(viewer: Any, request: Any?): Boolean {
+        if (state.value.request !== request) return false
+        return start(viewer, SavedTrustRequest.Reset)
+    }
     @Synchronized internal fun refresh(viewer: Any): Boolean = start(viewer, SavedTrustRequest.List)
     @Synchronized internal fun choice(viewer: Any, peer: ConnectionPeer): SavedTrustChoice? = presentation.choice(viewer, peer)
     @Synchronized internal fun forget(viewer: Any, choice: SavedTrustChoice): Boolean {
@@ -76,6 +80,7 @@ internal class SavedTrustBinding(
 /** View-bound command ticket. Closing revokes commands, never accepted work. */
 internal class SavedTrustClient internal constructor(private val binding: SavedTrustBinding, private val viewer: Any) : AutoCloseable {
     val current: Boolean get() = binding.state.value.viewer === viewer
+    fun reset(request: Any?): Boolean = binding.reset(viewer, request)
     fun refresh(): Boolean = binding.refresh(viewer)
     fun choice(peer: ConnectionPeer): SavedTrustChoice? = binding.choice(viewer, peer)
     fun forget(choice: SavedTrustChoice): Boolean = binding.forget(viewer, choice)

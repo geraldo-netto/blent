@@ -8,6 +8,7 @@ class SavedTrustProtocolTest {
     private fun peer(index: Int) = ConnectionPeer.parse(index.toString(16).padStart(64, '0'))
     private fun rejected(body: () -> Unit) { assertThrows(Exception::class.java, body) }
     @Test fun t1151RequestCodecKeepsExactBoundedConditionalIdentity() {
+        assertEquals(SavedTrustRequest.Reset, SavedTrustCodec.request(SavedTrustCodec.request(SavedTrustRequest.Reset)))
         assertArrayEquals(byteArrayOf(1, 0), SavedTrustCodec.request(SavedTrustRequest.List))
         val selected = SavedComputerSelection(peer(0), Long.MAX_VALUE, peer(1))
         val request = SavedTrustRequest.Forget(selected)
@@ -18,7 +19,7 @@ class SavedTrustProtocolTest {
         for (count in 0 until bytes.size) rejected { SavedTrustCodec.request(bytes.copyOf(count)) }
         rejected { SavedTrustCodec.request(bytes + byteArrayOf(0)) }
         rejected { SavedTrustCodec.request(byteArrayOf(2, 0)) }
-        for (kind in 2..255) rejected { SavedTrustCodec.request(byteArrayOf(1, kind.toByte())) }
+        for (kind in 3..255) rejected { SavedTrustCodec.request(byteArrayOf(1, kind.toByte())) }
         rejected { SavedTrustCodec.request(byteArrayOf(1, 0, 0)) }
         val zero = bytes.copyOf()
         ByteBuffer.wrap(zero).putLong(68, 0)

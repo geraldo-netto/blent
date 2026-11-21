@@ -9,12 +9,14 @@ import java.nio.file.Path
 internal class AndroidSavedTrustFactory(
     private val context: () -> Context,
     private val identity: () -> ConnectionPeer? = { currentSavedTrustIdentity() },
+    private val reset: (Path) -> Unit = { AndroidPeerTrustStore.open(it).use { store -> store.reset() } },
     private val store: (Path) -> PeerTrustStore = { AndroidPeerTrustStore.open(it) },
 ) {
     fun create(request: SavedTrustRequest, report: (ConnectionWorkerEvent) -> Unit): ConnectionWorker =
-        SavedTrustWorker(request, ::open, report)
-    private fun open(): SavedTrustAccess {
+        SavedTrustWorker(request, { open(request) }, report)
+    private fun open(request: SavedTrustRequest): SavedTrustAccess {
         val directory = AndroidConnectionFactory(context).directory()
+        if (request == SavedTrustRequest.Reset) reset(directory)
         return SavedTrustAccesses.open(store(directory), identity)
     }
 }

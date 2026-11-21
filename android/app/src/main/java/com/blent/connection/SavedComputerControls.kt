@@ -41,6 +41,7 @@ internal fun SavedComputerDialog(binding: SavedTrustBinding, dismiss: () -> Unit
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 SavedComputerStatus(view, use)
+                SavedComputerReset(client, view.request, available)
                 if (client != null && !ownsView) Text("This saved-computer view is no longer current. Close and reopen it.")
                 SavedComputerList(view, available) { peer ->
                     choice = client?.choice(peer)

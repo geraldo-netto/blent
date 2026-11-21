@@ -1,0 +1,1620 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+    "name": "<init>",
+    "line": 5,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+        "owner": "com/blent/connection/AndroidPeerTrustStore",
+        "name": "<init>",
+        "signature": "(Lcom/blent/connection/TrustFileAccess;)V",
+        "line": 8,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+    "name": "open",
+    "line": 13,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+        "owner": "com/blent/connection/AndroidPeerTrustStore$Companion",
+        "name": "open",
+        "signature": "(Ljava/nio/file/Path;)Lcom/blent/connection/AndroidPeerTrustStore;",
+        "line": 13,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+    "name": "open",
+    "line": 14,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+        "owner": "com/blent/connection/AndroidPeerTrustStore$Companion",
+        "name": "open",
+        "signature": "(Lcom/blent/connection/TrustFileAccess;)Lcom/blent/connection/AndroidPeerTrustStore;",
+        "line": 15,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+    "name": "ready",
+    "line": 25,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+        "owner": "com/blent/connection/AndroidPeerTrustStore",
+        "name": "ready",
+        "signature": "()V",
+        "line": 26,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+    "name": "load",
+    "line": 30,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+        "owner": "com/blent/connection/AndroidPeerTrustStore",
+        "name": "load",
+        "signature": "()[B",
+        "line": 31,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+    "name": "replace",
+    "line": 37,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+        "owner": "com/blent/connection/AndroidPeerTrustStore",
+        "name": "replace",
+        "signature": "([B)V",
+        "line": 38,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+    "name": "reset",
+    "line": 44,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+        "owner": "com/blent/connection/AndroidPeerTrustStore",
+        "name": "reset",
+        "signature": "()V",
+        "line": 46,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+    "name": "close",
+    "line": 51,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+        "owner": "com/blent/connection/AndroidPeerTrustStore",
+        "name": "close",
+        "signature": "()V",
+        "line": 52,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+    "name": "<init>",
+    "line": 7,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+        "owner": "com/blent/connection/AndroidSavedTrustFactory",
+        "name": "<init>",
+        "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V",
+        "line": 9,
+        "covered": 5,
+        "total": 5
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+        "owner": "com/blent/connection/AndroidSavedTrustFactory",
+        "name": "<init>",
+        "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+        "line": 9,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+    "name": "<lambda>",
+    "line": 11,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+        "owner": "com/blent/connection/AndroidSavedTrustFactory$1",
+        "name": "invoke",
+        "signature": "()Lcom/blent/connection/ConnectionPeer;",
+        "line": 11,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+    "name": "<lambda>",
+    "line": 12,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+        "owner": "com/blent/connection/AndroidSavedTrustFactory$2",
+        "name": "invoke",
+        "signature": "(Ljava/nio/file/Path;)V",
+        "line": 12,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+    "name": "<lambda>",
+    "line": 12,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+        "owner": "com/blent/connection/AndroidSavedTrustFactory$2",
+        "name": "invoke",
+        "signature": "(Ljava/nio/file/Path;)V",
+        "line": 12,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+    "name": "<lambda>",
+    "line": 13,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+        "owner": "com/blent/connection/AndroidSavedTrustFactory$3",
+        "name": "invoke",
+        "signature": "(Ljava/nio/file/Path;)Lcom/blent/connection/AndroidPeerTrustStore;",
+        "line": 13,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+    "name": "create",
+    "line": 15,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+        "owner": "com/blent/connection/AndroidSavedTrustFactory",
+        "name": "create",
+        "signature": "(Lcom/blent/connection/SavedTrustRequest;Lkotlin/jvm/functions/Function1;)Lcom/blent/connection/ConnectionWorker;",
+        "line": 16,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+    "name": "<lambda>",
+    "line": 16,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+        "owner": "com/blent/connection/AndroidSavedTrustFactory$create$1",
+        "name": "invoke",
+        "signature": "()Lcom/blent/connection/SavedTrustAccess;",
+        "line": 16,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+    "name": "open",
+    "line": 17,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+        "owner": "com/blent/connection/AndroidSavedTrustFactory",
+        "name": "open",
+        "signature": "(Lcom/blent/connection/SavedTrustRequest;)Lcom/blent/connection/SavedTrustAccess;",
+        "line": 18,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+    "name": "currentSavedTrustIdentity",
+    "line": 24,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidSavedTrustFactory.kt",
+        "owner": "com/blent/connection/AndroidSavedTrustFactoryKt",
+        "name": "currentSavedTrustIdentity",
+        "signature": "(Lkotlin/jvm/functions/Function1;)Lcom/blent/connection/ConnectionPeer;",
+        "line": 26,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+    "name": "path",
+    "line": 46,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+        "owner": "com/blent/connection/NioTrustFileAccess",
+        "name": "path",
+        "signature": "(Ljava/lang/String;)Ljava/nio/file/Path;",
+        "line": 47,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+    "name": "remove",
+    "line": 105,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+        "owner": "com/blent/connection/NioTrustFileAccess",
+        "name": "remove",
+        "signature": "(Ljava/lang/String;)V",
+        "line": 105,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "SavedComputerDialog",
+    "line": 25,
+    "language": "kotlin",
+    "covered": 17,
+    "total": 17,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt",
+        "name": "SavedComputerDialog",
+        "signature": "(Lcom/blent/connection/SavedTrustBinding;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V",
+        "line": 26,
+        "covered": 17,
+        "total": 17
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 30,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt",
+        "name": "SavedComputerDialog$lambda$8",
+        "signature": "(Landroidx/compose/runtime/MutableState;)Lcom/blent/connection/SavedTrustChoice;",
+        "line": 30,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt",
+        "name": "SavedComputerDialog$lambda$9",
+        "signature": "(Landroidx/compose/runtime/MutableState;Lcom/blent/connection/SavedTrustChoice;)V",
+        "line": 30,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 33,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$close$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 34,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 40,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerControlsKt$lambda-5$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 40,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 41,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$3$1$1",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionPeer;)V",
+        "line": 47,
+        "covered": 2,
+        "total": 2
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$3",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 42,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 42,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$3$1$1",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionPeer;)V",
+        "line": 47,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 46,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$3$1$1",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionPeer;)V",
+        "line": 47,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 51,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerControlsKt$lambda-2$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 53,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$1$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 52,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 52,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 52,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$1$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 52,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 52,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 52,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerControlsKt$lambda-2$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 53,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 56,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerControlsKt$lambda-3$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 60,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$2",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 57,
+        "covered": 5,
+        "total": 5
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$2$1$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 59,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerControlsKt$lambda-4$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 63,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 57,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerControlsKt$lambda-3$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 60,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$2$1$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 59,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerControlsKt$lambda-4$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 63,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 59,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$2$1$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 59,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 59,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerControlsKt$lambda-3$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 60,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 63,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerControlsKt$lambda-4$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 63,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 67,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$4$2",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 75,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$4$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 70,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 69,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$4$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 70,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+    "name": "<lambda>",
+    "line": 75,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerControls.kt",
+        "owner": "com/blent/connection/SavedComputerControlsKt$SavedComputerDialog$4$2",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 75,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "SavedComputerReset",
+    "line": 6,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt",
+        "name": "SavedComputerReset",
+        "signature": "(Lcom/blent/connection/SavedTrustClient;Ljava/lang/Object;ZLandroidx/compose/runtime/Composer;I)V",
+        "line": 9,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 10,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt",
+        "name": "SavedComputerReset$lambda$1",
+        "signature": "(Landroidx/compose/runtime/MutableState;)Ljava/lang/Object;",
+        "line": 10,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt",
+        "name": "SavedComputerReset$lambda$2",
+        "signature": "(Landroidx/compose/runtime/MutableState;Ljava/lang/Object;)V",
+        "line": 10,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 11,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerResetKt$lambda-1$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 11,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt$SavedComputerReset$1$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 11,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 11,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerResetKt$lambda-1$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 11,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt$SavedComputerReset$1$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 11,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 12,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt$SavedComputerReset$2$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 15,
+        "covered": 4,
+        "total": 4
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt$SavedComputerReset$2$2",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 20,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 14,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt$SavedComputerReset$2$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 15,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 20,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt$SavedComputerReset$2$2",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 20,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "SavedComputerResetConfirmation",
+    "line": 24,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt",
+        "name": "SavedComputerResetConfirmation",
+        "signature": "(ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V",
+        "line": 25,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 28,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerResetKt$lambda-4$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 28,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 29,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerResetKt$lambda-5$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 29,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 30,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt$SavedComputerResetConfirmation$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 30,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerResetKt$lambda-2$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 30,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 30,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt$SavedComputerResetConfirmation$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 30,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerResetKt$lambda-2$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 30,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 31,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt$SavedComputerResetConfirmation$2",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 31,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerResetKt$lambda-3$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 31,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+    "name": "<lambda>",
+    "line": 31,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/SavedComputerResetKt$SavedComputerResetConfirmation$2",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 31,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedComputerReset.kt",
+        "owner": "com/blent/connection/ComposableSingletons$SavedComputerResetKt$lambda-3$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 31,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedTrustBinding.kt",
+    "name": "reset",
+    "line": 35,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedTrustBinding.kt",
+        "owner": "com/blent/connection/SavedTrustBinding",
+        "name": "reset$app_debug",
+        "signature": "(Ljava/lang/Object;Ljava/lang/Object;)Z",
+        "line": 36,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedTrustBinding.kt",
+    "name": "reset",
+    "line": 83,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedTrustBinding.kt",
+        "owner": "com/blent/connection/SavedTrustClient",
+        "name": "reset",
+        "signature": "(Ljava/lang/Object;)Z",
+        "line": 83,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedTrustCodec.kt",
+    "name": "request",
+    "line": 11,
+    "language": "kotlin",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedTrustCodec.kt",
+        "owner": "com/blent/connection/SavedTrustCodec",
+        "name": "request",
+        "signature": "(Lcom/blent/connection/SavedTrustRequest;)[B",
+        "line": 12,
+        "covered": 13,
+        "total": 13
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/SavedTrustCodec.kt",
+    "name": "request",
+    "line": 28,
+    "language": "kotlin",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/SavedTrustCodec.kt",
+        "owner": "com/blent/connection/SavedTrustCodec",
+        "name": "request",
+        "signature": "([B)Lcom/blent/connection/SavedTrustRequest;",
+        "line": 29,
+        "covered": 11,
+        "total": 11
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+    "name": "<init>",
+    "line": 3,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+        "owner": "com/blent/connection/TrustPublication",
+        "name": "<init>",
+        "signature": "(Lcom/blent/connection/TrustFileAccess;)V",
+        "line": 6,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+    "name": "recover",
+    "line": 7,
+    "language": "kotlin",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+        "owner": "com/blent/connection/TrustPublication",
+        "name": "recover",
+        "signature": "()V",
+        "line": 8,
+        "covered": 12,
+        "total": 12
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+    "name": "<lambda>",
+    "line": 20,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "source lines with all instructions covered (conservative fallback)"
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+    "name": "replace",
+    "line": 23,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+        "owner": "com/blent/connection/TrustPublication",
+        "name": "replace",
+        "signature": "([B)V",
+        "line": 24,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+    "name": "publish",
+    "line": 30,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+        "owner": "com/blent/connection/TrustPublication",
+        "name": "publish",
+        "signature": "([B)V",
+        "line": 31,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+    "name": "reset",
+    "line": 39,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+        "owner": "com/blent/connection/TrustPublication",
+        "name": "reset",
+        "signature": "()V",
+        "line": 40,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+    "name": "finishReset",
+    "line": 46,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+        "owner": "com/blent/connection/TrustPublication",
+        "name": "finishReset",
+        "signature": "()V",
+        "line": 47,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+    "name": "removeIfPresent",
+    "line": 53,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/TrustPublication.kt",
+        "owner": "com/blent/connection/TrustPublication",
+        "name": "removeIfPresent",
+        "signature": "(Ljava/lang/String;)V",
+        "line": 54,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  }
+]
