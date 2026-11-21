@@ -1,0 +1,12 @@
+{
+  "source_commit": "319097ff",
+  "updated_at": "2026-11-21T23:46:34.101651+01:00",
+  "gui_sha256": "06ade2e37cc25dba9a1bf25ee7e018cbd18235c8ade50a31bf16a579eefcad47",
+  "rollback": "/home/netto/.cache/blent-gui-update-20261121-319097ff.c984125s",
+  "installed_directory": "/home/netto/.local/share/blent/appimage/Blent.AppDir",
+  "daemon_and_tablet_checkpoint": "f54ed991",
+  "scope": "GUI executable and its camera/audio guides only; no daemon/tablet restart",
+  "running_gui_pid": 3317047,
+  "second_launch_same_pid": true,
+  "daemon_pid_preserved": true
+}
