@@ -1247,10 +1247,11 @@ fn main() -> eframe::Result {
                 "Blent",
                 native_options(),
                 Box::new(move |cc| {
-                    Ok(Box::new(activation::Window {
-                        app: App::new(cc, scheduling_status),
-                        instance,
-                    }))
+                    Ok(Box::new(activation::Window::new(
+                        App::new(cc, scheduling_status),
+                        &instance,
+                        &cc.egui_ctx,
+                    )?))
                 }),
             )
         })

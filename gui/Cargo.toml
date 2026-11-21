@@ -15,13 +15,13 @@ blent = { path = "../host", features = ["accessory-transport"] }
 x11rb = { version = "0.13.2", features = ["randr"] }
 raw-window-handle = "0.6.2"
 sha2 = "0.10"
+tokio = { version = "1", features = ["rt", "net", "sync", "time", "macros"] }
 
 [dev-dependencies]
 tempfile = "3"
 
 [target.'cfg(target_os = "linux")'.dev-dependencies]
 winit = "0.30.13"
-tokio = { version = "1", features = ["rt", "net", "time", "macros"] }
 
 [target.'cfg(windows)'.dev-dependencies]
 windows-sys = { version = "0.61", features = ["Win32_System_Registry", "Win32_Security"] }

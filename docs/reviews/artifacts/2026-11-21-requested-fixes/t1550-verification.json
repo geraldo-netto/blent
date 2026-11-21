@@ -1,0 +1,22 @@
+{
+  "finding": "T1550",
+  "red": "The production wrapper poll scheduled another frame in 233 ms after warmup.",
+  "green": {
+    "gui_cases_passed": 225,
+    "private_entry_cases_passed": 2,
+    "failed": 0
+  },
+  "coverage": {
+    "maintained_production_methods": 10,
+    "minimum_percent": 80,
+    "main_entry_percent": 100
+  },
+  "measurement": {
+    "observation_seconds": 1.5,
+    "old_timer_control_update_callbacks": 6,
+    "fixed_update_callbacks": 0,
+    "fixture": "Private Xvfb window, 500 ms warmup; counters are app update callbacks, not kernel scheduler wakeups."
+  },
+  "ownership": "Instance retains original abstract socket through process cleanup. Exactly one reader owns a cloned descriptor and one bounded control-worker admission. A single atomic pending bit coalesces activations; malformed packets do not wake the GUI. Wake Drop signals cancellation; process registry retains original worker/socket until native join. A held/joined socket test confirms descriptor retirement. No periodic idle socket wake is requested.",
+  "limits": "Linux private window tests only; no live GUI was launched or replaced."
+}

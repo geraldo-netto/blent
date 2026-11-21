@@ -43,3 +43,9 @@ A permanent native regression reproduced the collision between `T1541-Aa` and `T
 ## T1548 — camera target after Overview start
 
 The failing-first GUI regression uses the real host camera Controller/session update with a private worker. Live edits and camera-tab Restart now overlay the admitted tablet onto a temporary profile, leaving saved drafts and Overview selection intact. Both ADB-serial and USB-peer cases pass, including changed mirror settings and original worker settlement. All 225 GUI cases pass; all three maintained methods exceed 95% line coverage and all measured functions are <=9 complexity. [Evidence](artifacts/2026-11-21-requested-fixes/t1548-verification.json). No camera or tablet was accessed. Windows native evidence remains tracked by T1271.
+
+## T1550 — GUI activation wake
+
+The production wrapper's unconditional timer failed the new idle regression. It now receives activation through one cancellable asynchronous socket reader and one coalesced pending bit. Window updates request focus only when that bit is set. The entry still retains the original abstract socket through native cleanup, and worker retirement remains exact. Tests cover malformed messages, coalescing, duplicate-reader rejection and original socket release.
+
+All 225 GUI cases and both actual-entry/relaunch cases pass. Ten maintained production methods reach at least 80% line coverage, including 100% for the real main entry. All measured functions are <=9 complexity. A private Xvfb window observed zero update callbacks over 1.5 idle seconds; the restored old 250 ms timer produced six callbacks over the same interval. These are application callbacks, not kernel wake counters. [Evidence](artifacts/2026-11-21-requested-fixes/t1550-verification.json).

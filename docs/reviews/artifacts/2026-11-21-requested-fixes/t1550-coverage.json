@@ -1,0 +1,118 @@
+[
+  {
+    "file": "gui/src/activation.rs",
+    "name": "new",
+    "line": 18,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/activation.rs",
+    "name": "update",
+    "line": 31,
+    "language": "rust",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/activation.rs",
+    "name": "poll",
+    "line": 38,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/activation.rs",
+    "name": "run_at",
+    "line": 33,
+    "language": "rust",
+    "covered": 14,
+    "total": 15,
+    "percent": 93.33333333333333,
+    "passes": true,
+    "missing": [
+      49
+    ]
+  },
+  {
+    "file": "gui/src/platform/activation.rs",
+    "name": "watch",
+    "line": 65,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/activation/wake.rs",
+    "name": "start",
+    "line": 19,
+    "language": "rust",
+    "covered": 21,
+    "total": 22,
+    "percent": 95.45454545454545,
+    "passes": true,
+    "missing": [
+      33
+    ]
+  },
+  {
+    "file": "gui/src/platform/activation/wake.rs",
+    "name": "requested",
+    "line": 42,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/activation/wake.rs",
+    "name": "drop",
+    "line": 47,
+    "language": "rust",
+    "covered": 4,
+    "total": 5,
+    "percent": 80.0,
+    "passes": true,
+    "missing": [
+      50
+    ]
+  },
+  {
+    "file": "gui/src/platform/activation/wake.rs",
+    "name": "receive",
+    "line": 53,
+    "language": "rust",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "main",
+    "line": 1241,
+    "language": "rust",
+    "covered": 17,
+    "total": 17,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

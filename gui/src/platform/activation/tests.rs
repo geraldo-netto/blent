@@ -164,3 +164,16 @@ fn t1454_long_home_paths_and_suffixes_remain_distinct() {
         .unwrap();
     }
 }
+
+#[test]
+fn t1550_one_original_activation_reader_per_instance() {
+    run_at(&name(), |instance| {
+        let first = instance.watch(|| {}).unwrap();
+        assert!(instance.watch(|| {}).is_err());
+        drop(first);
+        // A stopped reader is not replaceable before its original native join.
+        assert!(instance.watch(|| {}).is_err());
+        Ok(())
+    })
+    .unwrap();
+}

@@ -9,7 +9,12 @@ use std::{
     rc::Rc,
 };
 
-pub(crate) struct Instance(UnixDatagram);
+mod wake;
+pub(crate) use wake::Wake;
+pub(crate) struct Instance {
+    socket: UnixDatagram,
+    watching: std::cell::Cell<bool>,
+}
 
 pub(crate) fn run(work: impl FnOnce(Rc<Instance>) -> eframe::Result) -> eframe::Result {
     let directory = blent_config::linux::runtime::runtime_dir()
@@ -33,7 +38,10 @@ pub(crate) fn run_at(
     match UnixDatagram::bind_addr(&address) {
         Ok(socket) => {
             socket.set_nonblocking(true).map_err(error)?;
-            let instance = Rc::new(Instance(socket));
+            let instance = Rc::new(Instance {
+                socket,
+                watching: std::cell::Cell::new(false),
+            });
             // Keep this reference outside the GUI/runtime closure through cleanup.
             work(instance.clone())
         }
@@ -54,12 +62,21 @@ fn notify(address: &SocketAddr) -> io::Result<()> {
 }
 
 impl Instance {
+    pub(crate) fn watch(&self, notify: impl Fn() + Send + 'static) -> io::Result<Wake> {
+        if self.watching.get() {
+            return Err(io::Error::other("GUI activation already has a reader"));
+        }
+        let wake = Wake::start(self.socket.try_clone()?, notify)?;
+        self.watching.set(true);
+        Ok(wake)
+    }
+    #[cfg(test)]
     pub(crate) fn requested(&self) -> io::Result<bool> {
         let mut requested = false;
         // Bound work per frame even if another process floods the socket.
         for _ in 0..32 {
             let mut bytes = [0; 5];
-            match self.0.recv(&mut bytes) {
+            match self.socket.recv(&mut bytes) {
                 Ok(4) if &bytes[..4] == b"show" => requested = true,
                 Ok(_) => {}
                 Err(cause) if cause.kind() == io::ErrorKind::WouldBlock => break,

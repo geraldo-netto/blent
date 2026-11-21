@@ -10,28 +10,71 @@ pub(crate) fn show(context: &egui::Context) {
 #[cfg(target_os = "linux")]
 pub(crate) struct Window<A> {
     pub(crate) app: A,
-    pub(crate) instance: std::rc::Rc<crate::platform::activation::Instance>,
+    activation: crate::platform::activation::Wake,
+}
+
+#[cfg(target_os = "linux")]
+impl<A> Window<A> {
+    pub(crate) fn new(
+        app: A,
+        instance: &crate::platform::activation::Instance,
+        context: &egui::Context,
+    ) -> std::io::Result<Self> {
+        let context = context.clone();
+        let activation = instance.watch(move || context.request_repaint())?;
+        Ok(Self { app, activation })
+    }
 }
 
 #[cfg(target_os = "linux")]
 impl<A: eframe::App> eframe::App for Window<A> {
     fn update(&mut self, context: &egui::Context, frame: &mut eframe::Frame) {
-        poll(context, &self.instance);
+        poll(context, &self.activation);
         self.app.update(context, frame);
     }
 }
 
 #[cfg(target_os = "linux")]
-fn poll(context: &egui::Context, instance: &crate::platform::activation::Instance) {
-    if instance.requested().unwrap_or(false) {
+fn poll(context: &egui::Context, activation: &crate::platform::activation::Wake) {
+    if activation.requested() {
         show(context);
     }
-    context.request_repaint_after(std::time::Duration::from_millis(250));
 }
 
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
+
+    #[test]
+    fn t1550_idle_activation_wrapper_does_not_schedule_frames() {
+        let root = tempfile::tempdir().unwrap();
+        crate::platform::activation::run_at(
+            root.path().as_os_str().as_encoded_bytes(),
+            |instance| {
+                let context = egui::Context::default();
+                let wake_context = context.clone();
+                let (sent, received) = std::sync::mpsc::channel();
+                let activation = instance
+                    .watch(move || {
+                        wake_context.request_repaint();
+                        let _ = sent.send(());
+                    })
+                    .unwrap();
+                for _ in 0..3 {
+                    let _ = context.run(Default::default(), |context| poll(context, &activation));
+                }
+                let output = context.run(Default::default(), |context| poll(context, &activation));
+                assert_eq!(
+                    output.viewport_output[&egui::ViewportId::ROOT].repaint_delay,
+                    std::time::Duration::MAX,
+                    "T1550 idle activation wrapper keeps waking the GUI"
+                );
+                assert!(received.try_recv().is_err());
+                Ok(())
+            },
+        )
+        .unwrap();
+    }
 
     #[test]
     fn t1449_activation_restores_original_viewport_without_touching_resources() {
@@ -40,12 +83,23 @@ mod tests {
         crate::platform::activation::run_at(name, |instance| {
             crate::platform::activation::run_at(name, |_| panic!("duplicate window"))?;
             let context = egui::Context::default();
-            let output = context.run(Default::default(), |context| poll(context, &instance));
+            let wake_context = context.clone();
+            let (sent, received) = std::sync::mpsc::channel();
+            let activation = instance
+                .watch(move || {
+                    wake_context.request_repaint();
+                    let _ = sent.send(());
+                })
+                .unwrap();
+            received
+                .recv_timeout(std::time::Duration::from_secs(2))
+                .unwrap();
+            let output = context.run(Default::default(), |context| poll(context, &activation));
             let commands = &output.viewport_output[&egui::ViewportId::ROOT].commands;
             assert!(commands.contains(&egui::ViewportCommand::Visible(true)));
             assert!(commands.contains(&egui::ViewportCommand::Minimized(false)));
             assert!(commands.contains(&egui::ViewportCommand::Focus));
-            let output = context.run(Default::default(), |context| poll(context, &instance));
+            let output = context.run(Default::default(), |context| poll(context, &activation));
             assert!(output.viewport_output[&egui::ViewportId::ROOT]
                 .commands
                 .is_empty());
@@ -79,12 +133,7 @@ mod native_tests {
             eframe::run_native(
                 "T1449 private window",
                 options,
-                Box::new(move |_| {
-                    Ok(Box::new(Window {
-                        app: Probe,
-                        instance,
-                    }))
-                }),
+                Box::new(move |cc| Ok(Box::new(Window::new(Probe, &instance, &cc.egui_ctx)?))),
             )
         })
         .unwrap();
@@ -122,3 +171,6 @@ mod native_tests {
         );
     }
 }
+
+#[cfg(all(test, target_os = "linux"))]
+mod idle_tests;
