@@ -1,0 +1,20 @@
+{
+  "issue": "T1626",
+  "green": {
+    "evdi_setup": 7,
+    "packages": 7,
+    "release": 17,
+    "notices": 1
+  },
+  "complexity": [
+    "scripts/tests/test_evdi_setup.py:44\tsetup_program\t4",
+    "scripts/tests/test_evdi_setup.py:89\ttest_t751_xorg_defers_module_loading_and_capacity_growth\t4",
+    "scripts/tests/test_evdi_setup.py:114\ttest_t269_install_and_upgrade_never_unload_and_add_only_missing_capacity\t6",
+    "scripts/tests/test_evdi_setup.py:125\ttest_t269_setup_failure_defers_to_reboot_without_unloading\t4",
+    "scripts/tests/test_notices.py:16\ttest_t129_tar_appimage_and_arch_include_notices\t3",
+    "scripts/tests/test_packages.py:169\tcreate_fixture\t7",
+    "scripts/tests/test_release.py:220\ttest_t225_t661_active_project_links_target_fork\t4",
+    "7 functions; 0 exceed cyclomatic complexity 9"
+  ],
+  "scope": "Obsolete files, unused prerequisites and documentation removed; existing safety tests retargeted to current system_setup."
+}

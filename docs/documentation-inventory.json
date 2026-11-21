@@ -13302,7 +13302,7 @@
       "owner": "T1322",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Reviewed full installation, AppImage and historical Debian guidance. Reordered setup by user task, added installation diagrams and clarified host/bundle boundaries. Checked EVDI provisioning against scripts/setup-evdi.sh, scripts/install.sh and Makefile; AppImage dispatch/registration against its launcher and existing tests. All 34 notice, AppImage and identity tests pass; no live display changes. Advanced requirements and historical evidence retained.",
+      "review_note": "T1626 (2026-11-21): obsolete Debian packaging removed; setup safety tests retargeted to current installation. Original inventory metadata remains historical.",
       "words": 45,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -13312,7 +13312,7 @@
       "authority": "preserve independent requirements; check implemented claims against source",
       "review_stage": "reviewed",
       "reviewed_sha256": "5a23c06292f905e2571beed282878baee81c94c83eb3fefc2a92115492daa976",
-      "outcome": "rewritten"
+      "outcome": "removed"
     },
     {
       "path": "scripts/benchmarks/android-connection-idle/README.md",

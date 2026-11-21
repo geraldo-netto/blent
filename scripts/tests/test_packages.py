@@ -173,7 +173,7 @@ exit 0
             path.write_text(body)
             if executable:
                 path.chmod(0o755)
-        for name in ['packaging/build-packages.sh', 'packaging/deb/control', 'packaging/deb/postinst',
+        for name in ['packaging/build-packages.sh',
                      'packaging/arch/PKGBUILD', 'packaging/arch/blent.install']:
             write(name, (REPO / name).read_text(), name.endswith('.sh'))
         for name in ['README.md', 'LICENSE', 'COPYRIGHT.md', 'THIRD_PARTY_LICENSES.md', 'licenses', 'SECURITY.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'docs']:
@@ -193,8 +193,6 @@ exit 0
         for name in assets + ['blent-1.2.3-linux-x86_64.tar.gz', '.packages-ok']:
             write('dist/' + name, 'stale')
         write('bin/distrobox', '#!/bin/bash\nif [ "$BLENT_TEST_MODE" != container ]; then shift 3; shift 2; bash -c "$@"; fi\nexit 0\n', True)
-        write('bin/fakeroot', '#!/bin/sh\nexec "$@"\n', True)
-        write('bin/dpkg-deb', '#!/bin/bash\nif [ "$1" = --info ]; then echo "Package: blent"; else echo new > "${@: -1}"; fi\n', True)
         import appimage_fixture
         appimage_fixture.install(root)
         return assets

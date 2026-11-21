@@ -47,7 +47,7 @@ verification is recorded in
 Git-tracked files and untracked, nonignored files are included, including tests
 and this checker. Deleted files, dependency/build/cache directories, generated
 Gradle wrappers and the upstream `host/evdi/evdi_lib.h` are excluded explicitly.
-Kotlin build scripts, Arch `PKGBUILD`/`.install`, Debian `postinst` and Python
+Kotlin build scripts, Arch `PKGBUILD`/`.install` and Python
 heredocs passed directly to `python`/`python3`
 are included. Embedded Python retains the containing script's line numbers.
 

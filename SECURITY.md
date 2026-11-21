@@ -216,8 +216,7 @@ previous installation. User service/autostart cleanup below applies as well.
 
 For packages or source/tarball installs:
 
-- Native package: `sudo pacman -R blent`; retained Debian fixture installations
-  use `sudo apt remove blent`.
+- Native package: `sudo pacman -R blent`.
   Inspect the proposed transaction. Dependencies and repository settings may remain.
 - Default source/tarball installation: remove these application-owned files:
 

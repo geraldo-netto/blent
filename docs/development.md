@@ -158,7 +158,7 @@ tests spawning processes; concurrency tests still run their own concurrent
 clients/tasks. On Debian/Ubuntu, add:
 
 ```bash
-sudo apt-get install -y python3 python3-xlib python3-tk python3-numpy python3-pil ffmpeg fakeroot dpkg-dev \
+sudo apt-get install -y python3 python3-xlib python3-tk python3-numpy python3-pil ffmpeg \
   xvfb xauth x11-utils metacity wmctrl dbus-x11 at-spi2-core libglib2.0-bin libxkbcommon-x11-0 libegl1
 ```
 
@@ -555,7 +555,7 @@ build/signing environment:
 ```bash
 distrobox create --image debian:12 --name blent-build
 # Inside: install the host compiler/GUI prerequisites listed above,
-# plus dpkg-dev fakeroot patchelf squashfs-tools file, and stable Rust through rustup.
+# plus patchelf squashfs-tools file, and stable Rust through rustup.
 # Enable matching deb-src repositories for the bundled package versions.
 # packaging/ci/Dockerfile provides the complete build environment.
 # build-release.sh builds and bundles pinned libevdi v1.15.0 itself.
@@ -636,8 +636,7 @@ userspace library, GUI libraries, sanitizers and the default workspace test
 tools. Optional-encoder FFmpeg/libclang development packages are installed
 by the separate build workflow, not this container.
 The Docker base image is pinned by digest; Cargo uses `Cargo.lock`. Debian
-security package updates remain enabled. Build/test tools include `dpkg-dev`,
-`fakeroot`, `patchelf` and `squashfs-tools`.
+security package updates remain enabled. Build/test tools include `patchelf` and `squashfs-tools`.
 AppImage packaging downloads checksum-pinned appimagetool and builds its patched
 runtime from pinned sources. The runtime recipe needs Autoconf, Automake, Libtool,
 Meson and Ninja. Exact Debian corresponding sources also require matching

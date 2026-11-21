@@ -223,7 +223,7 @@ class ReleaseTest(unittest.TestCase):
             'README.md', 'CHANGELOG.md', 'CITATION.cff', 'host/src/update.rs',
             'common/src/release.rs',
             'gui/src/main.rs', 'scripts/blent.service', 'scripts/publish-release.sh',
-            'packaging/arch/PKGBUILD', 'packaging/deb/control',
+            'packaging/arch/PKGBUILD',
             'android/app/src/main/java/com/blent/UpdateCheck.kt',
             'android/app/src/main/java/com/blent/MainActivity.kt',
         ]

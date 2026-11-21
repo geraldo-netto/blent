@@ -21,3 +21,9 @@ The missing-dependency rejection regression failed before removal. Eight generat
 ## T1645 — obsolete installer mode
 
 Removed `--binaries-only`; prebuilt-bundle tests use `--user-install`. Unknown flags, missing/empty destinations and extra arguments are rejected before installer effects. No arguments still run the full installation sequence. The rejection regression failed before removal on the obsolete flag, unknown flag and extra arguments. Nine build/install tests pass. Native Bash tracing reports 18/18 executable lines covered in `main`; four affected functions measure complexity <=5 (project shell/Python checker). Tests use private temporary roots and command fixtures; no installed session or system configuration was changed.
+
+## T1626 — Debian release remnants
+
+Removed the obsolete Debian package directory and unused fakeroot/dpkg-deb test commands. Current build prerequisites and uninstall guidance no longer advertise Debian release packaging. Debian package-owner lookup and corresponding-source downloads remain required for AppImage dependencies. The documentation inventory marks its original Debian entry as removed while retaining historical metadata.
+
+Retargeted the three EVDI safety regressions from the removed postinst to the current full system-setup entry, preserving all failure, Xorg deferral, capacity and no-unload assertions. No obsolete implementation remains in fixtures. All 32 setup/package/release/notice tests pass; seven affected test functions have measured complexity <=7. No production executable function changed. Fixtures own their temporary roots and mocked command traces; no kernel or installed package mutation was performed.

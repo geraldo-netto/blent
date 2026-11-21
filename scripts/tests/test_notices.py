@@ -28,7 +28,6 @@ class NoticeTest(unittest.TestCase):
             write('bin/distrobox', '#!/bin/bash\nif [ "$BLENT_TEST_BUILD" = portable ]; then touch target-deb12/.build-ok; else shift 3; shift 2; bash -c "$@"; fi\n', True)
             write('bin/objdump', '#!/bin/sh\necho GLIBC_2.36\n', True)
             write('bin/readelf', '#!/bin/sh\ncat << EOF\n(RUNPATH) Library runpath: [\\$ORIGIN]\n(NEEDED) Shared library: [libevdi.so.1]\nEOF\n', True)
-            write('bin/fakeroot', '#!/bin/sh\nexec "$@"\n', True)
             write('android/gradlew', '#!/bin/sh\nexit 0\n', True)
             write('android/app/build/outputs/apk/release/app-release.apk', 'apk')
             release_signing_fixture.install_tools(root / 'bin')
