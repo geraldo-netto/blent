@@ -28,6 +28,9 @@ admitting a backend or queuing a replacement.
 ## Desktop workspace and resource controls
 
 The desktop workspace adapts between a tablet sidebar and a compact selector.
+On X11, initial window centering waits at most 25 geometry checks for the window
+to become visible, then leaves placement to the desktop. Wayland controls its
+own positioning.
 Connection status stays explicit: a remembered or last-seen tablet is not proof
 of a current connection, and a display assignment is not proof of video delivery.
 

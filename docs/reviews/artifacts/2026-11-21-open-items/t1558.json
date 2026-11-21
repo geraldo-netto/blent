@@ -1,0 +1,69 @@
+{
+  "issue": "T1558",
+  "tests": 10,
+  "coverage": [
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "new",
+      "line": 31,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "apply",
+      "line": 38,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "apply_with",
+      "line": 48,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "position_cached",
+      "line": 98,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "position",
+      "line": 109,
+      "language": "rust",
+      "covered": 19,
+      "total": 20,
+      "percent": 95.0,
+      "passes": true,
+      "missing": [
+        128
+      ]
+    }
+  ],
+  "complexity": {
+    "functions": 24,
+    "all_at_most_nine": true,
+    "tool": "project Rust syn 2.0.119"
+  },
+  "native_scope": "Private Xvfb, scale 1/1.25, no WM/Metacity; original connection resource lifetime and eframe positioning"
+}

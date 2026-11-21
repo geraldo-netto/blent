@@ -13,6 +13,7 @@ use x11rb::{
 };
 
 type Error = Box<dyn std::error::Error>;
+const MAX_ATTEMPTS: u8 = 25;
 
 #[derive(Clone, Copy)]
 struct Target {
@@ -23,18 +24,39 @@ struct Target {
 #[derive(Default)]
 pub(crate) struct Initial {
     target: Option<Target>,
+    connection: Option<x11rb::rust_connection::RustConnection>,
+    attempts: u8,
 }
 impl Initial {
     pub fn new(context: &eframe::CreationContext<'_>) -> Self {
         Self {
             target: target(context),
+            ..Self::default()
         }
     }
 
     pub fn apply(&mut self, context: &egui::Context) {
+        let mut connection = self.connection.take();
+        self.apply_with(context, |target, scale| {
+            position_cached(&mut connection, target, scale)
+        });
+        if self.target.is_some() {
+            self.connection = connection;
+        }
+    }
+
+    fn apply_with(
+        &mut self,
+        context: &egui::Context,
+        query: impl FnOnce(Target, f64) -> Result<Option<[f32; 2]>, Error>,
+    ) {
         let Some(target) = self.target else { return };
-        match position(target, context.pixels_per_point() as f64) {
-            Ok(None) => context.request_repaint_after(std::time::Duration::from_millis(20)),
+        self.attempts += 1;
+        match query(target, context.pixels_per_point() as f64) {
+            Ok(None) if self.attempts < MAX_ATTEMPTS => {
+                context.request_repaint_after(std::time::Duration::from_millis(20));
+            }
+            Ok(None) => self.target = None,
             Ok(Some(position)) => {
                 self.target = None;
                 context.send_viewport_cmd(egui::ViewportCommand::OuterPosition(position.into()));
@@ -70,10 +92,25 @@ fn screen(display: RawDisplayHandle) -> Option<usize> {
     usize::try_from(index).ok()
 }
 
-/// Own each read-only connection through its replies. No socket or reply cookie
-/// survives this call, including mapping waits, rejection and partial failure.
-fn position(target: Target, scale: f64) -> Result<Option<[f32; 2]>, Error> {
-    let (connection, _) = x11rb::connect(None)?;
+/// Retain one owned read-only connection across bounded mapping observations.
+/// Every reply settles in the call; success, rejection, exhaustion or Drop closes
+/// the connection without changing the borrowed window owned by eframe.
+fn position_cached(
+    connection: &mut Option<x11rb::rust_connection::RustConnection>,
+    target: Target,
+    scale: f64,
+) -> Result<Option<[f32; 2]>, Error> {
+    if connection.is_none() {
+        *connection = Some(x11rb::connect(None)?.0);
+    }
+    position(connection.as_ref().unwrap(), target, scale)
+}
+
+fn position(
+    connection: &impl Connection,
+    target: Target,
+    scale: f64,
+) -> Result<Option<[f32; 2]>, Error> {
     let root = connection
         .setup()
         .roots
@@ -84,8 +121,8 @@ fn position(target: Target, scale: f64) -> Result<Option<[f32; 2]>, Error> {
     if attributes.map_state != x11rb::protocol::xproto::MapState::VIEWABLE {
         return Ok(None);
     }
-    let size = outer_size(&connection, target.window)?;
-    let area = area_on(&connection, root)?;
+    let size = outer_size(connection, target.window)?;
+    let area = area_on(connection, root)?;
     center(area, size.map(|value| value / scale), scale)
         .map(Some)
         .ok_or_else(|| "invalid native window geometry or scale".into())

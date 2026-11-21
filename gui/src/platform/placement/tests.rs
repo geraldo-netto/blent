@@ -87,6 +87,7 @@ pub(crate) fn native_contracts(connection: &impl Connection) {
     };
     assert_eq!(area_on(connection, root).unwrap(), expected);
     assert!(position(
+        connection,
         Target {
             screen: usize::MAX,
             window: root
@@ -211,6 +212,7 @@ fn t1315_unavailable_screen_is_not_retried_or_positioned() {
             screen: usize::MAX,
             window: 0,
         }),
+        ..Initial::default()
     };
     let mut input = egui::RawInput::default();
     input
@@ -250,10 +252,12 @@ pub(crate) fn native_mapping_lifetime(connection: &impl Connection) {
         .check()
         .unwrap();
     let target = Target { screen: 0, window };
-    assert_eq!(position(target, 1.0).unwrap(), None);
+    native_pending_bound(connection, target);
+    assert_eq!(position(connection, target, 1.0).unwrap(), None);
     let context = egui::Context::default();
     let mut pending = Initial {
         target: Some(target),
+        ..Initial::default()
     };
     let _ = context.run(egui::RawInput::default(), |context| pending.apply(context));
     assert!(pending.target.is_some());
@@ -264,4 +268,118 @@ pub(crate) fn native_mapping_lifetime(connection: &impl Connection) {
     assert!(output.viewport_output[&egui::ViewportId::ROOT]
         .commands
         .is_empty());
+}
+
+#[test]
+fn t1558_unmapped_window_stops_after_twenty_five_queries() {
+    let context = egui::Context::default();
+    let mut pending = Initial {
+        target: Some(Target {
+            screen: 0,
+            window: 1,
+        }),
+        ..Initial::default()
+    };
+    let mut queries = 0;
+    for _ in 0..1000 {
+        let output = context.run(egui::RawInput::default(), |context| {
+            pending.apply_with(context, |_, _| {
+                queries += 1;
+                Ok(None)
+            });
+        });
+        assert!(output.viewport_output[&egui::ViewportId::ROOT]
+            .commands
+            .is_empty());
+    }
+    assert_eq!(
+        queries, 25,
+        "T1558 hidden window must not poll indefinitely"
+    );
+    assert!(pending.target.is_none());
+}
+
+// T1558: a server-side resource proves original connection identity and closure.
+fn native_pending_bound(observer: &impl Connection, target: Target) {
+    let context = egui::Context::default();
+    let mut pending = Initial {
+        target: Some(target),
+        ..Initial::default()
+    };
+    let _ = context.run(egui::RawInput::default(), |context| pending.apply(context));
+    let owned = pending.connection.as_ref().unwrap();
+    let pixmap = owned.generate_id().unwrap();
+    let root = &owned.setup().roots[target.screen];
+    owned
+        .create_pixmap(root.root_depth, pixmap, root.root, 1, 1)
+        .unwrap()
+        .check()
+        .unwrap();
+    for _ in 1..24 {
+        let _ = context.run(egui::RawInput::default(), |context| pending.apply(context));
+        pending
+            .connection
+            .as_ref()
+            .unwrap()
+            .get_geometry(pixmap)
+            .unwrap()
+            .reply()
+            .unwrap();
+    }
+    let _ = context.run(egui::RawInput::default(), |context| pending.apply(context));
+    assert!(pending.target.is_none());
+    assert!(pending.connection.is_none());
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(2);
+    while observer.get_geometry(pixmap).unwrap().reply().is_ok() {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "T1558 original connection still retains its pixmap"
+        );
+        std::thread::yield_now();
+    }
+    observer
+        .get_geometry(target.window)
+        .unwrap()
+        .reply()
+        .unwrap();
+}
+
+#[test]
+fn t1558_ready_and_failed_queries_finish_without_further_observation() {
+    for failure in [false, true] {
+        for pending_count in 0..25 {
+            let context = egui::Context::default();
+            let mut pending = Initial {
+                target: Some(Target {
+                    screen: 0,
+                    window: 1,
+                }),
+                ..Initial::default()
+            };
+            for _ in 0..pending_count {
+                let _ = context.run(egui::RawInput::default(), |context| {
+                    pending.apply_with(context, |_, _| Ok(None));
+                });
+            }
+            let output = context.run(egui::RawInput::default(), |context| {
+                pending.apply_with(context, |_, _| terminal_position(failure));
+            });
+            assert!(pending.target.is_none());
+            assert_eq!(
+                output.viewport_output[&egui::ViewportId::ROOT]
+                    .commands
+                    .len(),
+                usize::from(!failure)
+            );
+            pending.apply_with(&context, |_, _| panic!("T1558 queried after completion"));
+        }
+    }
+}
+
+fn terminal_position(failure: bool) -> Result<Option<[f32; 2]>, Error> {
+    if failure {
+        Err("unavailable".into())
+    } else {
+        Ok(Some([10.0, 20.0]))
+    }
 }
