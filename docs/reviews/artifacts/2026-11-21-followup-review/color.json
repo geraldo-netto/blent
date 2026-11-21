@@ -1,0 +1,24 @@
+{
+  "production": {
+    "filters": "scale=160:120:force_original_aspect_ratio=decrease:in_color_matrix=auto:out_color_matrix=bt601:in_range=auto:out_range=tv,pad=160:120:(ow-iw)/2:(oh-ih)/2,format=yuv420p",
+    "yuv": [
+      113,
+      165,
+      95
+    ],
+    "metadata": [
+      "[Parsed_showinfo_3 @ 0x556f6c37c680] color_range:tv color_space:bt709 color_primaries:bt709 color_trc:bt709"
+    ]
+  },
+  "complete_smpte170m_conversion": {
+    "filters": "colorspace=all=smpte170m:range=tv:format=yuv420p",
+    "yuv": [
+      112,
+      166,
+      92
+    ],
+    "metadata": [
+      "[Parsed_showinfo_1 @ 0x5ca4c5307340] color_range:tv color_space:smpte170m color_primaries:smpte170m color_trc:smpte170m"
+    ]
+  }
+}

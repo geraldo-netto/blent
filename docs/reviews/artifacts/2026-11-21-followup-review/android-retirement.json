@@ -1,0 +1,26 @@
+{
+  "finding": "T1462",
+  "evidence_kind": "source trace checked against Android API contract; no physical reproduction",
+  "source_trace": [
+    "CameraCapture.kt:90 passes CameraDevice::close to CameraStartup, and its callback does not override onClosed.",
+    "CameraCapture.kt:102 does the same for CameraCaptureSession.",
+    "CameraStartup.kt:31 registers close(value) as the complete destruction callback.",
+    "CameraResources.kt:81 invokes callbacks, then clears closing without an asynchronous device completion observation.",
+    "CameraRecovery.kt:22 calls resources.close; line 23 delays 250/500 ms; the next iteration reopens the same selected device.",
+    "LocalMediaRuns.kt:34 calls CameraCapture.run inside one worker. MediaWorkerService process retirement is outside those retries."
+  ],
+  "counterexample_schedule": [
+    "Open first device and session; establish streaming.",
+    "Transport raises CameraTransportException while resources.checkActive succeeds.",
+    "Cleanup calls session.close, device.close and releases other resources. The original onClosed remains undelivered.",
+    "After the first 250 ms backoff, the next attempt calls openCamera with the same camera ID while original shutdown is unconfirmed."
+  ],
+  "required_regression": "Withhold an identity-bound original close completion past the retry delay. Assert replacement does not open until completion. Cover cancellation, partial startup and late/duplicate acknowledgements.",
+  "reference": "https://developer.android.com/reference/android/hardware/camera2/CameraDevice#close()",
+  "reference_contract": "onClosed indicates full device shutdown and readiness to reopen; merely returning from close is not that observation.",
+  "limits": [
+    "No claim of native UAF or unbounded leak.",
+    "Final process retirement is separately fenced; the identified gap is same-process transport recovery.",
+    "A future fix must distinguish requesting closure from waiting for completion without blocking the callback handler."
+  ]
+}

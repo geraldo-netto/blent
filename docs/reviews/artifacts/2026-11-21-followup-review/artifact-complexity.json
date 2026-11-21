@@ -1,0 +1,49 @@
+{
+  "tool": "scripts/complexity/check.py at 15795e20",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "installed_dependencies": {
+    "tree-sitter-c": "0.24.2",
+    "tree-sitter-bash": "0.25.1",
+    "tree-sitter": "0.25.2",
+    "pip": "24.0"
+  },
+  "functions": [
+    [
+      "docs/reviews/artifacts/2026-11-21-followup-review/probe/src/main.rs",
+      9,
+      "failed_restart",
+      4
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-21-followup-review/probe/src/main.rs",
+      49,
+      "main",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-21-followup-review/color_probe.py",
+      10,
+      "production_filter",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-21-followup-review/color_probe.py",
+      20,
+      "tagged_input",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-21-followup-review/color_probe.py",
+      33,
+      "conversion",
+      2
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-21-followup-review/color_probe.py",
+      49,
+      "main",
+      1
+    ]
+  ],
+  "maximum": 4
+}

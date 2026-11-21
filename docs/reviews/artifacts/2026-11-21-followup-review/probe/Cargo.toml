@@ -1,0 +1,12 @@
+[package]
+name = "blent-review-pass2"
+version = "0.1.0"
+edition = "2021"
+[workspace]
+[dependencies]
+blent-config = { path = "../../../../../common" }
+blent = { path = "../../../../../host" }
+anyhow = "1"
+libc = "0.2"
+futures-util = "0.3"
+tokio = { version = "1", features = ["rt", "macros", "sync", "time", "test-util"] }

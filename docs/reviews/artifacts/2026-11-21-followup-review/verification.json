@@ -1,0 +1,284 @@
+{
+  "date": "2026-11-21",
+  "baseline": "15795e204ef06d183252314dd19ccf74054e6754",
+  "mode": "review only; production and existing test sources unchanged",
+  "scope": "Selected media lifecycle, output color, GUI ownership, Android capture/audio, USB connection and config-diff paths; not a whole-repository correctness proof.",
+  "sources_examined": [
+    {
+      "path": "host/src/camera_control.rs",
+      "sha256": "f764dfaaac91aee5f6acbcb9e60889d8d13868a1da08abfb71594365d45855ea",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "host/src/audio_control.rs",
+      "sha256": "7e754b81f6a804748b570f7892a4ee70cd24679e702ea3c6f14a12f53a2b8ab5",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "host/src/camera/output_worker.rs",
+      "sha256": "0d3f4760769ecf0f725cb22180b36fe975334c611ec2a6e513411e754a850e4a",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "host/src/camera.rs",
+      "sha256": "409bfbe1340f27b09255c5fa92d3d665f6a85f9f89975934d30d5f1ba44bdf34",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "host/src/camera/decoder.rs",
+      "sha256": "96f212f30e662dccf2f1e045ec0c474c0fad3c211e4f30dc8088da24601be163",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "host/src/camera/output_device/abi.rs",
+      "sha256": "80465ed565a61307878c088cdf0fe03b15348eca09b9e6f6de979f4c50e801b0",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "host/src/usb/connection.rs",
+      "sha256": "ed0c42c44bebf9dd77890e79eb18b09cf4b436d95b5f4a96b0497fdef32c39b0",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "host/src/start_request.rs",
+      "sha256": "4e4eea35aa621e41644aa5ec878a9fd0a668e395844247c8155ade693cfb2889",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "common/src/media_start.rs",
+      "sha256": "6ca793bc45d860b01be010661b8cf2e66e80e626ec1a3e3c77dbb65b81bda34e",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "common/src/camera/brightness.rs",
+      "sha256": "7d300d22b0d9144acb0925b8746da9b551357663b78abed63a0516fdc9d11c2d",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "common/src/storage/diff.rs",
+      "sha256": "7940412f8c95c37a341684f0852a6b1adbcfa4bc685a256ae13223672a7df6e2",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "gui/src/media_owner.rs",
+      "sha256": "ec8deb0a641e9b184673c4987a3e22def4089eb4e7ba770c26ceaba816b0c966",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/CameraCapture.kt",
+      "sha256": "90dd68b8e336c41b338427f7d79e0dbc9f239e7f4518327eadcb77674179e55b",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/CameraResources.kt",
+      "sha256": "3155f946d6d8522be183b86aa5a2792719ab7afe1787ebbe54f39e3eca56a27f",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/CameraStartup.kt",
+      "sha256": "0bf52b17424da9f400e72853290355e122da5ea4b46896ab12c07402aa58269f",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/CameraRate.kt",
+      "sha256": "2b3b8f5f070a29cfe89dc9822c8f6b7cc295236140bbc5a86aa543c274dab663",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/CameraFreshness.kt",
+      "sha256": "6f5b28c56def8931c5c0459550eae09560deda495f1ec4aabf0831dc7fe238b0",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/CameraRecovery.kt",
+      "sha256": "785a49f76413f197c86f1cfc3e74aae8e0278516f2b36e6a14b97a88938d4aa8",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/AudioPlaybackQueue.kt",
+      "sha256": "9bb761c4de2002fc028495b94248b923bfa900144cac10ea3c58e8884b1ad7a5",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/AudioCapture.kt",
+      "sha256": "05ab2d786f4fd17b48e4ef86752031d6253fdd04fe75d0f97b122927d7013ded",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "sha256": "b5de2382cc579f7e115a538be49254cff04bc39da75e6ff6fe43f365892a456e",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/LocalMediaRuns.kt",
+      "sha256": "313396d7c3fc59ad038a5edf412cf4b9e355e165c410455141379a7791384d8c",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/CameraCaptureContracts.kt",
+      "sha256": "b979a066c2eaf99db54dcc2ff8b4fba7258fa1cc3899acdcd2412d00cce244bb",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+      "sha256": "4fc4199a98826016a86235c8469656f4423185abb0a2e73ca6b2821d525465f3",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/NativeDeadline.kt",
+      "sha256": "959a2b904d6e064ef544b34a97e44befa85402c181fc074dcca15946ff82e493",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/MediaWorkerService.kt",
+      "sha256": "a9016085ad8d6c95513cf0f021d2ca9beae1f6a58fd99147b07eccce5e7d226a",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/CameraStartupTest.kt",
+      "sha256": "85e8e580fd9c0cc14f2f7389e5fc9e1240ff0a137b68e6428e35b14d6e31d00d",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/CameraRecoveryTest.kt",
+      "sha256": "223dbf56d012a39e56c684f9502a198d1842cb02815d9abdbc3e2c1c4df2f5e8",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/CameraCaptureTest.kt",
+      "sha256": "5a9870a89577da0d20c2bb237384433c566c8f57e1244ca82b68180bd6a128a4",
+      "scope": "whole file or relevant excerpts; not a per-function audit claim"
+    }
+  ],
+  "findings": [
+    {
+      "id": "T1460",
+      "severity": "medium",
+      "evidence": "replay-restart.log.gz",
+      "kind": "actual Controller and original GUI Owner reproduction"
+    },
+    {
+      "id": "T1462",
+      "severity": "medium",
+      "evidence": "android-retirement.json",
+      "kind": "source trace against documented native closure contract"
+    },
+    {
+      "id": "T1461",
+      "severity": "low",
+      "evidence": "color.json",
+      "kind": "synthetic fully tagged H.264 through exact production filter; independent full colorspace conversion control"
+    }
+  ],
+  "tests": [
+    {
+      "log": "camera-tests.log.gz",
+      "passed": 10,
+      "failed": 0,
+      "ignored": 0,
+      "cases": [
+        "camera_control::retirement_tests::scopes::t1125_nested_scope_preserves_original_cutoff_and_inflight_reservation",
+        "camera_control::retirement_tests::t1125_group_bounds_reserve_before_effects_and_share_original_scopes",
+        "camera_control::retirement_tests::t1125_owner_loss_keeps_native_fence_without_blocking_sibling",
+        "camera_control::retirement_tests::owned_future::t1125_original_future_drops_before_its_own_native_settlement_wait",
+        "camera_control::tests::t543_controller_owns_worker_and_validates_before_start",
+        "camera_control::tests::t543_failed_session_waits_for_explicit_retry",
+        "camera_control::tests::t543_manual_start_switch_stop_and_owner_exit_retire_in_order",
+        "camera_control::tests::t811_drop_returns_while_native_retirement_is_held",
+        "camera_control::workspace_close_tests::t1272_camera_close_returns_the_original_worker_fence",
+        "camera_control::retirement_tests::t1125_success_failure_and_panic_cannot_replace_unretired_original"
+      ]
+    },
+    {
+      "log": "audio-tests.log.gz",
+      "passed": 9,
+      "failed": 0,
+      "ignored": 0,
+      "cases": [
+        "audio_control::retirement::panic_tests::t995_panicking_backend_future_drops_owned_native_guard_before_retirement_wait",
+        "audio_control::retirement::tests::t995_audio_observation_capacity_and_replacement_require_real_completion",
+        "audio_control::retirement::tests::t995_audio_error_keeps_original_admission_until_actual_completion_without_stalling_sibling",
+        "audio_control::tests::t718_explicit_start_stop_failure_and_drop_retire",
+        "audio_control::tests::t718_pending_start_reserves_admission_before_worker_status",
+        "audio_control::retirement::tests::t995_audio_success_and_panic_keep_original_admission_until_actual_completion",
+        "audio_control::tests::t977_invalid_target_is_rejected_before_control_admission",
+        "audio_control::tests::t811_drop_returns_while_native_retirement_is_held",
+        "audio_control::workspace_close_tests::t1272_audio_close_returns_the_original_worker_fence"
+      ]
+    },
+    {
+      "log": "gui-tests-corrected.log.gz",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0,
+      "cases": [
+        "media_owner::acknowledgement_tests::t1455_pending_requests_never_read_stale_terminal_status",
+        "media_owner::tests::t1273_original_media_owner_survives_queued_start_and_retirement"
+      ]
+    },
+    {
+      "log": "storage-tests.log.gz",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0,
+      "cases": [
+        "storage::diff::tests::t559_diffs_semantic_paths_and_added_removed_values",
+        "storage::diff::tests::t559_malformed_and_bounded_nested_input_never_fabricates_changes"
+      ]
+    },
+    {
+      "suite": "CameraStartupTest",
+      "xml": "TEST-com.blent.CameraStartupTest.xml.gz",
+      "passed": 10,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "suite": "CameraRecoveryTest",
+      "xml": "TEST-com.blent.CameraRecoveryTest.xml.gz",
+      "passed": 8,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "suite": "CameraStartupDeadlineTest",
+      "xml": "TEST-com.blent.CameraStartupDeadlineTest.xml.gz",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    }
+  ],
+  "total_existing_test_cases_passed": 42,
+  "commands": [
+    "CARGO_BUILD_JOBS=2 nice -n 10 cargo test --offline -p blent --lib camera_control:: -- --test-threads=2",
+    "CARGO_BUILD_JOBS=2 nice -n 10 cargo test --offline -p blent --lib audio_control:: -- --test-threads=2",
+    "CARGO_BUILD_JOBS=2 nice -n 10 cargo test --offline -p blent-gui --bin blent-gui media_owner:: -- --test-threads=2",
+    "CARGO_BUILD_JOBS=2 nice -n 10 cargo test --offline -p blent-config --lib storage::diff:: -- --test-threads=2",
+    "cd android && nice -n 10 ./gradlew --offline --max-workers=2 :app:testDebugUnitTest --tests com.blent.CameraStartupTest --tests com.blent.CameraRecoveryTest --tests com.blent.CameraStartupDeadlineTest",
+    "CARGO_TARGET_DIR=/backups/disk2/projects/blent/target CARGO_BUILD_JOBS=2 nice -n 10 cargo run --offline --manifest-path docs/reviews/artifacts/2026-11-21-followup-review/probe/Cargo.toml",
+    "python3 docs/reviews/artifacts/2026-11-21-followup-review/color_probe.py"
+  ],
+  "invocation_correction": "An initial blent-gui --lib invocation executed no tests because GUI has a binary target; corrected --bin blent-gui run passed both selected tests.",
+  "versions": {
+    "rustc": "rustc 1.100.0 (0ef1bc386 2026-11-09)",
+    "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+  },
+  "references": [
+    "https://developer.android.com/reference/android/hardware/camera2/CameraDevice#close()",
+    "https://developer.android.com/reference/android/hardware/camera2/CameraCaptureSession#close()",
+    "https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/colorspaces-details.html",
+    "https://ffmpeg.org/ffmpeg-filters.html#colorspace"
+  ],
+  "ownership_review": {
+    "controller_probe": "One private WorkerPool slot, one bounded watch command slot and two request tokens. The original session returns an error after cancellation. Explicit shutdown and exact Completion observation precede probe exit; the second token still pending demonstrates an acknowledgement defect, not native worker leakage.",
+    "color_probe": "One synthetic 160x120 frame; each subprocess is waited and its captured buffers reclaimed. No hardware, persistent service or user video is opened.",
+    "android": "Startup callback leases and reverse-order cleanup exist, but closure return and native onClosed are conflated during same-process retry. Outer worker retirement does not supply an internal retry fence.",
+    "leak_result": "No new unbounded leak confirmed in inspected paths; no comprehensive leak-freedom, native safety or whole-repository coverage claim."
+  },
+  "limits": [
+    "No running Blent process was controlled or signalled. No installation, ADB action, live device access or push.",
+    "Existing tests do not cover the reported counterexamples. Required permanent regression coverage is recorded with each TODO.",
+    "Android results use Robolectric, not native hardware. Physical camera color/brightness acceptance remains T1452.",
+    "No per-function production coverage was remeasured in this review; production code is unchanged."
+  ]
+}
