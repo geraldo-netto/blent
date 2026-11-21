@@ -46,7 +46,7 @@ async fn get_mode(commands: &dyn CommandPort) -> Option<String> {
 }
 
 async fn set_mode(commands: &dyn CommandPort, mode: &str) -> bool {
-    // `mode` is a D-Bus int32; busctl needs to be told so.
+    // The native property request carries mode as a D-Bus int32.
     crate::kwin::set_property_with(commands, OBJECT, IFACE, "mode", "i", mode).await
 }
 

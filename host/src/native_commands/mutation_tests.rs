@@ -23,6 +23,14 @@ impl Device {
         self.0.applied.store(true, Ordering::Release);
     }
 }
+struct Keyboard;
+#[zbus::interface(name = "org.kde.kwin.VirtualKeyboard")]
+impl Keyboard {
+    #[zbus(property, name = "available")]
+    fn available(&self) -> bool {
+        true
+    }
+}
 struct Fixture {
     state: Arc<State>,
     bus: Option<zbus::Connection>,
@@ -37,6 +45,8 @@ impl Fixture {
         let bus = zbus::connection::Builder::session()
             .unwrap()
             .name("org.kde.KWin")
+            .unwrap()
+            .serve_at("/VirtualKeyboard", Keyboard)
             .unwrap()
             .serve_at("/org/kde/KWin/InputDevice/event41", Device(state.clone()))
             .unwrap()
@@ -69,21 +79,17 @@ async fn until(done: impl Fn() -> bool) {
     .await
     .unwrap();
 }
-async fn request(commands: &ObservedCommands) -> io::Result<Output> {
+async fn request(commands: &ObservedCommands) -> io::Result<()> {
     commands
-        .mutate(
-            "/usr/bin/busctl",
-            &[
-                "--user",
-                "--timeout=infinity",
-                "set-property",
-                "org.kde.KWin",
+        .set_property(
+            Property::new(
                 "/org/kde/KWin/InputDevice/event41",
                 "org.kde.KWin.InputDevice",
                 "outputName",
                 "s",
                 "after",
-            ],
+            )
+            .unwrap(),
         )
         .await
 }
@@ -143,6 +149,11 @@ async fn t1444_query_only_port_cannot_start_mutation() {
         .unwrap_err();
     assert_eq!(error.kind(), io::ErrorKind::Unsupported);
     assert!(!marker.exists());
+    let error = SystemCommands
+        .set_property(Property::new("/fixture", "org.blent.Fixture", "mode", "i", "1").unwrap())
+        .await
+        .unwrap_err();
+    assert_eq!(error.kind(), io::ErrorKind::Unsupported);
 }
 #[tokio::test]
 async fn t1444_failed_spawn_is_no_effect_and_original_success_releases() {
@@ -176,4 +187,47 @@ async fn t1444_native_exit_without_ack_retains_bounded_quarantine() {
             "T1444 native exit did not acknowledge remote outcome"
         );
     }
+}
+
+#[tokio::test]
+async fn t1640_rejected_property_set_retires_and_allows_successor() {
+    if !crate::activity::private_bus_test(
+        "native_commands::mutation_tests::t1640_rejected_property_set_retires_and_allows_successor",
+    ) {
+        return;
+    }
+    let fixture = Fixture::new().await;
+    let commands = ObservedCommands::default();
+    assert!(
+        !crate::kwin::set_property_with(
+            &commands,
+            "/org/kde/KWin/InputDevice/event41",
+            "org.kde.KWin.InputDevice",
+            "missingProperty",
+            "s",
+            "after"
+        )
+        .await
+    );
+    tokio::time::timeout(Duration::from_millis(200), async {
+        while !commands.complete() {
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .expect("T1640 original negative reply never settled");
+    fixture.state.release.notify_one();
+    assert!(
+        crate::kwin::set_property_with(
+            &commands,
+            "/org/kde/KWin/InputDevice/event41",
+            "org.kde.KWin.InputDevice",
+            "outputName",
+            "s",
+            "after"
+        )
+        .await
+    );
+    until(|| commands.complete()).await;
+    assert!(fixture.state.applied.load(Ordering::Acquire));
 }

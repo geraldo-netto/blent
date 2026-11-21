@@ -1,4 +1,4 @@
-//! T497: both command adapters and keyboard lifetime run against a private fake bus.
+//! T497/T1640: query CLI adapters and native writes share a private bus fixture.
 use super::*;
 use std::os::unix::fs::PermissionsExt;
 use std::path::Path;
@@ -9,9 +9,6 @@ const COMMAND: &str = r#"#!/bin/sh
 printf '%s\n' "$*" >> "$HOME/calls"
 case "$*" in
   *available*) printf 'b true\n';;
-  *set-property*|*Properties.Set*)
-    for value do :; done
-    printf '%s\n' "$value" > "$HOME/mode";;
   *mode*)
     read -r value < "$HOME/mode"
     if [ "$BLENT_T497_BACKEND" = busctl ]; then printf 'i %s\n' "$value"
@@ -30,7 +27,9 @@ fn isolated(backend: &str) {
     std::fs::write(&tool, COMMAND).unwrap();
     std::fs::set_permissions(&tool, std::fs::Permissions::from_mode(0o700)).unwrap();
     std::fs::write(directory.path().join("mode"), "2\n").unwrap();
-    let output = std::process::Command::new(std::env::current_exe().unwrap())
+    let output = std::process::Command::new("/usr/bin/dbus-run-session")
+        .args(["--dbus-daemon=/usr/bin/dbus-daemon", "--"])
+        .arg(std::env::current_exe().unwrap())
         .args(["--exact", TEST, "--nocapture"])
         .env("BLENT_T497_BACKEND", backend)
         .env("PATH", directory.path())
@@ -47,6 +46,34 @@ fn isolated(backend: &str) {
     let calls = std::fs::read_to_string(directory.path().join("calls")).unwrap();
     assert!(calls.contains("mode"));
     assert!(calls.contains("fixtureDevices"));
+}
+
+struct NativeKeyboard(std::path::PathBuf);
+#[zbus::interface(name = "org.kde.kwin.VirtualKeyboard")]
+impl NativeKeyboard {
+    #[zbus(property, name = "mode")]
+    fn mode(&self) -> i32 {
+        std::fs::read_to_string(&self.0)
+            .unwrap()
+            .trim()
+            .parse()
+            .unwrap()
+    }
+    #[zbus(property, name = "mode")]
+    fn set_mode(&mut self, mode: i32) {
+        std::fs::write(&self.0, format!("{mode}\n")).unwrap();
+    }
+}
+async fn native_keyboard(root: &Path) -> zbus::Connection {
+    zbus::connection::Builder::session()
+        .unwrap()
+        .name("org.kde.KWin")
+        .unwrap()
+        .serve_at("/VirtualKeyboard", NativeKeyboard(root.join("mode")))
+        .unwrap()
+        .build()
+        .await
+        .unwrap()
 }
 
 async fn properties(root: &Path, busctl: bool) {
@@ -109,10 +136,21 @@ async fn t497_kwin_adapters_restore_only_the_owned_keyboard_state() {
     };
     let root = std::path::PathBuf::from(std::env::var_os("HOME").unwrap());
     assert_eq!(backend().await.unwrap().name(), kind);
+    let native = native_keyboard(&root).await;
     properties(&root, kind == "busctl").await;
     keyboard(&root).await;
     let commands = crate::native_commands::ObservedCommands::default();
-    assert!(set_property_with(&commands, "/fixture", "fixture", "mode", "i", "1").await);
+    assert!(
+        set_property_with(
+            &commands,
+            "/VirtualKeyboard",
+            "org.kde.kwin.VirtualKeyboard",
+            "mode",
+            "i",
+            "1"
+        )
+        .await
+    );
     while !commands.complete() {
         tokio::task::yield_now().await;
     }
@@ -120,4 +158,5 @@ async fn t497_kwin_adapters_restore_only_the_owned_keyboard_state() {
         get_property("/fixture", "fixture", "mode").await.as_deref(),
         Some("1")
     );
+    native.close().await.unwrap();
 }

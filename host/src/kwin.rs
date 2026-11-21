@@ -1,6 +1,6 @@
-//! Talking to KWin over D-Bus.
+//! Talking to KWin over D-Bus. Property writes use an owned native request.
 //!
-//! Every call here used to shell out to `qdbus`, which turned out not to be a
+//! Read-only queries use the command adapters described below. They used to shell out to `qdbus`, which turned out not to be a
 //! safe assumption. On Debian- and Ubuntu-based Plasma 6 systems the binary is
 //! `qdbus-qt6` or `qdbus6`, and plain `qdbus` — Qt5's — is often not installed
 //! at all. When it was missing the daemon stopped mapping the tablet's input
@@ -169,8 +169,8 @@ pub(crate) async fn get_property_with(
     }
 }
 
-/// Write a scalar property. `signature` is the D-Bus type: `s` for a string,
-/// `i` for an int — busctl needs it, qdbus infers it.
+/// Write through an owned native D-Bus request; original negative replies settle too.
+/// `signature` is `s` for a string or `i` for an int32.
 pub(crate) async fn set_property_with(
     port: &dyn CommandPort,
     path: &str,
@@ -179,49 +179,11 @@ pub(crate) async fn set_property_with(
     signature: &str,
     value: &str,
 ) -> bool {
-    match backend_with(port).await {
-        Some(Backend::Busctl) => {
-            mutation_succeeded(
-                port,
-                "busctl",
-                &[
-                    "--user",
-                    "--timeout=infinity",
-                    "set-property",
-                    SERVICE,
-                    path,
-                    iface,
-                    prop,
-                    signature,
-                    value,
-                ],
-            )
-            .await
-        }
-        Some(Backend::Qdbus(cmd)) => {
-            mutation_succeeded(
-                port,
-                cmd,
-                &[
-                    "--literal",
-                    SERVICE,
-                    path,
-                    "org.freedesktop.DBus.Properties.Set",
-                    iface,
-                    prop,
-                    value,
-                ],
-            )
-            .await
-        }
-        None => false,
-    }
-}
-
-async fn mutation_succeeded(port: &dyn CommandPort, program: &str, args: &[&str]) -> bool {
-    port.mutate(program, args)
-        .await
-        .is_ok_and(|output| output.status.success())
+    let Ok(request) = crate::native_commands::Property::new(path, iface, prop, signature, value)
+    else {
+        return false;
+    };
+    port.set_property(request).await.is_ok()
 }
 
 /// An array-of-strings property, such as the list of input devices.

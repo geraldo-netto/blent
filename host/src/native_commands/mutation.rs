@@ -40,6 +40,29 @@ impl Operation {
             result,
         )
     }
+    pub(super) fn property(
+        request: Property,
+    ) -> (Self, tokio::sync::oneshot::Receiver<io::Result<()>>) {
+        let outcome = Arc::new(Mutex::new(Outcome::Pending));
+        let completion = outcome.clone();
+        let (send, result) = tokio::sync::oneshot::channel();
+        let worker = tokio::spawn(async move {
+            let report = super::dbus::execute(request).await;
+            *completion.lock().unwrap() = if report.settled {
+                Outcome::Settled
+            } else {
+                Outcome::Unknown
+            };
+            let _ = send.send(report.result);
+        });
+        (
+            Self {
+                worker: Some(worker),
+                outcome,
+            },
+            result,
+        )
+    }
     pub(super) fn complete(&mut self) -> bool {
         if let Some(worker) = self.worker.as_mut() {
             if !worker.is_finished() {

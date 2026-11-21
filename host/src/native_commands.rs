@@ -21,6 +21,12 @@ pub(crate) trait CommandPort: Sync {
         program: &'a str,
         args: &'a [&'a str],
     ) -> Pin<Box<dyn Future<Output = io::Result<Output>> + Send + 'a>>;
+    fn set_property(
+        &self,
+        _request: Property,
+    ) -> Pin<Box<dyn Future<Output = io::Result<()>> + Send + '_>> {
+        Box::pin(async { Err(io::ErrorKind::Unsupported.into()) })
+    }
     /// Query-only ports cannot authorize a mutation without an owning sponsor.
     fn mutate<'a>(
         &'a self,
@@ -48,7 +54,10 @@ impl CommandPort for SystemCommands {
     }
 }
 
+mod dbus;
 mod mutation;
+mod property;
+pub(crate) use property::Property;
 
 /// One command/mutation slot, funded by the owning input payload or OSK operation.
 /// That owner must retain this port until complete(), including caller loss.
@@ -129,6 +138,40 @@ impl ObservedCommands {
                 ))
             })
     }
+    fn start_property(
+        &self,
+        request: &mut Option<Property>,
+    ) -> Option<tokio::sync::oneshot::Receiver<io::Result<()>>> {
+        let mut state = self.state();
+        if !state.complete() {
+            return None;
+        }
+        let (operation, result) =
+            mutation::Operation::property(request.take().expect("one property admission"));
+        state.mutation = Some(operation);
+        Some(result)
+    }
+    async fn property_result(&self, request: Property) -> io::Result<()> {
+        let mut request = Some(request);
+        loop {
+            if let Some(result) = self.start_property(&mut request) {
+                return result
+                    .await
+                    .unwrap_or_else(|_| Err(io::Error::other("original property result lost")));
+            }
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    }
+    async fn property_bounded(&self, request: Property) -> io::Result<()> {
+        tokio::time::timeout(COMMAND_TIMEOUT, self.property_result(request))
+            .await
+            .unwrap_or_else(|_| {
+                Err(io::Error::new(
+                    io::ErrorKind::TimedOut,
+                    "property reply deadline; original operation remains owned",
+                ))
+            })
+    }
     async fn run(&self, program: &str, args: &[&str]) -> io::Result<Output> {
         // A command deadline does not authorize another effect while the old
         // original child or collector can still act. Cancellation stops this wait.
@@ -152,6 +195,12 @@ impl ObservedCommands {
     }
 }
 impl CommandPort for ObservedCommands {
+    fn set_property(
+        &self,
+        request: Property,
+    ) -> Pin<Box<dyn Future<Output = io::Result<()>> + Send + '_>> {
+        Box::pin(self.property_bounded(request))
+    }
     fn output<'a>(
         &'a self,
         program: &'a str,
