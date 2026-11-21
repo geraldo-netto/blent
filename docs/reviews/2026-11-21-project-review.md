@@ -39,3 +39,7 @@ Clippy 1.100 rejected the new brightness index loop, three divisibility predicat
 ## T1485 — camera pool integration composition
 
 The standalone pool target failed compilation because its production source now depends on camera_live. It now imports that production module with an explicit test-module path. The existing controller/session integration regression moved unchanged to camera_control/live_tests, its actual owner, so the independent pool fixture does not import the entire controller implementation. All 12 pool target cases pass, including immutable retained frames and allocation checks; the moved controller regression also passes. Clippy compiles the integration target with warnings denied. No production API or runtime behavior changed and no permanent regression was removed.
+
+## T1484 — startup deadline fixture
+
+The native missing-broker test allowed 3 seconds while production settings admitted a 10-second startup interval. Independent systemd launch exposed this mismatch because successful launcher creation does not prove successful broker startup. The fixture now explicitly selects a 100 ms startup deadline and retains its 3-second observation bound. The same permanent T894 failure/retirement/no-files assertions pass. Production deadlines and process ownership are unchanged.

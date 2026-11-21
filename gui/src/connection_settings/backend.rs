@@ -74,12 +74,13 @@ mod native_tests {
             presentation::{Factory, Settings},
         };
         let root = tempfile::tempdir().unwrap();
-        let settings = Settings::new(Launch {
+        let mut settings = Settings::new(Launch {
             executable: root.path().join("missing-broker"),
             helper: root.path().join("missing-helper"),
             state: root.path().join("state"),
             runtime: root.path().join("runtime"),
         });
+        settings.startup = Duration::from_millis(100);
         let mut source = Factory::new(settings).unwrap();
         let client = Source::start(&mut source).unwrap();
         let deadline = Instant::now() + Duration::from_secs(3);
