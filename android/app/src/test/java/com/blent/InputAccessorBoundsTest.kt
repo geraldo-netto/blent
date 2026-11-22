@@ -39,16 +39,12 @@ class InputAccessorBoundsTest {
         assertFalse(capture.isPenOnly)
         var fps = 0
         var format: DecoderFormat? = null
-        capture.onFpsKnown = { fps = it }
-        capture.onStreamFormat = { format = it }
-        capture.onFpsKnown!!(60)
+        capture.onStreamFormat = { format = it; fps = it?.fps ?: 0 }
         val expected = DecoderFormat(VideoReceiver.MIME_TYPE, 640, 480, 60)
         capture.onStreamFormat!!(expected)
         assertEquals(60, fps)
         assertSame(expected, format)
         capture.onStreamFormat = null
-        capture.onFpsKnown = null
         assertNull(capture.onStreamFormat)
-        assertNull(capture.onFpsKnown)
     }
 }

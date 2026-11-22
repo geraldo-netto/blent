@@ -93,8 +93,9 @@ class DisplayActivityLifecycleTest {
         try {
             rig.signal(1, 0, true, true); rig.awaitRequests(1)
             assertEquals(1, rig.requests.size)
-            rig.control.onStreamFormat!!.invoke(null)
-            rig.control.onCodecKnown!!.invoke("hevc")
+            val (socket, listener) = rig.sockets.last()
+            listener.onMessage(socket, """{"codec":"unsupported","video_width":64,"video_height":32,"fps":30}""")
+            listener.onMessage(socket, """{"codec":"hevc"}""")
             rig.drain()
             assertEquals("T1057 MIME change overrode unsupported decoder format", 1, rig.requests.size)
         } finally { rig.close() }
@@ -158,7 +159,7 @@ class DisplayActivityLifecycleTest {
             current.onOpen(next, Response.Builder().request(next.request()).protocol(Protocol.HTTP_1_1).code(101).message("supported").build())
             rig.signal(1, 0, true, true); rig.awaitRequests(2)
             rig.signal(2, 1, false)
-            rig.control.onFpsKnown!!.invoke(60)
+            rig.control.onStreamFormat!!.invoke(DecoderFormat("video/avc", 64, 32, 60))
             rig.session.handle(SettingsEvent.Stream(15000, 30))
             rig.until { rig.settled == 2 }
             assertEquals(2, rig.requests.size)

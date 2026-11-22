@@ -15,21 +15,22 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34], shadows = [StartupCodecShadow::class])
 class StreamFormatTest {
-    @Test fun t497_legacyCodecCallbacksPreservePenModeAndRejectUnknownFormats() {
+    @Test fun t497_currentFormatNotificationsPreservePenModeAndRejectUnknownFormats() {
         Fixture().use { f ->
             f.capture.onModeKnown!!(true)
-            f.capture.onCodecKnown!!("hevc")
+            f.sockets.last().greet("""{"codec":"hevc","video_width":640,"video_height":400,"fps":30}""")
             assertEquals("video/hevc", f.receiver.mimeType)
             assertTrue(f.session.penOnlyMode)
-            f.capture.onCodecKnown!!("unsupported")
+            f.sockets.last().greet("""{"codec":"unsupported"}""")
             assertEquals("video/hevc", f.receiver.mimeType)
             f.capture.onModeKnown!!(false)
-            f.capture.onCodecKnown!!("h264")
+            f.sockets.last().greet("""{"codec":"h264","video_width":640,"video_height":400,"fps":60}""")
             assertEquals("video/avc", f.receiver.mimeType)
-            f.capture.onFpsKnown!!(30)
+            assertFalse(f.session.penOnlyMode)
+            f.sockets.last().greet("""{"fps":30}""")
             assertEquals(30, f.receiver.streamFps)
             f.session.stop()
-            f.capture.onCodecKnown!!("av1")
+            f.sockets.last().greet("""{"codec":"av1"}""")
             assertEquals("video/avc", f.receiver.mimeType)
         }
     }

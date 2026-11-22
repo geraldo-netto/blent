@@ -422,7 +422,7 @@ class RegressionTest {
         capture.token = "a".repeat(64)
         capture.sendConfig(2000, 30)
         capture.onModeKnown = { callbacks++ }
-        capture.onCodecKnown = { callbacks++ }
+        capture.onStreamFormat = { callbacks++ }
         set(capture, "webSocket", current)
         val response = Response.Builder().request(old.request()).protocol(Protocol.HTTP_1_1).code(101).message("Switching Protocols").build()
         listener.onOpen(old, response)
@@ -458,7 +458,7 @@ class RegressionTest {
         }
     }
 
-    @Test fun t112_backgroundModeAndCodecCallbacksCannotStartVideo() {
+    @Test fun t112_backgroundModeAndFormatCallbacksCannotStartVideo() {
         Prefs(app).checkUpdates = false
         val controller = Robolectric.buildActivity(MainActivity::class.java).create()
         val activity = controller.get()
@@ -467,7 +467,7 @@ class RegressionTest {
         try {
             assertFalse(get(activity, "started") as Boolean)
             capture.onModeKnown?.invoke(false)
-            capture.onCodecKnown?.invoke("hevc")
+            capture.onStreamFormat?.invoke(DecoderFormat("video/hevc", 640, 480, 30))
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
             assertFalse("Background callback started video", get(receiver, "isRunning") as Boolean)
         } finally { controller.destroy() }
@@ -482,7 +482,7 @@ class RegressionTest {
         val receiver = localVideo(activity)
         try {
             set(activity, "started", true)
-            val worker = Thread { capture.onModeKnown?.invoke(false); capture.onCodecKnown?.invoke("hevc") }
+            val worker = Thread { capture.onModeKnown?.invoke(false); capture.onStreamFormat?.invoke(DecoderFormat("video/hevc", 640, 480, 30)) }
             worker.start()
             worker.join()
             capture.disconnect()

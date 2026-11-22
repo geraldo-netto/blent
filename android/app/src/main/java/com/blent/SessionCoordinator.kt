@@ -94,10 +94,7 @@ internal class SessionCoordinator(
     }
     private var started by mutableStateOf(false)
     private var stopTokenObservation: (() -> Unit)? = null
-    private data class DecoderSupport(val format: Boolean = true, val codec: Boolean = true) {
-        val available get() = format && codec
-    }
-    private var decoderSupport by mutableStateOf(DecoderSupport())
+    private var decoderAvailable by mutableStateOf(true)
     private var externalDisplay = !prefs.adbDeliveryPermitted
     private var externalAvailable = false
     val presentation = StreamPresentation(videoReceiver, touchCapture)
@@ -107,7 +104,7 @@ internal class SessionCoordinator(
         val applied: DisplayActivityUpdate?, val mode: Any?, val decoder: Boolean,
     )
     private fun wakeLocal() = WakeLocal(settings.batterySaver, presentation.connected, penOnlyMode,
-        started, appliedActivity, modeSource, decoderSupport.available)
+        started, appliedActivity, modeSource, decoderAvailable)
     fun powerDemandNow() = powerFor(wakeLocal(), presentation.connectionState.value)
     fun powerNow(): StreamingPower = powerDemandNow().power
     fun powerDemandUpdates() = combine(
@@ -258,34 +255,13 @@ internal class SessionCoordinator(
             val observed = touchCapture?.control?.hostSettings?.value
             withCurrentControl {
                 if (observed != null) showHostSettings(observed)
-                decoderSupport = decoderSupport.copy(format = format != null)
+                decoderAvailable = format != null
                 configureVideo { if (format != null) it.setStreamFormat(format) }
-            }
-        }
-        touchCapture?.onCodecKnown = { codec ->
-            withCurrentControl {
-                val mime = VideoCodec.types[codec]
-                decoderSupport = decoderSupport.copy(codec = mime != null)
-                if (mime == null) {
-                    Log.w("Blent", "Unsupported host video codec: $codec")
-                    videoReceiver?.stop()
-                    return@withCurrentControl
-                }
-                val vr = videoReceiver
-                if (vr != null && vr.mimeType != mime) {
-                    Log.i("Blent", "Host is sending $codec — rebuilding the decoder")
-                    if (!penOnlyMode) vr.stop()
-                    vr.mimeType = mime
-                    reconcileDisplay()
-                }
             }
         }
     }
 
     private fun connectSettingsCallbacks() {
-        touchCapture?.onFpsKnown = { fps ->
-            withCurrentControl { configureVideo { it.streamFps = fps } }
-        }
         touchCapture?.onSettingsRejected = { rejected ->
             withCurrentControl {
                 if (touchCapture?.isCurrentSettings(rejected.requestSnapshot) == true) {
@@ -321,7 +297,7 @@ internal class SessionCoordinator(
         if (source.displayActivityUpdate !== update || !source.connectionState.value.authenticated) return null
         return update
     }
-    private fun displayAllowed(): Boolean = started && !penOnlyMode && decoderSupport.available && currentActivity().let {
+    private fun displayAllowed(): Boolean = started && !penOnlyMode && decoderAvailable && currentActivity().let {
         it != null && modeSource === it.source && it.state.desired
     }
     private fun reconcileDisplay() {
@@ -358,7 +334,7 @@ internal class SessionCoordinator(
             Log.i("Blent", "New session token — reconnecting")
             touchCapture?.disconnect()
             touchCapture?.connect()
-            if (!penOnlyMode && decoderSupport.available) {
+            if (!penOnlyMode && decoderAvailable) {
                 videoReceiver?.stop()
                 reconcileDisplay()
             }
@@ -387,7 +363,7 @@ internal class SessionCoordinator(
         touchCapture?.routes = routes
         videoReceiver?.routes = routes
         // Codec and mode come from the new control greeting before video starts.
-        decoderSupport = DecoderSupport()
+        decoderAvailable = true
         settings = settings.copy(streamError = null)
         if (started) connectControl()
     }

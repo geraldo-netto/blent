@@ -35,13 +35,6 @@ class TouchCapture(factory: WebSocket.Factory = defaultControlClient(),
     var onModeKnown: ((Boolean) -> Unit)?
         get() = control.onModeKnown
         set(value) { control.onModeKnown = value }
-    var onCodecKnown: ((String) -> Unit)?
-        get() = control.onCodecKnown
-        set(value) { control.onCodecKnown = value }
-    var onFpsKnown: ((Int) -> Unit)?
-        get() = control.onFpsKnown
-        set(value) { control.onFpsKnown = value }
-
     internal var onStreamFormat: ((DecoderFormat?) -> Unit)?
         get() = control.onStreamFormat
         set(value) { control.onStreamFormat = value }

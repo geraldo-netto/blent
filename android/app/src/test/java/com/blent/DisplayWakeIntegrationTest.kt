@@ -177,9 +177,10 @@ class DisplayWakeIntegrationTest {
         try {
             rig.start(); rig.signal(true)
             rig.until { rig.session.powerNow().display == DisplayWakeState.ACTIVE }
-            rig.control.onStreamFormat!!.invoke(null)
+            val (socket, listener) = rig.sockets.last()
+            listener.onMessage(socket, """{"codec":"unsupported","video_width":64,"video_height":32,"fps":30}""")
             rig.until { rig.session.powerNow().display == DisplayWakeState.UNAVAILABLE }
-            rig.control.onCodecKnown!!.invoke("h264"); rig.drain()
+            listener.onMessage(socket, """{"codec":"h264"}"""); rig.drain()
             assertFalse(rig.session.powerNow().keepScreenOn)
             rig.control.onModeKnown!!.invoke(true)
             rig.until { rig.session.powerNow().display == DisplayWakeState.ACTIVE }

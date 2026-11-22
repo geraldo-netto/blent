@@ -87,8 +87,6 @@ internal class ControlSession(
     @Volatile var isPenOnly = false
         private set
     var onModeKnown: ((penOnly: Boolean) -> Unit)? = null
-    var onCodecKnown: ((codec: String) -> Unit)? = null
-    var onFpsKnown: ((fps: Int) -> Unit)? = null
     var onStreamFormat: ((DecoderFormat?) -> Unit)? = null
     var onSettingsRejected: ((RejectedStreamSettings) -> Unit)? = null
     private val settingsEpoch = ControlEpoch(initialSettingsGeneration)
@@ -380,10 +378,6 @@ internal class ControlSession(
             retainedSettings.fps ?: Prefs.DEFAULT_FPS)
         formatReceived = true
         onStreamFormat?.invoke(streamFormat)
-        // Retain the public per-field notifications for independent observers.
-        if (streamFormat == null) return
-        if (o.has("fps")) onFpsKnown?.invoke(streamFormat!!.fps)
-        if (o.has("codec")) onCodecKnown?.invoke(o.getString("codec"))
     }
 
     private fun applyModeGreeting(o: JSONObject) {

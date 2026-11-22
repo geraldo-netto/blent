@@ -146,7 +146,7 @@ class DecoderNegotiationTest {
         var rejected = 0
         var reportedFps = 0
         control.onSettingsRejected = { rejected++ }
-        control.onFpsKnown = { reportedFps = it }
+        control.onStreamFormat = { reportedFps = it?.fps ?: 0 }
         try {
             control.connect(); socket.open()
             control.sendConfig(25000, 90)
