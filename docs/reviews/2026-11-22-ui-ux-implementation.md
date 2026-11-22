@@ -35,3 +35,26 @@ Both changed production functions have full measured line coverage; the touched
 source/test files pass complexity <=9. Tools match T1781.
 [Evidence](artifacts/2026-11-22-ui-ux/t1780/). Style scalars remain context-owned;
 there is no additional native resource, retention or asynchronous work.
+
+## T1789 — exact camera configuration target
+
+Configure records one UI target without editing saved/default profiles. The next
+start uses that identity; live adjustments/restart still use the admitted owner.
+The page distinguishes active and next targets, identifies the route, and lets the
+user explicitly return to saved target selection. Display preferences are labelled
+as affecting all tablets. ADB identity alone does not prove USB versus network ADB.
+
+The permanent route regression failed by starting `first` after configuring
+`second`. Four target tests now pass, covering ADB/USB, active-versus-next target,
+invalid/automatic saved selection, and explicit context clearing. The broader run
+passed 266 existing/target tests and exposed one newly authored fixture that used
+prepare without admission; corrected to an acknowledged admission, that test
+passes in the focused four-test run. No production behavior was changed to satisfy
+that fixture correction. A full final GUI run follows the batch.
+
+All 13 changed/new production methods measure 92.3–100% line coverage; 293 functions
+in the affected source/tests have complexity <=9. Tools match T1781.
+[Evidence](artifacts/2026-11-22-ui-ux/t1789/). Context owns a single validated identity
+and display name from the bounded workspace; replacement/drop frees those values.
+It holds no native lease, frame, borrowed widget or callback. Existing backend
+admission, original-task settlement and stop/reuse boundaries remain authoritative.

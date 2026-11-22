@@ -223,10 +223,19 @@ impl App {
         action: Action,
     ) {
         match action {
-            Action::Configure => self.tab = resource_tab(resource),
+            Action::Configure => self.configure_resource(status, selected, resource),
             Action::Start => self.start_resource(status, selected, resource),
             Action::Stop => self.stop_resource(status, selected, resource),
         }
+    }
+
+    fn configure_resource(&mut self, status: &Status, selected: &Identity, resource: Resource) {
+        if resource == Resource::Camera {
+            let name = status.tablets.iter().find(|device| device.identity() == selected)
+                .map_or_else(|| selected.label().to_owned(), |device| device.name().to_owned());
+            self.camera.configure_target(selected.clone(), name);
+        }
+        self.tab = resource_tab(resource);
     }
 
     fn start_resource(&mut self, status: &Status, selected: &Identity, resource: Resource) {

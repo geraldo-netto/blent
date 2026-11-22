@@ -2,12 +2,14 @@
 use blent_config::camera::{CameraBackend, CameraProfile, CameraState, Lens};
 use eframe::egui;
 mod connection;
+mod context;
 #[cfg(all(test, target_os = "linux"))]
 mod live_tests;
 mod tuning;
 
 pub(super) struct Panel {
     owner: crate::media_owner::Owner,
+    configured: Option<context::Target>,
     pending: Option<CameraProfile>,
     pub(super) backend: Option<Box<dyn CameraBackend>>,
     error: Option<String>,
@@ -21,6 +23,7 @@ impl Default for Panel {
     fn default() -> Self {
         Self {
             owner: Default::default(),
+            configured: None,
             pending: None,
             backend: None,
             error: None,
@@ -62,7 +65,7 @@ impl Panel {
                     super::settings_grid(ui, "camera-advanced-grid", |ui| {
                         advanced_profile(ui, options);
                         tuning::show(ui, &mut options.sensor, self.capabilities);
-                        connection::show(ui, options, self.transports);
+                        self.connection_controls(ui, options);
                     });
                 });
         });
@@ -116,6 +119,7 @@ impl Panel {
         ui.label(egui::RichText::new("Camera sharing").strong());
         let state = self.state();
         ui.label(state_label(&state));
+        self.show_context(ui, options, state.is_active());
         if let Some(error) = &self.error {
             ui.colored_label(ui.visuals().error_fg_color, error);
         }
@@ -160,7 +164,7 @@ impl Panel {
                 let profile = if active {
                     self.admitted_profile(options)
                 } else {
-                    options.clone()
+                    self.next_profile(options)
                 };
                 self.error = self.start(profile).err();
                 ui.ctx()

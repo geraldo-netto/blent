@@ -1,0 +1,21 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.96s
+     Running unittests src/main.rs (target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 1 test
+test resource_workspace::tests::t1789_configure_camera_carries_target_without_editing_preferences ... 
+thread 'resource_workspace::tests::t1789_configure_camera_carries_target_without_editing_preferences' (662200) panicked at gui/src/resource_workspace/tests.rs:605:9:
+assertion `left == right` failed: T1789 exact configured tablet
+  left: Some(Adb("first"))
+ right: Some(Adb("second"))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    resource_workspace::tests::t1789_configure_camera_carries_target_without_editing_preferences
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 264 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

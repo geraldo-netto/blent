@@ -1,0 +1,80 @@
+[
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_page",
+    "covered": 11,
+    "total": 11
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "resource_action",
+    "covered": 12,
+    "total": 12
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "configure_resource",
+    "covered": 8,
+    "total": 8
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "default",
+    "covered": 13,
+    "total": 13
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "show",
+    "covered": 20,
+    "total": 20
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "summary",
+    "covered": 12,
+    "total": 13
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "buttons",
+    "covered": 30,
+    "total": 30
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "configure_target",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "next_profile",
+    "covered": 7,
+    "total": 7
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "show_context",
+    "covered": 13,
+    "total": 13
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "connection_controls",
+    "covered": 12,
+    "total": 12
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "route",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "saved_target",
+    "covered": 6,
+    "total": 6
+  }
+]

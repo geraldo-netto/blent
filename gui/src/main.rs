@@ -1230,6 +1230,9 @@ impl App {
 
     fn show_page(&mut self, ui: &mut egui::Ui, status: &Status) {
         ui.heading(self.tab.title());
+        if matches!(self.tab, Tab::Video | Tab::Display) {
+            ui.small("Display preferences · all tablets");
+        }
         if !matches!(self.tab, Tab::Overview | Tab::Connections | Tab::About) {
             self.show_navigation(ui);
         }

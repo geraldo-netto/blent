@@ -587,3 +587,40 @@ fn t1664_overview_configure_opens_the_selected_audio_resource() {
         assert!(app.speakers.backend.is_none());
     }
 }
+
+#[test]
+fn t1789_configure_camera_carries_target_without_editing_preferences() {
+    for target in [Identity::Adb("second".into()), Identity::UsbPeer(blent_config::connection::pairing::PeerId::parse("cd".repeat(32)).unwrap())] {
+        let (_root, mut app) = settings_test_app(Tab::Overview);
+        app.cfg.camera.options.serial = Some("first".into());
+        let original = app.cfg.clone();
+        let received = Arc::new(Mutex::new(Vec::new()));
+        app.camera.backend = Some(Box::new(Camera(received.clone(), Mutex::new(None))));
+        app.resource_action(&Status::default(), &target, Resource::Camera, Action::Configure);
+        assert!(app.tab == Tab::Camera);
+        assert_eq!(app.cfg, original, "navigation must not edit defaults");
+        click_settings_text(&mut app, &egui::Context::default(), "Start camera", window_test_frame);
+        let started = received.lock().unwrap();
+        assert_eq!(started.len(), 1);
+        assert_eq!(crate::media_owner::identity(started[0].target().unwrap()), Some(target), "T1789 exact configured tablet");
+    }
+}
+
+#[test]
+fn t1789_saved_target_can_be_restored_without_starting_camera() {
+    let (_root, mut app) = settings_test_app(Tab::Camera);
+    let original = app.cfg.clone();
+    app.camera.configure_target(Identity::Adb("chosen".into()), "Chosen tablet".into());
+    let context = egui::Context::default();
+    // The full page scrolls; exercise the same advanced connection controls directly.
+    fn frame(app: &mut App, context: &egui::Context, events: Vec<egui::Event>) -> Vec<(String, egui::Rect)> {
+        crate::tests::settings_test_frame(app, context, events, |app, ui| {
+            egui::Grid::new("t1789-target").show(ui, |ui| app.camera.connection_controls(ui, &mut app.cfg.camera.options));
+        })
+    }
+    click_settings_text(&mut app, &context, "Use saved target", frame);
+    assert_eq!(app.camera.next_profile(&app.cfg.camera.options), original.camera.options);
+    assert_eq!(app.cfg, original);
+    assert!(app.camera.backend.is_none());
+    frame(&mut app, &context, vec![]);
+}
