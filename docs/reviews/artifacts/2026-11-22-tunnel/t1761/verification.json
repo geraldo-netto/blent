@@ -1,0 +1,24 @@
+{
+  "before": "bare filename: NullPointerException; root: wrong exception",
+  "after": [
+    {
+      "name": "com.blent.connection.TunnelOutputTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.RecordMeterTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "tool_fixture_cases": 1,
+  "tool_fixture_failures": 0,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI / Python 3.12 AST",
+  "coverage": "benchmark/nonessential tool exemption",
+  "lifetime": "File descriptors are path values only; mkdirs creates parents, no open stream/thread or output file; regression owns and deletes its temporary directory"
+}

@@ -18,6 +18,7 @@ class TunnelHandoffBenchmarkTest(unittest.TestCase):
                 '-I', str(ROOT / 'scripts/benchmarks/android-tunnel/benchmark.init.gradle'),
                 '-PblentTunnelOutput=' + str(Path(temporary) / 'unused.json'),
                 ':app:testDebugUnitTest', '--tests', 'com.blent.connection.RecordMeterTest',
+                '--tests', 'com.blent.connection.TunnelOutputTest',
                 'help', '--task', 'tunnelHandoffBenchmark',
             ], dict(os.environ), logfile)
             self.assertIn('tunnelHandoffBenchmark', logfile.read_text())

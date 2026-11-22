@@ -89,12 +89,17 @@ private fun persist(output: File, results: List<JsonObject>) {
     } finally { pending.delete() }
 }
 
+internal fun measurementOutput(path: String): File {
+    val output = File(path).absoluteFile
+    requireNotNull(output.parentFile) { "Output must name a file below a directory" }.mkdirs()
+    return output
+}
+
 fun main(arguments: Array<String>) {
     require(arguments.size == 2)
     val server = measurementTls(File(arguments[1]), "host", "tablet")
     val client = measurementTls(File(arguments[1]), "tablet", "host")
-    val output = File(arguments[0])
-    output.parentFile.mkdirs()
+    val output = measurementOutput(arguments[0])
     val results = mutableListOf<JsonObject>()
     repeat(4) { trial ->
         for (fps in listOf(0, 60)) for (size in listOf(64, 4096, 16384, 65536)) {
