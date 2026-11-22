@@ -7,8 +7,10 @@ use std::{
         atomic::{AtomicBool, AtomicUsize, Ordering},
         mpsc, Arc,
     },
-    time::Duration,
 };
+
+#[cfg(test)]
+use std::time::Duration;
 
 pub mod observations;
 
@@ -16,6 +18,11 @@ pub mod observations;
 /// including any required join/reap. A deadline alone must never return true.
 pub trait Observe: Send + 'static {
     fn poll_complete(&mut self) -> bool;
+    /// Terminal unknown obligations have no future observation path. Keep their
+    /// admission and owner forever; do not wake merely to retry a settled failure.
+    fn quarantined(&self) -> bool {
+        false
+    }
 }
 #[derive(Clone, Debug)]
 pub struct Completion(Arc<AtomicBool>);
@@ -150,6 +157,7 @@ impl Record {
         }
         let outcome = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
             if !self.resource.as_mut().unwrap().poll_complete() {
+                self.poisoned = self.resource.as_ref().unwrap().quarantined();
                 return false;
             }
             drop(self.resource.take());
@@ -165,18 +173,28 @@ impl Record {
         }
     }
 }
+fn pollable(pending: &[Record]) -> bool {
+    pending.iter().any(|record| !record.poisoned)
+}
+
 fn reap(receiver: mpsc::Receiver<Record>) {
-    let mut pending = Vec::new();
+    let mut pending: Vec<Record> = Vec::new();
+    let mut backoff = crate::idle_wait::Backoff::retirement();
     loop {
-        let message = if pending.is_empty() {
+        let message = if !pollable(&pending) {
             receiver
                 .recv()
                 .map_err(|_| mpsc::RecvTimeoutError::Disconnected)
         } else {
-            receiver.recv_timeout(Duration::from_millis(5))
+            receiver.recv_timeout(backoff.next())
         };
+        let admitted = message.is_ok();
+        let count = pending.len();
         if !reap_message(message, &mut pending) {
             return;
+        }
+        if admitted || pending.len() < count {
+            backoff.reset();
         }
     }
 }
@@ -212,7 +230,7 @@ mod tests {
             self.0.load(Ordering::Acquire)
         }
     }
-    fn complete(ticket: &Completion) {
+    pub(super) fn complete(ticket: &Completion) {
         let end = std::time::Instant::now() + Duration::from_secs(2);
         while !ticket.is_complete() {
             assert!(std::time::Instant::now() < end);
@@ -233,6 +251,7 @@ mod tests {
         let mut pending = Vec::new();
         assert!(reap_message(Ok(record), &mut pending));
         assert_eq!(pending.len(), 1);
+        assert!(pollable(&pending));
         assert!(!completion.is_complete());
         assert!(reap_message(
             Err(mpsc::RecvTimeoutError::Timeout),
@@ -261,6 +280,10 @@ mod tests {
         ));
         assert_eq!(pending.len(), 1);
         assert!(!quarantined.is_complete());
+        assert!(
+            !pollable(&pending),
+            "T1529 quarantined records must suspend observation"
+        );
         assert!(!reap_message(
             Err(mpsc::RecvTimeoutError::Disconnected),
             &mut pending
@@ -320,5 +343,39 @@ mod tests {
         complete(&good);
         assert!(!bad.is_complete());
         assert_eq!(pool.active(), 1);
+    }
+}
+
+#[cfg(test)]
+mod idle_tests {
+    use super::*;
+    struct Counted {
+        calls: Arc<AtomicUsize>,
+        done: Arc<AtomicBool>,
+    }
+    impl Observe for Counted {
+        fn poll_complete(&mut self) -> bool {
+            self.calls.fetch_add(1, Ordering::Relaxed);
+            self.done.load(Ordering::Acquire)
+        }
+    }
+    #[test]
+    fn t1529_idle_retirement_backs_off_without_releasing_original_admission() {
+        let pool = Pool::new(1).unwrap();
+        let calls = Arc::new(AtomicUsize::new(0));
+        let done = Arc::new(AtomicBool::new(false));
+        let admission = pool.reserve().unwrap();
+        let completion = admission.completion();
+        admission.retain(Counted {
+            calls: calls.clone(),
+            done: done.clone(),
+        });
+        std::thread::sleep(Duration::from_secs(1));
+        let observed = calls.load(Ordering::Relaxed);
+        assert_eq!(pool.active(), 1);
+        assert!(!completion.is_complete());
+        done.store(true, Ordering::Release);
+        tests::complete(&completion);
+        assert!(observed <= 20, "T1529 idle observation calls: {observed}");
     }
 }

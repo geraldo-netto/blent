@@ -266,3 +266,35 @@ fn t1031_held_collector_reports_exact_original_thread_until_join() {
     );
     assert!(originals[0].is_complete());
 }
+
+struct IdleSource(Arc<std::sync::atomic::AtomicUsize>);
+impl Read for IdleSource {
+    fn read(&mut self, _: &mut [u8]) -> io::Result<usize> {
+        self.0.fetch_add(1, Ordering::Relaxed);
+        Err(io::ErrorKind::WouldBlock.into())
+    }
+}
+#[test]
+fn t1529_idle_output_waits_back_off_and_finish_without_losing_bytes() {
+    let calls = Arc::new(std::sync::atomic::AtomicUsize::new(0));
+    let state = Arc::new(AtomicU8::new(RUNNING));
+    let done = state.clone();
+    let worker = std::thread::spawn(move || {
+        std::thread::sleep(Duration::from_millis(500));
+        done.store(FINISHED, Ordering::Release);
+    });
+    let sources: Sources = [
+        Box::new(IdleSource(calls.clone())),
+        Box::new(io::Cursor::new(b"retained")),
+    ];
+    let result = collect(
+        sources,
+        limits(),
+        Some(Instant::now() + Duration::from_secs(2)),
+        &state,
+    );
+    worker.join().unwrap();
+    assert_eq!(result.unwrap(), [Vec::new(), b"retained".to_vec()]);
+    let observed = calls.load(Ordering::Relaxed);
+    assert!(observed <= 75, "T1529 idle pipe read calls: {observed}");
+}

@@ -1,0 +1,149 @@
+[
+  {
+    "file": "common/src/idle_wait.rs",
+    "name": "new",
+    "line": 14,
+    "language": "rust",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/idle_wait.rs",
+    "name": "retirement",
+    "line": 26,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/idle_wait.rs",
+    "name": "command",
+    "line": 30,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/idle_wait.rs",
+    "name": "reset",
+    "line": 37,
+    "language": "rust",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/idle_wait.rs",
+    "name": "next",
+    "line": 41,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/retirement.rs",
+    "name": "quarantined",
+    "line": 23,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/retirement.rs",
+    "name": "poll",
+    "line": 154,
+    "language": "rust",
+    "covered": 18,
+    "total": 18,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/retirement.rs",
+    "name": "pollable",
+    "line": 176,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/retirement.rs",
+    "name": "reap",
+    "line": 180,
+    "language": "rust",
+    "covered": 16,
+    "total": 16,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/retirement_work.rs",
+    "name": "quarantined",
+    "line": 94,
+    "language": "rust",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/commands.rs",
+    "name": "wait_collected",
+    "line": 200,
+    "language": "rust",
+    "covered": 20,
+    "total": 23,
+    "percent": 86.95652173913044,
+    "passes": true,
+    "missing": [
+      208,
+      209,
+      210
+    ]
+  },
+  {
+    "file": "common/src/commands/output.rs",
+    "name": "finish_sync",
+    "line": 100,
+    "language": "rust",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/commands/output.rs",
+    "name": "collect",
+    "line": 141,
+    "language": "rust",
+    "covered": 36,
+    "total": 36,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

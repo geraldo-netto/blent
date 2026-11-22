@@ -202,6 +202,7 @@ fn wait_collected(
     output: &mut CapturedOutput,
     deadline: std::time::Instant,
 ) -> io::Result<Output> {
+    let mut backoff = crate::idle_wait::Backoff::command();
     loop {
         if let Some(result) = output.poll_result() {
             return Err(result
@@ -214,7 +215,11 @@ fn wait_collected(
         if std::time::Instant::now() >= deadline {
             return Err(timed_out());
         }
-        std::thread::sleep(Duration::from_millis(1));
+        std::thread::sleep(
+            backoff
+                .next()
+                .min(deadline.saturating_duration_since(std::time::Instant::now())),
+        );
     }
 }
 

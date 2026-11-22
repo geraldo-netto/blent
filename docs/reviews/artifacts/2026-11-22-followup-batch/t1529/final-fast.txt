@@ -1,0 +1,3 @@
+50 commands; p50=2279us p95=2377us
+50 commands; p50=2246us p95=2299us
+50 commands; p50=2281us p95=2359us

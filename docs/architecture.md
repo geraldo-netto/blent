@@ -188,7 +188,14 @@ Native thread joins and dependent-resource destruction run on isolated cleanup
 threads, at most one per retiring admitted owner. This matters because a thread's
 `is_finished` can precede its thread-local destruction. Cleanup panic retains the
 slot as quarantined; sibling retirement continues. The shared observer polls
-pending records every 5 ms. These are control deadlines, not real-time guarantees
+pending records with a 5–100 ms exponential observation backoff, reset by
+admission or completion. Empty or entirely quarantined pools block until a new
+admission. Captured commands retain 1 ms observation for the first eight idle polls,
+then back off to a 10 ms cap,
+reset on output progress; waits are clipped to the caller’s deadline. These caps
+trade up to 100 ms retirement-publication latency and 10 ms command observation
+latency for fewer idle wakeups. Only original native completion releases
+capacity. These are control deadlines, not real-time guarantees
 against a stalled executor, kernel or filesystem.
 
 Environment settings apply to the host process. Capacity pools read their setting

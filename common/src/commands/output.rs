@@ -6,6 +6,8 @@ use super::{
 };
 use crate::retirement::Completion;
 use crate::retirement::{Admission, Pool};
+#[cfg(test)]
+use std::time::Duration;
 use std::{
     io::{self, Read},
     process::{Command, ExitStatus, Output, Stdio},
@@ -13,7 +15,7 @@ use std::{
         atomic::{AtomicU8, Ordering},
         Arc, OnceLock,
     },
-    time::{Duration, Instant},
+    time::Instant,
 };
 use tokio::sync::oneshot;
 const RUNNING: u8 = 0;
@@ -97,6 +99,7 @@ impl CapturedOutput {
     }
     pub fn finish_sync(&mut self, status: ExitStatus, deadline: Instant) -> io::Result<Output> {
         self.child_exited();
+        let mut backoff = crate::idle_wait::Backoff::command();
         loop {
             if let Some(result) = self.poll_result() {
                 return result.map(|bytes| output(status, bytes));
@@ -104,7 +107,11 @@ impl CapturedOutput {
             if Instant::now() >= deadline {
                 return Err(timed_out());
             }
-            std::thread::sleep(Duration::from_millis(1));
+            std::thread::sleep(
+                backoff
+                    .next()
+                    .min(deadline.saturating_duration_since(Instant::now())),
+            );
         }
     }
     pub async fn finish_async(&mut self, status: ExitStatus) -> io::Result<Output> {
@@ -140,6 +147,7 @@ fn collect(
     let mut bytes = Bytes::new(limits);
     let mut closed = [false; 2];
     let mut scratch = [0u8; 16384];
+    let mut backoff = crate::idle_wait::Backoff::command();
     loop {
         let observed = state.load(Ordering::Acquire);
         if observed == CANCELLED {
@@ -162,7 +170,12 @@ fn collect(
             if observed == FINISHED {
                 return Ok(bytes.streams);
             }
-            std::thread::sleep(Duration::from_millis(1));
+            let delay = backoff.next();
+            std::thread::sleep(deadline.map_or(delay, |end| {
+                delay.min(end.saturating_duration_since(Instant::now()))
+            }));
+        } else {
+            backoff.reset();
         }
     }
 }

@@ -1,0 +1,13 @@
+    Checking linux-raw-sys v0.12.1
+    Checking serde v1.0.228
+    Checking tokio v1.52.3
+    Checking tracing v0.1.44
+    Checking clap v4.6.1
+    Checking rustix v1.1.4
+    Checking serde_spanned v0.6.9
+    Checking toml_datetime v0.6.11
+    Checking toml_edit v0.22.27
+    Checking tempfile v3.27.0
+    Checking toml v0.8.23
+    Checking blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.11s

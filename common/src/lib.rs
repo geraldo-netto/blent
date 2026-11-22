@@ -17,6 +17,7 @@ pub mod encoding;
 pub mod gpu;
 pub mod host_activity;
 pub mod idle;
+mod idle_wait;
 pub mod input_mapping;
 pub mod model;
 pub mod negotiation;

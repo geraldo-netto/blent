@@ -117,3 +117,34 @@ unit and setup script; its original fresh-output assertions pass for environment
 and Cargo-config output overrides. Two policy tests and both Arch tests pass.
 Changed test functions pass complexity <=9; no production function changed.
 [Evidence](artifacts/2026-11-22-followup-batch/t1811/).
+
+## T1529 — bounded idle observation backoff
+
+Retirement waits grow from 5 to 100 ms and reset on admission/completion. Empty
+and entirely quarantined pools block for new work. Cleanup exposes a terminal
+quarantine only after its original worker has joined; it never releases the
+unknown obligations. Command/output loops preserve the first eight 1 ms idle
+polls, then grow to a 10 ms cap; output progress resets the cadence and caller
+deadlines clip sleeps. No native readiness or completion proof is inferred from
+the delay. Existing admissions, pipe capacities and original stop/join ownership
+remain authoritative; backoff stores only bounded scalar state per loop.
+
+Two permanent observation-count regressions failed before the change (198 reaper
+observations in one second; 477 idle reads in 500 ms). All 521 common library tests
+pass, including panic, timeout, cancellation, native TLS teardown and capacity
+regressions. All 13 maintained functions have >=80% line coverage; 100 measured
+source/test/benchmark functions have complexity <=9. Common production Clippy passes.
+
+Finite native benchmark (`common/examples/control_polling.rs`, strace 6.8):
+- Two-second retained child: wait4 calls 394 → 25; futex calls 396 → 27.
+- Two-second captured command: wait4 1822 → 210; reads 3565 → 435.
+- Quarantine-only workload: one blocking futex receive, no periodic observer.
+- Three runs of 50 short commands: baseline p50 2293–2428 µs, p95 2390–2572 µs;
+  final p50 2246–2281 µs, p95 2299–2377 µs. An initial candidate raised p95 to
+  about 4.6 ms; the initial fast observation window avoids that measured regression.
+
+These local syscall/latency measurements are not tablet power measurements or
+real-time guarantees. Worst-case observation adds up to 100 ms for retirement
+and 10 ms for command/output control. A separate reporting-panic gap found while
+reviewing this owner is retained as T1812.
+[Evidence](artifacts/2026-11-22-followup-batch/t1529/).

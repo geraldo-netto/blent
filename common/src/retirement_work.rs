@@ -91,6 +91,17 @@ fn run_work(shared: &Shared, report: fn()) -> Outcome {
 }
 
 impl Observe for Cleanup {
+    fn quarantined(&self) -> bool {
+        matches!(self.worker, Worker::Joined)
+            && self
+                .shared
+                .outcome
+                .lock()
+                .unwrap()
+                .as_ref()
+                .is_some_and(|outcome| outcome.work.is_err() || outcome.report.is_err())
+    }
+
     fn poll_complete(&mut self) -> bool {
         self.start();
         if !self.poll_worker() {

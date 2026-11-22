@@ -1,0 +1,23 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running unittests src/lib.rs (target/debug/build/blent-config/cd955b6b72e59911/out/blent_config-cd955b6b72e59911)
+
+running 2 tests
+test commands::output::tests::t1529_idle_output_waits_back_off_and_finish_without_losing_bytes ... 
+thread 'commands::output::tests::t1529_idle_output_waits_back_off_and_finish_without_losing_bytes' (928683) panicked at common/src/commands/output/tests.rs:291:5:
+T1529 idle pipe read calls: 477
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test retirement::idle_tests::t1529_idle_retirement_backs_off_without_releasing_original_admission ... 
+thread 'retirement::idle_tests::t1529_idle_retirement_backs_off_without_releasing_original_admission' (928702) panicked at common/src/retirement.rs:350:9:
+T1529 idle observation calls: 198
+FAILED
+
+failures:
+
+failures:
+    commands::output::tests::t1529_idle_output_waits_back_off_and_finish_without_losing_bytes
+    retirement::idle_tests::t1529_idle_retirement_backs_off_without_releasing_original_admission
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 517 filtered out; finished in 1.51s
+
+error: test failed, to rerun pass `-p blent-config --lib`
