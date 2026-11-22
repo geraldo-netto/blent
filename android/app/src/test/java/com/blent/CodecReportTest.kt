@@ -57,13 +57,12 @@ class CodecReportTest {
             ShadowMediaCodecList.addCodec(codec("vendor.hevc", false, false))
             val decoder = MediaCodec.createByCodecName("vendor.hevc")
             try {
-                val profile = DecoderProfile(hints = DecoderHints.SUPPORTED)
-                val unsupported = DecoderConfiguration.format(decoder,
-                    DecoderFormat("video/not-advertised", 640, 480, 30), profile, true)
+                val unsupported = ReplayDecoderConfiguration.format(decoder,
+                    DecoderFormat("video/not-advertised", 640, 480, 30), true)
                 assertFalse(unsupported.containsKey("low-latency"))
                 assertFalse(unsupported.containsKey(MediaFormat.KEY_OPERATING_RATE))
-                val known = DecoderConfiguration.format(decoder,
-                    DecoderFormat("video/hevc", 640, 480, 30), profile, true)
+                val known = ReplayDecoderConfiguration.format(decoder,
+                    DecoderFormat("video/hevc", 640, 480, 30), true)
                 assertFalse(known.containsKey("low-latency"))
                 assertFalse(known.containsKey("vendor.qti-ext-dec-low-latency.enable"))
                 assertTrue(decoderReport().startsWith("BLENT_CODECS_V2:"))
@@ -116,7 +115,7 @@ class CodecReportTest {
             val decoder = DecoderConfiguration.create(parameters)
             try {
                 assertEquals("vendor.hevc", decoder.name)
-                val format = DecoderConfiguration.format(decoder, parameters, DecoderProfile(), true)
+                val format = DecoderConfiguration.format(parameters, true)
                 assertFalse("T478: vendor hint forwarded to unrelated decoder", format.containsKey("vendor.qti-ext-dec-low-latency.enable"))
                 assertFalse(format.containsKey("low-latency"))
                 assertFalse(format.containsKey(MediaFormat.KEY_OPERATING_RATE))

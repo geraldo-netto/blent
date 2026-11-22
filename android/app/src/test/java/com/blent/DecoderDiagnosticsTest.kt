@@ -48,7 +48,7 @@ class DecoderDiagnosticsTest {
             val codec = MediaCodec.createByCodecName("t417.decoder")
             val parameters = DecoderFormat("video/avc", 640, 480, 30)
             try {
-                val configured = DecoderConfiguration.format(codec, parameters, DecoderProfile(), true)
+                val configured = DecoderConfiguration.format(parameters, true)
                 val row = DecoderDiagnosticProbe.capture(codec, parameters, configured)
                 assertEquals("t417.decoder", row.name)
                 assertEquals(if (Build.VERSION.SDK_INT >= 29) true else null, row.hardware)
@@ -61,7 +61,7 @@ class DecoderDiagnosticsTest {
                 assertNull(unknown.lowLatency)
                 assertNull(unknown.doubleRate)
                 assertEquals(false, DecoderDiagnosticProbe.capture(codec, parameters.copy(width = Int.MAX_VALUE), configured).doubleRate)
-                val disabled = DecoderConfiguration.format(codec, parameters, DecoderProfile(), false)
+                val disabled = DecoderConfiguration.format(parameters, false)
                 assertTrue(DecoderDiagnosticProbe.capture(codec, parameters, disabled).requested.isEmpty())
                 DiagnosticCodecShadow.information = null
                 val unavailable = DecoderDiagnosticProbe.capture(codec, parameters, configured)

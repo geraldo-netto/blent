@@ -36,17 +36,6 @@ dependencies { implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:
 '''
 BRIDGE = '''package com.blent.benchmark
 import com.blent.*
-internal fun applyProfile(decoder: DecoderSession, name: String) {
-    decoder.profile = when (name) {
-        "legacy", "socket-heap", "socket-direct" -> DecoderProfile()
-        "sync-normal" -> DecoderProfile(renderPriority = Thread.NORM_PRIORITY)
-        "callback-legacy" -> DecoderProfile(callbacks = true)
-        "callback-supported" -> DecoderProfile(true, DecoderHints.SUPPORTED, 2, Thread.NORM_PRIORITY)
-        "callback-supported1" -> DecoderProfile(true, DecoderHints.SUPPORTED, 1, Thread.NORM_PRIORITY)
-        "callback-unhinted" -> DecoderProfile(true, DecoderHints.NONE, null, Thread.NORM_PRIORITY)
-        else -> error("Unknown decoder profile")
-    }
-}
 '''
 SOCKET_BRIDGE = '''
 internal fun createReplayInput(decoder: DecoderSession, profile: String, active: () -> Boolean): ReplayInput? = when (profile) {
@@ -128,9 +117,7 @@ def prepare(args):
     (directory / 'app/src/main/AndroidManifest.xml').write_text(MANIFEST)
     shared_sources(directory, args.revision)
     copy_replay_sources(directory)
-    bridge = BRIDGE.replace('"sync-normal" ->',
-                            '"render-latest" -> DecoderProfile(renderLatest = true)\n        "sync-normal" ->')
-    bridge += SOCKET_BRIDGE + CURRENT_BRIDGE
+    bridge = BRIDGE + SOCKET_BRIDGE + CURRENT_BRIDGE
     (directory / 'app/src/main/java/ProfileBridge.kt').write_text(bridge)
     return directory
 

@@ -52,6 +52,26 @@ class StartupCodecShadow : ShadowMediaCodec() {
 @Config(sdk = [27, 34], shadows = [StartupCodecShadow::class])
 class DecoderStartupTest {
     @org.junit.After fun awaitFixtureRetirement() = awaitDecoderRetirement()
+    @Test fun t1747StartupRetainsItsOriginalFormatFactory() {
+        StartupCodecShadow.stage = ""
+        val surface = Surface(SurfaceTexture(1))
+        val receiver = VideoReceiver { error("T1747 no transport") }
+        org.robolectric.util.ReflectionHelpers.setField(receiver, "isRunning", true)
+        var configured = 0
+        receiver.decoder.formatCodec = { _, parameters, hints ->
+            configured++
+            DecoderConfiguration.format(parameters, hints)
+        }
+        receiver.decoder.createCodec = { parameters ->
+            receiver.decoder.formatCodec = { _, _, _ -> error("T1747 replacement factory entered old startup") }
+            MediaCodec.createDecoderByType(parameters.mimeType)
+        }
+        try {
+            assertTrue(receiver.setupCodec(surface))
+            assertEquals(1, configured)
+        } finally { receiver.stop(); surface.release() }
+    }
+
     @Test fun t497_factoryFailureRetiresStartupAndAcknowledgementsIgnoreRetiredCodec() {
         StartupCodecShadow.stage = ""
         StartupCodecShadow.renderedListener = null

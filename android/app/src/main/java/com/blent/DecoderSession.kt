@@ -33,6 +33,7 @@ internal class DecoderSession(
     private var frameCallbackThread: HandlerThread? = null
     var callbackThreadFactory: () -> HandlerThread = { HandlerThread("blent-frame-cb") }
     var createCodec: (DecoderFormat) -> MediaCodec = DecoderConfiguration::create
+    var formatCodec: DecoderFormatFactory = { _, parameters, hints -> DecoderConfiguration.format(parameters, hints) }
     var outputClock: () -> Long = System::nanoTime
     var inputClock: () -> Long = System::nanoTime
     private val renderedCount = AtomicLong(0)
@@ -48,7 +49,7 @@ internal class DecoderSession(
     val diagnostics = diagnosticState.asStateFlow()
 
     private class Startup(val epoch: FrameTiming.Epoch, val profile: DecoderProfile,
-                          val hints: Boolean, val valid: () -> Boolean) {
+                          val format: DecoderFormatFactory, val hints: Boolean, val valid: () -> Boolean) {
         var owner: CodecLifetime? = null
         var thread: HandlerThread? = null
         var callbacks: CallbackDecoder? = null
@@ -84,7 +85,7 @@ internal class DecoderSession(
         if (!CodecLifetime.beginStartup()) return null
         retiring = null
         outputWatchdog.restarted(outputClock())
-        Startup(timing.beginEpoch(), profile, outputWatchdog.lowLatencyHints, valid).also { startup = it }
+        Startup(timing.beginEpoch(), profile, formatCodec, outputWatchdog.lowLatencyHints, valid).also { startup = it }
     }
 
     private fun startupCurrent(attempt: Startup): Boolean = synchronized(monitor) {
@@ -92,7 +93,7 @@ internal class DecoderSession(
     }
 
     private fun configureStartup(attempt: Startup, codec: MediaCodec, surface: Surface, parameters: DecoderFormat) {
-        val format = DecoderConfiguration.format(codec, parameters, attempt.profile, attempt.hints)
+        val format = attempt.format(codec, parameters, attempt.hints)
         attempt.decoderReceipt = parameters.selection?.receipt(attempt.hints)
         attempt.diagnostics = DecoderDiagnosticProbe.capture(codec, parameters, format)
         if (!startupCurrent(attempt)) return

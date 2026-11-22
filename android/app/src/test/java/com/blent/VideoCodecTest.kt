@@ -74,7 +74,7 @@ class VideoCodecTest {
         assertArrayEquals(byteArrayOf(1, 2), parsed.codecPrivate)
         val codec = MediaCodec.createDecoderByType(vp9)
         try {
-            val format = DecoderConfiguration.format(codec, parsed, DecoderProfile(), false)
+            val format = DecoderConfiguration.format(parsed, false)
             assertEquals(640, format.getInteger(MediaFormat.KEY_WIDTH))
             assertEquals(ByteBuffer.wrap(byteArrayOf(1, 2)), format.getByteBuffer("csd-0"))
         } finally { codec.release() }
@@ -84,7 +84,7 @@ class VideoCodecTest {
         assertArrayEquals(byteArrayOf(), parsed.codecPrivate)
         val codec = MediaCodec.createDecoderByType(vp9)
         try {
-            val format = DecoderConfiguration.format(codec, parsed, DecoderProfile(), false)
+            val format = DecoderConfiguration.format(parsed, false)
             assertFalse(format.containsKey("csd-0"))
         } finally { codec.release() }
     }

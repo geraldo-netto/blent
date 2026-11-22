@@ -12,7 +12,7 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class DecoderConfigurationTest {
-    private class Support(private val low: Boolean, private val rate: Boolean) : DecoderConfiguration.Support {
+    private class Support(private val low: Boolean, private val rate: Boolean) : ReplayDecoderConfiguration.Support {
         var queries = 0
         override fun lowLatency(codec: MediaCodec, mime: String): Boolean { queries++; assertEquals("video/avc", mime); return low }
         override fun operatingRate(codec: MediaCodec, parameters: DecoderFormat, fps: Int): Boolean {
@@ -26,8 +26,8 @@ class DecoderConfigurationTest {
         try {
             for (low in listOf(false, true)) for (rate in listOf(false, true)) {
                 val support = Support(low, rate)
-                val format = DecoderConfiguration.format(codec, DecoderFormat("video/avc", 1280, 800, 60),
-                    DecoderProfile(true, DecoderHints.SUPPORTED, 2), true, support)
+                val format = ReplayDecoderConfiguration.format(codec, DecoderFormat("video/avc", 1280, 800, 60),
+                    true, 2, support)
                 assertEquals(low && Build.VERSION.SDK_INT >= 30, format.containsKey("low-latency"))
                 assertEquals(rate, format.containsKey(MediaFormat.KEY_OPERATING_RATE))
                 if (rate) assertEquals(120, format.getInteger(MediaFormat.KEY_OPERATING_RATE))
@@ -43,19 +43,21 @@ class DecoderConfigurationTest {
         val support = Support(true, true)
         val parameters = DecoderFormat("video/avc", 1280, 800, 60)
         try {
-            val profiles = listOf(DecoderProfile(), DecoderProfile(true, DecoderHints.SUPPORTED), DecoderProfile(true, DecoderHints.NONE))
-            for (profile in profiles) {
-                val format = DecoderConfiguration.format(codec, parameters, profile, false, support)
+            val formats = listOf(
+                DecoderConfiguration.format(parameters, false),
+                ReplayDecoderConfiguration.format(codec, parameters, false, support = support),
+                DecoderConfiguration.baseFormat(parameters, false))
+            for (format in formats) {
                 assertFalse(format.containsKey("low-latency"))
                 assertFalse(format.containsKey(MediaFormat.KEY_OPERATING_RATE))
                 assertFalse(format.containsKey("vendor.qti-ext-dec-low-latency.enable"))
             }
-            val unhinted = DecoderConfiguration.format(codec, parameters, DecoderProfile(true, DecoderHints.NONE), true, support)
+            val unhinted = DecoderConfiguration.baseFormat(parameters, true)
             assertFalse(unhinted.containsKey(MediaFormat.KEY_OPERATING_RATE))
             assertEquals(0, support.queries)
-            val legacy = DecoderConfiguration.format(codec, parameters, DecoderProfile(), true, support)
-            assertEquals(120, legacy.getInteger(MediaFormat.KEY_OPERATING_RATE))
-            assertEquals(1, legacy.getInteger("vendor.qti-ext-dec-low-latency.enable"))
+            val current = DecoderConfiguration.format(parameters, true)
+            assertEquals(120, current.getInteger(MediaFormat.KEY_OPERATING_RATE))
+            assertEquals(1, current.getInteger("vendor.qti-ext-dec-low-latency.enable"))
             assertEquals(0, support.queries)
         } finally { codec.release() }
     }

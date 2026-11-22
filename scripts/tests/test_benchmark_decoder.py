@@ -29,6 +29,18 @@ class DecoderBenchmarkTests(unittest.TestCase):
             self.assertEqual((output / 'app/src/main/java/ChannelPacketReader.kt').read_bytes(), source.read_bytes())
             self.assertFalse((output / 'originals/ChannelPacketReader.kt').exists())
 
+    def test_t1747_replay_format_policies_are_not_production_sources(self):
+        spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
+        project = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(project)
+        with tempfile.TemporaryDirectory() as directory:
+            output = project.prepare(SimpleNamespace(directory=Path(directory) / 'replay', revision=None,
+                package='com.blent.decoderbench.candidate'))
+            for name in ['ReplayDecoderConfiguration.kt', 'ReplayProfiles.kt']:
+                self.assertFalse((project.SOURCE / name).exists())
+                expected = project.ROOT / 'scripts/benchmarks/android-decoder/experiments' / name
+                self.assertEqual((output / 'app/src/main/java' / name).read_bytes(), expected.read_bytes())
+
     def test_t1746_generated_replay_includes_exact_decoder_eligibility_contract(self):
         spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
         project = importlib.util.module_from_spec(spec)

@@ -114,6 +114,7 @@ android {
     sourceSets.getByName("testDebug").java.srcDir("src/tlsInterop/tests")
     // Exercise the isolated replay's transport lifetime in the normal suite.
     sourceSets.getByName("test").java.srcDir("../../scripts/benchmarks/android-decoder/input")
+    sourceSets.getByName("test").java.srcDir("../../scripts/benchmarks/android-decoder/experiments")
 
     lint {
         // T258: a successful scan must not silently omit library checks.
