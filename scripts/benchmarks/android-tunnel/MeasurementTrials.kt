@@ -30,7 +30,7 @@ internal fun measurementResult(size: Int, fps: Int, combined: Boolean, elapsed: 
     extra.forEach { (key, value) -> put(key, value) }
 }
 
-private fun persistMeasurement(output: File, results: List<JsonObject>) {
+internal fun persistMeasurement(output: File, results: List<JsonObject>) {
     val pending = File(output.parentFile, output.name + ".pending")
     try {
         pending.writeText(JsonArray(results).toString())

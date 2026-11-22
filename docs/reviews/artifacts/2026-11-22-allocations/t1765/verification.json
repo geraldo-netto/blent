@@ -1,0 +1,18 @@
+{
+  "item": "T1765",
+  "production_test_cases": 42,
+  "production_test_classes": 8,
+  "production_functions": 24,
+  "minimum_function_line_coverage": 100.0,
+  "restored_and_benchmark_cases": 19,
+  "complexity_functions": 273,
+  "maximum_complexity": 7,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI / Python 3.12 AST",
+  "groovy_closures": 4,
+  "groovy_maximum": 3,
+  "allocation_trials": 28,
+  "saved_hosted_bytes_per_scheduling_pass": 40,
+  "additional_snapshot_payload_bytes_per_mux": 24,
+  "fault_control": "stale snapshot fails permanent metadata/credit regression; exact restored source passes",
+  "native_acceptance": "Not run; native ART/process evidence remains T1527"
+}

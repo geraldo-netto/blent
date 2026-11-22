@@ -10,6 +10,9 @@ internal class ConnectionMux(private val session: Long, generation: Long, privat
     private val queue = ConnectionQueue(capacity, messages, quantum)
     private val enabled = BooleanArray(ConnectionWire.CHANNELS) { it == ConnectionWire.CHANNELS - 1 }
     private val credit = IntArray(ConnectionWire.CHANNELS) { if (enabled[it]) capacity else 0 }
+    // Scratch view only: flows remain authoritative. The serialized next call
+    // refreshes every entry; ConnectionQueue borrows it only during that call.
+    private val creditSnapshot = IntArray(ConnectionWire.CHANNELS)
     private val terminal = arrayOfNulls<ConnectionWire.Header>(ConnectionWire.CHANNELS)
     private val closing = BooleanArray(ConnectionWire.CHANNELS)
     private var active: ConnectionWire.Header? = null
@@ -101,7 +104,8 @@ internal class ConnectionMux(private val session: Long, generation: Long, privat
         check(!failed)
         if (active != null) return null
         if (metadataFirst) metadata()?.let { return Frame(it, empty, 0, 0) }
-        val slice = queue.next(IntArray(flows.size) { flows[it].available() })
+        for (index in flows.indices) creditSnapshot[index] = flows[index].available()
+        val slice = queue.next(creditSnapshot)
         if (slice != null) {
             val header = flows[slice.channel - 1].send(ConnectionWire.DATA, slice.length, 0)
             active = header

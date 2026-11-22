@@ -116,3 +116,27 @@ Tests cover foreign/duplicate/invalid completions, prefix fragmentation, guarded
 extents, retained-loan reuse rejection, wrong bytes/headers and actual TLS exchange.
 The one-outstanding-frame domain does not measure pipelined multi-frame read-ahead,
 Android ART/LocalSocket behavior or full-reactor deadlines under native cancellation.
+
+For multiplexer scheduling allocation, use the current production mux:
+
+```sh
+python3 scripts/benchmarks/android-tunnel/run.py /tmp/blent-mux-allocation --kind mux-allocation
+python3 scripts/benchmarks/android-tunnel/analyze_mux.py /tmp/earlier-mux/results.json /tmp/blent-mux-allocation/results.json
+```
+
+This separate finite domain has 14 trials: four warmups and ten measured trials,
+five each for idle scheduling and 64-byte data transfers. Every trial executes
+200,000 passes. Data mode grants exactly one payload of peer credit, offers the
+same original array only after its preceding frame finishes, checks its identity
+and length, and finishes the exact reserved frame. Idle mode requires no frame.
+The loop owns one mux and one 64-byte payload; initialization is outside timing.
+No sockets, device access, processes or coroutine workers occur inside a trial.
+
+Hosted thread counters measure allocations and CPU for the driver; elapsed time
+also includes scheduling and collection pauses. Counter sampling has a small fixed
+per-trial allocation cost, so tiny residual bytes/pass are not attributed to the
+mux. There are no hardware/ART counters here. The analyzer reports medians of five
+trials and ratios between separate runs; historical artifacts preserve earlier
+source hashes without retaining an executable old implementation. Production
+snapshot capacity and exact behavior still require separate ownership/regression
+checks; a lower allocation counter is not a leak-freedom proof.

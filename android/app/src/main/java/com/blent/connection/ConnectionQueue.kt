@@ -30,6 +30,7 @@ internal class ConnectionQueue(private val capacity: Int, private val messages: 
         return true
     }
 
+    /** Borrows credit only for this synchronous call; no reference is retained. */
     fun next(credit: IntArray): Slice? {
         require(credit.size == ConnectionWire.CHANNELS && credit.all { it in 0..ConnectionWire.MAX_CREDIT })
         if (active != null) return null

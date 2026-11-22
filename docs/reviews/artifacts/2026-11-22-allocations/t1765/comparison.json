@@ -1,0 +1,35 @@
+{
+  "scope": "separate hosted JVM runs, five measured trials per mode/run",
+  "comparisons": {
+    "idle": {
+      "before": {
+        "driver_allocated_bytes_per_pass": 40.00084,
+        "driver_cpu_ns_per_pass": 26.429815,
+        "elapsed_ns_per_pass": 26.369255
+      },
+      "after": {
+        "driver_allocated_bytes_per_pass": 0.00084,
+        "driver_cpu_ns_per_pass": 21.88574,
+        "elapsed_ns_per_pass": 21.83045
+      },
+      "cpu_ratio": 0.828070117025034,
+      "wall_ratio": 0.8278751144088068,
+      "saved_bytes_per_pass": 40.0
+    },
+    "data": {
+      "before": {
+        "driver_allocated_bytes_per_pass": 184.00084,
+        "driver_cpu_ns_per_pass": 54.13256,
+        "elapsed_ns_per_pass": 53.928925
+      },
+      "after": {
+        "driver_allocated_bytes_per_pass": 144.00084,
+        "driver_cpu_ns_per_pass": 52.49148,
+        "elapsed_ns_per_pass": 54.359005
+      },
+      "cpu_ratio": 0.9696840496736161,
+      "wall_ratio": 1.0079749410914458,
+      "saved_bytes_per_pass": 40.0
+    }
+  }
+}

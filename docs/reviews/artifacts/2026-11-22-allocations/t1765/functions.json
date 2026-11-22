@@ -1,0 +1,563 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "<init>",
+    "line": 3,
+    "language": "kotlin",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "<init>",
+        "signature": "(JJIII)V",
+        "line": 5,
+        "covered": 12,
+        "total": 12
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "<init>",
+    "line": 6,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux$Frame",
+        "name": "<init>",
+        "signature": "(Lcom/blent/connection/ConnectionWire$Header;[BII)V",
+        "line": 6,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "activate",
+    "line": 24,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "activate",
+        "signature": "(IJ)V",
+        "line": 29,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "offer",
+    "line": 36,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "offer",
+        "signature": "(I[B)Z",
+        "line": 37,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "acceptsData",
+    "line": 42,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "acceptsData",
+        "signature": "(IJ)Z",
+        "line": 44,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "receive",
+    "line": 49,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "receive",
+        "signature": "(Lcom/blent/connection/ConnectionWire$Header;)Z",
+        "line": 52,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "release",
+    "line": 62,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "release",
+        "signature": "(II)V",
+        "line": 63,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "close",
+    "line": 70,
+    "language": "kotlin",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "close",
+        "signature": "(II)V",
+        "line": 73,
+        "covered": 11,
+        "total": 11
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "metadata",
+    "line": 85,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "metadata",
+        "signature": "()Lcom/blent/connection/ConnectionWire$Header;",
+        "line": 86,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "takeMetadata",
+    "line": 97,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "takeMetadata",
+        "signature": "(I)Lcom/blent/connection/ConnectionWire$Header;",
+        "line": 98,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "next",
+    "line": 103,
+    "language": "kotlin",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "next",
+        "signature": "()Lcom/blent/connection/ConnectionMux$Frame;",
+        "line": 104,
+        "covered": 11,
+        "total": 11
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "finish",
+    "line": 118,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "finish",
+        "signature": "(Z)V",
+        "line": 121,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "consumerRetired",
+    "line": 128,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "consumerRetired",
+        "signature": "(IJ)V",
+        "line": 130,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "replaceChannel",
+    "line": 136,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "replaceChannel",
+        "signature": "(IJ)V",
+        "line": 138,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+    "name": "retired",
+    "line": 146,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionMux.kt",
+        "owner": "com/blent/connection/ConnectionMux",
+        "name": "retired",
+        "signature": "(I)Z",
+        "line": 147,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+    "name": "<init>",
+    "line": 5,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+        "owner": "com/blent/connection/ConnectionQueue",
+        "name": "<init>",
+        "signature": "(III)V",
+        "line": 8,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+    "name": "<init>",
+    "line": 9,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+        "owner": "com/blent/connection/ConnectionQueue$Pending",
+        "name": "<init>",
+        "signature": "([BI)V",
+        "line": 9,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+        "owner": "com/blent/connection/ConnectionQueue$Pending",
+        "name": "<init>",
+        "signature": "([BIILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+        "line": 9,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+    "name": "<init>",
+    "line": 10,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+        "owner": "com/blent/connection/ConnectionQueue$Slice",
+        "name": "<init>",
+        "signature": "(I[BII)V",
+        "line": 10,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+    "name": "offer",
+    "line": 22,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+        "owner": "com/blent/connection/ConnectionQueue",
+        "name": "offer",
+        "signature": "(I[B)Z",
+        "line": 24,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+    "name": "next",
+    "line": 33,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+        "owner": "com/blent/connection/ConnectionQueue",
+        "name": "next",
+        "signature": "([I)Lcom/blent/connection/ConnectionQueue$Slice;",
+        "line": 35,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+    "name": "reserve",
+    "line": 46,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+        "owner": "com/blent/connection/ConnectionQueue",
+        "name": "reserve",
+        "signature": "(ILcom/blent/connection/ConnectionQueue$Pending;I)Lcom/blent/connection/ConnectionQueue$Slice;",
+        "line": 47,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+    "name": "finish",
+    "line": 54,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+        "owner": "com/blent/connection/ConnectionQueue",
+        "name": "finish",
+        "signature": "(Z)V",
+        "line": 56,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+    "name": "advance",
+    "line": 61,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+        "owner": "com/blent/connection/ConnectionQueue",
+        "name": "advance",
+        "signature": "(Lcom/blent/connection/ConnectionQueue$Slice;)V",
+        "line": 62,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+    "name": "clear",
+    "line": 71,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionQueue.kt",
+        "owner": "com/blent/connection/ConnectionQueue",
+        "name": "clear",
+        "signature": "(I)V",
+        "line": 72,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  }
+]
