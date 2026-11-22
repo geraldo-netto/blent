@@ -2,11 +2,10 @@
 //! Native C contract and capture-adapter regressions without physical devices.
 use std::{path::PathBuf, process::Command};
 
-#[test]
-fn t1712_quiet_capture_descriptors_avoid_redundant_probes() {
+fn run_capture_fixture(source: &str, extra: &[&str]) -> String {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let directory = tempfile::tempdir().unwrap();
-    let binary = directory.path().join("probe-test");
+    let binary = directory.path().join("capture-fixture");
     let compiled = Command::new("cc")
         .args([
             "-std=c11",
@@ -20,7 +19,8 @@ fn t1712_quiet_capture_descriptors_avoid_redundant_probes() {
             "-fno-pie",
             "-no-pie",
         ])
-        .arg(root.join("tests/capture_probe_test.c"))
+        .args(extra)
+        .arg(root.join("tests").join(source))
         .arg("-o")
         .arg(&binary)
         .output()
@@ -31,11 +31,24 @@ fn t1712_quiet_capture_descriptors_avoid_redundant_probes() {
         String::from_utf8_lossy(&compiled.stderr)
     );
     let tested = Command::new(binary).output().unwrap();
-    eprint!("{}", String::from_utf8_lossy(&tested.stderr));
-    assert!(
-        tested.status.success(),
+    let log = String::from_utf8_lossy(&tested.stderr).into_owned();
+    assert!(tested.status.success(), "{log}");
+    log
+}
+
+#[test]
+fn t1712_quiet_capture_descriptors_avoid_redundant_probes() {
+    eprint!("{}", run_capture_fixture("capture_probe_test.c", &[]));
+}
+
+#[test]
+fn t1713_fresh_frames_skip_advice_but_idle_keeps_exact_deadlines() {
+    eprint!(
         "{}",
-        String::from_utf8_lossy(&tested.stderr)
+        run_capture_fixture(
+            "writer_advice_probe_test.c",
+            &["-Wl,--wrap=pthread_cond_timedwait"]
+        )
     );
 }
 

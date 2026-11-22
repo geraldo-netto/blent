@@ -1,0 +1,233 @@
+{
+  "item": "T1713",
+  "date": "2026-11-22",
+  "tests": {
+    "native_helper_selected": 12,
+    "native_modules": 4,
+    "failures": 0,
+    "native_build": "C11 O3 Wall Wextra Werror; private helper linked, not launched"
+  },
+  "regression": "t1713_fresh_frames_skip_advice_but_idle_keeps_exact_deadlines failed before behavior change at the advice-count assertion; same permanent test passed afterward. All exact deadline and lease assertions passed in both runs.",
+  "counts": {
+    "fresh_frames": 1000,
+    "fresh_before": {
+      "opens": 1000,
+      "reads": 1000
+    },
+    "fresh_after": {
+      "opens": 0,
+      "reads": 0
+    },
+    "idle_decisions": 10,
+    "idle_before": {
+      "opens": 20,
+      "reads": 18
+    },
+    "idle_after": {
+      "opens": 10,
+      "reads": 9
+    }
+  },
+  "functions": [
+    {
+      "file": "host/evdi/writer.c",
+      "name": "claim_writer_frame",
+      "line": 84,
+      "language": "c",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "writer_frame_due",
+      "line": 106,
+      "language": "c",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "writer_run",
+      "line": 168,
+      "language": "c",
+      "covered": 20,
+      "total": 21,
+      "percent": 95.23809523809524,
+      "passes": true,
+      "missing": [
+        190
+      ]
+    }
+  ],
+  "complexity": [
+    [
+      "host/evdi/writer.c",
+      17,
+      "writer_now_us",
+      1
+    ],
+    [
+      "host/evdi/writer.c",
+      24,
+      "writer_now_ms",
+      1
+    ],
+    [
+      "host/evdi/writer.c",
+      29,
+      "writer_idle_ms",
+      2
+    ],
+    [
+      "host/evdi/writer.c",
+      36,
+      "record_latency",
+      2
+    ],
+    [
+      "host/evdi/writer.c",
+      56,
+      "add_period",
+      2
+    ],
+    [
+      "host/evdi/writer.c",
+      66,
+      "ensure_writer_fifo",
+      3
+    ],
+    [
+      "host/evdi/writer.c",
+      84,
+      "claim_writer_frame",
+      5
+    ],
+    [
+      "host/evdi/writer.c",
+      106,
+      "writer_frame_due",
+      3
+    ],
+    [
+      "host/evdi/writer.c",
+      130,
+      "pace_writer",
+      3
+    ],
+    [
+      "host/evdi/writer.c",
+      155,
+      "write_writer_frame",
+      4
+    ],
+    [
+      "host/evdi/writer.c",
+      168,
+      "writer_run",
+      8
+    ],
+    [
+      "host/tests/evdi_modules.rs",
+      5,
+      "run_capture_fixture",
+      1
+    ],
+    [
+      "host/tests/evdi_modules.rs",
+      40,
+      "t1712_quiet_capture_descriptors_avoid_redundant_probes",
+      1
+    ],
+    [
+      "host/tests/evdi_modules.rs",
+      45,
+      "t1713_fresh_frames_skip_advice_but_idle_keeps_exact_deadlines",
+      1
+    ],
+    [
+      "host/tests/evdi_modules.rs",
+      56,
+      "t1709_cadence_policy_needs_no_native_adapter",
+      1
+    ],
+    [
+      "host/tests/evdi_modules.rs",
+      94,
+      "t380_independent_contexts_preserve_frame_and_callback_lifetimes",
+      2
+    ],
+    [
+      "host/tests/writer_advice_probe_test.c",
+      10,
+      "counted_open",
+      4
+    ],
+    [
+      "host/tests/writer_advice_probe_test.c",
+      29,
+      "counted_read",
+      3
+    ],
+    [
+      "host/tests/writer_advice_probe_test.c",
+      36,
+      "counted_close",
+      2
+    ],
+    [
+      "host/tests/writer_advice_probe_test.c",
+      61,
+      "__wrap_pthread_cond_timedwait",
+      2
+    ],
+    [
+      "host/tests/writer_advice_probe_test.c",
+      71,
+      "advice_begin",
+      2
+    ],
+    [
+      "host/tests/writer_advice_probe_test.c",
+      93,
+      "fresh_frames",
+      3
+    ],
+    [
+      "host/tests/writer_advice_probe_test.c",
+      106,
+      "idle_decision",
+      3
+    ],
+    [
+      "host/tests/writer_advice_probe_test.c",
+      118,
+      "idle_deadlines",
+      2
+    ],
+    [
+      "host/tests/writer_advice_probe_test.c",
+      133,
+      "advice_end",
+      1
+    ],
+    [
+      "host/tests/writer_advice_probe_test.c",
+      149,
+      "main",
+      5
+    ]
+  ],
+  "coverage_tool": "GCC/gcov 13.3.0 via normal native test suites; ASan/UBSan retained",
+  "complexity_tool": "project C tree-sitter 0.25.2 / Rust syn 2.0.119 checker",
+  "source_sha256": "1faf94692fecba761708ce2907a4b4633f775a6388d477ac67da6f3b087486a5",
+  "ownership": "Writer owns scalar next-decision time; it grants no permission. Every nonfresh frame decision rereads advice through the original pinned reader and validates the current source identity. Fresh frames reset the default 200 ms deadline; waits recheck within 200 ms. Existing frame exchange retains generation-tagged admission and lease handoff; rejected idle claims release once, admitted claims remain leased through pacing/write. No new allocations or escaping borrows. Fixture counters track the currently open advice descriptor; path borrowing ends before cleanup, original advice pin closes, frame buffers retire/free before synchronization destruction, private pipe descriptors close before reuse.",
+  "boundary_tests": "500 and 1000 ms exact idle sends; expired advice; removed advice; resumed advice; 200 ms rechecks; existing original writer cancellation, mode retirement, reader identity, malformed advice and retained-slot regressions.",
+  "review": "Independent read-only native review found no additional defect; no builds or device operations by reviewer.",
+  "limitations": "Probe counts under private mocked-clock/EVDI fixtures; no CPU, power or end-to-end performance measurement. No installed session or physical device changed."
+}

@@ -45,6 +45,8 @@ typedef struct
 {
     long period_ns;
     long long last_write_ms;
+    /* Next idle decision; each actual decision revalidates original advice. */
+    long long idle_due_ms;
     struct timespec next_allowed;
     frame_cursor_t frame;
     frame_lease_t lease;
@@ -79,19 +81,20 @@ static int ensure_writer_fifo(writer_context_t *writer)
 }
 
 /* The exchange owns locking and publishes a generation-tagged lease. */
-static int claim_writer_frame(writer_context_t *writer, writer_state_t *state, int *size,
-                              int *fresh)
+static int claim_writer_frame(writer_context_t *writer, writer_state_t *state, int *size, int *fresh)
 {
-    long long due = state->last_write_ms + writer_idle_ms(writer, &state->idle);
-    /* Advice may be removed or expire while no damage is published. Recheck
-     * within compatibility cadence; a poll is not a raw-frame write. */
-    long long recheck = writer_now_ms() + 200;
+    long long due = state->idle_due_ms;
+    if (due == 0)
+        due = state->last_write_ms + IDLE_KEEPALIVE_MS;
+    /* Fresh publication needs no advice read. Once idle, revalidate advice
+     * within the normal keepalive cadence; a poll is not a raw-frame write. */
+    long long recheck = writer_now_ms() + IDLE_KEEPALIVE_MS;
     if (due > recheck)
         due = recheck;
     struct timespec keepalive = {.tv_sec = due / 1000, .tv_nsec = (due % 1000) * 1000000L};
     const struct timespec *deadline = state->frame.have_frame ? &keepalive : NULL;
-    int result = frame_exchange_claim(writer->frames, &state->frame, writer->running, deadline,
-                                      &state->lease);
+    int result =
+        frame_exchange_claim(writer->frames, &state->frame, writer->running, deadline, &state->lease);
     if (result > 0)
     {
         *size = (int)state->lease.size;
@@ -109,12 +112,17 @@ static int writer_frame_due(writer_context_t *writer, writer_state_t *state, int
        transmit no new information. The occasional keepalive keeps the
        encoder and the client's read timeout alive. */
     long long now_ms_write = writer_now_ms();
-    if (!fresh && (now_ms_write - state->last_write_ms) < writer_idle_ms(writer, &state->idle))
+    if (!fresh)
     {
-        frame_exchange_release(writer->frames);
-        return 0;
+        state->idle_due_ms = state->last_write_ms + writer_idle_ms(writer, &state->idle);
+        if (now_ms_write < state->idle_due_ms)
+        {
+            frame_exchange_release(writer->frames);
+            return 0;
+        }
     }
     state->last_write_ms = now_ms_write;
+    state->idle_due_ms = now_ms_write + IDLE_KEEPALIVE_MS;
 
     return 1;
 }
