@@ -110,3 +110,60 @@ per size/rate. The repository checker measures 237 Kotlin/Python functions, maxi
 complexity 7; benchmark line coverage is exempt. No production behavior, installed
 session or saved setting changed. Evidence:
 `artifacts/2026-11-22-allocations/t1767/`.
+
+## T1766: producer array allocation
+
+Keep the current producer allocation policy for now: reuse the native scratch for
+partial reads while copying only their used prefix into a right-sized transferred
+array; transfer full original blocks and allocate the next native read separately.
+This bounds queued partial payloads by their actual size and avoids borrowing an
+array that has already moved to the endpoint. A whole-block pool would change
+cross-domain queue ownership and retained capacity, especially for tiny reads.
+
+A finite hosted fixture invokes the actual LocalChannelProducer with its current
+64-KiB block. One synchronous synthetic native owner supplies each exact completed
+read; the endpoint consumes immediately, after verifying that the next admitted
+read cannot overwrite its transferred array. Both native filling and full endpoint
+byte validation are included in CPU/wall measurements. Twenty-eight trials contain
+eight warmups and twenty measured trials, five per completion size, each with
+1,024 completions. Initial producer/native scratch allocation is outside timing.
+
+| Completed bytes | Allocated bytes/completion | CPU ns/completion | Wall ns/completion | Bytes transferred in a different array |
+| --- | --- | --- | --- | --- |
+| 64 | 168.16 | 97.96 | 90.90 | 64 |
+| 4096 | 4200.16 | 1884.14 | 1875.08 | 4096 |
+| 16384 | 16488.16 | 7511.00 | 7481.73 | 16384 |
+| 65536 | 65640.16 | 27554.81 | 27517.59 | 0 |
+
+Allocation is payload size plus approximately 104 bytes per completion in this
+JVM, plus fixed per-trial counter overhead. Full blocks transfer without a payload
+copy. The largest measured CPU cost is about 27.6 microseconds/completion, including
+fixture filling/verification. Multiplying by 60 completions/s gives about 1.65 ms
+of driver CPU per second; this is a workload estimate from the hosted microbenchmark,
+not measured tablet throughput. At that same hypothetical rate, 64-KiB completions
+allocate about 3.76 MiB/s, so native allocation/GC evidence still matters.
+
+The hosted CPU cost and current compact partial-payload ownership do not justify
+introducing a pool or a new offset/length queue contract now. This resolves the
+measurement/policy outcome under T1766's existing-policy alternative; it does not
+prove allocation harmless under every rate or native collector. T1527 explicitly
+retains actual connection-process allocation, GC and retained/peak evidence, and
+must reopen a focused buffer optimization if that evidence identifies material
+cost. No zero-copy, pooling, native improvement or leak-freedom claim is made.
+
+The synthetic fixture retains at most one producer scratch/pending native read
+and one transferred payload, each bounded by 64 KiB. The queue endpoint drops each
+payload only after validation, while the producer owns the next distinct native
+loan. On normal exit or failure, cancellation completes the exact original pending
+synthetic read before owned endpoint storage is discarded. There is no native
+thread, socket or external lease whose retirement is inferred from that callback;
+production native retirement remains covered by its existing permanent regressions.
+
+All 20 hosted cases across six classes pass, including new invalid-domain checks
+and original-array/non-overwrite checks for partial/full boundary sizes. The
+repository checker measures 265 Kotlin/Python functions, maximum complexity 7;
+Groovy 3.0.17 compiler AST measures four task closures, maximum 3. Benchmark line
+coverage is exempt. All 28 trials preserve source hashes. Evidence:
+`artifacts/2026-11-22-allocations/t1766/`. No production code, installed session or
+saved setting changed. The measurement and policy decision are one cohesive outcome;
+no pool implementation is claimed.

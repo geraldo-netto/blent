@@ -1,0 +1,15 @@
+{
+  "item": "T1766",
+  "hosted_cases": 20,
+  "hosted_classes": 6,
+  "measurement_trials": 28,
+  "unchanged_inputs": true,
+  "complexity_functions": 265,
+  "maximum_complexity": 7,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI / Python 3.12 AST",
+  "groovy_closures": 4,
+  "groovy_maximum": 3,
+  "coverage": "benchmark/nonessential tool exemption",
+  "production_behavior_changed": false,
+  "scope": "current producer with synchronous synthetic native loans and immediate endpoint consumption; no Android ART or native GC evidence"
+}

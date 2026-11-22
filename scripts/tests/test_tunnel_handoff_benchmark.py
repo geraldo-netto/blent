@@ -22,12 +22,14 @@ class TunnelHandoffBenchmarkTest(unittest.TestCase):
                 '--tests', 'com.blent.connection.LocalMeasurementTest',
                 '--tests', 'com.blent.connection.ReadMeasurementTest',
                 '--tests', 'com.blent.connection.MuxAllocationTest',
+                '--tests', 'com.blent.connection.ProducerAllocationTest',
                 'help', '--task', 'tunnelHandoffBenchmark', 'tasks', '--all',
             ], dict(os.environ), logfile)
             self.assertIn('tunnelHandoffBenchmark', logfile.read_text())
             self.assertIn('localHandoffBenchmark', logfile.read_text())
             self.assertIn('tunnelReadBenchmark', logfile.read_text())
             self.assertIn('connectionAllocationBenchmark', logfile.read_text())
+            self.assertIn('producerAllocationBenchmark', logfile.read_text())
 
 
 if __name__ == '__main__':

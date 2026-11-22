@@ -1,0 +1,30 @@
+[
+  {
+    "payload_bytes": 64,
+    "driver_allocated_bytes_per_completion": 168.1640625,
+    "driver_cpu_ns_per_completion": 97.95703125,
+    "elapsed_ns_per_completion": 90.8994140625,
+    "offered_different_array_bytes_per_completion": 64.0
+  },
+  {
+    "payload_bytes": 4096,
+    "driver_allocated_bytes_per_completion": 4200.1640625,
+    "driver_cpu_ns_per_completion": 1884.138671875,
+    "elapsed_ns_per_completion": 1875.0830078125,
+    "offered_different_array_bytes_per_completion": 4096.0
+  },
+  {
+    "payload_bytes": 16384,
+    "driver_allocated_bytes_per_completion": 16488.1640625,
+    "driver_cpu_ns_per_completion": 7510.9990234375,
+    "elapsed_ns_per_completion": 7481.73046875,
+    "offered_different_array_bytes_per_completion": 16384.0
+  },
+  {
+    "payload_bytes": 65536,
+    "driver_allocated_bytes_per_completion": 65640.1640625,
+    "driver_cpu_ns_per_completion": 27554.8056640625,
+    "elapsed_ns_per_completion": 27517.5927734375,
+    "offered_different_array_bytes_per_completion": 0.0
+  }
+]

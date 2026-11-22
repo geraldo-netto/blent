@@ -14,18 +14,22 @@ sys.path.insert(0, str(ROOT / 'scripts/benchmarks'))
 import profile_process
 
 TASKS = {'tls-write': 'tunnelHandoffBenchmark', 'local-write': 'localHandoffBenchmark',
-         'tls-read': 'tunnelReadBenchmark', 'mux-allocation': 'connectionAllocationBenchmark'}
+         'tls-read': 'tunnelReadBenchmark', 'mux-allocation': 'connectionAllocationBenchmark',
+         'producer-allocation': 'producerAllocationBenchmark'}
 SCOPES = {
     'tls-write': 'Hosted Linux JDK loopback TLS 1.3; production framing/native I/O; production gather limits 0/16384; not Android native or full reactor',
     'local-write': 'Hosted Linux JDK plaintext loopback TCP; production local consumer versus direct native transaction; not Android LocalSocket or full reactor',
     'tls-read': 'Hosted Linux JDK TLS receive; production exact framing versus benchmark 16-KiB read-ahead feeding the same reader; not Android native or full reactor',
     'mux-allocation': 'Hosted JDK current production mux idle/data scheduling allocation and CPU; no native I/O or Android ART acceptance',
+    'producer-allocation': 'Hosted JDK current production local producer; synchronous synthetic native completion and immediate endpoint release; not full reactor or Android ART',
 }
 
 
 def domain(kind):
     if kind == 'mux-allocation':
         return dict(warmup_trials=4, measured_trials=10, iterations_per_trial=200000, modes=['idle', 'data'])
+    if kind == 'producer-allocation':
+        return dict(warmup_trials=8, measured_trials=20, iterations_per_trial=1024, payload_bytes=[64, 4096, 16384, 65536])
     return dict(warmup_trials=16, measured_trials=48, frames_per_trial=60,
                 payload_bytes=[64, 4096, 16384, 65536], rates=[0, 60])
 

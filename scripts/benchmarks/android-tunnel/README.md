@@ -151,3 +151,27 @@ connections, payload arrays and owner construction remain outside the measured
 region, and peer-thread allocations are excluded. These are cumulative allocated
 bytes, not retained/peak memory, collection counts or leak evidence. Historical
 summaries remain historical; current results require the allocation field.
+
+For current local-producer allocation, use the synchronous owned-input fixture:
+
+```sh
+python3 scripts/benchmarks/android-tunnel/run.py /tmp/blent-producer-allocation --kind producer-allocation
+```
+
+This domain has 28 trials: eight warmups and twenty measured trials, five per
+64-byte/4-KiB/16-KiB/64-KiB completion size, each with 1,024 completions. It invokes
+the actual LocalChannelProducer with its current 64-KiB block. The synthetic native
+owner retains one original read until explicit completion; filling and full byte
+validation are included in timing. The endpoint immediately consumes each transfer,
+after checking that the newly admitted native read targets a different array.
+Cancellation settles that original synthetic read before the fixture releases its
+owned data. There are no real native operations or threads in this domain.
+
+`offered_different_array_bytes` observes bytes offered in a different array from
+the completed native loan. It is not a general copy counter or a requirement that
+future implementations keep copying. The fixture retains at most one producer
+scratch/pending read and one transferred endpoint payload, each at most 64 KiB;
+no growing history of payloads is kept. Allocation/CPU counters are cumulative
+hosted driver measurements, excluding initial setup; they include synthetic input
+filling and endpoint verification. They do not measure a full mux backlog, native
+Android GC, retained process memory or camera throughput.
