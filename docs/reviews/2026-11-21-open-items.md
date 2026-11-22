@@ -832,3 +832,9 @@ Requests validate before output opening. Successful encoding owns one 128-byte b
 ## T1707 — shared EDID producer integration (2026-11-22)
 
 T1717 (`e11fe0fd`) establishes the independent shared encoder and runtime cache adapter; T1718 (`29309326`) moves the development producer, current Make/docs/inventory and mutation controls to it. The duplicate production writer is removed. Final evidence is the retained 19 host tests, four native CLI tests, three Python corpus tests and both caught deliberate faults in the child artifacts. This consolidation claims no measured performance gain and changes no installed sessions.
+
+## T1708 — unify encoder geometry-change classification (2026-11-22)
+
+Stream-size and virtual-output notifications now call one classifier, retaining their distinct diagnostic source labels and existing channel/reader ownership. Repeated geometry keeps the original session; changed geometry retires its original reader before orchestration can replace it. Permanent fixtures observe exact original reader/encoder completion proofs for both notification sources, including helper retention and final shutdown. The strengthened fixtures pass before and after the consolidation.
+
+All 273 selected capture tests pass; three existing opt-in experiments remain ignored. Both maintained production functions have 100% line coverage, and all 49 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1708.json). The classifier retains no resources or borrowed state. No installed sessions changed and no performance gain is claimed.

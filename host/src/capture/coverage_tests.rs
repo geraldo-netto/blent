@@ -15,6 +15,30 @@ struct Fixture {
     _shutdown: watch::Sender<bool>,
 }
 
+#[derive(Default)]
+struct ReaderProofs(std::sync::Mutex<Vec<blent_config::retirement::Completion>>);
+
+impl blent::capture_contract::NativeRetirement for ReaderProofs {
+    fn retain(&self, original: blent_config::retirement::Completion) {
+        let mut proofs = self.0.lock().unwrap();
+        assert!(proofs.len() < 2, "T1708 replaced the original reader");
+        proofs.push(original);
+    }
+}
+
+impl ReaderProofs {
+    fn assert_reader_retired(&self, retired: bool) {
+        let proofs = self.0.lock().unwrap();
+        assert_eq!(
+            proofs.len(),
+            2,
+            "T1708 requires original encoder and reader"
+        );
+        assert!(!proofs[0].is_complete(), "T1708 encoder exited early");
+        assert_eq!(proofs[1].is_complete(), retired, "T1708 reader settlement");
+    }
+}
+
 fn idle_child() -> blent_config::commands::OwnedChild {
     blent_config::commands::OwnedChild::spawn(
         Command::new("/bin/sleep")
@@ -32,6 +56,7 @@ impl Fixture {
             width: 64,
             height: 64,
             instance: u32::MAX,
+            adaptive_idle: false,
             helper_path: "/never/execute/an/evdi/helper".into(),
             ..Default::default()
         });
@@ -82,6 +107,9 @@ impl Fixture {
 
     async fn change_mode(&mut self, stream: bool) {
         self.children();
+        let helper = self.manager.helper.child.as_ref().unwrap().completion();
+        let proofs = Arc::new(ReaderProofs::default());
+        self.manager.encoder.retirement = Some(proofs.clone());
         let (video, _receiver) = crate::video_queue::channel(8, Default::default());
         let stream_tx = self.manager.helper.stream_tx.clone();
         let mode_tx = self.manager.helper.mode_tx.clone();
@@ -105,6 +133,8 @@ impl Fixture {
                     futures_util::poll!(&mut task).is_pending(),
                     "unchanged dimensions restarted encoder"
                 );
+                proofs.assert_reader_retired(false);
+                assert!(!helper.is_complete());
             }
         }
         let changes = tokio::time::timeout(Duration::from_secs(2), task)
@@ -114,7 +144,16 @@ impl Fixture {
         assert!(changes.mode_changed);
         assert!(!changes.settings_changed);
         assert!(changes.keep_helper());
+        proofs.assert_reader_retired(true);
+        assert!(!helper.is_complete());
         self.manager.shutdown().await;
+        assert!(helper.is_complete());
+        assert!(proofs
+            .0
+            .lock()
+            .unwrap()
+            .iter()
+            .all(|proof| proof.is_complete()));
     }
 
     async fn display_notifications(&mut self) {

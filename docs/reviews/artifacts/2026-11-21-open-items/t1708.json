@@ -1,0 +1,334 @@
+{
+  "issue": "T1708",
+  "date": "2026-11-22",
+  "functions": [
+    {
+      "file": "host/src/capture.rs",
+      "name": "encoder_geometry_changed",
+      "line": 435,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "run_encoder_session",
+      "line": 448,
+      "language": "rust",
+      "covered": 52,
+      "total": 52,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "host/src/capture.rs",
+      58,
+      "new",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      72,
+      "bind_activity",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      78,
+      "bind_display_work",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      81,
+      "bind_profile",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      87,
+      "bind_quiescence",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      92,
+      "bind_retirement",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      99,
+      "start_helper",
+      2
+    ],
+    [
+      "host/src/capture.rs",
+      105,
+      "active_mode",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      108,
+      "start_session_encoder",
+      3
+    ],
+    [
+      "host/src/capture.rs",
+      130,
+      "card_rx",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      136,
+      "latency_tracker",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      143,
+      "idr_request_flag",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      147,
+      "codec_config",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      151,
+      "while_active",
+      6
+    ],
+    [
+      "host/src/capture.rs",
+      174,
+      "while_settings_current",
+      2
+    ],
+    [
+      "host/src/capture.rs",
+      205,
+      "stream_frames",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      227,
+      "helper_settings_changed",
+      7
+    ],
+    [
+      "host/src/capture.rs",
+      240,
+      "stream_settings_changed",
+      7
+    ],
+    [
+      "host/src/capture.rs",
+      250,
+      "apply_stream_settings",
+      3
+    ],
+    [
+      "host/src/capture.rs",
+      296,
+      "idle_until_screen_change",
+      2
+    ],
+    [
+      "host/src/capture.rs",
+      320,
+      "ensure_capture_helper",
+      3
+    ],
+    [
+      "host/src/capture.rs",
+      353,
+      "prepare_capture_pipeline",
+      6
+    ],
+    [
+      "host/src/capture.rs",
+      406,
+      "ensure_session_encoder",
+      4
+    ],
+    [
+      "host/src/capture.rs",
+      435,
+      "encoder_geometry_changed",
+      2
+    ],
+    [
+      "host/src/capture.rs",
+      448,
+      "run_encoder_session",
+      3
+    ],
+    [
+      "host/src/capture.rs",
+      530,
+      "finish_session_reader",
+      2
+    ],
+    [
+      "host/src/capture.rs",
+      539,
+      "finish_encoder_session",
+      4
+    ],
+    [
+      "host/src/capture.rs",
+      564,
+      "stop",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      575,
+      "shutdown",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      598,
+      "stopped",
+      4
+    ],
+    [
+      "host/src/capture.rs",
+      605,
+      "pause",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      614,
+      "back_off",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      619,
+      "explain_evdi_failure",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      623,
+      "explain_evdi_failure_with",
+      3
+    ],
+    [
+      "host/src/capture.rs",
+      632,
+      "reset_backoff_if_stable",
+      2
+    ],
+    [
+      "host/src/capture.rs",
+      647,
+      "keep_helper",
+      4
+    ],
+    [
+      "host/src/capture.rs",
+      650,
+      "crashed",
+      1
+    ],
+    [
+      "host/src/capture.rs",
+      656,
+      "drop",
+      1
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      22,
+      "retain",
+      1
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      30,
+      "assert_reader_retired",
+      1
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      42,
+      "idle_child",
+      1
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      53,
+      "new",
+      1
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      102,
+      "children",
+      1
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      108,
+      "change_mode",
+      4
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      159,
+      "display_notifications",
+      2
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      192,
+      "failed_start",
+      1
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      201,
+      "explain_once",
+      4
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      220,
+      "t497_supervisor_distinguishes_notifications_restarts_and_failures",
+      3
+    ],
+    [
+      "host/src/capture/coverage_tests.rs",
+      261,
+      "t1683_authority_loss_preempts_inner_session_teardown",
+      3
+    ]
+  ],
+  "verification": {
+    "baseline_supervisor_tests": 2,
+    "strengthened_retention_baseline_tests": 2,
+    "capture_suite_passed": 273,
+    "preexisting_opt_in_tests_ignored": 3
+  },
+  "coverage_tool": "cargo-llvm-cov 0.8.7 / LLVM 23.1.5-rust-1.100.0-stable; exact executed host unit binary",
+  "complexity_tool": "project Rust syn 2.0.119 checker",
+  "ownership": "Classifier synchronously borrows manager and a diagnostic label, compares copied scalar geometry and retains nothing. Existing session owner remains sole reader/encoder/helper owner; no native allocation/admission or stop boundary changes. Permanent fixture records exactly two original encoder/reader completion proofs, asserts same-geometry notification retains both and helper, changed geometry settles original reader while encoder/helper remain, then final shutdown settles those originals. Recorder owns at most two proofs until fixture drop. Both source channels exercised; no native device/installed session changes.",
+  "performance": "Structural consolidation only; no speedup measured."
+}

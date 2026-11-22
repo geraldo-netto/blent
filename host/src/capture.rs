@@ -432,6 +432,19 @@ impl CaptureManager {
         true
     }
 
+    fn encoder_geometry_changed(&self, previous: Option<(u32, u32)>, source: &str) -> bool {
+        let now = self.active_mode();
+        if Some(now) == previous {
+            // Repeated mode notifications retain the original reader and helper.
+            return false;
+        }
+        info!(
+            "{} changed to {}x{} — restarting encoder to match",
+            source, now.0, now.1
+        );
+        true
+    }
+
     async fn run_encoder_session(
         &mut self,
         tx: &blent::capture_contract::VideoOutput,
@@ -485,26 +498,12 @@ impl CaptureManager {
                     resume_same_encoder = !settings_changed;
                 }
                 _ = run.stream_rx.changed() => {
-                    let now = self.active_mode();
-                    if Some(now) == run.encoder_mode {
-                        resume_same_encoder = true;
-                    } else {
-                        info!("Stream size is now {}x{} — restarting encoder", now.0, now.1);
-                        mode_changed = true;
-                    }
+                    mode_changed = self.encoder_geometry_changed(run.encoder_mode, "Stream size");
+                    resume_same_encoder = !mode_changed;
                 }
                 _ = run.mode_rx.changed() => {
-                    let now = self.active_mode();
-                    if Some(now) == run.encoder_mode {
-                        // KWin re-applying the same mode. Nothing to do.
-                        resume_same_encoder = true;
-                    } else {
-                        info!(
-                            "Virtual output changed to {}x{} — restarting encoder to match",
-                            now.0, now.1
-                        );
-                        mode_changed = true;
-                    }
+                    mode_changed = self.encoder_geometry_changed(run.encoder_mode, "Virtual output");
+                    resume_same_encoder = !mode_changed;
                 }
 
             }
