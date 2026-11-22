@@ -31,6 +31,8 @@ class SettingsContrastTest {
                 SettingsSheet(SettingsValues(), "fixture", {}, false, {})
             }
         } }
+        // T1806: refresh-rate help belongs to the nested DisplayControls component.
+        assertReadable("Applies immediately in Blent only", surface)
         assertReadable("Follow the tilt sensor", surface)
         assertReadable("Draw on the computer", surface)
         assertReadable("Reduce background work", surface)

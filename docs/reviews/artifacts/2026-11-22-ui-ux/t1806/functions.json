@@ -1,0 +1,44 @@
+[
+  {
+    "file": "DisplayControls.kt",
+    "class_name": "com/blent/DisplayControlsKt$DisplayControls$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "DisplayControls.kt",
+    "class_name": "com/blent/DisplayControlsKt",
+    "method": "DisplayControls",
+    "covered": 27,
+    "total": 27
+  },
+  {
+    "file": "DisplayControls.kt",
+    "class_name": "com/blent/DisplayControlsKt",
+    "method": "formatRefreshRate",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "DisplayControls.kt",
+    "class_name": "com/blent/DisplayControlsKt$DisplayControls$3$1$2",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "DisplayControls.kt",
+    "class_name": "com/blent/DisplayControlsKt$DisplayControls$3$1$1$1",
+    "method": "invoke",
+    "covered": 2,
+    "total": 2
+  },
+  {
+    "file": "DisplayControls.kt",
+    "class_name": "com/blent/DisplayControlsKt$DisplayControls$2$1",
+    "method": "invoke",
+    "covered": 2,
+    "total": 2
+  }
+]

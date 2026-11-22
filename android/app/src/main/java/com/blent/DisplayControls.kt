@@ -46,7 +46,7 @@ internal fun DisplayControls(settings: SettingsValues, refreshRates: List<Float>
         }
     }
     Text("Applies immediately in Blent only. The closest supported refresh rate is used.",
-        fontSize = 11.sp, color = Color(0xFF6A6A7E))
+        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
 }
 
 private fun formatRefreshRate(rate: Float): String =

@@ -340,3 +340,12 @@ The full strict gate remains obstructed by preexisting broker type complexity
 (T1801) and a paused audio test initialization lint (T1804). Preexisting host format
 drift remains T1799; no whole-repository formatting or Clippy pass is claimed.
 [Final evidence](artifacts/2026-11-22-ui-ux/final/).
+
+
+## T1806 — native acceptance follow-up
+
+The native check caught refresh-rate help outside SettingsSheet still using 11sp and a low-contrast color. The extended permanent 200%-font contrast regression failed before the fix and passes using Material bodySmall/onSurfaceVariant. This stateless composable borrows existing settings and event callbacks; no resource lifetime changes.
+
+All 6 emitted maintained methods with JaCoCo line counters have 100%
+coverage; complexity <=9. The eight-class final run passes 100 test executions
+on API 27/34. [Evidence](artifacts/2026-11-22-ui-ux/t1806/).
