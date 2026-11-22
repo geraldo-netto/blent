@@ -160,7 +160,7 @@ static void test_t1021_raw(void)
     raw_ring_t hello = ring;
     hello.nonce = 1021;
     t418_control(&hello, raw[1], 4);
-    assert(service_shared_capture(&g_capture));
+    assert(service_shared_capture(&g_capture, POLLIN));
     t418_drain(raw[1]);
     t1021_idle();
     assert(publish_shared_capture(&g_capture));

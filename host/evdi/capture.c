@@ -617,6 +617,8 @@ static void apply_capture_activity(capture_context_t *capture)
 
 static int acknowledge_capture_activity(capture_context_t *capture)
 {
+    if (!capture || !capture->control)
+        return 1;
     if (!capture_active(capture) && !frame_exchange_quiescent(capture->frames))
         return 1;
     return capture_control_ack(capture->control) >= 0;
@@ -647,21 +649,24 @@ static int capture_event_count(capture_context_t *capture, struct pollfd *fds)
     return capture_wakeup_fd(capture) >= 0 ? 2 : 1;
 }
 
-static void dispatch_capture_events(evdi_handle handle, struct evdi_event_context *events,
-                                    struct pollfd *fds, int ready)
+static void dispatch_capture_events(evdi_handle handle, struct evdi_event_context *events, struct pollfd *fds,
+                                    int ready)
 {
     if (ready > 0 && (fds->revents & POLLIN))
         evdi_handle_events(handle, events);
     capture_context_t *capture = events->user_data;
-    if (capture && frame_exchange_take_request(capture->frames))
+    if (ready > 0 && capture && !capture->raw_ring && capture_wakeup_fd(capture) >= 0 &&
+        (fds[1].revents & POLLIN) && frame_exchange_take_request(capture->frames))
         publish_frame(capture);
 }
 
-static int poll_capture_events(evdi_handle handle, struct evdi_event_context *evtctx,
-                               struct pollfd *fd, int timeout_ms)
+static int poll_capture_events(evdi_handle handle, struct evdi_event_context *evtctx, struct pollfd *fd,
+                               int timeout_ms)
 {
     capture_context_t *capture = evtctx->user_data;
-    if (!service_capture_control(capture))
+    /* Retry only an already admitted transition before waiting. New requests
+     * are read after poll, including arrivals after its readiness snapshot. */
+    if (!acknowledge_capture_activity(capture))
         return -1;
     int count = capture_event_count(capture, fd);
     int ret = poll(fd, count, timeout_ms);
@@ -686,7 +691,7 @@ static int poll_capture_events(evdi_handle handle, struct evdi_event_context *ev
 
 static int publish_shared_capture(capture_context_t *capture)
 {
-    if (!capture_active(capture))
+    if (!capture->raw_ring || !capture_active(capture))
         return 1;
     if (!capture->have_mode || !frame_exchange_is_ready(capture->frames))
         return 1;
@@ -712,9 +717,13 @@ static int publish_shared_capture(capture_context_t *capture)
     return 1;
 }
 
-static int service_shared_capture(capture_context_t *capture) {
-    if (!capture->raw_ring) return 1;
-    return raw_ring_service(capture->raw_ring) && publish_shared_capture(capture);
+static int service_shared_capture(capture_context_t *capture, short readiness)
+{
+    if (!capture->raw_ring)
+        return 1;
+    if ((readiness & (POLLIN | POLLHUP | POLLERR | POLLNVAL)) && !raw_ring_service(capture->raw_ring))
+        return 0;
+    return publish_shared_capture(capture);
 }
 
 static int shared_poll_timeout(capture_context_t *capture, int timeout_ms)
@@ -731,7 +740,7 @@ static int capture_tick(capture_context_t *capture, evdi_handle handle, long lon
                         long long *last_stats_ms, long long *stats_grab_base)
 {
     if (!capture_active(capture))
-        return service_shared_capture(capture);
+        return publish_shared_capture(capture);
     if (!capture->have_mode)
         return 1;
     long long now = capture_now_ms();
@@ -739,7 +748,7 @@ static int capture_tick(capture_context_t *capture, evdi_handle handle, long lon
     recover_capture_if_stalled(capture, now, &capture->cadence.last_fallback_grab_ms);
     if (now - *last_stats_ms >= 5000)
         report_capture_stats(capture, now, last_stats_ms, stats_grab_base);
-    return service_shared_capture(capture);
+    return publish_shared_capture(capture);
 }
 
 /* A begin record precedes the native call; its matching end only reports
@@ -823,7 +832,7 @@ int capture_run(capture_context_t *capture, evdi_handle handle)
         if (ret == 0)
             continue;
         service_display_progress(capture, handle);
-        if (!service_shared_capture(capture))
+        if (!service_shared_capture(capture, fds[1].revents))
             return 1;
 
         if (!capture_tick(capture, handle, request_period_ns, &last_stats_ms, &stats_grab_base))

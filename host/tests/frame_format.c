@@ -99,24 +99,42 @@ static void test_t752_cursor(void) {
     frame_exchange_free(&g_frames);pthread_cond_destroy(&g_frames.ready);
 }
 
-static void test_t752_shared(void) {
-    raw_ring_t ring=RAW_RING_INITIALIZER;
-    int pair[2];assert(socketpair(AF_UNIX,SOCK_SEQPACKET|SOCK_NONBLOCK,0,pair)==0);
-    assert(raw_ring_init(&ring,pair[0]));
-    frame_exchange_init(&g_frames);g_capture.raw_ring=&ring;g_running=1;
-    on_mode_changed((struct evdi_mode){8,8,60,32,0x34324258},&g_capture);
-    raw_ring_t hello=ring;hello.nonce=8;t418_control(&hello,pair[1],4);
-    mock_monotonic_ms=1000;assert(service_shared_capture(&g_capture));
-    unsigned char leased[96];memcpy(leased,ring.memory+RAW_CONTROL_BYTES,sizeof(leased));
-    for (int y=0;y<8;y++) for (int x=0;x<8;x++)
-        *(uint32_t *)((unsigned char *)t752_registered.buffer+y*g_capture.mode_stride+4*x)=0xff0000ff;
-    t752_grabs=1;t752_count=1;t752_rects[0]=(struct evdi_rect){0,0,8,8};
-    grab_now(&g_capture);mock_monotonic_ms=1020;
-    assert(service_shared_capture(&g_capture));
-    assert(!memcmp(leased,ring.memory+RAW_CONTROL_BYTES,sizeof(leased)) && "T752: preserve leased pixels");
-    unsigned char *fresh=ring.memory+RAW_CONTROL_BYTES+ring.slot_bytes;
-    assert(fresh[0]==63 && fresh[64]==102 && fresh[65]==240);
-    raw_ring_close(&ring);close(pair[1]);g_capture.raw_ring=NULL;
-    free(g_capture.framebuffer);free(g_capture.native_framebuffer);
-    frame_exchange_free(&g_frames);pthread_cond_destroy(&g_frames.ready);
+static void test_t752_shared(void)
+{
+    raw_ring_t ring = RAW_RING_INITIALIZER;
+    int pair[2];
+    assert(socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_NONBLOCK, 0, pair) == 0);
+    assert(raw_ring_init(&ring, pair[0]));
+    frame_exchange_init(&g_frames);
+    g_capture.raw_ring = &ring;
+    g_running = 1;
+    on_mode_changed((struct evdi_mode){8, 8, 60, 32, 0x34324258}, &g_capture);
+    raw_ring_t hello = ring;
+    hello.nonce = 8;
+    t418_control(&hello, pair[1], 4);
+    mock_monotonic_ms = 1000;
+    assert(service_shared_capture(&g_capture, POLLIN));
+    unsigned char leased[96];
+    memcpy(leased, ring.memory + RAW_CONTROL_BYTES, sizeof(leased));
+    for (int y = 0; y < 8; y++)
+        for (int x = 0; x < 8; x++)
+            *(uint32_t *)((unsigned char *)t752_registered.buffer + y * g_capture.mode_stride + 4 * x) =
+                0xff0000ff;
+    t752_grabs = 1;
+    t752_count = 1;
+    t752_rects[0] = (struct evdi_rect){0, 0, 8, 8};
+    grab_now(&g_capture);
+    mock_monotonic_ms = 1020;
+    assert(service_shared_capture(&g_capture, POLLIN));
+    assert(!memcmp(leased, ring.memory + RAW_CONTROL_BYTES, sizeof(leased)) &&
+           "T752: preserve leased pixels");
+    unsigned char *fresh = ring.memory + RAW_CONTROL_BYTES + ring.slot_bytes;
+    assert(fresh[0] == 63 && fresh[64] == 102 && fresh[65] == 240);
+    raw_ring_close(&ring);
+    close(pair[1]);
+    g_capture.raw_ring = NULL;
+    free(g_capture.framebuffer);
+    free(g_capture.native_framebuffer);
+    frame_exchange_free(&g_frames);
+    pthread_cond_destroy(&g_frames.ready);
 }

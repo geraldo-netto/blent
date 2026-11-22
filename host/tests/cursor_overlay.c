@@ -186,7 +186,7 @@ static void test_t753_shared(void)
     hello.nonce = 8;
     t418_control(&hello, pair[1], 4);
     mock_monotonic_ms = 1000;
-    assert(service_shared_capture(&g_capture));
+    assert(service_shared_capture(&g_capture, POLLIN));
     unsigned char baseline = ring.memory[RAW_CONTROL_BYTES];
     unsigned char leased[384];
     memcpy(leased, ring.memory + RAW_CONTROL_BYTES, sizeof(leased));

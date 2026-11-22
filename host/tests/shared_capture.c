@@ -83,7 +83,7 @@ static void test_t418_capture(void)
     frame_exchange_init(&g_frames);
     g_capture.raw_ring = &ring;
     g_running = 1;
-    assert(service_shared_capture(&g_capture)); /* Partial startup with no mode. */
+    assert(service_shared_capture(&g_capture, POLLIN)); /* Partial startup with no mode. */
     on_mode_changed(
         (struct evdi_mode){
             .width = 64, .height = 64, .refresh_rate = 60, .bits_per_pixel = 32, .pixel_format = 0x34325258},
@@ -95,7 +95,7 @@ static void test_t418_capture(void)
     hello.nonce = 8;
     t418_control(&hello, pair[1], 4);
     mock_monotonic_ms = 1000;
-    assert(service_shared_capture(&g_capture));
+    assert(service_shared_capture(&g_capture, POLLIN));
     assert(!g_capture.publication.pending && ring.sequence == 1);
     assert(shared_poll_timeout(&g_capture, 250) == 200);
     assert(publish_shared_capture(&g_capture) && ring.sequence == 1);
@@ -124,7 +124,7 @@ static void test_t418_capture(void)
     assert(ring.memory[RAW_CONTROL_BYTES] == 16); /* Final fresh update survives a full ring. */
     t418_drain(pair[1]);
     close(pair[1]);
-    assert(!service_shared_capture(&g_capture));
+    assert(!service_shared_capture(&g_capture, POLLIN));
     on_mode_changed(
         (struct evdi_mode){
             .width = 66, .height = 64, .refresh_rate = 60, .bits_per_pixel = 32, .pixel_format = 0x34325258},
@@ -152,30 +152,37 @@ static void test_t418_startup(void) {
 }
 
 /* T570: repeating an already converted slot must do no conversion work. */
-static void test_t570_idle(void) {
+static void test_t570_idle(void)
+{
     frame_exchange_t frames = FRAME_EXCHANGE_INITIALIZER;
     conv_pool_t pool = CONV_POOL_INITIALIZER;
     atomic_int running = 1;
     capture_context_t capture = CAPTURE_INITIALIZER(&frames, &pool, &running);
     raw_ring_t ring = RAW_RING_INITIALIZER;
-    int pair[2]; assert(socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_NONBLOCK, 0, pair) == 0);
+    int pair[2];
+    assert(socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_NONBLOCK, 0, pair) == 0);
     assert(raw_ring_init(&ring, pair[0]));
     frame_exchange_init(&frames);
     capture.raw_ring = &ring;
-    on_mode_changed((struct evdi_mode){.width=64, .height=64, .refresh_rate=60,
-        .bits_per_pixel=32, .pixel_format=0x34325258}, &capture);
-    raw_ring_t hello = ring; hello.nonce = 57;
+    on_mode_changed(
+        (struct evdi_mode){
+            .width = 64, .height = 64, .refresh_rate = 60, .bits_per_pixel = 32, .pixel_format = 0x34325258},
+        &capture);
+    raw_ring_t hello = ring;
+    hello.nonce = 57;
     t418_control(&hello, pair[1], 4);
     mock_monotonic_ms = 1000;
-    assert(service_shared_capture(&capture));
+    assert(service_shared_capture(&capture, POLLIN));
     t418_drain(pair[1]);
     atomic_store_explicit((_Atomic uint32_t *)ring.memory, RAW_FREE, memory_order_release);
     mock_monotonic_ms += 200;
     assert(publish_shared_capture(&capture) && ring.sequence == 2);
     assert(pool.last_jobs == 0 && "T570: idle repeat must reuse immutable converted pixels");
-    raw_ring_close(&ring); close(pair[1]);
+    raw_ring_close(&ring);
+    close(pair[1]);
     free(capture.framebuffer);
     frame_exchange_free(&frames);
-    pthread_cond_destroy(&frames.ready); pthread_mutex_destroy(&frames.mutex);
+    pthread_cond_destroy(&frames.ready);
+    pthread_mutex_destroy(&frames.mutex);
     conv_pool_destroy(&pool);
 }

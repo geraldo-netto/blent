@@ -1,0 +1,858 @@
+{
+  "issue": "T1712",
+  "parent": "T1613",
+  "date": "2026-11-22",
+  "verification": {
+    "native_helper_tests_passed": 81,
+    "native_module_tests_passed": 3,
+    "regression_before": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s\n     Running tests/evdi_modules.rs (target/debug/build/blent/e9a248192ab310cc/out/evdi_modules-e9a248192ab310cc)\n\nrunning 1 test\ntest t1712_quiet_capture_descriptors_avoid_redundant_probes ... FAILED\n\nfailures:\n\n---- t1712_quiet_capture_descriptors_avoid_redundant_probes stdout ----\n\nthread 't1712_quiet_capture_descriptors_avoid_redundant_probes' (281511) panicked at host/tests/evdi_modules.rs:19:5:\nT1712 mode=0 iterations=1000 control_recvmsg=2000 demand_read=1000 ring_recvmsg=0 polls=1000\nT1712 mode=1 iterations=1000 control_recvmsg=2000 demand_read=0 ring_recvmsg=2000 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\nT1712 mode=2 iterations=1000 control_recvmsg=2000 demand_read=0 ring_recvmsg=2000 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\nT1712 mode=3 iterations=1000 control_recvmsg=2000 demand_read=0 ring_recvmsg=2000 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\n[evdi-helper] capture-activity request sequence=2 active=0\n[evdi-helper] capture-activity ack sequence=2 active=0\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\nprobe-test: /backups/disk2/projects/blent/host/tests/capture_probe_test.c:195: main: Assertion `valid && \"T1712 quiet descriptors must not receive redundant probes\"' failed.\n\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    t1712_quiet_capture_descriptors_avoid_redundant_probes\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 3.07s\n\nerror: test failed, to rerun pass `-p blent --test evdi_modules`\n",
+    "native_build": "GCC 13.3.0 C11 O3 Wall Wextra Werror; private output not launched",
+    "deliberate_controls": {
+      "output": "/tmp/blent-t1712-controls-tjqop30y",
+      "outcomes": [
+        {
+          "control": "baseline",
+          "exit": 0,
+          "stderr": "T1712 mode=0 iterations=1000 control_recvmsg=1000 demand_read=0 ring_recvmsg=0 polls=1000\nT1712 mode=1 iterations=1000 control_recvmsg=1000 demand_read=0 ring_recvmsg=0 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\nT1712 mode=2 iterations=1000 control_recvmsg=1000 demand_read=0 ring_recvmsg=0 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\nT1712 mode=3 iterations=1000 control_recvmsg=1000 demand_read=0 ring_recvmsg=0 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\n[evdi-helper] capture-activity request sequence=2 active=0\n[evdi-helper] capture-activity ack sequence=2 active=0\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\n"
+        },
+        {
+          "control": "skip_late_control",
+          "exit": -6,
+          "stderr": "T1712 mode=0 iterations=1000 control_recvmsg=0 demand_read=0 ring_recvmsg=0 polls=1000\nT1712 mode=1 iterations=1000 control_recvmsg=0 demand_read=0 ring_recvmsg=0 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\nT1712 mode=2 iterations=1000 control_recvmsg=0 demand_read=0 ring_recvmsg=0 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\nT1712 mode=3 iterations=1000 control_recvmsg=0 demand_read=0 ring_recvmsg=0 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\nprobe: host/tests/capture_probe_test.c:167: late_pause: Assertion `!capture_active(&g_capture)' failed.\n"
+        },
+        {
+          "control": "restored",
+          "exit": 0,
+          "stderr": "T1712 mode=0 iterations=1000 control_recvmsg=1000 demand_read=0 ring_recvmsg=0 polls=1000\nT1712 mode=1 iterations=1000 control_recvmsg=1000 demand_read=0 ring_recvmsg=0 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\nT1712 mode=2 iterations=1000 control_recvmsg=1000 demand_read=0 ring_recvmsg=0 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\nT1712 mode=3 iterations=1000 control_recvmsg=1000 demand_read=0 ring_recvmsg=0 polls=1000\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\n[evdi-helper] capture-activity request sequence=2 active=0\n[evdi-helper] capture-activity ack sequence=2 active=0\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\n[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34325258\n[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)\n[evdi-helper] capture-activity request sequence=1 active=1\n[evdi-helper] capture-activity ack sequence=1 active=1\n"
+        }
+      ]
+    }
+  },
+  "modes": {
+    "0": "paused FIFO",
+    "1": "paused shared ring",
+    "2": "active full ring",
+    "3": "fresh shared publication"
+  },
+  "before_per_1000_iterations": {
+    "all_modes_control_recvmsg": 2000,
+    "mode0_demand_read": 1000,
+    "modes1_2_3_ring_recvmsg": 2000,
+    "all_modes_polls": 1000
+  },
+  "after": [
+    {
+      "mode": 0,
+      "iterations": 1000,
+      "control_recvmsg": 1000,
+      "demand_read": 0,
+      "ring_recvmsg": 0,
+      "polls": 1000
+    },
+    {
+      "mode": 1,
+      "iterations": 1000,
+      "control_recvmsg": 1000,
+      "demand_read": 0,
+      "ring_recvmsg": 0,
+      "polls": 1000
+    },
+    {
+      "mode": 2,
+      "iterations": 1000,
+      "control_recvmsg": 1000,
+      "demand_read": 0,
+      "ring_recvmsg": 0,
+      "polls": 1000
+    },
+    {
+      "mode": 3,
+      "iterations": 1000,
+      "control_recvmsg": 1000,
+      "demand_read": 0,
+      "ring_recvmsg": 0,
+      "polls": 1000
+    }
+  ],
+  "functions": [
+    {
+      "file": "host/evdi/capture.c",
+      "name": "acknowledge_capture_activity",
+      "line": 618,
+      "language": "c",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "dispatch_capture_events",
+      "line": 652,
+      "language": "c",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "poll_capture_events",
+      "line": 663,
+      "language": "c",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "publish_shared_capture",
+      "line": 692,
+      "language": "c",
+      "covered": 18,
+      "total": 19,
+      "percent": 94.73684210526316,
+      "passes": true,
+      "missing": [
+        697
+      ]
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "service_shared_capture",
+      "line": 720,
+      "language": "c",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_tick",
+      "line": 739,
+      "language": "c",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_run",
+      "line": 796,
+      "language": "c",
+      "covered": 24,
+      "total": 25,
+      "percent": 96.0,
+      "passes": true,
+      "missing": [
+        833
+      ]
+    }
+  ],
+  "complexity": [
+    [
+      "host/evdi/capture.c",
+      14,
+      "capture_now_ns",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      21,
+      "capture_now_us",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      26,
+      "capture_now_ms",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      28,
+      "cmp_int",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      33,
+      "on_dpms",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      39,
+      "capture_pixel_order",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      43,
+      "capture_to_nv12",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      53,
+      "mark_all_dirty",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      63,
+      "apply_damage",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      74,
+      "mark_damage",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      80,
+      "cursor_damage",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      86,
+      "restore_cursor",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      90,
+      "draw_cursor",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      95,
+      "capture_active",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      102,
+      "publish_frame",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      124,
+      "reject_mode",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      131,
+      "validate_frame_format",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      144,
+      "validate_mode_dimensions",
+      7
+    ],
+    [
+      "host/evdi/capture.c",
+      157,
+      "retire_mode_buffers",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      179,
+      "configure_mode_geometry",
+      9
+    ],
+    [
+      "host/evdi/capture.c",
+      211,
+      "allocate_framebuffer",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      240,
+      "allocate_stream_buffers",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      258,
+      "mode_buffers_allocated",
+      7
+    ],
+    [
+      "host/evdi/capture.c",
+      264,
+      "on_mode_changed",
+      7
+    ],
+    [
+      "host/evdi/capture.c",
+      310,
+      "normalize_framebuffer_rect",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      324,
+      "normalize_full_frame",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      337,
+      "normalize_framebuffer",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      346,
+      "normalize_snapshot",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      358,
+      "grab_snapshot",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      392,
+      "grab_now",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      397,
+      "on_update_ready",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      416,
+      "on_crtc_state",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      421,
+      "cursor_event_image",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      435,
+      "publish_cursor",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      441,
+      "on_cursor_set",
+      7
+    ],
+    [
+      "host/evdi/capture.c",
+      464,
+      "on_cursor_move",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      473,
+      "capture_poll_timeout",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      481,
+      "request_capture_if_due",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      505,
+      "recover_pending_update",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      516,
+      "recover_capture_if_stalled",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      540,
+      "latency_rank",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      547,
+      "report_capture_stats",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      578,
+      "capture_wakeup_fd",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      584,
+      "resume_capture",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      603,
+      "apply_capture_activity",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      618,
+      "acknowledge_capture_activity",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      627,
+      "service_capture_control",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      639,
+      "capture_event_count",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      652,
+      "dispatch_capture_events",
+      9
+    ],
+    [
+      "host/evdi/capture.c",
+      663,
+      "poll_capture_events",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      692,
+      "publish_shared_capture",
+      9
+    ],
+    [
+      "host/evdi/capture.c",
+      720,
+      "service_shared_capture",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      729,
+      "shared_poll_timeout",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      739,
+      "capture_tick",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      758,
+      "trace_display_progress",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      776,
+      "service_display_progress",
+      8
+    ],
+    [
+      "host/evdi/capture.c",
+      796,
+      "capture_run",
+      7
+    ],
+    [
+      "host/tests/capture_pause.c",
+      2,
+      "test_t1021_wire",
+      5
+    ],
+    [
+      "host/tests/capture_pause.c",
+      28,
+      "t1021_pair",
+      1
+    ],
+    [
+      "host/tests/capture_pause.c",
+      36,
+      "t1021_send",
+      1
+    ],
+    [
+      "host/tests/capture_pause.c",
+      43,
+      "t1021_ack",
+      3
+    ],
+    [
+      "host/tests/capture_pause.c",
+      52,
+      "test_t1021_control",
+      4
+    ],
+    [
+      "host/tests/capture_pause.c",
+      75,
+      "t1021_poll",
+      1
+    ],
+    [
+      "host/tests/capture_pause.c",
+      82,
+      "t1021_mode",
+      2
+    ],
+    [
+      "host/tests/capture_pause.c",
+      95,
+      "t1021_idle",
+      2
+    ],
+    [
+      "host/tests/capture_pause.c",
+      112,
+      "test_t1021_pause",
+      8
+    ],
+    [
+      "host/tests/capture_pause.c",
+      150,
+      "test_t1021_raw",
+      3
+    ],
+    [
+      "host/tests/capture_pause.c",
+      187,
+      "t1021_invalid_length",
+      1
+    ],
+    [
+      "host/tests/capture_pause.c",
+      199,
+      "t1021_blocked_ack",
+      5
+    ],
+    [
+      "host/tests/capture_pause.c",
+      224,
+      "test_t1021_boundaries",
+      5
+    ],
+    [
+      "host/tests/capture_pause.c",
+      249,
+      "t1021_aliases",
+      6
+    ],
+    [
+      "host/tests/capture_pause.c",
+      270,
+      "t1021_send_right",
+      1
+    ],
+    [
+      "host/tests/capture_pause.c",
+      292,
+      "test_t1021_rights",
+      3
+    ],
+    [
+      "host/tests/capture_pause.c",
+      312,
+      "test_t1025_resume_pacing",
+      5
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      2,
+      "t789_take_variants",
+      7
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      19,
+      "t789_take_failures",
+      3
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      36,
+      "t789_adoption_boundary",
+      2
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      50,
+      "test_t789_owned_cursor",
+      2
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      70,
+      "t753_invalid_images",
+      4
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      99,
+      "t753_clip_positions",
+      7
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      121,
+      "t753_alpha_and_format",
+      7
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      141,
+      "t753_event_lifecycle",
+      3
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      168,
+      "test_t753_bounds",
+      1
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      175,
+      "test_t753_shared",
+      3
+    ],
+    [
+      "host/tests/evdi_modules.rs",
+      6,
+      "t1712_quiet_capture_descriptors_avoid_redundant_probes",
+      1
+    ],
+    [
+      "host/tests/evdi_modules.rs",
+      43,
+      "t1709_cadence_policy_needs_no_native_adapter",
+      1
+    ],
+    [
+      "host/tests/evdi_modules.rs",
+      81,
+      "t380_independent_contexts_preserve_frame_and_callback_lifetimes",
+      2
+    ],
+    [
+      "host/tests/frame_format.c",
+      2,
+      "t752_contains",
+      4
+    ],
+    [
+      "host/tests/frame_format.c",
+      6,
+      "t752_check_region",
+      8
+    ],
+    [
+      "host/tests/frame_format.c",
+      16,
+      "t752_format_inputs",
+      3
+    ],
+    [
+      "host/tests/frame_format.c",
+      27,
+      "test_t752_bounds",
+      5
+    ],
+    [
+      "host/tests/frame_format.c",
+      51,
+      "test_t752_allocation",
+      4
+    ],
+    [
+      "host/tests/frame_format.c",
+      61,
+      "test_t780_full_rect_capacity",
+      5
+    ],
+    [
+      "host/tests/frame_format.c",
+      78,
+      "test_t752_cursor",
+      4
+    ],
+    [
+      "host/tests/frame_format.c",
+      102,
+      "test_t752_shared",
+      6
+    ],
+    [
+      "host/tests/shared_capture.c",
+      2,
+      "t418_control",
+      1
+    ],
+    [
+      "host/tests/shared_capture.c",
+      8,
+      "t418_drain",
+      3
+    ],
+    [
+      "host/tests/shared_capture.c",
+      22,
+      "test_t418_ring",
+      7
+    ],
+    [
+      "host/tests/shared_capture.c",
+      77,
+      "test_t418_capture",
+      8
+    ],
+    [
+      "host/tests/shared_capture.c",
+      140,
+      "test_t418_startup",
+      3
+    ],
+    [
+      "host/tests/shared_capture.c",
+      155,
+      "test_t570_idle",
+      3
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      8,
+      "counted_recvmsg",
+      3
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      17,
+      "counted_read",
+      2
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      38,
+      "probe_ring",
+      1
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      48,
+      "probe_mode",
+      2
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      68,
+      "probe_begin",
+      3
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      94,
+      "probe_tick",
+      3
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      113,
+      "probe_end",
+      3
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      129,
+      "probe_case",
+      6
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      149,
+      "pause_after_poll",
+      2
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      158,
+      "late_pause",
+      1
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      173,
+      "ring_release",
+      2
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      188,
+      "demand_saturation",
+      3
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      207,
+      "peer_loss",
+      4
+    ],
+    [
+      "host/tests/capture_probe_test.c",
+      234,
+      "main",
+      4
+    ]
+  ],
+  "coverage_tool": "GCC/gcov 13.3.0 through normal native suites; original sanitizer paths retained",
+  "complexity_tool": "project C tree-sitter 0.25.2 / Rust syn 2.0.119 checker",
+  "source_sha256": "8de79304c2d168c3d5bdb914d2858131ade9cddf9d3869c6825261f5a0f8be97",
+  "ownership": "Pre-poll only retries admitted acknowledgement; post-poll control receive remains unconditional so late pause precedes native dispatch. Eventfd readiness gates demand reads while locked generation/demand state remains authoritative. Ring readiness gates receives, never atomic slot ownership or publication. Pending messages/peer closure remain level-readable; no-hint release retains 1ms retry. Native frame/helper/writer fences and original registered-buffer teardown remain unchanged. Fixtures own private sockets/eventfd/mappings, retire mode buffers before freeing, settle conversion state and destroy synchronization objects before reuse. Recorder counters are bounded per synchronous fixture and descriptor identities reset before closure/reuse.",
+  "regressions": "Four 1000-iteration counter cases; original paused/reader/native suites; explicit late pause after readiness snapshot, saturated eventfd hints, ring release with/without hint, control/ring peer closure. Deliberately gating the post-poll control check fails the late-pause assertion, restored source passes.",
+  "limitations": "Counts are native syscall probes under mocked EVDI, not physical capture timing/CPU/battery/end-to-end measurements. Poll count and 1ms full-ring retry unchanged. Read-only subagent review found no additional defect. No installed session or device changed."
+}
