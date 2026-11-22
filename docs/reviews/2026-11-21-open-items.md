@@ -774,3 +774,9 @@ Parsing retains only process-lifetime argument borrows and scalar settings. Inva
 Generated EDIDs now use the shared data-directory resolver. Missing, empty and relative HOME fail before creating directories; an absolute non-UTF-8 HOME is preserved. The isolated subprocess regression fails before and passes after the fix. All 19 EDID tests pass, the changed production function has 100% line coverage (11/11), and all 30 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1701.json).
 
 The existing 128-byte generator and atomic file replacement retain their owners and cleanup. Every fixture child settles before its private directory is removed; no installed data or device is touched. T1621 retains cache-name, helper-rate and unused-API integration work.
+
+## T1702 — identify EDID cache entries by mode and instance (2026-11-22)
+
+The generator-version suffix and its obsolete rationale are removed. Current cache names depend on display instance, geometry, refresh and physical size; full content comparison decides reuse or atomic repair. Existing files are neither migrated nor deleted.
+
+Retargeted permanent T114/T115 regressions fail before and pass after the change: valid-checksum files with wrong physical size or refresh range are repaired at the same current path, with one cache entry retained. All 19 EDID tests pass, including incomplete-content repair, matching-inode reuse and failed replacement. The maintained function has 80% executable-line coverage (24/30; unexecuted tracing arguments remain reported); all 27 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1702.json). Bounded generator buffers and atomic temporary-file ownership are unchanged; installed files and sessions were untouched.

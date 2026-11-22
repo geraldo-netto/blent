@@ -1,0 +1,194 @@
+{
+  "issue": "T1702",
+  "parent": "T1621",
+  "date": "2026-11-22",
+  "regression_before": "   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.69s\n     Running unittests src/main.rs (target/debug/build/blent/44d015232584822c/out/blent-44d015232584822c)\n\nrunning 2 tests\ntest edid::tests::t114_t1702_current_cache_repairs_wrong_physical_size ... FAILED\ntest edid::tests::t115_t1702_current_cache_repairs_wrong_refresh_range ... FAILED\n\nfailures:\n\n---- edid::tests::t114_t1702_current_cache_repairs_wrong_physical_size stdout ----\n\nthread 'edid::tests::t114_t1702_current_cache_repairs_wrong_physical_size' (196528) panicked at host/src/edid.rs:376:9:\nassertion `left == right` failed: T1702 must repair the current mode identity\n  left: \"/tmp/.tmpXCFItc/auto-v8-slot0-1920x1080@60-310x194mm.bin\"\n right: \"/tmp/.tmpXCFItc/auto-slot0-1920x1080@60-310x194mm.bin\"\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n---- edid::tests::t115_t1702_current_cache_repairs_wrong_refresh_range stdout ----\n\nthread 'edid::tests::t115_t1702_current_cache_repairs_wrong_refresh_range' (196529) panicked at host/src/edid.rs:509:9:\nassertion `left == right` failed: T1702 must repair the current mode identity\n  left: \"/tmp/.tmpErYYuQ/auto-v8-slot0-1920x1080@10-310x194mm.bin\"\n right: \"/tmp/.tmpErYYuQ/auto-slot0-1920x1080@10-310x194mm.bin\"\n\n\nfailures:\n    edid::tests::t114_t1702_current_cache_repairs_wrong_physical_size\n    edid::tests::t115_t1702_current_cache_repairs_wrong_refresh_range\n\ntest result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 699 filtered out; finished in 0.01s\n\nerror: test failed, to rerun pass `-p blent --bin blent`\n",
+  "verification_log": "info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage\n   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.70s\n     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent/44d015232584822c/out/blent-44d015232584822c)\n\nrunning 19 tests\ntest edid::identity_tests::t1496_instance_serials_are_injective_and_reject_overflow ... ok\ntest edid::location_tests::t1701_data_location_requires_absolute_home ... ok\ntest edid::tests::edid_checksum_is_valid ... ok\ntest edid::tests::t061_rejects_unrepresentable_edid_modes ... ok\ntest edid::tests::t114_python_dtd_reports_exact_physical_size ... ok\ntest edid::tests::t114_rust_dtd_reports_exact_physical_size ... ok\ntest edid::tests::t114_t1702_current_cache_repairs_wrong_physical_size ... ok\ntest edid::tests::t115_both_generators_reject_unrepresentable_or_unsupported_values ... ok\ntest edid::tests::t115_generators_agree_on_boundaries_color_and_ranges ... ok\ntest edid::tests::t115_t1702_current_cache_repairs_wrong_refresh_range ... ok\ntest edid::tests::t246_cache_directory_is_not_returned_as_an_edid ... ok\ntest edid::tests::t246_repairs_incomplete_and_wrong_generated_edids ... ok\ntest edid::tests::t320_python_unused_descriptor_is_valid ... ok\ntest edid::tests::t320_rust_unused_descriptor_is_valid ... ok\ntest edid::tests::t321_python_rejects_low_clock_modes ... ok\ntest edid::tests::t321_range_minimum_tracks_supported_geometry ... ok\ntest edid::tests::t321_rust_rejects_low_clock_modes ... ok\ntest edid::tests::t332_shared_mode_validation_agrees_with_both_generators_at_clock_boundary ... ok\ntest edid::tests::t585_blent_monitor_descriptor_has_fixed_width_and_checksum ... ok\n\ntest result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 682 filtered out; finished in 1.52s\n\n\n    Finished report saved to /tmp/blent-t1702.lcov\n",
+  "coverage_tool": "cargo-llvm-cov 0.8.7 / LLVM 23.1.5-rust-1.100.0-stable / Rust 1.100.0",
+  "functions": [
+    {
+      "file": "host/src/edid.rs",
+      "name": "ensure_edid_in",
+      "line": 177,
+      "language": "rust",
+      "covered": 24,
+      "total": 30,
+      "percent": 80.0,
+      "passes": true,
+      "missing": [
+        202,
+        203,
+        204,
+        205,
+        206,
+        207
+      ]
+    }
+  ],
+  "complexity_tool": "project Rust tree-sitter 0.25.2 checker",
+  "complexity": [
+    [
+      "host/src/edid.rs",
+      8,
+      "encode_manufacturer_id",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      27,
+      "make_edid_sized",
+      5
+    ],
+    [
+      "host/src/edid.rs",
+      152,
+      "make_edid",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      165,
+      "ensure_edid_sized",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      177,
+      "ensure_edid_in",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      215,
+      "ensure_edid",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      229,
+      "t585_blent_monitor_descriptor_has_fixed_width_and_checksum",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      242,
+      "t321_range_minimum_tracks_supported_geometry",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      257,
+      "t321_python_rejects_low_clock_modes",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      268,
+      "t321_rust_rejects_low_clock_modes",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      278,
+      "assert_t320_dummy_descriptor",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      292,
+      "t320_rust_unused_descriptor_is_valid",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      299,
+      "t320_python_unused_descriptor_is_valid",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      306,
+      "t246_repairs_incomplete_and_wrong_generated_edids",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      334,
+      "t246_cache_directory_is_not_returned_as_an_edid",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      347,
+      "physical_size",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      355,
+      "t114_rust_dtd_reports_exact_physical_size",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      365,
+      "t114_t1702_current_cache_repairs_wrong_physical_size",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      377,
+      "t114_python_dtd_reports_exact_physical_size",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      393,
+      "python_edid",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      410,
+      "t332_shared_mode_validation_agrees_with_both_generators_at_clock_boundary",
+      3
+    ],
+    [
+      "host/src/edid.rs",
+      442,
+      "t115_generators_agree_on_boundaries_color_and_ranges",
+      5
+    ],
+    [
+      "host/src/edid.rs",
+      470,
+      "t115_both_generators_reject_unrepresentable_or_unsupported_values",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      495,
+      "t115_t1702_current_cache_repairs_wrong_refresh_range",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      512,
+      "t061_rejects_unrepresentable_edid_modes",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      528,
+      "edid_checksum_is_valid",
+      3
+    ],
+    [
+      "host/src/edid.rs",
+      546,
+      "t1496_instance_serials_are_injective_and_reject_overflow",
+      2
+    ]
+  ],
+  "ownership": "Only cache filename identity changes: instance, geometry, refresh and physical size. Full 128-byte content comparison and atomic temporary-file replacement remain authoritative. No migration, old-name fallback, installed-file deletion or native access. Existing match retains inode; mismatches settle temporary ownership through persist/drop."
+}

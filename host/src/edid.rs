@@ -161,11 +161,6 @@ pub fn make_edid(width: u32, height: u32, refresh: u32) -> Vec<u8> {
     .unwrap()
 }
 
-/// Bumped whenever the generator changes. It is part of the cache filename so
-/// that fixing a bug here actually reaches existing installs — without it, a
-/// stale file from a previous version would be reused forever.
-const EDID_GENERATION: u32 = 8;
-
 /// Write (or reuse) a generated EDID for this mode and return its path.
 pub fn ensure_edid_sized(
     width: u32,
@@ -191,8 +186,8 @@ fn ensure_edid_in(
     let edid = make_edid_sized(width, height, refresh, width_mm, height_mm, instance)?;
     std::fs::create_dir_all(dir).context("create EDID dir")?;
     let path = dir.join(format!(
-        "auto-v{}-slot{}-{}x{}@{}-{}x{}mm.bin",
-        EDID_GENERATION, instance, width, height, refresh, width_mm, height_mm
+        "auto-slot{}-{}x{}@{}-{}x{}mm.bin",
+        instance, width, height, refresh, width_mm, height_mm
     ));
     if std::fs::read(&path).ok().as_deref() != Some(edid.as_slice()) {
         // Only complete, matching generated contents are reusable. A previous
@@ -367,13 +362,15 @@ mod tests {
     }
 
     #[test]
-    fn t114_old_edid_cache_is_not_reused() {
+    fn t114_t1702_current_cache_repairs_wrong_physical_size() {
         let dir = tempfile::tempdir().unwrap();
-        let old = dir.path().join("auto-v3-1920x1080@60-310x194mm.bin");
-        std::fs::write(&old, [0u8; 128]).unwrap();
+        let current = dir.path().join("auto-slot0-1920x1080@60-310x194mm.bin");
+        let wrong = make_edid_sized(1920, 1080, 60, 255, 256, 0).unwrap();
+        std::fs::write(&current, wrong).unwrap();
         let path = ensure_edid_in(dir.path(), 1920, 1080, 60, 310, 194, 0).unwrap();
-        assert_ne!(path, old);
+        assert_eq!(path, current, "T1702 must repair the current mode identity");
         assert_eq!(physical_size(&std::fs::read(path).unwrap()), (310, 194));
+        assert_eq!(std::fs::read_dir(dir.path()).unwrap().count(), 1);
     }
 
     #[test]
@@ -495,12 +492,20 @@ mod tests {
     }
 
     #[test]
-    fn t115_old_range_cache_is_not_reused() {
+    fn t115_t1702_current_cache_repairs_wrong_refresh_range() {
         let dir = tempfile::tempdir().unwrap();
-        let old = dir.path().join("auto-v4-1920x1080@10-310x194mm.bin");
-        std::fs::write(&old, [0u8; 128]).unwrap();
+        let current = dir.path().join("auto-slot0-1920x1080@10-310x194mm.bin");
+        let mut wrong = make_edid_sized(1920, 1080, 10, 310, 194, 0).unwrap();
+        wrong[113] = 0;
+        wrong[114] = 240;
+        wrong[127] = 0u8.wrapping_sub(wrong[..127].iter().fold(0u8, |sum, b| sum.wrapping_add(*b)));
+        std::fs::write(&current, wrong).unwrap();
         let path = ensure_edid_in(dir.path(), 1920, 1080, 10, 310, 194, 0).unwrap();
-        assert_ne!(path, old);
+        assert_eq!(path, current, "T1702 must repair the current mode identity");
+        let actual = std::fs::read(path).unwrap();
+        assert_eq!(&actual[113..115], &[10, 90]);
+        assert_eq!(actual.iter().fold(0u8, |sum, b| sum.wrapping_add(*b)), 0);
+        assert_eq!(std::fs::read_dir(dir.path()).unwrap().count(), 1);
     }
 
     #[test]

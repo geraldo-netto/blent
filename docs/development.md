@@ -297,6 +297,8 @@ nonzero width and height; an oversized native size does not invalidate a support
 manual mode. An explicit `--edid` pins the supplied EDID instead of generating one.
 Generated EDIDs use the shared application data directory (`$HOME/.local/share/blent/edid`
 on Linux). Missing, empty or relative HOME is rejected before cache creation.
+Cache names identify the display instance and mode; full generated contents are
+checked on reuse and atomically replaced when different, without version suffixes.
 `list-displays` invokes `kscreen-doctor -o` and, when present, `wpctl status`;
 it is not a universal compositor enumeration API.
 
