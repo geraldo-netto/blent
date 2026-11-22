@@ -86,6 +86,7 @@ class AndroidWorkerRunTest {
         val exitEntered = java.util.concurrent.CountDownLatch(1)
         var exitGate: java.util.concurrent.CountDownLatch? = null
         override fun isBinderAlive() = alive
+        var link: (Endpoint) -> Unit = {}
         var failLink = false
         var failStop = false
         var stop: (Endpoint) -> Unit = {}
@@ -93,6 +94,7 @@ class AndroidWorkerRunTest {
         override fun linkToDeath(recipient: IBinder.DeathRecipient, flags: Int) {
             if (failLink) throw RemoteException("dead binding")
             deaths.add(recipient)
+            link(this)
         }
         override fun unlinkToDeath(recipient: IBinder.DeathRecipient, flags: Int) = deaths.remove(recipient)
         override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
@@ -120,6 +122,7 @@ class AndroidWorkerRunTest {
     private class Context(val endpoint: Endpoint) : ContextWrapper(RuntimeEnvironment.getApplication()) {
         var flags = 0
         var applicationReads = 0
+        val bindingReady = CompletableDeferred<Unit>()
         var binds = 0
         var unbinds = 0
         var accept = true
@@ -132,6 +135,7 @@ class AndroidWorkerRunTest {
         override fun getApplicationContext(): android.content.Context { applicationReads++; return this }
         override fun bindService(intent: Intent, connection: ServiceConnection, flags: Int): Boolean {
             binds++; this.flags = flags; this.connection = connection; component = intent.component!!
+            bindingReady.complete(Unit)
             if (error) throw SecurityException("bind denied")
             if (!accept) return false
             if (nullBinding) connection.onNullBinding(component)
@@ -289,6 +293,42 @@ class AndroidWorkerRunTest {
             assertEquals(1, context.unbinds)
         }
     }
+    @Test fun t1725AsynchronousDeathLinkMustSettleBeforeRetirement() = runBlocking {
+        val release = java.util.concurrent.CountDownLatch(1)
+        val linked = CompletableDeferred<Unit>()
+        val endpoint = Endpoint().apply {
+            link = { original ->
+                original.alive = false
+                original.deaths.toList().forEach { it.binderDied() }
+                linked.complete(Unit)
+                release.await()
+            }
+        }
+        val context = Context(endpoint).apply { connect = false }
+        val run = AndroidWorkerRun(context, task, graceMillis = 1, exitMillis = 30)
+        val execution = async(Dispatchers.Default) { runCatching { run.execute() } }
+        val callback = async(Dispatchers.IO, start = CoroutineStart.LAZY) {
+            context.connection.onServiceConnected(context.component, endpoint)
+        }
+        try {
+            withTimeout(1000) { context.bindingReady.await() }
+            callback.start()
+            withTimeout(1000) { linked.await(); execution.await() }
+            assertTrue("T1725 original death-link still running after observed process death",
+                runCatching { run.retire() }.exceptionOrNull() is TimeoutCancellationException)
+            assertEquals("T1725 original binding retained until link call settles", 0, context.unbinds)
+            assertTrue(endpoint.deaths.isNotEmpty())
+            assertFalse(callback.isCompleted)
+        } finally {
+            release.countDown()
+            callback.cancel(); callback.join()
+            run.cancel(); execution.join(); run.retire()
+        }
+        assertEquals(1, context.unbinds)
+        assertTrue(endpoint.deaths.isEmpty())
+        assertFalse(endpoint.commands.contains(WorkerIpc.START))
+    }
+
     @Test fun t885StartCallCannotOutliveSuccessfulRetirement() = runBlocking {
         val release = java.util.concurrent.CountDownLatch(1)
         val endpoint = Endpoint().apply { startGate = release }

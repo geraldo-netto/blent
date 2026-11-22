@@ -38,6 +38,7 @@ internal class AndroidWorkerRun(
     private var retired = false
     private val bindingGate = Any()
     private var acceptingBinding = true
+    private var linking: CompletableDeferred<Unit>? = null
     @Volatile private var loss: IOException? = null
     init { require(graceMillis in 0..60000 && exitMillis in 1..60000) }
     private val death = IBinder.DeathRecipient { dead.complete(Unit); disconnected() }
@@ -60,12 +61,14 @@ internal class AndroidWorkerRun(
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             if (service == null) { onNullBinding(name); return }
-            synchronized(bindingGate) {
+            val settled = synchronized(bindingGate) {
                 if (!bound || !acceptingBinding || remote != null) return
-                remote = service
+                // Reserve the original callback before publishing its Binder.
+                CompletableDeferred<Unit>().also { linking = it; remote = service }
             }
             try { service.linkToDeath(death, 0); ready.complete(service) }
             catch (error: Exception) { ready.completeExceptionally(error); disconnected() }
+            finally { settled.complete(Unit) }
         }
         override fun onServiceDisconnected(name: ComponentName?) = disconnected()
         override fun onBindingDied(name: ComponentName?) = disconnected()
@@ -149,6 +152,8 @@ internal class AndroidWorkerRun(
             outgoing?.join()
             if (requiresDeath()) awaitDeath() else stopping?.cancel()
             stopping?.join(); stopCall?.join(); exitCall?.join()
+            // Death/readiness can precede the original linkToDeath return.
+            synchronized(bindingGate) { linking }?.await()
             clean().await()
         }
         retired = true

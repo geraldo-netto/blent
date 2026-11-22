@@ -1,0 +1,2402 @@
+{
+  "item": "T1725",
+  "date": "2026-11-22",
+  "tests": {
+    "baseline_media": 38,
+    "baseline_connection": 60,
+    "new_regression_before": {
+      "executed": 2,
+      "failed": 2,
+      "api_levels": [
+        27,
+        34
+      ]
+    },
+    "deliberate_missing_await_control": {
+      "executed": 2,
+      "failed": 2
+    },
+    "final_media": 40,
+    "final_connection": 60,
+    "final_failures": 0
+  },
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<init>",
+      "line": 11,
+      "language": "kotlin",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "<init>",
+          "signature": "(Landroid/content/Context;Lcom/blent/MediaTask;Landroid/view/Surface;Lkotlin/jvm/functions/Function1;JJLcom/blent/WorkerGenerations;)V",
+          "line": 14,
+          "covered": 19,
+          "total": 19
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "<init>",
+          "signature": "(Landroid/content/Context;Lcom/blent/MediaTask;Landroid/view/Surface;Lkotlin/jvm/functions/Function1;JJLcom/blent/WorkerGenerations;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+          "line": 14,
+          "covered": 6,
+          "total": 6
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$connection$1",
+          "name": "<init>",
+          "signature": "(Lcom/blent/AndroidWorkerRun;)V",
+          "line": 61,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 16,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$1",
+          "name": "invoke",
+          "signature": "(Lcom/blent/WorkerEvent;)V",
+          "line": 16,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<clinit>",
+      "line": 20,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "<clinit>",
+          "signature": "()V",
+          "line": 20,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 44,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "death$lambda$0",
+          "signature": "(Lcom/blent/AndroidWorkerRun;)V",
+          "line": 44,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<init>",
+      "line": 45,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$callback$1",
+          "name": "<init>",
+          "signature": "(Lcom/blent/AndroidWorkerRun;)V",
+          "line": 45,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "onTransact",
+      "line": 46,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$callback$1",
+          "name": "onTransact",
+          "signature": "(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z",
+          "line": 47,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "receiveEvent",
+      "line": 56,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "receiveEvent",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 57,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "onServiceConnected",
+      "line": 62,
+      "language": "kotlin",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$connection$1",
+          "name": "onServiceConnected",
+          "signature": "(Landroid/content/ComponentName;Landroid/os/IBinder;)V",
+          "line": 63,
+          "covered": 8,
+          "total": 8
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "onServiceDisconnected",
+      "line": 73,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$connection$1",
+          "name": "onServiceDisconnected",
+          "signature": "(Landroid/content/ComponentName;)V",
+          "line": 73,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "onBindingDied",
+      "line": 74,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$connection$1",
+          "name": "onBindingDied",
+          "signature": "(Landroid/content/ComponentName;)V",
+          "line": 74,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "onNullBinding",
+      "line": 75,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$connection$1",
+          "name": "onNullBinding",
+          "signature": "(Landroid/content/ComponentName;)V",
+          "line": 76,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "disconnected",
+      "line": 79,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "disconnected",
+          "signature": "()V",
+          "line": 80,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "execute",
+      "line": 87,
+      "language": "kotlin",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "execute",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 88,
+          "covered": 13,
+          "total": 13
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 93,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$execute$start$1$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 93,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 99,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$execute$3",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 99,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "startNative",
+      "line": 102,
+      "language": "kotlin",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "startNative",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 102,
+          "covered": 8,
+          "total": 8
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 104,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$startNative$service$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 104,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "bind",
+      "line": 110,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "bind",
+          "signature": "()V",
+          "line": 111,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "observe",
+      "line": 118,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "observe",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 119,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "cancel",
+      "line": 129,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "cancel",
+          "signature": "()V",
+          "line": 130,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "interrupt",
+      "line": 135,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "interrupt",
+          "signature": "()V",
+          "line": 136,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 137,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$interrupt$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 137,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "stopAndExit",
+      "line": 139,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "stopAndExit",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 140,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 142,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 142,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 142,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 142,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 143,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3$1$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3$1$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 143,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3$1$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3$1$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 143,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3$1$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3$1$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 143,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3$1$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3$1$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$3",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 143,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 145,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$4",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 145,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 145,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$stopAndExit$4",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 145,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "retire",
+      "line": 148,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "retire",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 149,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 151,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$retire$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 152,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "requiresDeath",
+      "line": 162,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "requiresDeath",
+          "signature": "()Z",
+          "line": 162,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "awaitDeath",
+      "line": 166,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "awaitDeath",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 167,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "clean",
+      "line": 172,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "clean",
+          "signature": "()Lkotlinx/coroutines/Deferred;",
+          "line": 172,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "<lambda>",
+      "line": 173,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun$clean$1$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 174,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "name": "serviceClass",
+      "line": 178,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 7,
+      "percent": 85.71428571428571,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+          "owner": "com/blent/AndroidWorkerRun",
+          "name": "serviceClass$app_debug",
+          "signature": "(Lcom/blent/MediaTask;)Ljava/lang/Class;",
+          "line": 178,
+          "covered": 6,
+          "total": 7
+        }
+      ]
+    }
+  ],
+  "complexity": [
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      14,
+      "<init>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      16,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      20,
+      "<clinit>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      44,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      45,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      46,
+      "onTransact",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      56,
+      "receiveEvent",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      59,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      62,
+      "onServiceConnected",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      64,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      67,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      73,
+      "onServiceDisconnected",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      74,
+      "onBindingDied",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      75,
+      "onNullBinding",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      79,
+      "disconnected",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      87,
+      "execute",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      89,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      91,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      92,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      93,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      93,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      99,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      102,
+      "startNative",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      104,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      106,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      110,
+      "bind",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      111,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      115,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      118,
+      "observe",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      122,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      129,
+      "cancel",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      131,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      135,
+      "interrupt",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      137,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      139,
+      "stopAndExit",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      142,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      142,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      143,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      143,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      143,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      143,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      145,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      145,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      148,
+      "retire",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      151,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      156,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      162,
+      "requiresDeath",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      162,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      166,
+      "awaitDeath",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      172,
+      "clean",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      172,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      173,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      176,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      178,
+      "serviceClass",
+      7
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      16,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      17,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      21,
+      "dispatch",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      22,
+      "drain",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      31,
+      "t1562PausedUiStillDeliversLatestReceiptWithoutAnotherUiCallback",
+      5
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      31,
+      "<lambda>",
+      5
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      37,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      37,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      38,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      42,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      42,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      44,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      46,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      47,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      54,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      59,
+      "t1562RenderedCallbacksDoNotRunOnTheCallingUiDispatcher",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      59,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      62,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      62,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      64,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      65,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      65,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      67,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      75,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      88,
+      "isBinderAlive",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      89,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      92,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      93,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      94,
+      "linkToDeath",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      99,
+      "unlinkToDeath",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      100,
+      "onTransact",
+      6
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      105,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      108,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      113,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      114,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      119,
+      "emit",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      120,
+      "raw",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      122,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      135,
+      "getApplicationContext",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      136,
+      "bindService",
+      5
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      145,
+      "unbindService",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      150,
+      "t809_workerResultRequiresGenerationAndConfirmedDeathBeforeRetirement",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      150,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      151,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      151,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      166,
+      "t809_stopAndDeathAreResponsiveWithoutNativeCompletion",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      166,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      167,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      167,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      170,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      170,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      171,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      173,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      174,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      174,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      174,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      176,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      179,
+      "t809_failedExitRemainsUnconfirmedAndTransportFailuresRetire",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      179,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      180,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      184,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      187,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      187,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      189,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      192,
+      "t809_bindFailureCancellationAndLateConnectionsNeverStartNativeWork",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      192,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      195,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      201,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      201,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      202,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      206,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      214,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      217,
+      "t809_invalidAndOverloadedEventsCannotGrowTheQueue",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      217,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      219,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      219,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      221,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      221,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      224,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      224,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      224,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      226,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      226,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      229,
+      "t809_frameworkDisconnectAndBindingDeathEndTheRun",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      229,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      231,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      231,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      234,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      234,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      235,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      238,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      242,
+      "t809_serviceClassMappingAndParcelBoundsAreExplicit",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      249,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      251,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      253,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      254,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      256,
+      "t885BindingLossCannotProveDeathOrReleaseOriginalNativeOwner",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      256,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      258,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      258,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      261,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      261,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      263,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      266,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      268,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      270,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      273,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      274,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      279,
+      "t885BlockedNativeControlCallsRemainOwnedAfterConfirmedDeath",
+      5
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      279,
+      "<lambda>",
+      5
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      282,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      288,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      289,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      290,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      296,
+      "t1725AsynchronousDeathLinkMustSettleBeforeRetirement",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      296,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      299,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      300,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      302,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      307,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      309,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      309,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      310,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      314,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      316,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      318,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      332,
+      "t885StartCallCannotOutliveSuccessfulRetirement",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      332,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      334,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      337,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      337,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      339,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      341,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      342,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      345,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      349,
+      "t885FailedNativeUnbindCannotBeReportedAsRetirementOnRetry",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      349,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      350,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      353,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      354,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      359,
+      "t885InvalidCleanupLimitsRejectBeforeBinding",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      362,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      365,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      372,
+      "t1178ExhaustedConstructorRejectsBeforeContextBindingOrScopes",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      372,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      377,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      387,
+      "t1178LastGenerationFiltersOldAndLateBinderEventsAndJoinsOriginal",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      387,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      389,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      389,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      404,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      418,
+      "t1563EndedAcknowledgementBypassesGraceButNotOriginalDeath",
+      6
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      418,
+      "<lambda>",
+      6
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      420,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      422,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      423,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      427,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      427,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      429,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      431,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      436,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      440,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      447,
+      "t1563StaleAndNonterminalEventsCannotShortenGrace",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      447,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      448,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      448,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      451,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      451,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      453,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      455,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      461,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      465,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      470,
+      "t1563MeasureHostedRetirementWithDefaultGrace",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      470,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      471,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      471,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      471,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      474,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      474,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      476,
+      "<lambda>",
+      2
+    ]
+  ],
+  "coverage_tool": "JaCoCo 0.8.15 / Kotlin 1.9.20 authored-method attribution, normal Robolectric debug unit suite on API 27 and 34",
+  "complexity_tool": "project Kotlin 1.9.20 PSI checker",
+  "source_sha256": "ebec11e6dd0fa4c4390e427f397364027037b73e7813a760f4ec184c21fe4662",
+  "reproduction": "Independently dispatched onServiceConnected registers the original recipient, emits observed death, then holds linkToDeath before return. Original outgoing job has settled. Before fix retire returns successfully and releases binding; after fix retirement times out without unbind/unlink, then succeeds exactly once after the original callback settles. Removing only the new await reproduces both API failures.",
+  "ownership": "At most one deferred link receipt is allocated under bindingGate before publishing the single-assignment original Binder. The same gate closes admission if retirement sees no Binder. Receipt completion occurs in callback finally only after the native link call returns/throws. Retirement joins original START/STOP/EXIT work, awaits this receipt outside the gate, then calls original cleanup. Timeout cancels the wait, not the link receipt/callback or binding; retry observes the same obligation. Once-only cleanup and original death proof remain required. Eventual cleanup assumes link/native control calls settle and original death becomes observable; indefinite native failure remains owned. The test holds one private callback, releases its latch and joins execution/callback in finally before final retirement.",
+  "review": "Independent read-only native reviewer found no remaining defect in the change.",
+  "limitations": "Hosted Binder fixture proves the specified interleaving; physical Binder timing/provider acceptance remains in T1651. No devices or running sessions changed. No security or microphone/speaker feature campaign resumed."
+}
