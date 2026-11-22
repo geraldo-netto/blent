@@ -80,6 +80,10 @@ async fn t1597_identity_reset_requires_confirmation_and_removes_bound_trust() {
     damaged_trust(root.path());
     let failure = serve(settings(root.path()), std::future::pending()).await;
     assert!(failure.is_err());
+    // T1813: failed bootstrap transfers its original worker into retirement.
+    // This guarded fixture owns the sole shared admission; repair does not
+    // imply that the native worker has joined or its capacity can be reused.
+    crate::broker::linux::server::authority::test_idle().await;
     let mut unconfirmed = arguments(root.path(), "identity");
     unconfirmed.pop();
     assert!(run(unconfirmed).await.is_err());

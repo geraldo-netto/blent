@@ -162,3 +162,13 @@ record, retained until process exit because its obligations remain unknown.
 All 522 common library tests pass. Both maintained production functions exceed
 80% line coverage; all 30 measured functions have complexity <=7. Common Clippy
 passes. [Evidence](artifacts/2026-11-22-followup-batch/t1812/).
+
+## T1813 — wait for failed bootstrap ownership in the restart fixture
+
+The existing repair/restart test reproduced a premature retry of the one-slot
+shared authority domain. It now waits for that guarded domain's original
+admission to settle before retrying. All existing identity, confirmation, trust
+and restart assertions remain; the unchanged production admission still rejects
+reuse while native retirement is pending. The test passes after failing with
+`Resources still active or retiring`. Changed code is test-only; measured
+functions remain within complexity 9. [Evidence](artifacts/2026-11-22-followup-batch/t1813/).

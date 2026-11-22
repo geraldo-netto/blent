@@ -28,6 +28,17 @@ pub(in crate::broker::linux) async fn test_guard() -> tokio::sync::MutexGuard<'s
 }
 
 #[cfg(test)]
+pub(in crate::broker::linux) async fn test_idle() {
+    tokio::time::timeout(std::time::Duration::from_secs(5), async {
+        while shared().unwrap().active() != 0 {
+            tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+}
+
+#[cfg(test)]
 mod tests {
     use super::*;
 

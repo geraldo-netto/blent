@@ -1,0 +1,4 @@
+thread 'broker::linux::entry::repair_tests::t1597_identity_reset_requires_confirmation_and_removes_bound_trust' (955708) panicked at host/src/broker/linux/entry/repair_tests.rs:93:10:
+called `Result::unwrap()` on an `Err` value: Resources still active or retiring
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
