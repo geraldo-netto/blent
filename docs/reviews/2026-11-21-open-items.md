@@ -794,3 +794,7 @@ The daemon composition root was reviewed and not flagged merely for length. T153
 Helper command construction no longer clamps generated refresh to 90 or carries the obsolete 120-Hz rationale. The generator receives the selected FPS and rejects invalid product modes. The existing private command fixture now uses valid 90-FPS input and permanently checks 0, 9, 91, 120 and u32::MAX rejection; it fails before on 91 and passes after. Explicit EDID paths and card priority retain their behavior.
 
 All 38 helper tests pass. The maintained command function has 94.9% line coverage (37/39); all 36 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1703.json). Command construction spawns no child; existing cache/argument ownership is unchanged. Installed sessions were untouched.
+
+## T1715 — correct metric parser attribution (2026-11-22)
+
+T1610/T1701/T1702 artifact labels incorrectly named tree-sitter for Rust. The checked-in runner uses the locked syn 2.0.119 frontend; only C uses tree-sitter 0.25.2. Labels now name those actual tools. Function counters and results are unchanged; this documentation correction claims no additional execution.

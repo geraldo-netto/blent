@@ -18,7 +18,7 @@
       "missing": []
     }
   ],
-  "complexity_tool": "project Rust tree-sitter 0.25.2 checker",
+  "complexity_tool": "project Rust syn 2.0.119 checker",
   "complexity": [
     [
       "host/src/edid.rs",
