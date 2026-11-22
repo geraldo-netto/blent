@@ -1,6 +1,7 @@
 allprojects { project ->
     project.afterEvaluate {
         if (plugins.hasPlugin('com.android.application')) {
+            dependencies.add('testImplementation', 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2')
             def source = new File(rootProject.projectDir.parentFile, 'scripts/benchmarks/android-connection-idle/src')
             android.sourceSets.getByName('test').java.srcDir(source)
             tasks.register('connectionIdleBenchmark', JavaExec) {

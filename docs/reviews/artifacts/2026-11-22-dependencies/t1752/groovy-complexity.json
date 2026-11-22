@@ -1,0 +1,154 @@
+{
+    "tool": "Groovy 3.0.17 compiler AST",
+    "results": [
+        {
+            "file": "scripts/benchmarks/android-connection-idle/benchmark.init.gradle",
+            "closures": [
+                {
+                    "line": 1,
+                    "complexity": 1
+                },
+                {
+                    "line": 2,
+                    "complexity": 2
+                },
+                {
+                    "line": 7,
+                    "complexity": 1
+                }
+            ],
+            "methods": [
+                
+            ]
+        },
+        {
+            "file": "/tmp/blent-t1752-inventory.gradle",
+            "closures": [
+                {
+                    "line": 3,
+                    "complexity": 1
+                },
+                {
+                    "line": 4,
+                    "complexity": 2
+                },
+                {
+                    "line": 6,
+                    "complexity": 1
+                },
+                {
+                    "line": 7,
+                    "complexity": 1
+                },
+                {
+                    "line": 9,
+                    "complexity": 1
+                },
+                {
+                    "line": 10,
+                    "complexity": 1
+                },
+                {
+                    "line": 11,
+                    "complexity": 1
+                },
+                {
+                    "line": 12,
+                    "complexity": 1
+                },
+                {
+                    "line": 14,
+                    "complexity": 1
+                }
+            ],
+            "methods": [
+                
+            ]
+        },
+        {
+            "file": "/tmp/blent-groovy-complexity.groovy",
+            "closures": [
+                {
+                    "line": 33,
+                    "complexity": 1
+                },
+                {
+                    "line": 36,
+                    "complexity": 1
+                },
+                {
+                    "line": 36,
+                    "complexity": 1
+                },
+                {
+                    "line": 37,
+                    "complexity": 2
+                },
+                {
+                    "line": 38,
+                    "complexity": 1
+                },
+                {
+                    "line": 38,
+                    "complexity": 1
+                },
+                {
+                    "line": 38,
+                    "complexity": 1
+                }
+            ],
+            "methods": [
+                {
+                    "name": "visitClosureExpression",
+                    "line": 11,
+                    "complexity": 1
+                },
+                {
+                    "name": "visitIfElse",
+                    "line": 12,
+                    "complexity": 1
+                },
+                {
+                    "name": "visitForLoop",
+                    "line": 13,
+                    "complexity": 1
+                },
+                {
+                    "name": "visitWhileLoop",
+                    "line": 14,
+                    "complexity": 1
+                },
+                {
+                    "name": "visitDoWhileLoop",
+                    "line": 15,
+                    "complexity": 1
+                },
+                {
+                    "name": "visitCaseStatement",
+                    "line": 16,
+                    "complexity": 1
+                },
+                {
+                    "name": "visitCatchStatement",
+                    "line": 17,
+                    "complexity": 1
+                },
+                {
+                    "name": "visitTernaryExpression",
+                    "line": 18,
+                    "complexity": 1
+                },
+                {
+                    "name": "visitBinaryExpression",
+                    "line": 19,
+                    "complexity": 2
+                },
+                {
+                    "name": "visitClosureExpression",
+                    "line": 26,
+                    "complexity": 1
+                }
+            ]
+        }
+    ]
+}

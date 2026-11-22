@@ -26,6 +26,15 @@ class AndroidNoticesTest(unittest.TestCase):
                 for artifact in entry['artifacts']:
                     self.assertRegex(artifact['sha256'], r'^[0-9a-f]{64}$')
 
+    def test_t1752_benchmark_serialization_is_not_a_production_dependency(self):
+        build = (ROOT / 'android/app/build.gradle.kts').read_text()
+        self.assertNotIn('implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:', build)
+        entries = json.loads((ASSETS / 'runtime-dependencies.json').read_text())['dependencies']
+        self.assertFalse(any(entry['coordinate'].startswith('org.jetbrains.kotlinx:kotlinx-serialization-')
+                             for entry in entries))
+        benchmark = (ROOT / 'scripts/benchmarks/android-connection-idle/benchmark.init.gradle').read_text()
+        self.assertIn("dependencies.add('testImplementation', 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2')", benchmark)
+
 
 if __name__ == '__main__':
     unittest.main()

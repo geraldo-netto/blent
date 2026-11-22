@@ -15,7 +15,8 @@ python3 scripts/benchmarks/android-connection-idle/run.py --allocations /tmp/ble
 
 Both runs use Gradle `--offline`. Neither opens a tablet, USB transport, camera,
 audio device, network connection or application installation. The opt-in init
-script adds benchmark sources to the hosted unit-test compilation only for this
+script adds benchmark sources and their serialization dependency to hosted
+unit-test compilation only for this
 invocation; ordinary application and test builds retain their existing inputs.
 The permanent Python tool regressions exercise task registration and compilation.
 

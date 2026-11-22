@@ -200,3 +200,27 @@ connection handler has 53/53 executable lines covered and complexity 6 under
 the local Rust syntax checker. Exact evidence is retained in
 `artifacts/2026-11-22-dependencies/t1742.json`. This source change has not yet been
 installed; deployment remains part of T1734.
+
+## T1752: benchmark serialization leaves the production graph
+
+Remove unused kotlinx-serialization-json from the Android application. The idle
+connection benchmark declares its own test-only dependency in its opt-in init
+script, and its permanent task-registration/compilation tests still pass. Pin the
+already selected Kotlin stdlib 1.9.21 explicitly: otherwise removing serialization
+would silently lower stdlib/common to 1.9.20. No remaining runtime coordinate changed.
+
+The actual release graph falls from 85 to 80 coordinates. Five removed coordinates
+represent two JARs (core-jvm and json-jvm, 678,082 source artifact bytes) plus three
+metadata-only modules. This is not five native libraries or measured runtime memory.
+The exact remaining inventory travels in the APK; all eight notice assets match
+source bytes. The release APK is 2,230,367 bytes; no latency or startup gain is claimed.
+
+The new permanent production-dependency test failed before cleanup and passes after.
+Three Python notice tests, two benchmark configuration/compilation tests and four
+hosted Android notice cases pass. Release assembly passes. The repository checker
+measures 41 Kotlin/Python functions at complexity <=3; Groovy 3.0.17 compiler AST
+measures the three changed benchmark DSL closures at <=2. The artifact directory
+also retains the inventory collector and measurement tool with their own measured
+closure/method scores. These tools borrow Gradle's resolved graph and close file
+operations; they add no application allocation, thread or native-resource owner.
+Evidence is in `artifacts/2026-11-22-dependencies/t1752/`. Nothing was installed.
