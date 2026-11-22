@@ -1142,8 +1142,19 @@ callbacks revalidate ownership before acknowledgement. `FrameTiming` owns
 arrival/release measurements per epoch; `ReceiverStatistics` retains separate
 counters for each run.
 
-Synchronous input/output and the legacy hint profile remain the default.
-Experimental callback operation confines codec input/output to a Handler and
+Production keeps synchronous input/output and the current default hint policy;
+negotiated decoder selections remain authoritative when present. DecoderSession
+captures format, callback and output adapters for each admitted startup. Public
+packet/output contracts are independent of Android and the concrete lifetime
+owner; native adapters borrow the original codec through DecoderCodecAccess.
+CodecInputAccess provides the shared slot admission, complete-fill validation and
+submission path. PresentDecodedOutput presents every output without lookahead.
+
+CallbackDecoder, DecoderMailbox, direct input, supported/unhinted hint alternatives
+and render-latest policies belong to `scripts/benchmarks/android-decoder/experiments`.
+They are included in standalone replay and normal regression tests, and excluded
+from application production source sets. Experimental callback operation confines
+codec input/output to a Handler and
 owns at most two detached access units, including the one being submitted.
 Admission and pending input share a 200 ms deadline; expiry resets/reconnects
 rather than dropping a dependent encoded frame. Closing the mailbox wakes
@@ -1152,7 +1163,8 @@ The normal-priority callback Handler is separate from the selectable synchronous
 output-thread priority. The [decoder replay](benchmarks/2026-09-18-decoder-profiles.md)
 records the measured tradeoffs and the limits of render-notification timing.
 
-T403 adds an experimental synchronous `ChannelPacketReader`/`feedDirect` path.
+The replay-only synchronous input path uses `ChannelPacketReader` and
+`DirectReplayInput.feedReplayInput`, sharing production native input admission.
 The reader belongs to `scripts/benchmarks/android-decoder/input`; it is included
 in the standalone replay and normal regression tests, not the production APK.
 It validates the wire prefix before borrowing a codec input slot, reads the
@@ -1304,9 +1316,9 @@ available; there is no PID-only signalling fallback. A run without matching
 orphans does not need those syscalls. Doctor shares the capture-role/FIFO matcher
 for reporting but never signals processes.
 
-T399's optional `DecodedOutputDrainer` prototype decodes all input and can release
+The benchmark-only `DecodedOutputDrainer` policy decodes all input and can release
 older already-decoded outputs without presentation, with a four-output batch cap.
-It is disabled by default: the [cadence and burst experiments](benchmarks/2026-09-18-frame-pacing.md)
+Production uses `PresentDecodedOutput` and does not include this policy: the [cadence and burst experiments](benchmarks/2026-09-18-frame-pacing.md)
 found no ready-output backlog or latency advantage. Capture retains its 200 ms
 keepalive. The [T492 live sparse checks](benchmarks/2026-09-19-idle-cadence.md)
 found two-second CLI keyframe gaps at one input/s and about one-second ACK
