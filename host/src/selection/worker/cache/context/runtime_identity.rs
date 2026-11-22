@@ -13,6 +13,7 @@ use std::{
 
 const MAX_FILE: u64 = 512 * 1024 * 1024;
 const MAX_MANIFEST: u64 = 16384;
+mod memo;
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -32,12 +33,22 @@ fn open(path: &Path, limit: u64) -> Option<std::fs::File> {
 }
 
 pub(super) fn file_hash(path: &Path) -> Option<[u8; 32]> {
-    let mut file = open(&path.canonicalize().ok()?, MAX_FILE)?.take(MAX_FILE + 1);
+    let path = path.canonicalize().ok()?;
+    let mut file = open(&path, MAX_FILE)?;
+    let stamp = memo::Stamp::from(&file.metadata().ok()?);
+    let cached = memo::cache()
+        .lock()
+        .ok()?
+        .lookup(&path, stamp, memo::capacity()?);
+    if let Some(digest) = cached {
+        return Some(digest);
+    }
+    let mut input = (&mut file).take(MAX_FILE + 1);
     let mut digest = Sha256::new();
     let mut chunk = [0; 65536];
     let mut total = 0;
     loop {
-        let count = file.read(&mut chunk).ok()?;
+        let count = input.read(&mut chunk).ok()?;
         if count == 0 {
             break;
         }
@@ -47,7 +58,15 @@ pub(super) fn file_hash(path: &Path) -> Option<[u8; 32]> {
         }
         digest.update(&chunk[..count]);
     }
-    Some(digest.finalize().into())
+    if memo::Stamp::from(&file.metadata().ok()?) != stamp {
+        return None;
+    }
+    let digest = digest.finalize().into();
+    memo::cache()
+        .lock()
+        .ok()?
+        .remember(path, stamp, digest, memo::capacity()?);
+    Some(digest)
 }
 
 fn manifest(path: &Path) -> Option<Manifest> {

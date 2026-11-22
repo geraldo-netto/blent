@@ -379,6 +379,18 @@ raw tablet identities are not persisted. Boot identity and elapsed age do not
 invalidate tuning. Context matching cannot detect every runtime load or
 unreported userspace-driver behavior change; it is not a permanent speed claim.
 
+The host keeps up to 64 file digests in a process-local least-recently-used cache.
+`BLENT_RUNTIME_HASH_CACHE_ENTRIES` accepts 0–256 entries; zero forces hashing on
+every lookup and releases retained entries. Invalid values reject tuning-cache
+identity admission. Current canonical path, device/inode, size, mode and both
+modification/change timestamps (including nanoseconds) must match before reuse.
+Misses verify the original file's metadata again after reading. The cache relies
+on coherent filesystem metadata and retains no file descriptor or file contents;
+it is advisory tuning state, not authentication or native ownership evidence.
+The FFmpeg version query, manifest parsing and platform/configuration observations
+remain fresh. Entries are discarded on eviction, disable or process exit;
+lowering the capacity takes effect at the next admitted hash lookup.
+
 Malformed, oversized, symlinked, future-dated or incompatible records are ignored.
 Historical encoder/decoder identities, measurements and worker bounds are checked
 before use. Only successful measured selections are saved; a failed/aborted

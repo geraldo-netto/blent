@@ -1,0 +1,318 @@
+{
+  "issue": "T1493",
+  "tests": {
+    "invalidation_before_optimization": {
+      "passed": 2,
+      "failed": 0
+    },
+    "deliberate_fault_control_without_ctime": {
+      "passed": 0,
+      "failed": 1
+    },
+    "final_cache_suite": {
+      "passed": 54,
+      "failed": 0,
+      "ignored": 1
+    }
+  },
+  "measurements": {
+    "coverage": [
+      {
+        "file": "host/src/selection/worker/cache/context/runtime_identity.rs",
+        "name": "file_hash",
+        "line": 35,
+        "language": "rust",
+        "covered": 32,
+        "total": 34,
+        "percent": 94.11764705882354,
+        "passes": true,
+        "missing": [
+          57,
+          62
+        ]
+      },
+      {
+        "file": "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        "name": "from",
+        "line": 24,
+        "language": "rust",
+        "covered": 10,
+        "total": 10,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        "name": "cache",
+        "line": 43,
+        "language": "rust",
+        "covered": 3,
+        "total": 3,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        "name": "capacity",
+        "line": 47,
+        "language": "rust",
+        "covered": 8,
+        "total": 8,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        "name": "resize",
+        "line": 57,
+        "language": "rust",
+        "covered": 8,
+        "total": 8,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        "name": "lookup",
+        "line": 66,
+        "language": "rust",
+        "covered": 11,
+        "total": 11,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        "name": "remember",
+        "line": 77,
+        "language": "rust",
+        "covered": 13,
+        "total": 13,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      }
+    ],
+    "complexity": [
+      [
+        "host/src/selection/worker/cache/context/runtime_identity.rs",
+        35,
+        "file_hash",
+        6
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        24,
+        "from",
+        1
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        43,
+        "cache",
+        1
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        47,
+        "capacity",
+        4
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        57,
+        "resize",
+        3
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        66,
+        "lookup",
+        3
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo.rs",
+        77,
+        "remember",
+        3
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        11,
+        "new",
+        1
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        30,
+        "write",
+        1
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        36,
+        "t1676_declared_components_are_rehashed_and_links_stay_inside_the_root",
+        1
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        67,
+        "t1676_native_programs_work_without_metadata_but_opaque_scripts_do_not",
+        1
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        79,
+        "t1676_manifest_schema_and_count_bounds_reject_obsolete_or_unknown_inputs",
+        2
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        101,
+        "t1676_paths_reject_escape_control_missing_and_nonregular_components",
+        2
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        128,
+        "t1676_file_size_and_manifest_exact_boundaries_are_enforced",
+        1
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        151,
+        "t1676_hash_streaming_matches_sha256_across_chunk_boundaries",
+        2
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        162,
+        "t1676_maximum_component_count_and_path_length_are_admitted",
+        2
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        177,
+        "t1493_same_size_write_with_restored_mtime_changes_the_digest",
+        2
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/tests.rs",
+        199,
+        "t1493_replacement_and_retargeted_alias_use_current_file_identity",
+        1
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo/tests.rs",
+        3,
+        "stamp",
+        1
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo/tests.rs",
+        15,
+        "t1493_memo_retains_only_current_identity_and_promotes_hits",
+        1
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo/tests.rs",
+        34,
+        "t1493_memo_bounds_eviction_and_disable_cover_every_admitted_capacity",
+        3
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo/tests.rs",
+        50,
+        "t1493_every_stat_component_invalidates_the_memo",
+        2
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo/tests.rs",
+        94,
+        "t1493_retained_digests_do_not_retain_native_files",
+        2
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo/tests.rs",
+        109,
+        "t1493_capacity_defaults_and_invalid_inputs_are_explicit",
+        4
+      ],
+      [
+        "host/src/selection/worker/cache/context/runtime_identity/memo/tests.rs",
+        135,
+        "isolated",
+        2
+      ]
+    ],
+    "feature": "default"
+  },
+  "benchmark_complexity": [
+    [
+      "scripts/benchmarks/cache-identity.py",
+      21,
+      "arguments",
+      1
+    ],
+    [
+      "scripts/benchmarks/cache-identity.py",
+      32,
+      "identity",
+      6
+    ],
+    [
+      "scripts/benchmarks/cache-identity.py",
+      50,
+      "observe",
+      4
+    ],
+    [
+      "scripts/benchmarks/cache-identity.py",
+      64,
+      "summarize",
+      4
+    ],
+    [
+      "scripts/benchmarks/cache-identity.py",
+      80,
+      "run",
+      5
+    ]
+  ],
+  "tools": {
+    "rustc": "1.100.0 (0ef1bc386 2026-11-09)",
+    "cargo-llvm-cov": "0.8.7",
+    "complexity": "project Rust syn 2.0.119 and Python AST 3.12; 25 Rust functions and 5 benchmark functions, none above 9"
+  },
+  "performance": {
+    "evidence": "t1493-paired.json",
+    "private_probe_processes": 12,
+    "open_load_observations": 120,
+    "component_observations": 120,
+    "repeat_observations_per_runtime_variant": 27,
+    "system_repeat_open_ms": [
+      67.497,
+      52.076
+    ],
+    "packaged_repeat_open_ms": [
+      44.051,
+      5.565
+    ],
+    "first_call": "Still hashes files. All first-call observations, including the 155.942 ms baseline outlier, are retained. Filesystem caches were not flushed.",
+    "claim": "Repeated Cache::open preparation only, not installed attachment time, video latency, FPS or physical device acceptance."
+  },
+  "policy": "BLENT_RUNTIME_HASH_CACHE_ENTRIES defaults to 64, accepts 0..256; zero clears retained entries at the next admitted lookup and disables memoization. Invalid/non-Unicode values reject cache-key admission. Version execution, manifest validation and platform/config reads remain fresh.",
+  "ownership": "One process-lifetime Mutex<Memo> owns at most 256 canonical PathBuf/stat/digest entries. There are no retained file handles, contents, frames, callbacks or native leases. Each admitted hash call owns its original File and 64 KiB buffer; its miss reads at most 512 MiB+1 byte and verifies descriptor metadata before insertion. The mutex never spans content reads or native process execution. Hits copy a 32-byte digest; no borrowed entry escapes. Eviction and disable drop entries, process exit ends the static owner, and poisoned/invalid admission retains only the bounded existing value state. Native descriptor counts are unchanged after creating, hashing and unlinking more files than the active retention limit.",
+  "identity": "Keys include canonical path, device, inode, size, mode, nanosecond mtime and ctime. Requires coherent filesystem metadata; this advisory optimization is not authentication or native-ownership evidence. Same-size rewrites with restored mtime, replacement, symlink retargeting, absent files, every metadata field and every capacity 0..256 are permanently tested. Omitting ctime deliberately fails the real same-size/restored-mtime regression; correct source is restored and the final suite passes.",
+  "sources": {
+    "host/src/selection/worker/cache/context/runtime_identity.rs": "8eb4b9ac66ea7fc373f2b92f30bbe4a69660e0bd38bf1f62441e7c17b93a2890",
+    "host/src/selection/worker/cache/context/runtime_identity/memo.rs": "d68c1a669130fd718804bbfa15d914d45fc11d9bc782869bbc76fb2cfbcba71e",
+    "scripts/benchmarks/cache-identity.py": "f853395c03ffb7353667f75aa541d5ee5bbaf6d9fc9f386a3c2c97651411b119"
+  },
+  "scope": "Only private test processes, temporary configuration, synthetic attachment and an isolated copy of the installed packaged FFmpeg runtime were used. Installed helper was read only; no installed file, running session or tablet was changed. Benchmark-only coverage is exempt; all seven changed production functions measure 94.1\u2013100% line coverage."
+}

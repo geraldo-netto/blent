@@ -1,7 +1,8 @@
 """Native components declared by the current packaged FFmpeg launcher.
 
-The host rehashes these files; this declaration is not a checksum cache or trust
-grant. Build owns the fresh AppDir. At most 32 paths and 16 KiB JSON are emitted.
+The host checks these files' current identity and hashes changed files; this
+declaration is not a checksum cache or trust grant. Build owns the fresh AppDir.
+At most 32 paths and 16 KiB JSON are emitted.
 """
 import json
 from pathlib import PurePosixPath

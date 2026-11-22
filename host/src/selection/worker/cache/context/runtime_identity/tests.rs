@@ -172,3 +172,47 @@ fn t1676_maximum_component_count_and_path_length_are_admitted() {
     fixture.write(serde_json::json!({"schema":1,"files":files}));
     assert!(fingerprint(&fixture.program).is_some());
 }
+
+#[test]
+fn t1493_same_size_write_with_restored_mtime_changes_the_digest() {
+    let root = tempfile::tempdir().unwrap();
+    let path = root.path().join("native");
+    std::fs::write(&path, b"original bytes").unwrap();
+    let modified = path.metadata().unwrap().modified().unwrap();
+    let before = file_hash(&path).unwrap();
+    for byte in 0..16 {
+        let bytes = vec![byte; 14];
+        std::fs::write(&path, &bytes).unwrap();
+        std::fs::File::options()
+            .write(true)
+            .open(&path)
+            .unwrap()
+            .set_times(std::fs::FileTimes::new().set_modified(modified))
+            .unwrap();
+        let expected: [u8; 32] = Sha256::digest(&bytes).into();
+        assert_ne!(expected, before);
+        assert_eq!(file_hash(&path), Some(expected));
+    }
+}
+
+#[test]
+fn t1493_replacement_and_retargeted_alias_use_current_file_identity() {
+    use std::io::Write;
+    let root = tempfile::tempdir().unwrap();
+    let original = root.path().join("original");
+    let current = root.path().join("current");
+    std::fs::write(&original, b"old").unwrap();
+    symlink(&original, &current).unwrap();
+    assert_eq!(file_hash(&original), file_hash(&current));
+    let mut replacement = tempfile::NamedTempFile::new_in(root.path()).unwrap();
+    replacement.write_all(b"new").unwrap();
+    replacement.persist(&original).unwrap();
+    assert_eq!(file_hash(&current), Some(Sha256::digest(b"new").into()));
+    let other = root.path().join("other");
+    std::fs::write(&other, b"other").unwrap();
+    std::fs::remove_file(&current).unwrap();
+    symlink(&other, &current).unwrap();
+    assert_eq!(file_hash(&current), Some(Sha256::digest(b"other").into()));
+    std::fs::remove_file(&other).unwrap();
+    assert!(file_hash(&current).is_none());
+}

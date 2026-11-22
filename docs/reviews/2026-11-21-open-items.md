@@ -575,3 +575,20 @@ An opt-in release probe opens the production cache for a synthetic attachment an
 The executable measured is a 32,566,360-byte release test binary, versus the installed host's 22,568,217 bytes. No filesystem caches were flushed. These are preparation-cost observations, not installed attachment latency or implemented gains. [Baseline evidence](artifacts/2026-11-21-open-items/t1493-baseline.json). Three benchmark functions meet complexity ≤9; benchmark coverage is exempt. The bounded probe retains numeric observations, owns temporary storage and waits original version-query children through the existing scope. Installed sessions are untouched.
 
 T1493 remains open for bounded hash memoization, invalidation regressions and a paired after measurement. Fresh version queries remain necessary for native runtimes whose shared libraries are not completely declared.
+
+## T1493 — bounded runtime digest memoization
+
+The host memoizes file digests using canonical path, device/inode, size, mode and nanosecond modification/change times. Each lookup still opens and checks the current regular file; misses verify the original descriptor after reading. The process-local LRU defaults to 64 entries, supports 0–256 through `BLENT_RUNTIME_HASH_CACHE_ENTRIES`, and retains only paths/stat data/digests. Zero disables retention. Manifest validation, FFmpeg version execution and platform/config observations remain fresh. This depends on coherent filesystem metadata and supplies no authentication or native-ownership proof.
+
+Three alternating repeats per runtime/variant produced 120 private open/load observations. Each table median uses 27 repeat calls; the 12 first calls remain in the evidence and still hash files. No filesystem caches were flushed.
+
+| Runtime | Baseline repeated open | Memoized repeated open | Wall-time reduction |
+|---|---:|---:|---:|
+| System FFmpeg | 67.497 ms | 52.076 ms | 22.85% |
+| Private packaged FFmpeg copy | 44.051 ms | 5.565 ms | 87.37% |
+
+These measure cache preparation in release test binaries, not installed attachment or video latency. [Paired observations](artifacts/2026-11-21-open-items/t1493-paired.json). The system runtime still spends most time in its fresh version query. No first-call speedup is claimed; its baseline outlier is retained.
+
+Two real-filesystem invalidation tests passed before optimization and remain permanent. Deliberately omitting ctime made the same-size/restored-mtime test fail; the correct implementation is restored. The final cache suite passes all 54 executed tests with one opt-in timing probe excluded from the default run. Every admitted capacity 0–256, all metadata fields, replacement/retargeting and invalid configuration are covered; the native descriptor count is unchanged after hashing and unlinking more files than the retention limit. Seven changed production functions measure 94.1–100% line coverage. All 25 measured Rust functions and five benchmark functions have complexity ≤9. [Verification and ownership evidence](artifacts/2026-11-21-open-items/t1493.json).
+
+The original File and bounded read buffer settle within each call; no memo entry retains native work or content. Cache values are discarded on eviction/disable/process exit. The mutex does not span file hashing or native version execution. Installed sessions and binaries remain unchanged.
