@@ -132,3 +132,29 @@ measurement covers all 21 functions in the changed test module, maximum 3; the
 new test scores 2. The bounded test owns
 its temporary archive/notice directories through unittest cleanup; no reference
 escapes them. hex-slice remains separately unresolved in T1463.
+
+## T1733: remaining duplicate constraints
+
+The exact Linux normal/build graph for the host's installed features and GUI
+contains 334 package versions, down from 345 at 90a56e29. Names with multiple
+versions fall from 20 to 13. This includes build dependencies; it is not a count
+of linked runtime libraries. `artifacts/2026-11-22-dependencies/release-graph.json`
+retains both selected graphs and the exact delta. The full all-target lockfile
+falls from 551 to 540 versions and from 43 to 36 duplicated names.
+
+| Retained duplicate names | Consumers / removal constraint |
+| --- | --- |
+| smithay-client-toolkit, calloop, calloop-wayland-source, rustix, linux-raw-sys | Current winit 0.30.13 uses toolkit 0.19/calloop 0.13/rustix 0.38; current smithay-clipboard 0.7.3 uses toolkit 0.20/calloop 0.14/rustix 1. Current eframe 0.37 still uses winit 0.30. These require upstream API alignment; disabling Wayland/clipboard would remove capabilities. |
+| getrandom | ring 0.17.14 requires 0.2, ahash 0.8.12 requires 0.3, tempfile 3.27 and rand 0.10 use 0.4. Different API generations cannot be unified by a Cargo override. |
+| hashbrown | AccessKit consumer 0.28 uses 0.15; indexmap 2.14 uses 0.17. Current eframe 0.37 -> AccessKit Unix 0.23 -> AT-SPI common 0.20 -> consumer 0.39 can align this family. GUI migration plus the Rust 1.95 minimum (packaging currently 1.90) remains T1740. |
+| thiserror, thiserror-impl | winit/toolkit 0.19 and existing AccessKit consume 1; newer toolkit and WebSocket stack use 2. Updating only Blent's direct declaration cannot remove the old consumers. |
+| toml_datetime, toml_edit, winnow | TOML 0.8/current native-audio system-deps 6 retain the older parser family; proc-macro-crate uses the current parser family. T1731 preserves the explicit audio-work pause. |
+| shlex | bindgen 0.69 under libspa-sys/pipewire-sys 0.8 consumes 1.3; current cc consumes 2.0. This build-only chain requires native-audio dependency resumption. |
+
+Primary release references: <https://docs.rs/winit/0.30.13/>,
+<https://docs.rs/smithay-clipboard/0.7.3/>,
+<https://docs.rs/eframe/0.37.0/>,
+<https://docs.rs/accesskit_atspi_common/0.20.0/>.
+Exact cached normalized manifests and Cargo inverse trees verify these edges.
+No dependency is removed solely from the notice inventory. The review is complete;
+separate actionable framework migration and paused TOML work remain visible.
