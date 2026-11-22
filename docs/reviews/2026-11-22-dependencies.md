@@ -158,3 +158,28 @@ Primary release references: <https://docs.rs/winit/0.30.13/>,
 Exact cached normalized manifests and Cargo inverse trees verify these edges.
 No dependency is removed solely from the notice inventory. The review is complete;
 separate actionable framework migration and paused TOML work remain visible.
+
+## T1741: independently delegated intermediate buffer comparison
+
+Retain the 4 KiB default after the owner-requested intermediate-size investigation.
+The subagent completed 588 measured fresh-process runs plus 30 excluded warmups:
+4/8/16/32/64/128 KiB, a separate 4/6/8/12 KiB confirmation, then 60 final small-burst
+pairs at 4/8 KiB. No observation was discarded. 8 KiB is the closest measured
+compromise, but not an improvement across the representative workloads.
+
+In the independent finer sweep, paired 8/4 medians show interactive throughput
+-0.4%, p95 latency +0.8%, and 64 KiB bursts +5.4%. The final small-message burst
+confirmation suggests -4.9% throughput (95% paired-bootstrap interval -8.3% to
++1.0%). That uncertainty cannot establish parity or exclude a material regression.
+The input channel primarily carries small control messages, not video pixels.
+No production capacity or 64 KiB protocol limit changed, and no hardware speedup
+is claimed. 8 KiB would cost 4 KiB more reserved capacity per handler, separately
+from observed process residency.
+
+[Retained report](artifacts/2026-11-22-dependencies/t1741/report.md) contains every
+stage, raw compressed records, summaries, exact commands, code hashes and limits.
+The active workstation and possible initial Gradle overlap are disclosed;
+subsequent Gradle verification used separate CPU affinity. All 12 runner/analysis
+functions measure complexity <=6 under the local Python 3.12 AST checker.
+No running Blent process or device was touched. This resolves the requested
+comparison without changing the default on an unsupported performance claim.
