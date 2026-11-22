@@ -169,12 +169,12 @@ impl Tab {
         Self::Overview,
         Self::Connections,
         Self::About,
+        Self::Settings,
         Self::Video,
         Self::Display,
         Self::Camera,
         Self::Audio(AudioDirection::Microphone),
         Self::Audio(AudioDirection::Speakers),
-        Self::Settings,
     ];
 
     fn maximum_width(self, available: f32) -> f32 {
@@ -194,7 +194,7 @@ impl Tab {
             Self::Display => "Display & input",
             Self::Camera => "Cameras",
             Self::Audio(direction) => audio_settings::label(direction),
-            Self::Settings => "Settings",
+            Self::Settings => "General",
         }
     }
 }
