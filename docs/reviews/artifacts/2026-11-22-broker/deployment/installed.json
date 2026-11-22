@@ -1,0 +1,72 @@
+{
+  "source": {
+    "revision": "080d6546b56953102b2cc2c267ddb3d8a3f6621e",
+    "build": "local Linux native-audio,accessory-transport; current source; private SDK"
+  },
+  "binaries": [
+    {
+      "name": "blent",
+      "sha256": "b970768f513a78ef7a504ffc35cf937d517cae8e54e4c664e18954e796eef471"
+    },
+    {
+      "name": "blent-gui",
+      "sha256": "92345f96516bc509a1a7b7cc05a5efa33faa5cb91b09ddf11ff9a172cf597d89"
+    },
+    {
+      "name": "blent-audio",
+      "sha256": "70608614abfad5b18c0d02e0778b092bc075c99591db05728819fe0e3758d5c1"
+    },
+    {
+      "name": "blent-usb-broker",
+      "sha256": "f6db7bc90f3d85b166e983028ccab7a9a4e8f24b8b4a7b366d369e595b096599"
+    },
+    {
+      "name": "blent-usb-io",
+      "sha256": "09316bf4a2b3a163cee70df7e50addfdd73d4040bb97e1b03cb825b0f88f3faa"
+    },
+    {
+      "name": "evdi_helper",
+      "sha256": "4244a1351fe3916371b6042cee50bea7a754bef8ff719fa33d85c44a9a2dd3cd"
+    }
+  ],
+  "running": [
+    {
+      "pid": 631615,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent",
+      "sha256": "b970768f513a78ef7a504ffc35cf937d517cae8e54e4c664e18954e796eef471"
+    },
+    {
+      "pid": 631681,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent",
+      "sha256": "b970768f513a78ef7a504ffc35cf937d517cae8e54e4c664e18954e796eef471"
+    },
+    {
+      "pid": 631962,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent-gui",
+      "sha256": "92345f96516bc509a1a7b7cc05a5efa33faa5cb91b09ddf11ff9a172cf597d89"
+    },
+    {
+      "pid": 631677,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent-usb-broker",
+      "sha256": "f6db7bc90f3d85b166e983028ccab7a9a4e8f24b8b4a7b366d369e595b096599"
+    },
+    {
+      "pid": 631789,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/evdi_helper",
+      "sha256": "4244a1351fe3916371b6042cee50bea7a754bef8ff719fa33d85c44a9a2dd3cd"
+    }
+  ],
+  "apk_sha256": "dc67dd79ca078b246ae187a47dbba533774981a042a53ecc9a665f27f38c7479",
+  "tablet": "8002RH1010011900",
+  "notice_gap": "T1463; local installation only",
+  "autostart": "enabled unchanged",
+  "tablet_launch": "am start -W: Status ok, COLD, MainActivity resumed",
+  "display": "1280x800; h264_vaapi encoder active; X11 Touch and Pointer mapped to DVI-I-2-1; tablet screenshot matches orange host output with tablet settings overlay",
+  "notice_identity": {
+    "bundle_files": 56,
+    "notice_or_metadata_files": 661,
+    "selected_rust_package_versions": 334,
+    "full_release_qualification": "unresolved T1463"
+  },
+  "rollback_directory": "/home/netto/.cache/blent-reload-20261122-080d6546.gz371fvt"
+}
