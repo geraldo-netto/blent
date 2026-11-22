@@ -2,10 +2,8 @@ use super::*;
 
 #[test]
 fn t582_requests_cover_owned_groups_without_boosting_an_editor() {
-    for unit in [
-        include_str!("../../../../scripts/blent.service"),
-        include_str!("../../../../packaging/blent.service"),
-    ] {
+    {
+        let unit = include_str!("../../../../scripts/blent.service");
         assert!(unit.lines().any(|line| line == "CPUWeight=1000"));
         assert!(!unit.contains("CPUSchedulingPolicy=fifo"));
     }

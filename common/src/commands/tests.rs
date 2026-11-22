@@ -105,10 +105,8 @@ fn t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets() {
     assert!(daemon_command_timeout(false) > DAEMON_STOP_TIMEOUT);
     assert_eq!(daemon_command_timeout(true), Duration::from_secs(131));
     assert_eq!(daemon_command_timeout(true), MANAGED_COMMAND_TIMEOUT);
-    for unit in [
-        include_str!("../../../scripts/blent.service"),
-        include_str!("../../../packaging/blent.service"),
-    ] {
+    {
+        let unit = include_str!("../../../scripts/blent.service");
         let cleanup = unit
             .lines()
             .find_map(|line| line.strip_prefix("TimeoutStopSec="))

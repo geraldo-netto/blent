@@ -1,0 +1,52 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: method `poll_notice` is never used
+  --> host/src/owned_task/notices.rs:10:19
+   |
+ 6 | impl Task {
+   | --------- method in this implementation
+...
+10 |     pub(crate) fn poll_notice<T>(
+   |                   ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blent` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.11s
+     Running tests/arch_output.rs (target/debug/build/blent/06eed59661b28d4a/out/arch_output-06eed59661b28d4a)
+
+running 2 tests
+test t467_arch_source_build_pins_output_despite_cargo_config_override ... FAILED
+test t467_arch_source_build_pins_output_despite_environment_override ... FAILED
+
+failures:
+
+---- t467_arch_source_build_pins_output_despite_cargo_config_override stdout ----
+
+thread 't467_arch_source_build_pins_output_despite_cargo_config_override' (927951) panicked at host/tests/arch_output.rs:134:5:
+   Compiling blent v0.1.0 (/tmp/.tmp4Af4On/blent-1.2.3/host)
+    Finished `release` profile [optimized] target(s) in 0.09s
+   Compiling blent-gui v0.1.0 (/tmp/.tmp4Af4On/blent-1.2.3/gui)
+    Finished `release` profile [optimized] target(s) in 0.05s
+install: cannot stat 'scripts/setup-system.sh': No such file or directory
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- t467_arch_source_build_pins_output_despite_environment_override stdout ----
+
+thread 't467_arch_source_build_pins_output_despite_environment_override' (928110) panicked at host/tests/arch_output.rs:134:5:
+   Compiling blent v0.1.0 (/tmp/.tmpHo3wJt/blent-1.2.3/host)
+    Finished `release` profile [optimized] target(s) in 0.07s
+   Compiling blent-gui v0.1.0 (/tmp/.tmpHo3wJt/blent-1.2.3/gui)
+    Finished `release` profile [optimized] target(s) in 0.05s
+install: cannot stat 'scripts/setup-system.sh': No such file or directory
+
+
+
+failures:
+    t467_arch_source_build_pins_output_despite_cargo_config_override
+    t467_arch_source_build_pins_output_despite_environment_override
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+
+error: test failed, to rerun pass `-p blent --test arch_output`

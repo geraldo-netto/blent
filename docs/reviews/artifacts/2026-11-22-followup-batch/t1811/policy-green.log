@@ -1,0 +1,330 @@
+    Blocking waiting for file lock on build directory
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.27s
+     Running unittests src/lib.rs (target/debug/build/blent-config/cd955b6b72e59911/out/blent_config-cd955b6b72e59911)
+
+running 1 test
+test commands::tests::t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 518 filtered out; finished in 0.00s
+
+     Running unittests src/bin/edid.rs (target/debug/build/blent-config/ad3145f9568b6a5f/out/blent_edid-ad3145f9568b6a5f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/appimage.rs (target/debug/build/blent-config/f999a39710ede342/out/appimage-f999a39710ede342)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/audio_render_bench.rs (target/debug/build/blent-config/9350ba09c17841c7/out/audio_render_bench-9350ba09c17841c7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/autostart.rs (target/debug/build/blent-config/aff0fa35a67a610a/out/autostart-aff0fa35a67a610a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/command_lifetime.rs (target/debug/build/blent-config/6866fdd853a438d3/out/command_lifetime-6866fdd853a438d3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/command_output.rs (target/debug/build/blent-config/8a950bb590d1e74f/out/command_output-8a950bb590d1e74f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+     Running tests/config_location.rs (target/debug/build/blent-config/b2935e425f171a96/out/config_location-b2935e425f171a96)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/connection.rs (target/debug/build/blent-config/f56731de5ac22ed3/out/connection-f56731de5ac22ed3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.00s
+
+     Running tests/connection_management.rs (target/debug/build/blent-config/98c852b3656f6f9d/out/connection_management-98c852b3656f6f9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/connection_mux.rs (target/debug/build/blent-config/ae572d335c001237/out/connection_mux-ae572d335c001237)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+     Running tests/connection_pairing.rs (target/debug/build/blent-config/5b2623e269f9341a/out/connection_pairing-5b2623e269f9341a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/connection_registration.rs (target/debug/build/blent-config/2accf1fd9c865e23/out/connection_registration-2accf1fd9c865e23)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/connection_resource_mux.rs (target/debug/build/blent-config/de9f0ed413aea1fd/out/connection_resource_mux-de9f0ed413aea1fd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/connection_resources.rs (target/debug/build/blent-config/e5a8adc81ccaf86f/out/connection_resources-e5a8adc81ccaf86f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+     Running tests/connection_routes.rs (target/debug/build/blent-config/afb2283cfe5dc506/out/connection_routes-afb2283cfe5dc506)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/connection_window.rs (target/debug/build/blent-config/ba3838a4edf2f2b9/out/connection_window-ba3838a4edf2f2b9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/diagnostics.rs (target/debug/build/blent-config/f27baae9679e9b61/out/diagnostics-f27baae9679e9b61)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/edid_cli.rs (target/debug/build/blent-config/470c4b64f0183134/out/edid_cli-470c4b64f0183134)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/encoding_quality.rs (target/debug/build/blent-config/052e36294ec41a1d/out/encoding_quality-052e36294ec41a1d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/identity_display.rs (target/debug/build/blent-config/f2be686c1efe179f/out/identity_display-f2be686c1efe179f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/media_identity.rs (target/debug/build/blent-config/d38eaa54b53d828a/out/media_identity-d38eaa54b53d828a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/owned_stream.rs (target/debug/build/blent-config/ae5226ab313a981e/out/owned_stream-ae5226ab313a981e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/persistence_contract.rs (target/debug/build/blent-config/bac6b80d2a993084/out/persistence_contract-bac6b80d2a993084)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/portable_policy.rs (target/debug/build/blent-config/5d6eae89edbcae81/out/portable_policy-5d6eae89edbcae81)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/tablet_status.rs (target/debug/build/blent-config/e6b384af5c778516/out/tablet_status-e6b384af5c778516)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/windows_platform.rs (target/debug/build/blent-config/dc20b356b2bdd967/out/windows_platform-dc20b356b2bdd967)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running unittests src/lib.rs (target/debug/build/blent-config/cd955b6b72e59911/out/blent_config-cd955b6b72e59911)
+
+running 1 test
+test scheduling::linux::tests::t582_requests_cover_owned_groups_without_boosting_an_editor ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 518 filtered out; finished in 0.01s
+
+     Running unittests src/bin/edid.rs (target/debug/build/blent-config/ad3145f9568b6a5f/out/blent_edid-ad3145f9568b6a5f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/appimage.rs (target/debug/build/blent-config/f999a39710ede342/out/appimage-f999a39710ede342)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/audio_render_bench.rs (target/debug/build/blent-config/9350ba09c17841c7/out/audio_render_bench-9350ba09c17841c7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/autostart.rs (target/debug/build/blent-config/aff0fa35a67a610a/out/autostart-aff0fa35a67a610a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/command_lifetime.rs (target/debug/build/blent-config/6866fdd853a438d3/out/command_lifetime-6866fdd853a438d3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/command_output.rs (target/debug/build/blent-config/8a950bb590d1e74f/out/command_output-8a950bb590d1e74f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+     Running tests/config_location.rs (target/debug/build/blent-config/b2935e425f171a96/out/config_location-b2935e425f171a96)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/connection.rs (target/debug/build/blent-config/f56731de5ac22ed3/out/connection-f56731de5ac22ed3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.00s
+
+     Running tests/connection_management.rs (target/debug/build/blent-config/98c852b3656f6f9d/out/connection_management-98c852b3656f6f9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/connection_mux.rs (target/debug/build/blent-config/ae572d335c001237/out/connection_mux-ae572d335c001237)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+     Running tests/connection_pairing.rs (target/debug/build/blent-config/5b2623e269f9341a/out/connection_pairing-5b2623e269f9341a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/connection_registration.rs (target/debug/build/blent-config/2accf1fd9c865e23/out/connection_registration-2accf1fd9c865e23)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/connection_resource_mux.rs (target/debug/build/blent-config/de9f0ed413aea1fd/out/connection_resource_mux-de9f0ed413aea1fd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/connection_resources.rs (target/debug/build/blent-config/e5a8adc81ccaf86f/out/connection_resources-e5a8adc81ccaf86f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+     Running tests/connection_routes.rs (target/debug/build/blent-config/afb2283cfe5dc506/out/connection_routes-afb2283cfe5dc506)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/connection_window.rs (target/debug/build/blent-config/ba3838a4edf2f2b9/out/connection_window-ba3838a4edf2f2b9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/diagnostics.rs (target/debug/build/blent-config/f27baae9679e9b61/out/diagnostics-f27baae9679e9b61)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/edid_cli.rs (target/debug/build/blent-config/470c4b64f0183134/out/edid_cli-470c4b64f0183134)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/encoding_quality.rs (target/debug/build/blent-config/052e36294ec41a1d/out/encoding_quality-052e36294ec41a1d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/identity_display.rs (target/debug/build/blent-config/f2be686c1efe179f/out/identity_display-f2be686c1efe179f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/media_identity.rs (target/debug/build/blent-config/d38eaa54b53d828a/out/media_identity-d38eaa54b53d828a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/owned_stream.rs (target/debug/build/blent-config/ae5226ab313a981e/out/owned_stream-ae5226ab313a981e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/persistence_contract.rs (target/debug/build/blent-config/bac6b80d2a993084/out/persistence_contract-bac6b80d2a993084)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/portable_policy.rs (target/debug/build/blent-config/5d6eae89edbcae81/out/portable_policy-5d6eae89edbcae81)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/tablet_status.rs (target/debug/build/blent-config/e6b384af5c778516/out/tablet_status-e6b384af5c778516)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/windows_platform.rs (target/debug/build/blent-config/dc20b356b2bdd967/out/windows_platform-dc20b356b2bdd967)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

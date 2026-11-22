@@ -106,3 +106,14 @@ No staged bundle notices were relabelled for an unshipped candidate.
 and [candidate validation](artifacts/2026-11-22-followup-batch/t1809/). Installed
 processes and artifacts remain untouched. The packaging compiler improvement
 T1808 remains independently verified and committed.
+
+## T1811 — remaining Rust installation fixtures
+
+The common test build exposed two compile-time references to the deleted unit
+copy; the real-Cargo Arch fixture also failed because it omitted shared setup.
+Both policy fixtures now read the canonical unit, retaining all deadline, kill
+escalation and scheduling assertions. Arch stages the actual canonical renderer,
+unit and setup script; its original fresh-output assertions pass for environment
+and Cargo-config output overrides. Two policy tests and both Arch tests pass.
+Changed test functions pass complexity <=9; no production function changed.
+[Evidence](artifacts/2026-11-22-followup-batch/t1811/).

@@ -56,7 +56,6 @@ fn prepare(root: &Path, version: &str) -> std::path::PathBuf {
         "scripts/blent.desktop",
         "packaging/icons/blent.svg",
         "packaging/icons/blent-pen.svg",
-        "packaging/blent.service",
         "packaging/blent-evdi.conf",
         "packaging/blent-modules.conf",
         "packaging/60-blent-uinput.rules",
@@ -64,6 +63,23 @@ fn prepare(root: &Path, version: &str) -> std::path::PathBuf {
         "licenses/libevdi-LGPL-2.1.txt",
     ] {
         write(&source, name, "fixture");
+    }
+    // T1811: use the canonical renderer/setup assets staged by the current package.
+    for (name, content) in [
+        (
+            "scripts/blent.service",
+            include_str!("../../scripts/blent.service"),
+        ),
+        (
+            "scripts/write-systemd-service.sh",
+            include_str!("../../scripts/write-systemd-service.sh"),
+        ),
+        (
+            "scripts/setup-system.sh",
+            include_str!("../../scripts/setup-system.sh"),
+        ),
+    ] {
+        write(&source, name, content);
     }
     executable(
         &source,

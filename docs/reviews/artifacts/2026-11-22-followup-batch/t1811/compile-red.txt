@@ -1,0 +1,3 @@
+Observed before the fixture correction: cargo test -p blent-config t1529_idle could not compile the library tests.
+common/src/scheduling/linux/tests.rs:7: could not read ../../../../packaging/blent.service: No such file or directory
+common/src/commands/tests.rs:110: could not read ../../../packaging/blent.service: No such file or directory
