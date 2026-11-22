@@ -57,7 +57,7 @@ impl CaptureManager {
         } else {
             self.acknowledge_quiescent();
         }
-        wait_demand(run, notice).await;
+        self.wait_demand(run, notice).await;
         Ok(false)
     }
     async fn capture_attempt(
@@ -140,20 +140,27 @@ impl CaptureManager {
             None => false,
         }
     }
+    async fn wait_demand(&mut self, run: &mut CaptureRun, notice: Signal<'static>) {
+        tokio::select! {
+            _ = run.settings_rx.changed() => {},
+            _ = run.display_rx.changed() => {},
+            _ = run.shutdown_rx.changed() => {},
+            _ = notice => {},
+            status = self.helper.wait() => {
+                tracing::warn!(?status, "Capture helper stopped while paused; retiring original work");
+                self.helper.terminate().await;
+                self.quiesce_recovering().await;
+                run.encoder_mode = None;
+            },
+        }
+    }
 }
 impl CaptureRun {
     fn inactive(&self) -> bool {
         !*self.display_rx.borrow() || !self.settings_rx.borrow().geometry_ready
     }
 }
-async fn wait_demand(run: &mut CaptureRun, notice: Signal<'static>) {
-    tokio::select! {
-        _ = run.settings_rx.changed() => {},
-        _ = run.display_rx.changed() => {},
-        _ = run.shutdown_rx.changed() => {},
-        _ = notice => {},
-    }
-}
-
+#[cfg(test)]
+mod parked_tests;
 #[cfg(test)]
 mod tests;

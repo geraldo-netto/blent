@@ -93,6 +93,12 @@ print('STREAM_SIZE 64 32', flush=True)
 active = False
 writer = None
 while True:
+    if (root / 'exit-parked').exists():
+        (root / 'exit-parked').unlink()
+        sys.exit(7)
+    if (root / 'fail-parked-stdout').exists():
+        (root / 'fail-parked-stdout').unlink()
+        os.write(1, b'\xff\n')
     ready, _, _ = select.select([control], [], [], 0.01)
     if ready:
         request = control.recv(32)

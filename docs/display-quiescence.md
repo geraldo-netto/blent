@@ -112,3 +112,9 @@ the supervisor uses its existing original-helper termination path. Capture resum
 only while demand is current and after original retirement. The deadline neither acknowledges
 quiescence nor releases native resource ownership. A fresh helper receives a fresh
 channel and sequence. Completed matching transitions do not send another request.
+
+While waiting for demand, the capture supervisor also observes the original
+helper process and its stdout reader. Exit or reader failure triggers original
+helper retirement, clears codec headers and the encoder's remembered mode, and
+keeps capture parked. No helper or encoder restarts until demand is current;
+replacement still requires original native cleanup.

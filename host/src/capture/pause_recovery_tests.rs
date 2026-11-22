@@ -35,6 +35,38 @@ async fn stream_recovers(marker: &str) {
     stream.stop().await;
 }
 
+async fn parked_stream_recovers(marker: &str) {
+    let mut stream = Stream::start(true);
+    let first = stream.packet().await;
+    let original = stream.helper();
+    stream.lock(true);
+    stream.paused().await;
+    let fault = crate::runtime::runtime_dir().unwrap().join(marker);
+    std::fs::write(&fault, b"T1687 fail the already parked helper").unwrap();
+    until(|| !fault.exists()).await;
+    assert!(!stream.task.as_ref().unwrap().is_finished());
+    assert_eq!(stream.helper(), original);
+    assert!(stream.headers.current().is_none());
+    assert!(!first.generation.load(Ordering::Acquire));
+    stream.lock(false);
+    let fresh = stream.fresh(&first).await;
+    assert!(fresh.is_idr && fresh.codec_config.is_some());
+    assert_ne!(stream.helper(), original);
+    stream.stop().await;
+}
+
+#[tokio::test]
+async fn t1687_parked_exit_resumes_with_fresh_helper_and_stream() {
+    if ownership_tests::isolated("capture::activity_tests::pause_recovery::t1687_parked_exit_resumes_with_fresh_helper_and_stream") { return; }
+    parked_stream_recovers("exit-parked").await;
+}
+
+#[tokio::test]
+async fn t1687_parked_stdout_failure_resumes_with_fresh_helper_and_stream() {
+    if ownership_tests::isolated("capture::activity_tests::pause_recovery::t1687_parked_stdout_failure_resumes_with_fresh_helper_and_stream") { return; }
+    parked_stream_recovers("fail-parked-stdout").await;
+}
+
 #[tokio::test]
 async fn t1415_invalid_pause_ack_recovers_only_on_renewed_demand() {
     if ownership_tests::isolated("capture::activity_tests::pause_recovery::t1415_invalid_pause_ack_recovers_only_on_renewed_demand") { return; }
