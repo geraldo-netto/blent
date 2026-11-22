@@ -1,0 +1,14 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.19s
+     Running unittests src/main.rs (target/debug/build/blent-gui/ac7a5b3c8d48d8bb/out/blent_gui-ac7a5b3c8d48d8bb)
+
+running 6 tests
+test tests::about::t1276_about_is_reachable_and_owns_project_links ... ok
+test tests::about::t1276_about_links_fit_narrow_windows ... ok
+test tests::about::t1276_about_navigation_supports_keyboard_activation ... ok
+test tests::about::t1276_navigation_position_does_not_depend_on_selected_page ... ok
+test tests::about::t1277_about_exposes_version_credits_and_offline_notices ... ok
+test tests::about::t1290_wide_pages_and_footer_share_bounded_content ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 295 filtered out; finished in 0.19s
+

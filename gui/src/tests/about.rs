@@ -21,6 +21,7 @@ fn t1276_navigation_position_does_not_depend_on_selected_page() {
 #[test]
 fn t1276_about_is_reachable_and_owns_project_links() {
     let (_root, mut app) = settings_test_app(Tab::Overview);
+    app.cfg = app.saved_cfg.clone();
     let draft = app.cfg.clone();
     let context = egui::Context::default();
     window_test_frame(&mut app, &context, vec![]);

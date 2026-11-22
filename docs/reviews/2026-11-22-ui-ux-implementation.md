@@ -281,3 +281,11 @@ Theme values are borrowed during Compose rendering; existing composition owns
 layout and text. No new state, listener, allocation owner or native resource is
 introduced. The finite test font scale is 2.0; this does not claim every possible
 screen/font combination fits without scrolling.
+
+## T1800 — clean page fixtures
+
+The clean-home responsive and About-navigation fixtures explicitly start from saved preferences;
+it previously inherited an unrelated width edit and contradicted T1782's required
+global dirty footer. Its no-Save and clipping assertions remain unchanged and pass
+at all three sizes. All six About tests also pass. Dirty navigation has separate T1782 coverage.
+[Evidence](artifacts/2026-11-22-ui-ux/t1800/). No production behavior changed.

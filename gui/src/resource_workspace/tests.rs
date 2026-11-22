@@ -367,6 +367,7 @@ fn t1273_workspace_is_adaptive_without_save_controls_on_home() {
         egui::vec2(1040.0, 740.0),
     ] {
         let (_root, mut app) = settings_test_app(Tab::Overview);
+        app.cfg = app.saved_cfg.clone();
         app.status.lock().unwrap().tablets = devices();
         let context = egui::Context::default();
         sized_window_frame(&mut app, &context, vec![], size);

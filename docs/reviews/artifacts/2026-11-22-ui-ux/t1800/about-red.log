@@ -1,0 +1,5 @@
+---- tests::about::t1276_about_is_reachable_and_owns_project_links stdout ----
+
+thread 'tests::about::t1276_about_is_reachable_and_owns_project_links' (781876) panicked at gui/src/tests/about.rs:32:5:
+assertion failed: !labels.iter().any(|(text, _)| text.starts_with("Save"))
+

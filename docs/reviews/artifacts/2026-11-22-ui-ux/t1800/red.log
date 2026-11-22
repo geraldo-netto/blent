@@ -1,0 +1,5 @@
+---- resource_workspace::tests::t1273_workspace_is_adaptive_without_save_controls_on_home stdout ----
+
+thread 'resource_workspace::tests::t1273_workspace_is_adaptive_without_save_controls_on_home' (769912) panicked at gui/src/resource_workspace/tests.rs:374:9:
+assertion failed: !labels.iter().any(|(text, _)| text.starts_with("Save") || text == "Discard")
+
