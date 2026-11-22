@@ -1,0 +1,278 @@
+[
+  {
+    "owner": "com/blent/ComposableSingletons$SettingsSheetKt$lambda-1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$3$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$FrameRateControls$1$1$2",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$StreamControls$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/ComposableSingletons$SettingsSheetKt",
+    "method": "<clinit>",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$6$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/ComposableSingletons$SettingsSheetKt$lambda-2$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$2$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2",
+    "method": "invoke",
+    "covered": 43,
+    "total": 43
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$UpdateNotice$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$7$3$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$ModeControl$1$2",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$9$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/ComposableSingletons$SettingsSheetKt$lambda-3$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "SettingsSheet",
+    "covered": 13,
+    "total": 13
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "SettingsSection",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "AdvancedSettings",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "OrientationControls",
+    "covered": 39,
+    "total": 39
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "StreamControls",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "BitrateControls",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "FrameRateControls",
+    "covered": 15,
+    "total": 15
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "SettingsSwitch",
+    "covered": 10,
+    "total": 10
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "UpdateNotice",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "ModeControl",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "SettingsSheet$lambda$1",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "SettingsSheet$lambda$2",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "AdvancedSettings$lambda$4",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt",
+    "method": "AdvancedSettings$lambda$5",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$5$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$7$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$7$2$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$FrameRateControls$1$1$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$OrientationControls$2$1$2",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$AdvancedSettings$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$OrientationControls$1$3$1",
+    "method": "invoke",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$OrientationControls$2$1$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$AdvancedSettings$3",
+    "method": "invoke",
+    "covered": 2,
+    "total": 2
+  },
+  {
+    "owner": "com/blent/ComposableSingletons$SettingsSheetKt$lambda-4$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$7",
+    "method": "invoke",
+    "covered": 7,
+    "total": 7
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$8",
+    "method": "invoke",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSection$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$OrientationControls$1$2",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSwitch$1$2$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$SettingsSheet$2$1$4$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "owner": "com/blent/SettingsSheetKt$AdvancedSettings$2$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  }
+]

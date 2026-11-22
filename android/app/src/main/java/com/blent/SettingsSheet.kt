@@ -43,7 +43,7 @@ internal fun SettingsSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-        containerColor = Color(0xFF16161F)
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 24.dp, vertical = 8.dp)) {
             Text(
@@ -111,8 +111,8 @@ internal fun SettingsSheet(
                 Spacer(Modifier.height(8.dp))
                 Text(
                     "Apply sends only edited fields and remembers them for reconnects. Use host settings clears these overrides; it does not undo changes already applied on the host. Display sharing may briefly restart. Camera sharing keeps its current state.",
-                    fontSize = 11.sp,
-                    color = Color(0xFF6A6A7E),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -155,8 +155,8 @@ private fun OrientationControls(orientation: Int, onOrientationChange: (Int) -> 
             Text("Rotate automatically", fontSize = 14.sp, color = Color(0xFFB0B0C0))
             Text(
                 "Follow the tilt sensor between the two landscape directions",
-                fontSize = 11.sp,
-                color = Color(0xFF6A6A7E)
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         Spacer(Modifier.width(12.dp))
@@ -191,8 +191,8 @@ private fun OrientationControls(orientation: Int, onOrientationChange: (Int) -> 
         }
         Text(
             "Camera down is the usual way to hold it for drawing.",
-            fontSize = 11.sp,
-            color = Color(0xFF6A6A7E)
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
     Spacer(Modifier.height(20.dp))
@@ -225,8 +225,8 @@ private fun BitrateControls(bitrateMbps: Float, onBitrateChange: (Float) -> Unit
     Text(
         "This setting depends on your computer's encoder. VAAPI constant quality (CQP) has no bitrate cap; " +
             "adjust Quality in Blent on your computer instead. Auto may select VAAPI.",
-        fontSize = 11.sp,
-        color = Color(0xFF6A6A7E)
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
     )
     Spacer(Modifier.height(20.dp))
 }
@@ -258,7 +258,7 @@ private fun SettingsSwitch(title: String, description: String, checked: Boolean,
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.weight(1f)) {
             Text(title, fontSize = 14.sp, color = Color(0xFFB0B0C0))
-            Text(description, fontSize = 11.sp, color = Color(0xFF6A6A7E))
+            Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Switch(checked = checked, onCheckedChange = onChange,
             modifier = Modifier.semantics { contentDescription = title },
@@ -282,8 +282,8 @@ private fun UpdateNotice(updateAvailable: String?, onOpenUpdate: () -> Unit) {
                 Text("Update available: $updateAvailable", fontSize = 14.sp, color = Color.White)
                 Text(
                     "Tap to open the release page. Update the desktop side too — they ship together.",
-                    fontSize = 11.sp,
-                    color = Color(0xFF9A9AB0)
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -303,8 +303,8 @@ private fun ModeControl(penOnly: Boolean, onChange: (Boolean) -> Unit) {
             Text(
                 "Draw on the computer's own screen with the pen, " +
                     "instead of showing a second screen here",
-                fontSize = 11.sp,
-                color = Color(0xFF6A6A7E)
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         Spacer(Modifier.width(12.dp))

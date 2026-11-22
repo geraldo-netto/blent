@@ -261,3 +261,23 @@ scheduled close correctly opened T1783's new prompt, so the old fixture could no
 finish. It now explicitly starts clean. All four private native modes complete
 with their original idle callback bounds and old-timer fault controls intact.
 No production idle behavior changed. [Evidence](artifacts/2026-11-22-ui-ux/t1797/).
+
+## T1784 — readable tablet guidance
+
+Settings help uses Material bodySmall (12 sp) and onSurfaceVariant on the semantic
+surface, replacing 11-sp low-contrast custom colors. Guidance scales with Android
+font settings. No setting application, camera or display lifecycle changes.
+
+The permanent 200%-font landscape regression failed on the original 11-sp help.
+It now checks actual composed text size, >=4.5:1 contrast, scrolling visibility
+and access to Apply on Android API 27 and 34. All 68 test executions in four
+settings classes pass. All 46 SettingsSheet-emitted methods with JaCoCo line
+counters are covered at 100%, including callbacks; no aggregate substitution or
+counter exclusion was added. JaCoCo 0.8.15; measured Kotlin complexity <=5.
+[Evidence](artifacts/2026-11-22-ui-ux/t1784/). Native tablet large-font/landscape
+acceptance follows the final signed installation.
+
+Theme values are borrowed during Compose rendering; existing composition owns
+layout and text. No new state, listener, allocation owner or native resource is
+introduced. The finite test font scale is 2.0; this does not claim every possible
+screen/font combination fits without scrolling.
