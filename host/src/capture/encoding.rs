@@ -182,11 +182,7 @@ impl EncoderProcess {
             idle,
         ))?;
         report.retain(handle.completion());
-        Ok(EncoderTask {
-            outcome: None,
-            handle,
-            idle: idle_retirement,
-        })
+        Ok(EncoderTask::new(handle, idle_retirement))
     }
 
     #[cfg(feature = "inproc-encoder")]
@@ -240,11 +236,7 @@ impl EncoderProcess {
             }
         };
         self.child = Some(child);
-        Ok(EncoderTask {
-            handle,
-            idle: None,
-            outcome: None,
-        })
+        Ok(EncoderTask::new(handle, None))
     }
 
     pub(super) fn stop(&mut self) {
@@ -271,10 +263,22 @@ impl EncoderProcess {
 pub(super) struct EncoderTask {
     idle: Option<blent_config::retirement::Completion>,
     pub(super) handle: blent::owned_task::Task,
-    outcome: Option<Result<()>>,
+    // True means natural completion; false means cancellation or already consumed.
+    outcome: Option<Result<bool>>,
 }
 
 impl EncoderTask {
+    pub(super) fn new(
+        handle: blent::owned_task::Task,
+        idle: Option<blent_config::retirement::Completion>,
+    ) -> Self {
+        Self {
+            handle,
+            idle,
+            outcome: None,
+        }
+    }
+
     pub(super) fn abort(&mut self) {
         self.handle.abort();
     }
@@ -285,14 +289,15 @@ impl EncoderTask {
         }
     }
 
-    pub(super) async fn finish_session(&mut self) -> Result<()> {
+    /// True reports natural completion, only after original idle retirement.
+    pub(super) async fn finish_session(&mut self) -> Result<bool> {
         match self.finish().await {
-            Err(error) if error.is::<outcome::WorkFailure>() => Ok(()),
+            Err(error) if error.is::<outcome::WorkFailure>() => Ok(true),
             result => result,
         }
     }
 
-    pub(super) async fn finish(&mut self) -> Result<()> {
+    pub(super) async fn finish(&mut self) -> Result<bool> {
         self.handle.abort();
         let budget = std::time::Duration::from_millis(blent_config::retirement_limits::configured(
             "BLENT_ENCODER_STOP_MS",
@@ -305,7 +310,7 @@ impl EncoderTask {
                 anyhow::anyhow!("encoder task retirement incomplete; replacement forbidden")
             })?
     }
-    pub(super) async fn retire(&mut self) -> Result<()> {
+    pub(super) async fn retire(&mut self) -> Result<bool> {
         // The reader's generation guard and its original idle controller must
         // both retire before the supervisor can rotate/reuse the FIFO.
         self.join().await;
@@ -314,7 +319,7 @@ impl EncoderTask {
                 tokio::time::sleep(std::time::Duration::from_millis(1)).await;
             }
         }
-        self.outcome.take().unwrap_or(Ok(()))
+        self.outcome.take().unwrap_or(Ok(false))
     }
 }
 

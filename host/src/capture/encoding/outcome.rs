@@ -15,17 +15,17 @@ impl std::error::Error for WorkFailure {
     }
 }
 
-pub(super) fn observe(outcome: Result<Result<()>, tokio::task::JoinError>) -> Result<()> {
+pub(super) fn observe(outcome: Result<Result<()>, tokio::task::JoinError>) -> Result<bool> {
     match outcome {
         Ok(Ok(())) => {
             tracing::info!("Encoder finished");
-            Ok(())
+            Ok(true)
         }
         Ok(Err(error)) => {
             tracing::warn!(%error, "Encoder reader failed; restart requires original retirement");
             Err(WorkFailure(error).into())
         }
-        Err(error) if error.is_cancelled() => Ok(()),
+        Err(error) if error.is_cancelled() => Ok(false),
         Err(error) => {
             tracing::error!(%error, "Encoder reader panicked");
             Err(error.into())

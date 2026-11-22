@@ -276,3 +276,80 @@ async fn t575_native_stock_ffmpeg_packets_use_the_existing_wire_contract() {
     }
     assert_eq!(parser.read_from(&mut input).await.unwrap().0, 0);
 }
+
+async fn t1685_reader(
+    failure: bool,
+    idle: Option<blent_config::retirement::Completion>,
+) -> super::super::encoding::EncoderTask {
+    let handle = blent::owned_task::Task::spawn(async move {
+        anyhow::ensure!(!failure, "T1685 GPU output failure");
+        Ok(())
+    })
+    .unwrap();
+    while !handle.is_finished() {
+        tokio::task::yield_now().await;
+    }
+    super::super::encoding::EncoderTask::new(handle, idle)
+}
+
+#[tokio::test]
+async fn t1685_gpu_completion_falls_back_in_both_ready_branch_orders() {
+    for failure in [false, true] {
+        for joined in [false, true] {
+            let mut manager = super::super::CaptureManager::new(Default::default());
+            manager.encoder.gpu.active = true;
+            let mut reader = t1685_reader(failure, None).await;
+            if joined {
+                reader.join().await;
+            }
+            assert!(
+                manager.finish_session_reader(&mut reader).await.unwrap(),
+                "T1685 missing GPU fallback when joined={joined}, failure={failure}"
+            );
+            assert!(manager.encoder.gpu.failed);
+            assert!(!manager.encoder.gpu.active);
+        }
+    }
+}
+
+#[tokio::test]
+async fn t1685_deliberate_cancellation_keeps_gpu_available() {
+    let mut manager = super::super::CaptureManager::new(Default::default());
+    manager.encoder.gpu.active = true;
+    let handle = blent::owned_task::Task::spawn(std::future::pending()).unwrap();
+    let mut reader = super::super::encoding::EncoderTask::new(handle, None);
+    assert!(!manager.finish_session_reader(&mut reader).await.unwrap());
+    assert!(!manager.encoder.gpu.failed);
+    manager.encoder.gpu.stopped();
+    assert!(!manager.encoder.gpu.active);
+}
+
+#[tokio::test(start_paused = true)]
+async fn t1685_gpu_fallback_waits_for_original_retirement() {
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let original = pool.reserve().unwrap();
+    let mut reader = t1685_reader(true, Some(original.completion())).await;
+    reader.join().await;
+    let mut manager = super::super::CaptureManager::new(Default::default());
+    manager.encoder.gpu.active = true;
+    assert!(tokio::time::timeout(
+        std::time::Duration::from_millis(10),
+        manager.finish_session_reader(&mut reader)
+    )
+    .await
+    .is_err());
+    assert!(manager.encoder.gpu.active);
+    assert!(!manager.encoder.gpu.failed);
+    drop(original);
+    assert!(manager.finish_session_reader(&mut reader).await.unwrap());
+    assert!(manager.encoder.gpu.failed);
+    assert!(!manager.finish_session_reader(&mut reader).await.unwrap());
+}
+
+#[tokio::test]
+async fn t1685_fifo_completion_does_not_request_gpu_fallback() {
+    let mut manager = super::super::CaptureManager::new(Default::default());
+    let mut reader = t1685_reader(false, None).await;
+    assert!(!manager.finish_session_reader(&mut reader).await.unwrap());
+    assert!(!manager.encoder.gpu.failed);
+}

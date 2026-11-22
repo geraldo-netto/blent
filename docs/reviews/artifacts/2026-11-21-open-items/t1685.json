@@ -1,0 +1,1032 @@
+{
+  "id": "T1685",
+  "coverage": [
+    {
+      "file": "host/src/capture.rs",
+      "name": "run_encoder_session",
+      "line": 435,
+      "language": "rust",
+      "covered": 77,
+      "total": 87,
+      "percent": 88.50574712643679,
+      "passes": true,
+      "missing": [
+        523,
+        524,
+        525,
+        528,
+        544,
+        550,
+        551,
+        552,
+        553,
+        554
+      ]
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "finish_session_reader",
+      "line": 578,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "spawn_session",
+      "line": 138,
+      "language": "rust",
+      "covered": 43,
+      "total": 45,
+      "percent": 95.55555555555556,
+      "passes": true,
+      "missing": [
+        151,
+        162
+      ]
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "spawn_session",
+      "line": 189,
+      "language": "rust",
+      "covered": 45,
+      "total": 46,
+      "percent": 97.82608695652173,
+      "passes": true,
+      "missing": [
+        200
+      ]
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "new",
+      "line": 271,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "finish_session",
+      "line": 293,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "finish",
+      "line": 300,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "retire",
+      "line": 313,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding/outcome.rs",
+      "name": "observe",
+      "line": 18,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "coverage_scope": "Union per source function across default and inproc-encoder counters; cfg-specific spawn_session functions measured separately. Shared run_encoder_session is 88.5% default, 59.8% optional; both raw build views retained.",
+  "builds": {
+    "default": {
+      "coverage": [
+        {
+          "file": "host/src/capture.rs",
+          "name": "run_encoder_session",
+          "line": 435,
+          "language": "rust",
+          "covered": 77,
+          "total": 87,
+          "percent": 88.50574712643679,
+          "passes": true,
+          "missing": [
+            523,
+            524,
+            525,
+            528,
+            544,
+            550,
+            551,
+            552,
+            553,
+            554
+          ]
+        },
+        {
+          "file": "host/src/capture.rs",
+          "name": "finish_session_reader",
+          "line": 578,
+          "language": "rust",
+          "covered": 5,
+          "total": 5,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/encoding.rs",
+          "name": "spawn_session",
+          "line": 138,
+          "language": "rust",
+          "covered": 43,
+          "total": 45,
+          "percent": 95.55555555555556,
+          "passes": true,
+          "missing": [
+            151,
+            162
+          ]
+        },
+        {
+          "file": "host/src/capture/encoding.rs",
+          "name": "new",
+          "line": 271,
+          "language": "rust",
+          "covered": 10,
+          "total": 10,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/encoding.rs",
+          "name": "finish_session",
+          "line": 293,
+          "language": "rust",
+          "covered": 5,
+          "total": 5,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/encoding.rs",
+          "name": "finish",
+          "line": 300,
+          "language": "rust",
+          "covered": 13,
+          "total": 13,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/encoding.rs",
+          "name": "retire",
+          "line": 313,
+          "language": "rust",
+          "covered": 8,
+          "total": 8,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/encoding/outcome.rs",
+          "name": "observe",
+          "line": 18,
+          "language": "rust",
+          "covered": 10,
+          "total": 10,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        }
+      ],
+      "complexity": [
+        [
+          "host/src/capture.rs",
+          435,
+          "run_encoder_session",
+          3
+        ],
+        [
+          "host/src/capture.rs",
+          578,
+          "finish_session_reader",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          34,
+          "new",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          41,
+          "begin_generation",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          46,
+          "ensure_retired",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          50,
+          "session_report",
+          3
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          62,
+          "adopt",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          67,
+          "is_running",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          72,
+          "start",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          90,
+          "start_using",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          104,
+          "start",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          116,
+          "start_with",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          138,
+          "spawn_session",
+          4
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          189,
+          "spawn_session",
+          5
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          242,
+          "stop",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          252,
+          "shutdown",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          271,
+          "new",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          282,
+          "abort",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          286,
+          "join",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          293,
+          "finish_session",
+          3
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          300,
+          "finish",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          313,
+          "retire",
+          3
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          334,
+          "drop",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          341,
+          "drop",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          346,
+          "t1029_joined_reader_waits_for_original_idle_cleanup",
+          3
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          398,
+          "t1047_canceled_retirement_retries_after_original_reader_join_and_held_idle",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          443,
+          "t814_encoder_cleanup_errors_and_panics_are_not_success",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          463,
+          "t819_async_encoder_task_cancellation_and_completion_are_observed",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          482,
+          "t819_native_encoder_process_tracks_start_and_reaped_shutdown",
+          4
+        ],
+        [
+          "host/src/capture/encoding/outcome.rs",
+          18,
+          "observe",
+          5
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          5,
+          "failed",
+          2
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          20,
+          "selected",
+          2
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          28,
+          "t1684_reader_work_failure_restarts_in_both_ready_branch_orders",
+          2
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          40,
+          "t1684_reader_panic_is_fatal_in_both_ready_branch_orders",
+          2
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          51,
+          "t1684_work_error_does_not_skip_original_idle_settlement",
+          1
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          75,
+          "t1684_retirement_deadline_is_fatal_and_retains_original_outcome",
+          2
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          93,
+          "t1684_strict_cleanup_preserves_work_error_source_chain",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          4,
+          "connectors",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          13,
+          "configuration",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          22,
+          "t1675_inspection",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          28,
+          "t1675_only_an_available_gpu_attempt_inspects_connectors",
+          3
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          56,
+          "t575_gpu_adapter_requires_owned_supported_capture",
+          4
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          88,
+          "t575_gpu_command_preserves_user_settings_without_shell_parsing",
+          2
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          146,
+          "t575_gpu_failure_falls_back_once_without_detaching_monitor",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          173,
+          "t575_successful_gpu_spawn_and_failed_retry_preserve_adapter_state",
+          3
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          210,
+          "t575_capture_supervisor_starts_gpu_with_owned_monitor_identity",
+          2
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          238,
+          "t575_gpu_child_is_killed_when_its_owner_is_cancelled",
+          2
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          259,
+          "t575_native_stock_ffmpeg_packets_use_the_existing_wire_contract",
+          2
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          280,
+          "t1685_reader",
+          2
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          296,
+          "t1685_gpu_completion_falls_back_in_both_ready_branch_orders",
+          4
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          316,
+          "t1685_deliberate_cancellation_keeps_gpu_available",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          328,
+          "t1685_gpu_fallback_waits_for_original_retirement",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          350,
+          "t1685_fifo_completion_does_not_request_gpu_fallback",
+          1
+        ]
+      ],
+      "feature": "default"
+    },
+    "inproc": {
+      "coverage": [
+        {
+          "file": "host/src/capture.rs",
+          "name": "run_encoder_session",
+          "line": 435,
+          "language": "rust",
+          "covered": 52,
+          "total": 87,
+          "percent": 59.770114942528735,
+          "passes": false,
+          "missing": [
+            474,
+            490,
+            491,
+            492,
+            494,
+            495,
+            499,
+            500,
+            502,
+            504,
+            506,
+            508,
+            516,
+            517,
+            518,
+            519,
+            520,
+            522,
+            523,
+            524,
+            525,
+            526,
+            527,
+            528,
+            530,
+            537,
+            538,
+            539,
+            540,
+            544,
+            550,
+            551,
+            552,
+            553,
+            554
+          ]
+        },
+        {
+          "file": "host/src/capture.rs",
+          "name": "finish_session_reader",
+          "line": 578,
+          "language": "rust",
+          "covered": 5,
+          "total": 5,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/encoding.rs",
+          "name": "spawn_session",
+          "line": 189,
+          "language": "rust",
+          "covered": 45,
+          "total": 46,
+          "percent": 97.82608695652173,
+          "passes": true,
+          "missing": [
+            200
+          ]
+        },
+        {
+          "file": "host/src/capture/encoding.rs",
+          "name": "new",
+          "line": 271,
+          "language": "rust",
+          "covered": 10,
+          "total": 10,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/encoding.rs",
+          "name": "finish_session",
+          "line": 293,
+          "language": "rust",
+          "covered": 5,
+          "total": 5,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/encoding.rs",
+          "name": "finish",
+          "line": 300,
+          "language": "rust",
+          "covered": 13,
+          "total": 13,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/encoding.rs",
+          "name": "retire",
+          "line": 313,
+          "language": "rust",
+          "covered": 8,
+          "total": 8,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/encoding/outcome.rs",
+          "name": "observe",
+          "line": 18,
+          "language": "rust",
+          "covered": 10,
+          "total": 10,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        }
+      ],
+      "complexity": [
+        [
+          "host/src/capture.rs",
+          435,
+          "run_encoder_session",
+          3
+        ],
+        [
+          "host/src/capture.rs",
+          578,
+          "finish_session_reader",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          34,
+          "new",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          41,
+          "begin_generation",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          46,
+          "ensure_retired",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          50,
+          "session_report",
+          3
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          62,
+          "adopt",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          67,
+          "is_running",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          72,
+          "start",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          90,
+          "start_using",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          104,
+          "start",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          116,
+          "start_with",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          138,
+          "spawn_session",
+          4
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          189,
+          "spawn_session",
+          5
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          242,
+          "stop",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          252,
+          "shutdown",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          271,
+          "new",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          282,
+          "abort",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          286,
+          "join",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          293,
+          "finish_session",
+          3
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          300,
+          "finish",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          313,
+          "retire",
+          3
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          334,
+          "drop",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          341,
+          "drop",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          346,
+          "t1029_joined_reader_waits_for_original_idle_cleanup",
+          3
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          398,
+          "t1047_canceled_retirement_retries_after_original_reader_join_and_held_idle",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          443,
+          "t814_encoder_cleanup_errors_and_panics_are_not_success",
+          2
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          463,
+          "t819_async_encoder_task_cancellation_and_completion_are_observed",
+          1
+        ],
+        [
+          "host/src/capture/encoding.rs",
+          482,
+          "t819_native_encoder_process_tracks_start_and_reaped_shutdown",
+          4
+        ],
+        [
+          "host/src/capture/encoding/outcome.rs",
+          18,
+          "observe",
+          5
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          5,
+          "failed",
+          2
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          20,
+          "selected",
+          2
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          28,
+          "t1684_reader_work_failure_restarts_in_both_ready_branch_orders",
+          2
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          40,
+          "t1684_reader_panic_is_fatal_in_both_ready_branch_orders",
+          2
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          51,
+          "t1684_work_error_does_not_skip_original_idle_settlement",
+          1
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          75,
+          "t1684_retirement_deadline_is_fatal_and_retains_original_outcome",
+          2
+        ],
+        [
+          "host/src/capture/encoding/outcome_tests.rs",
+          93,
+          "t1684_strict_cleanup_preserves_work_error_source_chain",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          4,
+          "connectors",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          13,
+          "configuration",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          22,
+          "t1675_inspection",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          28,
+          "t1675_only_an_available_gpu_attempt_inspects_connectors",
+          3
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          56,
+          "t575_gpu_adapter_requires_owned_supported_capture",
+          4
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          88,
+          "t575_gpu_command_preserves_user_settings_without_shell_parsing",
+          2
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          146,
+          "t575_gpu_failure_falls_back_once_without_detaching_monitor",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          173,
+          "t575_successful_gpu_spawn_and_failed_retry_preserve_adapter_state",
+          3
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          210,
+          "t575_capture_supervisor_starts_gpu_with_owned_monitor_identity",
+          2
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          238,
+          "t575_gpu_child_is_killed_when_its_owner_is_cancelled",
+          2
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          259,
+          "t575_native_stock_ffmpeg_packets_use_the_existing_wire_contract",
+          2
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          280,
+          "t1685_reader",
+          2
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          296,
+          "t1685_gpu_completion_falls_back_in_both_ready_branch_orders",
+          4
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          316,
+          "t1685_deliberate_cancellation_keeps_gpu_available",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          328,
+          "t1685_gpu_fallback_waits_for_original_retirement",
+          1
+        ],
+        [
+          "host/src/capture/gpu_tests.rs",
+          350,
+          "t1685_fifo_completion_does_not_request_gpu_fallback",
+          1
+        ]
+      ],
+      "feature": "inproc"
+    }
+  },
+  "tests": {
+    "red": {
+      "passed": 1,
+      "failed": 1
+    },
+    "default": {
+      "passed": 265,
+      "failed": 0,
+      "ignored": 3
+    },
+    "inproc": {
+      "passed": 126,
+      "failed": 0,
+      "ignored": 0
+    }
+  },
+  "tools": {
+    "rustc": "1.100.0 (0ef1bc386 2026-11-09)",
+    "cargo-llvm-cov": "0.8.7",
+    "complexity": "project Rust syn 2.0.119 checker; 53 functions, none above 9"
+  },
+  "worker": {
+    "path": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/blent",
+    "sha256": "e363127c7220b27e46f894c76d7f3b4b1745c927a782c354b8233bdd0d365d6a",
+    "features": [
+      "inproc-encoder"
+    ]
+  },
+  "collection_retry": "The first optional run passed all 126 tests but merging its profiles failed on blent-3666566-1412429936348575290_0.profraw (32768 bytes, corrupt header). Its module filename group matches the native worker (valid sibling build ID 95f56192e609961840c074d6208cd613980954a2), distinct from the test binary 9aebfd1c4d01e1583fa7656161cb87031dcf4142. The invalid profile and first run log are retained; no counters were silently dropped. A fresh full 126-test collection passed and all its new profiles merged successfully.",
+  "ownership": "One stored reader outcome distinguishes natural completion from cancellation. No duplicated mutable GPU status: the adapter remains authoritative. The supervisor consumes the original outcome only after idle retirement, then requests fallback. Pending retirement leaves adapter state unchanged; repeated cleanup cannot replay the consumed completion. Existing generation/child/FIFO gates still precede replacement. New constructor transfers existing task and optional idle handles without adding a lease, callback cycle or frame retention.",
+  "scope": "GPU decision tested with private tasks and seeded adapter state, not a physical GPU capture run. Native worker uses privately extracted Ubuntu FFmpeg 6.1.1 SDK. Source-only; installed sessions unchanged."
+}

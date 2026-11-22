@@ -454,8 +454,6 @@ impl CaptureManager {
 
         let mut settings_changed = false;
         let mut fifo_reset = false;
-        #[allow(unused_mut)]
-        let mut gpu_fallback = false;
         // Distinct from `settings_changed`: the mode moved under us, so the
         // encoder must be rebuilt but the helper and the virtual display
         // are fine and must not be torn down.
@@ -469,17 +467,13 @@ impl CaptureManager {
         // rebuilding the encoder, which now owns the stream and must not be
         // torn down for something spurious.
         #[allow(unused_labels)]
-        'session: loop {
+        let gpu_fallback = 'session: loop {
             let mut resume_same_encoder = false;
             tokio::select! {
                 status = self.helper.wait() => {
                     warn!("Capture helper exited: {:?}. Restarting...", status);
                 }
-                _ = encode_task.join() => {
-                    #[cfg(not(feature = "inproc-encoder"))]
-                    { gpu_fallback = self.encoder.gpu.encoder_finished(); }
-
-                }
+                _ = encode_task.join() => {}
                 _ = run.fifo_reset_rx.changed() => {
                     if self.helper.fifo_reset_pending(self.config.instance)? {
                         warn!("Partial capture frame — restarting reader on a fresh FIFO");
@@ -569,10 +563,8 @@ impl CaptureManager {
             }
 
             // Retire the reader before the supervisor rebuilds the pipeline.
-            encode_task.finish_session().await?;
-
-            break;
-        }
+            break self.finish_session_reader(&mut encode_task).await?;
+        };
 
         Ok(Some(SessionChanges {
             settings_changed,
@@ -581,6 +573,15 @@ impl CaptureManager {
             fifo_reset,
             gpu_fallback,
         }))
+    }
+
+    async fn finish_session_reader(&mut self, reader: &mut encoding::EncoderTask) -> Result<bool> {
+        let _finished = reader.finish_session().await?;
+        #[cfg(not(feature = "inproc-encoder"))]
+        let fallback = _finished && self.encoder.gpu.encoder_finished();
+        #[cfg(feature = "inproc-encoder")]
+        let fallback = false;
+        Ok(fallback)
     }
 
     async fn finish_encoder_session(

@@ -17,7 +17,7 @@ async fn failed(panic: bool) -> EncoderTask {
         outcome: None,
     }
 }
-async fn selected(reader: &mut EncoderTask, joined_first: bool) -> Result<()> {
+async fn selected(reader: &mut EncoderTask, joined_first: bool) -> Result<bool> {
     if joined_first {
         reader.join().await;
     }

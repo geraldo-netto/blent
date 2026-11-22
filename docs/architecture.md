@@ -595,6 +595,9 @@ retires. Both session event orders log recoverable read/assembly errors and
 restart only after cleanup. A task panic or incomplete retirement fails the
 session; strict cleanup callers still receive reader work errors. Cancelling a
 cleanup wait retains the original outcome for the next wait.
+Natural GPU reader EOF or failure requests the session's one-way FIFO fallback
+only after that cleanup, regardless of which event woke the supervisor.
+Deliberate cancellation does not latch a GPU failure.
 The `media` module owns codec, packet, generation and live-settings contracts,
 so streaming, input and encoding do not depend on capture management.
 `ivf` reads bounded VP9/AV1 packets and classifies random-access headers.
