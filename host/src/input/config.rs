@@ -57,6 +57,7 @@ impl InputConfig {
             direct_input: None,
             status: status.into(),
             transport: None,
+            bitrate: settings.as_ref().map(|current| current.bitrate),
             fps: settings.as_ref().map(|current| current.fps),
             video_width: settings
                 .as_ref()

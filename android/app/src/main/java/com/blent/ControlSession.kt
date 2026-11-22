@@ -72,6 +72,8 @@ internal class ControlSession(
     val controlConnected = authenticatedControl.asStateFlow()
     private val connection = MutableStateFlow(ControlConnection())
     val connectionState = connection.asStateFlow()
+    private val observedSettings = MutableStateFlow<HostSettingsObservation?>(null)
+    val hostSettings = observedSettings.asStateFlow()
     private var reconnectJob: Job? = null
     private var capabilityJob: Job? = null
     private data class CapabilityRequest(val format: Triple<Int, Int, Int>, val scope: String)
@@ -217,6 +219,7 @@ internal class ControlSession(
         // Retire on a valid stop even if later unrelated metadata is malformed.
         if (activityChanged) notifyDisplayActivity()
         if (message.has("calibrating")) calibration.value = message.opt("calibrating") == true
+        receiveHostSettings(message)
         applyCapabilityGreeting(message)
         applyDecoderGreeting(message)
         requestDecoderCapabilities(source, streamFormat)
@@ -270,6 +273,7 @@ internal class ControlSession(
     }
 
     private fun resetGreeting() {
+        observedSettings.value = null
         activity.close()
         activityHints.value = activity.update
         notifyDisplayActivity()
@@ -330,6 +334,13 @@ internal class ControlSession(
                     enqueue(JSONObject().put("type", "decoders").put("capabilities", report))
                 }
             }
+        }
+    }
+
+    private fun receiveHostSettings(message: JSONObject) {
+        if (!message.has("bitrate") && !message.has("fps")) return
+        observedSettings.value = HostStreamSettingsJson.read(message)?.let {
+            HostSettingsObservation(it, connectionEpoch.snapshot())
         }
     }
 

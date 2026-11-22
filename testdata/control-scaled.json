@@ -15,5 +15,6 @@
   "decoder_protocol": 2,
   "decoder_scope": "0",
   "decoder_selection": null,
-  "calibrating": false
+  "calibrating": false,
+  "bitrate": 20000
 }

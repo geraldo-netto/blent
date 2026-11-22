@@ -1,0 +1,947 @@
+{
+  "issue": "T1693",
+  "parent": "T1569",
+  "date": "2026-11-22",
+  "regressions_before": {
+    "host_failed": 1,
+    "host_passed": 1,
+    "failure": "greeting bitrate absent; FPS present"
+  },
+  "verification": {
+    "host_input_contract_tests_passed": 49,
+    "android_api27_34_cases_passed": 84,
+    "new_android_cases_included": 8,
+    "paired_snapshot_observations": 1000
+  },
+  "coverage": [
+    {
+      "file": "android/app/src/main/java/com/blent/HostStreamSettings.kt",
+      "name": "<init>",
+      "line": 3,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/HostStreamSettings.kt",
+          "owner": "com/blent/HostStreamSettings",
+          "name": "<init>",
+          "signature": "(II)V",
+          "line": 4,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HostStreamSettings.kt",
+      "name": "<init>",
+      "line": 11,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/HostStreamSettings.kt",
+          "owner": "com/blent/HostSettingsObservation",
+          "name": "<init>",
+          "signature": "(Lcom/blent/HostStreamSettings;Lcom/blent/ControlNotice;)V",
+          "line": 12,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HostStreamSettingsJson.kt",
+      "name": "read",
+      "line": 7,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/HostStreamSettingsJson.kt",
+          "owner": "com/blent/HostStreamSettingsJson",
+          "name": "read",
+          "signature": "(Lorg/json/JSONObject;)Lcom/blent/HostStreamSettings;",
+          "line": 7,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+      "name": "<init>",
+      "line": 33,
+      "language": "kotlin",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+          "owner": "com/blent/ControlSession",
+          "name": "<init>",
+          "signature": "(Ljava/lang/Object;Lcom/blent/ControlInputState;Lokhttp3/WebSocket$Factory;JJLkotlin/jvm/functions/Function4;)V",
+          "line": 34,
+          "covered": 24,
+          "total": 24
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+          "owner": "com/blent/ControlSession",
+          "name": "<init>",
+          "signature": "(Ljava/lang/Object;Lcom/blent/ControlInputState;Lokhttp3/WebSocket$Factory;JJLkotlin/jvm/functions/Function4;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+          "line": 34,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+      "name": "receiveControl",
+      "line": 213,
+      "language": "kotlin",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+          "owner": "com/blent/ControlSession",
+          "name": "receiveControl",
+          "signature": "(Lokhttp3/WebSocket;Lorg/json/JSONObject;)V",
+          "line": 215,
+          "covered": 14,
+          "total": 14
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+      "name": "resetGreeting",
+      "line": 275,
+      "language": "kotlin",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+          "owner": "com/blent/ControlSession",
+          "name": "resetGreeting",
+          "signature": "()V",
+          "line": 276,
+          "covered": 15,
+          "total": 15
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+      "name": "receiveHostSettings",
+      "line": 340,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+          "owner": "com/blent/ControlSession",
+          "name": "receiveHostSettings",
+          "signature": "(Lorg/json/JSONObject;)V",
+          "line": 341,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "host/src/input/config.rs",
+      "name": "response",
+      "line": 30,
+      "language": "rust",
+      "covered": 49,
+      "total": 49,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "host/src/input/config.rs",
+      30,
+      "response",
+      9
+    ],
+    [
+      "host/src/input/config.rs",
+      86,
+      "any_device",
+      2
+    ],
+    [
+      "host/src/input/config.rs",
+      91,
+      "decoder_fields",
+      1
+    ],
+    [
+      "host/src/input/config.rs",
+      108,
+      "default",
+      1
+    ],
+    [
+      "host/src/input/config.rs",
+      123,
+      "selection_fields",
+      3
+    ],
+    [
+      "host/src/input/config.rs",
+      134,
+      "calibration_field",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/HostStreamSettings.kt",
+      4,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/HostStreamSettings.kt",
+      12,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/HostStreamSettingsJson.kt",
+      7,
+      "read",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      16,
+      "defaultControlClient",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      28,
+      "setDirectInput",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      31,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      34,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      48,
+      "get:displayActivityView",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      49,
+      "get:displayActivityUpdate",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      58,
+      "get:connectionSnapshot",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      59,
+      "isCurrentConnection",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      64,
+      "setQueueBudget",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      64,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      79,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      95,
+      "get:settingsSnapshot",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      96,
+      "isCurrentSettings",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      105,
+      "get:routes",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      106,
+      "set:routes",
+      6
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      106,
+      "<lambda>",
+      6
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      116,
+      "get:token",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      117,
+      "set:token",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      117,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      136,
+      "setNativeResolution",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      145,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      146,
+      "onOpen",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      147,
+      "<lambda>",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      153,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      158,
+      "onMessage",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      159,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      170,
+      "onClosing",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      171,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      180,
+      "onClosed",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      181,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      191,
+      "onFailure",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      192,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      210,
+      "isStale",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      214,
+      "receiveControl",
+      6
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      231,
+      "receiveDisplayActivity",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      238,
+      "notifyDisplayActivity",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      243,
+      "sendAuthentication",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      249,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      255,
+      "sendResolution",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      257,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      268,
+      "flushPendingMode",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      275,
+      "resetGreeting",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      292,
+      "acceptGreeting",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      298,
+      "applyInputGreeting",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      309,
+      "applyDirectGreeting",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      317,
+      "requestDecoderCapabilities",
+      8
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      328,
+      "<lambda>",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      330,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      332,
+      "<lambda>",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      340,
+      "receiveHostSettings",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      342,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      347,
+      "applyCapabilityGreeting",
+      6
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      351,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      352,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      356,
+      "scopedCapabilities",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      360,
+      "matchesPendingConfig",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      362,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      367,
+      "applySettingsRejection",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      379,
+      "applyDecoderGreeting",
+      6
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      391,
+      "applyModeGreeting",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      402,
+      "connect",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      402,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      416,
+      "connectWebSocket",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      416,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      440,
+      "scheduleReconnect",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      440,
+      "<lambda>",
+      5
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      444,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      446,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      459,
+      "sendConfig",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      459,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      465,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      480,
+      "sendRendered",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      483,
+      "sendRendered",
+      6
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      486,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      488,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      492,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      502,
+      "sendMode",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      502,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      503,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      513,
+      "isControlConnected",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      517,
+      "sendWhenConnected",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      517,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      522,
+      "enqueue",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      526,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      545,
+      "statistics",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      545,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      549,
+      "disconnect",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/ControlSession.kt",
+      549,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      16,
+      "reset",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      17,
+      "forgetTouches",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      18,
+      "setTouchEnabled",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      19,
+      "setPenEnabled",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      21,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      22,
+      "request",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      23,
+      "queueSize",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      24,
+      "send",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      25,
+      "send",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      26,
+      "close",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      27,
+      "cancel",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      28,
+      "greet",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      31,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      33,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      34,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      36,
+      "connect",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      37,
+      "close",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      40,
+      "t1693PairedObservationsUseOnlyTheOriginalConnection",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      41,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      63,
+      "t1693MalformedRefreshCannotRetainAnApparentlyCurrentPair",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      64,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      75,
+      "t1693CurrentPairedContractPreservesBoundaryValues",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      86,
+      "t1693WireRejectsPartialCoercedOverflowAndOutOfRangeValues",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/HostStreamSettingsTest.kt",
+      96,
+      "<lambda>",
+      1
+    ],
+    [
+      "host/src/input.rs",
+      2417,
+      "t1693_greeting_reports_bitrate_and_fps_from_one_snapshot",
+      7
+    ],
+    [
+      "host/src/input.rs",
+      2452,
+      "t1693_no_encoder_settings_does_not_invent_observations",
+      1
+    ]
+  ],
+  "tools": {
+    "rust": "1.100.0; LLVM source counters from exact current unit binary",
+    "android": "Robolectric4.17 API27/34;JaCoCo0.8.15;KotlinPSI1.9.20",
+    "complexity": "project language-specific cyclomatic counters"
+  },
+  "contract": "Host bitrate/FPS fields share one immutable watch read guard and are both omitted without a settings source. Android paired values require integral bitrate1000..60000kbit/s andFPS10..90. Observation retains original ControlNotice; cutoff clears the conflated observation, old socket callbacks cannot replace it. No auth/native retirement authority is inferred from a notice.",
+  "ownership": "One current immutable pair and original notice retained in the original ControlSession StateFlow. Rejection replaces with unavailable; unrelated messages preserve the pair. Disconnect/reset drops current observation. No new worker, native handle or callback owner; consumers must verify original notice before applying asynchronous deliveries. Bounded parser values and current JSON transport capacities remain enforced.",
+  "remaining": "T1694 must integrate UI draft fields, sparse retained intent and clear/reconnect behavior. No user-visible completion claim for T1569 yet."
+}

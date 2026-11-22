@@ -2414,6 +2414,50 @@ fi
     }
 
     #[test]
+    fn t1693_greeting_reports_bitrate_and_fps_from_one_snapshot() {
+        let (sender, _) = watch::channel(settings("libx264"));
+        let source = Some(sender.clone());
+        std::thread::scope(|scope| {
+            scope.spawn(|| {
+                for turn in 0..1000 {
+                    sender.send_modify(|value| {
+                        (value.bitrate, value.fps) = if turn % 2 == 0 {
+                            (12000, 30)
+                        } else {
+                            (25000, 90)
+                        };
+                    });
+                }
+            });
+            for _ in 0..1000 {
+                let reply = serde_json::to_value(InputConfig::default().response(
+                    "connected",
+                    false,
+                    &source,
+                ))
+                .unwrap();
+                let pair = (reply["bitrate"].as_u64(), reply["fps"].as_u64());
+                assert!(
+                    matches!(
+                        pair,
+                        (Some(20000), Some(60)) | (Some(12000), Some(30)) | (Some(25000), Some(90))
+                    ),
+                    "T1693 mixed or missing host settings: {pair:?}"
+                );
+            }
+        });
+    }
+
+    #[test]
+    fn t1693_no_encoder_settings_does_not_invent_observations() {
+        let reply =
+            serde_json::to_value(InputConfig::default().response("connected", false, &None))
+                .unwrap();
+        assert!(reply.get("bitrate").is_none());
+        assert!(reply.get("fps").is_none());
+    }
+
+    #[test]
     fn t1187_terminal_reports_cannot_restore_metadata_or_advertise_a_scope() {
         use super::settings::SettingsSink;
         let mut initial = settings("auto");

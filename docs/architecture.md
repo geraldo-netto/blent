@@ -976,7 +976,7 @@ The first message is `{"type":"auth","token":"…"}` when authentication is
 required. A representative host greeting is valid JSON:
 
 ```json
-{"status":"connected","width":2960,"height":1848,"video_width":2960,"video_height":1848,"fps":60,"codec":"h264","pen_only":false,"touch":true,"pen":true}
+{"status":"connected","width":2960,"height":1848,"video_width":2960,"video_height":1848,"bitrate":20000,"fps":60,"codec":"h264","pen_only":false,"touch":true,"pen":true}
 ```
 
 The server sends `status: "mode"` for subsequent mode/settings notifications.
@@ -991,7 +991,12 @@ both encoded dimensions; missing fields stop video instead of inventing a size.
 Partial updates may retain fields from an established valid format. Explicitly
 malformed formats stop video instead of configuring an unsupported size. VP9/AV1 also retain their framed configuration headers.
 
-`codec` is `h264`, `hevc`, `vp9` or `av1`; FPS is omitted if no shared settings source exists.
+`codec` is `h264`, `hevc`, `vp9` or `av1`. `bitrate` (kbit/s) and `fps`
+come from the same encoder-settings read guard; both are omitted when no shared
+settings source exists. Android exposes the validated pair as an observation
+bound to the original control connection. Missing or malformed members cannot
+form a pair; connection cutoff clears the observation. This observation alone
+does not change saved tablet overrides or the settings UI.
 `width` and `height` describe the requested virtual-display geometry before
 stream scaling. They share the same settings snapshot as FPS, codec and encoded
 dimensions, including after negotiation and reconnect. Before negotiation the

@@ -664,3 +664,11 @@ The deadline scalar is owned only by the original capture event loop. No allocat
 The three original outcomes are complete: T1688 (`7d850a5e`) suppresses redundant fallback grabs, T1690 (`d3b90684`) discloses the bounded latency sample window, and T1689 (`d3904ea7`) preserves absolute request cadence. The additional percentile inconsistency is fixed separately by T1692 (`33fc7dac`); historical benchmark label aliases were removed under T1691 (`0f8528d0`).
 
 The final 78-test helper suite covers their combined behavior. All 14 conversion/module/retirement tests also pass; current helper callers and benchmark readers agree with the new contracts. Per-function coverage and complexity evidence remain in the child artifacts. Native throughput and live kernel-log improvements were not measured; installed binaries and sessions remain untouched.
+
+## T1693 — expose paired host stream settings (2026-11-22)
+
+Host greetings now include bitrate and FPS from the same encoder-settings read guard. Without a settings source, neither field is invented. Android validates the paired values and retains one immutable observation tied to its original control notice; cutoff clears it and stale socket callbacks cannot replace it. The shared greeting fixture and protocol documentation use the current contract.
+
+The missing-bitrate regression failed before the fix. All 49 host input-contract tests and 84 Android API-27/34 cases pass, including eight new observation cases and 1,000 concurrent host snapshot checks. All eight maintained functions/constructors measure 100% line coverage; all 123 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1693.json).
+
+The observation retains only bounded values and a delivery identity; it adds no native resource or worker. T1694 still must connect it to draft settings and explicit override intent. T1569 remains incomplete until that UI/reconnect behavior is verified.
