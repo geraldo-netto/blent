@@ -7,6 +7,10 @@
 #include <sys/socket.h>
 #include <inttypes.h>
 
+#ifndef BLENT_BENCH_FULL_DAMAGE
+#define BLENT_BENCH_FULL_DAMAGE 0
+#endif
+
 enum { WIDTH = 1280, HEIGHT = 800, SAMPLES = 400 };
 typedef struct {
     raw_ring_t ring;
@@ -68,29 +72,42 @@ static int compare(const void *a, const void *b) {
     return (x > y) - (x < y);
 }
 
-static void measure(replay_t *r) {
+/* Compare current production code with explicit full invalidation, never an old
+ * source/layout fallback. Both variants retain the same owned slot protocol. */
+static void prepare_publication(replay_t *r)
+{
+    if (BLENT_BENCH_FULL_DAMAGE)
+        raw_ring_mark_all(&r->ring);
+    r->capture.raw_sent_us = 0;
+}
+
+static void measure(replay_t *r)
+{
     uint64_t latency[SAMPLES], cpu = 0;
-    for (unsigned slot = 0; slot < RAW_SLOTS; slot++) {
-        r->capture.raw_sent_us = 0;
+    for (unsigned slot = 0; slot < RAW_SLOTS; slot++)
+    {
+        prepare_publication(r);
         assert(publish_shared_capture(&r->capture));
     }
     drain(r);
-    for (unsigned step = 0; step < SAMPLES; step++) {
+    for (unsigned step = 0; step < SAMPLES; step++)
+    {
         unsigned slot = step % RAW_SLOTS;
-        atomic_store_explicit((_Atomic uint32_t *)(r->ring.memory + slot * RAW_SLOT_CONTROL_BYTES),
-                              RAW_FREE, memory_order_release);
+        atomic_store_explicit((_Atomic uint32_t *)(r->ring.memory + slot * RAW_SLOT_CONTROL_BYTES), RAW_FREE,
+                              memory_order_release);
         uint64_t cpu_start = now_ns(CLOCK_PROCESS_CPUTIME_ID), start = now_ns(CLOCK_MONOTONIC);
         mutate(r, step);
-        r->capture.raw_sent_us = 0;
+        prepare_publication(r);
         assert(publish_shared_capture(&r->capture));
         latency[step] = now_ns(CLOCK_MONOTONIC) - start;
         cpu += now_ns(CLOCK_PROCESS_CPUTIME_ID) - cpu_start;
-        hash_slot(r, slot); drain(r);
+        hash_slot(r, slot);
+        drain(r);
     }
     qsort(latency, SAMPLES, sizeof(*latency), compare);
     printf("{\"scale\":%d,\"mode\":%d,\"samples\":%d,\"p50_us\":%.3f,\"p95_us\":%.3f,"
-           "\"cpu_us\":%.3f,\"checksum\":\"%016" PRIx64 "\"}\n", r->scale, r->mode, SAMPLES,
-           latency[SAMPLES / 2] / 1000.0, latency[SAMPLES * 95 / 100] / 1000.0,
+           "\"cpu_us\":%.3f,\"checksum\":\"%016" PRIx64 "\"}\n",
+           r->scale, r->mode, SAMPLES, latency[SAMPLES / 2] / 1000.0, latency[SAMPLES * 95 / 100] / 1000.0,
            cpu / (1000.0 * SAMPLES), r->hash);
 }
 

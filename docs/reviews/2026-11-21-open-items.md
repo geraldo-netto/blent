@@ -838,3 +838,11 @@ T1717 (`e11fe0fd`) establishes the independent shared encoder and runtime cache 
 Stream-size and virtual-output notifications now call one classifier, retaining their distinct diagnostic source labels and existing channel/reader ownership. Repeated geometry keeps the original session; changed geometry retires its original reader before orchestration can replace it. Permanent fixtures observe exact original reader/encoder completion proofs for both notification sources, including helper retention and final shutdown. The strengthened fixtures pass before and after the consolidation.
 
 All 273 selected capture tests pass; three existing opt-in experiments remain ignored. Both maintained production functions have 100% line coverage, and all 49 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1708.json). The classifier retains no resources or borrowed state. No installed sessions changed and no performance gain is claimed.
+
+## T1720 — remove old-source benchmark compatibility (2026-11-22)
+
+The shared-damage runner no longer extracts historical production sources or probes for old private-header/cursor layouts. Its two variants use the same current implementation: full slot invalidation versus retained per-slot damage. Existing historical results retain their original meaning and are not relabelled as results of this new comparison. The obsolete `--baseline` option is rejected before creating output.
+
+All three shared-damage tests and both numeric-admission tests pass. The obsolete-option regression fails before and passes after the change. The independent pixel/checksum oracle covers both policies, four scales, three damage modes and twelve frames per case; it also confirms that full invalidation performs conversion while warmed idle retained-damage frames reuse pixels. All 22 measured functions meet complexity ≤9. Benchmark/development coverage exemptions remain unchanged. [Evidence](artifacts/2026-11-21-open-items/t1720.json).
+
+No production slot or native ownership changed. Children settle before fixture cleanup. T1709 retains current-cadence caller integration; T1721 separately tracks the paired runner's elapsed-time cap, which was not executed here. No new performance ratio or hardware acceptance is claimed.

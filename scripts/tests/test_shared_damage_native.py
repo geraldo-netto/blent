@@ -1,4 +1,4 @@
-"""T1288: exact-source builds and independent pixel/checksum replay."""
+"""T1288/T1720: current-policy builds and independent pixel/checksum replay."""
 from pathlib import Path
 import subprocess
 import sys
@@ -13,9 +13,19 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class SharedDamageNativeTest(unittest.TestCase):
-    def test_t1288_current_and_historical_sources_build(self):
+    def test_t1720_historical_baseline_option_is_rejected(self):
+        with tempfile.TemporaryDirectory(prefix='blent-t1720-cli-') as temporary:
+            output = Path(temporary) / 'output'
+            result = subprocess.run([sys.executable, str(ROOT / 'scripts/benchmarks/shared-damage.py'),
+                                     str(output), '--baseline', 'not-a-revision'],
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 2, result.stderr)
+            self.assertIn('unrecognized arguments: --baseline', result.stderr)
+            self.assertFalse(output.exists())
+
+    def test_t1288_current_policy_variants_build(self):
         with tempfile.TemporaryDirectory(prefix='blent-t1288-build-') as temporary:
-            SHARED.build(Path(temporary), '7cac165')
+            SHARED.build(Path(temporary))
 
     def test_t1288_bounded_replay_matches_independent_pixels_and_checksum(self):
         with tempfile.TemporaryDirectory(prefix='blent-t1288-replay-') as temporary:
@@ -31,5 +41,6 @@ class SharedDamageNativeTest(unittest.TestCase):
                        *[str(sources / name) for name in
                          ['conversion.c', 'frame_exchange.c', 'raw_ring.c', 'cursor_overlay.c']],
                        '-o', str(binary)]
-            subprocess.run(command, check=True)
-            subprocess.run([str(binary)], check=True)
+            for full in [0, 1]:
+                subprocess.run([*command, f'-DBLENT_BENCH_FULL_DAMAGE={full}'], check=True)
+                subprocess.run([str(binary)], check=True)

@@ -42,6 +42,14 @@ static void verify_pixels(replay_t *r, unsigned slot, unsigned step)
     assert(r->hash == expected);
 }
 
+static void verify_conversion_work(const replay_t *r, unsigned step)
+{
+    if (BLENT_BENCH_FULL_DAMAGE)
+        assert(r->pool.last_jobs > 0);
+    else if (r->mode == 0 && step >= RAW_SLOTS)
+        assert(r->pool.last_jobs == 0);
+}
+
 static void replay_case(int scale, int mode)
 {
     replay_t r = {.scale = scale, .mode = mode};
@@ -51,8 +59,9 @@ static void replay_case(int scale, int mode)
         unsigned slot = step % RAW_SLOTS;
         atomic_store((_Atomic uint32_t *)(r.ring.memory + slot * RAW_SLOT_CONTROL_BYTES), RAW_FREE);
         mutate(&r, step * 19);
-        r.capture.raw_sent_us = 0;
+        prepare_publication(&r);
         assert(publish_shared_capture(&r.capture));
+        verify_conversion_work(&r, step);
         verify_pixels(&r, slot, step * 19);
         drain(&r);
     }

@@ -1,0 +1,151 @@
+{
+  "issue": "T1720",
+  "date": "2026-11-22",
+  "verification": {
+    "shared_damage_tests_passed": 3,
+    "numeric_admission_tests_passed": 2,
+    "pixel_oracle_policy_variants": 2,
+    "pixel_oracle_scales": 4,
+    "pixel_oracle_modes": 3,
+    "pixel_oracle_frames_per_case": 12,
+    "obsolete_cli_fails_before": "F\n======================================================================\nFAIL: test_t1720_historical_baseline_option_is_rejected (test_shared_damage_native.SharedDamageNativeTest.test_t1720_historical_baseline_option_is_rejected)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/blent-t1720-worktree/scripts/tests/test_shared_damage_native.py\", line 22, in test_t1720_historical_baseline_option_is_rejected\n    self.assertEqual(result.returncode, 2, result.stderr)\nAssertionError: 1 != 2 : fatal: Needed a single revision\nTraceback (most recent call last):\n  File \"/tmp/blent-t1720-worktree/scripts/benchmarks/shared-damage.py\", line 87, in <module>\n    main()\n  File \"/tmp/blent-t1720-worktree/scripts/benchmarks/shared-damage.py\", line 71, in main\n    baseline = subprocess.check_output(['git', 'rev-parse', '--verify', args.baseline + '^{commit}'],\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/subprocess.py\", line 466, in check_output\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['git', 'rev-parse', '--verify', 'not-a-revision^{commit}']' returned non-zero exit status 128.\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.073s\n\nFAILED (failures=1)\n"
+  },
+  "complexity": [
+    [
+      "scripts/benchmarks/shared-damage.py",
+      13,
+      "fixture_headers",
+      1
+    ],
+    [
+      "scripts/benchmarks/shared-damage.py",
+      19,
+      "build",
+      2
+    ],
+    [
+      "scripts/benchmarks/shared-damage.py",
+      31,
+      "pair",
+      4
+    ],
+    [
+      "scripts/benchmarks/shared-damage.py",
+      45,
+      "metadata",
+      1
+    ],
+    [
+      "scripts/benchmarks/shared-damage.py",
+      53,
+      "main",
+      4
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      25,
+      "now_ns",
+      1
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      30,
+      "initialize",
+      2
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      49,
+      "mutate",
+      4
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      59,
+      "drain",
+      2
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      64,
+      "hash_slot",
+      2
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      70,
+      "compare",
+      1
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      77,
+      "prepare_publication",
+      2
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      84,
+      "measure",
+      3
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      114,
+      "main",
+      1
+    ],
+    [
+      "scripts/tests/shared_damage_native.c",
+      6,
+      "reference_level",
+      9
+    ],
+    [
+      "scripts/tests/shared_damage_native.c",
+      21,
+      "verify_pixels",
+      4
+    ],
+    [
+      "scripts/tests/shared_damage_native.c",
+      45,
+      "verify_conversion_work",
+      4
+    ],
+    [
+      "scripts/tests/shared_damage_native.c",
+      53,
+      "replay_case",
+      2
+    ],
+    [
+      "scripts/tests/shared_damage_native.c",
+      76,
+      "main",
+      3
+    ],
+    [
+      "scripts/tests/test_shared_damage_native.py",
+      16,
+      "test_t1720_historical_baseline_option_is_rejected",
+      1
+    ],
+    [
+      "scripts/tests/test_shared_damage_native.py",
+      26,
+      "test_t1288_current_policy_variants_build",
+      1
+    ],
+    [
+      "scripts/tests/test_shared_damage_native.py",
+      30,
+      "test_t1288_bounded_replay_matches_independent_pixels_and_checksum",
+      2
+    ]
+  ],
+  "complexity_tool": "project C tree-sitter 0.25.2 / Python AST 3.12 checker",
+  "coverage": "Benchmark and nonessential development tooling exempt; permanent regressions retained. No production runtime function changes.",
+  "ownership": "Both binaries use current production slot ownership and exact cleanup. Full-invalidation control changes bounded dirty histories, never leased pixel memory; no old producer, source-layout adapter or copied encoder. Test compiler/child processes finish before private directories retire. Header selection is unconditional; missing current contracts fail compilation. Historical reports remain historical. No installed/device changes.",
+  "remaining": "T1709 separately retargets the current cadence field and source linkage. T1721 tracks the unchanged 30-second paired-runner cap; the capped paired runner was not executed. These checks claim no new timing or hardware result."
+}

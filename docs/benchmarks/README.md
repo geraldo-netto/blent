@@ -326,3 +326,10 @@ metadata or retrospectively establishes physical display performance.
 
 
 </details>
+
+The current `scripts/benchmarks/shared-damage.py OUTPUT` runner compares full slot
+invalidation with retained per-slot damage using the same current production
+sources. Both policies must publish identical pixel checksums. It no longer
+accepts historical source baselines or adapts old header layouts. Archived
+T570 measurements retain their original source identities and results; the new
+comparison is not a reproduction of those historical ratios.

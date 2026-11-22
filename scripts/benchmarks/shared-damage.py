@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""T570: paired exact-source publication replay; no display/device changes."""
+"""T570/T1720: paired current-source publication policies; no display/device changes."""
 import argparse
 import hashlib
 import json
@@ -11,32 +11,20 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def fixture_headers(sources):
-    """Use private fixture layouts from each exact source revision, if split."""
-    flags = ['-D_GNU_SOURCE=']
-    for name in ('frame_exchange_private.h', 'conversion_private.h'):
-        header = sources / name
-        if header.exists():
-            flags.extend(['-include', str(header)])
-    return flags
+    """Current private fixture layouts; missing contracts are build errors."""
+    return ['-D_GNU_SOURCE=', '-include', str(sources / 'frame_exchange_private.h'),
+            '-include', str(sources / 'conversion_private.h')]
 
 
-def build(directory, baseline):
-    old = directory / 'baseline'
-    old.mkdir()
-    files = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', baseline,
-                                     'host/evdi'], cwd=ROOT, text=True).splitlines()
-    for name in files:
-        if Path(name).suffix in ['.c', '.h']:
-            (old / Path(name).name).write_bytes(subprocess.check_output(
-                ['git', 'show', f'{baseline}:{name}'], cwd=ROOT))
-    for variant, sources in [('full', old), ('damage', ROOT / 'host/evdi')]:
-        cursor = sources / 'cursor_overlay.c'
-        cursor_sources = [str(cursor)] if cursor.exists() else []
+def build(directory):
+    sources = ROOT / 'host/evdi'
+    for variant, full in [('full', 1), ('damage', 0)]:
         subprocess.run(['cc', '-std=c11', '-O3', '-pthread', '-Wall', '-Wextra', '-Werror',
                         '-ffunction-sections', '-fdata-sections', '-Wl,--gc-sections',
-                        *fixture_headers(sources),
+                        f'-DBLENT_BENCH_FULL_DAMAGE={full}', *fixture_headers(sources),
                         '-I', str(sources), str(ROOT / 'scripts/benchmarks/shared-damage.c'),
-                        *[str(sources / name) for name in ['conversion.c', 'frame_exchange.c', 'raw_ring.c']], *cursor_sources,
+                        *[str(sources / name) for name in
+                          ['conversion.c', 'frame_exchange.c', 'raw_ring.c', 'cursor_overlay.c']],
                         '-o', str(directory / variant)], check=True)
 
 
@@ -54,10 +42,10 @@ def pair(directory, trial, scale, mode):
     return rows
 
 
-def metadata(baseline):
+def metadata():
     paths = list((ROOT / 'host/evdi').glob('*.[ch]'))
     paths += [Path(__file__).resolve(), ROOT / 'scripts/benchmarks/shared-damage.c']
-    return dict(baseline=baseline, kernel=platform.release(), machine=platform.machine(),
+    return dict(controls={"full": "invalidate all slots", "damage": "retain per-slot damage"}, kernel=platform.release(), machine=platform.machine(),
                 compiler=subprocess.check_output(['cc', '--version'], text=True).splitlines()[0],
                 sources={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths})
 
@@ -65,15 +53,12 @@ def metadata(baseline):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
-    parser.add_argument('--baseline', default='7cac165')
     parser.add_argument('--trials', type=int, choices=range(1, 10), default=5)
     args = parser.parse_args()
-    baseline = subprocess.check_output(['git', 'rev-parse', '--verify', args.baseline + '^{commit}'],
-                                       cwd=ROOT, text=True).strip()
     directory = args.output.resolve()
     directory.mkdir(parents=True)
-    build(directory, baseline)
-    (directory / 'metadata.json').write_text(json.dumps(metadata(baseline), indent=2) + '\n')
+    build(directory)
+    (directory / 'metadata.json').write_text(json.dumps(metadata(), indent=2) + '\n')
     rows = []
     for trial in range(args.trials):
         for scale in range(1, 5):
