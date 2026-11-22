@@ -349,3 +349,12 @@ The native check caught refresh-rate help outside SettingsSheet still using 11sp
 All 6 emitted maintained methods with JaCoCo line counters have 100%
 coverage; complexity <=9. The eight-class final run passes 100 test executions
 on API 27/34. [Evidence](artifacts/2026-11-22-ui-ux/t1806/).
+
+
+## T1807 — native acceptance follow-up
+
+The native Back key hides the Material sheet before its dismissal callback. Keep editing now reopens the same sheet through its composition-owned coroutine scope and retained SheetState. Composition retirement cancels that animation; the existing two-field draft remains the sole owner. The permanent native-window KeyEvent regression failed at the visibility assertion after Keep editing, then passed after restoration. Semantic-dismiss, Done/discard, pending edits and immediate settings retain their coverage.
+
+All 53 emitted maintained methods with JaCoCo line counters have 100%
+coverage; complexity <=9. The eight-class final run passes 100 test executions
+on API 27/34. [Evidence](artifacts/2026-11-22-ui-ux/t1807/).

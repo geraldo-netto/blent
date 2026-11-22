@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,13 +43,15 @@ internal fun SettingsSheet(
     var confirmDiscard by remember { mutableStateOf(false) }
     val pending by rememberUpdatedState(!edited.differentFrom(settings.bitrateKbps, settings.fps).empty)
     val requestDismiss = { if (pending) confirmDiscard = true else onDismiss() }
+    val scope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true,
+        confirmValueChange = { value ->
+            if (value == SheetValue.Hidden && pending) { confirmDiscard = true; false } else true
+        })
 
     ModalBottomSheet(
         onDismissRequest = requestDismiss,
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true,
-            confirmValueChange = { value ->
-                if (value == SheetValue.Hidden && pending) { confirmDiscard = true; false } else true
-            }),
+        sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 24.dp, vertical = 8.dp)) {
@@ -111,7 +114,10 @@ internal fun SettingsSheet(
     }
     if (confirmDiscard) {
         DiscardVideoDialog(
-            onKeepEditing = { confirmDiscard = false },
+            onKeepEditing = {
+                confirmDiscard = false
+                scope.launch { sheetState.show() }
+            },
             onDiscard = { edited = StreamOverrides(); confirmDiscard = false; onDismiss() })
     }
 

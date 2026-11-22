@@ -68,6 +68,26 @@ class VideoDraftSettingsTest {
         compose.runOnIdle { assertEquals(0, dismissals) }
     }
 
+    @Test fun t1807KeepEditingRestoresSheetAfterAndroidBack() {
+        var dismissals = 0
+        lateinit var sheet: android.view.View
+        compose.setContent { BlentTheme {
+            SettingsSheet(SettingsValues(), null, {}, false, { dismissals++ }, cameraControls = {
+                sheet = androidx.compose.ui.platform.LocalView.current.rootView
+            })
+        } }
+        compose.onNodeWithText("30 fps").performScrollTo().performClick()
+        compose.runOnIdle {
+            sheet.dispatchKeyEvent(android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN, android.view.KeyEvent.KEYCODE_BACK))
+            sheet.dispatchKeyEvent(android.view.KeyEvent(android.view.KeyEvent.ACTION_UP, android.view.KeyEvent.KEYCODE_BACK))
+        }
+        compose.onNodeWithText("Discard video changes?").assertIsDisplayed()
+        compose.onNodeWithText("Keep editing").performClick()
+        compose.onNodeWithText("30 fps").performScrollTo().assertIsDisplayed().assertIsSelected()
+        compose.onNodeWithText("Apply video changes").performScrollTo().assertIsDisplayed().assertIsEnabled()
+        compose.runOnIdle { assertEquals(0, dismissals) }
+    }
+
     @Test fun t1785UnchangedVideoActionIsDisabledAndDoneCloses() {
         var dismissals = 0
         val events = mutableListOf<SettingsEvent>()

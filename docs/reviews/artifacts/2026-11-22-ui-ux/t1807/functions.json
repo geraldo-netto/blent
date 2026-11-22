@@ -1,0 +1,373 @@
+[
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$7$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/ComposableSingletons$SettingsSheetKt$lambda-1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$3$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$FrameRateControls$1$1$2",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$StreamControls$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/ComposableSingletons$SettingsSheetKt",
+    "method": "<clinit>",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$requestDismiss$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$6$1",
+    "method": "invoke",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/ComposableSingletons$SettingsSheetKt$lambda-2$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$9$3$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$2$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2",
+    "method": "invoke",
+    "covered": 35,
+    "total": 35
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$3",
+    "method": "invoke",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$UpdateNotice$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$ModeControl$1$2",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$sheetState$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$4$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/ComposableSingletons$SettingsSheetKt$lambda-3$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$9$2$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "SettingsSheet",
+    "covered": 22,
+    "total": 22
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "SettingsSection",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "AdvancedSettings",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "OrientationControls",
+    "covered": 39,
+    "total": 39
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "StreamControls",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "BitrateControls",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "FrameRateControls",
+    "covered": 15,
+    "total": 15
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "SettingsSwitch",
+    "covered": 10,
+    "total": 10
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "UpdateNotice",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "ModeControl",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "SettingsSheet$lambda$1",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "SettingsSheet$lambda$2",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "SettingsSheet$lambda$4",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "SettingsSheet$lambda$5",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "SettingsSheet$lambda$6",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "AdvancedSettings$lambda$11",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt",
+    "method": "AdvancedSettings$lambda$12",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$5$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$FrameRateControls$1$1$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$OrientationControls$2$1$2",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$AdvancedSettings$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$OrientationControls$1$3$1",
+    "method": "invoke",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$OrientationControls$2$1$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$AdvancedSettings$3",
+    "method": "invoke",
+    "covered": 2,
+    "total": 2
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$3$1",
+    "method": "invokeSuspend",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$8$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$9",
+    "method": "invoke",
+    "covered": 7,
+    "total": 7
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$9$1$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSection$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$OrientationControls$1$2",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSwitch$1$2$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$SettingsSheet$2$1$4$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  },
+  {
+    "file": "SettingsSheet.kt",
+    "class_name": "com/blent/SettingsSheetKt$AdvancedSettings$2$1",
+    "method": "invoke",
+    "covered": 1,
+    "total": 1
+  }
+]
