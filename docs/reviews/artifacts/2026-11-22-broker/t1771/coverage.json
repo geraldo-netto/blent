@@ -1,0 +1,29 @@
+{
+  "tool": "Rust 1.100.0, cargo-llvm-cov 0.8.7; llvm-cov export from exact executed host unit object",
+  "object": "target/llvm-cov-target/debug/build/blent/8a4c416e38fc28de/out/blent-8a4c416e38fc28de",
+  "object_sha256": "367ce1e37ea02335a70cba8d4d7dcd2fbefc0d59cc8efac2a099c290822a18d6",
+  "functions": [
+    {
+      "file": "host/src/broker/control/inventory.rs",
+      "name": "inventory_needed",
+      "line": 8,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "scan",
+      "line": 111,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

@@ -620,3 +620,22 @@ fn t1338_reservation_blocks_both_view_and_broker_until_refresh() {
 }
 
 mod inventory;
+
+#[test]
+fn t1771_inventory_demand_tracks_clients_saved_peers_and_original_links() {
+    for clients in [false, true] {
+        for saved in [false, true] {
+            for links in [false, true] {
+                let peers = if saved { vec![peer(8)] } else { vec![] };
+                let mut rig = Rig::new(peers);
+                if links {
+                    rig.start(1);
+                }
+                if !clients {
+                    rig.control.drop_client(rig.client);
+                }
+                assert_eq!(rig.control.inventory_needed(), clients || saved || links);
+            }
+        }
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "host/src/broker/control/inventory.rs": "f722d6bbae9ae97ea712c9038ea845d0e22571bd35cefbcc702edd61fa0f8604",
+  "host/src/broker/linux/server/commands.rs": "fa9ce027179b4d6d56f32c737c608394434c1b76b337c4caa618b8b177f78fbc",
+  "host/src/broker/control/tests.rs": "cd141b2fdf1c93df0bb9b587d3320f0091f935cde171eb782c9a231c17c80fea",
+  "host/src/broker/linux/server/tests/idle_inventory.rs": "8520689b099b88e343907f9b519f692db94a0d4cd5d5081ee66963f0b4ed2ac8",
+  "host/src/broker/linux/server/tests.rs": "9ca5d6932b0a83f681899f22ecccc7547b941faacd828936cb6d4e8b5a65b730"
+}

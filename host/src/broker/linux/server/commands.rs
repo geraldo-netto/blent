@@ -112,6 +112,13 @@ impl Server {
         if self.inventory.as_ref().is_some_and(Inventory::retired) {
             self.inventory = None;
         }
+        if !self.controller.inventory_needed() {
+            // Keep any admitted helper until its original native retirement.
+            // A later client must await fresh metadata, not this idle cache.
+            self.inventory_observed = false;
+            self.next_inventory = Instant::now();
+            return self.controller.inventory_unavailable();
+        }
         if self.inventory.is_none() && Instant::now() >= self.next_inventory {
             self.next_inventory = Instant::now() + Duration::from_secs(2);
             let limits = accessory::discovery::Limits {

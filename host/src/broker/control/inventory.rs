@@ -3,6 +3,12 @@
 use super::*;
 
 impl<K: Ord + Clone, T: Clone> Controller<K, T> {
+    /// Read current authoritative demand without allocating a UI snapshot.
+    /// Retiring links still count until their original ownership is settled.
+    pub fn inventory_needed(&self) -> bool {
+        !self.clients.is_empty() || !self.saved.is_empty() || !self.links.is_empty()
+    }
+
     pub fn inventory_available(&self) -> bool {
         self.inventory_available
     }

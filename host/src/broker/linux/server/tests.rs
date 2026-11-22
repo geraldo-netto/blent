@@ -83,6 +83,7 @@ impl Fixture {
     }
 }
 
+mod idle_inventory;
 mod accept;
 mod authority;
 mod diagnostics;
