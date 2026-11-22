@@ -70,11 +70,7 @@ impl Workers {
             .as_ref()
             .map_err(|error| std::io::Error::new(error.kind(), error.to_string()))?;
         let slot = crate::process_retirement::PROCESS.reserve(pool)?;
-        let grace = Duration::from_millis(blent_config::retirement_limits::configured(
-            "BLENT_SESSION_STOP_MS",
-            5000,
-            60_000,
-        )? as u64);
+        let grace = blent_config::retirement_limits::session_stop_budget()?;
         let reap = blent_config::retirement_limits::reap_budget()?;
         let (creation, native) = crate::capture_retirement::channel();
         Ok(SessionAdmission {

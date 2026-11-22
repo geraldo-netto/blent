@@ -3259,7 +3259,7 @@ printf '%s' "$((existing + delta))" > "$count""#,
         let pid_file = sandbox.0.join("pid");
         let program = sandbox.script(
             "stuck-stop",
-            r#"echo $$ > "$BLENT_T268_PID"; exec sleep 60"#,
+            r#"echo $$ > "$BLENT_T268_PID"; exec sleep 300"#,
         );
         let restarted = std::cell::Cell::new(false);
         let before = std::time::Instant::now();

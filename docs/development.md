@@ -717,8 +717,12 @@ share the Linux layout and ABI validator. Native install smoke scripts under
 
 ### Lifecycle command deadlines
 
-The CLI allows 10 seconds for daemon cleanup. GUI direct stop/restart commands
-allow 15 seconds; systemd actions allow 35 seconds. Both shipped user units use
+The daemon observes pipeline shutdown for `BLENT_SESSION_STOP_MS` plus
+`BLENT_REAP_TIMEOUT_MS` and one second of scheduling margin (6.1 seconds with
+defaults). The CLI allows 126 seconds, covering both settings at their supported
+60-second maxima plus command overhead. GUI direct and systemd commands allow
+131 seconds. Client ceilings cover a daemon configured through a different
+environment; they do not delay a completed shutdown. Both shipped user units use
 `TimeoutStopSec=infinity`, `KillMode=mixed` and `SendSIGKILL=no`. Systemd sends
 SIGTERM only to the daemon, which owns native child shutdown and cleanup; there
 is no separate ExecStop command. Pending cleanup keeps the unit stopping and

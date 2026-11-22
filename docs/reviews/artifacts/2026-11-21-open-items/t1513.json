@@ -1,0 +1,433 @@
+{
+  "issue": "T1513",
+  "date": "2026-11-22",
+  "regressions_before": {
+    "daemon_failures": 1,
+    "client_contract_failures": 1
+  },
+  "verification": {
+    "common_tests_passed": 508,
+    "daemon_activity_tests_passed": 8,
+    "gui_lifecycle_tests_passed": 2,
+    "final_exact_client_budget_test_passed": 1
+  },
+  "measurements": {
+    "coverage": [
+      {
+        "file": "host/src/linux_main.rs",
+        "name": "run_daemon_with",
+        "line": 1685,
+        "language": "rust",
+        "covered": 207,
+        "total": 217,
+        "percent": 95.39170506912443,
+        "passes": true,
+        "missing": [
+          1712,
+          1808,
+          1813,
+          1831,
+          1832,
+          1833,
+          1926,
+          1928,
+          1930,
+          1944
+        ]
+      },
+      {
+        "file": "host/src/session_supervision.rs",
+        "name": "reserve",
+        "line": 60,
+        "language": "rust",
+        "covered": 22,
+        "total": 23,
+        "percent": 95.65217391304348,
+        "passes": true,
+        "missing": [
+          71
+        ]
+      },
+      {
+        "file": "common/src/retirement_limits.rs",
+        "name": "session_stop_budget",
+        "line": 40,
+        "language": "rust",
+        "covered": 4,
+        "total": 4,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "common/src/retirement_limits.rs",
+        "name": "daemon_drain_budget",
+        "line": 46,
+        "language": "rust",
+        "covered": 3,
+        "total": 3,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "common/src/retirement_limits.rs",
+        "name": "reap_budget",
+        "line": 50,
+        "language": "rust",
+        "covered": 4,
+        "total": 4,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      }
+    ],
+    "complexity": [
+      [
+        "common/src/commands/tests.rs",
+        5,
+        "fixture",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        19,
+        "t496_fixture_process",
+        6
+      ],
+      [
+        "common/src/commands/tests.rs",
+        44,
+        "assert_exited",
+        2
+      ],
+      [
+        "common/src/commands/tests.rs",
+        62,
+        "fixture_timeout",
+        2
+      ],
+      [
+        "common/src/commands/tests.rs",
+        72,
+        "t328_denied_signal_does_not_extend_deadline",
+        2
+      ],
+      [
+        "common/src/commands/tests.rs",
+        104,
+        "t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets",
+        3
+      ],
+      [
+        "common/src/commands/tests.rs",
+        122,
+        "assert_reaped",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        129,
+        "t094_sync_command_is_bounded_and_reaped",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        140,
+        "t094_async_command_is_bounded_and_reaped",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        151,
+        "t094_cancelled_command_is_reaped",
+        2
+      ],
+      [
+        "common/src/commands/tests.rs",
+        178,
+        "deny_kill_in_test_thread",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        224,
+        "t590_denied_group_signal_reports_unretired_work",
+        3
+      ],
+      [
+        "common/src/commands/tests.rs",
+        255,
+        "t815_collection_failure_after_reap_never_signals_a_reusable_pid",
+        3
+      ],
+      [
+        "common/src/commands/tests.rs",
+        296,
+        "t609_stdin_delivery_closes_input_and_preserves_bytes",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        310,
+        "t609_timeout_covers_blocked_stdin_write",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        323,
+        "t609_cancelled_stdin_writer_is_reaped",
+        2
+      ],
+      [
+        "common/src/commands/tests.rs",
+        346,
+        "t814_accepted_signal_does_not_make_reaping_unbounded",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        366,
+        "t814_unconfirmed_async_exit_retains_admission_after_control_deadline",
+        6
+      ],
+      [
+        "common/src/commands/tests.rs",
+        468,
+        "t814_dependent_lease_cleanup_cannot_hold_control_deadline",
+        6
+      ],
+      [
+        "common/src/commands/tests.rs",
+        474,
+        "drop",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        524,
+        "t836_extreme_retirement_grace_never_panics_or_loses_ownership",
+        5
+      ],
+      [
+        "common/src/commands/tests.rs",
+        531,
+        "drop",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        577,
+        "t836_representable_grace_and_cancelled_retirement_preserve_ownership",
+        4
+      ],
+      [
+        "common/src/commands/tests.rs",
+        623,
+        "t836_fixture_ready",
+        2
+      ],
+      [
+        "common/src/commands/tests.rs",
+        635,
+        "readmitted_retirement",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        643,
+        "readmitted_fixture",
+        2
+      ],
+      [
+        "common/src/commands/tests.rs",
+        663,
+        "assert_readmitted_retirement",
+        5
+      ],
+      [
+        "common/src/commands/tests.rs",
+        697,
+        "t1197_readmitted_fixture_waits_for_actual_exit_without_a_startup_deadline",
+        1
+      ],
+      [
+        "common/src/commands/tests.rs",
+        719,
+        "t1513_client_wait_covers_a_daemon_with_different_configured_budgets",
+        1
+      ],
+      [
+        "common/src/retirement_limits.rs",
+        40,
+        "session_stop_budget",
+        1
+      ],
+      [
+        "common/src/retirement_limits.rs",
+        46,
+        "daemon_drain_budget",
+        1
+      ],
+      [
+        "common/src/retirement_limits.rs",
+        50,
+        "reap_budget",
+        1
+      ],
+      [
+        "gui/src/main.rs",
+        3257,
+        "t268_over_budget_stop_is_reaped_and_prevents_restart",
+        3
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        34,
+        "capabilities",
+        1
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        37,
+        "poll",
+        1
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        44,
+        "stop",
+        1
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        47,
+        "retired",
+        1
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        52,
+        "create",
+        2
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        78,
+        "drop",
+        2
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        84,
+        "fixture",
+        1
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        95,
+        "running",
+        1
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        106,
+        "until",
+        2
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        115,
+        "snapshot",
+        1
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        122,
+        "t1027_daemon_owns_one_source_and_preserves_preferences_edges_and_native_retirement",
+        6
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        188,
+        "t1027_unsupported_capabilities_and_loss_remain_visible_without_recreation",
+        4
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        220,
+        "t1027_primary_and_adb_usb_extra_builders_forward_the_original_channel",
+        3
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        254,
+        "isolated_daemon",
+        2
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        298,
+        "daemon_config",
+        1
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        318,
+        "shutdown_requests",
+        3
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        341,
+        "t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests",
+        4
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        381,
+        "t1045_extra_adb_usb_sessions_keep_saved_viewer_preferences",
+        3
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        396,
+        "t1509_daemon_identity_survives_workflow_return",
+        5
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        431,
+        "t1510_failure_waits_for_original_cleanup_then_returns_error",
+        4
+      ],
+      [
+        "host/src/daemon_activity/tests.rs",
+        469,
+        "t1513_configured_stop_grace_keeps_original_retirement_running",
+        5
+      ],
+      [
+        "host/src/linux_main.rs",
+        1685,
+        "run_daemon_with",
+        8
+      ],
+      [
+        "host/src/session_supervision.rs",
+        60,
+        "reserve",
+        3
+      ]
+    ]
+  },
+  "tools": "Rust 1.100.0; cargo-llvm-cov 0.8.7 with exact current test binaries; syn 2.0.119 project complexity checker",
+  "budgets": {
+    "daemon_default_ms": 6100,
+    "daemon_maximum_ms": 121000,
+    "cli_ms": 126000,
+    "gui_direct_and_managed_ms": 131000
+  },
+  "ownership": "Original worker grace and reap budgets share one source. Daemon snapshots validated observation budget before admitting work. Expiry preserves original process-retirement obligations; unchanged pending retirement can outlast client response ceilings. Clients cover maximum allowed daemon settings even with different environments. No new retained resource, thread or borrowed view.",
+  "scope": "Private process/PID/mount namespace and fixture children only; installed sessions and Windows-specific implementation were untouched."
+}

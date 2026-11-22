@@ -464,3 +464,39 @@ async fn t1510_failure_waits_for_original_cleanup_then_returns_error() {
     );
     assert!(!crate::get_pid_path().exists());
 }
+
+#[tokio::test]
+async fn t1513_configured_stop_grace_keeps_original_retirement_running() {
+    if isolated_daemon(
+        "daemon_activity::tests::t1513_configured_stop_grace_keeps_original_retirement_running",
+    ) {
+        return;
+    }
+    // Private process: no parent environment or installed daemon is changed.
+    std::env::set_var("BLENT_SESSION_STOP_MS", "10000");
+    let cli = daemon_config().await;
+    let (factory, release) = fixture(Default::default());
+    let observed = factory.clone();
+    let stopped = factory.clone();
+    let daemon = tokio::spawn(async move {
+        crate::run_daemon_with(
+            cli,
+            factory,
+            move |_| async move {
+                until(|| observed.state.created.load(Ordering::Acquire) == 1).await;
+                Ok(())
+            },
+            &mut None,
+        )
+        .await
+    });
+    until(|| stopped.state.stopped.load(Ordering::Acquire)).await;
+    tokio::time::sleep(Duration::from_secs(6)).await;
+    let prematurely_returned = daemon.is_finished();
+    drop(release);
+    daemon.await.unwrap().unwrap();
+    assert!(
+        !prematurely_returned,
+        "T1513 fixed outer deadline discarded the configured stop grace"
+    );
+}

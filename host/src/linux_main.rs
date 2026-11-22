@@ -1696,6 +1696,7 @@ where
     let file_cfg = blent_config::storage::ConfigStore::default().load();
     let effective = effective_config(&cli, &file_cfg);
     effective.validate()?;
+    let stop_budget = config::retirement_limits::daemon_drain_budget()?;
     config::validate_encoder_for_build(capture::initial_encoder(
         &effective.encoder,
         &file_cfg.encoding_gpu,
@@ -1909,10 +1910,10 @@ where
     }
     info!("Shutting down...");
 
-    // Ask the capture pipeline to wind down, and give it a bounded moment to
-    // actually reap its children before pulling the rug out.
+    // Observe the workers through their configured grace and reap budget.
+    // Expiry leaves original native obligations with process retirement.
     let _ = shutdown_tx.send(true);
-    if tokio::time::timeout(std::time::Duration::from_secs(5), async {
+    if tokio::time::timeout(stop_budget, async {
         let _ = tokio::join!(
             primary.stop(),
             &mut adb_handle,
@@ -1922,7 +1923,10 @@ where
     .await
     .is_err()
     {
-        warn!("Capture pipelines did not stop within 5s");
+        warn!(
+            ?stop_budget,
+            "Capture pipelines still retiring after stop budget"
+        );
         adb_handle.abort();
     }
 

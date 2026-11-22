@@ -30,9 +30,26 @@ pub fn observation_budget(budget: Duration) -> io::Result<Duration> {
     }
     Ok(budget)
 }
+pub const MAX_SESSION_STOP_MS: usize = 60_000;
+pub const MAX_REAP_MS: usize = 60_000;
+pub const DAEMON_REAP_MARGIN: Duration = Duration::from_secs(1);
+pub const MAX_DAEMON_DRAIN: Duration =
+    Duration::from_millis((MAX_SESSION_STOP_MS + MAX_REAP_MS) as u64 + 1000);
+
+/// Session grace is shared by workers and their outer daemon observer.
+pub fn session_stop_budget() -> io::Result<Duration> {
+    Ok(Duration::from_millis(
+        configured("BLENT_SESSION_STOP_MS", 5000, MAX_SESSION_STOP_MS)? as u64,
+    ))
+}
+/// This observation budget never settles unknown native work.
+pub fn daemon_drain_budget() -> io::Result<Duration> {
+    Ok(session_stop_budget()? + reap_budget()? + DAEMON_REAP_MARGIN)
+}
+
 pub fn reap_budget() -> io::Result<Duration> {
     Ok(Duration::from_millis(
-        configured("BLENT_REAP_TIMEOUT_MS", 100, 60_000)? as u64,
+        configured("BLENT_REAP_TIMEOUT_MS", 100, MAX_REAP_MS)? as u64,
     ))
 }
 #[cfg(test)]
@@ -95,5 +112,41 @@ mod observation_tests {
                 (1..=60_000).contains(&milliseconds)
             );
         }
+    }
+}
+
+#[cfg(test)]
+mod shutdown_tests {
+    use super::*;
+    #[test]
+    fn t1513_shutdown_budgets_cover_boundaries_and_reject_invalid_configuration() {
+        if let Ok(expected) = std::env::var("BLENT_T1513_EXPECT") {
+            let actual = daemon_drain_budget().map(|value| value.as_millis().to_string());
+            assert_eq!(actual.unwrap_or_else(|_| "invalid".into()), expected);
+            return;
+        }
+        for (grace, reap, expected) in [
+            ("1", "1", "1002"),
+            ("5000", "100", "6100"),
+            ("60000", "60000", "121000"),
+            ("0", "100", "invalid"),
+            ("60001", "100", "invalid"),
+            ("bad", "100", "invalid"),
+            ("5000", "0", "invalid"),
+            ("5000", "60001", "invalid"),
+        ] {
+            let result = std::process::Command::new(std::env::current_exe().unwrap())
+                .args(["--exact", "retirement_limits::shutdown_tests::t1513_shutdown_budgets_cover_boundaries_and_reject_invalid_configuration"])
+                .env("BLENT_SESSION_STOP_MS", grace)
+                .env("BLENT_REAP_TIMEOUT_MS", reap)
+                .env("BLENT_T1513_EXPECT", expected)
+                .output().unwrap();
+            assert!(
+                result.status.success(),
+                "{grace}/{reap}: {}",
+                String::from_utf8_lossy(&result.stdout)
+            );
+        }
+        assert_eq!(MAX_DAEMON_DRAIN, Duration::from_millis(121000));
     }
 }

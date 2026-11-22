@@ -41,12 +41,14 @@ pub fn spawn_reaped(command: &mut std::process::Command) -> std::io::Result<Spaw
 
 pub const COMMAND_TIMEOUT: Duration = Duration::from_secs(5);
 
-/// Grace allowed by the daemon's `stop` command.
-pub const DAEMON_STOP_TIMEOUT: Duration = Duration::from_secs(10);
+/// A client may have different environment settings from its running daemon.
+/// Cover the maximum admitted session/reap budget plus command overhead.
+pub const DAEMON_STOP_TIMEOUT: Duration =
+    crate::retirement_limits::MAX_DAEMON_DRAIN.saturating_add(COMMAND_TIMEOUT);
 /// Client response budget for managed commands, independent of service cleanup.
 /// A timed-out client does not settle native work; systemd retains the service
 /// until its original cleanup completes (T1417).
-pub const MANAGED_COMMAND_TIMEOUT: Duration = Duration::from_secs(35);
+pub const MANAGED_COMMAND_TIMEOUT: Duration = DAEMON_STOP_TIMEOUT.saturating_add(COMMAND_TIMEOUT);
 
 /// Bound the caller's wait, without imposing a native retirement deadline.
 pub fn daemon_command_timeout(managed: bool) -> Duration {

@@ -103,7 +103,7 @@ fn t328_denied_signal_does_not_extend_deadline() {
 #[test]
 fn t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets() {
     assert!(daemon_command_timeout(false) > DAEMON_STOP_TIMEOUT);
-    assert_eq!(daemon_command_timeout(true), Duration::from_secs(35));
+    assert_eq!(daemon_command_timeout(true), Duration::from_secs(131));
     assert_eq!(daemon_command_timeout(true), MANAGED_COMMAND_TIMEOUT);
     for unit in [
         include_str!("../../../scripts/blent.service"),
@@ -713,4 +713,13 @@ async fn t1197_readmitted_fixture_waits_for_actual_exit_without_a_startup_deadli
         status.success(),
         "T1197 held native fixture reproduced the one-second phase assumption"
     );
+}
+
+#[test]
+fn t1513_client_wait_covers_a_daemon_with_different_configured_budgets() {
+    // The CLI can have a different environment from its running daemon.
+    let maximum_grace_and_reap = Duration::from_millis(60_000 + 60_000);
+    assert!(DAEMON_STOP_TIMEOUT > maximum_grace_and_reap);
+    assert!(daemon_command_timeout(false) > DAEMON_STOP_TIMEOUT);
+    assert!(daemon_command_timeout(true) > maximum_grace_and_reap);
 }
