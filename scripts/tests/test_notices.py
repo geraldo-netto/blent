@@ -47,7 +47,9 @@ class NoticeTest(unittest.TestCase):
                              (REPO / 'scripts/gpu-boot-order.sh').read_bytes(), 'T700: portable GPU ordering missing')
             env['BLENT_TEST_BUILD'] = 'packages'
             import appimage_fixture
+            import arch_source_fixture
             appimage_fixture.install(root)
+            arch_source_fixture.install(root)
             run('bash', 'packaging/build-packages.sh')
             self.verify_docs(root / 'dist/appimage-docs-fixture')
             self.assertEqual((root / 'dist/appimage-docs-fixture/scripts/setup-evdi.sh').read_bytes(),
@@ -59,8 +61,8 @@ class NoticeTest(unittest.TestCase):
             for name in ['blent', 'blent-gui', 'blent-audio', 'blent-usb-broker', 'blent-usb-io']:
                 shutil.copy(docs / 'bin' / name, source / 'target/release' / name)
             shutil.copy(docs / 'bin/evdi_helper', source / 'host/evdi/evdi_helper')
-            (root / 'evdi-1.15.0/library').mkdir(parents=True)
-            shutil.copy(docs / 'bin/libevdi.so.1.15.0', root / 'evdi-1.15.0/library/')
+            (root / 'evdi-2713cd41932f2bd8697953a205862a68a966b5ba/library').mkdir(parents=True)
+            shutil.copy(docs / 'bin/libevdi.so.1.15.0', root / 'evdi-2713cd41932f2bd8697953a205862a68a966b5ba/library/')
             run('bash', '-c', 'set -e; source "$PWD/packaging/arch/PKGBUILD"; srcdir="$PWD"; pkgdir="$PWD/arch"; package')
             self.verify_docs(root / 'arch/usr/share/doc/blent')
             self.assertEqual((root / 'arch/usr/share/blent/setup-evdi.sh').read_bytes(), (REPO / 'scripts/setup-evdi.sh').read_bytes(), 'T269: Arch setup missing')

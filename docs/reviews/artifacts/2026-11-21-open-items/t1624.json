@@ -1,0 +1,260 @@
+{
+  "issue": "T1624",
+  "date": "2026-11-22",
+  "regressions_before": {
+    "executed": 3,
+    "failed": 3,
+    "names": [
+      "test_t1624_generated_arch_sources_have_real_checksums",
+      "test_t1624_download_failure_cannot_publish_arch_recipe",
+      "test_t1624_evdi_archive_matches_the_release_commit_pin"
+    ]
+  },
+  "verification": {
+    "package_release_suites": {
+      "command": "PYTHONPATH=scripts/tests python3 -m unittest test_arch_build test_notices test_packages test_release",
+      "passed": 29,
+      "failed": 0
+    },
+    "real_cargo_recipe": {
+      "command": "CARGO_BUILD_JOBS=2 cargo test --offline --locked -p blent --test arch_output",
+      "passed": 2,
+      "failed": 0
+    },
+    "final_fixture_checks": {
+      "focused_checksum_partial_download_tests_passed": 2,
+      "distribution_notices_test_passed": 1
+    },
+    "checksum_oracle": "Original downloaded bytes pass sha256sum --check against generated recipe; altered bytes fail.",
+    "syntax": "bash -n on PKGBUILD, package builder and Arch CI adapter",
+    "rust_format": "python3 scripts/format-rust.py --check",
+    "whitespace": "git diff --check"
+  },
+  "coverage": {
+    "tool": "Bash DEBUG line events, SHA-256 matched original source; project tree-sitter executable-line inventory",
+    "functions": [
+      {
+        "file": "packaging/arch/PKGBUILD",
+        "function": "build",
+        "covered": 6,
+        "executable": 6,
+        "percent": 100.0
+      },
+      {
+        "file": "packaging/arch/PKGBUILD",
+        "function": "package",
+        "covered": 21,
+        "executable": 21,
+        "percent": 100.0
+      }
+    ]
+  },
+  "complexity": {
+    "tools": "project checker: Python AST 3.12, tree-sitter 0.25.2 Shell, Rust syn 2.0.119",
+    "functions": [
+      [
+        "host/tests/arch_output.rs",
+        5,
+        "write",
+        1
+      ],
+      [
+        "host/tests/arch_output.rs",
+        11,
+        "executable",
+        1
+      ],
+      [
+        "host/tests/arch_output.rs",
+        17,
+        "prepare",
+        3
+      ],
+      [
+        "host/tests/arch_output.rs",
+        93,
+        "builds_fresh_package",
+        5
+      ],
+      [
+        "host/tests/arch_output.rs",
+        160,
+        "t467_arch_source_build_pins_output_despite_environment_override",
+        1
+      ],
+      [
+        "host/tests/arch_output.rs",
+        165,
+        "t467_arch_source_build_pins_output_despite_cargo_config_override",
+        1
+      ],
+      [
+        "packaging/arch/PKGBUILD",
+        20,
+        "build",
+        1
+      ],
+      [
+        "packaging/arch/PKGBUILD",
+        32,
+        "package",
+        1
+      ],
+      [
+        "scripts/tests/test_arch_build.py",
+        12,
+        "executable",
+        1
+      ],
+      [
+        "scripts/tests/test_arch_build.py",
+        18,
+        "test_t1624_evdi_archive_matches_the_release_commit_pin",
+        1
+      ],
+      [
+        "scripts/tests/test_arch_build.py",
+        27,
+        "test_t497_arch_build_uses_one_target_directory_and_replaceable_evdi_library",
+        2
+      ],
+      [
+        "scripts/tests/test_notices.py",
+        16,
+        "test_t129_tar_appimage_and_arch_include_notices",
+        3
+      ],
+      [
+        "scripts/tests/test_notices.py",
+        72,
+        "copy_sources",
+        4
+      ],
+      [
+        "scripts/tests/test_notices.py",
+        86,
+        "verify_docs",
+        5
+      ],
+      [
+        "scripts/tests/test_notices.py",
+        20,
+        "write",
+        2
+      ],
+      [
+        "scripts/tests/test_notices.py",
+        35,
+        "run",
+        1
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        13,
+        "test_t428_portable_build_rejects_unverified_evdi_cache",
+        5
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        56,
+        "test_t101_container_and_appimage_failures_reject_stale_assets",
+        5
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        73,
+        "test_t1624_generated_arch_sources_have_real_checksums",
+        1
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        90,
+        "verify_arch_digest",
+        2
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        99,
+        "test_t1624_download_failure_cannot_publish_arch_recipe",
+        1
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        113,
+        "test_t1217_supported_outputs_need_only_current_package_tools",
+        2
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        125,
+        "test_t235_checkout_paths_are_literal_container_arguments",
+        2
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        140,
+        "test_t235_portable_build_uses_literal_checkout_path",
+        2
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        159,
+        "test_t236_release_rejects_new_glibc_in_bundled_evdi",
+        1
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        172,
+        "portable_fixture",
+        4
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        194,
+        "test_t235_make_preserves_release_notes_path",
+        1
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        209,
+        "create_fixture",
+        7
+      ],
+      [
+        "scripts/tests/test_packages.py",
+        210,
+        "write",
+        2
+      ],
+      [
+        "scripts/tests/arch_source_fixture.py",
+        4,
+        "install",
+        1
+      ]
+    ],
+    "maximum_allowed": 9
+  },
+  "evdi_archive": {
+    "url": "https://codeload.github.com/DisplayLink/evdi/tar.gz/2713cd41932f2bd8697953a205862a68a966b5ba",
+    "sha256": "f4f293c26ccce1b52a8534228c5748c8c17b5c2f3b1d4e5a6139b0a066ea098d",
+    "bytes": 102722,
+    "all_member_roots": "evdi-2713cd41932f2bd8697953a205862a68a966b5ba"
+  },
+  "ownership": {
+    "owner": "Original package-builder shell owns a mktemp directory and foreground downloader.",
+    "admission": "HTTPS-only curl including redirects; 128 MiB --max-filesize and child RLIMIT_FSIZE, including responses without Content-Length.",
+    "handoff": "Foreground downloader settles before hashing; only generated recipe and existing install script enter release tar.",
+    "settlement": "EXIT trap removes original temporary directory after success or failure; regression verifies cleanup after a partial download. No background process or new persistent allocation.",
+    "limits": "Uncatchable owner termination does not run an EXIT trap; no unconditional crash-cleanup claim."
+  },
+  "limitations": [
+    "Native Arch makepkg and installation were not executed; production build/package shell functions were executed with private fixtures and real Cargo.",
+    "No release was published; no installed binary or running Blent session was changed."
+  ],
+  "source_sha256": {
+    "packaging/arch/PKGBUILD": "eb6a06d68db85132b8fce4772a750d09cf597d33c7f6fae428c0db61fb108c36",
+    "packaging/build-packages.sh": "b1399d47f6c8f8f50595b63379ded656bd1e119ecb9af831d04d5fb982027b6c",
+    "scripts/ci/build-arch-package.sh": "57a1f098f69382c70debe23d86b0454b6fb92b372ad749c31b12bbba3f772bdb"
+  }
+}

@@ -633,6 +633,15 @@ Before that, for a new version:
    proposed tag and may not resolve until publication.
 4. Commit, tag `vX.Y.Z`, push both.
 
+`packaging/arch/PKGBUILD` is a release template. The package builder downloads
+that version's published tag over HTTPS, hashes the archive, and inserts its
+SHA-256 into the distributed recipe. The tag must therefore exist before running
+`packaging/build-packages.sh`; the source download has a 128 MiB bound. EVDI uses
+the same exact commit as the portable build and a committed archive SHA-256.
+When updating EVDI, update both pins and verify the new archive digest. Arch CI
+uses the generated recipe. Running `makepkg` directly on the unrendered template
+cannot verify its placeholder checksum.
+
 `make publish` re-checks all of it (`update-release-metadata.sh --check`,
 the Cargo/Gradle versions, the changelog entry) and stops with a message
 naming the stale file rather than publishing a page that still says the

@@ -70,6 +70,46 @@ exit 0
                         path = root / 'dist' / name
                         self.assertFalse(path.exists() and path.read_text() == 'stale')
 
+    def test_t1624_generated_arch_sources_have_real_checksums(self):
+        import hashlib
+        import tarfile
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.create_fixture(root)
+            env = dict(os.environ, PATH=f'{root}/bin:{os.environ["PATH"]}', BLENT_TEST_MODE='success')
+            result = subprocess.run(['bash', 'packaging/build-packages.sh'], cwd=root,
+                                    env=env, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            with tarfile.open(root/'dist/blent-1.2.3-PKGBUILD.tar.gz') as archive:
+                recipe = archive.extractfile('PKGBUILD').read().decode()
+            self.assertNotIn('SKIP', recipe, 'T1624: release source integrity must be checked')
+            self.assertIn(hashlib.sha256(b'T1624 release archive bytes').hexdigest(), recipe)
+            self.assertNotIn('@BLENT_SOURCE_SHA256@', recipe)
+            self.verify_arch_digest(root, recipe)
+
+    def verify_arch_digest(self, root, recipe):
+        (root/'PKGBUILD').write_text(recipe)
+        for content, accepted in [(b'T1624 release archive bytes', True), (b'altered archive', False)]:
+            (root/'source.tar.gz').write_bytes(content)
+            result = subprocess.run(['bash', '-c',
+                'source PKGBUILD; printf "%s  source.tar.gz\\n" "${sha256sums[0]}" | sha256sum --check'],
+                cwd=root, capture_output=True, text=True)
+            self.assertEqual(result.returncode == 0, accepted, result.stdout + result.stderr)
+
+    def test_t1624_download_failure_cannot_publish_arch_recipe(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.create_fixture(root)
+            scratch = root/'scratch'
+            scratch.mkdir()
+            env = dict(os.environ, PATH=f'{root}/bin:{os.environ["PATH"]}',
+                       TMPDIR=str(scratch), BLENT_TEST_MODE='archive-failure')
+            result = subprocess.run(['bash', 'packaging/build-packages.sh'], cwd=root,
+                                    env=env, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0, 'T1624: unverified source download accepted')
+            self.assertFalse((root/'dist/blent-1.2.3-PKGBUILD.tar.gz').exists())
+            self.assertEqual(list(scratch.iterdir()), [], 'T1624: failed source download retained scratch')
+
     def test_t1217_supported_outputs_need_only_current_package_tools(self):
         with tempfile.TemporaryDirectory(prefix='blent-supported-packages-') as tmp:
             root = Path(tmp)
@@ -194,7 +234,9 @@ exit 0
             write('dist/' + name, 'stale')
         write('bin/distrobox', '#!/bin/bash\nif [ "$BLENT_TEST_MODE" != container ]; then shift 3; shift 2; bash -c "$@"; fi\nexit 0\n', True)
         import appimage_fixture
+        import arch_source_fixture
         appimage_fixture.install(root)
+        arch_source_fixture.install(root)
         return assets
 
 

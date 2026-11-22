@@ -70,7 +70,11 @@ fn prepare(root: &Path, version: &str) -> std::path::PathBuf {
         "scripts/copy-distribution-docs.sh",
         "#!/bin/sh\nmkdir -p -- \"$1\"\n",
     );
-    write(root, "evdi-1.15.0/library/libevdi.so.1.15.0", "fixture");
+    write(
+        root,
+        "evdi-2713cd41932f2bd8697953a205862a68a966b5ba/library/libevdi.so.1.15.0",
+        "fixture",
+    );
     executable(root, "bin/make", "#!/bin/sh\ncase \"$*\" in *host/accessory*) mkdir -p target/release; printf '#!/bin/sh\\necho fresh-blent-usb-io\\n' > target/release/blent-usb-io;; esac\nexit 0\n");
     executable(root, "bin/gcc", "#!/bin/sh\nexit 0\n");
     let output = Command::new("cargo")

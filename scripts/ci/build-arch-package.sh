@@ -7,14 +7,15 @@ pacman -Syu --noconfirm --needed base-devel
 useradd --create-home packager
 BUILD=$(mktemp -d)
 chmod 755 "$BUILD"
-cp /source/packaging/arch/{PKGBUILD,blent.install} "$BUILD/"
+tar -xf "/artifacts/blent-$VERSION-PKGBUILD.tar.gz" -C "$BUILD"
+EVDI_COMMIT=$(sed -n 's/^_evdi=//p' "$BUILD/PKGBUILD")
 mkdir -p "$BUILD/src"
 tar -xf "/artifacts/blent-$VERSION-linux-x86_64.tar.gz" -C "$BUILD/src"
 D="$BUILD/src/blent-$VERSION"
-mkdir -p "$D/target/release" "$D/host/evdi" "$BUILD/src/evdi-1.15.0/library"
+mkdir -p "$D/target/release" "$D/host/evdi" "$BUILD/src/evdi-$EVDI_COMMIT/library"
 cp "$D/bin/blent" "$D/bin/blent-gui" "$D/bin/blent-audio" "$D/bin/blent-usb-broker" "$D/bin/blent-usb-io" "$D/target/release/"
 cp "$D/bin/evdi_helper" "$D/host/evdi/"
-cp "$D/bin/libevdi.so.1.15.0" "$BUILD/src/evdi-1.15.0/library/"
+cp "$D/bin/libevdi.so.1.15.0" "$BUILD/src/evdi-$EVDI_COMMIT/library/"
 # Include the original distribution-docs manifest and copier for package().
 cp -a /source/scripts /source/packaging "$D/"
 chown -R packager:packager "$BUILD"

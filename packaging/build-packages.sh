@@ -32,7 +32,16 @@ rm -f dist/.packages-ok
 # pkgver is rewritten like the other package versions so the archive can never
 # point at an older tag than the release it ships with.
 ARCH_TMP=$(mktemp -d); trap 'rm -rf "$ARCH_TMP"' EXIT
-sed "s/^pkgver=.*/pkgver=$VERSION/" packaging/arch/PKGBUILD > "$ARCH_TMP/PKGBUILD"
+# The published tag must exist first. Bound temporary source storage to 128 MiB;
+# the EXIT trap owns cleanup after both successful and failed downloads.
+( ulimit -f 131072
+  exec curl --fail --location --proto '=https' --proto-redir '=https' \
+    --max-filesize 134217728 --output "$ARCH_TMP/source.tar.gz" \
+    "https://github.com/geraldo-netto/blent/archive/refs/tags/v$VERSION.tar.gz"
+)
+SOURCE_SHA256=$(sha256sum "$ARCH_TMP/source.tar.gz" | cut -d ' ' -f 1)
+sed -e "s/^pkgver=.*/pkgver=$VERSION/" -e "s/@BLENT_SOURCE_SHA256@/$SOURCE_SHA256/" \
+  packaging/arch/PKGBUILD > "$ARCH_TMP/PKGBUILD"
 cp packaging/arch/blent.install "$ARCH_TMP/"
 tar -C "$ARCH_TMP" -czf "dist/blent-$VERSION-PKGBUILD.tar.gz" PKGBUILD blent.install
 

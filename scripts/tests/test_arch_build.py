@@ -15,6 +15,15 @@ def executable(path, body):
 
 
 class ArchBuildTest(unittest.TestCase):
+    def test_t1624_evdi_archive_matches_the_release_commit_pin(self):
+        recipe = (REPO/'packaging/arch/PKGBUILD').read_text()
+        release = (REPO/'scripts/build-release.sh').read_text()
+        commit = re.search(r'^EVDI_COMMIT="([0-9a-f]{40})"$', release, re.M)[1]
+        self.assertIn(f'_evdi={commit}', recipe)
+        self.assertIn('https://codeload.github.com/DisplayLink/evdi/tar.gz/$_evdi', recipe)
+        self.assertRegex(recipe, r"sha256sums=\('@BLENT_SOURCE_SHA256@' '[0-9a-f]{64}'\)")
+        self.assertNotIn('evdi-${_evdi#v}', recipe)
+
     def test_t497_arch_build_uses_one_target_directory_and_replaceable_evdi_library(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -23,7 +32,7 @@ class ArchBuildTest(unittest.TestCase):
             # T661: GitHub archives use the renamed repository as their root.
             source = root/('blent-' + version)
             (source/'host/evdi').mkdir(parents=True)
-            (root/'evdi-1.15.0/library').mkdir(parents=True)
+            (root/'evdi-2713cd41932f2bd8697953a205862a68a966b5ba/library').mkdir(parents=True)
             bin = root/'bin'
             bin.mkdir()
             for name in ['cargo', 'make', 'gcc']:
@@ -38,7 +47,7 @@ class ArchBuildTest(unittest.TestCase):
             self.assertIn('--target-dir target --manifest-path host/Cargo.toml', commands[0])
             self.assertIn('--target-dir target --manifest-path gui/Cargo.toml', commands[1])
             self.assertIn('OUTPUT=../../target/release/blent-usb-io', commands[2])
-            self.assertIn('evdi-1.15.0/library', commands[3])
+            self.assertIn('evdi-2713cd41932f2bd8697953a205862a68a966b5ba/library', commands[3])
             self.assertIn('-levdi -lpthread -Wl,-rpath,$ORIGIN', commands[4])
             self.assertIn('host/evdi/frame_exchange.c host/evdi/fifo_writer.c', commands[4])
             self.assertIn('host/evdi/raw_ring.c', commands[4], 'T418: shared capture must link in Arch packages')

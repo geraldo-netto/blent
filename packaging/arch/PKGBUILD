@@ -11,10 +11,11 @@ depends=('evdi-dkms' 'ffmpeg' 'android-tools' 'bash' 'coreutils' 'libusb' 'libx1
 optdepends=('pipewire: microphone and speaker sharing')
 makedepends=('pipewire' 'clang' 'cargo' 'gcc' 'pkgconf' 'libdrm')
 install=blent.install
-_evdi=v1.15.0
+_evdi=2713cd41932f2bd8697953a205862a68a966b5ba
 source=("$pkgname-$pkgver.tar.gz::https://github.com/geraldo-netto/blent/archive/refs/tags/v$pkgver.tar.gz"
-        "evdi-$_evdi.tar.gz::https://github.com/DisplayLink/evdi/archive/refs/tags/$_evdi.tar.gz")
-sha256sums=('SKIP' 'SKIP')
+        "evdi-$_evdi.tar.gz::https://codeload.github.com/DisplayLink/evdi/tar.gz/$_evdi")
+# Release template: build-packages.sh hashes the published Blent tag archive.
+sha256sums=('@BLENT_SOURCE_SHA256@' 'f4f293c26ccce1b52a8534228c5748c8c17b5c2f3b1d4e5a6139b0a066ea098d')
 
 build() {
   cd "blent-$pkgver"
@@ -23,9 +24,9 @@ build() {
   make --always-make -C host/accessory OUTPUT=../../target/release/blent-usb-io
   # libevdi built from upstream and shipped next to the helper (rpath $ORIGIN),
   # so the only thing the system must provide is the evdi kernel module.
-  make -C "$srcdir/evdi-${_evdi#v}/library"
+  make -C "$srcdir/evdi-$_evdi/library"
   gcc -O3 -Ihost/evdi -o host/evdi/evdi_helper host/evdi/evdi_helper.c host/evdi/conversion.c host/evdi/frame_exchange.c host/evdi/fifo_writer.c host/evdi/capture.c host/evdi/capture_activity.c host/evdi/capture_control.c host/evdi/cursor_overlay.c host/evdi/raw_ring.c host/evdi/writer.c host/evdi/idle_control.c \
-      -L"$srcdir/evdi-${_evdi#v}/library" -levdi -lpthread -Wl,-rpath,'$ORIGIN'
+      -L"$srcdir/evdi-$_evdi/library" -levdi -lpthread -Wl,-rpath,'$ORIGIN'
 }
 
 package() {
@@ -38,7 +39,7 @@ package() {
   install -Dm755 target/release/blent-usb-broker "$pkgdir/usr/bin/blent-usb-broker"
   install -Dm755 target/release/blent-usb-io "$pkgdir/usr/bin/blent-usb-io"
   install -Dm755 host/evdi/evdi_helper      "$pkgdir/usr/lib/blent/evdi_helper"
-  install -Dm755 "$srcdir/evdi-${_evdi#v}/library/libevdi.so.1.15.0" "$pkgdir/usr/lib/blent/libevdi.so.1.15.0"
+  install -Dm755 "$srcdir/evdi-$_evdi/library/libevdi.so.1.15.0" "$pkgdir/usr/lib/blent/libevdi.so.1.15.0"
   ln -sf libevdi.so.1.15.0 "$pkgdir/usr/lib/blent/libevdi.so.1"
   install -Dm644 scripts/blent.desktop    "$pkgdir/usr/share/applications/blent.desktop"
   install -Dm644 packaging/icons/blent.svg     "$pkgdir/usr/share/icons/hicolor/scalable/apps/blent.svg"
