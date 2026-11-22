@@ -61,6 +61,24 @@ async fn t853_server_local_client_retirement_preserves_capacity_until_task_exit(
     let (socket, _) = bounded(fixture.server.listener.accept()).await.unwrap();
     fixture.server.accept(socket).unwrap();
     assert_eq!(fixture.server.clients.len(), 1);
+    second
+        .send(
+            &Message::Control {
+                request: 1,
+                command: Command::Inspect,
+            },
+            &[],
+        )
+        .await
+        .unwrap();
+    bounded(fixture.server.rejector.next()).await;
+    assert!(matches!(
+        bounded(second.receive()).await.unwrap().message,
+        Message::Rejected {
+            request: 1,
+            reason: Rejection::Busy
+        }
+    ));
     assert!(bounded(second.receive()).await.is_err());
     first.close();
     let input = bounded(next(&mut fixture.server.clients, &mut fixture.server.links)).await;

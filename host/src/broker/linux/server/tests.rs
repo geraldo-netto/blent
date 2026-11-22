@@ -257,3 +257,5 @@ async fn t1336_inventory_names_reach_control_snapshot() {
 }
 
 mod inventory_view;
+
+mod capacity;

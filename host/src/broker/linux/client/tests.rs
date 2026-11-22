@@ -279,3 +279,57 @@ async fn t1638_dead_starter_without_runtime_reports_original_status() {
     assert!(result.err().unwrap().to_string().contains("exit status: 1"));
     assert!(connector.check_starter(None).is_ok());
 }
+
+#[test]
+fn t1600_launch_passes_validated_capacity_settings() {
+    if crate::test_logging::isolated(
+        "broker::linux::client::tests::t1600_launch_passes_validated_capacity_settings",
+    ) {
+        return;
+    }
+    for name in [
+        "BLENT_USB_CLIENTS",
+        "BLENT_USB_LINKS",
+        "BLENT_USB_REGISTRATIONS",
+    ] {
+        std::env::remove_var(name);
+    }
+    let launcher = launch(std::path::Path::new("/private"), "/bin/false".into());
+    let args: Vec<_> = launcher
+        .command()
+        .unwrap()
+        .get_args()
+        .map(|arg| arg.to_owned())
+        .collect();
+    assert!(args.ends_with(
+        &["--clients", "128", "--links", "4", "--registrations", "64"]
+            .map(std::ffi::OsString::from)
+    ));
+    for (name, max) in [
+        ("BLENT_USB_CLIENTS", 1024),
+        ("BLENT_USB_LINKS", 64),
+        ("BLENT_USB_REGISTRATIONS", 1024),
+    ] {
+        capacity_values(&launcher, name, max);
+    }
+}
+
+fn capacity_values(launcher: &Launch, name: &str, max: usize) {
+    for invalid in [
+        "0".to_owned(),
+        "-1".into(),
+        "invalid".into(),
+        (max + 1).to_string(),
+    ] {
+        std::env::set_var(name, invalid);
+        assert!(launcher.command().is_err());
+    }
+    for value in [1, max] {
+        std::env::set_var(name, value.to_string());
+        let command = launcher.command().unwrap();
+        assert!(command
+            .get_args()
+            .any(|arg| arg == value.to_string().as_str()));
+    }
+    std::env::remove_var(name);
+}

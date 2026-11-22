@@ -15,3 +15,5 @@ pub mod authority_worker;
 pub mod bridges;
 pub mod control;
 pub mod link;
+
+pub mod capacity;

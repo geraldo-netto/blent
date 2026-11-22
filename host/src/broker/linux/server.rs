@@ -37,6 +37,7 @@ pub(super) mod authority;
 mod commands;
 mod events;
 mod inspection;
+mod overload;
 mod routes;
 mod settings;
 mod shutdown;
@@ -77,6 +78,8 @@ pub struct Server {
     routes: BTreeMap<u64, Registration>,
     claims: RouteClaims,
     link_pool: Pool,
+    client_pool: Pool,
+    rejector: overload::Rejector,
     inventory: Option<Inventory>,
     inventory_observed: bool,
     next_inventory: Instant,
@@ -117,6 +120,7 @@ impl Server {
         )?;
         let claims = RouteClaims::new(settings.registrations)?;
         let link_pool = Pool::new(settings.control.links)?;
+        let client_pool = Pool::new(settings.control.clients)?;
         Ok(Self {
             settings,
             listener,
@@ -126,6 +130,8 @@ impl Server {
             controller,
             claims,
             link_pool,
+            client_pool,
+            rejector: Default::default(),
             clients: BTreeMap::new(),
             links: BTreeMap::new(),
             routes: BTreeMap::new(),
@@ -143,7 +149,8 @@ impl Server {
         clock.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
         loop {
             tokio::select! {
-                accepted = self.listener.accept(), if Instant::now() >= self.accept_after => self.accepted(accepted)?,
+                accepted = self.listener.accept(), if !self.rejector.active() && Instant::now() >= self.accept_after => self.accepted(accepted)?,
+                _ = self.rejector.next() => (),
                 input = next(&mut self.clients, &mut self.links) => self.input(input)?,
                 reply = self.authority.next() => self.authority_event(reply?)?,
                 inventory = inventory_next(&mut self.inventory) => self.inventory_result(inventory)?,
@@ -169,9 +176,20 @@ impl Server {
     }
     fn accept(&mut self, socket: super::async_io::AsyncSocket) -> Result<()> {
         let Ok(id) = self.controller.admit_client() else {
+            self.rejector
+                .start(socket, self.settings.session.io_timeout);
             return Ok(());
         };
-        match Peer::start(socket, self.settings.session.io_timeout) {
+        let admission = match crate::process_retirement::PROCESS.reserve(&self.client_pool) {
+            Ok(admission) => admission,
+            Err(_) => {
+                self.controller.drop_client(id);
+                self.rejector
+                    .start(socket, self.settings.session.io_timeout);
+                return Ok(());
+            }
+        };
+        match Peer::start(admission, socket, self.settings.session.io_timeout) {
             Ok(peer) => {
                 self.clients.insert(
                     id,

@@ -2,7 +2,10 @@
 use super::{async_io::AsyncSocket, Received};
 use crate::owned_task::Task;
 use anyhow::{ensure, Context, Result};
-use blent_config::{connection::registration::Message, retirement::Completion};
+use blent_config::{
+    connection::registration::Message,
+    retirement::{Admission, Completion},
+};
 use std::{sync::Arc, time::Duration};
 use tokio::sync::mpsc;
 
@@ -14,7 +17,11 @@ pub struct Peer {
     finished: bool,
 }
 impl Peer {
-    pub fn start(socket: AsyncSocket, timeout: Duration) -> Result<Self> {
+    pub(crate) fn start(
+        admission: Admission,
+        socket: AsyncSocket,
+        timeout: Duration,
+    ) -> Result<Self> {
         ensure!(
             !timeout.is_zero() && timeout <= Duration::from_secs(60),
             "invalid local client deadline"
@@ -22,10 +29,10 @@ impl Peer {
         let (replies, outbound) = mpsc::channel(2);
         let (inbound, requests) = mpsc::channel(2);
         let socket = Arc::new(socket);
-        let task = Task::spawn(async move {
+        let task = Task::spawn_reserved(admission, async move {
             tokio::try_join!(read(&socket, inbound), write(&socket, outbound, timeout))?;
             Ok(())
-        })?;
+        });
         Ok(Self {
             replies,
             requests,

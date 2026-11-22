@@ -1,0 +1,1186 @@
+{
+  "issue": "T1600",
+  "date": "2026-11-22",
+  "regressions_before": {
+    "failed": 3,
+    "passed": 0,
+    "additional_strengthened_admission_case": "configured 68 clients admitted only64"
+  },
+  "verification": {
+    "broker_tests_passed": 287,
+    "new_t1600_tests_passed": 7
+  },
+  "coverage": [
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "spawn",
+      "line": 29,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "spawn_reserved",
+      "line": 34,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "default",
+      "line": 31,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "validate",
+      "line": 42,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "command",
+      "line": 27,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "spawn",
+      "line": 42,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "capacity_arguments",
+      "line": 57,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "start",
+      "line": 20,
+      "language": "rust",
+      "covered": 21,
+      "total": 22,
+      "percent": 95.45454545454545,
+      "passes": true,
+      "missing": [
+        34
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "open_in",
+      "line": 97,
+      "language": "rust",
+      "covered": 47,
+      "total": 48,
+      "percent": 97.91666666666667,
+      "passes": true,
+      "missing": [
+        113
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "run",
+      "line": 147,
+      "language": "rust",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        162
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "accept",
+      "line": 177,
+      "language": "rust",
+      "covered": 22,
+      "total": 23,
+      "percent": 95.65217391304348,
+      "passes": true,
+      "missing": [
+        204
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/settings.rs",
+      "name": "new",
+      "line": 20,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/shutdown.rs",
+      "name": "request_stop",
+      "line": 24,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/overload.rs",
+      "name": "active",
+      "line": 11,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/overload.rs",
+      "name": "start",
+      "line": 14,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/overload.rs",
+      "name": "next",
+      "line": 20,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/overload.rs",
+      "name": "stop",
+      "line": 27,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/overload.rs",
+      "name": "reject",
+      "line": 33,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "host/src/broker/control.rs",
+      31,
+      "default",
+      1
+    ],
+    [
+      "host/src/broker/control.rs",
+      42,
+      "validate",
+      1
+    ],
+    [
+      "host/src/broker/control.rs",
+      112,
+      "new",
+      2
+    ],
+    [
+      "host/src/broker/control.rs",
+      136,
+      "fresh",
+      1
+    ],
+    [
+      "host/src/broker/control.rs",
+      142,
+      "changed",
+      1
+    ],
+    [
+      "host/src/broker/control.rs",
+      147,
+      "editable",
+      1
+    ],
+    [
+      "host/src/broker/control.rs",
+      151,
+      "admitting",
+      1
+    ],
+    [
+      "host/src/broker/control.rs",
+      158,
+      "admit_client",
+      1
+    ],
+    [
+      "host/src/broker/control.rs",
+      169,
+      "drop_client",
+      1
+    ],
+    [
+      "host/src/broker/control.rs",
+      172,
+      "snapshot",
+      5
+    ],
+    [
+      "host/src/broker/control.rs",
+      210,
+      "pairing",
+      3
+    ],
+    [
+      "host/src/broker/control.rs",
+      216,
+      "lease",
+      2
+    ],
+    [
+      "host/src/broker/control.rs",
+      223,
+      "closing",
+      2
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      18,
+      "validate",
+      1
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      27,
+      "command",
+      1
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      42,
+      "spawn",
+      1
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      48,
+      "connect",
+      1
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      57,
+      "capacity_arguments",
+      3
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      89,
+      "new",
+      1
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      100,
+      "connect",
+      5
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      114,
+      "start",
+      2
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      118,
+      "start_with",
+      2
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      130,
+      "wait",
+      6
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      146,
+      "check_starter",
+      1
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      162,
+      "missing",
+      1
+    ],
+    [
+      "host/src/broker/linux/client.rs",
+      168,
+      "busy",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      6,
+      "root",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      12,
+      "launch",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      20,
+      "quote",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      23,
+      "executable",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      35,
+      "t853_client_process_fixture",
+      5
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      68,
+      "exchange",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      84,
+      "t853_competing_clients_start_one_elected_owner_and_exchange",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      100,
+      "t853_existing_owner_needs_no_executable_and_invalid_inputs_fail",
+      3
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      119,
+      "t853_unavailable_or_busy_owner_has_one_absolute_startup_deadline",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      136,
+      "t853_invalid_socket_path_fails_without_losing_starter_capacity",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      145,
+      "t853_timed_out_native_starter_retains_capacity_until_actual_return",
+      2
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      170,
+      "t1473_shared_broker_launch_leaves_callers_cgroup",
+      4
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      206,
+      "t1638_failed_broker_reports_exit_before_startup_deadline",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      230,
+      "t1638_exited_starter_waits_for_the_other_elected_owner",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      265,
+      "t1638_dead_starter_without_runtime_reports_original_status",
+      1
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      284,
+      "t1600_launch_passes_validated_capacity_settings",
+      5
+    ],
+    [
+      "host/src/broker/linux/client/tests.rs",
+      317,
+      "capacity_values",
+      3
+    ],
+    [
+      "host/src/broker/linux/entry.rs",
+      58,
+      "settings",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry.rs",
+      84,
+      "run",
+      5
+    ],
+    [
+      "host/src/broker/linux/entry.rs",
+      99,
+      "serve",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry.rs",
+      109,
+      "serve_opened",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry.rs",
+      121,
+      "stop_signal",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      4,
+      "bounded",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      9,
+      "arguments",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      23,
+      "settings",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      34,
+      "t853_cli_defaults_and_overrides_reach_capacity_policy",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      101,
+      "t853_cli_invalid_arguments_fail_without_starting_native_work",
+      2
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      117,
+      "t853_entry_stop_and_failed_stop_retire_the_owner_socket",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      136,
+      "t1101_cli_exposes_cleanup_observation_budget",
+      2
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      150,
+      "cleanup_arguments",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      164,
+      "t1101_cli_cleanup_mapping_and_rejection_precede_native_effects",
+      4
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      200,
+      "t1103_cli_exposes_resource_admission_timeout",
+      2
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      214,
+      "resource_arguments",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      220,
+      "t1103_resource_timeout_mapping_and_validation_precede_native_effects",
+      4
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      256,
+      "t1105_cli_exposes_tls_setup_deadline",
+      2
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      267,
+      "tls_arguments",
+      1
+    ],
+    [
+      "host/src/broker/linux/entry/tests.rs",
+      273,
+      "t1105_tls_cli_mapping_and_rejection_precede_native_effects",
+      4
+    ],
+    [
+      "host/src/broker/linux/peer.rs",
+      20,
+      "start",
+      1
+    ],
+    [
+      "host/src/broker/linux/peer.rs",
+      43,
+      "reply",
+      2
+    ],
+    [
+      "host/src/broker/linux/peer.rs",
+      52,
+      "stop",
+      1
+    ],
+    [
+      "host/src/broker/linux/peer.rs",
+      55,
+      "completion",
+      1
+    ],
+    [
+      "host/src/broker/linux/peer.rs",
+      58,
+      "next",
+      1
+    ],
+    [
+      "host/src/broker/linux/peer.rs",
+      71,
+      "read",
+      2
+    ],
+    [
+      "host/src/broker/linux/peer.rs",
+      80,
+      "write",
+      2
+    ],
+    [
+      "host/src/broker/linux/peer.rs",
+      90,
+      "send_batch",
+      2
+    ],
+    [
+      "host/src/broker/linux/peer/tests.rs",
+      6,
+      "bounded",
+      1
+    ],
+    [
+      "host/src/broker/linux/peer/tests.rs",
+      11,
+      "pair",
+      1
+    ],
+    [
+      "host/src/broker/linux/peer/tests.rs",
+      24,
+      "message",
+      1
+    ],
+    [
+      "host/src/broker/linux/peer/tests.rs",
+      30,
+      "retired",
+      2
+    ],
+    [
+      "host/src/broker/linux/peer/tests.rs",
+      39,
+      "t853_local_client_duplex_batches_and_actual_retirement",
+      1
+    ],
+    [
+      "host/src/broker/linux/peer/tests.rs",
+      69,
+      "t853_reply_capacity_and_timeout_bounds_reject_invalid_values",
+      2
+    ],
+    [
+      "host/src/broker/linux/peer/tests.rs",
+      87,
+      "t853_stalled_client_writer_does_not_block_sibling",
+      1
+    ],
+    [
+      "host/src/broker/linux/peer/tests.rs",
+      103,
+      "t853_closed_dispatch_lanes_retire_native_socket",
+      1
+    ],
+    [
+      "host/src/broker/linux/peer/tests.rs",
+      120,
+      "admission",
+      1
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      92,
+      "open",
+      1
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      97,
+      "open_in",
+      4
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      147,
+      "run",
+      2
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      163,
+      "accepted",
+      3
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      177,
+      "accept",
+      5
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      209,
+      "input",
+      6
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      222,
+      "link_failed",
+      1
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      237,
+      "reply",
+      4
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      247,
+      "reject",
+      1
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      250,
+      "snapshot",
+      2
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      260,
+      "close_client",
+      5
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      278,
+      "close_requested",
+      4
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      289,
+      "tick",
+      1
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      297,
+      "collect_clients",
+      4
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      306,
+      "collect_links",
+      4
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      326,
+      "next",
+      6
+    ],
+    [
+      "host/src/broker/linux/server.rs",
+      347,
+      "inventory_next",
+      3
+    ],
+    [
+      "host/src/broker/linux/server/settings.rs",
+      20,
+      "new",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/settings.rs",
+      36,
+      "validate",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/settings.rs",
+      65,
+      "link",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/settings.rs",
+      83,
+      "directories",
+      2
+    ],
+    [
+      "host/src/broker/linux/server/shutdown.rs",
+      4,
+      "shutdown_configured",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/shutdown.rs",
+      10,
+      "shutdown",
+      2
+    ],
+    [
+      "host/src/broker/linux/server/shutdown.rs",
+      24,
+      "request_stop",
+      3
+    ],
+    [
+      "host/src/broker/linux/server/shutdown.rs",
+      36,
+      "quiet",
+      6
+    ],
+    [
+      "host/src/broker/linux/server/shutdown.rs",
+      44,
+      "drain",
+      3
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      13,
+      "bounded",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      18,
+      "peer",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      21,
+      "candidate",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      38,
+      "new",
+      2
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      41,
+      "configured",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      61,
+      "client",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      74,
+      "finish",
+      2
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      97,
+      "lease",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      111,
+      "registration",
+      2
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      135,
+      "fill_replies",
+      2
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      145,
+      "response",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      148,
+      "control",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      161,
+      "t853_retired_route_reply_failure_still_cancels_every_client_sibling",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      181,
+      "t853_failed_inventory_reports_unavailable_until_successful_refresh",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests.rs",
+      237,
+      "t1336_inventory_names_reach_control_snapshot",
+      4
+    ],
+    [
+      "host/src/broker/linux/server/tests/policy.rs",
+      6,
+      "t853_server_settings_validate_all_capacity_and_path_boundaries",
+      2
+    ],
+    [
+      "host/src/broker/linux/server/tests/policy.rs",
+      29,
+      "invalidate",
+      7
+    ],
+    [
+      "host/src/broker/linux/server/tests/policy.rs",
+      39,
+      "invalid_capacity",
+      6
+    ],
+    [
+      "host/src/broker/linux/server/tests/policy.rs",
+      50,
+      "t853_server_local_client_retirement_preserves_capacity_until_task_exit",
+      4
+    ],
+    [
+      "host/src/broker/linux/server/tests/policy.rs",
+      108,
+      "t853_server_rejects_client_replies_unknown_routes_and_unproven_registration",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests/policy.rs",
+      170,
+      "t853_server_route_ownership_stale_callbacks_and_closing_are_exact",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests/policy.rs",
+      224,
+      "t853_server_authority_revokes_acknowledge_only_completed_storage_job",
+      1
+    ],
+    [
+      "host/src/owned_task.rs",
+      21,
+      "owned",
+      1
+    ],
+    [
+      "host/src/owned_task.rs",
+      29,
+      "spawn",
+      1
+    ],
+    [
+      "host/src/owned_task.rs",
+      34,
+      "spawn_reserved",
+      1
+    ],
+    [
+      "host/src/owned_task.rs",
+      40,
+      "spawn_blocking",
+      1
+    ],
+    [
+      "host/src/owned_task.rs",
+      44,
+      "abort",
+      2
+    ],
+    [
+      "host/src/owned_task.rs",
+      51,
+      "is_finished",
+      3
+    ],
+    [
+      "host/src/owned_task.rs",
+      59,
+      "is_joined",
+      1
+    ],
+    [
+      "host/src/owned_task.rs",
+      62,
+      "completion",
+      1
+    ],
+    [
+      "host/src/owned_task.rs",
+      66,
+      "keep_alive",
+      1
+    ],
+    [
+      "host/src/owned_task.rs",
+      69,
+      "retire_leases",
+      3
+    ],
+    [
+      "host/src/owned_task.rs",
+      83,
+      "poll",
+      2
+    ],
+    [
+      "host/src/owned_task.rs",
+      93,
+      "drop",
+      2
+    ],
+    [
+      "host/src/owned_task.rs",
+      110,
+      "joined",
+      2
+    ],
+    [
+      "host/src/owned_task.rs",
+      126,
+      "poll_complete",
+      5
+    ],
+    [
+      "host/src/owned_task.rs",
+      144,
+      "report_outcome",
+      3
+    ],
+    [
+      "host/src/owned_task.rs",
+      162,
+      "t814_owned_task_keeps_native_capacity_until_real_completion",
+      3
+    ],
+    [
+      "host/src/owned_task.rs",
+      191,
+      "t814_owned_task_observes_success_errors_and_panics",
+      6
+    ],
+    [
+      "host/src/broker/linux/server/overload.rs",
+      11,
+      "active",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/overload.rs",
+      14,
+      "start",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/overload.rs",
+      20,
+      "next",
+      3
+    ],
+    [
+      "host/src/broker/linux/server/overload.rs",
+      27,
+      "stop",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/overload.rs",
+      33,
+      "reject",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests/capacity.rs",
+      5,
+      "t1600_excess_client_receives_request_bound_busy_without_disrupting_owner",
+      2
+    ],
+    [
+      "host/src/broker/linux/server/tests/capacity.rs",
+      60,
+      "t1600_default_clients_cover_registration_capacity_and_control_headroom",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests/capacity.rs",
+      66,
+      "t1600_registration_headroom_is_funded_by_actual_client_admission",
+      4
+    ],
+    [
+      "host/src/broker/linux/server/tests/capacity.rs",
+      92,
+      "excess",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests/capacity.rs",
+      103,
+      "t1600_silent_excess_peer_cannot_stall_admitted_control_or_shutdown",
+      2
+    ],
+    [
+      "host/src/broker/linux/server/tests/capacity.rs",
+      146,
+      "registration_factory",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests/capacity.rs",
+      162,
+      "t1600_busy_settles_real_registration_and_reuses_original_slot",
+      6
+    ],
+    [
+      "host/src/broker/linux/server/tests/capacity.rs",
+      217,
+      "t1600_pending_client_retirement_retains_admission_and_rejects_retry",
+      2
+    ]
+  ],
+  "tools": {
+    "rustc": "1.100.0",
+    "rust_parser": "syn 2.0.119",
+    "coverage": "cargo-llvm-cov; LLVM source coverage exported from exact current test binary",
+    "complexity": "project scripts/complexity/check.py, language-aware cyclomatic count"
+  },
+  "ownership": {
+    "owner": "Server owns bounded client Pool, Controller IDs, exact Peer completion and one Rejector future",
+    "admission": "validated1..1024 client slots;128 default,64 registrations,4 links; clients count retirement until original task destruction/join",
+    "rejection": "one owned socket and one bounded decoded packet; received descriptor owners drop before request-bound Busy; no route admitted",
+    "cancellation": "dropping rejection future closes original AsyncSocket; no detached syscall/callback; client Task retains original admission in reaper until actual join",
+    "conservation": "occupied client admission plus free slots equals configured pool capacity; reuse after exact completion; registration factory capacity1 reused three times and both original listener addresses rebound after each exact Busy/native retirement",
+    "cleanup_assumptions": "eventual runtime/reaper scheduling and native operation return; deadlines do not prove unknown remote retirement"
+  },
+  "scope": "private IPC/TLS/helper fixtures only; no hardware transfers, large-machine performance campaign or installed session changes"
+}

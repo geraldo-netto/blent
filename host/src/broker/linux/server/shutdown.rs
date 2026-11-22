@@ -22,6 +22,7 @@ impl Server {
         Ok(())
     }
     fn request_stop(&mut self) -> Result<()> {
+        self.rejector.stop();
         let clients: Vec<_> = self.clients.keys().copied().collect();
         for client in clients {
             self.close_client(client)?;

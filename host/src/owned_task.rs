@@ -28,7 +28,14 @@ impl Task {
     }
     pub fn spawn(work: impl Future<Output = Result<()>> + Send + 'static) -> io::Result<Self> {
         let admission = crate::work_admission::reserve()?;
-        Ok(Self::owned(admission, tokio::spawn(work)))
+        Ok(Self::spawn_reserved(admission, work))
+    }
+    /// Consume the original caller-funded admission until task destruction and join.
+    pub(crate) fn spawn_reserved(
+        admission: Admission,
+        work: impl Future<Output = Result<()>> + Send + 'static,
+    ) -> Self {
+        Self::owned(admission, tokio::spawn(work))
     }
     pub fn spawn_blocking(work: impl FnOnce() -> Result<()> + Send + 'static) -> io::Result<Self> {
         let admission = crate::work_admission::reserve()?;

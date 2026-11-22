@@ -148,6 +148,21 @@ that connection owns the physical device, including during discovery refreshes.
 It becomes available only after the connection and its native worker retire.
 Use the connection’s **Disconnect** button to stop it.
 
+The broker defaults to 128 local clients, 4 tablet links and 64 registrations.
+Each registration uses one client; media bridges use separate loopback streams.
+Clients awaiting original task retirement still consume capacity. At capacity,
+one bounded exchange returns **Busy** for the request before any route is admitted;
+other excess connections wait in the socket backlog while existing clients remain
+served. Missing replies never prove remote resource cleanup.
+
+For a newly launched on-demand broker, set `BLENT_USB_CLIENTS` (1–1024),
+`BLENT_USB_LINKS` (1–64), or `BLENT_USB_REGISTRATIONS` (1–1024). A manually
+started broker offers `--clients`, `--links` and `--registrations` with the same
+defaults and ranges. These settings apply at broker startup. Higher limits permit
+more retained client tasks, bounded message queues, links and route owners; lower
+limits reduce that capacity. Leave client headroom above expected registrations
+for connection controls. Changing limits does not resize a running broker.
+
 A failed USB scan is shown as **USB inventory unavailable**. Existing links,
 pairing choices and saved tablets remain visible; Disconnect, pairing decisions
 and Forget remain available. New connections require successful discovery.

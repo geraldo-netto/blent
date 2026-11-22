@@ -24,7 +24,7 @@ impl Launch {
         );
         Ok(())
     }
-    fn spawn(&self) -> Result<blent_config::commands::Spawned> {
+    fn command(&self) -> Result<std::process::Command> {
         let mut command = crate::independent_process::command(self.executable.as_os_str());
         command
             .args(["--runtime"])
@@ -36,6 +36,11 @@ impl Launch {
             .stdin(Stdio::null())
             .stdout(Stdio::null())
             .stderr(Stdio::inherit());
+        capacity_arguments(&mut command)?;
+        Ok(command)
+    }
+    fn spawn(&self) -> Result<blent_config::commands::Spawned> {
+        let mut command = self.command()?;
         // The elected broker survives the requesting client's exit. Its own
         // lifecycle, not this startup request, governs attached resources.
         blent_config::commands::spawn_reaped(&mut command).context("start local USB broker")
@@ -46,6 +51,31 @@ impl Launch {
             unsafe { libc::geteuid() },
         )?)
     }
+}
+
+/// Copy validated capacity choices into this original launch's owned argv.
+fn capacity_arguments(command: &mut std::process::Command) -> Result<()> {
+    use crate::broker::capacity::*;
+    for (option, name, default, maximum) in [
+        (
+            "--clients",
+            "BLENT_USB_CLIENTS",
+            DEFAULT_CLIENTS,
+            MAX_CLIENTS,
+        ),
+        ("--links", "BLENT_USB_LINKS", DEFAULT_LINKS, MAX_LINKS),
+        (
+            "--registrations",
+            "BLENT_USB_REGISTRATIONS",
+            DEFAULT_REGISTRATIONS,
+            MAX_REGISTRATIONS,
+        ),
+    ] {
+        let value = blent_config::retirement_limits::configured(name, default, maximum)
+            .with_context(|| format!("invalid {name}"))?;
+        command.arg(option).arg(value.to_string());
+    }
+    Ok(())
 }
 
 /// Share one Connector per application owner. Stuck native process creation

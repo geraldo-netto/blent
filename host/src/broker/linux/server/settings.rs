@@ -24,7 +24,7 @@ impl Settings {
             helper,
             control: control::Limits::default(),
             session: session::Limits::default(),
-            registrations: 64,
+            registrations: crate::broker::capacity::DEFAULT_REGISTRATIONS,
             trust_peers: 64,
             block: 65536,
             retirement_timeout: Duration::from_secs(5),

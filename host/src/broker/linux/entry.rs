@@ -1,5 +1,6 @@
 //! CLI adapter for the local experimental broker, independent of media clients.
 use super::server::{Server, Settings};
+use crate::broker::capacity;
 use anyhow::{Context, Result};
 use clap::Parser;
 use std::{ffi::OsString, path::PathBuf, time::Duration};
@@ -22,13 +23,13 @@ pub struct Options {
     /// Confirm destruction of the selected saved state.
     #[arg(long, requires = "reset")]
     confirm_reset: bool,
-    #[arg(long, conflicts_with = "reset", default_value_t = 16)]
+    #[arg(long, conflicts_with = "reset", default_value_t = capacity::DEFAULT_CLIENTS)]
     clients: usize,
-    #[arg(long, conflicts_with = "reset", default_value_t = 4)]
+    #[arg(long, conflicts_with = "reset", default_value_t = capacity::DEFAULT_LINKS)]
     links: usize,
     #[arg(long, conflicts_with = "reset", default_value_t = 64)]
     devices: usize,
-    #[arg(long, conflicts_with = "reset", default_value_t = 64)]
+    #[arg(long, conflicts_with = "reset", default_value_t = capacity::DEFAULT_REGISTRATIONS)]
     registrations: usize,
     #[arg(long, conflicts_with = "reset", default_value_t = 64)]
     trust_peers: usize,

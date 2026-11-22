@@ -36,7 +36,7 @@ async fn t853_cli_defaults_and_overrides_reach_capacity_policy() {
         .unwrap()
         .settings()
         .unwrap();
-    assert_eq!(defaults.control.clients, 16);
+    assert_eq!(defaults.control.clients, 128);
     assert_eq!(defaults.control.links, 4);
     assert_eq!(defaults.session.channel_bytes, 262144);
     let mut custom = arguments();

@@ -1,6 +1,7 @@
 //! T853 single-owner control policy. No device, filesystem or media I/O runs here.
 //! The authority worker owns Trust; its one outstanding job moves the exact
 //! Pairing out and returns it. Cancellation remains immediate while storage runs.
+use super::capacity;
 use anyhow::{ensure, Result};
 use blent_config::{
     connection::{
@@ -30,8 +31,8 @@ impl Default for Limits {
     fn default() -> Self {
         Self {
             devices: 64,
-            links: 4,
-            clients: 16,
+            links: capacity::DEFAULT_LINKS,
+            clients: capacity::DEFAULT_CLIENTS,
             setup_ms: 60_000,
             approval_ms: 120_000,
         }
@@ -40,9 +41,12 @@ impl Default for Limits {
 impl Limits {
     fn validate(self) -> Result<()> {
         ensure!((1..=512).contains(&self.devices), "invalid device capacity");
-        ensure!((1..=64).contains(&self.links), "invalid link capacity");
         ensure!(
-            (1..=1024).contains(&self.clients),
+            (1..=capacity::MAX_LINKS).contains(&self.links),
+            "invalid link capacity"
+        );
+        ensure!(
+            (1..=capacity::MAX_CLIENTS).contains(&self.clients),
             "invalid client capacity"
         );
         ensure!(

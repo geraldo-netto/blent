@@ -38,7 +38,7 @@ async fn retired(completion: Completion) {
 #[tokio::test]
 async fn t853_local_client_duplex_batches_and_actual_retirement() {
     let (client, socket) = pair().await;
-    let mut peer = Peer::start(socket, Duration::from_secs(1)).unwrap();
+    let mut peer = Peer::start(admission(), socket, Duration::from_secs(1)).unwrap();
     client
         .send(
             &Message::Control {
@@ -69,10 +69,10 @@ async fn t853_local_client_duplex_batches_and_actual_retirement() {
 async fn t853_reply_capacity_and_timeout_bounds_reject_invalid_values() {
     for timeout in [Duration::ZERO, Duration::from_secs(61), Duration::MAX] {
         let (_, socket) = pair().await;
-        assert!(Peer::start(socket, timeout).is_err());
+        assert!(Peer::start(admission(), socket, timeout).is_err());
     }
     let (_client, socket) = pair().await;
-    let peer = Peer::start(socket, Duration::from_secs(1)).unwrap();
+    let peer = Peer::start(admission(), socket, Duration::from_secs(1)).unwrap();
     assert!(peer.reply(vec![]).is_err());
     assert!(peer.reply(vec![message(1); MAX_BATCH + 1]).is_err());
     peer.reply(vec![message(1)]).unwrap();
@@ -86,10 +86,10 @@ async fn t853_reply_capacity_and_timeout_bounds_reject_invalid_values() {
 #[tokio::test]
 async fn t853_stalled_client_writer_does_not_block_sibling() {
     let (_stalled, socket) = pair().await;
-    let mut blocked = Peer::start(socket, Duration::from_millis(20)).unwrap();
+    let mut blocked = Peer::start(admission(), socket, Duration::from_millis(20)).unwrap();
     blocked.reply(vec![message(1); MAX_BATCH]).unwrap();
     let (client, socket) = pair().await;
-    let mut sibling = Peer::start(socket, Duration::from_secs(1)).unwrap();
+    let mut sibling = Peer::start(admission(), socket, Duration::from_secs(1)).unwrap();
     sibling.reply(vec![message(2)]).unwrap();
     assert_eq!(
         bounded(client.receive()).await.unwrap().message.request(),
@@ -115,4 +115,11 @@ async fn t853_closed_dispatch_lanes_retire_native_socket() {
     assert!(bounded(send_batch(&socket, vec![message(1)]))
         .await
         .is_err());
+}
+
+fn admission() -> Admission {
+    blent_config::retirement::Pool::new(1)
+        .unwrap()
+        .reserve()
+        .unwrap()
 }
