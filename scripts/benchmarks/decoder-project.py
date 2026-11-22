@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'android/app/src/main/java/com/blent'
 SHARED = ['DecoderSession.kt', 'VideoTiming.kt', 'DecoderOutputWatchdog.kt', 'CodecLifetime.kt', 'NativeDeadline.kt', 'NativeQueryLane.kt', 'GenerationFence.kt',
           'DecoderDiagnostics.kt', 'DecoderInput.kt', 'DecoderMailbox.kt', 'CallbackDecoder.kt', 'DecoderConfiguration.kt',
-          'ChannelPacketReader.kt', 'VideoPacketReader.kt', 'DecodedOutputDrainer.kt', 'VideoCodec.kt',
+          'VideoPacketReader.kt', 'DecodedOutputDrainer.kt', 'VideoCodec.kt',
           'MediaProfiles.kt', 'MediaInventory.kt', 'DecoderSelection.kt', 'JsonNumbers.kt',
           'VideoContract.kt', 'VideoProfiles.kt', 'DecoderCapabilities.kt', 'DecoderEligibility.kt',
           'DecoderSelectionJson.kt', 'DecoderSelectionAndroid.kt']

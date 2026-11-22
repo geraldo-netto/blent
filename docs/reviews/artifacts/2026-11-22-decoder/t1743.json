@@ -1,0 +1,248 @@
+{
+  "item": "T1743",
+  "reader_unchanged_sha256": "e27eac50fa2cf686b98132510968ac2a72b138b996abc39cd3cb8f6f8b725b2d",
+  "android_tests": [
+    {
+      "name": "com.blent.benchmark.UsbReplayTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.ReplayPacingTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.SocketReplayTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.benchmark.ReplayRetirementTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DirectDecoderInputTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.JoinedDisplayReplayTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.ChannelPacketReaderTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.ReplayClipTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "production_debug_and_profile_reader_classes": 0,
+  "test_reader_present": true,
+  "generated_apk_sha256": "72408061abbc4780a09923b637a48107d2d6505b41ea80f7b5055046aaaee5ba",
+  "complexity": [
+    [
+      "scripts/benchmarks/decoder-project.py",
+      75,
+      "source",
+      4
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      83,
+      "shared_sources",
+      3
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      97,
+      "instrument_timing",
+      3
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      113,
+      "instrument_cache",
+      2
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      121,
+      "prepare",
+      2
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      138,
+      "copy_replay_sources",
+      3
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      146,
+      "main",
+      4
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      19,
+      "test_t1743_experimental_reader_is_replay_owned_and_not_a_production_source",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      32,
+      "test_t1746_generated_replay_includes_exact_decoder_eligibility_contract",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      44,
+      "test_t1644_missing_current_dependency_rejects_old_snapshot",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      57,
+      "test_t569_generated_replay_preserves_json_number_dependency",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      72,
+      "test_t479_selection_reaches_replay_as_exact_bounded_request",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      79,
+      "test_t460_replay_can_remain_visible_over_the_same_keyguard_as_blent",
+      3
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      95,
+      "test_t803_render_receipts_preserve_current_identity_and_reject_old_api",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      112,
+      "test_t458_generated_replay_includes_current_decoder_dependencies",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      137,
+      "test_t386_selected_variants_match_provenance_and_trials",
+      1
+    ],
+    [
+      "scripts/tests/test_android_contract_boundaries.py",
+      10,
+      "test_t822_wire_contracts_have_no_android_or_owner_dependencies",
+      2
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      15,
+      "<init>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      22,
+      "<init>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      42,
+      "readHeader",
+      2
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      43,
+      "<lambda>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      51,
+      "readRecord",
+      3
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      65,
+      "parseHeader",
+      8
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      81,
+      "readPayload",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      82,
+      "<lambda>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      83,
+      "<lambda>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      90,
+      "readExact",
+      4
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      101,
+      "checkReadable",
+      5
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      107,
+      "awaitReady",
+      2
+    ],
+    [
+      "scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt",
+      116,
+      "close",
+      1
+    ]
+  ],
+  "scope": "Reader source relocation; exact Kotlin body unchanged. Generated replay APK compiled, not installed or executed."
+}

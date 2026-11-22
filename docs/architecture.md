@@ -1153,6 +1153,8 @@ output-thread priority. The [decoder replay](benchmarks/2026-09-18-decoder-profi
 records the measured tradeoffs and the limits of render-notification timing.
 
 T403 adds an experimental synchronous `ChannelPacketReader`/`feedDirect` path.
+The reader belongs to `scripts/benchmarks/android-decoder/input`; it is included
+in the standalone replay and normal regression tests, not the production APK.
 It validates the wire prefix before borrowing a codec input slot, reads the
 payload into that slot outside the receiver monitor and queues only a complete
 payload. An absolute packet deadline and channel close bound transport reads;

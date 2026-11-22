@@ -16,6 +16,19 @@ SPEC.loader.exec_module(BENCH)
 
 
 class DecoderBenchmarkTests(unittest.TestCase):
+    def test_t1743_experimental_reader_is_replay_owned_and_not_a_production_source(self):
+        spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
+        project = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(project)
+        self.assertFalse((project.SOURCE / 'ChannelPacketReader.kt').exists())
+        source = project.ROOT / 'scripts/benchmarks/android-decoder/input/ChannelPacketReader.kt'
+        with tempfile.TemporaryDirectory() as directory:
+            args = SimpleNamespace(directory=Path(directory) / 'replay', revision=None,
+                                   package='com.blent.decoderbench.candidate')
+            output = project.prepare(args)
+            self.assertEqual((output / 'app/src/main/java/ChannelPacketReader.kt').read_bytes(), source.read_bytes())
+            self.assertFalse((output / 'originals/ChannelPacketReader.kt').exists())
+
     def test_t1746_generated_replay_includes_exact_decoder_eligibility_contract(self):
         spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
         project = importlib.util.module_from_spec(spec)
