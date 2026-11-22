@@ -124,23 +124,63 @@ async fn t1776_delayed_accept_recovers_without_any_admitted_client() {
 #[tokio::test]
 async fn t1776_admitted_inventory_and_saved_peers_keep_maintenance_live() {
     let mut fixture = Fixture::new().await;
-    assert!(!fixture.server.maintenance_needed());
+    assert!(fixture.server.maintenance_deadline().is_none());
     fixture.server.controller =
         Control::new(peer(0), vec![peer(8)], fixture.server.settings.control).unwrap();
-    assert!(fixture.server.maintenance_needed());
+    assert!(fixture.server.maintenance_deadline().is_some());
     fixture.server.scan().unwrap();
     fixture.server.controller =
         Control::new(peer(0), vec![], fixture.server.settings.control).unwrap();
-    assert!(
-        fixture.server.maintenance_needed(),
-        "T1776 lost admitted helper retirement observation"
-    );
+    assert!(fixture.server.inventory.is_some());
+    // Active inventory has a channel wake; only its finished native owner polls.
+    assert!(fixture.server.maintenance_deadline().is_none());
+    let result = bounded(inventory_next(&mut fixture.server.inventory)).await;
+    fixture.server.inventory_result(result).unwrap();
+    assert!(fixture.server.maintenance_deadline().is_some());
     fixture
         .server
         .shutdown(Duration::from_secs(5))
         .await
         .unwrap();
     fixture.server.scan().unwrap();
-    assert!(!fixture.server.maintenance_needed());
+    assert!(fixture.server.maintenance_deadline().is_none());
+    fixture.finish().await;
+}
+
+#[tokio::test]
+async fn t1777_live_client_waits_for_inventory_deadline_without_periodic_ticks() {
+    let mut fixture = Fixture::new().await;
+    let _client = fixture.client().await;
+    fixture.server.next_inventory = Instant::now() + Duration::from_secs(2);
+    let wakes = observe_wakes(&mut fixture.server, Duration::from_millis(600)).await;
+    fixture
+        .server
+        .shutdown(Duration::from_secs(5))
+        .await
+        .unwrap();
+    fixture.finish().await;
+    println!("T1777 live-client dispatcher wakes in 600 ms: {wakes}");
+    assert_eq!(wakes, 0, "T1777 live idle client kept periodic ticks");
+}
+
+#[tokio::test]
+async fn t1777_maintenance_selects_earliest_and_observes_only_retiring_clients() {
+    let mut fixture = Fixture::new().await;
+    let (client, _remote) = fixture.client().await;
+    let now = Instant::now();
+    fixture.server.next_inventory = now + Duration::from_secs(2);
+    fixture.server.accept_after = now + Duration::from_secs(1);
+    assert_eq!(
+        fixture.server.maintenance_deadline(),
+        Some(fixture.server.accept_after)
+    );
+    fixture.server.close_client(client).unwrap();
+    fixture.server.next_observation = now;
+    assert_eq!(fixture.server.maintenance_deadline(), Some(now));
+    fixture
+        .server
+        .shutdown(Duration::from_secs(5))
+        .await
+        .unwrap();
     fixture.finish().await;
 }

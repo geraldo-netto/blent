@@ -172,3 +172,23 @@ and restart assertions remain; the unchanged production admission still rejects
 reuse while native retirement is pending. The test passes after failing with
 `Resources still active or retiring`. Changed code is test-only; measured
 functions remain within complexity 9. [Evidence](artifacts/2026-11-22-followup-batch/t1813/).
+
+## T1777 — schedule broker maintenance by actual deadlines
+
+The dispatcher now chooses the earliest accept retry, controller expiry,
+eligible automatic retry or inventory deadline. Live sockets/channels supply
+readiness wakes. Finished inventory and closing native owners retain a bounded
+100 ms observation cadence, including controller tombstones after their adapter
+task leaves. Timer recalculation cannot postpone that retained absolute deadline.
+No new native owner, queue or allocation is introduced; exact original completion
+still gates collection. Suppressed retries and unavailable authority/inventory
+produce no retry timer.
+
+The live-idle-client regression failed with 31 wakes in 600 ms and passes with
+zero. All 307 selected broker tests pass; the separately corrected T1813 repair
+fixture also passes. Existing accept retry, native collection, automatic retry,
+expiry, channel and TLS regressions remain. All 17 maintained functions exceed
+80% line coverage; all 69 measured functions have complexity <=7. Host Clippy
+still fails only on the previously recorded T1801 inventory return type; this
+batch does not suppress it. Native USB tablet/battery behavior was not measured.
+[Evidence](artifacts/2026-11-22-followup-batch/t1777/).

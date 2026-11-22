@@ -40,6 +40,7 @@ mod inspection;
 mod overload;
 mod readiness;
 mod routes;
+mod schedule;
 mod settings;
 mod shutdown;
 pub use settings::Settings;
@@ -85,6 +86,7 @@ pub struct Server {
     inventory: Option<Inventory>,
     inventory_observed: bool,
     next_inventory: Instant,
+    next_observation: Instant,
     origin: Instant,
     owner_id: u64,
     authority_busy: bool,
@@ -141,6 +143,7 @@ impl Server {
             inventory: None,
             inventory_observed: false,
             next_inventory: Instant::now(),
+            next_observation: Instant::now(),
             origin: Instant::now(),
             owner_id: 0,
             authority_busy: false,
@@ -148,16 +151,15 @@ impl Server {
         })
     }
     pub async fn run(&mut self) -> Result<()> {
-        let mut clock = tokio::time::interval(Duration::from_millis(20));
-        clock.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
         loop {
+            let deadline = self.maintenance_deadline();
             tokio::select! {
                 accepted = self.listener.accept(), if !self.rejector.active() && Instant::now() >= self.accept_after => self.accepted(accepted)?,
                 _ = self.rejector.next() => (),
                 input = std::future::poll_fn(|cx| self.readiness.poll(&mut self.clients, &mut self.links, cx)) => self.input(input)?,
                 reply = self.authority.next() => self.authority_event(reply?)?,
                 inventory = inventory_next(&mut self.inventory) => self.inventory_result(inventory)?,
-                _ = clock.tick(), if self.maintenance_needed() => self.tick()?,
+                _ = schedule::wait(deadline) => self.tick()?,
             }
             self.close_requested()?;
             self.authorize_next()?;
@@ -289,15 +291,8 @@ impl Server {
         }
         Ok(())
     }
-    /// Idle sockets and worker channels already wake this dispatcher directly.
-    /// Keep observing an admitted inventory until exact retirement, and keep
-    /// delayed accepts moving even when no controller client has been admitted.
-    fn maintenance_needed(&self) -> bool {
-        self.controller.inventory_needed()
-            || self.inventory.is_some()
-            || Instant::now() < self.accept_after
-    }
     fn tick(&mut self) -> Result<()> {
+        self.next_observation = Instant::now() + Duration::from_millis(100);
         self.controller.tick(link::now(self.origin)?)?;
         self.collect_clients();
         self.collect_links()?;

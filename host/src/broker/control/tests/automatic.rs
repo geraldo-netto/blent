@@ -230,3 +230,64 @@ fn t1594_authentication_resets_backoff_before_next_connection() {
     idle(&mut rig, 3_999);
     start(&mut rig, 4_000);
 }
+
+#[test]
+fn t1777_retry_deadline_matches_admission_and_suppression() {
+    let mut rig = fixture();
+    assert_eq!(rig.control.automatic_deadline(), Some(0));
+    let first = start(&mut rig, 10);
+    assert_eq!(rig.control.automatic_deadline(), None);
+    rig.control.start_failed(first).unwrap();
+    rig.control.collect_retired().unwrap();
+    assert_eq!(rig.control.automatic_deadline(), Some(2010));
+    idle(&mut rig, 2009);
+    rig.control.automatic.get_mut(&1).unwrap().suppress();
+    assert_eq!(rig.control.automatic_deadline(), None);
+    rig.control.inventory_unavailable().unwrap();
+    assert_eq!(rig.control.automatic_deadline(), None);
+}
+
+#[test]
+fn t1777_deadline_excludes_unavailable_and_non_accessory_devices() {
+    let mut rig = fixture();
+    for available in [false, true] {
+        for accessory in [false, true] {
+            let mut candidate = device(1);
+            candidate.accessory = accessory;
+            candidate.availability = if available {
+                Availability::Available
+            } else {
+                Availability::Debugging
+            };
+            rig.control.replace_devices(vec![candidate]).unwrap();
+            assert_eq!(
+                rig.control.automatic_deadline().is_some(),
+                available && accessory
+            );
+        }
+    }
+    rig.control.healthy = false;
+    assert_eq!(rig.control.automatic_deadline(), None);
+    rig.control.healthy = true;
+    rig.control.saved.clear();
+    assert_eq!(rig.control.automatic_deadline(), None);
+}
+
+#[test]
+fn t1777_expiry_stops_at_deadline_and_retirement_keeps_original_fence() {
+    let mut rig = fixture();
+    let first = start(&mut rig, 10);
+    let deadline = rig.control.expiry_deadline().unwrap();
+    let hold = rig.pool.reserve().unwrap();
+    rig.control.attach(first, hold.completion()).unwrap();
+    assert!(!rig.control.retirement_pending());
+    assert!(rig.control.tick(deadline - 1).unwrap().is_empty());
+    assert_eq!(rig.control.tick(deadline).unwrap(), [first]);
+    assert_eq!(rig.control.expiry_deadline(), None);
+    assert!(rig.control.retirement_pending());
+    rig.control.native_finished(first).unwrap();
+    assert!(rig.control.collect_retired().unwrap().is_empty());
+    drop(hold);
+    assert_eq!(rig.control.collect_retired().unwrap(), [first]);
+    assert!(!rig.control.retirement_pending());
+}

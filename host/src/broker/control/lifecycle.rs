@@ -64,6 +64,19 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
         link.finished = true;
         self.changed()
     }
+    pub fn expiry_deadline(&self) -> Option<i64> {
+        self.links
+            .values()
+            .filter_map(|link| expirable(link).then_some(link.deadline))
+            .min()
+    }
+    /// Original native completions have no async notification. Observe only
+    /// closing records, including tombstones whose adapter task already left.
+    pub fn retirement_pending(&self) -> bool {
+        self.links
+            .values()
+            .any(|link| matches!(link.state, State::Closing | State::Quarantined))
+    }
     pub fn tick(&mut self, now: i64) -> Result<Vec<u64>> {
         self.editable()?;
         ensure!(now >= 0, "invalid monotonic time");
@@ -99,11 +112,14 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
         Ok(retired)
     }
 }
-fn expires<K>(link: &Link<K>, now: i64) -> bool {
+fn expirable<K>(link: &Link<K>) -> bool {
     matches!(
         link.state,
         State::Discovering | State::Pending | State::Approved
-    ) && now >= link.deadline
+    )
+}
+fn expires<K>(link: &Link<K>, now: i64) -> bool {
+    expirable(link) && now >= link.deadline
 }
 fn ready<K>(link: &Link<K>) -> bool {
     matches!(link.state, State::Closing | State::Quarantined)

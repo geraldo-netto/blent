@@ -30,10 +30,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
     /// Called only by the running broker, never during shutdown draining.
     pub fn automatic(&mut self, now: i64) -> Result<Action<T>> {
         ensure!(now >= 0, "invalid monotonic time");
-        if self.saved.is_empty() || self.links.len() >= self.limits.links {
-            return Ok(Action::None);
-        }
-        if self.admitting().is_err() {
+        if !self.automatic_admitted() {
             return Ok(Action::None);
         }
         let target = self
@@ -46,6 +43,30 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
         self.connect(self.revision, target, now)
     }
 
+    /// Earliest eligible retry in the controller's monotonic millisecond clock.
+    /// None means wait for a state/inventory event, not a periodic retry.
+    pub fn automatic_deadline(&self) -> Option<i64> {
+        if !self.inventory_available || !self.automatic_admitted() {
+            return None;
+        }
+        self.devices
+            .values()
+            .filter_map(|device| {
+                if !self.automatic_candidate(device) {
+                    return None;
+                }
+                match self.automatic.get(&device.key) {
+                    Some(retry) => (!retry.suppressed).then_some(retry.deadline),
+                    None => Some(0),
+                }
+            })
+            .min()
+    }
+
+    fn automatic_admitted(&self) -> bool {
+        !self.saved.is_empty() && self.links.len() < self.limits.links && self.admitting().is_ok()
+    }
+
     /// A native discovery that never produced Hello must not repeatedly probe
     /// the device. Startup failures before native admission retain bounded retries.
     pub(super) fn retire_automatic(&mut self, link: &Link<K>) {
@@ -56,10 +77,14 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
         }
     }
 
-    fn automatic_ready(&self, device: &Device<K, T>, now: i64) -> bool {
+    fn automatic_candidate(&self, device: &Device<K, T>) -> bool {
         device.accessory
             && device.availability == Availability::Available
             && !self.links.values().any(|link| link.key == device.key)
+    }
+
+    fn automatic_ready(&self, device: &Device<K, T>, now: i64) -> bool {
+        self.automatic_candidate(device)
             && self
                 .automatic
                 .get(&device.key)

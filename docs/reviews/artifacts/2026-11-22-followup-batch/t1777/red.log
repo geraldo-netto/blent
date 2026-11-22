@@ -1,0 +1,23 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 26.10s
+     Running unittests src/lib.rs (target/debug/build/blent/8a4c416e38fc28de/out/blent-8a4c416e38fc28de)
+
+running 1 test
+test broker::linux::server::tests::idle_wake::t1777_live_client_waits_for_inventory_deadline_without_periodic_ticks ... T1777 live-client dispatcher wakes in 600 ms: 31
+
+thread 'broker::linux::server::tests::idle_wake::t1777_live_client_waits_for_inventory_deadline_without_periodic_ticks' (953603) panicked at host/src/broker/linux/server/tests/idle_wake.rs:157:5:
+assertion `left == right` failed: T1777 live idle client kept periodic ticks
+  left: 31
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    broker::linux::server::tests::idle_wake::t1777_live_client_waits_for_inventory_deadline_without_periodic_ticks
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1386 filtered out; finished in 0.77s
+
+error: test failed, to rerun pass `-p blent --lib`

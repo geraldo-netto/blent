@@ -1395,3 +1395,13 @@ owners, and native fixtures retain explicit private access. See the
 [T823 boundary validation](reviews/2026-10-10-c-owner-contracts.md).
 
 </details>
+
+### USB broker maintenance scheduling
+
+Live control sockets and worker channels wake the dispatcher directly. Inventory
+scans retain their two-second freshness interval when discovery is needed; accept
+retry, approval/setup expiry and eligible automatic reconnect use their actual
+deadlines. Only finished inventory and closing native owners require periodic
+completion observation (100 ms), because their original completion handles have
+no notification interface. An idle dispatcher with no due work has no periodic
+timer. These schedules never substitute for the original native completion proof.
