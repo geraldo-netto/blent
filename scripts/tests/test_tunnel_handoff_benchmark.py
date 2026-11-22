@@ -19,9 +19,11 @@ class TunnelHandoffBenchmarkTest(unittest.TestCase):
                 '-PblentTunnelOutput=' + str(Path(temporary) / 'unused.json'),
                 ':app:testDebugUnitTest', '--tests', 'com.blent.connection.RecordMeterTest',
                 '--tests', 'com.blent.connection.TunnelOutputTest',
-                'help', '--task', 'tunnelHandoffBenchmark',
+                '--tests', 'com.blent.connection.LocalMeasurementTest',
+                'help', '--task', 'tunnelHandoffBenchmark', 'tasks', '--all',
             ], dict(os.environ), logfile)
             self.assertIn('tunnelHandoffBenchmark', logfile.read_text())
+            self.assertIn('localHandoffBenchmark', logfile.read_text())
 
 
 if __name__ == '__main__':

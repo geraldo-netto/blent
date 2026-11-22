@@ -51,3 +51,33 @@ application source sets and dependency graphs are unchanged. No native Android,
 USB, battery, full-pipeline throughput or hardware-support claim follows from this
 hosted experiment. Three paired trials yield local point estimates, not statistical
 confidence or a universal optimization threshold.
+
+For local consumer coordination, select the private plaintext TCP analogue:
+
+```sh
+python3 scripts/benchmarks/android-tunnel/run.py /tmp/blent-local-measurement --kind local-write
+python3 scripts/benchmarks/android-tunnel/analyze.py /tmp/blent-local-measurement/results.json
+```
+
+Here `combined=false` runs the current production LocalChannelConsumer and its
+exact ring receipt. `combined=true` is a direct WriteFlushed control on the same
+production StreamConnectionIo, bypassing consumer bookkeeping. The native control
+holds the original payload through exact write/flush completion; neither mode
+copies payloads. Prefix/suffix sentinels and peer byte checks detect wrong ranges.
+Both use TCP_NODELAY, private five-second setup/read deadlines and one ACK per
+payload. This is Linux JDK TCP, not Android LocalSocket or a full resource pump.
+The direct control quantifies potential coordination savings; it does not by itself
+establish the gain of a future consumer implementation. Later runs always use the
+current consumer source, so historical baselines remain artifacts rather than
+executable legacy paths. The shared `tls_application_records` field is known zero
+for this explicitly plaintext transport, not a TLS measurement.
+
+The local fixture owns one listener, original client socket and peer thread;
+the accepted socket stays inside the peer's use scope. MeasuredIo owns the three
+native workers and borrows abstract streams through MeasurementConnection. Its
+close revokes admission, closes the original stream and joins those exact workers;
+the enclosing connection closes the listener and joins the original peer. Failed
+construction closes already-admitted originals. Wrong-byte controls require the
+peer's explicit mismatch error and confirm the client socket is closed afterward.
+The normal tool fixture runs local valid/invalid/fault cases alongside TLS-record
+and output-path tests, and checks registration of both executable tasks.

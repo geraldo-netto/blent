@@ -11,7 +11,14 @@ import javax.net.ssl.SSLServerSocket
 import javax.net.ssl.SSLSocket
 
 /** One private loopback peer; ownership never reaches installed Blent sessions. */
-internal class TunnelMeasurement(server: SSLContext, client: SSLContext, frames: Int, payloadBytes: Int) : AutoCloseable {
+internal interface MeasurementConnection : AutoCloseable {
+    val input: java.io.InputStream
+    val output: java.io.OutputStream
+    fun closeStream()
+    fun finishPeer()
+}
+
+internal class TunnelMeasurement(server: SSLContext, client: SSLContext, frames: Int, payloadBytes: Int) : MeasurementConnection {
     private val resources = ArrayList<java.io.Closeable>(3)
     private val finish = CountDownLatch(1)
     private val accepted = CountDownLatch(1)
@@ -22,6 +29,9 @@ internal class TunnelMeasurement(server: SSLContext, client: SSLContext, frames:
     private val metered: MeteredSocket
     val socket: SSLSocket
     val records: Long get() = metered.meter.records
+    override val input: java.io.InputStream get() = socket.inputStream
+    override val output: java.io.OutputStream get() = socket.outputStream
+    override fun closeStream() = socket.close()
     init {
         try {
             listener.needClientAuth = true
@@ -65,7 +75,7 @@ internal class TunnelMeasurement(server: SSLContext, client: SSLContext, frames:
             finish.await() // Keep the peer alive until final CPU/record snapshots.
         }
     }
-    fun finishPeer() { finish.countDown() }
+    override fun finishPeer() { finish.countDown() }
     override fun close() {
         finishPeer()
         try { closeConnectionResources(resources.reversed()) }
@@ -74,7 +84,7 @@ internal class TunnelMeasurement(server: SSLContext, client: SSLContext, frames:
     }
 }
 
-internal class MeasuredIo(private val connection: TunnelMeasurement) : AutoCloseable {
+internal class MeasuredIo(private val connection: MeasurementConnection) : AutoCloseable {
     private val origin = System.nanoTime()
     fun now(): Long = (System.nanoTime() - origin) / 1_000_000
     private val ready = Semaphore(0)
@@ -84,20 +94,24 @@ internal class MeasuredIo(private val connection: TunnelMeasurement) : AutoClose
     var waits = 0L; private set
     private val hints = java.util.concurrent.atomic.AtomicLong()
     val readyHints: Long get() = hints.get()
-    private val io = StreamConnectionIo(connection.socket.inputStream,
-        connection.socket.outputStream,
-        closer = java.io.Closeable { connection.socket.close() }, ready = { hints.incrementAndGet(); ready.release() },
+    val port: ConnectionIo = StreamConnectionIo(connection.input,
+        connection.output,
+        closer = java.io.Closeable { connection.closeStream() }, ready = { hints.incrementAndGet(); ready.release() },
         threadFactory = { name, task -> Thread(task, name).also { threads.add(it) } })
     fun perform(request: ConnectionIoRequest): Int {
-        check(io.submit(request))
+        check(port.submit(request))
+        val result = completion()
+        check(result.request === request)
+        result.failure?.let { throw it }
+        return result.count
+    }
+    fun completion(): ConnectionIoCompletion {
         while (true) {
             polls++
-            val result = io.poll()
+            val result = port.poll()
             if (result != null) {
-                check(result.request === request)
-                result.failure?.let { throw it }
                 completions++
-                return result.count
+                return result
             }
             waits++
             ready.acquire()
@@ -109,8 +123,8 @@ internal class MeasuredIo(private val connection: TunnelMeasurement) : AutoClose
     }
     override fun close() {
         connection.finishPeer()
-        io.stop()
+        port.stop()
         threads.forEach { it.join() }
-        check(io.retired()); check(io.closeFailure() == null)
+        check(port.retired()); check(port.closeFailure() == null)
     }
 }

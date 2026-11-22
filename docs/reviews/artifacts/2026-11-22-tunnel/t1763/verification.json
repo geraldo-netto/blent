@@ -1,0 +1,39 @@
+{
+  "item": "T1763",
+  "hosted_tests": [
+    {
+      "name": "com.blent.connection.TunnelOutputTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.RecordMeterTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.LocalMeasurementTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "tool_tests": 1,
+  "local_trials": 64,
+  "tls_harness_check_trials": 64,
+  "unchanged_inputs": true,
+  "complexity_functions": 164,
+  "maximum_complexity": 7,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI / Python 3.12 AST",
+  "groovy_closures": 4,
+  "groovy_maximum": 2,
+  "coverage": "benchmark/nonessential tool exemption",
+  "production_behavior_changed": false,
+  "scope": "Linux JDK TCP native stream coordination, not Android local sockets or full session",
+  "fault_control": "wrong byte must report explicit peer payload mismatch and close original socket"
+}

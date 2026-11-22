@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""T1755: finite hosted TLS handoff trials; no installed app or device access."""
+"""Finite hosted TLS/local handoff trials; no installed app or device access."""
 import argparse
 import hashlib
 import json
@@ -12,6 +12,12 @@ import sys
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / 'scripts/benchmarks'))
 import profile_process
+
+TASKS = {'tls-write': 'tunnelHandoffBenchmark', 'local-write': 'localHandoffBenchmark'}
+SCOPES = {
+    'tls-write': 'Hosted Linux JDK loopback TLS 1.3; production framing/native I/O; production gather limits 0/16384; not Android native or full reactor',
+    'local-write': 'Hosted Linux JDK plaintext loopback TCP; production local consumer versus direct native transaction; not Android LocalSocket or full reactor',
+}
 
 
 def inputs():
@@ -29,7 +35,9 @@ def inputs():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
-    output = parser.parse_args().output.resolve()
+    parser.add_argument('--kind', choices=tuple(TASKS), default='tls-write')
+    args = parser.parse_args()
+    output = args.output.resolve()
     output.mkdir(parents=True)
     before = inputs()
     metadata = dict(source_sha256=before,
@@ -37,11 +45,11 @@ def main():
         platform=platform.platform(), java=subprocess.run(['java', '-version'], capture_output=True, text=True, check=True).stderr,
         domain=dict(warmup_trials=16, measured_trials=48, frames_per_trial=60,
                     payload_bytes=[64, 4096, 16384, 65536], rates=[0, 60]),
-        scope='Hosted Linux JDK loopback TLS 1.3; production framing/native I/O; production gather limits 0/16384; not Android native or full reactor')
+        kind=args.kind, scope=SCOPES[args.kind])
     (output / 'metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
     command = [str(ROOT / 'android/gradlew'), '-p', str(ROOT / 'android'), '--offline', '--no-daemon',
                '-I', str(ROOT / 'scripts/benchmarks/android-tunnel/benchmark.init.gradle'),
-               ':app:tunnelHandoffBenchmark', '-PblentTunnelOutput=' + str(output / 'results.json')]
+               ':app:' + TASKS[args.kind], '-PblentTunnelOutput=' + str(output / 'results.json')]
     status = profile_process.logged(command, dict(os.environ), output / 'run.log', ROOT)
     if status != 0:
         raise RuntimeError(f'Benchmark failed ({status}); retained {output}/run.log')

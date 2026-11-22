@@ -4,13 +4,17 @@ allprojects { project ->
             android.sourceSets.getByName('test').java.srcDir(new File(rootProject.projectDir.parentFile, 'scripts/benchmarks/android-hosted'))
             dependencies.add('testImplementation', 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2')
             android.sourceSets.getByName('test').java.srcDir(new File(rootProject.projectDir.parentFile, 'scripts/benchmarks/android-tunnel'))
-            tasks.register('tunnelHandoffBenchmark', JavaExec) {
-                dependsOn 'compileDebugUnitTestKotlin', 'compileDebugUnitTestJavaWithJavac',
-                    'processDebugUnitTestJavaRes', 'generateDebugUnitTestConfig'
-                classpath = tasks.named('testDebugUnitTest', Test).get().classpath
-                mainClass = 'com.blent.connection.TunnelHandoffBenchmarkKt'
-                args providers.gradleProperty('blentTunnelOutput').get(),
-                    new File(rootProject.projectDir.parentFile, 'testdata/connection-tls').absolutePath
+            [tunnelHandoffBenchmark: 'TunnelHandoffBenchmarkKt', localHandoffBenchmark: 'LocalHandoffBenchmarkKt'].each { taskName, entryPoint ->
+                tasks.register(taskName, JavaExec) {
+                    dependsOn 'compileDebugUnitTestKotlin', 'compileDebugUnitTestJavaWithJavac',
+                        'processDebugUnitTestJavaRes', 'generateDebugUnitTestConfig'
+                    classpath = tasks.named('testDebugUnitTest', Test).get().classpath
+                    mainClass = 'com.blent.connection.' + entryPoint
+                    args providers.gradleProperty('blentTunnelOutput').get()
+                    if (taskName == 'tunnelHandoffBenchmark') {
+                        args new File(rootProject.projectDir.parentFile, 'testdata/connection-tls').absolutePath
+                    }
+                }
             }
         }
     }
