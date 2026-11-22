@@ -101,6 +101,7 @@ mod command_output;
 pub mod update;
 
 pub mod encoder_worker_contract;
+pub mod encoded_read;
 mod process_retirement;
 pub mod runtime_owner;
 

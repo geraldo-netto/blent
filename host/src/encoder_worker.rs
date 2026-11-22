@@ -137,9 +137,7 @@ async fn packets(
             .await
             .context("Encoder worker ended before packet")?;
         let (size, is_idr) = wire::packet_size(header)?;
-        let mut data = vec![0; size];
-        input
-            .read_exact(&mut data)
+        let data = blent::encoded_read::payload(&mut input, size)
             .await
             .context("Truncated encoder worker packet")?;
         publish(&job.encoder, &output, &generation, &evidence, data, is_idr);

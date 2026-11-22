@@ -1,0 +1,12 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.63s
+     Running unittests src/lib.rs (/home/netto/.cache/blent-followup-20261122/host-coverage/debug/build/blent/65634a99c338c115/out/blent-65634a99c338c115)
+
+running 1 test
+test encoded_read::tests::t1495_exact_payload_preserves_next_frame_and_rejects_invalid_bounds ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1000 filtered out; finished in 0.00s
+
+
+    Finished report saved to /tmp/blent-t1495-lib.lcov

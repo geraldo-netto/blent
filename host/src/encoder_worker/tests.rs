@@ -556,3 +556,26 @@ fn t1479_worker_fixture_resolves_profile_without_fixed_artifact_depth() {
     }
     assert!(test_executable(&root.path().join("outside/test")).is_err());
 }
+
+#[tokio::test]
+async fn t1495_worker_packet_reader_preserves_exact_payload_and_truncation() {
+    let (output, mut receiver) = output();
+    let payload = vec![0x55; 65536];
+    let mut frame = wire::packet_header(payload.len(), false).unwrap().to_vec();
+    frame.extend_from_slice(&payload);
+    let (mut writer, reader) = tokio::io::duplex(frame.len());
+    writer.write_all(&frame).await.unwrap();
+    let job = job();
+    let mut reading = Box::pin(packets(&job, reader, output));
+    let packet = tokio::select! {
+        result = &mut reading => panic!("early packet reader exit: {result:?}"),
+        packet = receiver.recv() => packet.unwrap(),
+    };
+    assert_eq!(packet.data.as_ref(), payload);
+    assert!(!packet.is_idr);
+    drop(writer);
+    assert!(reading.await.is_err());
+    let (output, _receiver) = self::output();
+    let short = &frame[..frame.len() - 1];
+    assert!(packets(&job, short, output).await.is_err());
+}

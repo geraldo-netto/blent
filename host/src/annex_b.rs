@@ -108,6 +108,7 @@ impl AnnexBPacketizer {
         );
         #[cfg(test)]
         crate::allocation_probe::scanned(input.len());
+        self.reserve_packet(input.len());
         let mut starts = crate::annex_scan::annex_b_offsets(input).peekable();
         let mut out = Vec::new();
         while let Some((start, header)) = starts.next() {
@@ -123,6 +124,13 @@ impl AnnexBPacketizer {
         }
         ensure!(out.len() <= 1, "Multiple pictures in one encoded packet");
         Ok(out)
+    }
+
+    fn reserve_packet(&mut self, input: usize) {
+        // Reserve the framed input once; ordinary keyframes already carry their
+        // parameter sets. Missing headers still grow through bounded append.
+        let extra = input.min(MAX_FRAME_BYTES - self.pending_access_unit.len());
+        self.pending_access_unit.reserve_exact(extra);
     }
 
     /// Read directly into owned spare capacity. No zero-filled scratch buffer
@@ -405,11 +413,12 @@ impl AnnexBPacketizer {
             length <= MAX_FRAME_BYTES,
             "Annex B keyframe configuration exceeds the wire limit"
         );
-        let mut data = Vec::with_capacity(length);
-        data.extend_from_slice(&self.config);
-        data.extend_from_slice(&self.pending_access_unit);
+        let previous = self.pending_access_unit.len();
+        self.pending_access_unit.resize(length, 0);
+        self.pending_access_unit
+            .copy_within(..previous, self.config.len());
+        self.pending_access_unit[..self.config.len()].copy_from_slice(&self.config);
         copied!(length);
-        self.pending_access_unit = data;
         Ok(())
     }
 

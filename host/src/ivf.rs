@@ -71,9 +71,7 @@ impl IvfPacketizer {
             (1..=MAX_FRAME_BYTES).contains(&size),
             "Invalid IVF packet size"
         );
-        let mut data = vec![0; size];
-        input
-            .read_exact(&mut data)
+        let mut data = blent::encoded_read::payload(input, size)
             .await
             .context("Truncated IVF packet")?;
         let is_idr = match self.codec {

@@ -216,3 +216,39 @@ failed before the change and passes with the two existing native-style tests.
 The maintained configure function has 100% line coverage; measured style/test
 functions have complexity <=9. This changes only context-owned scalar style
 values, with no new resource or lifecycle. [Evidence](artifacts/2026-11-22-followup-batch/t1814/).
+
+## T1495 — bounded encoded reads and measured allocation changes
+
+IVF and the optional native encoder worker share an exact-length reader into
+Tokio-managed spare capacity. It validates the existing frame bound, stops on
+truncation and never consumes the next frame. No unsafe initialization code was
+added. Annex B reserves the known packet size once and inserts configuration
+in-place, preserving normalization and all existing aggregate-size checks.
+The output retains its full allocation charge until its last immutable owner
+releases it; partial reads/cancellation drop their private Vec. Prefix metadata
+remains bounded by the existing frame/config limits. No pool or borrow escapes.
+
+Two permanent regressions failed before the change: redundant IVF initialization
+and repeated keyframe reallocation. Validation passes 43 parser/capacity tests,
+one shared-reader boundary test and one direct native-worker packet test against
+the locally extracted FFmpeg development SDK (libavcodec 60.31.102). All six
+maintained production functions exceed 80% line coverage; measured functions
+remain within complexity 9. The separate-output worker fixture limitation is
+recorded as T1815; direct worker-path coverage does not claim that fixture suite
+passed.
+
+Three local release samples per codec/size, each reading 80 packets:
+- H.264 keyframes: 80 reallocations → 0, with 240 allocations unchanged.
+  Median CPU for 1 MiB payloads: 136.94 → 118.91 ms per 80 packets.
+- VP9: allocation counts unchanged; median CPU for 1 MiB payloads:
+  6.17 → 2.69 ms per 80 packets, from avoiding redundant zero filling.
+- The Annex B normalization copy remains. Its allocation improvement is measured;
+  no eliminated-copy or end-to-end capture/encoding gain is claimed.
+
+AV1 insertion was measured separately over 80 synthetic 1 MiB packets. Reserving
+three header bytes upfront removed 80 keyframe reallocations, but doubled ordinary
+frame bookkeeping allocations from 80 to 160 because excess Vec capacity requires
+an additional Bytes owner. The unconditional reserve candidate was rejected;
+AV1 retains its bounded on-demand sequence insertion. These finite memory-source
+measurements exclude encoder/device latency and are not live-call performance.
+[Evidence](artifacts/2026-11-22-followup-batch/t1495/).

@@ -1,0 +1,39 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: method `poll_notice` is never used
+  --> host/src/owned_task/notices.rs:10:19
+   |
+ 6 | impl Task {
+   | --------- method in this implementation
+...
+10 |     pub(crate) fn poll_notice<T>(
+   |                   ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blent` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.31s
+     Running unittests src/main.rs (target/debug/build/blent/9e2b00fea8e17b28/out/blent-9e2b00fea8e17b28)
+
+running 3 tests
+test capture::cli_encoder::reader_capacity_tests::benchmark::t1495_encoded_reader_allocations ... ignored, finite encoded-reader allocation/CPU measurement
+test framed_annex_b::tests::t1495_complete_keyframe_reserves_once_without_reallocation ... 
+thread 'framed_annex_b::tests::t1495_complete_keyframe_reserves_once_without_reallocation' (969798) panicked at host/src/framed_annex_b/tests.rs:305:5:
+assertion `left == right` failed: T1495 redundant keyframe reallocation
+  left: 1
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test ivf::tests::t1495_ivf_payload_uses_spare_capacity_without_zero_filling ... 
+thread 'ivf::tests::t1495_ivf_payload_uses_spare_capacity_without_zero_filling' (969799) panicked at host/src/ivf/tests.rs:313:5:
+T1495 payload unnecessarily zero-initialized
+FAILED
+
+failures:
+
+failures:
+    framed_annex_b::tests::t1495_complete_keyframe_reserves_once_without_reallocation
+    ivf::tests::t1495_ivf_payload_uses_spare_capacity_without_zero_filling
+
+test result: FAILED. 0 passed; 2 failed; 1 ignored; 0 measured; 701 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --bin blent`

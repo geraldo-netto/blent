@@ -1,0 +1,39 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: method `poll_notice` is never used
+  --> host/src/owned_task/notices.rs:10:19
+   |
+ 6 | impl Task {
+   | --------- method in this implementation
+...
+10 |     pub(crate) fn poll_notice<T>(
+   |                   ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blent` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 24.83s
+     Running unittests src/main.rs (target/release/build/blent/44f8a6d8ff139b62/out/blent-44f8a6d8ff139b62)
+
+running 1 test
+test capture::cli_encoder::reader_capacity_tests::benchmark::t1495_encoded_reader_allocations ... T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":5242880,"reallocations":80,"requested_bytes":5278400,"scanner_input_bytes":5242880},"codec":"h264","cpu_ns":8733247,"packets":80,"payload":65536,"wall_ns":8739855}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":5242880,"reallocations":80,"requested_bytes":5278400,"scanner_input_bytes":5242880},"codec":"h264","cpu_ns":8860776,"packets":80,"payload":65536,"wall_ns":8874106}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":5242880,"reallocations":80,"requested_bytes":5278400,"scanner_input_bytes":5242880},"codec":"h264","cpu_ns":8518644,"packets":80,"payload":65536,"wall_ns":8515900}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":20971520,"reallocations":80,"requested_bytes":21007040,"scanner_input_bytes":20971520},"codec":"h264","cpu_ns":35166463,"packets":80,"payload":262144,"wall_ns":35201651}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":20971520,"reallocations":80,"requested_bytes":21007040,"scanner_input_bytes":20971520},"codec":"h264","cpu_ns":33919296,"packets":80,"payload":262144,"wall_ns":33919910}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":20971520,"reallocations":80,"requested_bytes":21007040,"scanner_input_bytes":20971520},"codec":"h264","cpu_ns":33846579,"packets":80,"payload":262144,"wall_ns":33847449}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":83886080,"reallocations":80,"requested_bytes":83921600,"scanner_input_bytes":83886080},"codec":"h264","cpu_ns":139798009,"packets":80,"payload":1048576,"wall_ns":139822299}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":83886080,"reallocations":80,"requested_bytes":83921600,"scanner_input_bytes":83886080},"codec":"h264","cpu_ns":136942475,"packets":80,"payload":1048576,"wall_ns":136949136}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":83886080,"reallocations":80,"requested_bytes":83921600,"scanner_input_bytes":83886080},"codec":"h264","cpu_ns":136275103,"packets":80,"payload":1048576,"wall_ns":136294883}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":0,"reallocations":0,"requested_bytes":5254400,"scanner_input_bytes":0},"codec":"vp9","cpu_ns":226034,"packets":80,"payload":65536,"wall_ns":224055}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":0,"reallocations":0,"requested_bytes":5254400,"scanner_input_bytes":0},"codec":"vp9","cpu_ns":123822,"packets":80,"payload":65536,"wall_ns":123080}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":0,"reallocations":0,"requested_bytes":5254400,"scanner_input_bytes":0},"codec":"vp9","cpu_ns":131015,"packets":80,"payload":65536,"wall_ns":130053}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":0,"reallocations":0,"requested_bytes":20983040,"scanner_input_bytes":0},"codec":"vp9","cpu_ns":1346935,"packets":80,"payload":262144,"wall_ns":1345675}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":0,"reallocations":0,"requested_bytes":20983040,"scanner_input_bytes":0},"codec":"vp9","cpu_ns":1678688,"packets":80,"payload":262144,"wall_ns":1677690}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":0,"reallocations":0,"requested_bytes":20983040,"scanner_input_bytes":0},"codec":"vp9","cpu_ns":1310027,"packets":80,"payload":262144,"wall_ns":1308793}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":0,"reallocations":0,"requested_bytes":83897600,"scanner_input_bytes":0},"codec":"vp9","cpu_ns":7108991,"packets":80,"payload":1048576,"wall_ns":7105839}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":0,"reallocations":0,"requested_bytes":83897600,"scanner_input_bytes":0},"codec":"vp9","cpu_ns":6165251,"packets":80,"payload":1048576,"wall_ns":6162727}
+T1495 {"allocations":{"allocations":240,"explicit_copy_bytes":0,"reallocations":0,"requested_bytes":83897600,"scanner_input_bytes":0},"codec":"vp9","cpu_ns":3871069,"packets":80,"payload":1048576,"wall_ns":3868829}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 701 filtered out; finished in 1.30s
+

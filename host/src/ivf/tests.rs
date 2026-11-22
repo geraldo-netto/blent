@@ -281,3 +281,34 @@ fn decode_ivf(packets: &[VideoPacket]) {
         "T432: frame payloads must decode completely"
     );
 }
+
+#[tokio::test]
+async fn t1495_ivf_payload_uses_spare_capacity_without_zero_filling() {
+    use std::{
+        pin::Pin,
+        task::{Context, Poll},
+    };
+    use tokio::io::{AsyncRead, ReadBuf};
+    struct Probe<'a>(&'a [u8], bool);
+    impl AsyncRead for Probe<'_> {
+        fn poll_read(
+            mut self: Pin<&mut Self>,
+            cx: &mut Context<'_>,
+            buf: &mut ReadBuf<'_>,
+        ) -> Poll<std::io::Result<()>> {
+            if buf.remaining() > 32 {
+                self.1 |= buf.initialized().len() < buf.capacity();
+            }
+            Pin::new(&mut self.0).poll_read(cx, buf)
+        }
+    }
+    let mut data = header();
+    let mut payload = vec![0x55; 65536];
+    payload[..4].copy_from_slice(&[0x82, 0x49, 0x83, 0x42]);
+    append_packet(&mut data, &payload, 0);
+    let mut input = Probe(&data, false);
+    let mut parser = IvfPacketizer::new(Codec::Vp9, Default::default());
+    let (_, packets) = parser.read_from(&mut input).await.unwrap();
+    assert_eq!(packets[0].data.as_ref(), payload);
+    assert!(input.1, "T1495 payload unnecessarily zero-initialized");
+}

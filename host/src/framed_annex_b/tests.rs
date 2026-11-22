@@ -286,3 +286,24 @@ async fn t448_stock_h264_hevc_framing_preserves_decoded_pictures_and_join_points
         }
     }
 }
+
+#[tokio::test]
+async fn t1495_complete_keyframe_reserves_once_without_reallocation() {
+    let mut payload = vec![0x55; 65536];
+    payload[..19].copy_from_slice(&[
+        0, 0, 0, 1, 0x67, 0x11, 0, 0, 0, 1, 0x68, 0x22, 0, 0, 0, 1, 0x65, 0x80, 0x33,
+    ]);
+    let stream = stream(Codec::H264, &[payload.clone(), payload.clone()]);
+    let mut input = stream.as_slice();
+    let mut parser = FramedAnnexB::new(Codec::H264, Default::default());
+    parser.read_from(&mut input).await.unwrap();
+    let ((_, packets), counts) = crate::allocation_probe::measure_async(async {
+        parser.read_from(&mut input).await.unwrap()
+    })
+    .await;
+    assert_eq!(packets[0].data.as_ref(), payload);
+    assert_eq!(
+        counts.reallocations, 0,
+        "T1495 redundant keyframe reallocation"
+    );
+}

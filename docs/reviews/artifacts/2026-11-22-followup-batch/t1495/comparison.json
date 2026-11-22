@@ -1,0 +1,182 @@
+[
+  {
+    "stage": "before",
+    "codec": "h264",
+    "payload_bytes": 65536,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 8733247,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 5242880,
+      "reallocations": 80,
+      "requested_bytes": 5278400,
+      "scanner_input_bytes": 5242880
+    }
+  },
+  {
+    "stage": "before",
+    "codec": "h264",
+    "payload_bytes": 262144,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 33919296,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 20971520,
+      "reallocations": 80,
+      "requested_bytes": 21007040,
+      "scanner_input_bytes": 20971520
+    }
+  },
+  {
+    "stage": "before",
+    "codec": "h264",
+    "payload_bytes": 1048576,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 136942475,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 83886080,
+      "reallocations": 80,
+      "requested_bytes": 83921600,
+      "scanner_input_bytes": 83886080
+    }
+  },
+  {
+    "stage": "before",
+    "codec": "vp9",
+    "payload_bytes": 65536,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 131015,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 0,
+      "reallocations": 0,
+      "requested_bytes": 5254400,
+      "scanner_input_bytes": 0
+    }
+  },
+  {
+    "stage": "before",
+    "codec": "vp9",
+    "payload_bytes": 262144,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 1346935,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 0,
+      "reallocations": 0,
+      "requested_bytes": 20983040,
+      "scanner_input_bytes": 0
+    }
+  },
+  {
+    "stage": "before",
+    "codec": "vp9",
+    "payload_bytes": 1048576,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 6165251,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 0,
+      "reallocations": 0,
+      "requested_bytes": 83897600,
+      "scanner_input_bytes": 0
+    }
+  },
+  {
+    "stage": "after",
+    "codec": "h264",
+    "payload_bytes": 65536,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 7404755,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 5242880,
+      "reallocations": 0,
+      "requested_bytes": 5277440,
+      "scanner_input_bytes": 5242880
+    }
+  },
+  {
+    "stage": "after",
+    "codec": "h264",
+    "payload_bytes": 262144,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 29808287,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 20971520,
+      "reallocations": 0,
+      "requested_bytes": 21006080,
+      "scanner_input_bytes": 20971520
+    }
+  },
+  {
+    "stage": "after",
+    "codec": "h264",
+    "payload_bytes": 1048576,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 118911573,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 83886080,
+      "reallocations": 0,
+      "requested_bytes": 83920640,
+      "scanner_input_bytes": 83886080
+    }
+  },
+  {
+    "stage": "after",
+    "codec": "vp9",
+    "payload_bytes": 65536,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 93405,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 0,
+      "reallocations": 0,
+      "requested_bytes": 5254400,
+      "scanner_input_bytes": 0
+    }
+  },
+  {
+    "stage": "after",
+    "codec": "vp9",
+    "payload_bytes": 262144,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 1007850,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 0,
+      "reallocations": 0,
+      "requested_bytes": 20983040,
+      "scanner_input_bytes": 0
+    }
+  },
+  {
+    "stage": "after",
+    "codec": "vp9",
+    "payload_bytes": 1048576,
+    "packets_per_sample": 80,
+    "samples": 3,
+    "cpu_median_ns": 2686127,
+    "counts": {
+      "allocations": 240,
+      "explicit_copy_bytes": 0,
+      "reallocations": 0,
+      "requested_bytes": 83897600,
+      "scanner_input_bytes": 0
+    }
+  }
+]

@@ -70,3 +70,44 @@ fn t433_av1_rejects_invalid_bounds_profiles_and_ambiguous_units() {
     too_large.resize(65540, 0);
     assert!(Av1State::default().prepare(&mut too_large).is_err());
 }
+
+fn large_frame(size: usize, key: bool) -> Vec<u8> {
+    let mut data = vec![0x32];
+    let mut remaining = size;
+    while remaining >= 128 {
+        data.push((remaining as u8 & 127) | 128);
+        remaining >>= 7;
+    }
+    data.push(remaining as u8);
+    data.push(if key { 0x10 } else { 0 });
+    data.resize(data.len() + size - 1, 0x55);
+    data
+}
+
+#[test]
+#[ignore = "finite AV1 repeated-sequence allocation measurement"]
+fn t1495_av1_repeat_header_cost() {
+    for key in [false, true] {
+        for headroom in [0, 3] {
+            let mut parser = Av1State::default();
+            parser.prepare(&mut unit(0x10)).unwrap();
+            let source = large_frame(1024 * 1024, key);
+            let mut cpu = 0;
+            let mut allocations = 0;
+            let mut reallocations = 0;
+            for _ in 0..80 {
+                let mut data = Vec::with_capacity(source.len() + headroom);
+                data.extend_from_slice(&source);
+                let start = crate::allocation_probe::cpu_ns();
+                let (_, counts) = crate::allocation_probe::measure(|| {
+                    assert_eq!(parser.prepare(&mut data).unwrap(), Some(key));
+                    std::hint::black_box(crate::media_storage::MediaBytes::from(data));
+                });
+                cpu += crate::allocation_probe::cpu_ns() - start;
+                allocations += counts.allocations;
+                reallocations += counts.reallocations;
+            }
+            println!("T1495 AV1 key={key} reserved_header={headroom} packets=80 cpu_ns={cpu} allocations={allocations} reallocations={reallocations}");
+        }
+    }
+}

@@ -117,3 +117,36 @@ async fn t785_pipe() {
         }
     }
 }
+
+async fn allocation_sample(codec: Codec, size: usize) -> serde_json::Value {
+    let frames = fixture(codec, size, 81);
+    let stream = frames.concat();
+    let mut input = stream.as_slice();
+    let mut parser = Packetizer::new(codec, Default::default());
+    parser.read_from(&mut input).await.unwrap();
+    let cpu = crate::allocation_probe::cpu_ns();
+    let start = Instant::now();
+    let (_, counts) = crate::allocation_probe::measure_async(async {
+        for _ in 0..80 {
+            let (_, packets) = parser.read_from(&mut input).await.unwrap();
+            assert_eq!(packets.len(), 1);
+            assert_eq!(packets[0].data.len(), size);
+        }
+    })
+    .await;
+    serde_json::json!({"codec":codec.wire_name(), "payload":size, "packets":80,
+        "wall_ns":start.elapsed().as_nanos(), "cpu_ns":crate::allocation_probe::cpu_ns()-cpu,
+        "allocations":counts})
+}
+
+#[tokio::test]
+#[ignore = "finite encoded-reader allocation/CPU measurement"]
+async fn t1495_encoded_reader_allocations() {
+    for codec in [Codec::H264, Codec::Vp9] {
+        for size in [65536, 262144, 1048576] {
+            for _ in 0..3 {
+                println!("T1495 {}", allocation_sample(codec, size).await);
+            }
+        }
+    }
+}

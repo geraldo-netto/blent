@@ -1,0 +1,22 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: method `poll_notice` is never used
+  --> host/src/owned_task/notices.rs:10:19
+   |
+ 6 | impl Task {
+   | --------- method in this implementation
+...
+10 |     pub(crate) fn poll_notice<T>(
+   |                   ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blent` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.32s
+     Running unittests src/main.rs (/home/netto/.cache/blent-followup-20261122/inproc-coverage/debug/build/blent/8e6b0ae9e65b65fc/out/blent-8e6b0ae9e65b65fc)
+
+running 1 test
+test encoder_worker::tests::t1495_worker_packet_reader_preserves_exact_payload_and_truncation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 457 filtered out; finished in 0.00s
+

@@ -1,0 +1,25 @@
+warning: method `poll_notice` is never used
+  --> host/src/owned_task/notices.rs:10:19
+   |
+ 6 | impl Task {
+   | --------- method in this implementation
+...
+10 |     pub(crate) fn poll_notice<T>(
+   |                   ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blent` (lib) generated 1 warning
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `release` profile [optimized] target(s) in 17.84s
+     Running unittests src/main.rs (target/release/build/blent/44f8a6d8ff139b62/out/blent-44f8a6d8ff139b62)
+
+running 1 test
+test ivf::av1::tests::t1495_av1_repeat_header_cost ... T1495 AV1 key=false reserved_header=0 packets=80 cpu_ns=109913 allocations=80 reallocations=0
+T1495 AV1 key=false reserved_header=3 packets=80 cpu_ns=47164 allocations=160 reallocations=0
+T1495 AV1 key=true reserved_header=0 packets=80 cpu_ns=1197320 allocations=160 reallocations=80
+T1495 AV1 key=true reserved_header=3 packets=80 cpu_ns=795836 allocations=80 reallocations=0
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 704 filtered out; finished in 0.01s
+
