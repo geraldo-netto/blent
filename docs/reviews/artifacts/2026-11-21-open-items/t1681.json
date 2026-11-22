@@ -1,0 +1,329 @@
+{
+  "coverage": [
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "open",
+      "line": 24,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "publish",
+      "line": 51,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "clear_staging",
+      "line": 80,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "remove_staging",
+      "line": 87,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "reserve",
+      "line": 101,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "pass",
+      "line": 113,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "descriptor_path",
+      "line": 132,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "record_name",
+      "line": 136,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "candidate",
+      "line": 148,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "regular",
+      "line": 162,
+      "language": "rust",
+      "covered": 6,
+      "total": 7,
+      "percent": 85.71428571428571,
+      "passes": true,
+      "missing": [
+        166
+      ]
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "staging_name",
+      "line": 171,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "remove",
+      "line": 183,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      24,
+      "open",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      51,
+      "publish",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      80,
+      "clear_staging",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      87,
+      "remove_staging",
+      4
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      101,
+      "reserve",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      113,
+      "pass",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      132,
+      "descriptor_path",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      136,
+      "record_name",
+      5
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      148,
+      "candidate",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      162,
+      "regular",
+      4
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      171,
+      "staging_name",
+      5
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      183,
+      "remove",
+      4
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      7,
+      "write_record",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      18,
+      "t1490_retention_has_configurable_bounds_and_keeps_current_even_when_oldest",
+      4
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      45,
+      "t1490_retention_preserves_foreign_names_links_and_directories",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      72,
+      "t1490_retention_names_have_exact_bounds_and_lowercase_hex",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      90,
+      "t1490_bad_lock_paths_and_capacity_fail_before_retention",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      114,
+      "t1490_lock_excludes_writers_and_releases_on_drop",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      123,
+      "t1490_missing_names_settle_and_nonfile_removal_errors_are_reported",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      129,
+      "check_process_lock",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      142,
+      "t1490_lock_exclusion_applies_across_original_processes",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      156,
+      "t1490_retention_stays_with_original_directory_after_path_replacement",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      186,
+      "t1490_failed_publication_cleans_tempfiles_before_releasing_directory",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      215,
+      "crash_after_sync",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      225,
+      "staging_residue",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      234,
+      "t1681_abrupt_writer_staging_is_reclaimed_after_original_exit",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      264,
+      "t1681_staging_cleanup_requires_lock_and_preserves_unowned_entries",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      289,
+      "t1681_staging_namespace_is_exact_and_missing_entries_are_settled",
+      4
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      322,
+      "t1681_reclamation_uses_original_directory_after_rename",
+      1
+    ]
+  ],
+  "issue": "T1681",
+  "before": "Permanent private native-child regression exits immediately after the production staging fsync, bypasses Rust Drop, waits for that original process, then observes its staging file survive the next writer admission.",
+  "after": "Current producer uses an exact owned staging namespace. New admission acquires the original directory writer lock and reclaims regular staged names before publication can start. Active writer lock contention preserves its staged data. Namespace/type and original-directory replacement regressions pass.",
+  "tests": {
+    "selection_cache": 47,
+    "new_staging_cases": 4
+  },
+  "tools": {
+    "coverage": "cargo-llvm-cov / LLVM native line counters",
+    "complexity": "project Rust syn 2.0.119",
+    "tempfile": "3.27.0 pinned implementation; Builder.rand_bytes(12) uses ASCII alphanumeric names"
+  },
+  "ownership": "Transaction owns the original directory and lock descriptors. Every staged creator and normal cleanup remains inside that lock lifetime. Native child regression exits only an owned private test process after staging, and the parent waits for that exact process before re-admission. No timer is a release proof. Each scan retains one directory entry/metadata/name at a time; no list of all staged paths is accumulated. Files with other names or nonregular types are never admitted for reclamation. The test-only abrupt-exit hook is absent from release builds.",
+  "invariants": "A current creator cannot be admitted while another current creator owns the lock. Reclamation precedes new staging creation. Each nonfinal cleanup pass removes a current owned name; descriptor-relative paths cannot redirect cleanup to a replacement directory. Errors prevent admission. Normal tempfile drops run while directory fd is pinned; a leftover current-namespace name after crash/unlink failure stays attributable for next admission.",
+  "cleanup_assumptions": "Finite directory, cooperative current writers preserving lock inode/namespace, next writer admission and successful filesystem calls. Unidentified historical names and externally moved directories are not assigned guessed ownership. No claim of immediate background cleanup or a quota on unrelated files. Installed applications unchanged."
+}

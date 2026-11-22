@@ -40,10 +40,12 @@ impl Transaction {
             "cache lock is not a regular file"
         );
         lock.try_lock().context("tuning cache writer is busy")?;
-        Ok(Self {
+        let transaction = Self {
             directory: directory_file,
             _lock: lock,
-        })
+        };
+        transaction.clear_staging()?;
+        Ok(transaction)
     }
 
     pub(super) fn publish(&self, name: &OsStr, data: &[u8], capacity: u32) -> Result<()> {
@@ -56,9 +58,15 @@ impl Transaction {
             "profile cache too large"
         );
         let directory = descriptor_path(&self.directory);
-        let mut temporary = tempfile::NamedTempFile::new_in(&directory)?;
+        let mut temporary = tempfile::Builder::new()
+            .prefix(".blent-tuning-")
+            .rand_bytes(12)
+            .suffix(".tmp")
+            .tempfile_in(&directory)?;
         temporary.write_all(data)?;
         temporary.as_file().sync_all()?;
+        #[cfg(test)]
+        tests::crash_after_sync();
         self.reserve(name, capacity)?;
         temporary.persist(directory.join(name)).map_err(|failure| {
             // PersistError owns the tempfile; retire it while its directory fd
@@ -67,6 +75,27 @@ impl Transaction {
             failure.error
         })?;
         Ok(())
+    }
+
+    fn clear_staging(&self) -> Result<()> {
+        // Lock admission excludes the original creator. Names are current owned
+        // staging files, never guessed historical tempfile names.
+        while self.remove_staging()? {}
+        Ok(())
+    }
+
+    fn remove_staging(&self) -> Result<bool> {
+        let directory = descriptor_path(&self.directory);
+        let mut removed = false;
+        for entry in fs::read_dir(&directory)? {
+            let entry = entry?;
+            let name = entry.file_name();
+            if staging_name(&name) && regular(&entry)?.is_some() {
+                remove(&directory.join(name))?;
+                removed = true;
+            }
+        }
+        Ok(removed)
     }
 
     pub(super) fn reserve(&self, current: &OsStr, capacity: u32) -> Result<()> {
@@ -124,15 +153,31 @@ fn candidate(
     if name == current || !record_name(&name) {
         return Ok(None);
     }
+    let Some(metadata) = regular(&entry)? else {
+        return Ok(None);
+    };
+    Ok(Some((metadata.modified()?, name)))
+}
+
+fn regular(entry: &fs::DirEntry) -> Result<Option<fs::Metadata>> {
     let metadata = match entry.metadata() {
         Ok(value) => value,
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
         Err(error) => return Err(error.into()),
     };
-    if !metadata.is_file() {
-        return Ok(None);
-    }
-    Ok(Some((metadata.modified()?, name)))
+    Ok(metadata.is_file().then_some(metadata))
+}
+
+fn staging_name(name: &OsStr) -> bool {
+    name.to_str().is_some_and(|name| {
+        let Some(random) = name
+            .strip_prefix(".blent-tuning-")
+            .and_then(|rest| rest.strip_suffix(".tmp"))
+        else {
+            return false;
+        };
+        random.len() == 12 && random.bytes().all(|value| value.is_ascii_alphanumeric())
+    })
 }
 
 fn remove(path: &Path) -> Result<()> {

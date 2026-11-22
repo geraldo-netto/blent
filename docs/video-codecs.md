@@ -546,9 +546,19 @@ The dedicated directory owns regular `<64 lowercase hex digits>.json` names.
 Other names, directories and symlinks remain untouched. Writers use one persistent
 nonblocking lock; a busy writer skips persistence without blocking shutdown or
 altering the selected live profile. Eviction and atomic publication stay bound
-to the original open directory even if its pathname is replaced. Temporary
-cleanup finishes before that directory descriptor is released. Historical
+to the original open directory even if its pathname is replaced. Temporary-file
+drops run before that directory descriptor is released. Historical
 eviction can precede a later publication error; the current record is preserved.
 Pruning errors prevent new publication. Existing readers keep their original
 file handles until their bounded read ends; eviction does not revoke a live
 encoder, decoder, tablet attachment or native resource lease.
+
+Current staging files use `.blent-tuning-<12 ASCII alphanumeric characters>.tmp`.
+After acquiring the writer lock, the next writer removes regular files in that
+owned namespace before it can create new staging data. An active writer retains
+the lock through file IO and cleanup, so reclamation does not use age, PID guesses
+or elapsed deadlines as permission to delete. An abrupt writer exit releases the
+original OS lock; the next admission can reclaim its abandoned staging file.
+Reclamation errors refuse the new write. Symlinks, directories and historical
+unidentified temporary names remain untouched. Eventual reclamation requires a
+subsequent writer admission and successful filesystem operations.

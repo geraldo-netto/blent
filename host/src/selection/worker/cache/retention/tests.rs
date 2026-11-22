@@ -209,3 +209,131 @@ fn t1490_failed_publication_cleans_tempfiles_before_releasing_directory() {
     drop(transaction);
     assert!(Transaction::open(root.path()).is_ok());
 }
+
+static EXIT_AFTER_SYNC: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+pub(super) fn crash_after_sync() {
+    if EXIT_AFTER_SYNC.load(std::sync::atomic::Ordering::Acquire) {
+        println!("T1681_EXIT_AFTER_SYNC");
+        std::io::stdout().flush().unwrap();
+        // Bypass Rust Drop exactly as an abrupt process exit would. Parent waits
+        // for this original process before it admits another cache writer.
+        std::process::exit(0);
+    }
+}
+
+fn staging_residue(root: &Path) -> Vec<std::ffi::OsString> {
+    fs::read_dir(root)
+        .unwrap()
+        .map(|entry| entry.unwrap().file_name())
+        .filter(|name| name != "retention.lock")
+        .collect()
+}
+
+#[test]
+fn t1681_abrupt_writer_staging_is_reclaimed_after_original_exit() {
+    if let Some(root) = std::env::var_os("BLENT_T1681_EXIT_ROOT") {
+        let transaction = Transaction::open(Path::new(&root)).unwrap();
+        EXIT_AFTER_SYNC.store(true, std::sync::atomic::Ordering::Release);
+        transaction
+            .publish(OsStr::new(&format!("{:064x}.json", 0)), b"candidate", 64)
+            .unwrap();
+        panic!("T1681 fault did not reach the staging boundary");
+    }
+    let root = tempfile::tempdir().unwrap();
+    let output = std::process::Command::new(std::env::current_exe().unwrap())
+        .args(["--exact", "selection::worker::cache::retention::tests::t1681_abrupt_writer_staging_is_reclaimed_after_original_exit", "--nocapture"])
+        .env("BLENT_T1681_EXIT_ROOT", root.path()).output().unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(String::from_utf8_lossy(&output.stdout).contains("T1681_EXIT_AFTER_SYNC"));
+    let before = staging_residue(root.path());
+    assert_eq!(before.len(), 1);
+    let _next = Transaction::open(root.path()).unwrap();
+    assert!(
+        staging_residue(root.path()).is_empty(),
+        "T1681 abandoned staging file survived original-writer exit"
+    );
+    assert!(before[0].to_str().unwrap().starts_with(".blent-tuning-"));
+}
+
+#[test]
+fn t1681_staging_cleanup_requires_lock_and_preserves_unowned_entries() {
+    let root = tempfile::tempdir().unwrap();
+    let owner = Transaction::open(root.path()).unwrap();
+    let staged = root.path().join(".blent-tuning-ABCdef012345.tmp");
+    fs::write(&staged, b"live staging").unwrap();
+    assert!(Transaction::open(root.path()).is_err());
+    assert!(staged.exists());
+    let unknown = root.path().join(".tmpHistorical");
+    fs::write(&unknown, b"unattributed").unwrap();
+    let outside = tempfile::NamedTempFile::new().unwrap();
+    fs::write(outside.path(), b"external").unwrap();
+    let link = root.path().join(".blent-tuning-000000000000.tmp");
+    symlink(outside.path(), &link).unwrap();
+    let directory = root.path().join(".blent-tuning-111111111111.tmp");
+    fs::create_dir(&directory).unwrap();
+    drop(owner);
+    let _next = Transaction::open(root.path()).unwrap();
+    assert!(!staged.exists());
+    assert_eq!(fs::read(unknown).unwrap(), b"unattributed");
+    assert_eq!(fs::read(outside.path()).unwrap(), b"external");
+    assert!(link.is_symlink());
+    assert!(directory.is_dir());
+}
+
+#[test]
+fn t1681_staging_namespace_is_exact_and_missing_entries_are_settled() {
+    for body in ["a".repeat(12), "A".repeat(12), "0".repeat(12)] {
+        assert!(staging_name(OsStr::new(&format!(
+            ".blent-tuning-{body}.tmp"
+        ))));
+    }
+    for body in [
+        "a".repeat(11),
+        "a".repeat(13),
+        "_".repeat(12),
+        "é".repeat(6),
+    ] {
+        assert!(!staging_name(OsStr::new(&format!(
+            ".blent-tuning-{body}.tmp"
+        ))));
+    }
+    for name in [
+        ".tmpABCdef012345",
+        ".blent-tuning-ABCdef012345.json",
+        "blent-tuning-ABCdef012345.tmp",
+    ] {
+        assert!(!staging_name(OsStr::new(name)));
+    }
+    assert!(!staging_name(OsStr::from_bytes(&[255])));
+    let root = tempfile::tempdir().unwrap();
+    let path = write_record(root.path(), 0);
+    let entry = fs::read_dir(root.path()).unwrap().next().unwrap().unwrap();
+    fs::remove_file(path).unwrap();
+    assert!(regular(&entry).unwrap().is_none());
+    assert!(candidate(entry, OsStr::new("other")).unwrap().is_none());
+}
+
+#[test]
+fn t1681_reclamation_uses_original_directory_after_rename() {
+    let root = tempfile::tempdir().unwrap();
+    let original = root.path().join("cache");
+    fs::create_dir(&original).unwrap();
+    let transaction = Transaction::open(&original).unwrap();
+    let name = ".blent-tuning-ABCdef012345.tmp";
+    fs::write(original.join(name), b"settled original staging").unwrap();
+    let moved = root.path().join("moved");
+    fs::rename(&original, &moved).unwrap();
+    fs::create_dir(&original).unwrap();
+    fs::write(original.join(name), b"replacement directory").unwrap();
+    transaction.clear_staging().unwrap();
+    assert!(!moved.join(name).exists());
+    assert_eq!(
+        fs::read(original.join(name)).unwrap(),
+        b"replacement directory"
+    );
+}

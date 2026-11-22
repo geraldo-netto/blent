@@ -499,3 +499,11 @@ All 500 common-library tests, 260 GUI unit tests, two GUI process-exit tests and
 CameraProfile, Sensor and host activity settings now reject unknown keys. CameraSettings forwards its current flat layout transparently to the profile contract, so current camera fields and omitted-field defaults retain their meaning. The permanent regression accepted an unknown nested camera key before the change; it now rejects bounded unknown TOML/JSON inputs through direct and FileConfig callers. Known sensor/activity values and complete current round trips still pass.
 
 All 502 common tests and 36 camera-matching GUI tests pass; all 28 examined functions have complexity ≤9. No handwritten production method changed, and no standalone coverage percentage is claimed for Serde-generated methods. This adds no resource owner or escaped parsing value. [Evidence](artifacts/2026-11-21-open-items/t1680.json). Source-only; installed settings and sessions are untouched.
+
+## T1681 — reclaim abandoned current staging files
+
+The cache producer uses an exact owned staging namespace. A new writer first acquires the original directory lock, then removes regular abandoned staging names before creating another temporary record. A live writer keeps the lock through IO and cleanup. No age or PID heuristic authorizes deletion; symlinks, directories and unidentified historical names remain untouched. Errors refuse admission, and descriptor-bound operations preserve a replacement directory.
+
+The permanent regression exits an owned private native child immediately after production staging fsync, bypasses Rust Drop, and waits for that original process before re-admission. Before the fix, the staging file remained; afterward, it is reclaimed. All 47 cache tests pass, including four new staging cases. Twelve production methods measure 85.71–100% executable-line coverage; all 29 measured production/test functions have complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1681.json).
+
+Reclamation retains only one entry/metadata/name at a time and requires a subsequent writer plus successful filesystem operations. Historical unknown names do not acquire guessed ownership. The original blocking worker remains the native completion sponsor; the abrupt-exit hook is test-only. No installed session changed.
