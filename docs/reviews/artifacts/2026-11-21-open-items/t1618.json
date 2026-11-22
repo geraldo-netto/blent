@@ -1,0 +1,32 @@
+{
+  "issue": "T1618",
+  "source_commit": "b6e6ed4f",
+  "children": {
+    "T1686": "5d182385",
+    "T1687": "b6e6ed4f"
+  },
+  "combined_evidence": "t1687.json",
+  "tests": {
+    "default_capture": {
+      "passed": 273,
+      "failed": 0,
+      "ignored": 3
+    },
+    "inproc_capture": {
+      "passed": 133,
+      "failed": 0,
+      "ignored": 0
+    },
+    "unchanged_common_control_suite": {
+      "passed": 506,
+      "failed": 0,
+      "evidence": "t1686.json"
+    },
+    "unchanged_native_control_suite": {
+      "passed": 1,
+      "transitions": 16,
+      "evidence": "t1686-native.log.gz"
+    }
+  },
+  "acceptance": "Combined source verifies original absolute ACK deadline and cancellation retention, exact ACK/native cleanup gates, parked original helper exit/stdout failure, current-demand-only replacement and fresh-stream resume. Private processes and fake EVDI only; physical event ordering is not certified. Installed binaries and sessions unchanged."
+}
