@@ -55,17 +55,10 @@ impl VideoSender {
         self.viewers.clone()
     }
 
-    /// None at epoch exhaustion, before any subscription or membership is owned.
-    pub fn subscribe(&self) -> Option<VideoReceiver> {
-        self.subscriber(None)
-    }
-    pub fn subscribe_with_presence(
-        &self,
-        capability: Arc<dyn crate::capture_contract::LivenessCapability>,
-    ) -> Option<VideoReceiver> {
-        self.subscriber(Some(capability))
-    }
-    fn subscriber(
+    /// Reserve one membership before exposing a receiver. Missing liveness proof
+    /// keeps this viewer ineligible for native idle capture. Returns None on
+    /// epoch exhaustion without acquiring a subscription or capability.
+    pub fn subscribe(
         &self,
         capability: Option<Arc<dyn crate::capture_contract::LivenessCapability>>,
     ) -> Option<VideoReceiver> {
@@ -195,7 +188,7 @@ mod tests {
         let config = MediaBytes::from_static(b"csd");
         assert!(tx.send(packet(0, true, &config)).is_err());
         assert_eq!(tx.budget.usage().0, 0);
-        let _rx = tx.subscribe().unwrap();
+        let _rx = tx.subscribe(None).unwrap();
         let mut oversized = packet(1, true, &config);
         oversized.data = MediaBytes::from(vec![0; MAX_FRAME_BYTES + 1]);
         assert!(tx.send(oversized).is_err());

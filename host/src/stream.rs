@@ -3,6 +3,8 @@ mod lag_tests;
 mod liveness;
 mod presence;
 #[cfg(test)]
+pub(crate) mod test_control;
+#[cfg(test)]
 mod wake_tests;
 #[cfg(test)]
 mod write_tests;
@@ -57,7 +59,6 @@ const WRITE_TIMEOUT: tokio::time::Duration = tokio::time::Duration::from_secs(1)
 pub struct StreamServer {
     config: StreamConfig,
     attachment: Option<crate::attachment::Attachment>,
-    stop: tokio::sync::watch::Sender<bool>,
     codec_config: CodecConfig,
     /// Raised on attachment or viewer lag for the optional in-process encoder's next-frame
     /// keyframe request. The CLI uses its one-second wall-clock IDR schedule.
@@ -73,7 +74,6 @@ impl StreamServer {
         Self {
             config,
             attachment: None,
-            stop: tokio::sync::watch::channel(false).0,
             codec_config,
             idr_wanted,
         }
@@ -97,7 +97,6 @@ impl StreamServer {
         video_tx: crate::video_queue::VideoSender,
         listener: TcpListener,
     ) -> Result<()> {
-        let mut stop = self.stop.subscribe();
         // Dropping this server future also cancels every accepted connection.
         let mut clients = tokio::task::JoinSet::new();
         let slots = Arc::new(tokio::sync::Semaphore::new(MAX_CLIENTS));
@@ -107,7 +106,6 @@ impl StreamServer {
             let accept = tokio::select! {
                 res = acceptance.next(&listener) => res,
                 _ = clients.join_next(), if !clients.is_empty() => continue,
-                _ = stop.wait_for(|stopped| *stopped) => break,
             };
 
             let (socket, peer) = match accept {
@@ -141,9 +139,6 @@ impl StreamServer {
                 info!("Client {} session ended", peer);
             });
         }
-
-        clients.shutdown().await;
-        Ok(())
     }
 
     async fn handle_attached_client(
@@ -204,7 +199,7 @@ impl StreamServer {
         let liveness = liveness::configured_interval()?;
         let (presence_owner, capabilities) = presence::channel();
         let rx = video_tx
-            .subscribe_with_presence(Arc::new(capabilities.clone()))
+            .subscribe(Some(Arc::new(capabilities.clone())))
             .context("Video viewer epochs exhausted")?;
         idr_wanted.store(true, Ordering::SeqCst);
         let (mut reader, writer) = socket.into_split();
@@ -318,13 +313,6 @@ impl StreamServer {
             std::io::IoSlice::advance_slices(&mut remaining, written);
         }
         Ok(())
-    }
-
-    /// Counterpart to `run`; shutdown currently goes through task
-    /// cancellation instead, but leaving this makes the lifecycle explicit.
-    #[allow(dead_code)]
-    pub fn stop(&self) {
-        self.stop.send_replace(true);
     }
 }
 
@@ -941,6 +929,7 @@ mod tests {
 
     async fn authenticated_test_server() -> (
         Arc<StreamServer>,
+        futures_util::future::AbortHandle,
         crate::video_queue::VideoSender,
         std::net::SocketAddr,
         tokio::task::JoinHandle<Result<()>>,
@@ -956,19 +945,20 @@ mod tests {
         let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
         let address = listener.local_addr().unwrap();
         let (tx, _) = crate::video_queue::channel(8, Default::default());
-        let task = tokio::spawn({
+        let (cancel, work) = test_control::controlled({
             let server = server.clone();
             let tx = tx.clone();
             async move { server.run_with_listener(tx, listener).await }
         });
-        (server, tx, address, task)
+        let task = tokio::spawn(work);
+        (server, cancel, tx, address, task)
     }
 
     #[tokio::test]
     async fn t139_only_authenticated_clients_request_capture() {
         use tokio::io::AsyncReadExt;
         use tokio::time::{sleep, timeout, Duration};
-        let (server, tx, address, task) = authenticated_test_server().await;
+        let (server, cancel, tx, address, task) = authenticated_test_server().await;
         let mut client = TcpStream::connect(address).await.unwrap();
         sleep(Duration::from_millis(20)).await;
         assert_eq!(
@@ -995,7 +985,7 @@ mod tests {
             .unwrap();
         assert_eq!(tx.receiver_count(), 1);
         assert!(server.idr_wanted.load(Ordering::SeqCst));
-        server.stop();
+        cancel.abort();
         task.await.unwrap().unwrap();
     }
 
@@ -1003,7 +993,7 @@ mod tests {
     async fn t139_pending_admission_is_bounded_and_reusable() {
         use tokio::io::AsyncReadExt;
         use tokio::time::{sleep, timeout, Duration};
-        let (server, _, address, task) = authenticated_test_server().await;
+        let (_server, cancel, _, address, task) = authenticated_test_server().await;
         let mut clients = Vec::new();
         for _ in 0..16 {
             clients.push(TcpStream::connect(address).await.unwrap());
@@ -1031,7 +1021,7 @@ mod tests {
         })
         .await
         .expect("closed pending clients did not free admission capacity");
-        server.stop();
+        cancel.abort();
         task.await.unwrap().unwrap();
     }
 
@@ -1039,7 +1029,7 @@ mod tests {
     async fn t139_idle_authenticated_disconnect_frees_capture() {
         use tokio::io::AsyncReadExt;
         use tokio::time::{timeout, Duration};
-        let (server, tx, address, task) = authenticated_test_server().await;
+        let (_server, cancel, tx, address, task) = authenticated_test_server().await;
         let mut client = TcpStream::connect(address).await.unwrap();
         client.write_all("a".repeat(64).as_bytes()).await.unwrap();
         timeout(Duration::from_secs(1), client.read_exact(&mut [0; 12]))
@@ -1055,7 +1045,7 @@ mod tests {
         })
         .await
         .expect("idle disconnected client retained capture subscription");
-        server.stop();
+        cancel.abort();
         task.await.unwrap().unwrap();
     }
 
@@ -1076,11 +1066,12 @@ mod tests {
             let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
             let address = listener.local_addr().unwrap();
             let (tx, _) = crate::video_queue::channel(8, Default::default());
-            let task = tokio::spawn({
+            let (cancel, work) = test_control::controlled({
                 let server = server.clone();
                 let tx = tx.clone();
                 async move { server.run_with_listener(tx, listener).await }
             });
+            let task = tokio::spawn(work);
             let mut client = TcpStream::connect(address).await.unwrap();
             client.write_all(token.as_bytes()).await.unwrap();
             let mut config = [0; 12];
@@ -1093,7 +1084,7 @@ mod tests {
             if abort {
                 task.abort();
             } else {
-                server.stop();
+                cancel.abort();
             }
             let result = timeout(Duration::from_secs(1), task).await.unwrap();
             if !abort {

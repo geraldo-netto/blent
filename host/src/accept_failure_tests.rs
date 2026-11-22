@@ -68,9 +68,11 @@ async fn t1633_stream_exhaustion_backs_off_and_stop_remains_immediate() {
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
     let (video, _) = crate::video_queue::channel(8, Default::default());
-    let mut future = Box::pin(server.run_with_listener(video, listener));
+    let (cancel, work) =
+        crate::stream::test_control::controlled(server.run_with_listener(video, listener));
+    let mut future = Box::pin(work);
     let _peer = exhaust(&mut future, address).await;
-    server.stop();
+    cancel.abort();
     tokio::time::timeout(Duration::from_millis(50), future)
         .await
         .expect("T1633 stop waited for retry deadline")
@@ -148,7 +150,9 @@ async fn t1633_stream_recovers_after_descriptor_capacity_returns() {
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
     let (video, _) = crate::video_queue::channel(8, Default::default());
-    let mut future = Box::pin(server.run_with_listener(video, listener));
+    let (cancel, work) =
+        crate::stream::test_control::controlled(server.run_with_listener(video, listener));
+    let mut future = Box::pin(work);
     let mut peer = exhaust(&mut future, address).await;
     peer.write_all("b".repeat(64).as_bytes()).await.unwrap();
     let mut byte = [0];
@@ -160,6 +164,6 @@ async fn t1633_stream_recovers_after_descriptor_capacity_returns() {
     })
     .await
     .expect("T1633 listener did not recover after descriptors returned");
-    server.stop();
+    cancel.abort();
     future.await.unwrap();
 }

@@ -26,7 +26,7 @@ async fn t1041_capture_observes_original_grant_and_denies_unmanaged_or_closed_so
     let viewers = video.viewers();
     assert_eq!(viewers.epoch(), 0);
     let (grant, capability) = presence::channel();
-    let original = video.subscribe_with_presence(Arc::new(capability)).unwrap();
+    let original = video.subscribe(Some(Arc::new(capability))).unwrap();
     assert_eq!(viewers.epoch(), 1);
     assert_eq!(video.viewer_epoch().load(Ordering::Acquire), 1);
     grant.send_replace(true);
@@ -91,13 +91,13 @@ async fn t1041_mixed_original_viewers_wake_on_presence_and_unmanaged_departure()
     drop(initial);
     let viewers = video.viewers();
     let (first, capability) = presence::channel();
-    let _first = video.subscribe_with_presence(Arc::new(capability)).unwrap();
+    let _first = video.subscribe(Some(Arc::new(capability))).unwrap();
     first.send_replace(true);
     assert!(viewers.liveness_ready());
     let added = viewers.changed();
     let (second, capability) = presence::channel();
     second.send_replace(false); // Deliberate revoked-source control.
-    let second_reader = video.subscribe_with_presence(Arc::new(capability)).unwrap();
+    let second_reader = video.subscribe(Some(Arc::new(capability))).unwrap();
     assert!(!viewers.liveness_ready());
     timeout(Duration::from_millis(100), added).await.unwrap();
     let acknowledged = viewers.changed();
@@ -106,7 +106,7 @@ async fn t1041_mixed_original_viewers_wake_on_presence_and_unmanaged_departure()
         .await
         .unwrap();
     assert!(viewers.liveness_ready());
-    let unmanaged = video.subscribe().unwrap();
+    let unmanaged = video.subscribe(None).unwrap();
     let departed = viewers.changed();
     assert!(!viewers.liveness_ready());
     drop(unmanaged);
@@ -127,13 +127,13 @@ async fn t1041_late_original_notices_never_grant_replacement_membership() {
     let viewers = video.viewers();
     for _ in 0..1000 {
         let (old, capability) = presence::channel();
-        let old_reader = video.subscribe_with_presence(Arc::new(capability)).unwrap();
+        let old_reader = video.subscribe(Some(Arc::new(capability))).unwrap();
         old.send_replace(true);
         let retained_notice = viewers.changed();
         drop(old_reader);
         let (new, capability) = presence::channel();
         new.send_replace(false); // A stale publisher cannot grant this replacement.
-        let replacement = video.subscribe_with_presence(Arc::new(capability)).unwrap();
+        let replacement = video.subscribe(Some(Arc::new(capability))).unwrap();
         old.send_replace(true);
         timeout(Duration::from_millis(100), retained_notice)
             .await
@@ -157,7 +157,7 @@ async fn t1041_read_only_wait_is_idle_and_closed_sources_do_not_spin() {
         .is_err());
     let (grant, capability) = presence::channel();
     grant.send_replace(true);
-    let original = video.subscribe_with_presence(Arc::new(capability)).unwrap();
+    let original = video.subscribe(Some(Arc::new(capability))).unwrap();
     drop(grant);
     assert!(!viewers.liveness_ready());
     assert!(timeout(Duration::from_millis(10), viewers.changed())

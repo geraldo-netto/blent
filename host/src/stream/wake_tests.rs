@@ -7,7 +7,8 @@ async fn t405_idle_listener_has_no_periodic_wakeups() {
     let server = StreamServer::new(Default::default(), Default::default(), Default::default());
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let (tx, _rx) = crate::video_queue::channel(8, Default::default());
-    let mut future = Box::pin(server.run_with_listener(tx, listener));
+    let (_cancel, work) = test_control::controlled(server.run_with_listener(tx, listener));
+    let mut future = Box::pin(work);
     let probe = Arc::new(Probe::default());
     assert!(probe.poll(future.as_mut()).is_pending());
     probe.take();
@@ -20,11 +21,12 @@ async fn t405_stop_wakes_listener_without_waiting_for_a_tick() {
     let server = StreamServer::new(Default::default(), Default::default(), Default::default());
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let (tx, _rx) = crate::video_queue::channel(8, Default::default());
-    let mut future = Box::pin(server.run_with_listener(tx, listener));
+    let (cancel, work) = test_control::controlled(server.run_with_listener(tx, listener));
+    let mut future = Box::pin(work);
     let probe = Arc::new(Probe::default());
     assert!(probe.poll(future.as_mut()).is_pending());
     probe.take();
-    server.stop();
+    cancel.abort();
     assert!(probe.take() > 0, "T405: stop left the listener asleep");
     assert!(probe.poll(future.as_mut()).is_ready());
 }
@@ -96,8 +98,9 @@ async fn t405_stop_before_first_poll_remains_latched() {
     let server = StreamServer::new(Default::default(), Default::default(), Default::default());
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let (tx, _rx) = crate::video_queue::channel(8, Default::default());
-    server.stop();
-    let mut future = Box::pin(server.run_with_listener(tx, listener));
+    let (cancel, work) = test_control::controlled(server.run_with_listener(tx, listener));
+    cancel.abort();
+    let mut future = Box::pin(work);
     let probe = Arc::new(Probe::default());
     assert!(
         probe.poll(future.as_mut()).is_ready(),

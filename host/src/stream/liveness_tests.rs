@@ -147,7 +147,9 @@ async fn t1567_authenticated_current_client_gets_liveness_without_ack_and_stop_r
     drop(rx);
     let owner = server.clone();
     let source = tx.clone();
-    let task = tokio::spawn(async move { owner.run_with_listener(source, listener).await });
+    let (cancel, work) =
+        test_control::controlled(async move { owner.run_with_listener(source, listener).await });
+    let task = tokio::spawn(work);
     let mut viewer = TcpStream::connect(address).await.unwrap();
     tokio::time::advance(Duration::from_secs(2)).await;
     let before = record(&viewer).await;
@@ -157,7 +159,7 @@ async fn t1567_authenticated_current_client_gets_liveness_without_ack_and_stop_r
     viewer.read_exact(&mut [0; 8]).await.unwrap();
     tokio::time::advance(Duration::from_secs(12)).await;
     let after = record(&viewer).await;
-    server.stop();
+    cancel.abort();
     task.await.unwrap().unwrap();
     assert_eq!(viewer.read(&mut [0]).await.unwrap(), 0);
     assert_eq!(tx.receiver_count(), 0);

@@ -118,7 +118,7 @@ mod tests {
         let (video, initial) = crate::video_queue::channel(8, Default::default());
         drop(initial);
         for _ in 0..1000 {
-            let original = video.subscribe().unwrap();
+            let original = video.subscribe(None).unwrap();
             assert_eq!(video.viewers.members.lock().unwrap().entries.len(), 1);
             let retained_notice = video.viewers.changed();
             drop(original);

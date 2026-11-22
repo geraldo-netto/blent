@@ -56,7 +56,7 @@ fn t497_helper_command_prepares_private_edid_and_respects_card_priority() {
     );
     assert_eq!(
         Path::new(&args[1]),
-        crate::edid::ensure_edid(640, 480, 90).unwrap()
+        crate::edid::ensure_edid_sized(640, 480, 90, 310, 194, 0).unwrap()
     );
     // T1703: generated modes reject invalid product rates instead of clamping.
     for fps in [0, 9, 91, 120, u32::MAX] {

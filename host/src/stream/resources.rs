@@ -128,7 +128,7 @@ impl Control {
 }
 
 struct Session {
-    server: Arc<StreamServer>,
+    cancel: futures_util::future::AbortHandle,
     video: crate::video_queue::VideoSender,
     address: std::net::SocketAddr,
     task: ServerTask,
@@ -165,10 +165,11 @@ async fn session(instance: u32) -> Session {
     let listener = server.bind().await.unwrap();
     let address = listener.local_addr().unwrap();
     let (video, _) = crate::video_queue::channel(8, Default::default());
-    let task = tokio::spawn({
+    let (cancel, work) = test_control::controlled({
         let (server, video) = (server.clone(), video.clone());
         async move { server.run_with_listener(video, listener).await }
     });
+    let task = tokio::spawn(work);
     let starts = Arc::new(Mutex::new(vec![Instant::now(); FRAMES]));
     let fast = authenticated(address, false).await;
     let reader = tokio::spawn(receive(fast, starts.clone()));
@@ -179,7 +180,7 @@ async fn session(instance: u32) -> Session {
         TcpStream::connect(control.address).await.unwrap(),
     ];
     Session {
-        server,
+        cancel,
         video,
         address,
         task,
@@ -265,7 +266,7 @@ impl Session {
             1,
             "T391: stalled viewer retained subscription"
         );
-        self.server.stop();
+        self.cancel.abort();
         timeout(Duration::from_secs(1), self.task)
             .await
             .unwrap()

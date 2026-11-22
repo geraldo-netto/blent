@@ -18,13 +18,13 @@ fn t1177_denial_keeps_original_presence_capability_and_subscription() {
     let (video, raw) = video_queue::channel(8, Default::default());
     drop(raw);
     video.viewer_epoch().store(u64::MAX - 1, Ordering::Release);
-    let original = video.subscribe_with_presence(Arc::new(Capability(true)));
+    let original = video.subscribe(Some(Arc::new(Capability(true))));
     let before = video.viewers.presence().unwrap();
     assert!(video.viewers.liveness_ready());
     let notice = video.viewers.changed();
     let capability = Arc::new(Capability(false));
     for _ in 0..3 {
-        let denied = video.subscribe_with_presence(capability.clone());
+        let denied = video.subscribe(Some(capability.clone()));
         assert_eq!(video.receiver_count(), 1, "T1177: denied receiver admitted");
         assert_eq!(video.viewers.members.lock().unwrap().entries.len(), 1);
         assert_eq!(video.viewers.epoch(), u64::MAX);
@@ -53,7 +53,7 @@ fn t1177_terminal_empty_registry_cannot_restart_continuity() {
     drop(raw);
     video.viewer_epoch().store(u64::MAX, Ordering::Release);
     let notice = video.viewers.changed();
-    let denied = video.subscribe();
+    let denied = video.subscribe(None);
     assert_eq!(
         video.receiver_count(),
         0,
@@ -78,7 +78,7 @@ fn t1177_concurrent_final_admission_reserves_only_one_original() {
             let (video, gate) = (video.clone(), gate.clone());
             std::thread::spawn(move || {
                 gate.wait();
-                video.subscribe()
+                video.subscribe(None)
             })
         })
         .collect();
@@ -112,7 +112,7 @@ fn check_seed(seed: u64) {
     video.viewer_epoch().store(seed, Ordering::Release);
     let mut expected = u128::from(seed);
     for _ in 0..20 {
-        let receiver = video.subscribe();
+        let receiver = video.subscribe(None);
         let admitted = usize::from(expected < u128::from(u64::MAX));
         expected += admitted as u128;
         assert_eq!(
