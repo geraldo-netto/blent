@@ -814,3 +814,9 @@ All 51 retargeted stream baseline tests passed before removal. Final verificatio
 ## T1621 — EDID and stream cleanup integration (2026-11-22)
 
 T1701 (`8fb9866e`) validates the cache location; T1702 (`a9efefec`) removes versioned filenames; T1703 (`77cdc3db`) passes refresh unchanged to validation; T1704 (`37062396`) removes unused APIs and duplicate subscription wrappers. Final integration passes all 19 EDID tests alongside the 71 library and 73 binary cases recorded for T1704. Child artifacts retain individual coverage, complexity and ownership evidence. No installed session or device was changed.
+
+## T1717 — share the EDID contract and runtime encoder (2026-11-22)
+
+A platform-independent `blent_config::edid::Mode` request now owns geometry, panel size, refresh and instance identity. Its encoder returns an owned 128-byte array and borrows at most twelve name characters; current custom-name replacement, termination and padding semantics are retained. The host owns only cache placement/publication. No storage or native backend type enters the shared contract.
+
+All seven selected shared encoder/timing tests and all 19 host EDID tests pass. Existing independent physical-size, color, range, checksum, overflow and cache-repair assertions remain; the Python producer still participates until T1718. All four maintained production functions have 84.2–100% line coverage, and all 32 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1717.json). Successful payload storage is fixed-size; returned diagnostic errors may allocate. No borrowed output or native work escapes, and the host's atomic cache ownership is unchanged. T1707 remains open for development-tool migration.

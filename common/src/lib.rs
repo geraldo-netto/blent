@@ -11,6 +11,7 @@ pub mod direct_input;
 pub mod display;
 pub mod display_activity;
 pub mod display_control;
+pub mod edid;
 pub mod encoder_workers;
 pub mod encoding;
 pub mod gpu;
