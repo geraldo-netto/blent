@@ -83,12 +83,13 @@ impl Fixture {
     }
 }
 
-mod idle_inventory;
 mod accept;
 mod authority;
 mod diagnostics;
 mod display;
 mod identity;
+mod idle_inventory;
+mod idle_wake;
 mod media_client;
 mod policy;
 mod registration;

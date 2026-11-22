@@ -154,7 +154,7 @@ impl Server {
                 input = next(&mut self.clients, &mut self.links) => self.input(input)?,
                 reply = self.authority.next() => self.authority_event(reply?)?,
                 inventory = inventory_next(&mut self.inventory) => self.inventory_result(inventory)?,
-                _ = clock.tick() => self.tick()?,
+                _ = clock.tick(), if self.maintenance_needed() => self.tick()?,
             }
             self.close_requested()?;
             self.authorize_next()?;
@@ -285,6 +285,14 @@ impl Server {
             }
         }
         Ok(())
+    }
+    /// Idle sockets and worker channels already wake this dispatcher directly.
+    /// Keep observing an admitted inventory until exact retirement, and keep
+    /// delayed accepts moving even when no controller client has been admitted.
+    fn maintenance_needed(&self) -> bool {
+        self.controller.inventory_needed()
+            || self.inventory.is_some()
+            || Instant::now() < self.accept_after
     }
     fn tick(&mut self) -> Result<()> {
         self.controller.tick(link::now(self.origin)?)?;
