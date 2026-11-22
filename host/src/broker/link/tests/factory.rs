@@ -60,10 +60,13 @@ async fn t853_cancelled_blocking_factory_keeps_capacity_until_actual_return() {
     let completion = handle.native_completion();
     until(|| gate.entered.load(Ordering::Acquire)).await;
     handle.stop();
-    assert!(tokio::time::timeout(Duration::from_secs(3), handle.next())
-        .await
-        .unwrap()
-        .is_err());
+    assert!(tokio::time::timeout(
+        Duration::from_secs(3),
+        std::future::poll_fn(|cx| handle.poll_next(cx))
+    )
+    .await
+    .unwrap()
+    .is_err());
     drop(handle);
     assert!(!completion.is_complete());
     assert!(!inner.is_complete());
@@ -84,10 +87,13 @@ async fn t853_factory_error_releases_startup_admission() {
     )
     .unwrap();
     let completion = handle.native_completion();
-    assert!(tokio::time::timeout(Duration::from_secs(3), handle.next())
-        .await
-        .unwrap()
-        .is_err());
+    assert!(tokio::time::timeout(
+        Duration::from_secs(3),
+        std::future::poll_fn(|cx| handle.poll_next(cx))
+    )
+    .await
+    .unwrap()
+    .is_err());
     until(|| completion.is_complete()).await;
     assert_eq!(pool.active(), 0);
 }

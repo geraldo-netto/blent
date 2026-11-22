@@ -14,7 +14,6 @@ pub struct Peer {
     replies: mpsc::Sender<Vec<Message>>,
     requests: mpsc::Receiver<Received>,
     task: Task,
-    finished: bool,
 }
 impl Peer {
     pub(crate) fn start(
@@ -37,7 +36,6 @@ impl Peer {
             replies,
             requests,
             task,
-            finished: false,
         })
     }
     pub fn reply(&self, messages: Vec<Message>) -> Result<()> {
@@ -55,22 +53,11 @@ impl Peer {
     pub fn completion(&self) -> Completion {
         self.task.completion()
     }
-    pub async fn next(&mut self) -> Result<Received> {
-        ensure!(!self.finished, "local client already retired");
-        tokio::select! {
-            message = self.requests.recv() => {
-                match message {
-                    Some(message) => Ok(message),
-                    None => {
-                        let result = (&mut self.task).await;
-                        self.finished = true;
-                        result??;
-                        anyhow::bail!("local client closed")
-                    }
-                }
-            }
-            result = &mut self.task => { self.finished = true; result??; anyhow::bail!("local client exited") }
-        }
+    pub fn poll_next(
+        &mut self,
+        cx: &mut std::task::Context<'_>,
+    ) -> std::task::Poll<Result<Received>> {
+        self.task.poll_notice(&mut self.requests, cx)
     }
 }
 async fn read(socket: &AsyncSocket, inbound: mpsc::Sender<Received>) -> Result<()> {

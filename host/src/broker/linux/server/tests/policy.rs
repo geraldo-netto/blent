@@ -81,7 +81,13 @@ async fn t853_server_local_client_retirement_preserves_capacity_until_task_exit(
     ));
     assert!(bounded(second.receive()).await.is_err());
     first.close();
-    let input = bounded(next(&mut fixture.server.clients, &mut fixture.server.links)).await;
+    let input = bounded(std::future::poll_fn(|cx| {
+        fixture
+            .server
+            .readiness
+            .poll(&mut fixture.server.clients, &mut fixture.server.links, cx)
+    }))
+    .await;
     fixture.server.input(input).unwrap();
     bounded(async {
         loop {
@@ -98,9 +104,13 @@ async fn t853_server_local_client_retirement_preserves_capacity_until_task_exit(
         .controller
         .command(id, Command::Inspect, 0)
         .is_err());
-    assert!(next(&mut fixture.server.clients, &mut fixture.server.links)
-        .now_or_never()
-        .is_none());
+    assert!(std::future::poll_fn(|cx| fixture.server.readiness.poll(
+        &mut fixture.server.clients,
+        &mut fixture.server.links,
+        cx
+    ))
+    .now_or_never()
+    .is_none());
     fixture.finish().await;
 }
 
@@ -113,7 +123,13 @@ async fn t853_server_rejects_client_replies_unknown_routes_and_unproven_registra
         reason: Rejection::Busy,
     };
     remote.send(&incoming, &[]).await.unwrap();
-    let input = bounded(next(&mut fixture.server.clients, &mut fixture.server.links)).await;
+    let input = bounded(std::future::poll_fn(|cx| {
+        fixture
+            .server
+            .readiness
+            .poll(&mut fixture.server.clients, &mut fixture.server.links, cx)
+    }))
+    .await;
     fixture.server.input(input).unwrap();
     assert!(matches!(
         response(&remote).await,

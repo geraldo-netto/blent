@@ -1,0 +1,167 @@
+{
+  "tool": "Rust 1.100.0, cargo-llvm-cov 0.8.7; exact executed host test object",
+  "object": "target/llvm-cov-target/debug/build/blent/8a4c416e38fc28de/out/blent-8a4c416e38fc28de",
+  "object_sha256": "097b88c177ab02ba962737589ffce4f45f1f28bcc568047c41d25f83f2b6d1df",
+  "functions": [
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "start_factory",
+      "line": 83,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "start",
+      "line": 107,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "poll_next",
+      "line": 135,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "start",
+      "line": 19,
+      "language": "rust",
+      "covered": 20,
+      "total": 21,
+      "percent": 95.23809523809524,
+      "passes": true,
+      "missing": [
+        33
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "poll_next",
+      "line": 56,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "open_in",
+      "line": 99,
+      "language": "rust",
+      "covered": 48,
+      "total": 49,
+      "percent": 97.95918367346938,
+      "passes": true,
+      "missing": [
+        115
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "run",
+      "line": 150,
+      "language": "rust",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        165
+      ]
+    },
+    {
+      "file": "host/src/owned_task/notices.rs",
+      "name": "poll_notice",
+      "line": 10,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/readiness.rs",
+      "name": "poll",
+      "line": 16,
+      "language": "rust",
+      "covered": 28,
+      "total": 28,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/readiness.rs",
+      "name": "entries",
+      "line": 48,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/readiness.rs",
+      "name": "poll",
+      "line": 68,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/readiness.rs",
+      "name": "ordered",
+      "line": 80,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/readiness.rs",
+      "name": "client",
+      "line": 98,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/readiness.rs",
+      "name": "link",
+      "line": 104,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

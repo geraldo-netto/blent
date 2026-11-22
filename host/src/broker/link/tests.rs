@@ -45,10 +45,13 @@ async fn t853_cancelled_discovery_drops_task_and_native_resource() {
     let task = handle.task_completion();
     assert!(!native.is_complete());
     handle.stop();
-    assert!(tokio::time::timeout(Duration::from_secs(2), handle.next())
-        .await
-        .unwrap()
-        .is_err());
+    assert!(tokio::time::timeout(
+        Duration::from_secs(2),
+        std::future::poll_fn(|cx| handle.poll_next(cx))
+    )
+    .await
+    .unwrap()
+    .is_err());
     drop(handle);
     tokio::time::timeout(Duration::from_secs(2), async {
         while !task.is_complete() {
@@ -66,10 +69,13 @@ async fn t853_invalid_setup_fails_without_native_leak() {
     options.setup_timeout = Duration::ZERO;
     let mut handle = Handle::start(resource, options).unwrap();
     let native = handle.native_completion();
-    assert!(tokio::time::timeout(Duration::from_secs(2), handle.next())
-        .await
-        .unwrap()
-        .is_err());
+    assert!(tokio::time::timeout(
+        Duration::from_secs(2),
+        std::future::poll_fn(|cx| handle.poll_next(cx))
+    )
+    .await
+    .unwrap()
+    .is_err());
     assert!(native.is_complete());
     assert!(now(Instant::now()).unwrap() < 1000);
     let (out, _input) = mpsc::channel(1);
@@ -87,13 +93,17 @@ async fn t853_repeated_link_next_after_task_completion_does_not_panic() {
     let mut handle = Handle::start(resource, options).unwrap();
     let (_keep_open, receiver) = mpsc::channel(1);
     handle.events = receiver;
-    assert!(tokio::time::timeout(Duration::from_secs(3), handle.next())
-        .await
-        .unwrap()
-        .is_err());
+    assert!(tokio::time::timeout(
+        Duration::from_secs(3),
+        std::future::poll_fn(|cx| handle.poll_next(cx))
+    )
+    .await
+    .unwrap()
+    .is_err());
     let result = tokio::time::timeout(
         Duration::from_secs(3),
-        std::panic::AssertUnwindSafe(handle.next()).catch_unwind(),
+        std::panic::AssertUnwindSafe(std::future::poll_fn(|cx| handle.poll_next(cx)))
+            .catch_unwind(),
     )
     .await
     .unwrap();

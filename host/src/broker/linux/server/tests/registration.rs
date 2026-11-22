@@ -65,10 +65,13 @@ async fn t853_server_real_tls_remembered_registration_binds_local_descriptors_an
         )
         .await
         .unwrap();
-    let input = bounded(next(
-        &mut auth.fixture.server.clients,
-        &mut auth.fixture.server.links,
-    ))
+    let input = bounded(std::future::poll_fn(|cx| {
+        auth.fixture.server.readiness.poll(
+            &mut auth.fixture.server.clients,
+            &mut auth.fixture.server.links,
+            cx,
+        )
+    }))
     .await;
     auth.fixture.server.input(input).unwrap();
     assert_eq!(auth.fixture.server.routes.len(), 1);
@@ -119,7 +122,7 @@ async fn cancel_active(server: &mut Server, client: u64, id: u64, route: RouteId
     assert!(server.routes[&route.owner].closing);
     assert!(!server.routes[&sibling.owner].closing);
     assert!(server.controller.lease(id).is_some());
-    let event = bounded(
+    let event = bounded(std::future::poll_fn(|cx| {
         server
             .links
             .get_mut(&id)
@@ -127,8 +130,8 @@ async fn cancel_active(server: &mut Server, client: u64, id: u64, route: RouteId
             .handle
             .as_mut()
             .unwrap()
-            .next(),
-    )
+            .poll_next(cx)
+    }))
     .await
     .unwrap();
     match event {

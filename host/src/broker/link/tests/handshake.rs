@@ -72,10 +72,13 @@ fn controller(local: PeerId) -> (Control, u64, u64) {
     (control, client, id)
 }
 async fn notice(handle: &mut Handle) -> Event {
-    tokio::time::timeout(Duration::from_secs(3), handle.next())
-        .await
-        .unwrap()
-        .unwrap()
+    tokio::time::timeout(
+        Duration::from_secs(3),
+        std::future::poll_fn(|cx| handle.poll_next(cx)),
+    )
+    .await
+    .unwrap()
+    .unwrap()
 }
 async fn remote_tls(
     mut remote: tokio::io::DuplexStream,
@@ -347,10 +350,13 @@ async fn t853_unexpected_setup_command_during_media_closes_native_owner() {
     let native = handle.native_completion();
     let ticket = link.control.lease(link.id).unwrap().ticket.clone();
     assert!(handle.submit(Command::Approve(ticket)).is_ok());
-    assert!(tokio::time::timeout(Duration::from_secs(3), handle.next())
-        .await
-        .unwrap()
-        .is_err());
+    assert!(tokio::time::timeout(
+        Duration::from_secs(3),
+        std::future::poll_fn(|cx| handle.poll_next(cx))
+    )
+    .await
+    .unwrap()
+    .is_err());
     completed(&native).await;
 }
 

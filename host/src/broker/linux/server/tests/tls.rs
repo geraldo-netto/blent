@@ -1,4 +1,5 @@
 use super::*;
+use std::pin::Pin;
 mod ambiguity;
 use crate::{
     accessory::{setup::tests::remote_hello, Owner, Resource as NativeResource, Stream},
@@ -94,7 +95,7 @@ fn attach(server: &mut Server, id: u64) -> tokio::io::DuplexStream {
     peer
 }
 async fn event(server: &mut Server, id: u64) -> link::Event {
-    bounded(
+    bounded(std::future::poll_fn(|cx| {
         server
             .links
             .get_mut(&id)
@@ -102,8 +103,8 @@ async fn event(server: &mut Server, id: u64) -> link::Event {
             .handle
             .as_mut()
             .unwrap()
-            .next(),
-    )
+            .poll_next(cx)
+    }))
     .await
     .unwrap()
 }

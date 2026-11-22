@@ -49,7 +49,14 @@ async fn t853_local_client_duplex_batches_and_actual_retirement() {
         )
         .await
         .unwrap();
-    assert_eq!(bounded(peer.next()).await.unwrap().message.request(), 7);
+    assert_eq!(
+        bounded(std::future::poll_fn(|cx| peer.poll_next(cx)))
+            .await
+            .unwrap()
+            .message
+            .request(),
+        7
+    );
     peer.reply(vec![message(8), message(9)]).unwrap();
     assert_eq!(
         bounded(client.receive()).await.unwrap().message.request(),
@@ -61,8 +68,10 @@ async fn t853_local_client_duplex_batches_and_actual_retirement() {
     );
     let completion = peer.completion();
     client.close();
-    assert!(bounded(peer.next()).await.is_err());
-    assert!(peer.next().await.is_err());
+    assert!(bounded(std::future::poll_fn(|cx| peer.poll_next(cx)))
+        .await
+        .is_err());
+    assert!(std::future::poll_fn(|cx| peer.poll_next(cx)).await.is_err());
     retired(completion).await;
 }
 #[tokio::test]
@@ -95,9 +104,13 @@ async fn t853_stalled_client_writer_does_not_block_sibling() {
         bounded(client.receive()).await.unwrap().message.request(),
         2
     );
-    assert!(bounded(blocked.next()).await.is_err());
+    assert!(bounded(std::future::poll_fn(|cx| blocked.poll_next(cx)))
+        .await
+        .is_err());
     client.close();
-    assert!(bounded(sibling.next()).await.is_err());
+    assert!(bounded(std::future::poll_fn(|cx| sibling.poll_next(cx)))
+        .await
+        .is_err());
 }
 #[tokio::test]
 async fn t853_closed_dispatch_lanes_retire_native_socket() {
@@ -133,9 +146,13 @@ async fn t1779_cancelled_closed_notice_wait_retains_pending_original_join() {
     peer.requests = closed;
     let completion = peer.completion();
     let mut context = std::task::Context::from_waker(futures_util::task::noop_waker_ref());
-    let first = std::pin::pin!(peer.next()).poll(&mut context).is_pending();
-    let second = std::pin::pin!(peer.next()).poll(&mut context).is_pending();
-    let premature = peer.finished;
+    let first = std::pin::pin!(std::future::poll_fn(|cx| peer.poll_next(cx)))
+        .poll(&mut context)
+        .is_pending();
+    let second = std::pin::pin!(std::future::poll_fn(|cx| peer.poll_next(cx)))
+        .poll(&mut context)
+        .is_pending();
+    let premature = peer.task.is_joined();
     peer.stop();
     drop(peer);
     retired(completion).await;

@@ -13,7 +13,7 @@ async fn rejected(closed: bool) {
     let original = connection.completion();
     if closed {
         link.handle.stop();
-        let _ = link.handle.next().await;
+        let _ = std::future::poll_fn(|cx| link.handle.poll_next(cx)).await;
         completed(&link.handle.task_completion()).await;
     } else {
         let peer = pin(&settings().identity);
@@ -39,7 +39,7 @@ async fn rejected(closed: bool) {
     };
     // Sponsor original cleanup before asserting, including faulty admission.
     link.handle.stop();
-    let _ = link.handle.next().await;
+    let _ = std::future::poll_fn(|cx| link.handle.poll_next(cx)).await;
     completed(&link.handle.task_completion()).await;
     drop(link);
     completed(&original).await;

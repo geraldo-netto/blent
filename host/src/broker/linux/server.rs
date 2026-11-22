@@ -31,13 +31,14 @@ use blent_config::{
     },
     retirement::{Completion, Pool},
 };
-use std::{collections::BTreeMap, future::Future, pin::Pin, time::Duration};
+use std::{collections::BTreeMap, time::Duration};
 use tokio::time::Instant;
 pub(super) mod authority;
 mod commands;
 mod events;
 mod inspection;
 mod overload;
+mod readiness;
 mod routes;
 mod settings;
 mod shutdown;
@@ -68,6 +69,7 @@ enum Input {
 }
 pub struct Server {
     settings: Settings,
+    readiness: readiness::Readiness,
     listener: AsyncListener,
     accept_after: Instant,
     authority: Worker,
@@ -123,6 +125,7 @@ impl Server {
         let client_pool = Pool::new(settings.control.clients)?;
         Ok(Self {
             settings,
+            readiness: Default::default(),
             listener,
             accept_after: Instant::now(),
             authority,
@@ -151,7 +154,7 @@ impl Server {
             tokio::select! {
                 accepted = self.listener.accept(), if !self.rejector.active() && Instant::now() >= self.accept_after => self.accepted(accepted)?,
                 _ = self.rejector.next() => (),
-                input = next(&mut self.clients, &mut self.links) => self.input(input)?,
+                input = std::future::poll_fn(|cx| self.readiness.poll(&mut self.clients, &mut self.links, cx)) => self.input(input)?,
                 reply = self.authority.next() => self.authority_event(reply?)?,
                 inventory = inventory_next(&mut self.inventory) => self.inventory_result(inventory)?,
                 _ = clock.tick(), if self.maintenance_needed() => self.tick()?,
@@ -329,28 +332,6 @@ impl Server {
         self.controller.collect_retired()?;
         Ok(())
     }
-}
-type Pending<'a> = Pin<Box<dyn Future<Output = Input> + Send + 'a>>;
-async fn next(clients: &mut BTreeMap<u64, Client>, links: &mut BTreeMap<u64, Link>) -> Input {
-    let mut pending: Vec<Pending<'_>> = Vec::new();
-    for (&id, client) in clients {
-        if let Some(peer) = &mut client.peer {
-            pending.push(Box::pin(
-                async move { Input::Client(id, peer.next().await) },
-            ));
-        }
-    }
-    for (&id, link) in links {
-        if let Some(handle) = &mut link.handle {
-            pending.push(Box::pin(
-                async move { Input::Link(id, handle.next().await) },
-            ));
-        }
-    }
-    if pending.is_empty() {
-        return std::future::pending().await;
-    }
-    futures_util::future::select_all(pending).await.0
 }
 async fn inventory_next(inventory: &mut Option<Inventory>) -> Result<Vec<Candidate>> {
     match inventory {

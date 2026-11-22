@@ -66,7 +66,6 @@ pub struct Handle {
     events: mpsc::Receiver<Event>,
     task: Task,
     native: Completion,
-    finished: bool,
 }
 pub struct Settings {
     pub identity: Arc<Identity>,
@@ -101,7 +100,6 @@ impl Handle {
             events,
             task,
             native,
-            finished: false,
         })
     }
     /// Resource is already admitted; caller attaches native Completion to its
@@ -116,7 +114,6 @@ impl Handle {
             events,
             task,
             native,
-            finished: false,
         })
     }
     pub fn submit(&self, command: Command) -> std::result::Result<(), Command> {
@@ -135,20 +132,8 @@ impl Handle {
     }
     /// Terminal task error means all owned local streams were dropped. Native
     /// helper completion remains separate and must still gate replacement.
-    pub async fn next(&mut self) -> Result<Event> {
-        ensure!(!self.finished, "link already retired");
-        tokio::select! {
-            event = self.events.recv() => match event {
-                Some(event) => Ok(event),
-                None => {
-                    let result = (&mut self.task).await;
-                    self.finished = true;
-                    result??;
-                    anyhow::bail!("link notice lane closed")
-                }
-            },
-            result = &mut self.task => { self.finished = true; result??; anyhow::bail!("link exited") }
-        }
+    pub fn poll_next(&mut self, cx: &mut std::task::Context<'_>) -> std::task::Poll<Result<Event>> {
+        self.task.poll_notice(&mut self.events, cx)
     }
 }
 fn emit(output: &mpsc::Sender<Event>, event: Event) -> Result<()> {

@@ -50,7 +50,7 @@ async fn selected_budget(ready_delay: Duration, tls_delay: Duration, expires: bo
         .submit(Command::Approve(Ticket { epoch: 1, peer }))
         .is_ok());
     let (outcome, peer) = tokio::join!(
-        handle.next(),
+        std::future::poll_fn(|cx| handle.poll_next(cx)),
         peer_after_ready(remote, tablet, host, ready_delay, tls_delay)
     );
     let expired = outcome

@@ -6,6 +6,7 @@ use blent_config::connection::{
     pairing::Ticket,
 };
 use std::{
+    future::Future,
     net::TcpListener,
     os::{fd::OwnedFd, unix::fs::PermissionsExt},
 };
@@ -92,6 +93,7 @@ mod idle_inventory;
 mod idle_wake;
 mod media_client;
 mod policy;
+mod readiness;
 mod registration;
 mod runtime;
 mod shutdown;
