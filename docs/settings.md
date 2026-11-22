@@ -57,6 +57,11 @@ switches are under **App & diagnostics**. The decoder panel shows the active cod
 capabilities, requested performance hints and watchdog fallback; effective hints
 remain unknown. Camera Start/Stop is explicit and independent of
 display sharing; opening desktop settings or pressing Save does not start capture.
+When the tablet display rotates during camera sharing, Blent briefly restarts the
+selected camera with the new orientation. Replacement waits for the old worker's
+actual retirement; rapid turns keep only the latest requested orientation.
+Inactive cameras stay off. This also follows display changes during explicitly
+enabled background camera sharing.
 Save/Discard controls appear in preference editors. The existing two-second background poll also observes saved configuration changes, including tablet settings persisted by the daemon. It rebases unsaved local edits onto the latest valid snapshot; Discard uses that new baseline. Missing, malformed, non-regular or over-1-MiB snapshots do not replace the draft. A read started before a completed GUI save cannot overwrite that save. Workspace resource Start uses
 the exact selected tablet without rewriting saved target preferences. Explicit
 Start in a camera/audio editor uses its target fields. Stop preserves the original

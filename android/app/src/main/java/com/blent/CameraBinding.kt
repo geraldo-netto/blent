@@ -29,6 +29,7 @@ internal class CameraBinding(
         private set(value) { mutableState.update { it.copy(status = value) } }
     private val source = CameraCaptureSource()
     private var active = false
+    private var requestedRotation: Int? = null
     private var backgroundRun: String? = null
     private val backgroundRunning get() = backgroundRun != null
     private var pending: CameraCapturePermission? = null
@@ -98,6 +99,14 @@ internal class CameraBinding(
         }
     }
 
+    /** Serialized with selection on the media UI dispatcher; never starts an idle camera. */
+    fun rotationChanged() {
+        val lens = selected ?: return
+        val angle = rotation()
+        if (angle !in 0..3 || angle == requestedRotation) return
+        choose(lens)
+    }
+
     fun hasPermission(): Boolean = permission()
 
     /** Fresh SDK permission, independent of a new invitation or SDK callback. */
@@ -144,6 +153,9 @@ internal class CameraBinding(
 
     private fun launch(host: CameraEndpoint, lens: CameraLens, revision: Long) {
         check(generations.current(revision)) { "Camera request no longer current" }
+        val angle = rotation()
+        require(angle in 0..3) { "Invalid display rotation" }
+        requestedRotation = angle
         selected = lens
         status = "${lens.label} camera selected."
         val target = source.target
@@ -152,7 +164,7 @@ internal class CameraBinding(
         try {
             check(generations.current(revision)) { "Camera request no longer current" }
             guard.replace({ MediaConsumerRun(claim, ::hasPermission) {
-                createRun(host, lens, rotation) { text ->
+                createRun(host, lens, { angle }) { text ->
                     statusUpdates.submit { if (generations.current(revision)) status = text }
                 }
             } }, { failure ->
@@ -176,6 +188,7 @@ internal class CameraBinding(
     private fun stopCapture() {
         generations.revoke()
         guard.stop()
+        requestedRotation = null
         selected = null
     }
 

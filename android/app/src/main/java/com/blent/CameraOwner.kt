@@ -2,8 +2,6 @@ package com.blent
 
 import android.content.Context
 import android.content.Intent
-import android.hardware.display.DisplayManager
-import android.view.Display
 import android.os.Handler
 import android.os.Looper
 import com.blent.connection.ConnectionCameraAccess
@@ -21,18 +19,20 @@ internal object CameraOwner {
     private var observation: MediaConsentObservation<CameraAccessOffer>? = null
     private var captureObservation: MediaConsumerObservation<CameraAccessOffer, CameraEndpoint, CameraCaptureTarget>? = null
     private var scope: CoroutineScope? = null
+    private var rotation: DisplayRotationSource? = null
     val access: MediaAccessControls<CameraAccessOffer>? get() = control?.consent
 
     fun get(context: Context): CameraBinding {
         val app = context.applicationContext
         binding?.let { return it }
-        val value = RemoteMediaBindings.camera(app, {
-            app.getSystemService(DisplayManager::class.java).getDisplay(Display.DEFAULT_DISPLAY)?.rotation ?: 0
-        }, { control?.requestLegacy() }, service = { run ->
+        val display = AndroidDisplayRotation(app)
+        rotation = display
+        val value = RemoteMediaBindings.camera(app, display::current, { control?.requestLegacy() }, service = { run ->
             val intent = Intent(app, CameraService::class.java).putExtra("camera_run", run)
             if (run != null) app.startForegroundService(intent) else app.stopService(intent)
         })
         binding = value
+        display.start(value::rotationChanged)
         val owner = CameraActivityOwner(value, MediaConsentPolicy<CameraAccessOffer>(value::hasPermission, prompts), prompts)
         control = owner
         val dispatcher = CoroutineScope(SupervisorJob() + Handler(Looper.getMainLooper()).asCoroutineDispatcher())
@@ -58,6 +58,8 @@ internal object CameraOwner {
     }
 
     fun reset() {
+        rotation?.stop()
+        rotation = null
         captureObservation?.retire()
         captureObservation = null
         observation?.retire()

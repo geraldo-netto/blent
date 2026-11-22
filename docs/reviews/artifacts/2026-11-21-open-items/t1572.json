@@ -1,0 +1,1240 @@
+{
+  "issue": "T1572",
+  "date": "2026-11-22",
+  "before": {
+    "portable_tests_failed": 2,
+    "portable_tests_passed": 1,
+    "failure": "rotation notification did not cancel original capture or recheck permission"
+  },
+  "verification": {
+    "selected_camera_lifecycle_cases_passed": 267,
+    "new_cases_included": 9,
+    "new_case_scope": "five portable ownership cases and two Robolectric adapter/composition tests on API 27 and 34",
+    "native_simulation": "fake Binder worker remains alive after STOP/EXIT; replacement begins only after original death callback and uses current display rotation"
+  },
+  "coverage": [
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<init>",
+      "line": 8,
+      "language": "kotlin",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "<init>",
+          "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function4;Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;J)V",
+          "line": 9,
+          "covered": 14,
+          "total": 14
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "<init>",
+          "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function4;Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+          "line": 9,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "rotationChanged",
+      "line": 102,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "rotationChanged",
+          "signature": "()V",
+          "line": 104,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "launch",
+      "line": 154,
+      "language": "kotlin",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "launch",
+          "signature": "(Lcom/blent/CameraEndpoint;Lcom/blent/CameraLens;J)V",
+          "line": 155,
+          "covered": 16,
+          "total": 16
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 166,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$5",
+          "name": "invoke",
+          "signature": "()Lcom/blent/LifecycleRun;",
+          "line": 166,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 166,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "source lines with all instructions covered (conservative fallback)"
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 167,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$5$2$1",
+          "name": "invoke",
+          "signature": "()Ljava/lang/Integer;",
+          "line": 167,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$5$2",
+          "name": "invoke",
+          "signature": "()Lcom/blent/LifecycleRun;",
+          "line": 167,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 168,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$5$2$2",
+          "name": "invoke",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 168,
+          "covered": 2,
+          "total": 2
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$5$2$2$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 168,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 170,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$6",
+          "name": "invoke",
+          "signature": "(Ljava/lang/Exception;)V",
+          "line": 171,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 178,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$7",
+          "name": "invoke",
+          "signature": "(Lcom/blent/ResourceRetirement;)V",
+          "line": 178,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "stopCapture",
+      "line": 188,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "stopCapture",
+          "signature": "()V",
+          "line": 189,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraOwner.kt",
+      "name": "get",
+      "line": 25,
+      "language": "kotlin",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraOwner.kt",
+          "owner": "com/blent/CameraOwner",
+          "name": "get",
+          "signature": "(Landroid/content/Context;)Lcom/blent/CameraBinding;",
+          "line": 26,
+          "covered": 16,
+          "total": 16
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraOwner.kt",
+      "name": "<lambda>",
+      "line": 30,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraOwner.kt",
+          "owner": "com/blent/CameraOwner$get$value$2",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 30,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraOwner.kt",
+      "name": "<lambda>",
+      "line": 30,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraOwner.kt",
+          "owner": "com/blent/CameraOwner$get$value$3",
+          "name": "invoke",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 31,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraOwner.kt",
+      "name": "reset",
+      "line": 60,
+      "language": "kotlin",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraOwner.kt",
+          "owner": "com/blent/CameraOwner",
+          "name": "reset",
+          "signature": "()V",
+          "line": 61,
+          "covered": 15,
+          "total": 15
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+      "name": "<init>",
+      "line": 9,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+          "owner": "com/blent/AndroidDisplayRotation",
+          "name": "<init>",
+          "signature": "(Landroid/content/Context;)V",
+          "line": 10,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+      "name": "current",
+      "line": 14,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+          "owner": "com/blent/AndroidDisplayRotation",
+          "name": "current",
+          "signature": "()I",
+          "line": 14,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+      "name": "start",
+      "line": 16,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+          "owner": "com/blent/AndroidDisplayRotation",
+          "name": "start",
+          "signature": "(Lkotlin/jvm/functions/Function0;)V",
+          "line": 17,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+      "name": "stop",
+      "line": 23,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+          "owner": "com/blent/AndroidDisplayRotation",
+          "name": "stop",
+          "signature": "()V",
+          "line": 24,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+      "name": "<init>",
+      "line": 30,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+          "owner": "com/blent/AndroidDisplayRotation$Observation",
+          "name": "<init>",
+          "signature": "(Lcom/blent/AndroidDisplayRotation;Lkotlin/jvm/functions/Function0;)V",
+          "line": 30,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+      "name": "onDisplayAdded",
+      "line": 32,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+          "owner": "com/blent/AndroidDisplayRotation$Observation",
+          "name": "onDisplayAdded",
+          "signature": "(I)V",
+          "line": 32,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+      "name": "onDisplayRemoved",
+      "line": 33,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+          "owner": "com/blent/AndroidDisplayRotation$Observation",
+          "name": "onDisplayRemoved",
+          "signature": "(I)V",
+          "line": 33,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+      "name": "onDisplayChanged",
+      "line": 34,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+          "owner": "com/blent/AndroidDisplayRotation$Observation",
+          "name": "onDisplayChanged",
+          "signature": "(I)V",
+          "line": 35,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    }
+  ],
+  "complexity": {
+    "tool": "Kotlin PSI 1.9.20; scripts/complexity/check.py",
+    "functions": [
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        9,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        22,
+        "get:endpoint",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        23,
+        "set:endpoint",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        23,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        25,
+        "get:selected",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        26,
+        "set:selected",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        26,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        28,
+        "get:status",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        29,
+        "set:status",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        29,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        34,
+        "get:backgroundRunning",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        36,
+        "get:permissionPending",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        38,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        41,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        43,
+        "start",
+        6
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        46,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        48,
+        "<lambda>",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        49,
+        "<lambda>",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        57,
+        "useTarget",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        64,
+        "applyHost",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        73,
+        "stopTarget",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        78,
+        "choose",
+        7
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        89,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        90,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        103,
+        "rotationChanged",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        110,
+        "hasPermission",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        113,
+        "permissionChanged",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        122,
+        "allowCapture",
+        5
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        144,
+        "permissionResult",
+        6
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        154,
+        "launch",
+        5
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        155,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        157,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        163,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        165,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        166,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        166,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        167,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        167,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        168,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        170,
+        "<lambda>",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        178,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        185,
+        "idleStatus",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        185,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        188,
+        "stopCapture",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        195,
+        "background",
+        3
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        202,
+        "stopBackground",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        213,
+        "stop",
+        4
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        220,
+        "ownsBackground",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        222,
+        "backgroundStopped",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraBinding.kt",
+        226,
+        "shutdown",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        15,
+        "<clinit>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        23,
+        "get:access",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        25,
+        "get",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        27,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        30,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        30,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        47,
+        "attach",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        48,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        50,
+        "detach",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        52,
+        "permissionResult",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        54,
+        "ownsService",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        56,
+        "serviceStopped",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/CameraOwner.kt",
+        60,
+        "reset",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+        10,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+        14,
+        "current",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+        16,
+        "start",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+        17,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+        23,
+        "stop",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+        30,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+        32,
+        "onDisplayAdded",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+        33,
+        "onDisplayRemoved",
+        1
+      ],
+      [
+        "android/app/src/main/java/com/blent/AndroidDisplayRotation.kt",
+        34,
+        "onDisplayChanged",
+        4
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        10,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        13,
+        "execute",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        14,
+        "cancel",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        15,
+        "retire",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        17,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        24,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        24,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        24,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        25,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        25,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        26,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        28,
+        "close",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        31,
+        "t1572RotationWaitsForOriginalRetirementAndCoalescesToLatestAngle",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        32,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        33,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        40,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        45,
+        "t1572DuplicateInvalidAndStoppedRotationNeverOpenAWorker",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        46,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        60,
+        "t1572RotationCannotBypassFreshPermissionOrRestartAfterShutdown",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        61,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        72,
+        "t1572BackgroundCaptureKeepsFollowingDisplayWhileActivityIsStopped",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        73,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        79,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        84,
+        "t1572InvalidInitialRotationRejectsBeforeWorkerCreation",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraRotationTest.kt",
+        85,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        21,
+        "t1572NativeDisplayRegistrationFencesOldCallbacksAndUsesDefaultDisplay",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        26,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        29,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        29,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        41,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        51,
+        "<init>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        53,
+        "getApplicationContext",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        54,
+        "bindService",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        61,
+        "unbindService",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        63,
+        "until",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        63,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        70,
+        "t1572ProcessCameraOwnerReplacesWorkerWithCurrentDisplayRotation",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        70,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        80,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        84,
+        "<lambda>",
+        1
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        87,
+        "<lambda>",
+        2
+      ],
+      [
+        "android/app/src/test/java/com/blent/CameraDisplayRotationTest.kt",
+        93,
+        "<lambda>",
+        1
+      ]
+    ],
+    "maximum": 7
+  },
+  "ownership": {
+    "rotation_source": "one application-owned default-display observer, registered on main Handler; never retains Activity; stop fences delivery before unregister and retains original registration identity if unregister throws",
+    "camera": "bounded desired angle snapshot belongs to one generation; existing ResourceLane owns one current run and latest pending replacement, and original MediaConsumerClaim retirement remains unchanged",
+    "cutoff": "duplicate/invalid rotations and inactive cameras do not start workers; explicit permission/background policy rechecked; shutdown cancels replacement and unregisters source; queued old callbacks are fenced",
+    "cleanup_assumption": "Android DisplayManager unregister detaches that original registration; already queued callbacks retain their managed object until dispatched but cannot call retired binding through observer"
+  },
+  "limitations": [
+    "No physical tablet orientation or host camera latency measurement",
+    "Rotation briefly restarts camera; it is not a per-frame wire metadata update",
+    "Robolectric framework delivery and fake Binder death are regression evidence, not unrestricted native safety proof"
+  ]
+}
