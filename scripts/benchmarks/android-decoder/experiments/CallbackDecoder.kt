@@ -83,7 +83,7 @@ internal class CallbackDecoder(
     private fun submit(next: DecoderMailbox.Pending) {
         check(clock() < next.deadline) { "Decoder input unavailable for 200ms" }
         val index = indices.removeFirst()
-        owner.use { next.input.write(owner.codec, index) } ?: return
+        owner.use { queueCodecInput(owner.codec, index, next.input, next.input::copyTo) } ?: return
         mailbox.complete(next)
         if (!next.input.configuration) queued()
     }

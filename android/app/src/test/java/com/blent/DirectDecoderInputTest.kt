@@ -104,12 +104,12 @@ class DirectDecoderInputTest {
 
     @Test fun t403_fill_uses_codec_owned_storage_and_preserves_csd_and_unsigned_sequence() {
         DirectInputFixture().use { fixture ->
-            assertTrue(fixture.decoder.feedDirect(fixture.codec, ChannelPacketHeader(2, true, 0)) {
+            assertTrue(fixture.decoder.feedReplayInput(fixture.codec, ChannelPacketHeader(2, true, 0)) {
                 assertSame(DirectInputCodecShadow.input, it)
                 assertTrue(it.isDirect)
                 it.put(byteArrayOf(1, 2))
             })
-            assertTrue(fixture.decoder.feedDirect(fixture.codec, ChannelPacketHeader(3, false, 0xffff_ffffL)) {
+            assertTrue(fixture.decoder.feedReplayInput(fixture.codec, ChannelPacketHeader(3, false, 0xffff_ffffL)) {
                 it.put(byteArrayOf(7, 8, 9))
             })
             val config = DirectInputCodecShadow.queued.remove()
@@ -125,7 +125,7 @@ class DirectDecoderInputTest {
 
     @Test fun t403_partial_eof_never_queues_a_codec_sample() {
         DirectInputFixture().use { fixture ->
-            assertFalse(fixture.decoder.feedDirect(fixture.codec, ChannelPacketHeader(4, false, 1)) {
+            assertFalse(fixture.decoder.feedReplayInput(fixture.codec, ChannelPacketHeader(4, false, 1)) {
                 it.put(7); throw EOFException("partial payload")
             })
             assertTrue(DirectInputCodecShadow.queued.isEmpty())
@@ -136,7 +136,7 @@ class DirectDecoderInputTest {
 
     @Test fun t403_short_fill_cannot_queue_stale_codec_slot_bytes() {
         DirectInputFixture().use { fixture ->
-            assertFalse(fixture.decoder.feedDirect(fixture.codec, ChannelPacketHeader(4, false, 1)) { it.put(7) })
+            assertFalse(fixture.decoder.feedReplayInput(fixture.codec, ChannelPacketHeader(4, false, 1)) { it.put(7) })
             assertTrue(DirectInputCodecShadow.queued.isEmpty())
             assertNull(fixture.decoder.mediaCodec)
         }
@@ -144,7 +144,7 @@ class DirectDecoderInputTest {
 
     @Test fun t403_capacity_is_checked_before_transport_reads() {
         DirectInputFixture().use { fixture ->
-            assertFalse(fixture.decoder.feedDirect(fixture.codec, ChannelPacketHeader(65, false, 1)) {
+            assertFalse(fixture.decoder.feedReplayInput(fixture.codec, ChannelPacketHeader(65, false, 1)) {
                 fail("T403: undersized codec slot must not consume payload")
             })
             assertTrue(DirectInputCodecShadow.queued.isEmpty())
@@ -154,7 +154,7 @@ class DirectDecoderInputTest {
 
     @Test fun t403_callback_profile_never_uses_synchronous_direct_input() {
         DirectInputFixture(callbacks = true).use { fixture ->
-            assertFalse(fixture.decoder.feedDirect(fixture.codec, ChannelPacketHeader(1, false, 1)) { fail("must not fill") })
+            assertFalse(fixture.decoder.feedReplayInput(fixture.codec, ChannelPacketHeader(1, false, 1)) { fail("must not fill") })
             assertTrue(DirectInputCodecShadow.queued.isEmpty())
             assertNotNull(fixture.decoder.mediaCodec)
         }
@@ -169,7 +169,7 @@ class DirectDecoderInputTest {
                     fixture.closeTransport = reader::close
                     val entered = CountDownLatch(1)
                     val codec = fixture.codec
-                    val feed = FutureTask { fixture.decoder.feedDirect(codec, header) { entered.countDown(); reader.readPayload(it) } }
+                    val feed = FutureTask { fixture.decoder.feedReplayInput(codec, header) { entered.countDown(); reader.readPayload(it) } }
                     Thread(feed).start()
                     assertTrue(entered.await(1, TimeUnit.SECONDS))
                     val stopped = FutureTask { synchronized(fixture.monitor) { fixture.decoder.resetCodec() } }
@@ -190,7 +190,7 @@ class DirectDecoderInputTest {
             val resume = CountDownLatch(1)
             val codec = fixture.codec
             val feed = FutureTask {
-                fixture.decoder.feedDirect(codec, ChannelPacketHeader(1, false, 1)) {
+                fixture.decoder.feedReplayInput(codec, ChannelPacketHeader(1, false, 1)) {
                     entered.countDown()
                     check(resume.await(3, TimeUnit.SECONDS))
                     it.put(7)

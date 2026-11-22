@@ -22,6 +22,12 @@ class AndroidContractBoundariesTest(unittest.TestCase):
                 source = path.read_text()
                 self.assertIsNone(re.search(forbidden, source), f'T822 native/owner dependency: {path.name}')
 
+    def test_t1750_input_contracts_are_independent_of_native_ownership(self):
+        forbidden = r'\b(android\.|androidx\.|MediaCodec|DecoderSession|CodecLifetime|CodecInputAccess)\b'
+        for name in ('DecoderInputPacket.kt', 'DecoderInputAccess.kt'):
+            with self.subTest(file=name):
+                self.assertIsNone(re.search(forbidden, (ROOT / name).read_text()))
+
 
 if __name__ == '__main__':
     unittest.main()

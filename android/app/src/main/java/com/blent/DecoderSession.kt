@@ -246,63 +246,28 @@ internal class DecoderSession(
         codec: MediaCodec, data: ByteArray, offset: Int, size: Int,
         isConfig: Boolean, presentationTimeUs: Long, arrivalNanos: Long = System.nanoTime()
     ) {
-        val (inputOwner, callbacks) = synchronized(monitor) {
-            val owner = ownerFor(codec) ?: return
-            if (!isConfig) timing.noteArrival(presentationTimeUs.toInt(), timingEpoch, arrivalNanos)
-            owner to callbackDecoder
-        }
-        try {
+        useInput(codec) { access ->
             val input = DecoderInput(data, offset, size, isConfig, presentationTimeUs)
-            if (callbacks != null) {
-                check(callbacks.offer(input) || inputOwner.retired) { "Decoder callback input queue stalled" }
-                return
-            }
-            if (queueInput(inputOwner) { slot -> input.write(codec, slot) } && !isConfig) {
-                synchronized(monitor) {
-                    if (mediaCodec === codec) checkOutputProgress()
-                }
-            }
-        } catch (e: Exception) {
-            retireFailedOutput(codec, "Decoder feed error", e)
+            access.arrived(input, arrivalNanos)
+            access.offer(input)
         }
     }
 
-    /** T403 experiment: a transport read borrows codec storage, outside the
-     * receiver monitor. Caller must close its reader when the session retires. */
-    fun feedDirect(codec: MediaCodec, info: DecoderInputInfo, fill: (java.nio.ByteBuffer) -> Unit): Boolean {
-        val (owner, epoch) = synchronized(monitor) {
-            if (callbackDecoder != null) return false
-            (ownerFor(codec) ?: return false) to timingEpoch
+    /** Captures identity under the receiver monitor, then runs native input
+     * outside it. Late failures can retire only the original admitted decoder. */
+    fun useInput(codec: MediaCodec, operation: (DecoderInputAccess) -> Boolean): Boolean {
+        val access = synchronized(monitor) {
+            val owner = ownerFor(codec) ?: return false
+            val epoch = timingEpoch
+            CodecInputAccess(owner, callbackDecoder,
+                { sequence, nanos -> timing.noteArrival(sequence, epoch, nanos) },
+                { synchronized(monitor) { if (mediaCodec === codec) checkOutputProgress() } })
         }
-        return try {
-            val queued = queueInput(owner) { index ->
-                queueCodecInput(codec, index, info) { buffer ->
-                    fill(buffer)
-                    check(!owner.retired) { "Codec retired during input read" }
-                    if (!info.configuration) timing.noteArrival(info.sequence.toInt(), epoch, System.nanoTime())
-                }
-            }
-            if (queued && !info.configuration) synchronized(monitor) {
-                if (mediaCodec === codec) checkOutputProgress()
-            }
-            queued
-        } catch (error: Exception) {
-            retireFailedOutput(codec, "Direct decoder input failed", error)
+        return try { operation(access) }
+        catch (error: Exception) {
+            retireFailedOutput(codec, "Decoder input failed", error)
             false
         }
-    }
-
-    private fun queueInput(owner: CodecLifetime, submit: (Int) -> Unit): Boolean {
-        repeat(10) {
-            val queued = owner.use {
-                val index = owner.codec.dequeueInputBuffer(20_000)
-                if (index < 0 || owner.retired) false
-                else { submit(index); true }
-            } ?: return false
-            if (queued) return true
-            if (owner.retired) return false
-        }
-        throw IllegalStateException("Decoder input unavailable after ten 20ms waits")
     }
 
     // Caller holds the receiver monitor. The lazy branch supports a codec

@@ -13,7 +13,5 @@ internal fun queueCodecInput(codec: MediaCodec, index: Int, info: DecoderInputIn
     codec.queueInputBuffer(index, 0, info.size, info.sequence, flags)
 }
 
-/** Native adapter for a borrowed synchronous packet. */
-internal fun DecoderInput.write(codec: MediaCodec, index: Int) {
-    queueCodecInput(codec, index, this) { it.put(data, offset, size) }
-}
+/** Copy a packet into an admitted native buffer without retaining its view. */
+internal fun DecoderInput.copyTo(buffer: ByteBuffer) { buffer.put(data, offset, size) }

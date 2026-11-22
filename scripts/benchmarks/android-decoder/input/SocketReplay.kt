@@ -72,7 +72,7 @@ internal class SocketReplay(
         while (!closed) {
             val info = reader.readHeader()
             val codec = decoder.mediaCodec ?: return
-            if (!decoder.feedDirect(codec, info) { buffer ->
+            if (!decoder.feedReplayInput(codec, info) { buffer ->
                     if (buffer.isDirect) directSlots.incrementAndGet()
                     reader.readPayload(buffer)
                 }) return
