@@ -25,15 +25,14 @@ pub enum Lens {
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(default)]
+#[serde(transparent)]
 pub struct CameraSettings {
-    #[serde(flatten)]
     pub options: CameraProfile,
 }
 
 #[cfg_attr(feature = "platform", derive(Args))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(default)]
+#[serde(default, deny_unknown_fields)]
 pub struct CameraProfile {
     #[cfg_attr(feature = "platform", command(flatten))]
     pub sensor: tuning::Sensor,

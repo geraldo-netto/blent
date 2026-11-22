@@ -70,7 +70,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1680 | open | low | small | Reject unknown nested camera and activity preferences. `CameraSettings` flattens a permissive `CameraProfile` (`common/src/camera.rs`); `camera/tuning.rs::Sensor` and `host_activity.rs::Settings` also use default Serde unknown-field acceptance. Root rejection in T1679 therefore does not reject obsolete/misspelled keys inside these current settings. AudioOptions/AudioProfile/AudioSettings and DirectInputConfig already declare strict fields; preserve their current behavior. Completion: make these nested current contracts strict without aliases or migration, retain known-field/default round trips through FileConfig and direct JSON/TOML callers, prove permanent rejection tests fail first, and verify current producers/tests/docs together. |
 
 ## Installation and distribution
 

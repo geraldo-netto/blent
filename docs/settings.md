@@ -284,3 +284,8 @@ Root configuration keys must belong to the current schema; unknown and obsolete
 keys are parse errors. Existing read-error handling warns and uses defaults in
 memory, but locked edits preserve the invalid file and return an error. Correct
 the reported key before saving. No automatic obsolete-field migration is used.
+
+Camera options, camera sensor controls and host activity tables also reject unknown
+keys. Camera options stay directly under `[camera]`; sensor controls belong under
+`[camera.sensor]`. There is no `[camera.options]` configuration wrapper. Current
+known fields and omitted-field defaults retain their existing meaning.

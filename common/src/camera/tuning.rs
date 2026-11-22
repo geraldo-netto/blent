@@ -35,7 +35,7 @@ pub enum Flicker {
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "platform", derive(clap::Args))]
-#[serde(default)]
+#[serde(default, deny_unknown_fields)]
 pub struct Sensor {
     /// Exposure compensation in hundredths of an EV; rounded to camera steps.
     #[cfg_attr(feature = "platform", arg(long, default_value_t = 0))]

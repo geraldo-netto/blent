@@ -9,6 +9,8 @@ mod diagnostic_tests;
 mod media_tests;
 mod merge;
 #[cfg(test)]
+mod nested_schema_tests;
+#[cfg(test)]
 mod schema_tests;
 
 /// Maximum accepted configured bitrate, in kbps. This is a project policy

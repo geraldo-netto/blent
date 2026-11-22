@@ -24,7 +24,7 @@ pub use source_contract::{
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(default)]
+#[serde(default, deny_unknown_fields)]
 pub struct Settings {
     pub pause_on_lock: bool,
     pub pause_on_display_off: bool,
