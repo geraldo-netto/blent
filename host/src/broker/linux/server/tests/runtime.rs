@@ -191,3 +191,40 @@ fn accessory_candidate() -> Candidate {
         ..candidate()
     }
 }
+
+#[tokio::test]
+async fn t1609_selected_runtime_reaches_original_helper() {
+    let mut fixture = Fixture::new().await;
+    fixture.server.next_inventory = Instant::now() + Duration::from_secs(60);
+    let runtime = fixture.server.settings.runtime.clone();
+    std::fs::write(&fixture.server.settings.helper,
+        b"#!/usr/bin/python3\nimport os\nfrom pathlib import Path\nruntime = os.environ['BLENT_USB_RUNTIME_DIR']\nPath(runtime, 'helper-runtime').write_bytes(os.fsencode(runtime))\n").unwrap();
+    fixture.server.controller = Controller::new(
+        peer(0),
+        vec![peer(1)],
+        crate::broker::control::Limits::default(),
+    )
+    .unwrap();
+    fixture
+        .server
+        .inventory_result(Ok(vec![accessory_candidate()]))
+        .unwrap();
+    fixture.server.tick().unwrap();
+    let recorded = runtime.join("helper-runtime");
+    bounded(async {
+        while !recorded.exists() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await;
+    assert_eq!(
+        std::fs::read(recorded).unwrap(),
+        runtime.as_os_str().as_encoded_bytes()
+    );
+    fixture
+        .server
+        .shutdown(Duration::from_secs(5))
+        .await
+        .unwrap();
+    fixture.finish().await;
+}

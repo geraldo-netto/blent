@@ -67,12 +67,46 @@ accessory_selection accessory_parse_selection(const char *address,const char *ve
     return result;
 }
 
-int accessory_lock(accessory_target target) {
-    char name[160];
-    int offset=snprintf(name,sizeof(name),"/run/user/%u/blent-aoa-probe-%u",(unsigned)getuid(),target.bus);
-    for (int index=0;index<target.count;index++) offset+=snprintf(name+offset,sizeof(name)-(size_t)offset,"-%u",target.ports[index]);
-    int fd=open(name,O_CREAT|O_RDWR|O_NOFOLLOW|O_CLOEXEC,0600); accessory_require(fd>=0,"cannot open probe ownership lock");
-    struct stat status; accessory_require(fstat(fd,&status)==0,"probe lock metadata");
-    accessory_require(S_ISREG(status.st_mode) && status.st_uid==getuid(),"unsafe probe ownership lock");
-    accessory_require(flock(fd,LOCK_EX|LOCK_NB)==0,"another probe still owns this port; do not start a replacement"); return fd;
+/* The broker supplies its selected private runtime; a helper never guesses a
+ * second location. Hold the directory only through lock-file admission. */
+static int runtime_directory(void)
+{
+    const char *path = getenv("BLENT_USB_RUNTIME_DIR");
+    accessory_require(path && path[0] == '/', "absolute USB runtime directory required");
+    int directory = open(path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC);
+    accessory_require(directory >= 0, "cannot open USB runtime directory");
+    struct stat status;
+    accessory_require(fstat(directory, &status) == 0, "USB runtime metadata");
+    accessory_require(status.st_uid == getuid() && (status.st_mode & 077) == 0,
+                      "USB runtime must be owned and private");
+    return directory;
+}
+
+static void probe_name(char name[64], accessory_target target)
+{
+    accessory_require(target.bus > 0 && target.count >= 1 && target.count <= 7,
+                      "invalid probe lock target");
+    int offset = snprintf(name, 64, "blent-aoa-probe-%u", target.bus);
+    for (int index = 0; index < target.count; index++)
+    {
+        accessory_require(target.ports[index] > 0, "invalid probe lock port");
+        offset += snprintf(name + offset, 64 - (size_t)offset, "-%u", target.ports[index]);
+    }
+}
+
+int accessory_lock(accessory_target target)
+{
+    char name[64];
+    probe_name(name, target);
+    int directory = runtime_directory();
+    int fd = openat(directory, name, O_CREAT | O_RDWR | O_NOFOLLOW | O_CLOEXEC, 0600);
+    close(directory);
+    accessory_require(fd >= 0, "cannot open probe ownership lock");
+    struct stat status;
+    accessory_require(fstat(fd, &status) == 0, "probe lock metadata");
+    accessory_require(S_ISREG(status.st_mode) && status.st_uid == getuid(),
+                      "unsafe probe ownership lock");
+    accessory_require(flock(fd, LOCK_EX | LOCK_NB) == 0,
+                      "another probe still owns this port; do not start a replacement");
+    return fd;
 }

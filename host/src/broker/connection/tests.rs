@@ -122,6 +122,7 @@ async fn t872_native_helper_retirement_observes_actual_child_exit() {
     // Native owner fixture only; stock TLS/session duplex has its own regression.
     verified.resource = crate::accessory::linux::open(
         &helper,
+        directory.path(),
         &crate::accessory::linux::Target::new(1, &[1]).unwrap(),
     )
     .unwrap();

@@ -50,14 +50,18 @@ impl Owner for Process {
     }
 }
 /// The helper is installed/configured locally, never selected by an incoming
-/// peer message. Its inherited per-port lock survives until actual process exit.
+/// peer message. Its per-port lock lives in the supplied private runtime until actual process exit.
 /// No TLS state or application permission is implied by spawning this process.
-pub fn open(helper: &Path, target: &Target) -> Result<Resource> {
-    open_arguments(helper, &target.arguments())
+pub fn open(helper: &Path, runtime: &Path, target: &Target) -> Result<Resource> {
+    open_arguments(helper, runtime, &target.arguments())
 }
 /// Recheck observed metadata on the opened handle before any AOA transfer.
 /// This binds a UI selection, never trust; TLS still proves the peer identity.
-pub fn open_selected(helper: &Path, selected: &discovery::Candidate) -> Result<Resource> {
+pub fn open_selected(
+    helper: &Path,
+    runtime: &Path,
+    selected: &discovery::Candidate,
+) -> Result<Resource> {
     ensure!(
         (1..=127).contains(&selected.address),
         "invalid selected USB address"
@@ -69,16 +73,21 @@ pub fn open_selected(helper: &Path, selected: &discovery::Candidate) -> Result<R
         selected.vendor.to_string(),
         selected.product.to_string(),
     ]);
-    open_arguments(helper, &arguments)
+    open_arguments(helper, runtime, &arguments)
 }
-fn open_arguments(helper: &Path, arguments: &[String]) -> Result<Resource> {
+fn open_arguments(helper: &Path, runtime: &Path, arguments: &[String]) -> Result<Resource> {
     ensure!(
         helper.is_absolute(),
         "USB helper must use an absolute installed path"
     );
+    ensure!(
+        runtime.is_absolute(),
+        "USB runtime must use an absolute path"
+    );
     let mut command = Command::new(helper);
     command
         .args(arguments)
+        .env("BLENT_USB_RUNTIME_DIR", runtime)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::inherit());
@@ -102,7 +111,11 @@ mod tests {
         use std::os::unix::fs::PermissionsExt;
         let root = tempfile::tempdir().unwrap();
         let helper = root.path().join("selected-helper");
-        std::fs::write(&helper, b"#!/bin/sh\nprintf '%s\\n' \"$@\"\n").unwrap();
+        std::fs::write(
+            &helper,
+            b"#!/bin/sh\nprintf '%s\\n' \"$BLENT_USB_RUNTIME_DIR\" \"$@\"\n",
+        )
+        .unwrap();
         std::fs::set_permissions(&helper, std::fs::Permissions::from_mode(0o700)).unwrap();
         let mut selected = discovery::Candidate {
             target: Target::new(3, &[2, 4, 4]).unwrap(),
@@ -116,17 +129,26 @@ mod tests {
         };
         for address in [0, 128, 255] {
             selected.address = address;
-            assert!(open_selected(&helper, &selected).is_err());
+            assert!(open_selected(&helper, root.path(), &selected).is_err());
         }
         selected.address = 7;
-        assert!(open_selected(Path::new("relative"), &selected).is_err());
-        let Resource { mut stream, owner } = open_selected(&helper, &selected).unwrap();
+        assert!(open_selected(&helper, Path::new("relative-runtime"), &selected).is_err());
+        assert!(open_selected(Path::new("relative"), root.path(), &selected).is_err());
+        let Resource { mut stream, owner } =
+            open_selected(&helper, root.path(), &selected).unwrap();
         let mut bytes = Vec::new();
         tokio::time::timeout(Duration::from_secs(3), stream.read_to_end(&mut bytes))
             .await
             .unwrap()
             .unwrap();
-        assert_eq!(bytes, b"--selected\n3\n2.4.4\n7\n6353\n201\n");
+        assert_eq!(
+            bytes,
+            format!(
+                "{}\n--selected\n3\n2.4.4\n7\n6353\n201\n",
+                root.path().display()
+            )
+            .as_bytes()
+        );
         drop(stream);
         owner.retire().await.unwrap();
     }
@@ -143,8 +165,13 @@ mod tests {
             );
         }
         let target = Target::new(1, &[1]).unwrap();
-        assert!(open(Path::new("relative-helper"), &target).is_err());
-        assert!(open(Path::new("/nonexistent/blent-test-usb-helper"), &target).is_err());
+        assert!(open(Path::new("relative-helper"), Path::new("/tmp"), &target).is_err());
+        assert!(open(
+            Path::new("/nonexistent/blent-test-usb-helper"),
+            Path::new("/tmp"),
+            &target
+        )
+        .is_err());
     }
     #[tokio::test]
     async fn t846_native_owner_duplex_and_actual_process_retirement() {
@@ -155,7 +182,7 @@ mod tests {
         std::fs::write(&helper, b"#!/bin/sh\nexec cat\n").unwrap();
         std::fs::set_permissions(&helper, std::fs::Permissions::from_mode(0o700)).unwrap();
         let Resource { mut stream, owner } =
-            open(&helper, &Target::new(3, &[2, 4, 4]).unwrap()).unwrap();
+            open(&helper, temp.path(), &Target::new(3, &[2, 4, 4]).unwrap()).unwrap();
         let completion = owner.completion();
         assert!(!completion.is_complete());
         stream.write_all(b"opaque transport bytes").await.unwrap();

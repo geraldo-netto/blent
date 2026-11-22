@@ -761,6 +761,15 @@ An injected permission denial covers eventual reaping without blocking the
 deadline; it does not execute privileged system setup. T094 continues to check
 direct-child reaping.
 
+### USB helper runtime
+
+The USB broker passes its selected private runtime directory to `blent-usb-io`
+through `BLENT_USB_RUNTIME_DIR`. Direct helper invocations must provide that
+absolute, owned private directory explicitly. Probe lock files are opened relative
+to its directory descriptor, so long runtime paths do not enlarge the bounded
+per-port filename. The helper retains the lock until original process exit; stable
+lock files are not unlinked during retirement.
+
 ### Attachment-only auto-launch
 
 `auto_launch_app` opens the Android Activity once after forwarding succeeds for

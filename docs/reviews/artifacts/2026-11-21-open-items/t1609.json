@@ -1,0 +1,445 @@
+{
+  "issue": "T1609",
+  "date": "2026-11-22",
+  "regressions_before": {
+    "failed": 2,
+    "passed": 0
+  },
+  "verification": {
+    "native_probe_and_runtime_tests_passed": 21,
+    "final_expanded_runtime_tests_passed": 3,
+    "accessory_linux_tests_passed": 17,
+    "broker_runtime_tests_passed": 4,
+    "linux_adapter_coverage_suite_passed": 207,
+    "final_broker_forwarding_test_passed": 1,
+    "helper_build": "C11, -Wall -Wextra -Werror; cached libusb headers; private /tmp output",
+    "example_check": "cargo check --offline --locked -p blent --features accessory-transport --example accessory_probe"
+  },
+  "coverage": [
+    {
+      "file": "host/accessory/contract.c",
+      "name": "runtime_directory",
+      "line": 72,
+      "language": "c",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "probe_name",
+      "line": 85,
+      "language": "c",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_lock",
+      "line": 97,
+      "language": "c",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/linux.rs",
+      "name": "open",
+      "line": 55,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/linux.rs",
+      "name": "open_selected",
+      "line": 60,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/linux.rs",
+      "name": "open_arguments",
+      "line": 78,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "start",
+      "line": 70,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "host/accessory/contract.c",
+      72,
+      "runtime_directory",
+      3
+    ],
+    [
+      "host/accessory/contract.c",
+      85,
+      "probe_name",
+      4
+    ],
+    [
+      "host/accessory/contract.c",
+      97,
+      "accessory_lock",
+      2
+    ],
+    [
+      "host/examples/accessory_probe.rs",
+      159,
+      "run",
+      2
+    ],
+    [
+      "host/src/accessory/linux.rs",
+      55,
+      "open",
+      1
+    ],
+    [
+      "host/src/accessory/linux.rs",
+      60,
+      "open_selected",
+      1
+    ],
+    [
+      "host/src/accessory/linux.rs",
+      78,
+      "open_arguments",
+      1
+    ],
+    [
+      "host/src/accessory/linux.rs",
+      110,
+      "t879_selected_snapshot_reaches_helper_as_bounded_exact_arguments",
+      2
+    ],
+    [
+      "host/src/accessory/linux.rs",
+      156,
+      "t846_native_target_bounds_reject_before_spawning",
+      3
+    ],
+    [
+      "host/src/accessory/linux.rs",
+      177,
+      "t846_native_owner_duplex_and_actual_process_retirement",
+      1
+    ],
+    [
+      "host/src/broker/connection/tests.rs",
+      21,
+      "poll_complete",
+      1
+    ],
+    [
+      "host/src/broker/connection/tests.rs",
+      26,
+      "completion",
+      1
+    ],
+    [
+      "host/src/broker/connection/tests.rs",
+      29,
+      "retire",
+      2
+    ],
+    [
+      "host/src/broker/connection/tests.rs",
+      42,
+      "candidate",
+      1
+    ],
+    [
+      "host/src/broker/connection/tests.rs",
+      68,
+      "t872_failed_native_retirement_does_not_release_link_ownership",
+      2
+    ],
+    [
+      "host/src/broker/connection/tests.rs",
+      87,
+      "t872_verified_setup_rechecks_current_pairing_before_install",
+      6
+    ],
+    [
+      "host/src/broker/connection/tests.rs",
+      114,
+      "t872_native_helper_retirement_observes_actual_child_exit",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/commands.rs",
+      70,
+      "start",
+      4
+    ],
+    [
+      "host/src/broker/linux/server/tests/runtime.rs",
+      3,
+      "snapshot",
+      6
+    ],
+    [
+      "host/src/broker/linux/server/tests/runtime.rs",
+      37,
+      "inventory",
+      6
+    ],
+    [
+      "host/src/broker/linux/server/tests/runtime.rs",
+      57,
+      "t853_server_run_inspects_native_inventory_and_retires_failed_synthetic_link",
+      9
+    ],
+    [
+      "host/src/broker/linux/server/tests/runtime.rs",
+      122,
+      "t1391_saved_peer_starts_available_usb_without_ui_command",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests/runtime.rs",
+      149,
+      "t1391_automatic_start_failure_keeps_server_alive_and_bounded",
+      2
+    ],
+    [
+      "host/src/broker/linux/server/tests/runtime.rs",
+      186,
+      "accessory_candidate",
+      1
+    ],
+    [
+      "host/src/broker/linux/server/tests/runtime.rs",
+      196,
+      "t1609_selected_runtime_reaches_original_helper",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      14,
+      "setUpClass",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      35,
+      "build_echo_fixture",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      78,
+      "run_target",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      81,
+      "test_t846_physical_path_boundaries",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      87,
+      "test_t846_invalid_paths_reject_without_usb_dependency",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      93,
+      "test_t846_bounded_invalid_numeric_fuzz",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      100,
+      "test_t846_c_wire_golden_vector_payload_boundaries_and_corruption",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      108,
+      "setUpClass",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      119,
+      "test_t846_usb_zero_length_packets_are_bounded_read_events",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      133,
+      "run_probe",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      137,
+      "test_t1225_transient_io_during_mode_switch_recovers",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      144,
+      "test_t846_transient_access_and_disappearance_recover",
+      3
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      151,
+      "test_t879_replaced_selection_never_sends_control_transfers",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      158,
+      "test_t854_production_metadata_matches_android_filter",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      172,
+      "test_t879_exact_selection_allows_expected_reenumeration",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      178,
+      "test_t846_persistent_open_error_is_bounded",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      185,
+      "test_t1225_persistent_io_remains_bounded",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      191,
+      "test_t1225_other_open_errors_fail_without_retries",
+      3
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      200,
+      "test_t846_initial_open_and_nontransient_errors_remain_strict",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      212,
+      "setUpClass",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      223,
+      "test_t1614_simultaneous_stream_failures_skip_exit_handlers",
+      2
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      237,
+      "test_t876_inventory_dispatch_does_not_enter_usb_streaming",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      242,
+      "test_t879_stream_entry_preserves_selected_descriptor_arguments",
+      1
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      247,
+      "test_t846_packet_aligned_usb_writes_terminate_pending_device_read",
+      3
+    ],
+    [
+      "scripts/tests/test_aoa_probe.py",
+      254,
+      "test_t846_usb_duplex_bounds_timeouts_partial_io_and_process_retirement",
+      3
+    ],
+    [
+      "scripts/tests/test_accessory_runtime.py",
+      13,
+      "setUpClass",
+      1
+    ],
+    [
+      "scripts/tests/test_accessory_runtime.py",
+      23,
+      "command",
+      1
+    ],
+    [
+      "scripts/tests/test_accessory_runtime.py",
+      27,
+      "test_t1609_relocated_runtime_lock_excludes_replacement_until_original_exit",
+      1
+    ],
+    [
+      "scripts/tests/test_accessory_runtime.py",
+      47,
+      "test_t1609_missing_and_relative_runtime_are_rejected",
+      2
+    ],
+    [
+      "scripts/tests/test_accessory_runtime.py",
+      54,
+      "test_t1609_full_target_extent_and_runtime_validation",
+      3
+    ],
+    [
+      "scripts/tests/fixtures/aoa/runtime_lock.c",
+      8,
+      "descriptors",
+      2
+    ],
+    [
+      "scripts/tests/fixtures/aoa/runtime_lock.c",
+      21,
+      "main",
+      2
+    ]
+  ],
+  "tools": "GCC/gcov native counters via project compiler wrapper; ASan/UBSan fixtures; Rust 1.100.0/cargo-llvm-cov 0.8.7 exact test-binary export; tree-sitter 0.25.2, Python AST 3.12 and syn 2.0.119 complexity",
+  "ownership": "Broker clones its local validated runtime path into the original factory closure. Command owns its copied environment. Helper opens one directory descriptor, creates/opens the bounded port filename relative to it, closes that directory, and retains exactly the lock descriptor until process exit. Native fixture counts descriptors before/open/close, rejects a replacement while original lock is held, then admits it only after original exit. Lock files remain stable; no unlink/reuse race. Failed setup exits before native threads and closes descriptors through original process teardown. No new task, native cleanup sponsor or long-lived allocation.",
+  "bounds": "Bus 1..255; 1..7 ports each 1..255; lock filename fits 64 bytes independent of runtime path length. Tested long runtime path and full seven-port extent, missing/relative/non-directory/shared/symlink runtime rejection.",
+  "limits": "No physical USB or installed session was opened. Hardware transport acceptance is unchanged. Example is a nonessential development probe: compile and complexity checked, coverage exempt."
+}

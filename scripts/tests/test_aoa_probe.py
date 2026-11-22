@@ -1,5 +1,6 @@
 """T846: invalid native probe targets must reject before any USB operation."""
 from pathlib import Path
+import os
 import random
 import subprocess
 import tempfile
@@ -234,23 +235,27 @@ class AccessoryStreamTest(unittest.TestCase):
             self.assertNotIn(b'T1614_UNSAFE_EXIT_HANDLER', result.stderr)
 
     def test_t876_inventory_dispatch_does_not_enter_usb_streaming(self):
-        result = subprocess.run([self.binary, '24'], capture_output=True, timeout=3)
+        result = subprocess.run([self.binary, '24'], capture_output=True, timeout=3,
+                                    env=dict(os.environ, BLENT_USB_RUNTIME_DIR=self.directory.name))
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_t879_stream_entry_preserves_selected_descriptor_arguments(self):
-        result = subprocess.run([self.binary, '25'], capture_output=True, timeout=3)
+        result = subprocess.run([self.binary, '25'], capture_output=True, timeout=3,
+                                    env=dict(os.environ, BLENT_USB_RUNTIME_DIR=self.directory.name))
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_t846_packet_aligned_usb_writes_terminate_pending_device_read(self):
         for scenario in range(15, 24):
-            result = subprocess.run([self.binary, str(scenario)], capture_output=True, timeout=3)
+            result = subprocess.run([self.binary, str(scenario)], capture_output=True, timeout=3,
+                                    env=dict(os.environ, BLENT_USB_RUNTIME_DIR=self.directory.name))
             expected = 0 if scenario in (15, 18, 19) else 2
             self.assertEqual(result.returncode, expected, (scenario, result.stderr.decode()))
 
     def test_t846_usb_duplex_bounds_timeouts_partial_io_and_process_retirement(self):
         for scenario in range(15):
             expected = 2 if scenario in (3, 4, 5, 6, 8, 9, 10, 12, 14) else 0
-            result = subprocess.run([self.binary, str(scenario)], capture_output=True, timeout=3)
+            result = subprocess.run([self.binary, str(scenario)], capture_output=True, timeout=3,
+                                    env=dict(os.environ, BLENT_USB_RUNTIME_DIR=self.directory.name))
             self.assertEqual(result.returncode, expected, (scenario, result.stderr.decode()))
 
 

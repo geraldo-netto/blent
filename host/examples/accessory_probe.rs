@@ -162,7 +162,8 @@ mod linux {
         }
         let (helper, target) = arguments()?;
         let identity = Identity::load(IdentityRecord::generate()?)?;
-        let resource = accessory::linux::open(&helper, &target)?;
+        let runtime = blent_config::runtime::runtime_dir()?;
+        let resource = accessory::linux::open(&helper, &runtime, &target)?;
         let candidate =
             accessory::setup::discover(resource, &identity, Duration::from_secs(60)).await?;
         let ticket = approved(&candidate, &identity).await?;
