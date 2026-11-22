@@ -11,6 +11,7 @@ pub(crate) fn show(context: &egui::Context) {
 pub(crate) struct Window<A> {
     pub(crate) app: A,
     activation: crate::platform::activation::Wake,
+    appearance: Option<crate::platform::appearance::Watch>,
 }
 
 #[cfg(target_os = "linux")]
@@ -20,9 +21,22 @@ impl<A> Window<A> {
         instance: &crate::platform::activation::Instance,
         context: &egui::Context,
     ) -> std::io::Result<Self> {
-        let context = context.clone();
-        let activation = instance.watch(move || context.request_repaint())?;
-        Ok(Self { app, activation })
+        let wake = context.clone();
+        let activation = instance.watch(move || wake.request_repaint())?;
+        let wake = context.clone();
+        let appearance =
+            match crate::platform::appearance::Watch::start(move || wake.request_repaint()) {
+                Ok(watch) => Some(watch),
+                Err(error) => {
+                    crate::workspace_style::refresh_desktop(context, Err(error.to_string()));
+                    None
+                }
+            };
+        Ok(Self {
+            app,
+            activation,
+            appearance,
+        })
     }
 }
 
@@ -30,6 +44,9 @@ impl<A> Window<A> {
 impl<A: eframe::App> eframe::App for Window<A> {
     fn update(&mut self, context: &egui::Context, frame: &mut eframe::Frame) {
         poll(context, &self.activation);
+        if let Some(update) = self.appearance.as_ref().and_then(|watch| watch.take()) {
+            crate::workspace_style::refresh_desktop(context, update);
+        }
         self.app.update(context, frame);
     }
 }
@@ -113,10 +130,23 @@ mod tests {
 mod native_tests {
     use super::*;
 
-    struct Probe;
+    struct Probe(std::time::Instant);
     impl eframe::App for Probe {
         fn update(&mut self, context: &egui::Context, _: &mut eframe::Frame) {
-            context.send_viewport_cmd(egui::ViewportCommand::Close);
+            assert!(
+                std::time::Instant::now() < self.0,
+                "T1795 appearance event did not arrive"
+            );
+            let ready = context
+                .data(|data| data.get_temp::<String>(egui::Id::new("desktop-appearance")))
+                .is_some();
+            if ready {
+                context.send_viewport_cmd(egui::ViewportCommand::Close);
+            } else {
+                context.request_repaint_after(
+                    self.0.saturating_duration_since(std::time::Instant::now()),
+                );
+            }
         }
     }
 
@@ -133,7 +163,13 @@ mod native_tests {
             eframe::run_native(
                 "T1449 private window",
                 options,
-                Box::new(move |cc| Ok(Box::new(Window::new(Probe, &instance, &cc.egui_ctx)?))),
+                Box::new(move |cc| {
+                    Ok(Box::new(Window::new(
+                        Probe(std::time::Instant::now() + std::time::Duration::from_secs(5)),
+                        &instance,
+                        &cc.egui_ctx,
+                    )?))
+                }),
             )
         })
         .unwrap();
@@ -161,6 +197,7 @@ mod native_tests {
             .env("XDG_RUNTIME_DIR", root.path())
             .env("WINIT_UNIX_BACKEND", "x11")
             .env_remove("WAYLAND_DISPLAY")
+            .env_remove("GTK_THEME")
             .output()
             .unwrap();
         assert!(

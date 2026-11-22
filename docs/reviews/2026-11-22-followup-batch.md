@@ -252,3 +252,40 @@ an additional Bytes owner. The unconditional reserve candidate was rejected;
 AV1 retains its bounded on-demand sequence insertion. These finite memory-source
 measurements exclude encoder/device latency and are not live-call performance.
 [Evidence](artifacts/2026-11-22-followup-batch/t1495/).
+
+## T1795 — live desktop appearance notifications
+
+One GTK subscription process listens for theme, font, DPI, animation and selected
+GSettings text-scale changes. A one-shot 100 ms coalescer runs only after a change;
+identical snapshots cause no GUI wake. The GUI keeps one replaceable pending
+snapshot and applies it to the existing context/App. Rejected snapshots retain
+the current style and permit recovery on a subsequent valid notification.
+Terminal listener failure is visible in General; restarting retries integration.
+
+Ownership: one admitted control worker owns one admitted native child. Frames are
+limited to 8 KiB; font input is a validated regular file of at most 8 MiB. The
+worker retains at most the pending and next font payloads (16 MiB), plus bounded
+appearance metadata and existing bounded command receipts. GUI font resources
+remain owned by egui. Drop cancels the reader, closes the child's original stdin,
+and uses existing exact-child retirement; the process registry retains the
+original worker join and any unresolved native admission. GTK disconnects its
+fixed signal registrations and removes its original sources on orderly exit.
+No resource completion is inferred from cancellation or a deadline.
+
+Validation: the 309-test GUI suite passed; eight final targeted tests passed after
+adding live-update acceptance, covering 310 distinct GUI unit tests across those
+runs. Eight Python tests pass. Permanent checks cover invalid/truncated frames,
+coalescing, identical updates, rejection/recovery, spawn failure, original child
+and worker retirement, unchanged context data and palette retention. A private
+Xvfb/GSettings-memory GTK test changes font, theme, scale and animation, then
+checks original listener cleanup. The private native eframe window also waits
+for the real GTK event before closing. No owner desktop setting or installed
+Blent session was changed. All 26 maintained Rust/Python functions have >=80%
+line coverage; 71 measured functions have complexity <=6. GUI production Clippy
+passes. KDE/Windows native acceptance is not claimed.
+
+Native notification semantics were checked against the official
+[GTK Settings](https://docs.gtk.org/gtk3/class.Settings.html) and
+[GSettings changed signal](https://docs.gtk.org/gio/signal.Settings.changed.html)
+contracts; GSettings is read after registration to arm notifications.
+[Evidence](artifacts/2026-11-22-followup-batch/t1795/).

@@ -1,0 +1,29 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.96s
+     Running unittests src/main.rs (target/debug/build/blent-gui/ac7a5b3c8d48d8bb/out/blent_gui-ac7a5b3c8d48d8bb)
+
+running 6 tests
+test platform::appearance::watch::tests::t1795_frames_reject_invalid_size_truncation_and_preserve_next ... ok
+test platform::appearance::watch::tests::t1795_invalid_snapshot_stops_reader_without_publishing_a_theme ... ok
+test platform::appearance::watch::tests::t1795_latest_update_replaces_pending_value_with_one_wake ... ok
+test platform::appearance::watch::tests::t1795_native_gtk_changes_and_unregisters_on_private_display ... T1795 GTK font/theme/scale/animation notifications and cleanup passed
+
+ok
+test platform::appearance::watch::tests::t1795_native_stream_coalesces_identical_updates_and_cancels_original_child ... ok
+test platform::appearance::watch::tests::t1795_spawn_rejection_is_reported_and_original_worker_joins ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 303 filtered out; finished in 0.61s
+
+     Running tests/process_exit.rs (target/debug/build/blent-gui/318f88369a730791/out/process_exit-318f88369a730791)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/startup.rs (target/debug/build/blent-gui/e90d95e0276a0a2f/out/startup-e90d95e0276a0a2f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+

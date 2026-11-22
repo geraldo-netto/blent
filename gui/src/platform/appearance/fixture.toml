@@ -1,0 +1,11 @@
+
+source = "Fixture"
+background = [248, 248, 249]
+surface = [255, 255, 255]
+foreground = [32, 32, 32]
+accent = [31, 158, 222]
+selected_text = [255, 255, 255]
+font_family = "Sans"
+font_points = 10.0
+text_scale = 1.0
+animations = false

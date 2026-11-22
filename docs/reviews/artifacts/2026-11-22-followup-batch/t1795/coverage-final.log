@@ -1,0 +1,19 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.05s
+     Running unittests src/main.rs (/home/netto/.cache/blent-followup-20261122/coverage/debug/build/blent-gui/ac7a5b3c8d48d8bb/out/blent_gui-ac7a5b3c8d48d8bb)
+
+running 8 tests
+test activation::native_tests::t1449_native_window_on_private_display ... ok
+test platform::appearance::watch::tests::t1795_frames_reject_invalid_size_truncation_and_preserve_next ... ok
+test platform::appearance::watch::tests::t1795_invalid_snapshot_preserves_subscription_and_recovers_on_valid_change ... ok
+test platform::appearance::watch::tests::t1795_latest_update_replaces_pending_value_with_one_wake ... ok
+test platform::appearance::watch::tests::t1795_native_gtk_changes_and_unregisters_on_private_display ... ok
+test platform::appearance::watch::tests::t1795_native_stream_coalesces_identical_updates_and_cancels_original_child ... ok
+test platform::appearance::watch::tests::t1795_spawn_rejection_is_reported_and_original_worker_joins ... ok
+test workspace_style::tests::t1795_live_refresh_preserves_context_and_rejected_updates_keep_palette ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 302 filtered out; finished in 1.01s
+
+
+    Finished report saved to /tmp/blent-t1795-final.lcov

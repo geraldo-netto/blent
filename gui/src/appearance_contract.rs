@@ -1,6 +1,6 @@
 //! Immutable desktop appearance values, independent of GUI/OS implementations.
 //! The native adapter validates its bounded input; UI consumes one owned snapshot.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub(crate) struct Appearance {
     pub source: String,
     pub background: [u8; 3],

@@ -1,8 +1,10 @@
 //! Linux boundary: bounded child receipts own GTK/fontconfig probes. Snapshot
-//! strings <=256 bytes; output <=8 KiB; regular font input <=8 MiB. No listener.
+//! strings <=256 bytes; output <=8 KiB; regular font input <=8 MiB. Listener frames use the same bounds.
 use crate::appearance_contract::Appearance;
+mod watch;
 use blent_config::commands::SyncCommandExt;
 use std::{io::Read, process::Command};
+pub(crate) use watch::Watch;
 
 pub(crate) fn load() -> Result<(Appearance, Vec<u8>), String> {
     let output = Command::new("/usr/bin/python3")

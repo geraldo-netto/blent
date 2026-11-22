@@ -1,5 +1,7 @@
-"""One process-local GTK light snapshot; never write desktop preferences."""
+"""Process-local GTK light appearance; never write desktop preferences."""
 import json
+import struct
+import sys
 
 
 def rgb(context, name, background):
@@ -11,15 +13,20 @@ def rgb(context, name, background):
             for value, base in zip(channels, background)]
 
 
-def text_scale(Gio):
+def scale_settings(Gio):
     source = Gio.SettingsSchemaSource.get_default()
     if source is None:
-        return 1.0
+        return None
     for name in ("org.cinnamon.desktop.interface", "org.gnome.desktop.interface"):
         schema = source.lookup(name, True)
         if schema and schema.has_key("text-scaling-factor"):
-            return Gio.Settings.new_full(schema, None, None).get_double("text-scaling-factor")
-    return 1.0
+            return Gio.Settings.new_full(schema, None, None)
+    return None
+
+
+def text_scale(Gio):
+    settings = scale_settings(Gio)
+    return settings.get_double("text-scaling-factor") if settings else 1.0
 
 
 def snapshot(Gtk, Pango, Gio):
@@ -43,12 +50,97 @@ def snapshot(Gtk, Pango, Gio):
         window.destroy()
 
 
+class Watch:
+    """Fixed signal registrations and one coalesced one-shot refresh source."""
+    def __init__(self, Gtk, Pango, Gio, GLib, emit):
+        self.modules = Gtk, Pango, Gio
+        self.glib = GLib
+        self.emit = emit
+        self.pending = 0
+        self.connections = []
+        self.closed = False
+        self.loop = GLib.MainLoop()
+        self.error = None
+        self.input_source = 0
+
+    def connect(self, owner, signal):
+        self.connections.append((owner, owner.connect(signal, self.changed)))
+
+    def start(self):
+        Gtk, _, Gio = self.modules
+        if not Gtk.init_check([])[0]:
+            raise ValueError("GTK display unavailable")
+        settings = Gtk.Settings.get_default()
+        for name in ("gtk-theme-name", "gtk-font-name", "gtk-xft-dpi", "gtk-enable-animations"):
+            self.connect(settings, "notify::" + name)
+        scale = scale_settings(Gio)
+        if scale:
+            self.connect(scale, "changed::text-scaling-factor")
+            scale.get_double("text-scaling-factor")  # Arm GSettings notifications.
+        self.changed()
+
+    def changed(self, *_):
+        if not self.closed and not self.pending:
+            self.pending = self.glib.timeout_add(100, self.refresh)
+
+    def refresh(self):
+        self.pending = 0
+        try:
+            value = snapshot(*self.modules)
+        except Exception:
+            value = {"error": "GTK appearance snapshot unavailable"}
+        try:
+            self.emit(value)
+        except Exception as error:
+            self.error = error
+            self.loop.quit()
+        return False
+
+    def input_closed(self, *_):
+        self.input_source = 0
+        self.loop.quit()
+        return False
+
+    def close(self):
+        self.closed = True
+        for source in (self.pending, self.input_source):
+            if source:
+                self.glib.source_remove(source)
+        self.pending = self.input_source = 0
+        for owner, handler in self.connections:
+            owner.disconnect(handler)
+        self.connections.clear()
+
+    def run(self):
+        try:
+            self.start()
+            self.input_source = self.glib.io_add_watch(
+                0, self.glib.IO_IN | self.glib.IO_HUP | self.glib.IO_ERR, self.input_closed)
+            self.loop.run()
+        finally:
+            self.close()
+        if self.error:
+            raise self.error
+
+
+def emit_frame(values):
+    data = "\n".join(key + " = " + json.dumps(value) for key, value in values.items()).encode()
+    if len(data) > 8192:
+        raise ValueError("GTK appearance exceeds frame limit")
+    sys.stdout.buffer.write(struct.pack(">I", len(data)) + data)
+    sys.stdout.buffer.flush()
+
+
 def main():
     import gi
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk, Pango, Gio
-    for key, value in snapshot(Gtk, Pango, Gio).items():
-        print(key + " = " + json.dumps(value))
+    if sys.argv[1:] == ["--watch"]:
+        from gi.repository import GLib
+        Watch(Gtk, Pango, Gio, GLib, emit_frame).run()
+    else:
+        for key, value in snapshot(Gtk, Pango, Gio).items():
+            print(key + " = " + json.dumps(value))
 
 
 if __name__ == "__main__":

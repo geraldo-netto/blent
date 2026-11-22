@@ -1,17 +1,6 @@
 use super::*;
 
-const FIXTURE: &str = r#"
-source = "Fixture"
-background = [248, 248, 249]
-surface = [255, 255, 255]
-foreground = [32, 32, 32]
-accent = [31, 158, 222]
-selected_text = [255, 255, 255]
-font_family = "Sans"
-font_points = 10.0
-text_scale = 1.0
-animations = false
-"#;
+const FIXTURE: &str = include_str!("fixture.toml");
 
 #[test]
 fn t1786_native_contract_rejects_malformed_and_out_of_range_inputs() {

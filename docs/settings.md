@@ -33,6 +33,13 @@ admitting a backend or queuing a replacement.
 
 ## Desktop workspace and resource controls
 
+On Linux, the desktop light theme, font, text scale and animation preference
+refresh automatically while the same Blent window and media sessions remain open.
+GTK notifications drive updates; there is no appearance polling timer. Invalid
+updates retain the current appearance and show a notice under General. Restarting
+Blent retries an unavailable native integration. KDE-specific appearance parity
+remains unvalidated.
+
 The desktop workspace adapts between a tablet sidebar and a compact selector.
 On X11, initial window centering waits at most 25 geometry checks for the window
 to become visible, then leaves placement to the desktop. Wayland controls its

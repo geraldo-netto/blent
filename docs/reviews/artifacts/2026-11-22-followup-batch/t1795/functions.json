@@ -1,0 +1,299 @@
+[
+  {
+    "file": "gui/src/activation.rs",
+    "name": "new",
+    "line": 19,
+    "language": "rust",
+    "covered": 16,
+    "total": 18,
+    "percent": 88.88888888888889,
+    "passes": true,
+    "missing": [
+      31,
+      32
+    ]
+  },
+  {
+    "file": "gui/src/activation.rs",
+    "name": "update",
+    "line": 45,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "refresh_desktop",
+    "line": 159,
+    "language": "rust",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "appearance_info",
+    "line": 190,
+    "language": "rust",
+    "covered": 15,
+    "total": 16,
+    "percent": 93.75,
+    "passes": true,
+    "missing": [
+      194
+    ]
+  },
+  {
+    "file": "gui/src/platform/appearance/watch.rs",
+    "name": "publish",
+    "line": 21,
+    "language": "rust",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/watch.rs",
+    "name": "take",
+    "line": 27,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/watch.rs",
+    "name": "start",
+    "line": 37,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/watch.rs",
+    "name": "start_command",
+    "line": 42,
+    "language": "rust",
+    "covered": 24,
+    "total": 24,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/watch.rs",
+    "name": "take",
+    "line": 66,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/watch.rs",
+    "name": "drop",
+    "line": 71,
+    "language": "rust",
+    "covered": 4,
+    "total": 5,
+    "percent": 80.0,
+    "passes": true,
+    "missing": [
+      74
+    ]
+  },
+  {
+    "file": "gui/src/platform/appearance/watch.rs",
+    "name": "run",
+    "line": 78,
+    "language": "rust",
+    "covered": 17,
+    "total": 18,
+    "percent": 94.44444444444444,
+    "passes": true,
+    "missing": [
+      92
+    ]
+  },
+  {
+    "file": "gui/src/platform/appearance/watch.rs",
+    "name": "receive",
+    "line": 103,
+    "language": "rust",
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/watch.rs",
+    "name": "changed",
+    "line": 124,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/watch.rs",
+    "name": "frame",
+    "line": 133,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "scale_settings",
+    "line": 16,
+    "language": "python",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "text_scale",
+    "line": 27,
+    "language": "python",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "emit_frame",
+    "line": 126,
+    "language": "python",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "main",
+    "line": 134,
+    "language": "python",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "__init__",
+    "line": 55,
+    "language": "python",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "connect",
+    "line": 66,
+    "language": "python",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "start",
+    "line": 69,
+    "language": "python",
+    "covered": 10,
+    "total": 11,
+    "percent": 90.9090909090909,
+    "passes": true,
+    "missing": [
+      72
+    ]
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "changed",
+    "line": 82,
+    "language": "python",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "refresh",
+    "line": 86,
+    "language": "python",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "input_closed",
+    "line": 99,
+    "language": "python",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "close",
+    "line": 104,
+    "language": "python",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/platform/appearance/gtk.py",
+    "name": "run",
+    "line": 114,
+    "language": "python",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

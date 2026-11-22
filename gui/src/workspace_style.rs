@@ -155,6 +155,24 @@ fn install_desktop(
     context.data_mut(|data| data.insert_temp(egui::Id::new("desktop-appearance"), description));
 }
 
+#[cfg(target_os = "linux")]
+pub(crate) fn refresh_desktop(
+    context: &egui::Context,
+    update: Result<(crate::appearance_contract::Appearance, Vec<u8>), String>,
+) {
+    match update {
+        Ok(snapshot) => {
+            context.data_mut(|data| {
+                data.remove::<bool>(egui::Id::new("appearance-watch-unavailable"))
+            });
+            install_desktop(context, Ok(snapshot));
+        }
+        Err(_) => context.data_mut(|data| {
+            data.insert_temp(egui::Id::new("appearance-watch-unavailable"), true);
+        }),
+    }
+}
+
 fn install_font(context: &egui::Context, bytes: Vec<u8>) {
     let mut fonts = egui::FontDefinitions::default();
     fonts.font_data.insert(
@@ -175,7 +193,18 @@ pub(super) fn appearance_info(ui: &mut egui::Ui) {
         .data(|data| data.get_temp::<String>(egui::Id::new("desktop-appearance")))
         .unwrap_or_else(|| "Standard light defaults".into());
     ui.label(format!("Appearance: {description}"));
-    ui.small("Desktop appearance is read when Blent opens. Theme changes apply the next time the Blent GUI starts.");
+    if !cfg!(target_os = "linux")
+        || ui
+            .ctx()
+            .data(|data| data.get_temp::<bool>(egui::Id::new("appearance-watch-unavailable")))
+            .unwrap_or(false)
+    {
+        ui.small(
+            "The last appearance update failed; the current theme is kept. Restarting Blent retries desktop integration.",
+        );
+    } else {
+        ui.small("Desktop theme, font and text scale changes apply automatically.");
+    }
 }
 
 #[cfg(test)]
@@ -194,6 +223,41 @@ mod tests {
             text_scale: 1.0,
             animations: false,
         }
+    }
+
+    #[test]
+    fn t1795_live_refresh_preserves_context_and_rejected_updates_keep_palette() {
+        let context = egui::Context::default();
+        context.data_mut(|data| data.insert_temp(egui::Id::new("session-owner"), 42u64));
+        let mut appearance = fixture();
+        appearance.text_scale = 1.5;
+        let font = egui::FontDefinitions::default()
+            .font_data
+            .values()
+            .next()
+            .unwrap()
+            .font
+            .to_vec();
+        refresh_desktop(&context, Ok((appearance.clone(), font.clone())));
+        let _ = context.run(Default::default(), |_| {});
+        assert_eq!(context.zoom_factor(), 1.5);
+        let color = context.style().visuals.panel_fill;
+        refresh_desktop(&context, Err("rejected native change".into()));
+        assert_eq!(context.style().visuals.panel_fill, color);
+        assert_eq!(
+            context.data(|data| data.get_temp::<u64>(egui::Id::new("session-owner"))),
+            Some(42)
+        );
+        let _ = context.run(Default::default(), |context| {
+            egui::CentralPanel::default().show(context, appearance_info);
+        });
+        refresh_desktop(&context, Ok((appearance, font)));
+        let _ = context.run(Default::default(), |context| {
+            egui::CentralPanel::default().show(context, appearance_info);
+        });
+        assert!(context
+            .data(|data| data.get_temp::<bool>(egui::Id::new("appearance-watch-unavailable")))
+            .is_none());
     }
 
     #[test]
