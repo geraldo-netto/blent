@@ -1,0 +1,64 @@
+{
+  "issue": "T1699",
+  "date": "2026-11-22",
+  "before": "Permanent T497 test failed on obsolete within 10s text in /tmp/blent-t1695-coverage.log.",
+  "after": "cargo test --offline --locked -p blent --bin blent t497_stop_timeout: 1 passed. Current 126-second diagnostic and elapsed virtual time verified, original child still alive and exact kill/wait performed by fixture afterward.",
+  "complexity_tool": "project Rust syn 2.0.119 checker",
+  "complexity": [
+    [
+      "host/src/runtime_coverage_tests.rs",
+      9,
+      "isolated_command",
+      3
+    ],
+    [
+      "host/src/runtime_coverage_tests.rs",
+      25,
+      "isolated",
+      1
+    ],
+    [
+      "host/src/runtime_coverage_tests.rs",
+      47,
+      "runtime_contract",
+      4
+    ],
+    [
+      "host/src/runtime_coverage_tests.rs",
+      94,
+      "config_contract",
+      1
+    ],
+    [
+      "host/src/runtime_coverage_tests.rs",
+      113,
+      "relaunch_contract",
+      2
+    ],
+    [
+      "host/src/runtime_coverage_tests.rs",
+      127,
+      "wifi_contract",
+      1
+    ],
+    [
+      "host/src/runtime_coverage_tests.rs",
+      166,
+      "t497_private_runtime_failures_and_transport_recovery",
+      2
+    ],
+    [
+      "host/src/runtime_coverage_tests.rs",
+      180,
+      "t497_stop_timeout_leaves_a_nonresponsive_owned_daemon_reported",
+      1
+    ],
+    [
+      "host/src/runtime_coverage_tests.rs",
+      211,
+      "t590_extra_session_releases_idle_ports_without_opening_devices",
+      3
+    ]
+  ],
+  "scope": "Test oracle only; no production behavior change."
+}

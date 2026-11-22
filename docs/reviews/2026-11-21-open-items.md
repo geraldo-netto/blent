@@ -716,3 +716,7 @@ The permanent delayed-removal test fails before and passes after the fix. All fi
 T1513's default 6100 ms body observation budget exceeds the ADB command's 5000 ms deadline. The private T1509 fixture consequently killed its held original command before releasing it, leaving an intentionally unknown effect. It now explicitly selects 100 ms session grace and 100 ms reap, preserving the one-second margin. It also verifies that the original fake removal is still alive when entry drain starts.
 
 The existing permanent T1509 test fails before and passes after this fixture correction; all three existing namespace tests pass. Original PID, repeated-signal, exact route settlement and CLI command-absence assertions remain. All four measured fixture functions have complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1698.json). No production deadline, cleanup proof or installed process changed.
+
+## T1699 — retarget the Stop deadline oracle (2026-11-22)
+
+The permanent T497 Stop test still expected the obsolete ten-second diagnostic after T1513 enlarged the client observation budget. It now independently checks the accepted 126-second bound and elapsed virtual time, retaining its assertions that the original nonresponsive daemon remains alive and is explicitly killed/waited only by the fixture. The test fails before and passes after; every measured function in the fixture file has complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1699.json). No production behavior changed.
