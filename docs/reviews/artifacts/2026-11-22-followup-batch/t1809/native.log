@@ -1,0 +1,46 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.45
+   Compiling rustls-webpki v0.103.15
+   Compiling rcgen v0.14.10
+   Compiling tokio-rustls v0.26.5
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.48s
+     Running unittests src/main.rs (/home/netto/.cache/blent-followup-20261122/coverage/debug/build/blent-gui/cb2a6fdfe0e53482/out/blent_gui-cb2a6fdfe0e53482)
+
+running 16 tests
+test activation::native_tests::t1449_native_window_on_private_display ... ok
+test connection_settings::backend::native_tests::t894_environment_composition_is_lazy_in_isolated_process ... ok
+test connection_settings::backend::native_tests::t894_native_start_failure_remains_bounded_and_retires ... Failed to find executable /tmp/.tmpZgKN0n/missing-broker: No such file or directory
+ok
+test placement_tests::t1315_native_primary_monitor_offset ... ok
+test platform::appearance::tests::t1786_native_contract_rejects_malformed_and_out_of_range_inputs ... ok
+test platform::appearance::tests::t1786_native_contract_requires_bounded_names_and_typed_fields ... ok
+test platform::appearance::tests::t1786_native_gtk_probe_on_private_display ... ok
+test resource_workspace::tests::media_identity::t1650_workspace_rejects_opposite_audio_direction_before_native_start ... ok
+test status_poll::linux::tests::t1574_native_capability_refresh_keeps_independent_evidence ... ok
+test status_poll::native_tests::t922_empty_and_adb_only_status_keep_inventory_rules ... ok
+test status_poll::native_tests::t922_failed_adb_inventory_preserves_independent_usb_status ... ok
+test status_poll::native_tests::t922_usb_status_does_not_require_or_probe_adb ... ok
+test tests::close_tests::native::t1669_native_close_reactivate_and_explicit_stop_on_private_display ... ok
+test tests::close_tests::native::t1783_native_clean_startup_closes_without_a_prompt ... ok
+test tests::close_tests::t1783_dirty_or_pending_preferences_cancel_native_close ... ok
+test workspace_style::tests::t1786_native_palette_and_font_size_replace_custom_theme ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 288 filtered out; finished in 10.63s
+
+     Running tests/process_exit.rs (/home/netto/.cache/blent-followup-20261122/coverage/debug/build/blent-gui/647f2c9083d74389/out/process_exit-647f2c9083d74389)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/startup.rs (/home/netto/.cache/blent-followup-20261122/coverage/debug/build/blent-gui/d1acf63086f5cec9/out/startup-d1acf63086f5cec9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+
+    Finished report saved to /tmp/blent-t1809-cargo.lcov

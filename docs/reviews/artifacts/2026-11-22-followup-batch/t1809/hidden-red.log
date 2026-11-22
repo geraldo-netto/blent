@@ -1,0 +1,46 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+warning: unused return value of `eframe::egui::Context::run_logic` that must be used
+   --> gui/src/camera_settings/cache_tests.rs:102:5
+    |
+102 | /     context.run_logic(&Default::default(), |context| {
+103 | |         eframe::App::logic(&mut app, context, &mut eframe::Frame::_new_kittest());
+104 | |     });
+    | |______^
+    |
+    = note: `#[warn(unused_must_use)]` (part of `#[warn(unused)]`) on by default
+help: use `let _ = ...` to ignore the resulting value
+    |
+102 |     let _ = context.run_logic(&Default::default(), |context| {
+    |     +++++++
+
+warning: `blent-gui` (bin "blent-gui" test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.93s
+     Running unittests src/main.rs (target/debug/build/blent-gui/e33d04e9b7a3293f/out/blent_gui-e33d04e9b7a3293f)
+
+running 2 tests
+test activation::logic_tests::t1809_hidden_logic_consumes_activation_and_preserves_app_owner ... FAILED
+test camera_settings::cache_tests::t1809_hidden_window_logic_releases_terminal_preview_without_painting ... FAILED
+
+failures:
+
+---- activation::logic_tests::t1809_hidden_logic_consumes_activation_and_preserves_app_owner stdout ----
+
+thread 'activation::logic_tests::t1809_hidden_logic_consumes_activation_and_preserves_app_owner' (890519) panicked at gui/src/activation.rs:202:13:
+assertion `left == right` failed: T1809 inner logic was not called
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- camera_settings::cache_tests::t1809_hidden_window_logic_releases_terminal_preview_without_painting stdout ----
+
+thread 'camera_settings::cache_tests::t1809_hidden_window_logic_releases_terminal_preview_without_painting' (890522) panicked at gui/src/camera_settings/cache_tests.rs:105:5:
+T1809 hidden logic retained terminal pixels
+
+
+failures:
+    activation::logic_tests::t1809_hidden_logic_consumes_activation_and_preserves_app_owner
+    camera_settings::cache_tests::t1809_hidden_window_logic_releases_terminal_preview_without_painting
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 302 filtered out; finished in 0.13s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

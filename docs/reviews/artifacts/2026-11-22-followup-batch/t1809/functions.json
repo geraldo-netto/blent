@@ -1,0 +1,178 @@
+[
+  {
+    "file": "gui/src/main.rs",
+    "name": "logic",
+    "line": 466,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "ui",
+    "line": 470,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "maintain",
+    "line": 483,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_window",
+    "line": 493,
+    "language": "rust",
+    "covered": 26,
+    "total": 26,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_workspace_navigation",
+    "line": 522,
+    "language": "rust",
+    "covered": 27,
+    "total": 27,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_footer",
+    "line": 608,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "settings_grid",
+    "line": 1356,
+    "language": "rust",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/activation.rs",
+    "name": "logic",
+    "line": 31,
+    "language": "rust",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/activation.rs",
+    "name": "ui",
+    "line": 36,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/about.rs",
+    "name": "bundle_link",
+    "line": 90,
+    "language": "rust",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "tablet_selector",
+    "line": 76,
+    "language": "rust",
+    "covered": 19,
+    "total": 19,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "show_close_dialog",
+    "line": 60,
+    "language": "rust",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "configure",
+    "line": 7,
+    "language": "rust",
+    "covered": 21,
+    "total": 21,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "apply_native",
+    "line": 44,
+    "language": "rust",
+    "covered": 20,
+    "total": 20,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "install_desktop",
+    "line": 133,
+    "language": "rust",
+    "covered": 16,
+    "total": 16,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "appearance_info",
+    "line": 171,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

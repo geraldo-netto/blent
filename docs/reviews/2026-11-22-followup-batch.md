@@ -70,3 +70,39 @@ pass complexity <=9. These isolated fixtures cover files, outcome policy and
 private native-loader behavior; no pacman transaction, privileged setup or live
 service reload was performed. Existing native module acceptance remains separate.
 [Evidence](artifacts/2026-11-22-followup-batch/t1625/).
+
+## T1740 / T1809 — evaluated candidate, not landed
+
+The eframe 0.37 adapter candidate passed all 304 GUI unit tests, both process
+lifecycle integration tests and the startup/accessibility integration test. A
+further 16 native tests passed after explicitly retaining Wayland client
+decorations. The release build and GUI Clippy pass; all 16 maintained production
+functions have >=80% measured line coverage, and 618 measured source/test
+functions have complexity <=9. Exact LLVM evidence combines the two executed
+GUI objects with identical maintained source and differing feature selection.
+
+The candidate handles the new separate logic/UI callbacks, including hidden
+activation and terminal-preview cleanup (both new regressions failed before that
+adaptation). Headless tests explicitly consume texture deltas. Fixtures retain
+their original safety assertions: framework theme initialization is settled,
+slider numeric text is located separately from its suffix, animation preferences
+are set after selecting the test theme, and the notice-only viewport fixture
+starts with no unrelated draft. An intermediate run rebuilt its executable during
+self-spawning tests; those invocation failures were eliminated using an isolated
+coverage target. Final tests do not exhibit those failures.
+
+**The candidate does not satisfy the dependency cleanup objective.** In the
+Linux GUI normal/build closure, distinct package/version pairs rise from 309 to
+340; package names with multiple versions rise from 12 to 14. The old AccessKit
+hashbrown 0.15 edge disappears, but the newly enabled Wayland clipboard data-control
+path introduces `arboard → wl-clipboard-rs 0.9.5 → tree_magic_mini 3.2.2 → petgraph
+0.8.3 → hashbrown 0.15.5`. Registry checks confirmed current petgraph/tree_magic/
+wl-clipboard releases retain that requirement; arboard 3.7 retains it as well.
+The selected API migration was therefore not landed. Current GUI dependencies
+and code remain in place; T1740/T1809 retain the precise upstream prerequisite.
+No staged bundle notices were relabelled for an unshipped candidate.
+
+[Graph and recoverable patch identity](artifacts/2026-11-22-followup-batch/t1740/)
+and [candidate validation](artifacts/2026-11-22-followup-batch/t1809/). Installed
+processes and artifacts remain untouched. The packaging compiler improvement
+T1808 remains independently verified and committed.

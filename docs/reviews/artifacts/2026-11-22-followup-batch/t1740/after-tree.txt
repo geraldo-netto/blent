@@ -1,0 +1,906 @@
+blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+ab_glyph v0.2.32
+ab_glyph_rasterizer v0.1.10
+owned_ttf_parser v0.25.1
+ttf-parser v0.25.1
+blent v1.2.3 (/backups/disk2/projects/blent/host)
+anyhow v1.0.102
+blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+anyhow v1.0.102
+clap v4.6.1
+clap_builder v4.6.0
+anstream v1.0.0
+anstyle v1.0.14
+anstyle-parse v1.0.0
+utf8parse v0.2.2
+anstyle-query v1.1.5
+colorchoice v1.0.5
+is_terminal_polyfill v1.70.2
+utf8parse v0.2.2
+anstyle v1.0.14
+clap_lex v1.1.0
+strsim v0.11.1
+clap_derive v4.6.1 (proc-macro)
+heck v0.5.0
+proc-macro2 v1.0.106
+unicode-ident v1.0.24
+quote v1.0.45
+proc-macro2 v1.0.106 (*)
+syn v2.0.117
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+unicode-ident v1.0.24
+getrandom v0.3.4
+cfg-if v1.0.4
+libc v0.2.186
+libc v0.2.186
+semver v1.0.28
+serde v1.0.228
+serde_core v1.0.228
+serde_derive v1.0.228 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+serde_json v1.0.150
+itoa v1.0.18
+memchr v2.8.1
+serde_core v1.0.228
+zmij v1.0.21
+tempfile v3.27.0
+fastrand v2.4.1
+getrandom v0.4.2
+cfg-if v1.0.4
+libc v0.2.186
+rand_core v0.10.1
+once_cell v1.21.4
+rustix v1.1.4
+bitflags v2.13.0
+linux-raw-sys v0.12.1
+tokio v1.52.3
+bytes v1.11.1
+libc v0.2.186
+mio v1.2.1
+libc v0.2.186
+parking_lot v0.12.5
+lock_api v0.4.14
+scopeguard v1.2.0
+parking_lot_core v0.9.12
+cfg-if v1.0.4
+libc v0.2.186
+smallvec v1.16.6
+pin-project-lite v0.2.17
+signal-hook-registry v1.4.8
+errno v0.3.14
+libc v0.2.186
+libc v0.2.186
+socket2 v0.6.4
+libc v0.2.186
+tokio-macros v2.7.0 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+toml v0.8.23
+serde v1.0.228 (*)
+serde_spanned v0.6.9
+serde v1.0.228 (*)
+toml_datetime v0.6.11
+serde v1.0.228 (*)
+toml_edit v0.22.27
+indexmap v2.14.0
+equivalent v1.0.2
+hashbrown v0.17.1
+foldhash v0.2.0
+serde v1.0.228 (*)
+serde_spanned v0.6.9 (*)
+toml_datetime v0.6.11 (*)
+toml_write v0.1.2
+winnow v0.7.15
+tracing v0.1.44
+log v0.4.35
+pin-project-lite v0.2.17
+tracing-attributes v0.1.31 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+tracing-core v0.1.36
+once_cell v1.21.4
+bytes v1.11.1
+clap v4.6.1 (*)
+futures-util v0.3.32
+futures-core v0.3.32
+futures-macro v0.3.32 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+futures-sink v0.3.32
+futures-task v0.3.32
+pin-project-lite v0.2.17
+slab v0.4.12
+h264-reader v0.9.0
+bitstream-io v4.10.0
+no_std_io2 v0.9.4
+memchr v2.8.1
+hex-slice v0.1.4
+log v0.4.35
+memchr v2.8.1
+rfc6381-codec v0.3.0
+mp4ra-rust v0.6.0
+four-cc v0.4.0
+mpeg4-audio-const v0.3.0
+ksni v0.3.6
+async-executor v1.14.0
+async-task v4.7.1
+concurrent-queue v2.5.0
+crossbeam-utils v0.8.21
+fastrand v2.4.1
+futures-lite v2.6.1
+fastrand v2.4.1
+futures-core v0.3.32
+futures-io v0.3.32
+parking v2.2.1
+pin-project-lite v0.2.17
+pin-project-lite v0.2.17
+slab v0.4.12
+async-io v2.6.0
+cfg-if v1.0.4
+concurrent-queue v2.5.0 (*)
+futures-io v0.3.32
+futures-lite v2.6.1 (*)
+parking v2.2.1
+polling v3.11.0
+cfg-if v1.0.4
+rustix v1.1.4 (*)
+rustix v1.1.4 (*)
+slab v0.4.12
+autocfg v1.5.1
+async-lock v3.4.2
+event-listener v5.4.1
+concurrent-queue v2.5.0 (*)
+parking v2.2.1
+pin-project-lite v0.2.17
+event-listener-strategy v0.5.4
+event-listener v5.4.1 (*)
+pin-project-lite v0.2.17
+pin-project-lite v0.2.17
+futures-channel v0.3.32
+futures-core v0.3.32
+futures-lite v2.6.1 (*)
+futures-util v0.3.32 (*)
+pastey v0.2.3 (proc-macro)
+serde v1.0.228 (*)
+task-local v0.1.1
+pin-project-lite v0.2.17
+zbus v5.19.0
+async-broadcast v0.7.2
+event-listener v5.4.1 (*)
+event-listener-strategy v0.5.4 (*)
+futures-core v0.3.32
+pin-project-lite v0.2.17
+async-executor v1.14.0 (*)
+async-io v2.6.0 (*)
+async-lock v3.4.2 (*)
+async-process v2.5.0
+async-channel v2.5.0
+concurrent-queue v2.5.0 (*)
+event-listener-strategy v0.5.4 (*)
+futures-core v0.3.32
+pin-project-lite v0.2.17
+async-io v2.6.0 (*)
+async-lock v3.4.2 (*)
+async-signal v0.2.14
+async-io v2.6.0 (*)
+cfg-if v1.0.4
+futures-core v0.3.32
+futures-io v0.3.32
+rustix v1.1.4 (*)
+signal-hook-registry v1.4.8 (*)
+async-task v4.7.1
+cfg-if v1.0.4
+event-listener v5.4.1 (*)
+futures-lite v2.6.1 (*)
+rustix v1.1.4 (*)
+async-recursion v1.1.1 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+async-task v4.7.1
+async-trait v0.1.89 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+blocking v1.6.2
+async-channel v2.5.0 (*)
+async-task v4.7.1
+futures-io v0.3.32
+futures-lite v2.6.1 (*)
+piper v0.2.5
+atomic-waker v1.1.2
+fastrand v2.4.1
+futures-io v0.3.32
+enumflags2 v0.7.12
+enumflags2_derive v0.7.12 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+serde v1.0.228 (*)
+event-listener v5.4.1 (*)
+futures-core v0.3.32
+futures-lite v2.6.1 (*)
+hex v0.4.3
+libc v0.2.186
+ordered-stream v0.2.0
+futures-core v0.3.32
+pin-project-lite v0.2.17
+rustix v1.1.4 (*)
+serde v1.0.228 (*)
+serde_repr v0.1.20 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+tracing v0.1.44 (*)
+uuid v1.23.3
+serde_core v1.0.228
+winnow v1.0.3
+zbus_macros v5.19.0 (proc-macro)
+proc-macro-crate v3.5.0
+toml_edit v0.25.12+spec-1.1.0
+indexmap v2.14.0
+equivalent v1.0.2
+hashbrown v0.17.1
+toml_datetime v1.1.1+spec-1.1.0
+toml_parser v1.1.2+spec-1.1.0
+winnow v1.0.3
+winnow v1.0.3
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v3.0.10
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+unicode-ident v1.0.24
+zbus_names v4.3.5
+serde v1.0.228
+serde_core v1.0.228
+serde_derive v1.0.228 (proc-macro) (*)
+winnow v1.0.3
+zvariant v5.15.1
+endi v1.1.1
+enumflags2 v0.7.12
+enumflags2_derive v0.7.12 (proc-macro) (*)
+serde v1.0.228 (*)
+serde v1.0.228 (*)
+winnow v1.0.3
+zcheapstr v1.4.0
+serde v1.0.228 (*)
+zvariant_derive v5.15.1 (proc-macro)
+proc-macro-crate v3.5.0 (*)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v3.0.10 (*)
+zvariant_utils v4.2.0
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+serde v1.0.228 (*)
+syn v3.0.10 (*)
+winnow v1.0.3
+zvariant_utils v4.2.0 (*)
+zvariant v5.15.1 (*)
+zvariant_utils v4.2.0 (*)
+zbus_names v4.3.5
+serde v1.0.228 (*)
+winnow v1.0.3
+zvariant v5.15.1
+endi v1.1.1
+enumflags2 v0.7.12 (*)
+serde v1.0.228 (*)
+winnow v1.0.3
+zcheapstr v1.4.0
+serde v1.0.228 (*)
+zvariant_derive v5.15.1 (proc-macro) (*)
+zvariant_utils v4.2.0
+proc-macro2 v1.0.106
+unicode-ident v1.0.24
+quote v1.0.45
+proc-macro2 v1.0.106 (*)
+serde v1.0.228 (*)
+syn v3.0.10
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+unicode-ident v1.0.24
+winnow v1.0.3
+zvariant v5.15.1 (*)
+libc v0.2.186
+linux-raw-sys v0.12.1
+rcgen v0.14.10
+ring v0.17.14
+cfg-if v1.0.4
+getrandom v0.2.17
+cfg-if v1.0.4
+libc v0.2.186
+untrusted v0.9.0
+cc v1.4.4
+find-msvc-tools v0.1.11
+shlex v2.0.1
+rustls-pki-types v1.15.1
+zeroize v1.9.0
+time v0.3.55
+deranged v0.5.8
+num-conv v0.2.2
+powerfmt v0.2.0
+time-core v0.1.9
+yasna v0.6.0
+time v0.3.55 (*)
+rustls v0.23.45
+once_cell v1.21.4
+ring v0.17.14 (*)
+rustls-pki-types v1.15.1 (*)
+rustls-webpki v0.103.15
+ring v0.17.14 (*)
+rustls-pki-types v1.15.1 (*)
+untrusted v0.9.0
+subtle v2.6.1
+zeroize v1.9.0
+serde v1.0.228 (*)
+serde_json v1.0.150 (*)
+sha2 v0.11.1
+cfg-if v1.0.4
+cpufeatures v0.3.1
+digest v0.11.3
+block-buffer v0.12.1
+hybrid-array v0.4.15
+typenum v1.20.1
+const-oid v0.10.3
+crypto-common v0.2.2
+hybrid-array v0.4.15 (*)
+simd-adler32 v0.3.9
+socket2 v0.6.4 (*)
+tempfile v3.27.0 (*)
+tokio v1.52.3 (*)
+tokio-rustls v0.26.5
+rustls v0.23.45 (*)
+tokio v1.52.3 (*)
+tokio-tungstenite v0.30.0
+futures-util v0.3.32 (*)
+log v0.4.35
+tokio v1.52.3 (*)
+tungstenite v0.30.0
+bytes v1.11.1
+data-encoding v2.11.0
+http v1.4.2
+bytes v1.11.1
+itoa v1.0.18
+httparse v1.10.1
+log v0.4.35
+rand v0.10.4
+chacha20 v0.10.2
+cfg-if v1.0.4
+cpufeatures v0.3.1
+rand_core v0.10.1
+getrandom v0.4.2 (*)
+rand_core v0.10.1
+sha1 v0.11.0
+cfg-if v1.0.4
+cpufeatures v0.3.1
+digest v0.11.3 (*)
+thiserror v2.0.18
+thiserror-impl v2.0.18 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+tokio-util v0.7.18
+bytes v1.11.1
+futures-core v0.3.32
+futures-sink v0.3.32
+pin-project-lite v0.2.17
+tokio v1.52.3 (*)
+toml v0.8.23 (*)
+tracing v0.1.44 (*)
+tracing-subscriber v0.3.23
+matchers v0.2.0
+regex-automata v0.4.14
+regex-syntax v0.8.11
+nu-ansi-term v0.50.3
+once_cell v1.21.4
+regex-automata v0.4.14 (*)
+serde v1.0.228 (*)
+serde_json v1.0.150 (*)
+sharded-slab v0.1.7
+lazy_static v1.5.0
+smallvec v1.16.6
+thread_local v1.1.9
+cfg-if v1.0.4
+tracing v0.1.44 (*)
+tracing-core v0.1.36 (*)
+tracing-log v0.2.0
+log v0.4.35
+once_cell v1.21.4
+tracing-core v0.1.36 (*)
+tracing-serde v0.2.0
+serde v1.0.228 (*)
+tracing-core v0.1.36 (*)
+x11rb v0.13.2
+as-raw-xcb-connection v1.0.1
+gethostname v1.1.0
+rustix v1.1.4 (*)
+libc v0.2.186
+libloading v0.8.9
+cfg-if v1.0.4
+once_cell v1.21.4
+rustix v1.1.4 (*)
+x11rb-protocol v0.13.2
+zbus v5.19.0 (*)
+blent-config v1.2.3 (/backups/disk2/projects/blent/common) (*)
+eframe v0.37.0
+ahash v0.8.12
+cfg-if v1.0.4
+getrandom v0.3.4 (*)
+once_cell v1.21.4
+zerocopy v0.8.52
+version_check v0.9.5
+document-features v0.2.12 (proc-macro)
+litrs v1.0.0
+egui v0.37.0
+accesskit v0.25.2
+uuid v1.23.3 (*)
+ahash v0.8.12 (*)
+bitflags v2.13.0
+emath v0.37.0
+bytemuck v1.25.0
+bytemuck_derive v1.10.2 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+epaint v0.37.0
+ahash v0.8.12 (*)
+bytemuck v1.25.0 (*)
+ecolor v0.37.0
+bytemuck v1.25.0 (*)
+emath v0.37.0 (*)
+emath v0.37.0 (*)
+epaint_default_fonts v0.37.0
+font-types v0.12.7
+bytemuck v1.25.0 (*)
+harfrust v0.12.0
+bitflags v2.13.0
+bytemuck v1.25.0 (*)
+read-fonts v0.41.0
+bytemuck v1.25.0 (*)
+font-types v0.12.7 (*)
+once_cell v1.21.4
+smallvec v1.16.6
+log v0.4.35
+nohash-hasher v0.2.0
+parking_lot v0.12.5 (*)
+profiling v1.0.18
+self_cell v1.3.0
+skrifa v0.44.0
+bytemuck v1.25.0 (*)
+read-fonts v0.41.0 (*)
+smallvec v1.16.6
+unicode-general-category v1.1.0
+unicode-properties v0.1.5
+unicode-segmentation v1.13.3
+vello_cpu v0.2.0
+bytemuck v1.25.0 (*)
+hashbrown v0.17.1 (*)
+vello_common v0.2.0
+bytemuck v1.25.0 (*)
+fearless_simd v0.4.1
+guillotiere v0.7.0
+euclid v0.22.14
+num-traits v0.2.19
+autocfg v1.5.1
+log v0.4.35
+peniko v0.6.1
+bytemuck v1.25.0 (*)
+color v0.3.3
+bytemuck v1.25.0 (*)
+kurbo v0.13.1
+arrayvec v0.7.6
+polycool v0.4.0
+arrayvec v0.7.6
+smallvec v1.16.6
+linebender_resource_handle v0.1.1
+smallvec v1.16.6
+smallvec v1.16.6
+thiserror v2.0.18 (*)
+itertools v0.15.0
+either v1.18.0
+log v0.4.35
+nohash-hasher v0.2.0
+profiling v1.0.18
+smallvec v1.16.6
+unicode-segmentation v1.13.3
+egui-winit v0.37.0
+accesskit_winit v0.34.2
+accesskit v0.25.2 (*)
+accesskit_unix v0.24.1
+accesskit v0.25.2 (*)
+accesskit_atspi_common v0.21.1
+accesskit v0.25.2 (*)
+accesskit_consumer v0.39.2
+accesskit v0.25.2 (*)
+hashbrown v0.17.1 (*)
+atspi-common v0.13.0
+enumflags2 v0.7.12 (*)
+serde v1.0.228 (*)
+static_assertions v1.1.0
+zbus v5.19.0 (*)
+zbus-lockstep v0.5.2
+zbus_xml v5.1.1
+quick-xml v0.39.4
+memchr v2.8.1
+serde v1.0.228 (*)
+serde v1.0.228 (*)
+zbus_names v4.3.5 (*)
+zvariant v5.15.1 (*)
+zvariant v5.15.1 (*)
+zbus-lockstep-macros v0.5.2 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+zbus-lockstep v0.5.2
+zbus_xml v5.1.1
+quick-xml v0.39.4
+memchr v2.8.1
+serde v1.0.228 (*)
+serde v1.0.228 (*)
+zbus_names v4.3.5 (*)
+zvariant v5.15.1 (*)
+zvariant v5.15.1 (*)
+zbus_xml v5.1.1 (*)
+zvariant v5.15.1 (*)
+zbus_names v4.3.5 (*)
+zvariant v5.15.1 (*)
+phf v0.14.0
+phf_macros v0.14.0 (proc-macro)
+phf_generator v0.14.0
+fastrand v2.4.1
+phf_shared v0.14.0
+siphasher v1.0.4
+phf_shared v0.14.0 (*)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+phf_shared v0.14.0
+siphasher v1.0.4
+serde v1.0.228 (*)
+zvariant v5.15.1 (*)
+async-channel v2.5.0 (*)
+async-executor v1.14.0 (*)
+async-task v4.7.1
+atspi v0.29.0
+atspi-common v0.13.0 (*)
+atspi-proxies v0.13.0
+atspi-common v0.13.0 (*)
+serde v1.0.228 (*)
+zbus v5.19.0 (*)
+futures-lite v2.6.1 (*)
+futures-util v0.3.32 (*)
+serde v1.0.228 (*)
+zbus v5.19.0 (*)
+raw-window-handle v0.6.2
+winit v0.30.13
+ahash v0.8.12 (*)
+bitflags v2.13.0
+bytemuck v1.25.0 (*)
+calloop v0.13.0
+bitflags v2.13.0
+log v0.4.35
+polling v3.11.0 (*)
+rustix v0.38.44
+bitflags v2.13.0
+linux-raw-sys v0.4.15
+slab v0.4.12
+thiserror v1.0.69
+thiserror-impl v1.0.69 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+cursor-icon v1.2.0
+dpi v0.1.2
+libc v0.2.186
+memmap2 v0.9.10
+libc v0.2.186
+percent-encoding v2.3.2
+raw-window-handle v0.6.2
+rustix v0.38.44 (*)
+sctk-adwaita v0.10.1
+ab_glyph v0.2.32 (*)
+log v0.4.35
+memmap2 v0.9.10 (*)
+smithay-client-toolkit v0.19.2
+bitflags v2.13.0
+calloop v0.13.0 (*)
+calloop-wayland-source v0.3.0
+calloop v0.13.0 (*)
+rustix v0.38.44 (*)
+wayland-backend v0.3.15
+downcast-rs v1.2.1
+rustix v1.1.4 (*)
+scoped-tls v1.0.1
+smallvec v1.16.6
+wayland-sys v0.31.11
+dlib v0.5.3
+libloading v0.8.9 (*)
+log v0.4.35
+once_cell v1.21.4
+pkg-config v0.3.33
+cc v1.4.4 (*)
+wayland-client v0.31.14
+bitflags v2.13.0
+rustix v1.1.4 (*)
+wayland-backend v0.3.15 (*)
+wayland-scanner v0.31.10 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quick-xml v0.39.4 (*)
+quote v1.0.45 (*)
+cursor-icon v1.2.0
+libc v0.2.186
+log v0.4.35
+memmap2 v0.9.10 (*)
+rustix v0.38.44 (*)
+thiserror v1.0.69 (*)
+wayland-backend v0.3.15 (*)
+wayland-client v0.31.14 (*)
+wayland-csd-frame v0.3.0
+bitflags v2.13.0
+cursor-icon v1.2.0
+wayland-backend v0.3.15 (*)
+wayland-cursor v0.31.14
+rustix v1.1.4 (*)
+wayland-client v0.31.14 (*)
+xcursor v0.3.10
+wayland-protocols v0.32.12
+bitflags v2.13.0
+wayland-backend v0.3.15 (*)
+wayland-client v0.31.14 (*)
+wayland-scanner v0.31.10 (proc-macro) (*)
+wayland-protocols-wlr v0.3.12
+bitflags v2.13.0
+wayland-backend v0.3.15 (*)
+wayland-client v0.31.14 (*)
+wayland-protocols v0.32.12 (*)
+wayland-scanner v0.31.10 (proc-macro) (*)
+wayland-scanner v0.31.10 (proc-macro) (*)
+xkeysym v0.2.1
+tiny-skia v0.11.4
+arrayref v0.3.9
+arrayvec v0.7.6
+bytemuck v1.25.0 (*)
+cfg-if v1.0.4
+log v0.4.35
+tiny-skia-path v0.11.4
+arrayref v0.3.9
+bytemuck v1.25.0 (*)
+strict-num v0.1.1
+smithay-client-toolkit v0.19.2 (*)
+smol_str v0.2.2
+tracing v0.1.44 (*)
+wayland-backend v0.3.15 (*)
+wayland-client v0.31.14 (*)
+wayland-protocols v0.32.12 (*)
+wayland-protocols-plasma v0.3.12
+bitflags v2.13.0
+wayland-backend v0.3.15 (*)
+wayland-client v0.31.14 (*)
+wayland-protocols v0.32.12 (*)
+wayland-scanner v0.31.10 (proc-macro) (*)
+x11-dl v2.21.0
+libc v0.2.186
+once_cell v1.21.4
+pkg-config v0.3.33
+x11rb v0.13.2 (*)
+xkbcommon-dl v0.4.2
+bitflags v2.13.0
+dlib v0.5.3 (*)
+log v0.4.35
+once_cell v1.21.4
+xkeysym v0.2.1
+cfg_aliases v0.2.1
+arboard v3.6.1
+image v0.25.10
+bytemuck v1.25.0 (*)
+byteorder-lite v0.1.0
+moxcms v0.8.1
+num-traits v0.2.19 (*)
+pxfm v0.1.29
+num-traits v0.2.19 (*)
+png v0.18.1
+bitflags v2.13.0
+crc32fast v1.5.0
+cfg-if v1.0.4
+fdeflate v0.3.7
+simd-adler32 v0.3.9
+flate2 v1.1.9
+crc32fast v1.5.0 (*)
+miniz_oxide v0.8.9
+adler2 v2.0.1
+simd-adler32 v0.3.9
+miniz_oxide v0.8.9 (*)
+log v0.4.35
+parking_lot v0.12.5 (*)
+percent-encoding v2.3.2
+wl-clipboard-rs v0.9.5
+libc v0.2.186
+log v0.4.35
+os_pipe v1.2.3
+libc v0.2.186
+rustix v1.1.4 (*)
+thiserror v2.0.18 (*)
+tree_magic_mini v3.2.2
+memchr v2.8.1
+nom v8.0.0
+memchr v2.8.1
+petgraph v0.8.3
+fixedbitset v0.5.9
+hashbrown v0.15.5
+foldhash v0.1.5
+indexmap v2.14.0 (*)
+wayland-backend v0.3.15 (*)
+wayland-client v0.31.14 (*)
+wayland-protocols v0.32.12 (*)
+wayland-protocols-wlr v0.3.12 (*)
+x11rb v0.13.2 (*)
+bytemuck v1.25.0 (*)
+egui v0.37.0 (*)
+log v0.4.35
+profiling v1.0.18
+raw-window-handle v0.6.2
+smithay-clipboard v0.7.3
+libc v0.2.186
+smithay-client-toolkit v0.20.0
+bitflags v2.13.0
+calloop v0.14.4
+bitflags v2.13.0
+polling v3.11.0 (*)
+rustix v1.1.4 (*)
+slab v0.4.12
+tracing v0.1.44 (*)
+calloop-wayland-source v0.4.1
+calloop v0.14.4 (*)
+rustix v1.1.4 (*)
+wayland-backend v0.3.15 (*)
+wayland-client v0.31.14 (*)
+cursor-icon v1.2.0
+libc v0.2.186
+log v0.4.35
+memmap2 v0.9.10 (*)
+rustix v1.1.4 (*)
+thiserror v2.0.18 (*)
+wayland-backend v0.3.15 (*)
+wayland-client v0.31.14 (*)
+wayland-csd-frame v0.3.0 (*)
+wayland-cursor v0.31.14 (*)
+wayland-protocols v0.32.12 (*)
+wayland-protocols-experimental v20250721.0.1
+bitflags v2.13.0
+wayland-backend v0.3.15 (*)
+wayland-client v0.31.14 (*)
+wayland-protocols v0.32.12 (*)
+wayland-scanner v0.31.10 (proc-macro) (*)
+wayland-protocols-misc v0.3.12
+bitflags v2.13.0
+wayland-backend v0.3.15 (*)
+wayland-client v0.31.14 (*)
+wayland-protocols v0.32.12 (*)
+wayland-scanner v0.31.10 (proc-macro) (*)
+wayland-protocols-wlr v0.3.12 (*)
+wayland-scanner v0.31.10 (proc-macro) (*)
+xkeysym v0.2.1
+wayland-backend v0.3.15 (*)
+web-time v1.1.0
+webbrowser v1.2.7
+log v0.4.35
+url v2.5.8
+form_urlencoded v1.2.2
+percent-encoding v2.3.2
+idna v1.1.0
+idna_adapter v1.2.2
+icu_normalizer v2.2.0
+icu_collections v2.2.0
+displaydoc v0.2.6 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+potential_utf v0.1.5
+zerovec v0.11.6
+yoke v0.8.3
+stable_deref_trait v1.2.1
+yoke-derive v0.8.2 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+synstructure v0.13.2
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+zerofrom v0.1.8
+zerofrom-derive v0.1.7 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+synstructure v0.13.2 (*)
+zerofrom v0.1.8 (*)
+zerovec-derive v0.11.3 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+utf8_iter v1.0.4
+yoke v0.8.3 (*)
+zerofrom v0.1.8 (*)
+zerovec v0.11.6 (*)
+icu_normalizer_data v2.2.0
+icu_provider v2.2.0
+displaydoc v0.2.6 (proc-macro) (*)
+icu_locale_core v2.2.0
+displaydoc v0.2.6 (proc-macro) (*)
+litemap v0.8.2
+tinystr v0.8.3
+displaydoc v0.2.6 (proc-macro) (*)
+zerovec v0.11.6 (*)
+writeable v0.6.3
+zerovec v0.11.6 (*)
+writeable v0.6.3
+yoke v0.8.3 (*)
+zerofrom v0.1.8 (*)
+zerotrie v0.2.4
+displaydoc v0.2.6 (proc-macro) (*)
+yoke v0.8.3 (*)
+zerofrom v0.1.8 (*)
+zerovec v0.11.6 (*)
+smallvec v1.16.6
+zerovec v0.11.6 (*)
+icu_properties v2.2.0
+icu_collections v2.2.0 (*)
+icu_locale_core v2.2.0 (*)
+icu_properties_data v2.2.0
+icu_provider v2.2.0 (*)
+zerotrie v0.2.4 (*)
+zerovec v0.11.6 (*)
+smallvec v1.16.6
+utf8_iter v1.0.4
+percent-encoding v2.3.2
+winit v0.30.13 (*)
+egui_glow v0.37.0
+bytemuck v1.25.0 (*)
+egui v0.37.0 (*)
+glow v0.17.0
+log v0.4.35
+profiling v1.0.18
+glow v0.17.0
+glutin v0.32.3
+bitflags v2.13.0
+glutin_egl_sys v0.7.1
+gl_generator v0.14.0
+khronos_api v3.1.0
+log v0.4.35
+xml-rs v0.8.28
+glutin_glx_sys v0.6.1
+x11-dl v2.21.0 (*)
+gl_generator v0.14.0 (*)
+libloading v0.8.9 (*)
+once_cell v1.21.4
+raw-window-handle v0.6.2
+wayland-sys v0.31.11 (*)
+x11-dl v2.21.0 (*)
+cfg_aliases v0.2.1
+glutin-winit v0.5.0
+glutin v0.32.3 (*)
+raw-window-handle v0.6.2
+winit v0.30.13 (*)
+cfg_aliases v0.2.1
+image v0.25.10 (*)
+log v0.4.35
+parking_lot v0.12.5 (*)
+profiling v1.0.18
+raw-window-handle v0.6.2
+static_assertions v1.1.0
+web-time v1.1.0
+winit v0.30.13 (*)
+libc v0.2.186
+raw-window-handle v0.6.2
+sha2 v0.11.1 (*)
+tokio v1.52.3 (*)
+toml v0.8.23 (*)
+winit v0.30.13 (*)
+x11rb v0.13.2 (*)

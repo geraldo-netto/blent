@@ -1,0 +1,6 @@
+{
+  "base": "4f4ef3da7ec5103dc31beebfa3f0a78be247f9d1",
+  "patch": "/home/netto/.cache/blent-followup-20261122/eframe-0.37-candidate.patch",
+  "sha256": "939ca9af8ab0f1695418e2d2a559b5515f6eb08574d82f5f5439d76d1b185c38",
+  "disposition": "Not landed: duplicate dependency count increases; hashbrown duplicate remains"
+}

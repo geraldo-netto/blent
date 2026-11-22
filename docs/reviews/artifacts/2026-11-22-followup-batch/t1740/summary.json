@@ -1,0 +1,120 @@
+{
+  "before": {
+    "package_names": 296,
+    "name_version_pairs": 309,
+    "duplicate_names": {
+      "getrandom": [
+        "0.2.17",
+        "0.3.4",
+        "0.4.2"
+      ],
+      "rustix": [
+        "0.38.44",
+        "1.1.4"
+      ],
+      "linux-raw-sys": [
+        "0.12.1",
+        "0.4.15"
+      ],
+      "toml_datetime": [
+        "0.6.11",
+        "1.1.1+spec-1.1.0"
+      ],
+      "toml_edit": [
+        "0.22.27",
+        "0.25.12+spec-1.1.0"
+      ],
+      "hashbrown": [
+        "0.15.5",
+        "0.17.1"
+      ],
+      "winnow": [
+        "0.7.15",
+        "1.0.3"
+      ],
+      "thiserror": [
+        "1.0.69",
+        "2.0.18"
+      ],
+      "thiserror-impl": [
+        "1.0.69",
+        "2.0.18"
+      ],
+      "calloop": [
+        "0.13.0",
+        "0.14.4"
+      ],
+      "smithay-client-toolkit": [
+        "0.19.2",
+        "0.20.0"
+      ],
+      "calloop-wayland-source": [
+        "0.3.0",
+        "0.4.1"
+      ]
+    }
+  },
+  "after": {
+    "package_names": 325,
+    "name_version_pairs": 340,
+    "duplicate_names": {
+      "syn": [
+        "2.0.117",
+        "3.0.10"
+      ],
+      "getrandom": [
+        "0.2.17",
+        "0.3.4",
+        "0.4.2"
+      ],
+      "rustix": [
+        "0.38.44",
+        "1.1.4"
+      ],
+      "linux-raw-sys": [
+        "0.12.1",
+        "0.4.15"
+      ],
+      "toml_datetime": [
+        "0.6.11",
+        "1.1.1+spec-1.1.0"
+      ],
+      "toml_edit": [
+        "0.22.27",
+        "0.25.12+spec-1.1.0"
+      ],
+      "hashbrown": [
+        "0.15.5",
+        "0.17.1"
+      ],
+      "foldhash": [
+        "0.1.5",
+        "0.2.0"
+      ],
+      "winnow": [
+        "0.7.15",
+        "1.0.3"
+      ],
+      "thiserror": [
+        "1.0.69",
+        "2.0.18"
+      ],
+      "thiserror-impl": [
+        "1.0.69",
+        "2.0.18"
+      ],
+      "calloop": [
+        "0.13.0",
+        "0.14.4"
+      ],
+      "smithay-client-toolkit": [
+        "0.19.2",
+        "0.20.0"
+      ],
+      "calloop-wayland-source": [
+        "0.3.0",
+        "0.4.1"
+      ]
+    }
+  }
+}
