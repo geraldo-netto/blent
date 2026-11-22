@@ -45,7 +45,7 @@ impl CaptureManager {
                 .guarded(self.capture_attempt(output, run, needs_pause))
                 .await
             {
-                Some(result) => result,
+                Some(result) => result.map(|()| false),
                 None => {
                     *quiescent = self.pause_capture(run).await?;
                     Ok(false)
@@ -65,17 +65,15 @@ impl CaptureManager {
         output: &VideoOutput,
         run: &mut CaptureRun,
         needs_pause: bool,
-    ) -> Result<bool> {
+    ) -> Result<()> {
         self.await_replacement(needs_pause).await?;
         self.apply_stream_settings(run).await;
         if run.inactive() || !self.prepare_capture_pipeline(run).await {
-            return Ok(false);
+            return Ok(());
         }
-        let Some(changes) = self.run_encoder_session(output, run).await? else {
-            return Ok(true);
-        };
+        let changes = self.run_encoder_session(output, run).await?;
         self.recover_encoder_session(changes, run).await?;
-        Ok(false)
+        Ok(())
     }
     async fn recover_encoder_session(
         &mut self,

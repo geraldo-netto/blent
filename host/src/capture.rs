@@ -359,8 +359,8 @@ impl CaptureManager {
         //
         // Only while a tablet is attached and being used as a screen:
         // enabling it unconditionally puts a monitor on the desktop that
-        // nobody can see, and KDE happily moves windows onto it. The
-        // run.display_rx branch below enables it the moment that changes.
+        // nobody can see, and KDE may move windows onto it. The outer
+        // supervisor admits preparation only for current display demand.
         if Self::while_settings_current(
             &mut run.settings_rx,
             &mut run.display_rx,
@@ -436,7 +436,7 @@ impl CaptureManager {
         &mut self,
         tx: &blent::capture_contract::VideoOutput,
         run: &mut CaptureRun,
-    ) -> Result<Option<SessionChanges>> {
+    ) -> Result<SessionChanges> {
         let output = EncoderOutput {
             #[cfg(feature = "inproc-encoder")]
             fifo: self.helper.fifo.clone(),
@@ -458,10 +458,8 @@ impl CaptureManager {
         // encoder must be rebuilt but the helper and the virtual display
         // are fine and must not be torn down.
         let mut mode_changed = false;
-        // The tablet stopped being a screen: a clean stop, not a crash,
-        // so no backoff and no wait before the outer loop parks itself.
-        let mut display_dropped = false;
-        let card = self.helper.card;
+        // Display loss and shutdown revoke the enclosing attempt's authority.
+        // The supervisor retires the original helper, which disconnects EVDI.
 
         // Events that need no restart at all send us back here without
         // rebuilding the encoder, which now owns the stream and must not be
@@ -508,51 +506,7 @@ impl CaptureManager {
                         mode_changed = true;
                     }
                 }
-                _ = run.display_rx.changed() => {
-                    // The tablet stopped being a screen — either unplugged, or
-                    // switched to pen-only. Neither must leave a monitor behind
-                    // that nobody can see, with windows stranded on it. The
-                    // encoder itself is unaffected either way.
-                    let wanted = *run.display_rx.borrow();
-                    if wanted {
-                        info!("Tablet is a screen — enabling the virtual display");
-                        Self::while_active(&mut run.display_rx, &mut run.shutdown_rx,
-                            placement::enable_evdi_display(card, self.config.position)).await;
-                        // Leave cancellation pending for the session select.
-                        if *run.shutdown_rx.borrow() || run.shutdown_rx.has_changed().is_err() {
-                            encode_task.abort();
-                            self.shutdown().await;
-                            return Ok(None);
-                        }
-                        if !*run.display_rx.borrow() || run.display_rx.has_changed().is_err() {
-                            display_dropped = true;
-                        } else {
-                            resume_same_encoder = true;
-                        }
-                    } else {
-                        // Disable first so KWin moves the windows off it, then
-                        // fall through to the teardown: the helper goes away
-                        // with the session, and the top of the outer loop
-                        // waits for a tablet before bringing anything back.
-                        info!("Tablet is not a screen — disabling the virtual display");
-                        let _ = tokio::time::timeout(std::time::Duration::from_millis(500),
-                            placement::disable_evdi_display(card)).await;
-                        display_dropped = true;
-                    }
-                }
-                _ = run.shutdown_rx.changed() => {
-                    info!("Shutdown requested — tearing down the capture pipeline");
-                    // Drop the encode task, which closes our read end of the
-                    // pipe. Nothing drains it during shutdown, so ffmpeg would
-                    // otherwise block writing into a full pipe and never reach
-                    // its signal handling — a wasted 1.5s SIGTERM timeout on
-                    // every stop. Closed, it gets EPIPE and exits at once.
-                    encode_task.abort();
-                    let _ = tokio::time::timeout(std::time::Duration::from_millis(500),
-                            placement::disable_evdi_display(card)).await;
-                    self.shutdown().await;
-                    return Ok(None);
-                }
+
             }
 
             if resume_same_encoder {
@@ -566,13 +520,12 @@ impl CaptureManager {
             break self.finish_session_reader(&mut encode_task).await?;
         };
 
-        Ok(Some(SessionChanges {
+        Ok(SessionChanges {
             settings_changed,
             mode_changed,
-            display_dropped,
             fifo_reset,
             gpu_fallback,
-        }))
+        })
     }
 
     async fn finish_session_reader(&mut self, reader: &mut encoding::EncoderTask) -> Result<bool> {
@@ -688,7 +641,6 @@ impl CaptureRun {
 struct SessionChanges {
     settings_changed: bool,
     mode_changed: bool,
-    display_dropped: bool,
     fifo_reset: bool,
     gpu_fallback: bool,
 }
@@ -697,7 +649,7 @@ impl SessionChanges {
         self.settings_changed || self.mode_changed || self.fifo_reset || self.gpu_fallback
     }
     fn crashed(self) -> bool {
-        !self.keep_helper() && !self.display_dropped
+        !self.keep_helper()
     }
 }
 

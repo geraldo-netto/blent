@@ -110,11 +110,9 @@ impl Fixture {
         let changes = tokio::time::timeout(Duration::from_secs(2), task)
             .await
             .unwrap()
-            .unwrap()
             .unwrap();
         assert!(changes.mode_changed);
         assert!(!changes.settings_changed);
-        assert!(!changes.display_dropped);
         assert!(changes.keep_helper());
         self.manager.shutdown().await;
     }
@@ -123,7 +121,12 @@ impl Fixture {
         self.children();
         let (video, _receiver) = crate::video_queue::channel(8, Default::default());
         let video = video.into();
-        let mut task = Box::pin(self.manager.run_encoder_session(&video, &mut self.run));
+        let sources = super::activity::Sources::new(None, None);
+        let authority = sources
+            .begin(&self.run.display_rx, &self.run.shutdown_rx)
+            .unwrap();
+        let mut task =
+            Box::pin(authority.guarded(self.manager.run_encoder_session(&video, &mut self.run)));
         assert!(futures_util::poll!(&mut task).is_pending());
         self.display.send(true).unwrap();
         assert!(
@@ -139,11 +142,11 @@ impl Fixture {
         self.display.send(false).unwrap();
         let changes = tokio::time::timeout(Duration::from_secs(2), task)
             .await
-            .unwrap()
-            .unwrap()
             .unwrap();
-        assert!(changes.display_dropped);
-        assert!(!changes.keep_helper());
+        assert!(
+            changes.is_none(),
+            "T497/T1683 display loss must revoke the guarded attempt"
+        );
         self.manager.shutdown().await;
     }
 
@@ -213,4 +216,40 @@ async fn t497_supervisor_distinguishes_notifications_restarts_and_failures() {
         !fifo_path_for(u32::MAX).unwrap().exists(),
         "supervisor fixture started capture"
     );
+}
+
+#[tokio::test]
+async fn t1683_authority_loss_preempts_inner_session_teardown() {
+    for shutdown in [false, true] {
+        let mut fixture = Fixture::new();
+        fixture.children();
+        let helper = fixture.manager.helper.child.as_ref().unwrap().completion();
+        let encoder = fixture.manager.encoder.child.as_ref().unwrap().completion();
+        let sources = super::activity::Sources::new(None, None);
+        let authority = sources
+            .begin(&fixture.run.display_rx, &fixture.run.shutdown_rx)
+            .unwrap();
+        let (video, _received) = crate::video_queue::channel(8, Default::default());
+        let video = video.into();
+        let mut session = Box::pin(
+            authority.guarded(
+                fixture
+                    .manager
+                    .run_encoder_session(&video, &mut fixture.run),
+            ),
+        );
+        assert!(futures_util::poll!(&mut session).is_pending());
+        if shutdown {
+            fixture._shutdown.send(true).unwrap();
+        } else {
+            fixture.display.send(false).unwrap();
+        }
+        assert!(
+            session.await.is_none(),
+            "T1683 obsolete inner teardown won authority loss"
+        );
+        fixture.manager.shutdown().await;
+        assert!(helper.is_complete());
+        assert!(encoder.is_complete());
+    }
 }

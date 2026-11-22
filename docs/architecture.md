@@ -598,6 +598,11 @@ cleanup wait retains the original outcome for the next wait.
 Natural GPU reader EOF or failure requests the session's one-way FIFO fallback
 only after that cleanup, regardless of which event woke the supervisor.
 Deliberate cancellation does not latch a GPU failure.
+Display mode loss and shutdown revoke the enclosing attempt before its inner
+reader loop handles another event. The supervisor retires the original helper;
+that helper's native cleanup disconnects and closes its EVDI device. Teardown
+does not send a separate KScreen disable command. Host-activity suspension uses
+the distinct retained-monitor quiescence path.
 The `media` module owns codec, packet, generation and live-settings contracts,
 so streaming, input and encoding do not depend on capture management.
 `ivf` reads bounded VP9/AV1 packets and classifies random-access headers.

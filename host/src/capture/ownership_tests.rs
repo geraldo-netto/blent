@@ -235,7 +235,6 @@ async fn t814_capture_replacement_requires_confirmed_retirement() {
         let changes = SessionChanges {
             settings_changed: false,
             mode_changed: false,
-            display_dropped: true,
             fifo_reset: false,
             gpu_fallback: false,
         };
@@ -321,7 +320,6 @@ async fn t498_encoder_restart_retires_reader_and_queued_frame_suffix() {
                     settings_changed: cause == 0,
                     mode_changed: cause == 1,
                     fifo_reset: cause == 2,
-                    display_dropped: false,
                     gpu_fallback: cause == 3,
                 },
                 &mut run,

@@ -90,17 +90,6 @@ fn parse_result(result: std::io::Result<std::process::Output>) -> Option<Vec<Out
     parse(&result.ok()?.stdout).ok()
 }
 
-pub fn enabled_matching_output<'a>(out: &'a Output, names: &[String]) -> Option<(u32, &'a str)> {
-    let name = out.label();
-    if !names.iter().any(|candidate| candidate == name) {
-        return None;
-    }
-    if !out.enabled {
-        return None;
-    }
-    Some((out.id, name))
-}
-
 #[derive(Clone, Copy)]
 struct Geometry {
     id: u32,
@@ -313,12 +302,11 @@ mod tests {
         let plan = placement(&outputs, &names, Position::Right).unwrap();
         assert!(plan.already_applied);
         assert_eq!((plan.x, plan.y), (3968, 0));
-        assert_eq!(
-            enabled_matching_output(&outputs[2], &names),
-            Some((3, "DVI-I-1"))
-        );
+        assert_eq!((outputs[2].id, outputs[2].label()), (3, "DVI-I-1"));
+        assert!(outputs[2].enabled);
         assert_eq!(outputs[2].icc_profile, "/fixture/sRGB.icc");
-        assert!(enabled_matching_output(&outputs[3], &["HDMI-1".into()]).is_none());
+        assert_eq!(outputs[3].label(), "HDMI-1");
+        assert!(!outputs[3].enabled);
     }
 
     #[test]

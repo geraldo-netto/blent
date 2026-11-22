@@ -97,46 +97,6 @@ async fn apply_display_placement(
     }
 }
 
-/// Turn the virtual output back off so its windows return to the real
-/// screens. Without this the desktop keeps a monitor nobody can see after
-/// the tablet is unplugged, and windows left there are effectively lost.
-pub(super) async fn disable_evdi_display(card: Option<u32>) {
-    let evdi_names: Vec<String> = crate::vdisplay::evdi_connectors()
-        .into_iter()
-        .filter(|c| card.is_none_or(|want| c.card == want))
-        .map(|c| c.name)
-        .collect();
-    disable_named_evdi_display(
-        &evdi_names,
-        crate::desktop::Desktop::current(),
-        std::ffi::OsStr::new("kscreen-doctor"),
-    )
-    .await;
-}
-
-async fn disable_named_evdi_display(
-    evdi_names: &[String],
-    desktop: crate::desktop::Desktop,
-    program: &std::ffi::OsStr,
-) {
-    if desktop != crate::desktop::Desktop::KdeWayland || evdi_names.is_empty() {
-        return;
-    }
-    let Some(outputs) = crate::kscreen::outputs_using(program).await else {
-        return;
-    };
-    for out in &outputs {
-        let Some((id, name)) = crate::kscreen::enabled_matching_output(out, evdi_names) else {
-            continue;
-        };
-        info!("Disabling EVDI output.{} ({})", id, name);
-        let _ = tokio::process::Command::new(program)
-            .arg(format!("output.{}.disable", id))
-            .output_bounded()
-            .await;
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -179,7 +139,6 @@ if [ "$1" = -j ]; then /bin/cat "${0%/*}/inventory"; fi
                 program.as_os_str(),
             )
             .await;
-            disable_named_evdi_display(&names, kind, program.as_os_str()).await;
             assert!(
                 started.elapsed() < std::time::Duration::from_millis(200),
                 "T224: {desktop}/{session} incurred retry delay"
@@ -188,7 +147,7 @@ if [ "$1" = -j ]; then /bin/cat "${0%/*}/inventory"; fi
         }
     }
     #[tokio::test]
-    async fn t224_kde_wayland_still_enables_positions_and_disables_output() {
+    async fn t224_kde_wayland_enables_and_positions_output() {
         let (_dir, program, trace) = t224_placement_fixture(
             r#"{"outputs":[
             {"id":1,"name":"eDP-1","enabled":true,"pos":{"x":0,"y":0},"size":{"width":1000,"height":500}},
@@ -203,11 +162,12 @@ if [ "$1" = -j ]; then /bin/cat "${0%/*}/inventory"; fi
             program.as_os_str(),
         )
         .await;
-        disable_named_evdi_display(&names, kind, program.as_os_str()).await;
         assert_eq!(
             std::fs::read_to_string(trace).unwrap(),
-            "-j\noutput.2.enable output.2.position.1000,0\n-j\noutput.2.disable\n"
+            "-j\noutput.2.enable output.2.position.1000,0\n"
         );
+        // T1683: teardown belongs to original helper retirement (T1015),
+        // whose native disconnect/close invariant is independently checked by T315.
     }
 
     const T497_TEST: &str =

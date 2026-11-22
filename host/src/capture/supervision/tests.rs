@@ -39,7 +39,6 @@ fn crash() -> SessionChanges {
     SessionChanges {
         settings_changed: false,
         mode_changed: false,
-        display_dropped: false,
         fifo_reset: false,
         gpu_fallback: false,
     }
@@ -72,10 +71,14 @@ async fn t1682_stable_session_resets_delay_before_waiting() {
 }
 
 #[tokio::test(start_paused = true)]
-async fn t1682_clean_stop_neither_waits_nor_grows_delay() {
+async fn t1682_clean_reconfiguration_neither_waits_nor_grows_delay() {
     let mut f = Fixture::new();
+    f.manager
+        .bind_display_work(std::sync::Arc::new(blent::display_work::View::new(
+            None, None, false,
+        )));
     let changes = SessionChanges {
-        display_dropped: true,
+        settings_changed: true,
         ..crash()
     };
     assert_eq!(f.recover(changes).await, Duration::ZERO);

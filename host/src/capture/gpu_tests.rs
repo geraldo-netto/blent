@@ -156,7 +156,6 @@ fn t575_gpu_failure_falls_back_once_without_detaching_monitor() {
     let changes = super::super::SessionChanges {
         settings_changed: false,
         mode_changed: false,
-        display_dropped: false,
         fifo_reset: false,
         gpu_fallback: true,
     };
