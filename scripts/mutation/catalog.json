@@ -1,29 +1,33 @@
 {
   "version": 1,
   "profiles": {
-    "python": {
+    "edid": {
       "platforms": [
         "linux",
         "win32"
       ],
       "build": [
-        "{python}",
-        "-m",
-        "py_compile",
-        "scripts/gen-edid.py"
+        "cargo",
+        "test",
+        "--offline",
+        "--locked",
+        "-p",
+        "blent-config",
+        "--test",
+        "edid_cli",
+        "--no-run"
       ],
       "test": [
-        "{python}",
-        "-m",
-        "unittest",
-        "discover",
-        "-s",
-        "scripts/tests",
-        "-v",
+        "cargo",
+        "test",
+        "--offline",
+        "--locked",
         "-p",
-        "test_gen_edid.py"
+        "blent-config",
+        "--test",
+        "edid_cli"
       ],
-      "format": "unittest"
+      "format": "rust"
     },
     "shell": {
       "platforms": [
@@ -174,22 +178,22 @@
   "mutations": [
     {
       "id": "PY01",
-      "profile": "python",
-      "language": "python",
-      "file": "scripts/gen-edid.py",
-      "before": "edid[127] = (256 - sum(edid[:127]) % 256) % 256",
-      "after": "edid[127] = (255 - sum(edid[:127]) % 256) % 256",
-      "expected_failure": "test_t321_",
+      "profile": "edid",
+      "language": "rust",
+      "file": "common/src/edid.rs",
+      "before": "edid[127] = ((256 - (sum % 256)) % 256) as u8;",
+      "after": "edid[127] = ((255 - (sum % 256)) % 256) as u8;",
+      "expected_failure": "t1718_cli_uses_shared_encoder_and_independent_fields",
       "operator": "arithmetic constant"
     },
     {
       "id": "PY02",
-      "profile": "python",
-      "language": "python",
-      "file": "scripts/gen-edid.py",
-      "before": "1 <= width_mm <= 4095",
-      "after": "0 <= width_mm <= 4095",
-      "expected_failure": "test_t321_invalid_physical",
+      "profile": "edid",
+      "language": "rust",
+      "file": "common/src/edid.rs",
+      "before": "(1..=4095).contains(&width_mm)",
+      "after": "(0..=4095).contains(&width_mm)",
+      "expected_failure": "t1718_invalid_requests_preserve_existing_output",
       "operator": "lower-bound relaxation"
     },
     {

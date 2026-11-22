@@ -1,31 +1,40 @@
-"""T321: deterministic malformed/boundary corpus for the maintained EDID tool."""
-import contextlib
-import importlib.util
-import io
+"""T321/T1718: retain the independent numeric corpus against the current CLI."""
 from pathlib import Path
 import random
+import subprocess
 import tempfile
 import unittest
-from unittest.mock import patch
 
-spec = importlib.util.spec_from_file_location('edid', Path(__file__).parents[1] / 'gen-edid.py')
-edid = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(edid)
+from edid_tool import binary
 
 
 class TimingTest(unittest.TestCase):
-    def test_t321_rejection_explains_low_clock_and_supported_refresh(self):
-        for fps in [10, 24]:
-            with self.assertRaisesRegex(ValueError, '10 MHz.*25 Hz'):
-                edid.make_edid(640, 480, fps)
-        for width, height, fps in [(640, 480, 25), (640, 1212, 10), (90, 3960, 10)]:
-            self.assertIsNotNone(self.check_mode(width, height, fps))
+    @classmethod
+    def setUpClass(cls):
+        cls.binary = binary()
 
-    def check_mode(self, width, height, fps):
-        try:
-            result = edid.make_edid(width, height, fps)
-        except ValueError:
+    def invoke(self, output, width, height, refresh, width_mm=310, height_mm=194):
+        result = subprocess.run([str(self.binary), str(width), str(height), str(refresh),
+                               str(output), str(width_mm), str(height_mm)],
+                              capture_output=True, text=True)
+        self.assertIn(result.returncode, (0, 1, 2), result.stderr)
+        return result
+
+    def test_t321_rejection_explains_low_clock_and_supported_refresh(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory, 'display.bin')
+            for fps in [10, 24]:
+                rejected = self.invoke(output, 640, 480, fps)
+                self.assertNotEqual(rejected.returncode, 0)
+                self.assertRegex(rejected.stderr, '10 MHz.*25 Hz')
+            for width, height, fps in [(640, 480, 25), (640, 1212, 10), (90, 3960, 10)]:
+                self.assertIsNotNone(self.check_mode(output, width, height, fps))
+
+    def check_mode(self, output, width, height, fps):
+        generated = self.invoke(output, width, height, fps)
+        if generated.returncode:
             return
+        result = output.read_bytes()
         self.assertEqual(len(result), 128)
         self.assertEqual(sum(result) % 256, 0)
         self.assertGreaterEqual(int.from_bytes(result[54:56], 'little'), 1000)
@@ -40,26 +49,26 @@ class TimingTest(unittest.TestCase):
                  for _ in range(1024)]
         for value in [-2**63, -1, 0, 1, 4095, 4096, 2**32-1, 2**64]:
             cases.extend([(value, 480, 25), (640, value, 25), (640, 480, value)])
-        for values in cases:
-            with self.subTest(values=values):
-                self.check_mode(*values)
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory, 'display.bin')
+            for values in cases:
+                with self.subTest(values=values):
+                    self.check_mode(output, *values)
 
     def test_t321_invalid_physical_dimensions_and_generator_cli(self):
-        for value in [-1, 0, 4096, 2**64]:
-            with self.assertRaises(ValueError):
-                edid.make_edid(640, 480, 25, width_mm=value)
-            with self.assertRaises(ValueError):
-                edid.make_edid(640, 480, 25, height_mm=value)
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory, 'display with spaces.bin')
-            args = ['gen-edid', '640', '480', '25', str(output)]
-            with patch.object(edid.sys, 'argv', args), contextlib.redirect_stdout(io.StringIO()):
-                edid.main()
-            expected = edid.make_edid(640, 480, 25)
-            self.assertEqual(output.read_bytes(), expected)
-            args[3] = '10'
-            with patch.object(edid.sys, 'argv', args), self.assertRaisesRegex(ValueError, '10 MHz'):
-                edid.main()
+            for value in [-1, 0, 4096, 2**64]:
+                self.assertNotEqual(self.invoke(output, 640, 480, 25, width_mm=value).returncode, 0)
+                self.assertNotEqual(self.invoke(output, 640, 480, 25, height_mm=value).returncode, 0)
+            generated = self.invoke(output, 640, 480, 25)
+            self.assertEqual(generated.returncode, 0, generated.stderr)
+            expected = output.read_bytes()
+            self.assertEqual(len(expected), 128)
+            self.assertEqual(sum(expected) % 256, 0)
+            rejected = self.invoke(output, 640, 480, 10)
+            self.assertNotEqual(rejected.returncode, 0)
+            self.assertIn('10 MHz', rejected.stderr)
             self.assertEqual(output.read_bytes(), expected, 'rejected mode overwrote a valid EDID')
 
 

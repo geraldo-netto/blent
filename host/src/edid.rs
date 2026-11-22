@@ -113,27 +113,27 @@ mod tests {
     #[test]
     fn t321_range_minimum_tracks_supported_geometry() {
         let rust = make_edid_sized(640, 480, 25, 310, 194, 0).unwrap();
-        let python = python_edid(640, 480, 25, 310, 194).unwrap();
+        let tool = tool_edid(640, 480, 25, 310, 194).unwrap();
         assert_eq!(
             rust[113], 25,
             "T321: Rust range advertises unsupported low refresh"
         );
         assert_eq!(
-            python[113], 25,
-            "T321: Python range advertises unsupported low refresh"
+            tool[113], 25,
+            "T321: CLI range advertises unsupported low refresh"
         );
-        assert_eq!(rust, python);
+        assert_eq!(rust, tool);
     }
 
     #[test]
-    fn t321_python_rejects_low_clock_modes() {
+    fn t321_cli_rejects_low_clock_modes() {
         for fps in [10, 24] {
             assert!(
-                python_edid(640, 480, fps, 310, 194).is_none(),
-                "T321: Python admitted low clock"
+                tool_edid(640, 480, fps, 310, 194).is_none(),
+                "T321: CLI admitted low clock"
             );
         }
-        assert!(python_edid(640, 480, 25, 310, 194).is_some());
+        assert!(tool_edid(640, 480, 25, 310, 194).is_some());
     }
 
     #[test]
@@ -168,9 +168,9 @@ mod tests {
     }
 
     #[test]
-    fn t320_python_unused_descriptor_is_valid() {
+    fn t320_cli_unused_descriptor_is_valid() {
         for (width, height, fps) in [(1920, 1080, 60), (2960, 1848, 90), (1024, 4095, 10)] {
-            assert_t320_dummy_descriptor(&python_edid(width, height, fps, 310, 194).unwrap());
+            assert_t320_dummy_descriptor(&tool_edid(width, height, fps, 310, 194).unwrap());
         }
     }
 
@@ -246,13 +246,10 @@ mod tests {
     }
 
     #[test]
-    fn t114_python_dtd_reports_exact_physical_size() {
+    fn t114_cli_dtd_reports_exact_physical_size() {
         let dir = tempfile::tempdir().unwrap();
         let output = dir.path().join("display.bin");
-        let script =
-            std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../scripts/gen-edid.py");
-        assert!(std::process::Command::new("python3")
-            .arg(script)
+        assert!(std::process::Command::new(tool_binary())
             .args(["1920", "1080", "60"])
             .arg(&output)
             .output()
@@ -262,13 +259,45 @@ mod tests {
         assert_eq!(physical_size(&std::fs::read(output).unwrap()), (310, 194));
     }
 
-    fn python_edid(w: u32, h: u32, fps: u32, wm: u32, hm: u32) -> Option<Vec<u8>> {
+    fn tool_binary() -> &'static std::path::Path {
+        static BINARY: std::sync::OnceLock<PathBuf> = std::sync::OnceLock::new();
+        BINARY.get_or_init(|| {
+            let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                .parent()
+                .unwrap()
+                .to_owned();
+            let target = root.join("target/edid-tool-tests");
+            let result = std::process::Command::new("cargo")
+                .args([
+                    "build",
+                    "--offline",
+                    "--locked",
+                    "-p",
+                    "blent-config",
+                    "--bin",
+                    "blent-edid",
+                    "--target-dir",
+                ])
+                .arg(&target)
+                .current_dir(&root)
+                .env_remove("RUSTFLAGS")
+                .env_remove("CARGO_ENCODED_RUSTFLAGS")
+                .env_remove("LLVM_PROFILE_FILE")
+                .output()
+                .unwrap();
+            assert!(
+                result.status.success(),
+                "{}",
+                String::from_utf8_lossy(&result.stderr)
+            );
+            target.join("debug/blent-edid")
+        })
+    }
+
+    fn tool_edid(w: u32, h: u32, fps: u32, wm: u32, hm: u32) -> Option<Vec<u8>> {
         let dir = tempfile::tempdir().unwrap();
         let output = dir.path().join("display.bin");
-        let script =
-            std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../scripts/gen-edid.py");
-        let status = std::process::Command::new("python3")
-            .arg(script)
+        let status = std::process::Command::new(tool_binary())
             .args([w.to_string(), h.to_string(), fps.to_string()])
             .arg(&output)
             .args([wm.to_string(), hm.to_string()])
@@ -279,7 +308,7 @@ mod tests {
     }
 
     #[test]
-    fn t332_shared_mode_validation_agrees_with_both_generators_at_clock_boundary() {
+    fn t332_shared_mode_validation_agrees_with_runtime_and_cli_at_clock_boundary() {
         for (width, height, fps, valid) in [
             (3840, 2160, 60, true),
             (3840, 2160, 74, true),
@@ -296,22 +325,22 @@ mod tests {
                 ..Default::default()
             };
             let rust = make_edid_sized(width, height, fps, 310, 194, 0);
-            let python = python_edid(width, height, fps, 310, 194);
+            let tool = tool_edid(width, height, fps, 310, 194);
             assert_eq!(
                 config.validate().is_ok(),
                 valid,
                 "T332: {width}x{height}@{fps}"
             );
             assert_eq!(rust.is_ok(), valid);
-            assert_eq!(python.is_some(), valid);
+            assert_eq!(tool.is_some(), valid);
             if valid {
-                assert_eq!(rust.unwrap(), python.unwrap());
+                assert_eq!(rust.unwrap(), tool.unwrap());
             }
         }
     }
 
     #[test]
-    fn t115_generators_agree_on_boundaries_color_and_ranges() {
+    fn t115_runtime_and_cli_agree_on_boundaries_color_and_ranges() {
         for (w, h, fps, wm, hm) in [
             (1920, 1080, 10, 310, 194),
             (2960, 1848, 90, 314, 195),
@@ -320,8 +349,8 @@ mod tests {
             (1024, 4095, 90, 310, 194),
         ] {
             let rust = make_edid_sized(w, h, fps, wm, hm, 0).unwrap();
-            let python = python_edid(w, h, fps, wm, hm).unwrap();
-            assert_eq!(rust, python, "generator mismatch at {w}x{h}@{fps}");
+            let tool = tool_edid(w, h, fps, wm, hm).unwrap();
+            assert_eq!(rust, tool, "producer mismatch at {w}x{h}@{fps}");
             assert!(u32::from(rust[113]) <= fps && u32::from(rust[114]) >= fps);
             let pclk = u32::from(u16::from_le_bytes([rust[54], rust[55]])) * 10_000;
             let horizontal = pclk as f64 / f64::from(w + 160);
@@ -339,7 +368,7 @@ mod tests {
     }
 
     #[test]
-    fn t115_both_generators_reject_unrepresentable_or_unsupported_values() {
+    fn t115_runtime_and_cli_reject_unrepresentable_or_unsupported_values() {
         for (w, h, fps, wm, hm) in [
             (1, 1080, 10, 255, 256),
             (4096, 1080, 60, 310, 194),
@@ -353,8 +382,8 @@ mod tests {
             (1920, 1080, 60, 310, 0),
         ] {
             assert!(
-                python_edid(w, h, fps, wm, hm).is_none(),
-                "Python accepted {w}x{h}@{fps}, {wm}x{hm} mm"
+                tool_edid(w, h, fps, wm, hm).is_none(),
+                "CLI accepted {w}x{h}@{fps}, {wm}x{hm} mm"
             );
             assert!(
                 make_edid_sized(w, h, fps, wm, hm, 0).is_err(),

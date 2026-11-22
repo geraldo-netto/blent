@@ -277,7 +277,7 @@ fn t073_install_does_not_require_unused_edid_or_python() {
     assert!(output.status.success());
     let recipe = String::from_utf8(output.stdout).unwrap();
     assert!(
-        !recipe.contains("gen-edid.py") && !recipe.contains("s9ultra.bin"),
+        !recipe.contains("blent-edid") && !recipe.contains("s9ultra.bin"),
         "{recipe}"
     );
 }

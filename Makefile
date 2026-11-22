@@ -88,7 +88,7 @@ android-install: android
 
 edid:
 	mkdir -p edid
-	python3 scripts/gen-edid.py 2960 1848 60 edid/s9ultra.bin
+	cargo run --offline --locked -p blent-config --bin blent-edid -- 2960 1848 60 edid/s9ultra.bin
 	@echo "✓ EDID generated: edid/s9ultra.bin"
 
 list:

@@ -239,7 +239,7 @@ host/              Rust daemon
   src/osk.rs         KDE on-screen keyboard suppression over D-Bus
   src/kwin.rs        KWin D-Bus calls, through busctl or qdbus
   src/vdisplay.rs    EVDI discovery via sysfs
-  src/edid.rs        EDID generation for the virtual display
+  src/edid.rs        virtual-display EDID cache and atomic publication
   evdi/              C helper: EVDI capture → NV12 → FIFO or leased shared slots
     capture.c        EVDI callbacks, mode and framebuffer lifetime
     conversion.c     per-context workers and native/scaled BT.709 kernels
@@ -249,6 +249,8 @@ host/              Rust daemon
     evdi_helper.c    options, device acquisition, signals and teardown
 common/            settings, commands, version parsing, runtime session ledger
   src/cli.rs         Current shared CLI grammar
+  src/edid.rs        shared fixed-porch EDID encoder and scalar request contract
+  src/bin/edid.rs    `blent-edid` development file producer
 gui/               egui desktop app: status, settings, start/stop
 android/           Kotlin/Compose app: MediaCodec decoder, touch/pen capture
 packaging/         AppImage builder, PKGBUILD, udev/modprobe files
@@ -369,7 +371,7 @@ refresh to the lowest supported integer value while preserving the selected
 pixels (640×480 at 10 becomes 25 FPS). The confirmed FPS is sent back to Android;
 this fallback never lowers an excessive clock into range, and explicit CLI or
 settings edits remain rejections. Display refresh and stream FPS still share one
-setting. Both EDID generators reject low-clock requests and advertise the
+setting. The shared EDID encoder rejects low-clock requests and advertises the
 geometry's supported minimum refresh. The 10 MHz boundary is a conservative
 supported-timing policy, not proof that a lower clock crashes a kernel or that an
 accepted mode works on every compositor. No live desktop attach is needed for
@@ -871,3 +873,10 @@ global `LD_LIBRARY_PATH`/`LD_PRELOAD` before choosing this explicit ABI. This is
 local verification environment, not a portable release build or device acceptance.
 T835 retains complete-suite acceptance when excluded EVDI fixtures are ready;
 no failed fixture is silently skipped.
+
+Generate a development EDID with `make edid`, or
+`cargo run --offline --locked -p blent-config --bin blent-edid -- WIDTH HEIGHT FPS OUTPUT WIDTH_MM HEIGHT_MM`.
+All positional arguments have defaults (2960×1848, 60 FPS, `s9ultra.bin`, 310×194 mm);
+`--instance` selects the display identity and `--name` the monitor label.
+The CLI and runtime call the same encoder. Invalid requests are rejected before
+opening the output file. A successful file write replaces the requested output.

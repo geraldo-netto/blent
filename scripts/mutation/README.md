@@ -32,12 +32,12 @@ fails the report; a later change in the live checkout is reported separately.
 
 ```sh
 python3 -m unittest discover -s scripts/tests -p 'test_*mutation*.py'
-python3 scripts/mutation/bounded.py --profile python --output /absolute/new/evidence
+python3 scripts/mutation/bounded.py --profile edid --output /absolute/new/evidence
 ```
 
 | Profile | Native execution | Selected operators and normal suite |
 | --- | --- | --- |
-| `python` | Linux and ordinary Windows | EDID checksum arithmetic and invalid physical-size boundary; `test_gen_edid.py` |
+| `edid` | Linux and ordinary Windows | Shared Rust EDID checksum arithmetic and invalid physical-size boundary; `common/tests/edid_cli.rs` (historical sample IDs PY01/PY02 retained) |
 | `shell` | Linux | EVDI capacity arithmetic and invalid argument admission; `test_evdi_setup.py`, with fake system commands |
 | `capture-c` | Linux | Dirty-mask index and chroma coefficient; normal sanitized conversion/oracle integration tests |
 | `kotlin` | Linux JVM/Robolectric | Version ordering and numeric overflow boundary; the permanent shared-version fixture regression |

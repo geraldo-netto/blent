@@ -6,8 +6,8 @@ on:
       profile:
         type: choice
         description: Reviewed bounded sample (no whole-project score)
-        options: [python, shell, capture-c, kotlin, linux-include]
-        default: python
+        options: [edid, shell, capture-c, kotlin, linux-include]
+        default: edid
 
 permissions:
   contents: read
