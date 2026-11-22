@@ -1,0 +1,10 @@
+{
+  "item": "T1764",
+  "tests": 3,
+  "failures": 0,
+  "complexity_functions": 4,
+  "maximum_complexity": 1,
+  "tool": "repository Kotlin 1.9.20 PSI",
+  "nullable_parent_warnings": 0,
+  "production_behavior_changed": false
+}

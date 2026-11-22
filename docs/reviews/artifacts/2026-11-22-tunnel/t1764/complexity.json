@@ -1,0 +1,26 @@
+[
+  [
+    "scripts/benchmarks/android-tunnel/TunnelOutputTest.kt",
+    8,
+    "t1761FilesystemRootIsNotAnOutputFilename",
+    1
+  ],
+  [
+    "scripts/benchmarks/android-tunnel/TunnelOutputTest.kt",
+    9,
+    "<lambda>",
+    1
+  ],
+  [
+    "scripts/benchmarks/android-tunnel/TunnelOutputTest.kt",
+    12,
+    "t1761BareOutputFilenameResolvesWithoutNullParent",
+    1
+  ],
+  [
+    "scripts/benchmarks/android-tunnel/TunnelOutputTest.kt",
+    20,
+    "t1761AbsoluteOutputCreatesOnlyItsOwnedParentDirectory",
+    1
+  ]
+]

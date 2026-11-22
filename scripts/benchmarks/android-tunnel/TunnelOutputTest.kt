@@ -14,7 +14,7 @@ class TunnelOutputTest {
         val output = measurementOutput(name)
         assertTrue(output.isAbsolute)
         assertEquals(name, output.name)
-        assertTrue(output.parentFile.isDirectory)
+        assertTrue(requireNotNull(output.parentFile).isDirectory)
         assertFalse(output.exists())
     }
     @Test fun t1761AbsoluteOutputCreatesOnlyItsOwnedParentDirectory() {
@@ -23,7 +23,7 @@ class TunnelOutputTest {
             val expected = directory.resolve("nested/result.json")
             val output = measurementOutput(expected.path)
             assertEquals(expected, output)
-            assertTrue(output.parentFile.isDirectory)
+            assertTrue(requireNotNull(output.parentFile).isDirectory)
             assertFalse(output.exists())
         } finally { check(directory.deleteRecursively()) }
     }
