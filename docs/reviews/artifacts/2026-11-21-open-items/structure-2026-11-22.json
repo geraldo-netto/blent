@@ -1,0 +1,132 @@
+{
+  "rust_files_parsed": 504,
+  "production_functions_examined": 3877,
+  "exact_body_candidates": [],
+  "long_functions": [
+    [
+      "host/src/linux_main.rs",
+      1707,
+      "run_daemon_with",
+      263
+    ],
+    [
+      "host/src/input.rs",
+      377,
+      "serve_controller",
+      125
+    ],
+    [
+      "host/src/edid.rs",
+      27,
+      "make_edid_sized",
+      122
+    ],
+    [
+      "host/src/ffmpeg_args.rs",
+      22,
+      "arguments",
+      110
+    ],
+    [
+      "host/src/input/linux.rs",
+      452,
+      "inject_pen",
+      100
+    ],
+    [
+      "host/src/capture.rs",
+      435,
+      "run_encoder_session",
+      95
+    ],
+    [
+      "host/src/selection/worker.rs",
+      28,
+      "run",
+      80
+    ],
+    [
+      "host/src/input.rs",
+      203,
+      "run_with_listener",
+      77
+    ],
+    [
+      "host/src/encoder.rs",
+      264,
+      "run_with_nonce",
+      73
+    ],
+    [
+      "host/src/doctor.rs",
+      555,
+      "check_tablet_session",
+      72
+    ],
+    [
+      "host/src/input/mapping.rs",
+      88,
+      "map_devices_using",
+      70
+    ],
+    [
+      "host/src/input.rs",
+      308,
+      "handle_connection",
+      68
+    ],
+    [
+      "host/src/encoder_probe.rs",
+      175,
+      "encode",
+      67
+    ],
+    [
+      "host/src/input.rs",
+      742,
+      "handle_event",
+      66
+    ]
+  ],
+  "date": "2026-11-22",
+  "scope": "Static Rust body/length candidate screen plus manual Rust, Android, native-C and packaging review. 504 Rust files and 3877 non-test functions screened; exact bodies >=180 normalized characters had zero duplicate groups. This does not establish absence of semantic duplication or exhaustive project review. Long functions are candidates only. No project tests/builds/native operations executed by reviewers.",
+  "confirmed_new_outcomes": [
+    "T1705",
+    "T1706",
+    "T1707",
+    "T1708",
+    "T1709"
+  ],
+  "existing_parent_decomposition": {
+    "T1613": [
+      "T1709",
+      "T1712",
+      "T1713",
+      "T1714"
+    ],
+    "T1625": [
+      "T1710",
+      "T1711"
+    ]
+  },
+  "queue": [
+    "T1621",
+    "T1707",
+    "T1708",
+    "T1613",
+    "T1706",
+    "T1568",
+    "T1524",
+    "T1525",
+    "T1527",
+    "T1605",
+    "T1529",
+    "T1546",
+    "T1705",
+    "T1507",
+    "T1625",
+    "T1628"
+  ],
+  "rejected_candidate": "run_daemon_with remains a cohesive startup/supervision/retirement composition root; length alone does not justify a finding.",
+  "stale_evidence_corrected": "T1536 no longer lists platform::data_dir as unused: T1701 supplies a current production caller. Installer XDG desktop-entry location is distinct from runtime EDID cache usage."
+}
