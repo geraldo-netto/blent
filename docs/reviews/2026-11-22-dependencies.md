@@ -250,7 +250,20 @@ The two maintained Python test methods measure complexity 2 and 1; ProGuard
 configuration introduces no executable production functions. Evidence is in
 `artifacts/2026-11-22-dependencies/t1753/`.
 
-Builds also report an SDK metadata mismatch: AGP 8.2.0's reader accepts schema 3
-while the installed command-line tools revision 22.0 supplies schema 4 metadata.
+Builds also report an SDK metadata mismatch: the emitting reader accepts schema 3
+and encounters schema 4. The project pins AGP 8.2.0, and the installed command-line
+tools revision is 22.0; the exact emitting component remains to be identified.
 The builds succeed. T1754 retains investigation of the exact emitting reader and
 an intentional tool pairing; no runtime failure is inferred from that warning.
+
+## T1524: Android dependency/shrinker integration complete
+
+T1752 removes the unused production serialization graph while preserving its
+benchmark consumer and Kotlin runtime version. T1753 removes blanket keeps while
+retaining generated native component entry points and dependency consumer rules.
+The actual 80-coordinate release inventory matches packaged notice metadata;
+release and optimized APKs contain all eight exact notice assets. Both builds
+pass with the final rules, and current independent regression checks pass.
+No physical Android execution or installed-session reload was performed. T1754
+records the non-fatal tool metadata warning separately. The next selected item
+is T1525, followed by T1527 tunnel allocation measurements.
