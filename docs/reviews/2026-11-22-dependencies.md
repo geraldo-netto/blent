@@ -112,3 +112,23 @@ library performance or physical USB/Wi-Fi performance. Camera/display pixels do
 not travel through this input WebSocket. Nine benchmark functions were measured
 by the local Rust syntax checker (syn 2.0.119); maximum cyclomatic complexity 7.
 Benchmarks are exempt from production line-coverage gates under AGENTS.md.
+
+## T1739: mp4ra workspace notice qualification
+
+mp4ra-rust 0.6.0 omits standalone license files from its crate, but its published
+`.cargo_vcs_info.json` identifies revision 3fc2d3a508b7867f3aa981ca902b24260fb0223f.
+The upstream workspace root at that exact revision contains LICENSE-APACHE and
+LICENSE-MIT. Their unchanged bytes, source URLs and hashes are pinned in the
+supplemental catalog, together with the crate checksum and normalized manifest
+identity. No implementation or cached source was changed.
+
+The permanent offline T1739 regression uses the published manifest/VCS metadata.
+It failed before the pin with `no crate notice files found`; the same test now
+passes and verifies both notices in the archive and notice directory, their
+revision, and unchanged fixture inputs. All 16 supplemental-notice tests pass,
+including identity rejection, staging cleanup and partial-failure coverage.
+Existing production collector functions are unchanged. Python 3.12 AST complexity
+measurement covers all 21 functions in the changed test module, maximum 3; the
+new test scores 2. The bounded test owns
+its temporary archive/notice directories through unittest cleanup; no reference
+escapes them. hex-slice remains separately unresolved in T1463.

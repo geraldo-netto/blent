@@ -532,6 +532,36 @@
           "revision": "8271551172eb6fa4cba47369aedd93790c623df9"
         }
       ]
+    },
+    "mp4ra-rust-0.6.0": {
+      "name": "mp4ra-rust",
+      "version": "0.6.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "license": "MIT/Apache-2.0",
+      "license_file": null,
+      "revision": "3fc2d3a508b7867f3aa981ca902b24260fb0223f",
+      "vcs_info": {
+        "git": {
+          "sha1": "3fc2d3a508b7867f3aa981ca902b24260fb0223f"
+        },
+        "path_in_vcs": "mp4ra-rust"
+      },
+      "manifest_sha256": "09fede2c85547b91ac9afc4a44b9dfaf6ba2aa87d5c31dc5f53789d656c2e271",
+      "crate_sha256": "50e73e22289737589d1575517eefead53c7bbd7e11546437f97b3859694c1a08",
+      "notices": [
+        {
+          "file": "mp4ra-rust/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "url": "https://raw.githubusercontent.com/dholroyd/mp4ra-rust/3fc2d3a508b7867f3aa981ca902b24260fb0223f/LICENSE-APACHE",
+          "revision": "3fc2d3a508b7867f3aa981ca902b24260fb0223f"
+        },
+        {
+          "file": "mp4ra-rust/LICENSE-MIT",
+          "sha256": "dea4b0f988296a5d89651e94c7e367a8815960498fb5678de839061702b056e6",
+          "url": "https://raw.githubusercontent.com/dholroyd/mp4ra-rust/3fc2d3a508b7867f3aa981ca902b24260fb0223f/LICENSE-MIT",
+          "revision": "3fc2d3a508b7867f3aa981ca902b24260fb0223f"
+        }
+      ]
     }
   }
 }

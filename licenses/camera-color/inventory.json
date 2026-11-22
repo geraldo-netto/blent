@@ -107,9 +107,21 @@
           "path": "mp4ra-rust-0.6.0/README.md",
           "sha256": "8327243d3fb14ddc4ee2d7c6122b027cd00f48b4f538f43ec7bae001fca76841",
           "source": "cached crate README.md"
+        },
+        {
+          "path": "../../packaging/appimage/supplemental-notices/mp4ra-rust/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "https://raw.githubusercontent.com/dholroyd/mp4ra-rust/3fc2d3a508b7867f3aa981ca902b24260fb0223f/LICENSE-APACHE",
+          "revision": "3fc2d3a508b7867f3aa981ca902b24260fb0223f"
+        },
+        {
+          "path": "../../packaging/appimage/supplemental-notices/mp4ra-rust/LICENSE-MIT",
+          "sha256": "dea4b0f988296a5d89651e94c7e367a8815960498fb5678de839061702b056e6",
+          "source": "https://raw.githubusercontent.com/dholroyd/mp4ra-rust/3fc2d3a508b7867f3aa981ca902b24260fb0223f/LICENSE-MIT",
+          "revision": "3fc2d3a508b7867f3aa981ca902b24260fb0223f"
         }
       ],
-      "license_text_present": false
+      "license_text_present": true
     },
     {
       "name": "mpeg4-audio-const",

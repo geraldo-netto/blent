@@ -57,6 +57,24 @@ class SupplementalNoticesTest(unittest.TestCase):
                     self.assertEqual(stream.read(), (self.notices / 'accesskit-0.19.0' / row['path']).read_bytes())
                 self.assertEqual(row['provenance']['revision'], 'daf5fafd63c42f62cc824a1f72e17aff1d102108')
 
+    def test_t1739_mp4ra_workspace_notices_are_collected_offline(self):
+        source = REPO / 'scripts/tests/fixtures/crate-notices/mp4ra-rust'
+        package = dict(self.package, name='mp4ra-rust', version='0.6.0',
+                       license='MIT/Apache-2.0',
+                       manifest_path=str(source / 'Cargo.toml'))
+        before = {p.name: p.read_bytes() for p in source.iterdir()}
+        record = sources.copy_crate(package, self.archives, self.notices)
+        self.assertEqual(before, {p.name: p.read_bytes() for p in source.iterdir()})
+        self.assertEqual({Path(row['path']).name for row in record['notices']},
+                         {'LICENSE-MIT', 'LICENSE-APACHE'})
+        with tarfile.open(self.archives / 'mp4ra-rust-0.6.0.tar.gz') as archive:
+            for row in record['notices']:
+                with archive.extractfile('mp4ra-rust-0.6.0/' + row['path']) as stream:
+                    self.assertEqual(stream.read(),
+                                     (self.notices / 'mp4ra-rust-0.6.0' / row['path']).read_bytes())
+                self.assertEqual(row['provenance']['revision'],
+                                 '3fc2d3a508b7867f3aa981ca902b24260fb0223f')
+
     def test_t1280_identity_mismatch_never_publishes_notices(self):
         for field, value in [('version', '0.19.1'), ('source', 'registry+foreign'),
                              ('license', 'Apache-2.0'), ('license_file', 'LICENSE')]:
@@ -184,7 +202,7 @@ class SupplementalNoticesTest(unittest.TestCase):
         locked = {(p['name'], p['version']): p for p in
                   tomllib.loads((REPO / 'Cargo.lock').read_text())['package']}
         catalog = json.loads((self.catalog / 'manifest.json').read_text())
-        self.assertEqual(len(catalog['crates']), 18)
+        self.assertEqual(len(catalog['crates']), 19)
         for key, pin in catalog['crates'].items():
             with self.subTest(crate=key):
                 self.assertEqual(key, f"{pin['name']}-{pin['version']}")
