@@ -234,7 +234,10 @@ connection performs no USB reset.
 
 The host's direct USB registration allows two minutes for local media approval by
 default. Pairing and camera permission remain separate actions within the request
-window. The native client's admission setting uses the shared 1–600000 ms resource
+window. The registration IPC/client exposes `PermissionRequired` while the tablet
+needs local permission; that state retains the original pending route without
+admitting media or proving retirement. Active, closing and terminal states cannot
+regress to this waiting state. The native client's admission setting uses the shared 1–600000 ms resource
 policy; startup and cleanup keep their separate short deadlines. Broker
 `--resource-timeout-ms`, tablet USB resource deadlines and the client's selected
 admission budget are independent: the first expiry cancels the request. Changing

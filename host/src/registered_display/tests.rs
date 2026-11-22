@@ -319,6 +319,7 @@ fn t920_invalid_status_matrix_closes_without_admission() {
         status(Phase::Starting, Some(route(1))),
         status(Phase::Registering, Some(route(1))),
         status(Phase::Queued, None),
+        status(Phase::PermissionRequired, None),
         status(Phase::Active, None),
         status(Phase::Failed, None),
         status(Phase::Closing, None),
@@ -328,9 +329,13 @@ fn t920_invalid_status_matrix_closes_without_admission() {
         Phase::Starting,
         Phase::Registering,
         Phase::Queued,
+        Phase::PermissionRequired,
         Phase::Active,
     ] {
-        let id = if matches!(phase, Phase::Queued | Phase::Active) {
+        let id = if matches!(
+            phase,
+            Phase::Queued | Phase::PermissionRequired | Phase::Active
+        ) {
             Some(route(1))
         } else {
             None
@@ -359,6 +364,7 @@ fn t920_active_cannot_regress_or_change_route_and_repeat_poll_does_not_wake_capt
         Phase::Starting,
         Phase::Registering,
         Phase::Queued,
+        Phase::PermissionRequired,
         Phase::Active,
     ] {
         let mut fixture = Fixture::new();

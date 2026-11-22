@@ -22,6 +22,7 @@ pub enum State {
     Closing = 2,
     Retired = 3,
     Failed = 4,
+    PermissionRequired = 5,
 }
 impl TryFrom<u8> for State {
     type Error = anyhow::Error;
@@ -32,6 +33,7 @@ impl TryFrom<u8> for State {
             2 => Self::Closing,
             3 => Self::Retired,
             4 => Self::Failed,
+            5 => Self::PermissionRequired,
             _ => anyhow::bail!("unknown registration state"),
         })
     }

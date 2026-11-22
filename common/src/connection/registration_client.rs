@@ -32,6 +32,7 @@ pub enum Phase {
     Starting,
     Registering,
     Queued,
+    PermissionRequired,
     Active,
     Closing,
     Retired,
@@ -87,10 +88,12 @@ impl Status {
         }
         match self.phase {
             Phase::Starting | Phase::Registering => self.route.is_none(),
-            Phase::Queued | Phase::Active => self.route.is_some_and(|route| {
-                (1..=super::wire::MAX_COUNTER).contains(&route.owner)
-                    && (1..=super::wire::MAX_COUNTER).contains(&route.revision)
-            }),
+            Phase::Queued | Phase::PermissionRequired | Phase::Active => {
+                self.route.is_some_and(|route| {
+                    (1..=super::wire::MAX_COUNTER).contains(&route.owner)
+                        && (1..=super::wire::MAX_COUNTER).contains(&route.revision)
+                })
+            }
             _ => false,
         }
     }
@@ -230,7 +233,10 @@ impl Model {
             State::Failed => self.fail(Failure::Resource),
             State::Closing => self.close(),
             State::Active if !self.closing => self.status.phase = Phase::Active,
-            _ => (), // Queued or late Active cannot undo cancellation/failure.
+            State::PermissionRequired if !self.closing => {
+                self.status.phase = Phase::PermissionRequired
+            }
+            _ => (), // Waiting/admission notices cannot undo cancellation/failure.
         }
     }
     fn rejected(&mut self, request: u64, reason: Rejection) -> Result<()> {
@@ -249,7 +255,8 @@ impl Model {
 fn advance_allowed(previous: Option<State>, next: State) -> bool {
     match previous {
         None | Some(State::Queued) => true,
-        Some(State::Active) => next != State::Queued,
+        Some(State::PermissionRequired) => next != State::Queued,
+        Some(State::Active) => !matches!(next, State::Queued | State::PermissionRequired),
         Some(State::Closing | State::Failed) => {
             matches!(next, State::Closing | State::Failed | State::Retired)
         }

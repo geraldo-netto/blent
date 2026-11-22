@@ -137,7 +137,11 @@ impl Server {
             "stale resource status"
         );
         match state {
-            session::State::PermissionRequired => (),
+            session::State::PermissionRequired => {
+                if !route.closing {
+                    self.status(lease.owner, RouteState::PermissionRequired);
+                }
+            }
             session::State::Admitted => {
                 if !route.closing {
                     self.status(lease.owner, RouteState::Active);

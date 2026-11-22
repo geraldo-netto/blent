@@ -275,13 +275,23 @@ fn t910_invalid_and_extreme_counters_reject_before_retirement_proof() {
 fn t910_all_bounded_status_pairs_preserve_terminal_and_failed_admission() {
     let states = [
         State::Queued,
+        State::PermissionRequired,
         State::Active,
         State::Closing,
         State::Failed,
         State::Retired,
     ];
-    for first in states {
-        for second in states {
+    // Independent contract matrix: rows are previous states, columns are next states.
+    let allowed = [
+        [true, true, true, true, true, true],
+        [false, true, true, true, true, true],
+        [false, false, true, true, true, true],
+        [false, false, false, true, true, true],
+        [false, false, false, true, true, true],
+        [false, false, false, false, false, false],
+    ];
+    for (row, first) in states.into_iter().enumerate() {
+        for (column, second) in states.into_iter().enumerate() {
             let mut model = registered();
             progress(&mut model, 1, first);
             let accepted = model
@@ -291,11 +301,7 @@ fn t910_all_bounded_status_pairs_preserve_terminal_and_failed_admission() {
                     state: second,
                 })
                 .is_ok();
-            let forbidden = first == State::Retired
-                || (first == State::Active && second == State::Queued)
-                || (matches!(first, State::Closing | State::Failed)
-                    && matches!(second, State::Queued | State::Active));
-            assert_ne!(accepted, forbidden);
+            assert_eq!(accepted, allowed[row][column]);
             if matches!(first, State::Closing | State::Failed | State::Retired) {
                 assert_ne!(model.status().phase, Phase::Active);
             }
@@ -355,4 +361,64 @@ fn t1007_original_exit_never_restores_authority_or_uses_socket_failure_as_proof(
     untouched.close();
     untouched.observe_broker_exit(&Broker(true));
     assert!(untouched.status().failure.is_none());
+}
+
+#[test]
+fn t1603_permission_requirement_is_live_without_admitting_or_retiring_route() {
+    let permission =
+        State::try_from(5).expect("T1603 permission state missing from registration wire");
+    let mut model = registered();
+    progress(&mut model, 1, permission);
+    assert_eq!(format!("{:?}", model.status().phase), "PermissionRequired");
+    assert!(model.status().live());
+    assert_eq!(model.status().route, Some(route()));
+    assert!(!model.status().remote_retired);
+    progress(&mut model, 1, permission);
+    progress(&mut model, 1, State::Active);
+    assert_eq!(model.status().phase, Phase::Active);
+    assert!(model
+        .receive(Message::Status {
+            request: 1,
+            route: route(),
+            state: permission
+        })
+        .is_err());
+    assert!(!model.status().remote_retired);
+}
+
+#[test]
+fn t1603_late_permission_notice_never_undoes_cancellation() {
+    let permission =
+        State::try_from(5).expect("T1603 permission state missing from registration wire");
+    let mut model = registered();
+    progress(&mut model, 1, permission);
+    model.close();
+    assert!(matches!(
+        model.outgoing(),
+        Some(Message::Unregister { request: 2, .. })
+    ));
+    progress(&mut model, 1, permission);
+    assert_eq!(model.status().phase, Phase::Closing);
+    assert!(!model.status().remote_retired);
+    progress(&mut model, 2, State::Closing);
+    progress(&mut model, 2, State::Retired);
+    assert!(model.status().remote_retired);
+}
+
+#[test]
+fn t1603_registration_state_byte_domain_and_permission_status_roundtrip() {
+    for value in 0..=u8::MAX {
+        let parsed = State::try_from(value);
+        assert_eq!(parsed.is_ok(), value <= 5);
+        if let Ok(state) = parsed {
+            let message = Message::Status {
+                request: 1,
+                route: route(),
+                state,
+            };
+            let wire = message.encode().unwrap();
+            assert_eq!(*wire.last().unwrap(), value);
+            assert!(Message::decode(&wire).unwrap() == message);
+        }
+    }
 }

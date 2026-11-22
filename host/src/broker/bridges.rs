@@ -97,6 +97,7 @@ impl Bridges {
             .ok_or_else(|| anyhow::anyhow!("unknown local resource"))?;
         ensure!(entry.lease == *lease, "stale local resource notice");
         match state {
+            // A status notice grants no permission to open the local endpoint.
             State::PermissionRequired => (),
             State::Admitted => {
                 if !session.current(lease) {

@@ -1,0 +1,676 @@
+{
+  "issue": "T1603",
+  "date": "2026-11-22",
+  "before": {
+    "failed_common_contract_tests": 2,
+    "failed_broker_delivery_tests": 1,
+    "evidence": "wire value 5 rejected; native IPC receives following sentinel reply instead of original permission status"
+  },
+  "verification": {
+    "broker_tests_passed": 288,
+    "registered_display_tests_passed": 17,
+    "client_model_tests_passed": 13,
+    "wire_contract_tests_passed": 5,
+    "transition_pairs": 36,
+    "wire_byte_values": 256
+  },
+  "coverage": [
+    {
+      "file": "common/src/connection/registration.rs",
+      "name": "try_from",
+      "line": 29,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/registration_client.rs",
+      "name": "live",
+      "line": 85,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        97
+      ]
+    },
+    {
+      "file": "common/src/connection/registration_client.rs",
+      "name": "phase",
+      "line": 227,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/registration_client.rs",
+      "name": "advance_allowed",
+      "line": 255,
+      "language": "rust",
+      "covered": 7,
+      "total": 8,
+      "percent": 87.5,
+      "passes": true,
+      "missing": [
+        263
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "route_state",
+      "line": 125,
+      "language": "rust",
+      "covered": 23,
+      "total": 24,
+      "percent": 95.83333333333333,
+      "passes": true,
+      "missing": [
+        148
+      ]
+    }
+  ],
+  "complexity": {
+    "tool": "tree-sitter 0.25.2 Rust; scripts/complexity/check.py",
+    "functions": [
+      [
+        "common/src/connection/registration.rs",
+        29,
+        "try_from",
+        8
+      ],
+      [
+        "common/src/connection/registration.rs",
+        53,
+        "try_from",
+        8
+      ],
+      [
+        "common/src/connection/registration.rs",
+        108,
+        "request",
+        7
+      ],
+      [
+        "common/src/connection/registration.rs",
+        121,
+        "descriptor_count",
+        4
+      ],
+      [
+        "common/src/connection/registration.rs",
+        132,
+        "counter",
+        1
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        20,
+        "message",
+        1
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        85,
+        "live",
+        8
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        115,
+        "new",
+        1
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        131,
+        "status",
+        1
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        134,
+        "outgoing",
+        3
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        145,
+        "unregister",
+        3
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        153,
+        "close",
+        4
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        162,
+        "fail",
+        1
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        169,
+        "observe_broker_exit",
+        3
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        175,
+        "receive",
+        2
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        182,
+        "apply",
+        5
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        199,
+        "registered",
+        2
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        210,
+        "progress",
+        1
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        227,
+        "phase",
+        7
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        242,
+        "rejected",
+        3
+      ],
+      [
+        "common/src/connection/registration_client.rs",
+        255,
+        "advance_allowed",
+        6
+      ],
+      [
+        "host/src/broker/linux/server/routes.rs",
+        5,
+        "register",
+        2
+      ],
+      [
+        "host/src/broker/linux/server/routes.rs",
+        68,
+        "connection_for",
+        3
+      ],
+      [
+        "host/src/broker/linux/server/routes.rs",
+        78,
+        "unregister",
+        1
+      ],
+      [
+        "host/src/broker/linux/server/routes.rs",
+        87,
+        "cancel_route",
+        3
+      ],
+      [
+        "host/src/broker/linux/server/routes.rs",
+        101,
+        "registered",
+        4
+      ],
+      [
+        "host/src/broker/linux/server/routes.rs",
+        125,
+        "route_state",
+        7
+      ],
+      [
+        "host/src/broker/linux/server/routes.rs",
+        155,
+        "status",
+        2
+      ],
+      [
+        "host/src/broker/linux/server/routes.rs",
+        167,
+        "retire_route",
+        1
+      ],
+      [
+        "host/src/broker/linux/server/routes.rs",
+        185,
+        "retire_link_routes",
+        3
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        4,
+        "request",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        12,
+        "route",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        18,
+        "model",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        21,
+        "registered",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        32,
+        "progress",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        43,
+        "t910_admission_requires_current_route_status_and_retirement_requires_exact_proof",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        80,
+        "t910_cancel_before_exposure_opens_nothing_and_cancel_during_start_waits_route",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        112,
+        "t910_failed_status_and_native_loss_never_release_remote_ownership",
+        2
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        134,
+        "t910_rejection_is_retirement_only_before_registration_was_owned",
+        2
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        163,
+        "t910_peer_initiated_close_and_failed_admission_revoke_before_native_cleanup",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        177,
+        "t910_malformed_foreign_and_replayed_responses_cannot_grant_or_retire_resources",
+        2
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        227,
+        "t910_invalid_and_extreme_counters_reject_before_retirement_proof",
+        3
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        275,
+        "t910_all_bounded_status_pairs_preserve_terminal_and_failed_admission",
+        4
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        312,
+        "t910_invalid_profile_and_response_before_exposure_do_not_start_native_work",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        329,
+        "exited",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        334,
+        "t1007_original_exit_never_restores_authority_or_uses_socket_failure_as_proof",
+        2
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        367,
+        "t1603_permission_requirement_is_live_without_admitting_or_retiring_route",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        390,
+        "t1603_late_permission_notice_never_undoes_cancellation",
+        1
+      ],
+      [
+        "common/src/connection/registration_client/tests.rs",
+        409,
+        "t1603_registration_state_byte_domain_and_permission_status_roundtrip",
+        3
+      ],
+      [
+        "host/src/broker/linux/server/tests/registration.rs",
+        7,
+        "listeners",
+        1
+      ],
+      [
+        "host/src/broker/linux/server/tests/registration.rs",
+        14,
+        "active",
+        6
+      ],
+      [
+        "host/src/broker/linux/server/tests/registration.rs",
+        37,
+        "exchange",
+        1
+      ],
+      [
+        "host/src/broker/linux/server/tests/registration.rs",
+        52,
+        "t853_server_real_tls_remembered_registration_binds_local_descriptors_and_revokes",
+        2
+      ],
+      [
+        "host/src/broker/linux/server/tests/registration.rs",
+        108,
+        "control_revoke",
+        1
+      ],
+      [
+        "host/src/broker/linux/server/tests/registration.rs",
+        114,
+        "cancel_active",
+        3
+      ],
+      [
+        "host/src/broker/linux/server/tests/registration.rs",
+        141,
+        "t853_active_route_cancel_with_closed_link_revokes_connection_authority",
+        1
+      ],
+      [
+        "host/src/broker/linux/server/tests/registration.rs",
+        180,
+        "t1603_permission_notice_reaches_only_its_current_registration",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        17,
+        "new",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        24,
+        "publish",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        29,
+        "status",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        32,
+        "close",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        35,
+        "retired",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        47,
+        "start",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        56,
+        "status",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        64,
+        "route",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        67,
+        "entropy",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        72,
+        "peer",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        82,
+        "new",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        115,
+        "client",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        118,
+        "count",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        121,
+        "active",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        131,
+        "t920_renewal_waits_for_native_and_remote_retirement_and_preserves_geometry",
+        2
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        186,
+        "t920_late_close_does_not_revoke_a_replacement_attachment",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        201,
+        "t920_lost_authority_does_not_retry_over_its_replacement",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        226,
+        "t920_startup_and_entropy_errors_obey_absolute_retry_deadlines",
+        3
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        249,
+        "t920_retry_bounds_and_close_before_start",
+        2
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        269,
+        "t920_replacement_during_retry_is_not_overwritten",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        289,
+        "t920_invalid_active_route_counters_never_admit_display",
+        3
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        316,
+        "t920_invalid_status_matrix_closes_without_admission",
+        4
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        362,
+        "t920_active_cannot_regress_or_change_route_and_repeat_poll_does_not_wake_capture",
+        3
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        388,
+        "t920_idle_close_clears_only_owned_configuration",
+        2
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        413,
+        "t920_first_start_cannot_replace_a_newer_owner",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        426,
+        "t920_deadline_boundary_fails_without_registering",
+        3
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        443,
+        "t1049_pause_retains_configuration_and_waits_for_original_registration",
+        2
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        482,
+        "t1049_idle_pause_and_terminal_close_never_start_registration",
+        2
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        506,
+        "t1049_late_active_reply_cannot_resume_a_paused_startup",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        534,
+        "t1049_pause_close_and_resume_do_not_revoke_a_replacement",
+        1
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        559,
+        "transition",
+        6
+      ],
+      [
+        "host/src/registered_display/tests.rs",
+        574,
+        "t1049_bounded_transitions_preserve_retirement_before_renewal",
+        5
+      ],
+      [
+        "common/tests/connection_registration.rs",
+        9,
+        "profiles",
+        1
+      ],
+      [
+        "common/tests/connection_registration.rs",
+        44,
+        "registration",
+        2
+      ],
+      [
+        "common/tests/connection_registration.rs",
+        53,
+        "route",
+        1
+      ],
+      [
+        "common/tests/connection_registration.rs",
+        59,
+        "roundtrip",
+        2
+      ],
+      [
+        "common/tests/connection_registration.rs",
+        79,
+        "t871_all_typed_messages_roundtrip_and_have_exact_descriptor_counts",
+        5
+      ],
+      [
+        "common/tests/connection_registration.rs",
+        120,
+        "t871_independent_fixed_layout_and_local_request_identity",
+        1
+      ],
+      [
+        "common/tests/connection_registration.rs",
+        150,
+        "t871_invalid_counters_and_profiles_reject_without_output_mutation",
+        5
+      ],
+      [
+        "common/tests/connection_registration.rs",
+        206,
+        "t871_malformed_header_body_and_route_values_reject",
+        6
+      ],
+      [
+        "common/tests/connection_registration.rs",
+        256,
+        "t871_bounded_packet_mutations_preserve_canonical_models_or_reject",
+        5
+      ]
+    ],
+    "maximum": 8
+  },
+  "ownership": "PermissionRequired is a live pending registration observation, not media admission or remote retirement. Original route/client/request/lease identity checks remain. Closing suppresses late server notices; client terminal/active states reject backwards progress. Bridges deliberately retain unopened endpoints until actual admission. No new native allocation, task or cleanup owner.",
+  "scope": "Registration IPC and client phase; existing media waiting/admission deadlines and device permissions unchanged. Private fake-helper, TLS and IPC fixtures only; no installed broker or tablet was contacted."
+}

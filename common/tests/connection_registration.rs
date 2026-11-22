@@ -97,7 +97,7 @@ fn t871_all_typed_messages_roundtrip_and_have_exact_descriptor_counts() {
         request: MAX_COUNTER,
         route: route(),
     });
-    for value in 0..=4 {
+    for value in 0..=5 {
         roundtrip(Message::Status {
             request: 2,
             route: route(),
@@ -111,7 +111,7 @@ fn t871_all_typed_messages_roundtrip_and_have_exact_descriptor_counts() {
         });
     }
     for value in 0u8..=255 {
-        assert_eq!(State::try_from(value).is_ok(), value <= 4);
+        assert_eq!(State::try_from(value).is_ok(), value <= 5);
         assert_eq!(Rejection::try_from(value).is_ok(), value <= 5);
     }
 }

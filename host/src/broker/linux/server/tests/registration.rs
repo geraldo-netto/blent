@@ -175,3 +175,73 @@ async fn t853_active_route_cancel_with_closed_link_revokes_connection_authority(
         .unwrap();
     auth.fixture.finish().await;
 }
+
+#[tokio::test]
+async fn t1603_permission_notice_reaches_only_its_current_registration() {
+    let mut fixture = Fixture::new().await;
+    let (client, remote) = fixture.client().await;
+    let route = registration(&mut fixture.server, client, 1, Resource::Camera, true);
+    fixture
+        .server
+        .route_state(
+            1,
+            lease(1, Resource::Camera),
+            session::State::PermissionRequired,
+        )
+        .unwrap();
+    // A known following reply makes a dropped permission notice fail immediately.
+    fixture.server.reply(
+        client,
+        vec![Message::Rejected {
+            request: 99,
+            reason: Rejection::Busy,
+        }],
+    );
+    let Message::Status {
+        request,
+        route: received,
+        state,
+    } = response(&remote).await
+    else {
+        panic!("T1603 broker discarded permission requirement");
+    };
+    assert_eq!(request, 1);
+    assert_eq!(received, route);
+    assert_eq!(state as u8, 5);
+    assert!(matches!(
+        response(&remote).await,
+        Message::Rejected { request: 99, .. }
+    ));
+    let entry = fixture.server.routes.get_mut(&1).unwrap();
+    entry.closing = true;
+    entry.request = 2;
+    fixture
+        .server
+        .route_state(
+            1,
+            lease(1, Resource::Camera),
+            session::State::PermissionRequired,
+        )
+        .unwrap();
+    assert!(fixture
+        .server
+        .route_state(
+            2,
+            lease(1, Resource::Camera),
+            session::State::PermissionRequired
+        )
+        .is_err());
+    fixture.server.reply(
+        client,
+        vec![Message::Rejected {
+            request: 100,
+            reason: Rejection::Busy,
+        }],
+    );
+    assert!(matches!(
+        response(&remote).await,
+        Message::Rejected { request: 100, .. }
+    ));
+    assert!(fixture.server.routes[&1].closing);
+    fixture.finish().await;
+}
