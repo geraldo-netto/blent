@@ -26,7 +26,7 @@ def write(root, name, body, executable=False):
 def fixture(root, selection, stale):
     version = test_notices.NoticeTest().copy_sources(root)
     import test_make
-    test_make.MakeTest().usb_make_fixture(root)
+    test_make.MakeTest().native_make_fixtures(root)
     tools = root / 'tools'
     tools.mkdir()
     import release_signing_fixture

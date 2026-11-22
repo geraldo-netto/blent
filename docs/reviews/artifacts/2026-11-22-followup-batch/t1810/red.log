@@ -1,0 +1,335 @@
+..............................EEEEEEEEEEEEEEEEEEEEEE......
+======================================================================
+ERROR: test_t231_failed_enable_is_not_reported_as_success (test_user_paths.UserPathsTest.test_t231_failed_enable_is_not_reported_as_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 26, in test_t231_failed_enable_is_not_reported_as_success
+    env, _ = self.environment(root, 'unset')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t231_installer_uses_desktop_autostart_without_a_user_manager (test_user_paths.UserPathsTest.test_t231_installer_uses_desktop_autostart_without_a_user_manager) (unavailable=1, enable=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 39, in test_t231_installer_uses_desktop_autostart_without_a_user_manager
+    env, (_, config) = self.environment(root, 'absolute')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t231_installer_uses_desktop_autostart_without_a_user_manager (test_user_paths.UserPathsTest.test_t231_installer_uses_desktop_autostart_without_a_user_manager) (unavailable=1, enable=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 39, in test_t231_installer_uses_desktop_autostart_without_a_user_manager
+    env, (_, config) = self.environment(root, 'absolute')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t231_installer_uses_desktop_autostart_without_a_user_manager (test_user_paths.UserPathsTest.test_t231_installer_uses_desktop_autostart_without_a_user_manager) (unavailable=127, enable=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 39, in test_t231_installer_uses_desktop_autostart_without_a_user_manager
+    env, (_, config) = self.environment(root, 'absolute')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t231_installer_uses_desktop_autostart_without_a_user_manager (test_user_paths.UserPathsTest.test_t231_installer_uses_desktop_autostart_without_a_user_manager) (unavailable=127, enable=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 39, in test_t231_installer_uses_desktop_autostart_without_a_user_manager
+    env, (_, config) = self.environment(root, 'absolute')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t231_unreachable_enabled_service_does_not_create_a_second_startup (test_user_paths.UserPathsTest.test_t231_unreachable_enabled_service_does_not_create_a_second_startup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 15, in test_t231_unreachable_enabled_service_does_not_create_a_second_startup
+    env, (_, config) = self.environment(root, 'unset')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t233_make_and_script_install_into_configured_xdg_locations (test_user_paths.UserPathsTest.test_t233_make_and_script_install_into_configured_xdg_locations) (installer='make', mode='absolute')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 123, in test_t233_make_and_script_install_into_configured_xdg_locations
+    env, (data, config) = self.environment(root, mode)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t233_make_and_script_install_into_configured_xdg_locations (test_user_paths.UserPathsTest.test_t233_make_and_script_install_into_configured_xdg_locations) (installer='make', mode='unset')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 123, in test_t233_make_and_script_install_into_configured_xdg_locations
+    env, (data, config) = self.environment(root, mode)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t233_make_and_script_install_into_configured_xdg_locations (test_user_paths.UserPathsTest.test_t233_make_and_script_install_into_configured_xdg_locations) (installer='make', mode='relative')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 123, in test_t233_make_and_script_install_into_configured_xdg_locations
+    env, (data, config) = self.environment(root, mode)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t233_make_and_script_install_into_configured_xdg_locations (test_user_paths.UserPathsTest.test_t233_make_and_script_install_into_configured_xdg_locations) (installer='make', mode='empty')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 123, in test_t233_make_and_script_install_into_configured_xdg_locations
+    env, (data, config) = self.environment(root, mode)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t233_make_and_script_install_into_configured_xdg_locations (test_user_paths.UserPathsTest.test_t233_make_and_script_install_into_configured_xdg_locations) (installer='script', mode='absolute')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 123, in test_t233_make_and_script_install_into_configured_xdg_locations
+    env, (data, config) = self.environment(root, mode)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t233_make_and_script_install_into_configured_xdg_locations (test_user_paths.UserPathsTest.test_t233_make_and_script_install_into_configured_xdg_locations) (installer='script', mode='unset')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 123, in test_t233_make_and_script_install_into_configured_xdg_locations
+    env, (data, config) = self.environment(root, mode)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t233_make_and_script_install_into_configured_xdg_locations (test_user_paths.UserPathsTest.test_t233_make_and_script_install_into_configured_xdg_locations) (installer='script', mode='relative')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 123, in test_t233_make_and_script_install_into_configured_xdg_locations
+    env, (data, config) = self.environment(root, mode)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t233_make_and_script_install_into_configured_xdg_locations (test_user_paths.UserPathsTest.test_t233_make_and_script_install_into_configured_xdg_locations) (installer='script', mode='empty')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 123, in test_t233_make_and_script_install_into_configured_xdg_locations
+    env, (data, config) = self.environment(root, mode)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t396_service_commands_follow_the_installed_binary_prefix (test_user_paths.UserPathsTest.test_t396_service_commands_follow_the_installed_binary_prefix) (installer='make', name='.local/bin')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 73, in test_t396_service_commands_follow_the_installed_binary_prefix
+    env, (_, config) = self.environment(root, 'unset')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t396_service_commands_follow_the_installed_binary_prefix (test_user_paths.UserPathsTest.test_t396_service_commands_follow_the_installed_binary_prefix) (installer='make', name='custom bin')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 73, in test_t396_service_commands_follow_the_installed_binary_prefix
+    env, (_, config) = self.environment(root, 'unset')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t396_service_commands_follow_the_installed_binary_prefix (test_user_paths.UserPathsTest.test_t396_service_commands_follow_the_installed_binary_prefix) (installer='make', name='bin "quoted" \\ $HOME %h `tick`')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 73, in test_t396_service_commands_follow_the_installed_binary_prefix
+    env, (_, config) = self.environment(root, 'unset')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t396_service_commands_follow_the_installed_binary_prefix (test_user_paths.UserPathsTest.test_t396_service_commands_follow_the_installed_binary_prefix) (installer='make', name='bin\n\tcarriage\r')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 73, in test_t396_service_commands_follow_the_installed_binary_prefix
+    env, (_, config) = self.environment(root, 'unset')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t396_service_commands_follow_the_installed_binary_prefix (test_user_paths.UserPathsTest.test_t396_service_commands_follow_the_installed_binary_prefix) (installer='script', name='.local/bin')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 73, in test_t396_service_commands_follow_the_installed_binary_prefix
+    env, (_, config) = self.environment(root, 'unset')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t396_service_commands_follow_the_installed_binary_prefix (test_user_paths.UserPathsTest.test_t396_service_commands_follow_the_installed_binary_prefix) (installer='script', name='custom bin')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 73, in test_t396_service_commands_follow_the_installed_binary_prefix
+    env, (_, config) = self.environment(root, 'unset')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t396_service_commands_follow_the_installed_binary_prefix (test_user_paths.UserPathsTest.test_t396_service_commands_follow_the_installed_binary_prefix) (installer='script', name='bin "quoted" \\ $HOME %h `tick`')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 73, in test_t396_service_commands_follow_the_installed_binary_prefix
+    env, (_, config) = self.environment(root, 'unset')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+======================================================================
+ERROR: test_t396_service_commands_follow_the_installed_binary_prefix (test_user_paths.UserPathsTest.test_t396_service_commands_follow_the_installed_binary_prefix) (installer='script', name='bin\n\tcarriage\r')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 73, in test_t396_service_commands_follow_the_installed_binary_prefix
+    env, (_, config) = self.environment(root, 'unset')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_user_paths.py", line 91, in environment
+    env, _ = fixture(root, 'relative', True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_build_output.py", line 29, in fixture
+    test_make.MakeTest().usb_make_fixture(root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MakeTest' object has no attribute 'usb_make_fixture'
+
+----------------------------------------------------------------------
+Ran 41 tests in 140.289s
+
+FAILED (errors=22)
