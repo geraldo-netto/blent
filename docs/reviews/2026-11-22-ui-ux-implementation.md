@@ -21,3 +21,17 @@ checker measured 194 functions across main/Overview tests, maximum complexity 9.
 Lifetime: frame-local enum projection and borrowed UI; egui owns shapes for the
 frame/context. No allocations, queues, callbacks, native leases or new cleanup
 obligations escape the existing UI owner. Native batch acceptance follows deployment.
+
+## T1780 — selected and error text contrast
+
+Remove the global foreground override so selected controls use their semantic
+selected-text color. Validation uses the theme error role, with a readable light
+error default. Both permanent contrast regressions failed before the change and
+pass after it, testing normal text against its actual light surface at >=4.5:1.
+The validation fixture covers valid and invalid drafts. These are enabled text
+checks, not an assertion that every disabled widget must meet the same threshold.
+
+Both changed production functions have full measured line coverage; the touched
+source/test files pass complexity <=9. Tools match T1781.
+[Evidence](artifacts/2026-11-22-ui-ux/t1780/). Style scalars remain context-owned;
+there is no additional native resource, retention or asynchronous work.

@@ -1,0 +1,14 @@
+[
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_validation_error",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "configure",
+    "covered": 20,
+    "total": 20
+  }
+]

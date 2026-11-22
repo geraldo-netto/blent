@@ -529,7 +529,7 @@ impl App {
         match self.cfg.validate() {
             Ok(()) => true,
             Err(error) => {
-                ui.label(egui::RichText::new(format!("{error:#}")).color(egui::Color32::LIGHT_RED));
+                ui.label(egui::RichText::new(format!("{error:#}")).color(ui.visuals().error_fg_color));
                 false
             }
         }
@@ -1344,6 +1344,7 @@ fn native_options() -> eframe::NativeOptions {
 mod tests {
     include!("config_refresh_tests.rs");
     mod about;
+    mod appearance;
     mod audio_tabs;
     mod busy_controls;
     mod close_tests;

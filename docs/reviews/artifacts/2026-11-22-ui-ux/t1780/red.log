@@ -1,0 +1,24 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.12s
+     Running unittests src/main.rs (target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 2 tests
+test tests::appearance::t1780_selected_text_meets_normal_text_contrast ... 
+thread 'tests::appearance::t1780_selected_text_meets_normal_text_contrast' (657995) panicked at gui/src/tests/appearance.rs:23:5:
+T1780 selected text
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test tests::appearance::t1780_validation_text_meets_normal_text_contrast ... 
+thread 'tests::appearance::t1780_validation_text_meets_normal_text_contrast' (657996) panicked at gui/src/tests/appearance.rs:40:21:
+T1780 validation contrast
+FAILED
+
+failures:
+
+failures:
+    tests::appearance::t1780_selected_text_meets_normal_text_contrast
+    tests::appearance::t1780_validation_text_meets_normal_text_contrast
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 262 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

@@ -18,7 +18,8 @@ pub(super) fn configure(context: &egui::Context) {
     style.spacing.item_spacing = egui::vec2(10.0, 8.0);
     style.spacing.interact_size.y = 32.0;
     style.spacing.button_padding = egui::vec2(10.0, 6.0);
-    style.visuals.override_text_color = Some(Color32::from_gray(28));
+    style.visuals.override_text_color = None;
+    style.visuals.error_fg_color = Color32::from_rgb(160, 25, 35);
     style.visuals.weak_text_color = Some(Color32::from_gray(80));
     style.visuals.selection.bg_fill = Color32::from_rgb(38, 92, 165);
     style.visuals.selection.stroke.color = Color32::WHITE;
