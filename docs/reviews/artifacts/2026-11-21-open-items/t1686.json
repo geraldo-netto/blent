@@ -1,0 +1,531 @@
+{
+  "issue": "T1686",
+  "tests": {
+    "common_before": {
+      "failed": 3,
+      "passed": 0
+    },
+    "private_helper_before": {
+      "failed": 1,
+      "passed": 0
+    },
+    "common_after": {
+      "passed": 506,
+      "failed": 0
+    },
+    "host_capture_after": {
+      "passed": 269,
+      "failed": 0,
+      "ignored": 3
+    },
+    "native_control_after": {
+      "passed": 1,
+      "transitions": 16
+    },
+    "inproc_capture_after": {
+      "passed": 129,
+      "failed": 0,
+      "ignored": 0
+    }
+  },
+  "measurements": {
+    "common": {
+      "coverage": [
+        {
+          "file": "common/src/linux/capture_control.rs",
+          "name": "pair",
+          "line": 50,
+          "language": "rust",
+          "covered": 20,
+          "total": 21,
+          "percent": 95.23809523809524,
+          "passes": true,
+          "missing": [
+            62
+          ]
+        },
+        {
+          "file": "common/src/linux/capture_control.rs",
+          "name": "transition",
+          "line": 96,
+          "language": "rust",
+          "covered": 15,
+          "total": 15,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "common/src/linux/capture_control.rs",
+          "name": "finish",
+          "line": 112,
+          "language": "rust",
+          "covered": 16,
+          "total": 17,
+          "percent": 94.11764705882354,
+          "passes": true,
+          "missing": [
+            127
+          ]
+        },
+        {
+          "file": "common/src/linux/capture_control.rs",
+          "name": "exchange",
+          "line": 134,
+          "language": "rust",
+          "covered": 10,
+          "total": 10,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        }
+      ],
+      "complexity": [
+        [
+          "common/src/linux/capture_control.rs",
+          31,
+          "attach",
+          2
+        ],
+        [
+          "common/src/linux/capture_control.rs",
+          42,
+          "inherit",
+          2
+        ],
+        [
+          "common/src/linux/capture_control.rs",
+          50,
+          "pair",
+          2
+        ],
+        [
+          "common/src/linux/capture_control.rs",
+          80,
+          "lease",
+          1
+        ],
+        [
+          "common/src/linux/capture_control.rs",
+          87,
+          "set_active",
+          2
+        ],
+        [
+          "common/src/linux/capture_control.rs",
+          96,
+          "transition",
+          3
+        ],
+        [
+          "common/src/linux/capture_control.rs",
+          112,
+          "finish",
+          2
+        ],
+        [
+          "common/src/linux/capture_control.rs",
+          134,
+          "exchange",
+          2
+        ],
+        [
+          "common/src/linux/capture_control.rs",
+          146,
+          "send",
+          6
+        ],
+        [
+          "common/src/linux/capture_control.rs",
+          161,
+          "receive",
+          4
+        ],
+        [
+          "common/src/linux/capture_control.rs",
+          172,
+          "receive_record",
+          4
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          5,
+          "pending",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          11,
+          "command",
+          3
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          23,
+          "acknowledge",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          28,
+          "t1023_cancellation_keeps_original_command_until_exact_echo",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          50,
+          "rejects",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          61,
+          "t1023_malformed_foreign_truncated_and_descriptor_echo_poison",
+          2
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          77,
+          "aliases",
+          3
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          88,
+          "t1023_closed_peer_cannot_acknowledge_pending_transition",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          99,
+          "t1023_peer_close_and_sequence_exhaustion_are_terminal",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          115,
+          "t1023_socket_lease_and_backpressure_preserve_pending_ownership",
+          3
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          143,
+          "t1023_exec_inherits_only_reserved_endpoint",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          164,
+          "t1023_successful_transition_returns_original_proof",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          177,
+          "t1686_admitted",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          185,
+          "t1686_unanswered_original_request_has_a_finite_deadline",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          207,
+          "t1686_caller_cancellation_cannot_renew_original_deadline",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          229,
+          "t1686_ready_late_ack_cannot_certify_the_transition",
+          1
+        ],
+        [
+          "common/src/linux/capture_control/tests.rs",
+          243,
+          "t1686_invalid_ack_budgets_are_rejected_before_socket_admission",
+          3
+        ]
+      ]
+    },
+    "host": {
+      "coverage": [
+        {
+          "file": "host/src/capture/helper/activity.rs",
+          "name": "attach",
+          "line": 17,
+          "language": "rust",
+          "covered": 9,
+          "total": 9,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        },
+        {
+          "file": "host/src/capture/helper/activity.rs",
+          "name": "ack_budget",
+          "line": 44,
+          "language": "rust",
+          "covered": 5,
+          "total": 5,
+          "percent": 100.0,
+          "passes": true,
+          "missing": []
+        }
+      ],
+      "complexity": [
+        [
+          "host/src/capture/helper/activity.rs",
+          14,
+          "enable",
+          1
+        ],
+        [
+          "host/src/capture/helper/activity.rs",
+          17,
+          "attach",
+          2
+        ],
+        [
+          "host/src/capture/helper/activity.rs",
+          26,
+          "retain",
+          2
+        ],
+        [
+          "host/src/capture/helper/activity.rs",
+          31,
+          "set_active",
+          1
+        ],
+        [
+          "host/src/capture/helper/activity.rs",
+          39,
+          "disconnect",
+          1
+        ],
+        [
+          "host/src/capture/helper/activity.rs",
+          44,
+          "ack_budget",
+          1
+        ],
+        [
+          "host/src/capture/helper/activity.rs",
+          57,
+          "t1686_ack_budget_defaults_and_invalid_bounds_are_explicit",
+          4
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          10,
+          "configuration",
+          1
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          50,
+          "until",
+          2
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          59,
+          "requests",
+          1
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          66,
+          "retire",
+          4
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          78,
+          "t1035_legacy_helper_stays_uncontrolled_and_unavailable_is_explicit",
+          2
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          92,
+          "t1035_original_helper_acknowledges_without_monitor_or_child_replacement",
+          3
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          117,
+          "t1035_cancelled_transition_must_finish_original_ack_before_resume",
+          3
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          150,
+          "t1035_foreign_ack_poison_cannot_grant_native_transition",
+          3
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          177,
+          "drop",
+          1
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          184,
+          "drop",
+          1
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          188,
+          "sockets",
+          3
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          195,
+          "held_startup",
+          3
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          240,
+          "t1035_cancelled_startup_retains_original_socket_until_native_cleanup",
+          2
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          245,
+          "t1035_failed_handshake_retains_original_socket_until_native_cleanup",
+          2
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          250,
+          "t1035_spawn_failure_releases_unexposed_endpoints_and_allows_fresh_retry",
+          2
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          271,
+          "t1035_shared_raw_and_activity_endpoints_remain_independent",
+          2
+        ],
+        [
+          "host/src/capture/helper/activity_tests.rs",
+          289,
+          "t1686_expired_ack_keeps_original_helper_owned_until_retired",
+          2
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          9,
+          "stream_recovers",
+          3
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          39,
+          "t1415_invalid_pause_ack_recovers_only_on_renewed_demand",
+          2
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          45,
+          "t1415_pause_control_eof_recovers_only_on_renewed_demand",
+          2
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          51,
+          "t1415_encoder_replacement_recovers_after_retained_helper_pause_eof",
+          3
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          72,
+          "drop",
+          1
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          79,
+          "drop",
+          1
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          84,
+          "bind_pause",
+          1
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          95,
+          "held_failure",
+          1
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          118,
+          "spawn_pause",
+          1
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          129,
+          "t1415_failed_pause_waits_for_original_cleanup_before_quiescence",
+          4
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          157,
+          "t1415_cancelled_failed_pause_retains_original_cleanup_for_retry",
+          3
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          186,
+          "t1415_failed_pause_retains_cancelled_reader_generation_until_native_exit",
+          2
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          210,
+          "retain_reader",
+          2
+        ],
+        [
+          "host/src/capture/pause_recovery_tests.rs",
+          235,
+          "t1686_unanswered_pause_retires_original_helper_before_fresh_resume",
+          2
+        ],
+        [
+          "host/tests/capture_activity.rs",
+          9,
+          "worker",
+          1
+        ],
+        [
+          "host/tests/capture_activity.rs",
+          39,
+          "t1021_rust_controls_original_native_monitor_across_repeated_pauses",
+          3
+        ]
+      ]
+    }
+  },
+  "tools": {
+    "rustc": "1.100.0 (0ef1bc386 2026-11-09)",
+    "cargo-llvm-cov": "0.8.7",
+    "complexity": "project Rust syn 2.0.119; 68 measured functions, none above 9"
+  },
+  "ownership": "Control owns one bounded original pending Request/deadline and the original AsyncFd. Admission validates the budget before socket allocation. Cancellation retains pending request, sent bit and absolute deadline; expiry fails the channel without issuing another request or creating a quiescence receipt. Original child lease retains endpoint through native settlement. Existing supervisor cleanup owns original child/stdout/encoder retirement; timeout alone neither releases nor reuses those resources. Fresh helper admission remains behind original cleanup. No new native allocation, task, callback cycle or retained frame is added.",
+  "bounds": "Host default 2000 ms, valid 1..60000 ms, read at channel attachment. Common Duration contract >0 and <=60 seconds. One pending/completed request and one immutable budget per Control.",
+  "scope": "Private helper processes and real socket control; C helper sanitizer fixture with fake EVDI. No physical display/lock event acceptance or unrestricted native safety claim. Installed sessions and binaries untouched."
+}

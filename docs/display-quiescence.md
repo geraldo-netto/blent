@@ -97,3 +97,18 @@ media buffer or route grant. Closing/dropping requests original display and runt
 cleanup; native owners and descriptor-bound clients retain actual obligations on
 partial failure, cancellation, owner loss and exhaustion. Auxiliary media has its
 own owners and grants; display activity never commands their close/retirement.
+
+## Capture helper acknowledgement deadline
+
+Each new native capture-control request has one absolute deadline, starting at
+admission. The Linux host uses `BLENT_CAPTURE_ACK_MS` (default 2000 ms, range
+1–60000 ms), read when the helper channel is attached. Larger values tolerate
+longer native stalls but delay recovery; smaller values detect an unresponsive
+helper sooner. Invalid values reject channel admission.
+
+Caller cancellation retains the original request, endpoint and deadline. A late
+ready ACK cannot certify the transition. Expiry marks that control channel failed;
+the supervisor uses its existing original-helper termination path. Capture resumes
+only while demand is current and after original retirement. The deadline neither acknowledges
+quiescence nor releases native resource ownership. A fresh helper receives a fresh
+channel and sequence. Completed matching transitions do not send another request.

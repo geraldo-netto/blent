@@ -230,3 +230,10 @@ async fn retain_reader(
     drop(native);
     (original, Release(release))
 }
+
+#[tokio::test]
+async fn t1686_unanswered_pause_retires_original_helper_before_fresh_resume() {
+    if ownership_tests::isolated("capture::activity_tests::pause_recovery::t1686_unanswered_pause_retires_original_helper_before_fresh_resume") { return; }
+    std::env::set_var("BLENT_CAPTURE_ACK_MS", "200");
+    stream_recovers("hold-pause").await;
+}

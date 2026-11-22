@@ -5,11 +5,14 @@ use anyhow::{ensure, Result};
 use std::io;
 use std::os::fd::{AsRawFd, OwnedFd};
 use std::sync::Arc;
+use std::time::Duration;
 use tokio::io::unix::AsyncFd;
+use tokio::time::Instant;
 
 struct Pending {
     request: Request,
     sent: bool,
+    deadline: Instant,
 }
 
 pub struct Control {
@@ -17,6 +20,7 @@ pub struct Control {
     completed: Option<Request>,
     pending: Option<Pending>,
     failed: bool,
+    budget: Duration,
 }
 
 pub struct Inherited(OwnedFd);
@@ -43,7 +47,8 @@ fn inherit(child: i32) -> io::Result<()> {
 }
 
 impl Control {
-    pub fn pair() -> io::Result<(Self, Inherited)> {
+    pub fn pair(budget: Duration) -> io::Result<(Self, Inherited)> {
+        let budget = crate::retirement_limits::observation_budget(budget)?;
         let mut pair = [-1; 2];
         let result = unsafe {
             libc::socketpair(
@@ -64,6 +69,7 @@ impl Control {
                 completed: None,
                 pending: None,
                 failed: false,
+                budget,
             },
             Inherited(child),
         ))
@@ -97,6 +103,7 @@ impl Control {
         self.pending = Some(Pending {
             request,
             sent: false,
+            deadline: Instant::now() + self.budget,
         });
         self.finish().await?;
         Ok(request)
@@ -106,8 +113,26 @@ impl Control {
         let Some(pending) = self.pending.as_ref() else {
             return Ok(());
         };
-        let request = pending.request;
-        if !pending.sent {
+        let (request, deadline) = (pending.request, pending.deadline);
+        ensure!(
+            Instant::now() < deadline,
+            "capture acknowledgment deadline expired"
+        );
+        tokio::time::timeout_at(deadline, self.exchange(request))
+            .await
+            .map_err(|_| anyhow::anyhow!("capture acknowledgment deadline expired"))??;
+        // A ready reply must not bypass expiry when this caller resumes late.
+        ensure!(
+            Instant::now() < deadline,
+            "capture acknowledgment deadline expired"
+        );
+        self.completed = Some(request);
+        self.pending = None;
+        Ok(())
+    }
+
+    async fn exchange(&mut self, request: Request) -> Result<()> {
+        if !self.pending.as_ref().unwrap().sent {
             self.send(request).await?;
             self.pending.as_mut().unwrap().sent = true;
         }
@@ -115,8 +140,6 @@ impl Control {
             self.receive().await? == request,
             "foreign capture acknowledgment"
         );
-        self.completed = Some(request);
-        self.pending = None;
         Ok(())
     }
 

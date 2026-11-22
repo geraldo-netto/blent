@@ -213,6 +213,7 @@ systemd user-service environment override.
 | `BLENT_SESSION_STOP_MS` | 5000 ms | 1..60000 ms | Session capture grace before abort and bounded final observation. |
 | `BLENT_RUNTIME_STOP_MS` | 1000 ms | 1..60000 ms | Linux final Tokio shutdown wait after admitted session/display-route/activity/input/control cleanup settles. |
 | `BLENT_ENCODER_STOP_MS` | 1000 ms | 1..60000 ms | Encoder-task completion wait before refusing replacement. |
+| `BLENT_CAPTURE_ACK_MS` | 2000 ms | 1..60000 ms | Original capture-control request ACK budget; read when its helper channel is attached. Cancellation does not renew a pending request’s deadline. Expiry requires original-helper recovery, never synthetic quiescence. |
 
 Linux input reserves its backend admission before session startup, and publishes
 its original completion to session retirement before the follower starts. Each

@@ -284,3 +284,33 @@ async fn t1035_shared_raw_and_activity_endpoints_remain_independent() {
         "T1035 activity retirement invalidated independent raw endpoint"
     );
 }
+
+#[tokio::test]
+async fn t1686_expired_ack_keeps_original_helper_owned_until_retired() {
+    if isolated("capture::helper::activity_tests::t1686_expired_ack_keeps_original_helper_owned_until_retired") { return; }
+    std::env::set_var("BLENT_CAPTURE_ACK_MS", "50");
+    let config = configuration();
+    let root = crate::runtime::runtime_dir().unwrap();
+    std::fs::write(root.join("hold"), "hold ACK").unwrap();
+    let mut helper = HelperProcess::new();
+    helper.enable_activity();
+    helper.start(&config).await.unwrap();
+    let original = helper.child.as_ref().unwrap().completion();
+    let error = tokio::time::timeout(Duration::from_secs(1), helper.set_capture_active(false))
+        .await
+        .expect("T1686 configured ACK deadline was ignored")
+        .unwrap_err();
+    assert!(error
+        .to_string()
+        .contains("capture acknowledgment deadline"));
+    assert!(!original.is_complete());
+    assert!(helper.is_running());
+    assert!(helper.set_capture_active(true).await.is_err());
+    assert_eq!(requests(), ["000000000000000100"]);
+    retire(&mut helper).await;
+    assert!(original.is_complete());
+    std::fs::remove_file(root.join("hold")).unwrap();
+    helper.start(&config).await.unwrap();
+    assert_eq!(helper.set_capture_active(true).await.unwrap().sequence(), 1);
+    retire(&mut helper).await;
+}

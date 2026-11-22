@@ -541,3 +541,11 @@ Afterward, all 266 default capture tests, 126 optional native-encoder capture te
 ## T1617 — integrated capture recovery
 
 T1682, T1683, T1684 and T1685 are complete together: current-delay retry, one authoritative guarded teardown, retained reader outcomes and event-order-independent GPU fallback. The final T1683 suites exercise their combined source: 266 default capture tests, 126 native-encoder capture tests, nine KScreen library tests and one C integration test containing three cleanup cases all pass. Three opt-in default benchmarks remain excluded. Original native retirement remains mandatory. [Integration evidence](artifacts/2026-11-21-open-items/t1617.json). Installed sessions remain unchanged; physical compositor relocation was not measured.
+
+## T1686 — bound original capture acknowledgements
+
+Each admitted capture-control request now retains one absolute deadline across caller cancellation. The host defaults to 2000 ms, configurable with `BLENT_CAPTURE_ACK_MS` from 1 to 60000 ms. Invalid settings reject channel admission. Late acknowledgements cannot certify a transition; expiry fails the channel and uses original-helper recovery. It cannot release native ownership, issue a replacement command or acknowledge quiescence. The child retains the original endpoint lease until actual cleanup.
+
+Three common deadline regressions and one private-helper budget regression failed before the fix. All 506 common tests, 269 default capture tests and 129 optional native-encoder capture tests now pass. Three opt-in default benchmarks remain excluded. The C helper integration test passes all 16 pause/resume transitions with sanitizer checks and clean shutdown. Six maintained production functions measure 94.1–100% line coverage; all 68 measured production/test functions have complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1686.json).
+
+The supervisor regression verifies that an unanswered pause revokes the old generation, retires the original helper, stays paused without replacement, and produces fresh headers/IDR after demand returns. The bounded request/deadline state adds no task, frame buffer or cleanup owner. Tests use private processes and fake EVDI; no physical lock-event acceptance is claimed. Installed binaries and sessions are unchanged.

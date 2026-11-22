@@ -39,7 +39,7 @@ fn worker(directory: &std::path::Path) -> PathBuf {
 async fn t1021_rust_controls_original_native_monitor_across_repeated_pauses() {
     let directory = tempfile::tempdir().unwrap();
     let binary = worker(directory.path());
-    let (mut control, inherited) = Control::pair().unwrap();
+    let (mut control, inherited) = Control::pair(Duration::from_secs(2)).unwrap();
     let mut command = tokio::process::Command::new(binary);
     command.stdout(Stdio::null());
     inherited.attach(&mut command).unwrap();
