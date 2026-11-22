@@ -5,6 +5,7 @@ use eframe::egui::{self, Color32, FontId, TextStyle};
 pub(super) const FORM_WIDTH: f32 = 960.0;
 
 pub(super) fn configure(context: &egui::Context) {
+    context.set_theme(egui::Theme::Light);
     let mut style = (*context.style()).clone();
     for (kind, size) in [
         (TextStyle::Body, 15.0),
@@ -17,16 +18,8 @@ pub(super) fn configure(context: &egui::Context) {
     style.spacing.item_spacing = egui::vec2(10.0, 8.0);
     style.spacing.interact_size.y = 32.0;
     style.spacing.button_padding = egui::vec2(10.0, 6.0);
-    style.visuals.override_text_color = Some(if style.visuals.dark_mode {
-        Color32::from_gray(228)
-    } else {
-        Color32::from_gray(28)
-    });
-    style.visuals.weak_text_color = Some(if style.visuals.dark_mode {
-        Color32::from_gray(180)
-    } else {
-        Color32::from_gray(80)
-    });
+    style.visuals.override_text_color = Some(Color32::from_gray(28));
+    style.visuals.weak_text_color = Some(Color32::from_gray(80));
     style.visuals.selection.bg_fill = Color32::from_rgb(38, 92, 165);
     style.visuals.selection.stroke.color = Color32::WHITE;
     context.set_style(style);
