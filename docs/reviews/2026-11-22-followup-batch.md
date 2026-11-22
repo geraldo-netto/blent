@@ -42,3 +42,17 @@ no-clobber linking preserves concurrent external ownership. No background owner,
 retained callback or unbounded buffer is introduced. Fault tests cover copy
 failure, existing symlinks and concurrent publication.
 [Evidence](artifacts/2026-11-22-followup-batch/t1711/).
+
+## T1808 — packaging compiler prerequisite
+
+Pin official `rust:1.100-bookworm` at manifest-list digest
+`ade39a710ef85f3506cffcfec3e8a24ba090badef1dff2fb798f71d878833fea`,
+verified through Docker Registry's image manifest. Official amd64 source revision:
+`rust-lang/docker-rust` `3f4c9cd699d3671ee657c75b5e592f6eb0b93824`. The complete
+packaging image builds; its native compiler/linker probe runs with Rust 1.100.0,
+glibc 2.36, installed EVDI 1.15.0, libusb 1.0.26 and PipeWire 0.3.65. This preserves
+the Debian 12 ABI baseline while meeting eframe 0.37's Rust 1.95 minimum. The
+permanent pin/minimum/documentation fixture failed at 1.90 and passes afterward.
+This is toolchain qualification, not a full application or distribution build.
+No production function or native session ownership changes.
+[Evidence](artifacts/2026-11-22-followup-batch/t1808/).

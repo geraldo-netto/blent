@@ -673,7 +673,7 @@ Update documentation branch links when the development work is merged.
 
 ## Portable build and package checks
 
-`packaging/ci/Dockerfile` supplies Rust 1.90 on Debian 12, the pinned EVDI
+`packaging/ci/Dockerfile` supplies Rust 1.100 on Debian 12, the pinned EVDI
 userspace library, GUI libraries, sanitizers and the default workspace test
 tools. Optional-encoder FFmpeg/libclang development packages are installed
 by the separate build workflow, not this container.

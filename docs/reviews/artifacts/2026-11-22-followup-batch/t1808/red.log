@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_t1808_pinned_toolchain_meets_gui_minimum_on_debian_12 (test_packaging_toolchain.PackagingToolchainTest.test_t1808_pinned_toolchain_meets_gui_minimum_on_debian_12)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_packaging_toolchain.py", line 14, in test_t1808_pinned_toolchain_meets_gui_minimum_on_debian_12
+    self.assertGreaterEqual(tuple(map(int, image.group(1, 2))), (1, 95))
+AssertionError: (1, 90) not greater than or equal to (1, 95)
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (failures=1)
