@@ -2,7 +2,7 @@ use super::super::tests::{candidate, settings};
 use super::*;
 use crate::{attachment::Attachment, capture::CaptureConfig};
 use blent_config::adb::Transport;
-use std::os::unix::fs::PermissionsExt;
+use std::{io::Write, os::unix::fs::PermissionsExt};
 
 pub(in crate::selection::worker) fn setup() -> (EncoderSettings, Candidate) {
     let mut snapshot = settings();
@@ -582,4 +582,95 @@ fn t1187_terminal_snapshot_cannot_prepare_a_durable_profile_context() {
     assert!(context::fingerprint(&identity, "host", &snapshot, &base).is_some());
     snapshot.decoder_epoch = u64::MAX;
     assert!(context::fingerprint(&identity, "host", &snapshot, &base).is_none());
+}
+
+#[test]
+fn t1490_cache_writes_bound_superseded_records_and_keep_current() {
+    if isolated_capacity_update("t1490_cache_writes_bound_superseded_records_and_keep_current") {
+        return;
+    }
+    let root = tempfile::tempdir().unwrap();
+    let (snapshot, row) = setup();
+    let unrelated = root.path().join("keep.txt");
+    std::fs::write(&unrelated, b"external").unwrap();
+    for index in 0..65 {
+        let fingerprint = format!("{index:064x}");
+        let mut cache = store(root.path().join(format!("{fingerprint}.json")));
+        cache.fingerprint = fingerprint;
+        cache.save(100 + index, &row).unwrap();
+        assert!(cache.load(100 + index, &snapshot).is_some());
+    }
+    let count = std::fs::read_dir(root.path())
+        .unwrap()
+        .filter_map(Result::ok)
+        .filter(|entry| {
+            entry
+                .path()
+                .extension()
+                .is_some_and(|extension| extension == "json")
+        })
+        .count();
+    assert_eq!(count, 64, "T1490 superseded cache records accumulate");
+    assert_eq!(std::fs::read(&unrelated).unwrap(), b"external");
+    assert!(root.path().join(format!("{:064x}.json", 64)).is_file());
+}
+
+fn isolated_capacity_update(name: &str) -> bool {
+    if std::env::var_os("BLENT_T1490_CONFIG").is_some() {
+        return false;
+    }
+    let root = tempfile::tempdir().unwrap();
+    let output = std::process::Command::new(std::env::current_exe().unwrap())
+        .arg("--exact")
+        .arg(format!("selection::worker::cache::tests::{name}"))
+        .arg("--nocapture")
+        .env("BLENT_T1490_CONFIG", "1")
+        .env("XDG_CONFIG_HOME", root.path())
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    true
+}
+
+#[test]
+fn t1490_existing_cache_uses_new_capacity_on_its_next_write() {
+    if isolated_capacity_update("t1490_existing_cache_uses_new_capacity_on_its_next_write") {
+        return;
+    }
+    let preferences = blent_config::storage::ConfigStore::default();
+    let mut config = blent_config::FileConfig {
+        tuning_cache_entries: 2,
+        ..Default::default()
+    };
+    preferences.save(&config).unwrap();
+    let directory = preferences.path().unwrap().with_file_name("tuned-profiles");
+    let mut current = store(directory.join(format!("{:064x}.json", 0)));
+    current.fingerprint = format!("{:064x}", 0);
+    let (snapshot, row) = setup();
+    current.save(100, &row).unwrap();
+    for index in 1..3 {
+        let mut cache = store(directory.join(format!("{index:064x}.json")));
+        cache.fingerprint = format!("{index:064x}");
+        cache.save(100 + index, &row).unwrap();
+    }
+    config.tuning_cache_entries = 1;
+    preferences.save(&config).unwrap();
+    current.save(104, &row).unwrap();
+    assert!(current.load(104, &snapshot).is_some());
+    assert_eq!(
+        std::fs::read_dir(directory)
+            .unwrap()
+            .filter_map(Result::ok)
+            .filter(|entry| entry
+                .path()
+                .extension()
+                .is_some_and(|extension| extension == "json"))
+            .count(),
+        1
+    );
 }

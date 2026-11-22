@@ -525,3 +525,29 @@ current V2 inventory is emitted and accepted; HEVC-only V1 reports provide no
 decoder evidence.
 
 </details>
+
+### Saved profile retention
+
+Linux retains at most `tuning_cache_entries` measured profile records after a
+successful write: default 64, configurable from 1 to 256 in `config.toml`. The
+next write reads the latest setting; changing it does not restart display or
+media sharing. Out-of-range saved numeric requests normalize to 64; direct
+configuration validation rejects them. Unknown value types are rejected.
+
+The current record is preserved and the most recently modified other records
+fill the remaining slots; equal modification times use filename order. Smaller
+limits use less disk but may require fresh tuning when an evicted environment
+returns. A record is at most 64 KiB, so 64 normal records contain at most 4 MiB
+of data, plus one temporary record during a write and filesystem metadata. This
+is a record limit, not a quota on unrelated files or externally retained inodes.
+
+The dedicated directory owns regular `<64 lowercase hex digits>.json` names.
+Other names, directories and symlinks remain untouched. Writers use one persistent
+nonblocking lock; a busy writer skips persistence without blocking shutdown or
+altering the selected live profile. Eviction and atomic publication stay bound
+to the original open directory even if its pathname is replaced. Temporary
+cleanup finishes before that directory descriptor is released. Historical
+eviction can precede a later publication error; the current record is preserved.
+Pruning errors prevent new publication. Existing readers keep their original
+file handles until their bounded read ends; eviction does not revoke a live
+encoder, decoder, tablet attachment or native resource lease.

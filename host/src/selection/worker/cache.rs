@@ -3,12 +3,10 @@ use super::{Candidate, EncoderSettings};
 use crate::selection::trial::Observation;
 use blent_config::negotiation::DecoderChoice;
 use serde::{Deserialize, Serialize};
-use std::{
-    io::{Read, Write},
-    path::PathBuf,
-};
+use std::{io::Read, path::PathBuf};
 
 mod context;
+mod retention;
 #[cfg(test)]
 pub(super) mod tests;
 const MAX_BYTES: u64 = 65536;
@@ -115,11 +113,17 @@ impl Cache {
         std::fs::create_dir_all(parent)?;
         let data = serde_json::to_vec(record)?;
         anyhow::ensure!(data.len() as u64 <= MAX_BYTES, "profile cache too large");
-        let mut temporary = tempfile::NamedTempFile::new_in(parent)?;
-        temporary.write_all(&data)?;
-        temporary.as_file().sync_all()?;
-        temporary.persist(&self.path)?;
-        Ok(())
+        let transaction = retention::Transaction::open(parent)?;
+        let capacity = blent_config::storage::ConfigStore::default()
+            .load()
+            .tuning_cache_entries;
+        transaction.publish(
+            self.path
+                .file_name()
+                .ok_or_else(|| anyhow::anyhow!("missing cache name"))?,
+            &data,
+            capacity,
+        )
     }
 
     pub fn invalidate(&self) {

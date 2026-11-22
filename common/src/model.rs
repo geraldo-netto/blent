@@ -2,6 +2,8 @@
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 #[cfg(test)]
+mod cache_tests;
+#[cfg(test)]
 mod diagnostic_tests;
 #[cfg(test)]
 mod media_tests;
@@ -65,6 +67,16 @@ pub fn supported_encoder(name: &str) -> bool {
 
 pub const PIPE_CAPACITIES_MIB: [u32; 4] = [1, 2, 4, 8];
 pub const MAX_CONVERSION_THREADS: u32 = 128;
+pub const DEFAULT_TUNING_CACHE_ENTRIES: u32 = 64;
+pub const MAX_TUNING_CACHE_ENTRIES: u32 = 256;
+
+pub fn validated_tuning_cache_entries(value: u32) -> u32 {
+    if (1..=MAX_TUNING_CACHE_ENTRIES).contains(&value) {
+        value
+    } else {
+        DEFAULT_TUNING_CACHE_ENTRIES
+    }
+}
 
 pub fn validated_conversion_threads(value: u32) -> u32 {
     if value <= MAX_CONVERSION_THREADS {
@@ -96,6 +108,8 @@ pub struct FileConfig {
     pub encoder: String,
     /// Increment to discard previously tuned automatic environments on next start.
     pub calibration_generation: u32,
+    /// Maximum retained measured profiles; effective at the next tuning-cache write.
+    pub tuning_cache_entries: u32,
     /// Opt-in measured sparse cadence for the current encoder/decoder session.
     pub adaptive_idle: bool,
     /// Portable preferences; native host observation integration is separate.
@@ -189,6 +203,7 @@ impl Default for FileConfig {
             audio: Default::default(),
             encoder: "auto".into(),
             calibration_generation: 0,
+            tuning_cache_entries: DEFAULT_TUNING_CACHE_ENTRIES,
             adaptive_idle: false,
             host_activity: Default::default(),
             raw_transport: Default::default(),
@@ -271,6 +286,10 @@ impl FileConfig {
     }
 
     pub fn validate(&self) -> Result<()> {
+        anyhow::ensure!(
+            (1..=MAX_TUNING_CACHE_ENTRIES).contains(&self.tuning_cache_entries),
+            "Tuning cache entries must be between 1 and 256"
+        );
         self.validate_input_mode()?;
         anyhow::ensure!(
             (2..=crate::raw_frame::MAX_SLOTS).contains(&self.raw_slots),
@@ -294,10 +313,12 @@ impl FileConfig {
         );
         Ok(())
     }
-    /// Pipe-only edits are consumed by the existing helper at frame boundaries.
+    /// Media and retention preferences do not require a display restart.
+    /// Pipe edits are consumed by the existing helper at frame boundaries.
     pub fn requires_restart_from(&self, previous: &Self) -> bool {
         let mut without_pipe_edit = self.clone();
         without_pipe_edit.pipe_capacity_mib = previous.pipe_capacity_mib;
+        without_pipe_edit.tuning_cache_entries = previous.tuning_cache_entries;
         without_pipe_edit.camera = previous.camera.clone();
         without_pipe_edit.audio = previous.audio.clone();
         without_pipe_edit != *previous
@@ -361,6 +382,7 @@ impl FileConfig {
         self.quality = self.quality.clamp(MIN_QUALITY, MAX_QUALITY);
         self.stream_scale = self.stream_scale.clamp(1, 4);
         self.pipe_capacity_mib = validated_pipe_capacity(self.pipe_capacity_mib);
+        self.tuning_cache_entries = validated_tuning_cache_entries(self.tuning_cache_entries);
         self.raw_slots = self.raw_slots.clamp(2, crate::raw_frame::MAX_SLOTS);
         self.conversion_threads = validated_conversion_threads(self.conversion_threads);
         self.encoder_workers = self

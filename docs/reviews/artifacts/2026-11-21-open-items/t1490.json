@@ -1,0 +1,795 @@
+{
+  "coverage": [
+    {
+      "file": "common/src/model.rs",
+      "name": "validated_tuning_cache_entries",
+      "line": 73,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/model.rs",
+      "name": "default",
+      "line": 199,
+      "language": "rust",
+      "covered": 40,
+      "total": 40,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/model.rs",
+      "name": "validate",
+      "line": 288,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/model.rs",
+      "name": "requires_restart_from",
+      "line": 318,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/model.rs",
+      "name": "sanitize_requested",
+      "line": 359,
+      "language": "rust",
+      "covered": 35,
+      "total": 38,
+      "percent": 92.10526315789474,
+      "passes": true,
+      "missing": [
+        378,
+        379,
+        398
+      ]
+    },
+    {
+      "file": "host/src/selection/worker/cache.rs",
+      "name": "write",
+      "line": 108,
+      "language": "rust",
+      "covered": 17,
+      "total": 19,
+      "percent": 89.47368421052632,
+      "passes": true,
+      "missing": [
+        112,
+        123
+      ]
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "open",
+      "line": 24,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "publish",
+      "line": 49,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "reserve",
+      "line": 72,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "pass",
+      "line": 84,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "descriptor_path",
+      "line": 103,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "record_name",
+      "line": 107,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "candidate",
+      "line": 119,
+      "language": "rust",
+      "covered": 15,
+      "total": 17,
+      "percent": 88.23529411764706,
+      "passes": true,
+      "missing": [
+        129,
+        130
+      ]
+    },
+    {
+      "file": "host/src/selection/worker/cache/retention.rs",
+      "name": "remove",
+      "line": 138,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "common/src/model.rs",
+      35,
+      "slot_ports",
+      3
+    ],
+    [
+      "common/src/model.rs",
+      60,
+      "ffmpeg_encoder_name",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      64,
+      "supported_encoder",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      73,
+      "validated_tuning_cache_entries",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      81,
+      "validated_conversion_threads",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      89,
+      "validated_pipe_capacity",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      199,
+      "default",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      251,
+      "as_str",
+      5
+    ],
+    [
+      "common/src/model.rs",
+      260,
+      "parse",
+      6
+    ],
+    [
+      "common/src/model.rs",
+      272,
+      "parse_or_default",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      280,
+      "request_recalibration",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      288,
+      "validate",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      306,
+      "validate_input_mode",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      318,
+      "requires_restart_from",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      330,
+      "merge_edits",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      351,
+      "sanitize",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      359,
+      "sanitize_requested",
+      5
+    ],
+    [
+      "common/src/model.rs",
+      409,
+      "t1533_raw_slot_validation_rejects_out_of_range_capacity",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      424,
+      "t1533_raw_slot_sanitization_matches_transport_capacity",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      442,
+      "t1534_positions_accept_current_names_and_reject_obsolete_aliases",
+      3
+    ],
+    [
+      "common/src/model.rs",
+      460,
+      "t612_worker_capacity_roundtrip_and_sanitize",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      476,
+      "t492_adaptive_idle_preference_round_trips_without_changing_motion_rate",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      494,
+      "t543_camera_preferences_round_trip_without_starting_or_restarting_display",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      529,
+      "t1195_bounded_recalibration_admission_matches_wider_integer_oracle",
+      3
+    ],
+    [
+      "common/src/model.rs",
+      548,
+      "t1195_invalid_recalibration_values_cannot_admit_a_configuration",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      557,
+      "t480_t1194_obsolete_cache_preference_is_not_in_current_schema",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      570,
+      "t1194_unknown_obsolete_values_cannot_change_current_tuning_controls",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      592,
+      "t474_conversion_capacity_defaults_round_trips_and_rejects_invalid_values",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      623,
+      "t415_pipe_capacity_round_trips_and_invalid_values_fall_back",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      642,
+      "t474_conversion_edit_merges_and_requires_explicit_restart",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      661,
+      "t434_auto_is_default_but_explicit_choices_survive",
+      2
+    ],
+    [
+      "common/src/model.rs",
+      675,
+      "t093_all_slot_ports_are_unique_nonzero_and_representable",
+      3
+    ],
+    [
+      "common/src/model.rs",
+      709,
+      "t017_merge_preserves_external_changes_and_applies_only_user_edits",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      738,
+      "t061_dimensions_fit_edid_active_pixel_fields",
+      1
+    ],
+    [
+      "common/src/model.rs",
+      749,
+      "t063_unknown_encoder_is_not_persisted_as_valid_configuration",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      36,
+      "remember",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      48,
+      "active",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      52,
+      "read",
+      4
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      71,
+      "load",
+      4
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      82,
+      "save",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      108,
+      "write",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      129,
+      "invalidate",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      138,
+      "retired",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      148,
+      "worker_evidence_valid",
+      5
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      158,
+      "measurement_valid",
+      7
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      170,
+      "measurement_bounds_valid",
+      8
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      182,
+      "valid",
+      8
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      194,
+      "observation_valid",
+      9
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      206,
+      "compatible",
+      5
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      223,
+      "now",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache.rs",
+      230,
+      "supports_choice",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      24,
+      "open",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      49,
+      "publish",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      72,
+      "reserve",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      84,
+      "pass",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      103,
+      "descriptor_path",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      107,
+      "record_name",
+      5
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      119,
+      "candidate",
+      7
+    ],
+    [
+      "host/src/selection/worker/cache/retention.rs",
+      138,
+      "remove",
+      4
+    ],
+    [
+      "common/src/model/cache_tests.rs",
+      4,
+      "t1490_cache_capacity_is_persisted_bounded_and_does_not_restart_media",
+      3
+    ],
+    [
+      "common/src/model/cache_tests.rs",
+      29,
+      "t1490_cache_capacity_rejects_wrong_types_and_preserves_unedited_changes",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      7,
+      "setup",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      38,
+      "store",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      48,
+      "t480_atomic_private_roundtrip_ignores_interrupted_writes",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      76,
+      "t480_context_future_time_and_manual_preference_invalidate_t714_preserves_age",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      95,
+      "t480_unknown_software_caps_format_host_route_and_capture_invalidate",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      127,
+      "t480_profile_rechecks_historical_capacity_and_current_decoder_support",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      146,
+      "t480_decoder_alternative_hints_are_rechecked",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      159,
+      "t480_malformed_oversized_and_symlinked_cache_is_ignored",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      181,
+      "t480_invalid_and_out_of_bounds_observations_never_load",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      212,
+      "t480_seeded_corruption_is_bounded_and_never_panics",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      233,
+      "t480_proven_identity_and_attachment_retirement_bound_cache_use",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      258,
+      "t480_t714_cache_requires_proven_identity_and_software_context",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      287,
+      "t480_historical_choice_is_not_ranked_as_this_session_and_requires_fresh_acks",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      310,
+      "t480_invalid_record_schema_quality_and_unknown_fields_are_rejected",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      333,
+      "t612_cached_worker_and_requested_budget_must_match",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      368,
+      "t714_tuned_profile_survives_elapsed_time_and_process_reopen",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      380,
+      "t714_tuning_is_automatic_with_default_preferences",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      397,
+      "attached_store",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      409,
+      "t714_recalibration_generation_invalidates_without_changing_manual_preference",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      425,
+      "t714_tuned_fast_path_rejects_corrupt_measurements_and_incompatible_decoders",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      460,
+      "t714_historical_worker_bounds_reject_unknown_out_of_range_counts",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      475,
+      "t727_gpu_policy_changes_invalidate_saved_candidates",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      493,
+      "retain",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      498,
+      "t1032_cache_creation_and_persistence_report_original_creators",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      539,
+      "t1195_terminal_recalibration_never_reuses_initial_durable_record",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      577,
+      "t1187_terminal_snapshot_cannot_prepare_a_durable_profile_context",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      588,
+      "t1490_cache_writes_bound_superseded_records_and_keep_current",
+      5
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      618,
+      "isolated_capacity_update",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      641,
+      "t1490_existing_cache_uses_new_capacity_on_its_next_write",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      7,
+      "write_record",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      18,
+      "t1490_retention_has_configurable_bounds_and_keeps_current_even_when_oldest",
+      4
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      45,
+      "t1490_retention_preserves_foreign_names_links_and_directories",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      72,
+      "t1490_retention_names_have_exact_bounds_and_lowercase_hex",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      90,
+      "t1490_bad_lock_paths_and_capacity_fail_before_retention",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      114,
+      "t1490_lock_excludes_writers_and_releases_on_drop",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      123,
+      "t1490_missing_names_settle_and_nonfile_removal_errors_are_reported",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      129,
+      "check_process_lock",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      142,
+      "t1490_lock_exclusion_applies_across_original_processes",
+      2
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      156,
+      "t1490_retention_stays_with_original_directory_after_path_replacement",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/retention/tests.rs",
+      186,
+      "t1490_failed_publication_cleans_tempfiles_before_releasing_directory",
+      2
+    ]
+  ],
+  "issue": "T1490",
+  "before": {
+    "unbounded_records": "Permanent regression observed 65 regular cache records after 65 distinct writes; expected default limit 64.",
+    "configuration": "Current serialized settings lacked tuning_cache_entries; initial new-field direct validation also accepted invalid limits, caught before completion.",
+    "directory_identity": "Private renamed-directory regression proved path-based draft pruning deleted a record from the replacement directory."
+  },
+  "after": "Latest configured limit is read after acquiring the nonblocking directory writer lock. Bounded heap eviction reserves the current name and retains newest other regular cache records. Directory fd pins inventory, unlink and publication; PersistError tempfile is dropped before that fd can be released.",
+  "tests": {
+    "common_library": 498,
+    "selection_cache": 43,
+    "targeted_host_retention": 11
+  },
+  "tools": {
+    "coverage": "cargo-llvm-cov / LLVM native per-function line counters",
+    "complexity": "project Rust syn 2.0.119"
+  },
+  "ownership": "Original Scope::blocking worker retains native completion ownership through caller loss. Transaction owns one original directory fd and one nonblocking lock fd; temporary writer/iterator handles are scoped beneath it. At most configured capacity heap records are retained (1\u2013256), with 69-byte accepted names. New serialized record is bounded to 64 KiB. Temporary success/error cleanup precedes directory release; no path-owning PersistError escapes. Original reader handles remain valid after unlink, and the kernel frees their inodes after last close. No deadline is used as retirement evidence.",
+  "invariants": "Lock admission excludes current cooperative writers. Each nonfinal scan removes an owned name; no writer adds records while pruning. Finite directory and successful filesystem operations imply eventual cleanup; errors prevent publication. Every successful publication has at most capacity regular cache names, including the current name; unrecognized names, directories and symlinks are preserved. Config changes take effect at the next serialized write, not through duplicated per-context limits.",
+  "limits": "No claim of a quota on unrelated files, externally retained inodes, filesystem metadata or orphaned unknown temporary names. Existing invalidation may remove names concurrently but does not add records. Cooperative current writers must preserve the persistent lock inode and cache namespace. Local Linux native fixture evidence; not Windows acceptance. Installed sessions and configuration are unchanged."
+}
