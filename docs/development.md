@@ -437,6 +437,11 @@ local to the worker. Stock FFmpeg needs no patches. The earlier
 [packet ownership measurements](benchmarks/2026-09-17-packet-storage.md) describe
 the former same-process path, not current cross-process packet delivery.
 
+The worker retains its first packet validation or write error, rejects subsequent
+packets, and reports that cause on stderr with a non-zero exit status. Completion
+consumes the output only after the synchronous encoder releases every output
+clone. An error never makes a partially written pipe reusable.
+
 Automatic calibration uses CLI profiles; `auto` uses `libx264` in this optional
 build. Select a supported explicit encoder to override it. Keyframe requests are
 coalesced over stdin. Isolation adds startup and memory cost; see the

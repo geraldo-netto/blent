@@ -18,7 +18,7 @@ fn t1447_nonce_exhaustion_rejects_repeatedly_without_wrapping() {
     }
 }
 
-fn job() -> Job {
+pub(super) fn job() -> Job {
     Job {
         encoder: "libx264".into(),
         width: 64,
@@ -97,10 +97,10 @@ fn t819_controls_packet_writer_and_activity_preserve_bounds() {
     assert!(write_packet(&mut bytes, b"", false).is_err());
     assert!(write_packet(&mut std::io::Cursor::new([0; 2]), b"data", false).is_err());
     use blent::capture_contract::PacketOutput;
-    let pipe = Pipe {
-        bytes: Mutex::new(tempfile::tempfile().unwrap()),
-        stop: crate::encoder_io::StopSignal::new().unwrap(),
-    };
+    let pipe = Pipe::new(
+        tempfile::tempfile().unwrap(),
+        crate::encoder_io::StopSignal::new().unwrap(),
+    );
     assert_eq!(pipe.receiver_count(), 1);
     assert_eq!(pipe.viewers().epoch(), 0);
 }
@@ -198,7 +198,7 @@ fn resident(pid: u32) -> u64 {
         .parse()
         .unwrap()
 }
-async fn handshake(producer: &mut crate::encoder::raw_tests::Producer, generation: i32) {
+pub(super) async fn handshake(producer: &mut crate::encoder::raw_tests::Producer, generation: i32) {
     let end = std::time::Instant::now() + Duration::from_secs(5);
     loop {
         assert!(std::time::Instant::now() < end);
@@ -363,10 +363,7 @@ fn t819_packet_writer_retries_interruption_and_preserves_failed_packet_ownership
     assert_eq!(output.data, [0, 0, 0, 3, 0, b'a', b'b', b'c']);
     use blent::capture_contract::PacketOutput;
     let stop = crate::encoder_io::StopSignal::new().unwrap();
-    let pipe = Pipe {
-        bytes: Mutex::new(tempfile::tempfile().unwrap()),
-        stop: stop.clone(),
-    };
+    let pipe = Pipe::new(tempfile::tempfile().unwrap(), stop.clone());
     let packet = crate::media::VideoPacket {
         data: Vec::<u8>::new().into(),
         is_idr: true,

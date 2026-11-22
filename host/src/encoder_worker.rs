@@ -228,11 +228,9 @@ fn run(job: Job, fifo: &Path, socket: Option<crate::raw_socket::Socket>) -> Resu
         .spawn(move || control(std::io::stdin().lock(), controlled_refresh, controlled_stop))?;
     use std::os::fd::AsFd;
     let bytes = std::fs::File::from(std::io::stdout().as_fd().try_clone_to_owned()?);
-    let output = blent::capture_contract::VideoOutput::new(Pipe {
-        bytes: Mutex::new(bytes),
-        stop: stop.clone(),
-    });
-    crate::encoder::run_with_nonce(
+    let pipe = Pipe::new(bytes, stop.clone());
+    let output = blent::capture_contract::VideoOutput::new(pipe.clone());
+    let result = crate::encoder::run_with_nonce(
         fifo,
         &job.encoder,
         job.width,
@@ -250,7 +248,8 @@ fn run(job: Job, fifo: &Path, socket: Option<crate::raw_socket::Socket>) -> Resu
         job.workers,
         &job.device,
         Some(job.nonce),
-    )
+    );
+    pipe.finish(result)
 }
 fn control(
     mut input: impl Read,
@@ -266,9 +265,37 @@ fn control(
     }
     stop.request();
 }
+#[derive(Clone)]
 struct Pipe {
-    bytes: Mutex<std::fs::File>,
+    state: Arc<Mutex<PipeState>>,
     stop: Arc<crate::encoder_io::StopSignal>,
+}
+struct PipeState {
+    bytes: std::fs::File,
+    failure: Option<anyhow::Error>,
+}
+impl Pipe {
+    fn new(bytes: std::fs::File, stop: Arc<crate::encoder_io::StopSignal>) -> Self {
+        Self {
+            state: Arc::new(Mutex::new(PipeState {
+                bytes,
+                failure: None,
+            })),
+            stop,
+        }
+    }
+    /// The synchronous encoder must return every output clone before its first
+    /// packet error can be consumed. Failed output never becomes writable again.
+    fn finish(self, result: Result<()>) -> Result<()> {
+        let state = Arc::try_unwrap(self.state)
+            .map_err(|_| anyhow::anyhow!("Encoder packet output still owned"))?
+            .into_inner()
+            .map_err(|_| anyhow::anyhow!("Encoder packet output poisoned"))?;
+        match state.failure {
+            Some(error) => Err(error).context("Encoder packet output failed"),
+            None => result,
+        }
+    }
 }
 struct Activity;
 impl blent::capture_contract::ViewerActivity for Activity {
@@ -281,8 +308,12 @@ impl blent::capture_contract::PacketOutput for Pipe {
         &self,
         packet: crate::media::VideoPacket,
     ) -> std::result::Result<usize, crate::media::VideoPacket> {
-        let mut bytes = self.bytes.lock().unwrap();
-        if write_packet(&mut *bytes, &packet.data, packet.is_idr).is_err() {
+        let mut state = self.state.lock().unwrap();
+        if state.failure.is_some() {
+            return Err(packet);
+        }
+        if let Err(error) = write_packet(&mut state.bytes, &packet.data, packet.is_idr) {
+            state.failure = Some(error);
             self.stop.request();
             return Err(packet);
         }
@@ -311,3 +342,5 @@ fn write_packet(output: &mut impl Write, data: &[u8], key: bool) -> Result<()> {
 }
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod write_tests;

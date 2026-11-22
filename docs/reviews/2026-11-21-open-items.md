@@ -559,3 +559,11 @@ Both permanent detection regressions failed before the change. Four focused test
 ## T1618 — integrated parked capture recovery
 
 T1686 and T1687 are complete together: original acknowledgement deadlines survive cancellation, and parked helper failures are observed without waiting for new demand. The final combined source passes 273 default capture tests and 133 optional native-encoder capture tests, including pause receipts, original-cleanup fences and fresh resume. Three opt-in default benchmarks remain excluded. The unchanged common control code also has 506 passing tests and the native C control integration passes 16 transitions. [Integration evidence](artifacts/2026-11-21-open-items/t1618.json). Physical event ordering remains outside these private-process checks; installed sessions are unchanged.
+
+## T1492 — report native encoder packet failures
+
+The optional native encoder worker retains its first packet validation/write failure, rejects further output, and returns the original cause after the synchronous encoder releases its output. The real child now reports a non-zero exit and stderr cause. The output's file and diagnostic share one mutex and bounded owner; completion requires every output clone to return. Rejected packets are returned without retention. No new thread, frame buffer or cleanup sponsor is added.
+
+Two permanent regressions failed before the fix: output accepted another packet after an oversized packet, and the real libx264 child exited successfully after writing to `/dev/full`. Five focused tests now cover those failures, preserved first IO error/source chain, successful framing/encoder result, retained clones and poison. All 16 encoder-worker tests pass. Four changed production functions measure 100% line coverage; native `run` counters come from the instrumented production child, with the other functions measured in the test binary. All 32 measured functions have complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1492.json).
+
+An initial native fixture used generation zero incorrectly and never reached packet output; its log is retained separately, and corrected failing-before evidence is used. The private C producer uses sanitizers. Installed binaries, devices and sessions were untouched.

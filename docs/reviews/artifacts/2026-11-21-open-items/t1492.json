@@ -1,0 +1,278 @@
+{
+  "issue": "T1492",
+  "tests": {
+    "before": {
+      "passed": 0,
+      "failed": 2
+    },
+    "focused_after": {
+      "passed": 5,
+      "failed": 0
+    },
+    "encoder_worker_suite_after": {
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0
+    }
+  },
+  "measurements": {
+    "coverage": [
+      {
+        "file": "host/src/encoder_worker.rs",
+        "name": "run",
+        "line": 220,
+        "language": "rust",
+        "covered": 33,
+        "total": 33,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "host/src/encoder_worker.rs",
+        "name": "new",
+        "line": 278,
+        "language": "rust",
+        "covered": 9,
+        "total": 9,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "host/src/encoder_worker.rs",
+        "name": "finish",
+        "line": 289,
+        "language": "rust",
+        "covered": 8,
+        "total": 8,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "host/src/encoder_worker.rs",
+        "name": "send",
+        "line": 307,
+        "language": "rust",
+        "covered": 15,
+        "total": 15,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      }
+    ],
+    "complexity": [
+      [
+        "host/src/encoder_worker.rs",
+        220,
+        "run",
+        2
+      ],
+      [
+        "host/src/encoder_worker.rs",
+        278,
+        "new",
+        1
+      ],
+      [
+        "host/src/encoder_worker.rs",
+        289,
+        "finish",
+        5
+      ],
+      [
+        "host/src/encoder_worker.rs",
+        307,
+        "send",
+        3
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        8,
+        "t1447_nonce_exhaustion_rejects_repeatedly_without_wrapping",
+        2
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        21,
+        "job",
+        1
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        36,
+        "output",
+        1
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        50,
+        "t819_worker_arguments_reject_invalid_job_flags_and_descriptors",
+        2
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        86,
+        "t819_controls_packet_writer_and_activity_preserve_bounds",
+        2
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        108,
+        "t819_reader_rejects_truncated_and_oversized_output_before_publication",
+        2
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        134,
+        "t819_shared_worker_death_hang_restart_and_final_lease_retirement",
+        4
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        183,
+        "cpu",
+        1
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        189,
+        "resident",
+        2
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        201,
+        "handshake",
+        3
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        212,
+        "measure",
+        9
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        310,
+        "t819_worker_matches_inprocess_shared_output_with_paired_measurements",
+        4
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        340,
+        "t819_packet_writer_retries_interruption_and_preserves_failed_packet_ownership",
+        4
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        346,
+        "write",
+        2
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        354,
+        "flush",
+        1
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        378,
+        "t819_parent_identity_failure_and_absent_executable_propagate",
+        1
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        409,
+        "retain",
+        1
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        418,
+        "drop",
+        1
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        425,
+        "drop",
+        1
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        430,
+        "t1028_isolated_encoder_reports_original_child_and_reader",
+        4
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        480,
+        "t1028_failed_reader_admission_keeps_original_child_proof",
+        5
+      ],
+      [
+        "host/src/encoder_worker/tests.rs",
+        547,
+        "t1479_worker_fixture_resolves_profile_without_fixed_artifact_depth",
+        2
+      ],
+      [
+        "host/src/encoder_worker/write_tests.rs",
+        6,
+        "packet",
+        1
+      ],
+      [
+        "host/src/encoder_worker/write_tests.rs",
+        17,
+        "t1492_invalid_packet_permanently_stops_the_original_output",
+        2
+      ],
+      [
+        "host/src/encoder_worker/write_tests.rs",
+        39,
+        "t1492_first_io_failure_survives_later_packet_and_encoder_errors",
+        1
+      ],
+      [
+        "host/src/encoder_worker/write_tests.rs",
+        63,
+        "t1492_successful_output_preserves_packet_bytes_and_encoder_result",
+        3
+      ],
+      [
+        "host/src/encoder_worker/write_tests.rs",
+        90,
+        "t1492_completion_requires_exclusive_unpoisoned_output",
+        1
+      ],
+      [
+        "host/src/encoder_worker/write_tests.rs",
+        119,
+        "t1492_native_worker_reports_packet_write_failure",
+        1
+      ]
+    ],
+    "feature": "default"
+  },
+  "coverage_scope": "run is measured from the separately built instrumented production worker; Pipe::new, finish and send are measured from the test binary. All profiles from the final cohort are merged. The production run has no test-binary execution counters; those missing counters are not presented as native coverage.",
+  "worker": {
+    "path": "target/llvm-cov-target/debug/blent",
+    "sha256": "0fed9c1d6e66541abdb460e248e66c2457ec679d1d8ec3c04019f97ec5c203fd",
+    "features": [
+      "inproc-encoder"
+    ]
+  },
+  "tools": {
+    "rustc": "1.100.0 (0ef1bc386 2026-11-09)",
+    "cargo-llvm-cov": "0.8.7",
+    "complexity": "project Rust syn 2.0.119; 32 functions, none above 9"
+  },
+  "ownership": "PipeState owns one original output File and at most one first failure under one mutex. Pipe::new admits one Arc allocation; the synchronous encoder gets one output clone while the worker retains the completion owner. Failed validation or IO stores no packet or frame, requests the existing stop signal and returns the same rejected packet; later sends cannot access the failed writer. Native encoder return ends the producing borrow and releases its output. finish requires exclusive Arc ownership, consumes the first failure and closes the File; clone retention or poison is explicitly rejected. Remaining clones retain the allocation/file until dropped. No reference cycle, new thread, queue or native access is introduced. The existing control thread belongs to the private worker process and ends with that process; parent original-child retirement remains authoritative. Tests preserve exact native completion and use a private C producer with ASan/UBSan.",
+  "bounds": "One bounded diagnostic slot per output. Existing packet contract is 1..8388604 bytes. The oversize test admits one 8388605-byte private payload; successful regression packets contain at most 16 bytes.",
+  "fixture_correction": "The first native test attempt compared against generation zero rather than the producer actual initial generation, so it failed before writing a frame. That log is retained as initial-fixture and is not native red evidence. The corrected pre-fix run captures the actual generation before spawn, produces an encoded frame, and observes erroneous status zero after /dev/full ENOSPC. The same corrected test passes after the fix.",
+  "scope": "Native libx264 worker with private shared-memory producer and Linux /dev/full; no camera, tablet, EVDI or installed session was used. Existing worker tests also cover byte equality, interruption, invalid framing and retained child/reader cleanup. No new performance claim."
+}
