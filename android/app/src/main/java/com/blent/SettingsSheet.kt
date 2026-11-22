@@ -36,11 +36,9 @@ internal fun SettingsSheet(
     connectionControls: @Composable () -> Unit = {},
     decoderDiagnostics: DecoderDiagnostics = DecoderDiagnostics(),
 ) {
-    // Boxed Float equality preserves signed zero and stable NaN semantics.
-    var bitrateMbps by remember(settings.bitrateKbps) {
-        mutableStateOf(settings.bitrateKbps / 1000f)
-    }
-    var fpsChoice by remember(settings.fps) { mutableIntStateOf(settings.fps) }
+    var edited by remember { mutableStateOf(StreamOverrides()) }
+    val bitrateMbps = (edited.bitrateKbps ?: settings.bitrateKbps) / 1000f
+    val fpsChoice = edited.fps ?: settings.fps
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -71,7 +69,9 @@ internal fun SettingsSheet(
 
             if (!penOnly) {
                 SettingsSection("Video stream")
-                StreamControls(bitrateMbps, fpsChoice, { bitrateMbps = it }, { fpsChoice = it })
+                StreamControls(bitrateMbps, fpsChoice,
+                    { edited = edited.copy(bitrateKbps = (it * 1000).roundToInt()) },
+                    { edited = edited.copy(fps = it) })
             }
 
             connectionControls()
@@ -94,7 +94,8 @@ internal fun SettingsSheet(
             if (!penOnly) {
                 Button(
                     onClick = {
-                        onSettingsEvent(SettingsEvent.Stream((bitrateMbps * 1000).roundToInt(), fpsChoice))
+                        val change = edited.differentFrom(settings.bitrateKbps, settings.fps)
+                        if (!change.empty) onSettingsEvent(SettingsEvent.Stream(change.bitrateKbps, change.fps))
                         onDismiss()
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -102,9 +103,14 @@ internal fun SettingsSheet(
                 ) {
                     Text("Apply", fontSize = 16.sp, modifier = Modifier.padding(vertical = 4.dp))
                 }
+                if (!settings.streamOverrides.empty) {
+                    TextButton(onClick = { edited = StreamOverrides(); onSettingsEvent(SettingsEvent.ClearStreamOverrides) }) {
+                        Text("Use host settings")
+                    }
+                }
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "Apply updates frame rate and bitrate, briefly restarting display sharing. Camera sharing keeps its current state.",
+                    "Apply sends only edited fields and remembers them for reconnects. Use host settings clears these overrides; it does not undo changes already applied on the host. Display sharing may briefly restart. Camera sharing keeps its current state.",
                     fontSize = 11.sp,
                     color = Color(0xFF6A6A7E),
                     textAlign = TextAlign.Center,

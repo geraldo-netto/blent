@@ -11,8 +11,11 @@ Host settings live in `~/.config/blent/config.toml`; edit them with
 `blent-gui` or override supported settings with CLI flags. An absolute
 `XDG_CONFIG_HOME` changes the path to `$XDG_CONFIG_HOME/blent/config.toml`;
 empty or relative values use the default. The tablet’s ⚙
-sheet stores app preferences locally; **Apply** sends its shared streaming
-settings to the host. Brightness/refresh preferences take effect immediately.
+sheet stores app preferences locally. Current host bitrate and FPS seed the stream
+controls; **Apply** sends only edited fields. An unchanged Apply sends nothing.
+Explicit field overrides are saved and resent on reconnect. **Use host settings**
+clears those overrides and prevents future resend; it does not undo or cancel changes already
+sent to the host. Brightness/refresh preferences take effect immediately.
 
 At startup, a missing host configuration uses defaults silently. Unreadable or
 malformed configuration also uses defaults, with a warning identifying the file
@@ -48,7 +51,7 @@ prove that opening the device or using a codec will succeed.
 **Advanced video settings** contains quality, bitrate, calibration and worker/pipe
 capacity controls. The tablet groups display/input, video, camera and app controls;
 bitrate is under **Advanced video settings**, with whole-Mbps stops from 1 to 60
-and a 20 Mbps default. Its label uses the kilobit value submitted by Apply; an
+and a 20 Mbps default. Its label preserves the exact kilobit value; an
 existing fractional setting remains exact until changed. Update/statistics
 switches are under **App & diagnostics**. The decoder panel shows the active codec, advertised
 capabilities, requested performance hints and watchdog fallback; effective hints

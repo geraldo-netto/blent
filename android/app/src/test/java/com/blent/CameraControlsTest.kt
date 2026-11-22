@@ -46,10 +46,11 @@ class CameraControlsTest {
         } }
         try {
             compose.onNodeWithText("Start camera").performScrollTo().assertIsNotEnabled()
+            compose.onNodeWithText("30 fps").performScrollTo().performClick()
             compose.onNodeWithText("Apply").performScrollTo().performClick()
             compose.runOnIdle {
                 assertEquals(0, opened.get())
-                assertEquals(listOf(SettingsEvent.Stream(20000, 60)), events)
+                assertEquals(listOf(SettingsEvent.Stream(null, 30)), events)
                 invitations.value = CameraEndpoint("a".repeat(64), 12345, 1280, 720, 30, 3000, requestedLens = CameraLens.FRONT)
             }
             compose.onNodeWithText("Stop camera").performScrollTo().performClick()

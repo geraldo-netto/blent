@@ -47,15 +47,22 @@ internal data class SettingsValues(
     val batterySaver: Boolean = false,
     val streamError: String? = null,
     val controlQueueBytes: Int = ControlCapacity.DEFAULT,
+    val streamOverrides: StreamOverrides = StreamOverrides(),
 ) {
     companion object {
-        fun read(prefs: Prefs) = SettingsValues(prefs.bitrateKbps, prefs.fps, prefs.brightnessPercent,
-            prefs.displayRefreshRate, prefs.orientation, prefs.showStats, prefs.checkUpdates, prefs.batterySaver, controlQueueBytes = prefs.controlQueueBytes)
+        fun read(prefs: Prefs): SettingsValues {
+            val overrides = prefs.streamOverrides
+            return SettingsValues(overrides.bitrateKbps ?: Prefs.DEFAULT_BITRATE_KBPS,
+                overrides.fps ?: Prefs.DEFAULT_FPS, prefs.brightnessPercent, prefs.displayRefreshRate,
+                prefs.orientation, prefs.showStats, prefs.checkUpdates, prefs.batterySaver,
+                controlQueueBytes = prefs.controlQueueBytes, streamOverrides = overrides)
+        }
     }
 }
 
 internal sealed interface SettingsEvent {
-    data class Stream(val bitrate: Int, val fps: Int) : SettingsEvent
+    data class Stream(val bitrate: Int?, val fps: Int?) : SettingsEvent
+    data object ClearStreamOverrides : SettingsEvent
     data class Mode(val penOnly: Boolean) : SettingsEvent
     data class Orientation(val value: Int) : SettingsEvent
     data class Brightness(val value: Int) : SettingsEvent
@@ -130,6 +137,7 @@ internal class SessionCoordinator(
     fun handle(event: SettingsEvent) {
         when (event) {
             is SettingsEvent.Stream -> requestStreamSettings(event)
+            SettingsEvent.ClearStreamOverrides -> clearStreamOverrides()
             is SettingsEvent.Mode -> touchCapture?.sendMode(event.penOnly)
             is SettingsEvent.CheckUpdates -> {
                 prefs.checkUpdates = event.value
@@ -137,7 +145,7 @@ internal class SessionCoordinator(
             }
             else -> localPreference(event)
         }
-        settings = SettingsValues.read(prefs).copy(streamError = settings.streamError)
+        settings = SettingsValues.read(prefs).copy(bitrateKbps = settings.bitrateKbps, fps = settings.fps, streamError = settings.streamError)
     }
 
     private fun localPreference(event: SettingsEvent) {
@@ -157,8 +165,23 @@ internal class SessionCoordinator(
 
     private fun requestStreamSettings(event: SettingsEvent.Stream) {
         if (!displayAllowed()) videoReceiver?.stop()
-        settings = settings.copy(streamError = null)
+        settings = settings.copy(bitrateKbps = event.bitrate ?: settings.bitrateKbps, fps = event.fps ?: settings.fps, streamError = null)
         applyStreamSettings(prefs, touchCapture, videoReceiver, event.bitrate, event.fps)
+    }
+
+    private fun clearStreamOverrides() {
+        prefs.streamOverrides = StreamOverrides()
+        touchCapture?.clearConfig()
+        val observed = touchCapture?.control?.hostSettings?.value
+        if (observed != null) showHostSettings(observed)
+        settings = settings.copy(streamError = null)
+    }
+
+    private fun showHostSettings(observed: HostSettingsObservation) {
+        val control = touchCapture?.control ?: return
+        if (!control.isCurrentConnection(observed.source)) return
+        if (control.hostSettings.value !== observed) return
+        settings = settings.copy(bitrateKbps = observed.values.bitrateKbps, fps = observed.values.fps)
     }
 
     fun dismissThanks() { showThanks = false }
@@ -186,7 +209,8 @@ internal class SessionCoordinator(
     }
     private fun connectControl() {
         touchCapture?.connect()
-        if (prefs.hasUserSettings) touchCapture?.sendConfig(prefs.bitrateKbps, prefs.fps)
+        val overrides = prefs.streamOverrides
+        touchCapture?.sendConfig(overrides.bitrateKbps, overrides.fps)
     }
     fun stop() {
         started = false
@@ -216,7 +240,7 @@ internal class SessionCoordinator(
                 dispatchUi { showThanks = true }
             }
         }
-        videoReceiver?.streamFps = prefs.fps
+        videoReceiver?.streamFps = settings.fps
         connectSettingsCallbacks()
         connectFormatCallbacks()
         touchCapture?.onModeKnown = { penOnly ->
@@ -231,7 +255,9 @@ internal class SessionCoordinator(
 
     private fun connectFormatCallbacks() {
         touchCapture?.onStreamFormat = { format ->
+            val observed = touchCapture?.control?.hostSettings?.value
             withCurrentControl {
+                if (observed != null) showHostSettings(observed)
                 decoderSupport = decoderSupport.copy(format = format != null)
                 configureVideo { if (format != null) it.setStreamFormat(format) }
             }
@@ -263,17 +289,17 @@ internal class SessionCoordinator(
         touchCapture?.onSettingsRejected = { rejected ->
             withCurrentControl {
                 if (touchCapture?.isCurrentSettings(rejected.requestSnapshot) == true) {
-                    restoreStreamSettings(rejected.reason, rejected.bitrate, rejected.fps)
+                    restoreStreamSettings(rejected)
                 }
             }
         }
     }
 
-    private fun restoreStreamSettings(reason: String, bitrate: Int, fps: Int) {
-        prefs.bitrateKbps = bitrate
-        prefs.fps = fps
-        configureVideo { it.streamFps = fps }
-        settings = SettingsValues.read(prefs).copy(streamError = reason)
+    private fun restoreStreamSettings(rejected: RejectedStreamSettings) {
+        prefs.streamOverrides = rejected.overrides
+        configureVideo { it.streamFps = rejected.fps }
+        settings = SettingsValues.read(prefs).copy(bitrateKbps = rejected.bitrate, fps = rejected.fps,
+            streamError = rejected.reason)
     }
 
     private fun applyDisplayActivity(update: DisplayActivityUpdate) {
@@ -395,10 +421,10 @@ internal class SessionCoordinator(
 
 }
 
-internal fun applyStreamSettings(prefs: Prefs?, touchCapture: TouchCapture?, videoReceiver: DisplaySession<android.view.SurfaceView>?, bitrateKbps: Int, newFps: Int) {
-    prefs?.bitrateKbps = bitrateKbps
-    prefs?.fps = newFps
-    prefs?.hasUserSettings = true
-    videoReceiver?.streamFps = newFps
+internal fun applyStreamSettings(prefs: Prefs?, touchCapture: TouchCapture?, videoReceiver: DisplaySession<android.view.SurfaceView>?, bitrateKbps: Int?, newFps: Int?) {
+    val change = StreamOverrides(bitrateKbps, newFps)
+    if (change.empty) return
+    prefs?.streamOverrides = prefs?.streamOverrides?.merge(change) ?: change
+    if (newFps != null) videoReceiver?.streamFps = newFps
     touchCapture?.sendConfig(bitrateKbps, newFps)
 }

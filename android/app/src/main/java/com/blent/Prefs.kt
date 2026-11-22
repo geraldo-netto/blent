@@ -10,13 +10,8 @@ class Prefs(context: Context) {
 
     companion object {
         private val deliveryGate = Any()
-        /**
-         * Defaults deliberately match the host's own defaults. They used to be
-         * 200 Mbps / 90 fps, which the app pushed to the host on every start —
-         * overwriting whatever was configured on the desktop and driving the
-         * encoder far past what the USB link carries, so frames queued up and
-         * latency grew without bound.
-         */
+        private val streamSettingsGate = Any()
+        /** UI placeholders before host observation; never implicit overrides. */
         const val DEFAULT_BITRATE_KBPS = 20_000
         const val DEFAULT_FPS = 60
         const val DEFAULT_BRIGHTNESS_PERCENT = 50
@@ -32,20 +27,27 @@ class Prefs(context: Context) {
         const val ORIENTATION_CAMERA_DOWN = 2
     }
 
-    var bitrateKbps: Int
-        get() = sp.getInt("bitrate_kbps", DEFAULT_BITRATE_KBPS)
-            .coerceIn(MIN_BITRATE_KBPS, MAX_BITRATE_KBPS)
-        set(v) = sp.edit().putInt("bitrate_kbps", v).apply()
+    internal var streamOverrides: StreamOverrides
+        get() = synchronized(streamSettingsGate) {
+            StreamOverrides(streamValue("stream_override_bitrate", 1000..60000),
+                streamValue("stream_override_fps", 10..90))
+        }
+        set(value) = synchronized(streamSettingsGate) {
+            val editor = sp.edit().remove("stream_override_bitrate").remove("stream_override_fps")
+            value.bitrateKbps?.let { editor.putInt("stream_override_bitrate", it) }
+            value.fps?.let { editor.putInt("stream_override_fps", it) }
+            editor.apply()
+        }
+
+    private fun streamValue(key: String, range: IntRange): Int? = try {
+        if (sp.contains(key)) sp.getInt(key, 0).takeIf { it in range } else null
+    } catch (_: ClassCastException) { null }
 
     /** Control queue capacity. Smaller values retire congested sessions sooner;
      * larger values tolerate bursts at the cost of retained input/ACK latency. */
     var controlQueueBytes: Int
         get() = sp.getInt("control_queue_bytes", ControlCapacity.DEFAULT).coerceIn(ControlCapacity.MIN, ControlCapacity.MAX)
         set(value) = sp.edit().putInt("control_queue_bytes", value.coerceIn(ControlCapacity.MIN, ControlCapacity.MAX)).apply()
-
-    var fps: Int
-        get() = sp.getInt("fps", DEFAULT_FPS)
-        set(v) = sp.edit().putInt("fps", v).apply()
 
     /** Local window preferences, independent of the host's stream configuration. */
     var brightnessPercent: Int
@@ -78,18 +80,6 @@ class Prefs(context: Context) {
     var orientation: Int
         get() = sp.getInt("orientation", ORIENTATION_AUTO)
         set(v) = sp.edit().putInt("orientation", v).apply()
-
-    /**
-     * True once the user has actually applied settings from the sheet.
-     *
-     * Until then the tablet stays silent instead of pushing its defaults on
-     * every connect: the desktop GUI is the source of truth, and a tablet that
-     * announces stale defaults at startup silently undoes whatever was set
-     * there. Only a deliberate "Apply" gives the tablet the right to speak.
-     */
-    var hasUserSettings: Boolean
-        get() = sp.getBoolean("has_user_settings", false)
-        set(v) = sp.edit().putBoolean("has_user_settings", v).apply()
 
     /**
      * The daemon's session token, delivered as an intent extra when it

@@ -28,7 +28,7 @@ internal interface ControlInputState {
     fun setDirectInput(status: JSONObject?) {}
 }
 
-internal data class RejectedStreamSettings(val reason: String, val bitrate: Int, val fps: Int, val requestSnapshot: ControlNotice)
+internal data class RejectedStreamSettings(val reason: String, val bitrate: Int, val fps: Int, val requestSnapshot: ControlNotice, val overrides: StreamOverrides)
 
 /** Owns authentication, host metadata and socket lifetime; never interprets MotionEvents. */
 internal class ControlSession(
@@ -119,8 +119,9 @@ internal class ControlSession(
     // tokenless startup. Publishing replacement credentials cannot retarget it.
     private var connectionRoutes: DisplayRoutes? = null
 
-    /** Settings to (re)send to the host whenever the control channel connects */
-    @Volatile private var pendingConfig: JSONObject? = null
+    // Protected by lock: retained intent and the last actual request have different lifetimes.
+    private var retainedSettings = StreamOverrides()
+    private var submittedSettings: StreamOverrides? = null
     @Volatile private var pendingMode: JSONObject? = null
 
     /** Tablet's native landscape resolution, reported to the host on connect
@@ -150,7 +151,7 @@ internal class ControlSession(
                 Log.i(TAG, "Connected")
                 if (!sendAuthentication()) return
                 if (!sendResolution()) return
-                pendingConfig?.let { if (!enqueue(it)) return }
+                if (!resendSettings()) return
                 flushPendingMode()
             }
         }
@@ -358,28 +359,25 @@ internal class ControlSession(
             .put("software", ProfileSoftware.fingerprint(android.os.Build.FINGERPRINT, ProfileBuild.SOURCE_ID))
 
     private fun matchesPendingConfig(requested: JSONObject): Boolean {
-        val pending = pendingConfig ?: return false
-        return listOf("fps", "bitrate").all { field ->
-            requested.isNull(field) || requested.optInt(field) == pending.optInt(field)
-        }
+        val original = submittedSettings ?: return false
+        return StreamOverridesJson.read(requested) == original
     }
 
     private fun applySettingsRejection(message: JSONObject) {
         val requested = message.optJSONObject("requested")
         if (requested != null && !matchesPendingConfig(requested)) return
-        val fps = message.optInt("fps")
-        val bitrate = message.optInt("bitrate")
-        if (fps !in 10..90 || bitrate !in 1000..60000) return
-        // Reconnect must resend confirmed settings rather than the rejected request.
-        pendingConfig?.put("fps", fps)?.put("bitrate", bitrate)
+        val current = HostStreamSettingsJson.read(message) ?: return
+        retainedSettings = retainedSettings.confirmed(current)
+        receiveHostSettings(message)
         onSettingsRejected?.invoke(RejectedStreamSettings(
-            message.optString("error", "Unsupported stream settings"), bitrate, fps, settingsEpoch.snapshot()))
+            message.optString("error", "Unsupported stream settings"), current.bitrateKbps,
+            current.fps, settingsEpoch.snapshot(), retainedSettings))
     }
 
     private fun applyDecoderGreeting(o: JSONObject) {
         if (formatReceived && listOf("codec", "fps", "video_width", "video_height").none(o::has)) return
         streamFormat = StreamFormat.read(o, streamFormat,
-            pendingConfig?.optInt("fps") ?: Prefs.DEFAULT_FPS)
+            retainedSettings.fps ?: Prefs.DEFAULT_FPS)
         formatReceived = true
         onStreamFormat?.invoke(streamFormat)
         // Retain the public per-field notifications for independent observers.
@@ -451,24 +449,31 @@ internal class ControlSession(
         }
     }
 
-    /**
-     * Push encoder settings to the host. The host live-restarts ffmpeg with
-     * the new parameters and persists them in its config file. Settings are
-     * also remembered here and re-sent on every reconnect.
-     */
-    fun sendConfig(bitrateKbps: Int, fps: Int): Unit = synchronized(lock) {
+    /** Send only this edit; retain explicit fields for future reconnects. */
+    fun sendConfig(bitrateKbps: Int?, fps: Int?): Unit = synchronized(lock) {
+        val change = StreamOverrides(bitrateKbps, fps)
+        if (change.empty) return@synchronized
         if (!settingsEpoch.acquire()) {
-            pendingConfig = null
+            retainedSettings = StreamOverrides()
+            submittedSettings = null
             Log.w(TAG, "Settings request capacity reached; reopen Blent to change stream settings")
             return@synchronized
         }
-        val msg = JSONObject().apply {
-            put("type", "config")
-            put("bitrate", bitrateKbps)
-            put("fps", fps)
-        }
-        pendingConfig = msg
-        if (enqueue(msg)) Log.i(TAG, "Queued config: $msg")
+        retainedSettings = retainedSettings.merge(change)
+        submittedSettings = change
+        enqueue(StreamOverridesJson.config(change))
+    }
+
+    fun clearConfig(): Unit = synchronized(lock) {
+        settingsEpoch.revoke()
+        retainedSettings = StreamOverrides()
+        submittedSettings = null
+    }
+
+    private fun resendSettings(): Boolean {
+        if (retainedSettings.empty) return true
+        submittedSettings = retainedSettings
+        return enqueue(StreamOverridesJson.config(retainedSettings))
     }
 
     /**

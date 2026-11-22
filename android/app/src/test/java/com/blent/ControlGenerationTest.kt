@@ -107,7 +107,7 @@ class ControlGenerationTest {
     @Test fun t1179QueuedModeCannotSurviveTerminalConnectionCutoff() {
         val sockets = mutableListOf<Socket>()
         val capture = TouchCapture(WebSocket.Factory { _, listener -> Socket(listener).also { sockets.add(it) } }, initialConnectionGeneration = Long.MAX_VALUE - 1)
-        val prefs = Prefs(org.robolectric.RuntimeEnvironment.getApplication()).apply { hostToken = "ab".repeat(32); checkUpdates = false; hasUserSettings = false }
+        val prefs = Prefs(org.robolectric.RuntimeEnvironment.getApplication()).apply { hostToken = "ab".repeat(32); checkUpdates = false; streamOverrides = StreamOverrides() }
         val callbacks = mutableListOf<() -> Unit>()
         val receiver = VideoReceiver { error("T1179 no native video") }
         val session = SessionCoordinator(prefs, { callbacks.add(it) }, receiver, capture)
@@ -129,19 +129,19 @@ class ControlGenerationTest {
     @Test fun t1179QueuedRejectionCannotRestoreDeniedSettings() {
         val sockets = mutableListOf<Socket>()
         val capture = TouchCapture(WebSocket.Factory { _, listener -> Socket(listener).also { sockets.add(it) } }, initialSettingsGeneration = Long.MAX_VALUE - 1)
-        val prefs = Prefs(org.robolectric.RuntimeEnvironment.getApplication()).apply { hostToken = "ab".repeat(32); checkUpdates = false; hasUserSettings = false }
+        val prefs = Prefs(org.robolectric.RuntimeEnvironment.getApplication()).apply { hostToken = "ab".repeat(32); checkUpdates = false; streamOverrides = StreamOverrides() }
         val callbacks = mutableListOf<() -> Unit>()
         val session = SessionCoordinator(prefs, { callbacks.add(it) }, null, capture)
         try {
             session.start(); sockets.single().open()
             session.handle(SettingsEvent.Stream(20000, 60))
             val notice = capture.settingsSnapshot
-            capture.onSettingsRejected!!.invoke(RejectedStreamSettings("old", 9000, 30, notice))
+            capture.onSettingsRejected!!.invoke(RejectedStreamSettings("old", 9000, 30, notice, StreamOverrides(9000, 30)))
             session.handle(SettingsEvent.Stream(12000, 60))
             callbacks.toList().forEach { it() }
             assertFalse(capture.isCurrentSettings(notice))
-            assertEquals(12000, prefs.bitrateKbps)
-            assertEquals(60, prefs.fps)
+            assertEquals(12000, prefs.streamOverrides.bitrateKbps)
+            assertEquals(60, prefs.streamOverrides.fps)
             assertEquals(1, sockets.single().configurations())
         } finally { session.stop() }
     }
@@ -184,6 +184,75 @@ class ControlGenerationTest {
             rig.control.sendRendered(RenderAcknowledgement(2, 10, null) { rig.control.isCurrentConnection(original) })
             assertEquals(1, socket.sent.count { JSONObject(it).optString("type") == "rendered" })
             assertEquals(1, rig.sockets.size)
+        }
+    }
+
+    @Test fun t1694PartialEditsSendOnlyDeltaAndReconnectRetainsExplicitIntent() {
+        Rig().use { rig ->
+            rig.open()
+            rig.control.sendConfig(null, 30)
+            val first = JSONObject(rig.sockets.last().sent.last())
+            assertEquals(30, first.getInt("fps"))
+            assertFalse(first.has("bitrate"))
+            rig.control.sendConfig(25000, null)
+            val second = JSONObject(rig.sockets.last().sent.last())
+            assertEquals(25000, second.getInt("bitrate"))
+            assertFalse(second.has("fps"))
+            rig.control.disconnect(); rig.open()
+            val replay = JSONObject(rig.sockets.last().sent.last())
+            assertEquals(25000, replay.getInt("bitrate"))
+            assertEquals(30, replay.getInt("fps"))
+        }
+    }
+
+    @Test fun t1694ClearInvalidatesNoticesAndNeverResendsOrConsumesAnEditGrant() {
+        Rig(settings = Long.MAX_VALUE - 1).use { rig ->
+            rig.open()
+            rig.control.sendConfig(null, null)
+            rig.control.sendConfig(null, 30)
+            val original = rig.control.settingsSnapshot
+            assertEquals(1, rig.sockets.last().configurations())
+            rig.control.clearConfig()
+            assertFalse(rig.control.isCurrentSettings(original))
+            assertEquals(1, rig.sockets.last().configurations())
+            rig.control.disconnect(); rig.open()
+            assertEquals(0, rig.sockets.last().configurations())
+        }
+    }
+
+    @Test fun t1694RejectionMatchesSparseShapeAndReplaysOnlyExplicitFields() {
+        Rig().use { rig ->
+            rig.open()
+            rig.control.sendConfig(null, 90)
+            val notices = mutableListOf<RejectedStreamSettings>()
+            rig.control.onSettingsRejected = { notices.add(it) }
+            val socket = rig.sockets.last()
+            val rejected = JSONObject().put("status", "settings_rejected").put("bitrate", 25005).put("fps", 60)
+            socket.listener.onMessage(socket, rejected.put("requested", JSONObject().put("fps", 90).put("bitrate", 25005)).toString())
+            assertTrue(notices.isEmpty())
+            socket.listener.onMessage(socket, rejected.put("requested", JSONObject().put("fps", 90).put("bitrate", JSONObject.NULL)).toString())
+            assertEquals(StreamOverrides(fps = 60), notices.single().overrides)
+            rig.control.disconnect(); rig.open()
+            val replay = JSONObject(rig.sockets.last().sent.last())
+            assertEquals(60, replay.getInt("fps"))
+            assertFalse(replay.has("bitrate"))
+            rig.control.clearConfig()
+            rig.sockets.last().listener.onMessage(rig.sockets.last(), rejected.toString())
+            assertEquals(1, notices.size)
+        }
+    }
+
+    @Test fun t1694GeometryRejectionReportsErrorWithoutCreatingStreamIntent() {
+        Rig().use { rig ->
+            rig.open()
+            val notices = mutableListOf<RejectedStreamSettings>()
+            rig.control.onSettingsRejected = { notices.add(it) }
+            val socket = rig.sockets.last()
+            socket.listener.onMessage(socket, "{\"status\":\"settings_rejected\",\"error\":\"geometry\",\"fps\":60,\"bitrate\":20000}")
+            assertEquals("geometry", notices.single().reason)
+            assertTrue(notices.single().overrides.empty)
+            rig.control.disconnect(); rig.open()
+            assertEquals(0, rig.sockets.last().configurations())
         }
     }
 

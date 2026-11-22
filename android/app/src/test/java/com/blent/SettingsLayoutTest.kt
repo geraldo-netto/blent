@@ -63,8 +63,8 @@ class SettingsLayoutTest {
                 .code(101).message("test").build())
             session.handle(SettingsEvent.Stream(25000, 90))
             listener.onMessage(socket, javaClass.getResource("/settings-rejected.json")!!.readText())
-            assertEquals("T332: response ownership must come from the control request", 30, prefs.fps)
-            assertEquals(15000, prefs.bitrateKbps)
+            assertEquals("T332: response ownership must come from the control request", 30, prefs.streamOverrides.fps)
+            assertEquals(15000, prefs.streamOverrides.bitrateKbps)
         } finally { session.stop() }
     }
 
@@ -84,8 +84,8 @@ class SettingsLayoutTest {
             listener.onMessage(socket, javaClass.getResource("/settings-rejected.json")!!.readText())
             session.handle(SettingsEvent.Stream(15000, 30))
             pending.toList().forEach { it() }
-            assertEquals("T332: queued rejection replaced newer UI edit", 30, prefs.fps)
-            assertEquals(15000, prefs.bitrateKbps)
+            assertEquals("T332: queued rejection replaced newer UI edit", 30, prefs.streamOverrides.fps)
+            assertEquals(15000, prefs.streamOverrides.bitrateKbps)
             assertEquals(30, receiver.streamFps)
         } finally { session.stop() }
     }
@@ -95,7 +95,7 @@ class SettingsLayoutTest {
         val socket = Socket()
         val capture = TouchCapture(WebSocket.Factory { _, created -> listener = created; socket })
         val prefs = Prefs(org.robolectric.RuntimeEnvironment.getApplication())
-        prefs.fps = 60; prefs.bitrateKbps = 20000
+        prefs.streamOverrides = StreamOverrides(20000, 60)
         val session = SessionCoordinator(prefs, { it() }, null, capture)
         compose.setContent { BlentTheme {
             SettingsSheet(session.settings, null, {}, false, {}, onSettingsEvent = session::handle)
@@ -107,8 +107,8 @@ class SettingsLayoutTest {
                     .code(101).message("test").build())
                 session.handle(SettingsEvent.Stream(25000, 90))
                 listener.onMessage(socket, javaClass.getResource("/settings-rejected.json")!!.readText())
-                assertEquals("T332: rejected FPS was retained", 60, prefs.fps)
-                assertEquals(20000, prefs.bitrateKbps)
+                assertEquals("T332: rejected FPS was retained", 60, prefs.streamOverrides.fps)
+                assertEquals(20000, prefs.streamOverrides.bitrateKbps)
                 assertEquals(60, session.settings.fps)
             }
             compose.onNodeWithText("Settings rejected:", substring = true).performScrollTo().assertIsDisplayed()
@@ -138,7 +138,7 @@ class SettingsLayoutTest {
             compose.onNodeWithText("Brightness: 65%").performScrollTo().assertIsDisplayed()
             compose.runOnIdle {
                 assertSame("T377: rendering restarted the receiver", original, jobField.get(receiver))
-                assertFalse(prefs.hasUserSettings)
+                assertTrue(prefs.streamOverrides.empty)
                 assertEquals(60, receiver.streamFps)
             }
         } finally { receiver.stop() }
@@ -150,7 +150,7 @@ class SettingsLayoutTest {
         val saved = app.getSharedPreferences("blent", android.content.Context.MODE_PRIVATE)
         assertFalse(saved.getBoolean("battery_saver", false))
         prefs.brightnessPercent = 75; prefs.displayRefreshRate = 120f
-        prefs.fps = 90; prefs.bitrateKbps = 40000
+        prefs.streamOverrides = StreamOverrides(40000, 90)
         val session = SessionCoordinator(prefs, { it() }, null, null)
         compose.setContent { BlentTheme {
             SettingsSheet(session.settings, null, {}, false, {}, onSettingsEvent = session::handle)
@@ -162,7 +162,7 @@ class SettingsLayoutTest {
             val reloaded = SettingsValues.read(Prefs(app))
             assertEquals(75, reloaded.brightness); assertEquals(120f, reloaded.refreshRate, 0f)
             assertEquals(90, reloaded.fps); assertEquals(40000, reloaded.bitrateKbps)
-            assertFalse(prefs.hasUserSettings)
+            assertEquals(StreamOverrides(40000, 90), prefs.streamOverrides)
         }
         toggle.performClick().assertIsOff()
         compose.runOnIdle { assertFalse(saved.getBoolean("battery_saver", true)) }
@@ -183,7 +183,7 @@ class SettingsLayoutTest {
             assertEquals(StreamingPower(true, true, StreamTransport.USB, DisplayWakeState.UNSUPPORTED), session.powerNow())
             session.handle(SettingsEvent.BatterySaver(false))
             assertEquals(StreamingPower(false, true, StreamTransport.USB, DisplayWakeState.UNSUPPORTED), session.powerNow())
-            assertFalse(prefs.hasUserSettings)
+            assertTrue(prefs.streamOverrides.empty)
             session.stop()
             assertFalse(session.powerNow().active)
             assertEquals(StreamTransport.UNKNOWN, session.powerNow().transport)
@@ -246,8 +246,8 @@ class SettingsLayoutTest {
             val saved = app.getSharedPreferences("blent", android.content.Context.MODE_PRIVATE)
             assertEquals(75, saved.getInt("brightness_percent", -1))
             assertEquals(0f, saved.getFloat("display_refresh_rate", -1f), 0f)
-            assertFalse("T349 local display controls must not replace host stream settings", prefs.hasUserSettings)
-            assertEquals(60, prefs.fps)
+            assertTrue("T349 local display controls must not replace host stream settings", prefs.streamOverrides.empty)
+            assertNull(prefs.streamOverrides.fps)
         }
         compose.onNodeWithText("60 Hz").performScrollTo().performClick().assertIsSelected()
         compose.runOnIdle {
@@ -273,6 +273,7 @@ class SettingsLayoutTest {
                 }
             }
         }
+        compose.onNodeWithText("30 fps").performScrollTo().performClick()
         compose.onNodeWithText("Apply").performScrollTo().assertIsDisplayed().performClick()
         compose.runOnIdle { assertTrue(applied); assertTrue(dismissed) }
     }

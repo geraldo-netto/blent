@@ -58,7 +58,8 @@ class TouchCapture(factory: WebSocket.Factory = defaultControlClient(),
     fun disconnect() = control.disconnect()
     internal fun controlStatistics() = control.statistics()
     fun isControlConnected() = control.isControlConnected()
-    fun sendConfig(bitrateKbps: Int, fps: Int) = control.sendConfig(bitrateKbps, fps)
+    fun sendConfig(bitrateKbps: Int?, fps: Int?) = control.sendConfig(bitrateKbps, fps)
+    fun clearConfig() = control.clearConfig()
     fun sendMode(penOnly: Boolean) = control.sendMode(penOnly)
     @Synchronized fun selectDirect(mode: String) {
         if (!isControlConnected()) return

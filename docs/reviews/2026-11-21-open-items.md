@@ -672,3 +672,11 @@ Host greetings now include bitrate and FPS from the same encoder-settings read g
 The missing-bitrate regression failed before the fix. All 49 host input-contract tests and 84 Android API-27/34 cases pass, including eight new observation cases and 1,000 concurrent host snapshot checks. All eight maintained functions/constructors measure 100% line coverage; all 123 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1693.json).
 
 The observation retains only bounded values and a delivery identity; it adds no native resource or worker. T1694 still must connect it to draft settings and explicit override intent. T1569 remains incomplete until that UI/reconnect behavior is verified.
+
+## T1694 — retain only explicit tablet stream overrides (2026-11-22)
+
+Current paired host observations seed the tablet settings. Apply sends only edited fields; unchanged Apply sends nothing. Explicit fields persist independently and reconnect resends only those fields. Use host settings removes stored and retained intent and invalidates old settings notices; it does not cancel writes already accepted by the socket or undo host changes. Rejection restores confirmed values only for previously explicit fields. Old preference APIs/keys have no migration or fallback.
+
+All eight original UI regression cases failed before the change. All 333 selected Android API-27/34 cases now pass, including 34 new T1694 cases for sparse wire/persistence, host refresh, draft edits, reconnect, clear, stale responses and invalid boundaries. Existing short-landscape Apply and camera ownership tests retain real edited Apply actions; generation and rejection oracles remain. All 71 maintained functions/constructors/callbacks measure 100% line coverage; all 871 measured functions meet complexity ≤9 (maximum 8). [Evidence](artifacts/2026-11-21-open-items/t1694.json).
+
+The new domain values are bounded immutable records. Control intent and the submitted request remain under the original controller lock; persistence and UI have explicit separate lifetimes. No native worker/resource was added. Tests use Robolectric and fake sockets; installed sessions and the tablet were not changed.

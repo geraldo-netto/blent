@@ -404,8 +404,8 @@ class RegressionTest {
 
     @Test fun t041_oneMbpsSettingMatchesHostMinimum() {
         val prefs = Prefs(app)
-        prefs.bitrateKbps = 1000
-        assertEquals(1000, prefs.bitrateKbps)
+        prefs.streamOverrides = StreamOverrides(bitrateKbps = 1000)
+        assertEquals(1000, prefs.streamOverrides.bitrateKbps)
     }
 
     @Test fun t042_controlSocketPingsDetectDeadLinks() {
@@ -633,7 +633,7 @@ class RegressionTest {
         try {
             applyStreamSettings(prefs, null, receiver, 5000, 30)
             assertEquals(30, receiver.streamFps)
-            assertEquals(30, prefs.fps)
+            assertEquals(30, prefs.streamOverrides.fps)
             assertNotSame("New rate needs a fresh decoder session", previous, get(receiver, "job"))
             assertTrue(get(receiver, "isRunning") as Boolean)
         } finally { receiver.stop() }

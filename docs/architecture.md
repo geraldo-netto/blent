@@ -995,8 +995,9 @@ malformed formats stop video instead of configuring an unsupported size. VP9/AV1
 come from the same encoder-settings read guard; both are omitted when no shared
 settings source exists. Android exposes the validated pair as an observation
 bound to the original control connection. Missing or malformed members cannot
-form a pair; connection cutoff clears the observation. This observation alone
-does not change saved tablet overrides or the settings UI.
+form a pair; connection cutoff clears the observation. The coordinator uses the
+current observation to seed the settings UI without creating saved overrides.
+Draft edits keep their chosen fields while untouched fields follow host updates.
 `width` and `height` describe the requested virtual-display geometry before
 stream scaling. They share the same settings snapshot as FPS, codec and encoded
 dimensions, including after negotiation and reconnect. Before negotiation the
@@ -1054,7 +1055,12 @@ Compose rendering (`BlentUi.kt`) observes `StreamPresentation` and immutable
 `SettingsValues`; it emits `SettingsEvent` commands instead of accessing Prefs,
 VideoReceiver or TouchCapture. The settings sheet composes focused display,
 orientation, mode, stream and update sections. Draft bitrate/FPS changes still
-require Apply; local display controls apply immediately. Recomposition does not
+require Apply, which sends only fields edited away from current host values.
+Persisted overrides contain only explicit fields and are resent on reconnect.
+The clear action removes retained intent and revokes outstanding settings notices;
+it does not undo already accepted host changes. Rejections retain only previously
+explicit fields, updated to the confirmed host values. Local display controls apply
+immediately. Recomposition does not
 create/restart a session, and queued video/control callbacks retain their
 ordering and generation checks. Hidden statistics no longer start a one-second
 presentation sampling loop; visible statistics still update once per second.

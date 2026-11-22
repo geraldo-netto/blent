@@ -162,7 +162,7 @@ class DisplayActivityLifecycleTest {
             rig.session.handle(SettingsEvent.Stream(15000, 30))
             rig.until { rig.settled == 2 }
             assertEquals(2, rig.requests.size)
-            assertEquals(15000, rig.prefs.bitrateKbps)
+            assertEquals(15000, rig.prefs.streamOverrides.bitrateKbps)
             rig.signal(3, 1, true); rig.awaitRequests(3)
         } finally { rig.close() }
     }
@@ -172,14 +172,15 @@ class DisplayActivityLifecycleTest {
         try {
             rig.signal(1, 0, true, true); rig.awaitRequests(1)
             rig.signal(2, 1, false)
-            rig.control.onSettingsRejected!!.invoke(RejectedStreamSettings("rejected", 12000, 60, rig.control.settingsSnapshot))
+            rig.control.onSettingsRejected!!.invoke(RejectedStreamSettings("rejected", 12000, 60, rig.control.settingsSnapshot, StreamOverrides()))
             // Execute the settings callback first, independent of UI hint scheduling.
             val pending = ArrayList<() -> Unit>()
             while (true) { pending.add(rig.actions.poll() ?: break) }
             pending.asReversed().forEach { it() }
             rig.until { rig.settled >= 1 }
             assertEquals("T1057 rejected settings reopened a paused display", 1, rig.requests.size)
-            assertEquals(60, rig.prefs.fps)
+            assertTrue(rig.prefs.streamOverrides.empty)
+            assertEquals(60, rig.session.settings.fps)
         } finally { rig.close() }
     }
 

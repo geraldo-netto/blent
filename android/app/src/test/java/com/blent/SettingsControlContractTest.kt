@@ -93,8 +93,8 @@ class SettingsControlContractTest {
         compose.onNodeWithText("Apply").performScrollTo().performClick()
         compose.runOnIdle {
             assertTrue(events.contains(SettingsEvent.Stream(60000, 30)))
-            assertEquals(60000, prefs.bitrateKbps)
-            assertEquals(30, prefs.fps)
+            assertEquals(60000, prefs.streamOverrides.bitrateKbps)
+            assertEquals(30, prefs.streamOverrides.fps)
             assertEquals(1, dismissals)
         }
         toggleBeside("Graphics tablet").performScrollTo().performClick()
@@ -118,7 +118,7 @@ class SettingsControlContractTest {
             compose.onNodeWithText("Bitrate: $value Mbps").assertExists()
         }
         compose.onNodeWithText("Apply").performScrollTo().performClick()
-        compose.runOnIdle { assertTrue(events.contains(SettingsEvent.Stream(20000, Prefs.DEFAULT_FPS))) }
+        compose.runOnIdle { assertTrue(events.none { it is SettingsEvent.Stream }) }
     }
 
     @Test fun t1570ExistingFractionalBitrateLabelMatchesSubmittedKilobits() {
@@ -129,7 +129,77 @@ class SettingsControlContractTest {
         compose.onNodeWithText("Advanced video settings").performScrollTo().performClick()
         compose.onNodeWithText("Bitrate: 25.005 Mbps").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("Apply").performScrollTo().performClick()
-        compose.runOnIdle { assertTrue(events.contains(SettingsEvent.Stream(25005, Prefs.DEFAULT_FPS))) }
+        compose.runOnIdle { assertTrue(events.none { it is SettingsEvent.Stream }) }
+    }
+
+    @Test fun t1694ApplyingAnUntouchedDraftSendsNoStreamOverride() {
+        val events = mutableListOf<SettingsEvent>()
+        compose.setContent { BlentTheme {
+            SettingsSheet(SettingsValues(bitrateKbps = 25005, fps = 60), null, {}, false, {},
+                onSettingsEvent = events::add)
+        } }
+        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.runOnIdle { assertTrue("T1694 unchanged settings became an override", events.none { it is SettingsEvent.Stream }) }
+    }
+
+    @Test fun t1694FpsOnlyEditDoesNotSubmitUnchangedBitrate() {
+        val events = mutableListOf<SettingsEvent>()
+        compose.setContent { BlentTheme {
+            SettingsSheet(SettingsValues(bitrateKbps = 25005, fps = 60), null, {}, false, {},
+                onSettingsEvent = events::add)
+        } }
+        compose.onNodeWithText("30 fps").performScrollTo().performClick()
+        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.runOnIdle {
+            val event = events.filterIsInstance<SettingsEvent.Stream>().single()
+            assertEquals(30, event.fps)
+            assertNull("T1694 unedited bitrate was submitted", event.bitrate)
+        }
+    }
+
+    @Test fun t1694BitrateOnlyEditDoesNotSubmitUnchangedFps() {
+        val events = mutableListOf<SettingsEvent>()
+        compose.setContent { BlentTheme {
+            SettingsSheet(SettingsValues(bitrateKbps = 20000, fps = 90), null, {}, false, {},
+                onSettingsEvent = events::add)
+        } }
+        compose.onNodeWithText("Advanced video settings").performScrollTo().performClick()
+        bitrateSlider().performScrollTo().performSemanticsAction(SemanticsActions.SetProgress) { it(25f) }
+        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.runOnIdle {
+            val event = events.filterIsInstance<SettingsEvent.Stream>().single()
+            assertEquals(25000, event.bitrate)
+            assertNull("T1694 unedited FPS was submitted", event.fps)
+        }
+    }
+
+    @Test fun t1694StoredStreamOverridesOfferUseHostSettings() {
+        val prefs = Prefs(RuntimeEnvironment.getApplication()).apply { checkUpdates = false }
+        val session = SessionCoordinator(prefs, { it() }, null, null)
+        try {
+            session.handle(SettingsEvent.Stream(25000, 90))
+            compose.setContent { BlentTheme {
+                SettingsSheet(session.settings, null, {}, false, {}, onSettingsEvent = session::handle)
+            } }
+            compose.onNodeWithText("Use host settings").performScrollTo().assertIsDisplayed().performClick()
+            compose.runOnIdle { assertTrue(prefs.streamOverrides.empty) }
+            compose.onNodeWithText("Use host settings").assertDoesNotExist()
+        } finally { session.stop() }
+    }
+
+    @Test fun t1694HostRefreshPreservesDraftAndRefreshesUntouchedFields() {
+        val settings = androidx.compose.runtime.mutableStateOf(SettingsValues())
+        val events = mutableListOf<SettingsEvent>()
+        compose.setContent { BlentTheme {
+            SettingsSheet(settings.value, null, {}, false, {}, onSettingsEvent = events::add)
+        } }
+        compose.onNodeWithText("30 fps").performScrollTo().performClick()
+        compose.runOnIdle { settings.value = settings.value.copy(bitrateKbps = 25005, fps = 90) }
+        compose.onNodeWithText("30 fps").assertIsSelected()
+        compose.onNodeWithText("Advanced video settings").performScrollTo().performClick()
+        compose.onNodeWithText("Bitrate: 25.005 Mbps").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.runOnIdle { assertEquals(listOf(SettingsEvent.Stream(null, 30)), events) }
     }
 
     private fun bitrateSlider() = compose.onNode(SemanticsMatcher("stream bitrate range") {
