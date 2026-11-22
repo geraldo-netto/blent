@@ -80,3 +80,35 @@ Local Rust syntax complexity remains <=9 throughout changed Rust files. Existing
 Windows fixture constructors received mechanical current-API conversions only;
 Windows native validation and feature work remain paused, with no support claim.
 Release-bundle rebuild and notice attribution remain T1734 integration work.
+
+## T1738: measured WebSocket read capacity
+
+Keep 4 KiB for interactive input. 128 KiB improves large synthetic bursts but
+regresses the representative small-frame workload. The benchmark is retained as
+`cargo run --release -p blent --example websocket_buffers -- --buffer-kib 128`;
+`--payload`, `--clients`, `--frames` and `--burst` select bounded workloads.
+
+72 fresh-process runs: twelve alternating pairs for each of three workloads,
+CPU affinity 2,4, two Tokio workers, AMD Ryzen 9 7945HX. Every received payload is
+compared against the transmitted bytes. Each case owns its listener/socket pair;
+all task outcomes are joined, including failures. No tablet service is accessed.
+
+| Workload | 4 KiB median payload throughput | 128 KiB | Interactive p95, 4 / 128 KiB |
+| --- | --- | --- | --- |
+| 200-byte interactive, 8 clients × 10,000 frames | 39.59 MiB/s | 33.67 MiB/s | 50.32 / 62.10 µs |
+| 200-byte bursts, 8 clients × 10,000 frames | 146.80 MiB/s | 109.68 MiB/s | — |
+| 64-KiB bursts, 4 clients × 1,024 frames | 2625.47 MiB/s | 2892.11 MiB/s | — |
+
+Interactive process VmHWM medians were 5260 / 5620 KiB. Reserved server read
+capacity for eight connections is 32 / 1024 KiB; this is distinct from measured
+whole-process residency. Final observations use Linux VmHWM because getrusage's
+high-water mark can retain launcher memory across exec. An initial unpinned pilot
+was exploratory and is not used for these numbers. Other platforms report no
+memory measurement. Raw observations and source hash are retained in
+`artifacts/2026-11-22-dependencies/t1738-results.json`.
+
+The comparison concerns buffer sizes within tungstenite 0.30, not old-versus-new
+library performance or physical USB/Wi-Fi performance. Camera/display pixels do
+not travel through this input WebSocket. Nine benchmark functions were measured
+by the local Rust syntax checker (syn 2.0.119); maximum cyclomatic complexity 7.
+Benchmarks are exempt from production line-coverage gates under AGENTS.md.

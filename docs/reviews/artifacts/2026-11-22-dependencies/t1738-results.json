@@ -1,0 +1,1440 @@
+{
+  "scope": "Loopback paired TCP/WebSocket echoes, 2 Tokio workers, CPU affinity 2,4; 12 alternating paired runs per workload; no tablet/camera interaction",
+  "toolchain": "Rust 1.100.0, tungstenite 0.30.0; optimized example",
+  "cpu": "AMD Ryzen 9 7945HX",
+  "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.39",
+  "memory_scope": "Linux /proc/self/status VmHWM for the benchmark executable; configured server capacity is reported separately",
+  "source_sha256": "4eccc821b6eeac548193b6d37fbcc1d563c4ca5b59e4b870dc1c84ab5e7bad91",
+  "summaries": [
+    {
+      "workload": "interactive",
+      "buffer_kib": 4,
+      "runs": 12,
+      "seconds": 0.3854423515,
+      "payload_mib_per_second": 39.58776027459439,
+      "peak_rss_kib": 5260.0,
+      "roundtrip_p50_ns": 36115.0,
+      "roundtrip_p95_ns": 50323.0
+    },
+    {
+      "workload": "interactive",
+      "buffer_kib": 128,
+      "runs": 12,
+      "seconds": 0.45315152950000004,
+      "payload_mib_per_second": 33.67259873271036,
+      "peak_rss_kib": 5620.0,
+      "roundtrip_p50_ns": 43224.0,
+      "roundtrip_p95_ns": 62095.5
+    },
+    {
+      "workload": "small_burst",
+      "buffer_kib": 4,
+      "runs": 12,
+      "seconds": 0.10395004599999999,
+      "payload_mib_per_second": 146.80246101387178,
+      "peak_rss_kib": 4512.0,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null
+    },
+    {
+      "workload": "small_burst",
+      "buffer_kib": 128,
+      "runs": 12,
+      "seconds": 0.139117895,
+      "payload_mib_per_second": 109.68311079472687,
+      "peak_rss_kib": 5836.0,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null
+    },
+    {
+      "workload": "large_burst",
+      "buffer_kib": 4,
+      "runs": 12,
+      "seconds": 0.0975074485,
+      "payload_mib_per_second": 2625.4693047042547,
+      "peak_rss_kib": 5060.0,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null
+    },
+    {
+      "workload": "large_burst",
+      "buffer_kib": 128,
+      "runs": 12,
+      "seconds": 0.0885166035,
+      "payload_mib_per_second": 2892.114936988859,
+      "peak_rss_kib": 5352.0,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null
+    }
+  ],
+  "runs": [
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 36.27381652999109,
+      "peak_rss_kib": 5392,
+      "roundtrip_p50_ns": 40449,
+      "roundtrip_p95_ns": 61159,
+      "seconds": 0.420655738,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 0,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 32.84887097295966,
+      "peak_rss_kib": 5612,
+      "roundtrip_p50_ns": 43905,
+      "roundtrip_p95_ns": 64185,
+      "seconds": 0.464514871,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 0,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 33.82129243103146,
+      "peak_rss_kib": 5520,
+      "roundtrip_p50_ns": 42984,
+      "roundtrip_p95_ns": 61509,
+      "seconds": 0.451159254,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 1,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 39.543505940872585,
+      "peak_rss_kib": 5292,
+      "roundtrip_p50_ns": 36140,
+      "roundtrip_p95_ns": 50518,
+      "seconds": 0.38587345,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 1,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 39.661492249353934,
+      "peak_rss_kib": 5300,
+      "roundtrip_p50_ns": 36110,
+      "roundtrip_p95_ns": 50308,
+      "seconds": 0.384725541,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 2,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 33.68252253803371,
+      "peak_rss_kib": 5308,
+      "roundtrip_p50_ns": 43224,
+      "roundtrip_p95_ns": 62190,
+      "seconds": 0.453018002,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 2,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 33.66617413550478,
+      "peak_rss_kib": 5600,
+      "roundtrip_p50_ns": 43154,
+      "roundtrip_p95_ns": 62171,
+      "seconds": 0.453237989,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 3,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 39.71286987994734,
+      "peak_rss_kib": 5300,
+      "roundtrip_p50_ns": 35980,
+      "roundtrip_p95_ns": 50027,
+      "seconds": 0.384227811,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 3,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 39.44795517240859,
+      "peak_rss_kib": 5216,
+      "roundtrip_p50_ns": 36411,
+      "roundtrip_p95_ns": 50698,
+      "seconds": 0.386808112,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 4,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 33.71734767598107,
+      "peak_rss_kib": 5828,
+      "roundtrip_p50_ns": 43124,
+      "roundtrip_p95_ns": 61880,
+      "seconds": 0.4525501,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 4,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 33.67902332991594,
+      "peak_rss_kib": 5800,
+      "roundtrip_p50_ns": 43224,
+      "roundtrip_p95_ns": 61950,
+      "seconds": 0.45306507,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 5,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 39.77373357283192,
+      "peak_rss_kib": 5176,
+      "roundtrip_p50_ns": 35899,
+      "roundtrip_p95_ns": 49747,
+      "seconds": 0.383639847,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 5,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 39.62036169115211,
+      "peak_rss_kib": 5220,
+      "roundtrip_p50_ns": 36231,
+      "roundtrip_p95_ns": 50438,
+      "seconds": 0.385124931,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 6,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 33.125911106761805,
+      "peak_rss_kib": 5652,
+      "roundtrip_p50_ns": 43484,
+      "roundtrip_p95_ns": 62972,
+      "seconds": 0.460630019,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 6,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 33.49978793895417,
+      "peak_rss_kib": 5692,
+      "roundtrip_p50_ns": 43395,
+      "roundtrip_p95_ns": 62562,
+      "seconds": 0.455489124,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 7,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 39.639100786712596,
+      "peak_rss_kib": 5204,
+      "roundtrip_p50_ns": 35950,
+      "roundtrip_p95_ns": 49897,
+      "seconds": 0.384942866,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 7,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 39.555158858036656,
+      "peak_rss_kib": 5200,
+      "roundtrip_p50_ns": 36080,
+      "roundtrip_p95_ns": 50218,
+      "seconds": 0.385759772,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 8,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 33.79954669150848,
+      "peak_rss_kib": 5568,
+      "roundtrip_p50_ns": 42943,
+      "roundtrip_p95_ns": 61360,
+      "seconds": 0.451449518,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 8,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 33.59700701706718,
+      "peak_rss_kib": 5628,
+      "roundtrip_p50_ns": 43304,
+      "roundtrip_p95_ns": 61760,
+      "seconds": 0.454171083,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 9,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 39.85425969556029,
+      "peak_rss_kib": 5236,
+      "roundtrip_p50_ns": 35229,
+      "roundtrip_p95_ns": 49546,
+      "seconds": 0.382864697,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 9,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 39.51331728680489,
+      "peak_rss_kib": 5284,
+      "roundtrip_p50_ns": 36120,
+      "roundtrip_p95_ns": 50338,
+      "seconds": 0.386168262,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 10,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 32.981637873659736,
+      "peak_rss_kib": 5640,
+      "roundtrip_p50_ns": 43364,
+      "roundtrip_p95_ns": 63884,
+      "seconds": 0.462644976,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 10,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 33.68764947555681,
+      "peak_rss_kib": 5300,
+      "roundtrip_p50_ns": 43214,
+      "roundtrip_p95_ns": 62020,
+      "seconds": 0.452949057,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "interactive",
+      "repeat": 11,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": false,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 38.929771330265844,
+      "peak_rss_kib": 5308,
+      "roundtrip_p50_ns": 36892,
+      "roundtrip_p95_ns": 52011,
+      "seconds": 0.391956812,
+      "server_read_capacity_bytes": 32768,
+      "workload": "interactive",
+      "repeat": 11,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 145.4301488262117,
+      "peak_rss_kib": 4528,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.104921773,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 0,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 109.41025731362363,
+      "peak_rss_kib": 5864,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.139463972,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 0,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 109.27541500990152,
+      "peak_rss_kib": 5816,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.139636066,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 1,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 154.0250475150977,
+      "peak_rss_kib": 4576,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.099066933,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 1,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 141.23055191902245,
+      "peak_rss_kib": 4616,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.108041701,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 2,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 112.51308805814523,
+      "peak_rss_kib": 5860,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.135617903,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 2,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 112.2889314764598,
+      "peak_rss_kib": 5568,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.13588863,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 3,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 173.26143854128907,
+      "peak_rss_kib": 4628,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.088068004,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 3,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 148.17477320153188,
+      "peak_rss_kib": 4408,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.102978319,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 4,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 110.26069280658011,
+      "peak_rss_kib": 5816,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.138388293,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 4,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 111.88194106654784,
+      "peak_rss_kib": 5844,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.136382949,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 5,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 163.0235079163062,
+      "peak_rss_kib": 4496,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.093598704,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 5,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 149.33002905942448,
+      "peak_rss_kib": 4436,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.102181652,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 6,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 110.24732259458462,
+      "peak_rss_kib": 5884,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.138405076,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 6,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 88.59274858589875,
+      "peak_rss_kib": 5652,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.172235192,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 7,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 136.9056385948566,
+      "peak_rss_kib": 4556,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.111454789,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 7,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 145.16835073573182,
+      "peak_rss_kib": 4392,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.10511099,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 8,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 109.95596427583013,
+      "peak_rss_kib": 5608,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.138771818,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 8,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 108.51419184206065,
+      "peak_rss_kib": 5828,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.140615608,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 9,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 164.7168576146707,
+      "peak_rss_kib": 4540,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.092636475,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 9,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 139.93793638296236,
+      "peak_rss_kib": 4420,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.109039689,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 10,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 108.84217136635385,
+      "peak_rss_kib": 5892,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.140191884,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 10,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 108.40750864485281,
+      "peak_rss_kib": 5868,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.140753987,
+      "server_read_capacity_bytes": 1048576,
+      "workload": "small_burst",
+      "repeat": 11,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 80000,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 8,
+        "frames": 10000,
+        "payload": 200
+      },
+      "payload_mib_per_second": 143.35553606260342,
+      "peak_rss_kib": 4396,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.10644018,
+      "server_read_capacity_bytes": 32768,
+      "workload": "small_burst",
+      "repeat": 11,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2642.877602298849,
+      "peak_rss_kib": 5116,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.096864115,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 0,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2739.197770293015,
+      "peak_rss_kib": 5360,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.09345802,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 0,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2937.1078810394665,
+      "peak_rss_kib": 5088,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.087160571,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 1,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2577.0409409259673,
+      "peak_rss_kib": 5064,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.09933874,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 1,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2747.6672975461042,
+      "peak_rss_kib": 4916,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.093169941,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 2,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2821.1835976032985,
+      "peak_rss_kib": 5344,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.090742056,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 2,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2889.615817901468,
+      "peak_rss_kib": 5360,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.088593092,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 3,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2634.1723398609975,
+      "peak_rss_kib": 4840,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.097184226,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 3,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2667.49281141947,
+      "peak_rss_kib": 4848,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.095970268,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 4,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 3098.688570844282,
+      "peak_rss_kib": 5356,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.082615595,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 4,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2839.3040107243173,
+      "peak_rss_kib": 5388,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.090162941,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 5,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2768.8143422160215,
+      "peak_rss_kib": 5404,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.092458348,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 5,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2616.7662695475124,
+      "peak_rss_kib": 5116,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.097830671,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 6,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2956.157675861445,
+      "peak_rss_kib": 5320,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.086598899,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 6,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 3016.5613222964585,
+      "peak_rss_kib": 5368,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.084864842,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 7,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2590.8147883789084,
+      "peak_rss_kib": 5056,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.098810614,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 7,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2546.3958546824006,
+      "peak_rss_kib": 5092,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.100534251,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 8,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2903.242722523121,
+      "peak_rss_kib": 5348,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.088177264,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 8,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2622.278001171052,
+      "peak_rss_kib": 5328,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.097625042,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 9,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2578.7963826497853,
+      "peak_rss_kib": 5084,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.099271118,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 9,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2411.228753224724,
+      "peak_rss_kib": 4844,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.106169935,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 10,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2894.61405607625,
+      "peak_rss_kib": 5376,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.088440115,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 10,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 128,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2801.392948872062,
+      "peak_rss_kib": 5048,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.09138311,
+      "server_read_capacity_bytes": 524288,
+      "workload": "large_burst",
+      "repeat": 11,
+      "affinity": "2,4"
+    },
+    {
+      "frames": 4096,
+      "options": {
+        "buffer_kib": 4,
+        "burst": true,
+        "clients": 4,
+        "frames": 1024,
+        "payload": 65536
+      },
+      "payload_mib_per_second": 2729.5760299892545,
+      "peak_rss_kib": 4812,
+      "roundtrip_p50_ns": null,
+      "roundtrip_p95_ns": null,
+      "seconds": 0.093787459,
+      "server_read_capacity_bytes": 16384,
+      "workload": "large_burst",
+      "repeat": 11,
+      "affinity": "2,4"
+    }
+  ]
+}
