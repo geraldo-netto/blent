@@ -388,7 +388,11 @@ fn shadow_settings(ui: &mut egui::Ui, options: &mut CameraProfile) {
         options.shadow_mode != ShadowMode::Off,
         egui::Slider::new(&mut options.shadow_strength, 0..=100).suffix("%"),
     );
-    crate::accessibility::field(response, label, "Choose Auto or Manual shadow correction to adjust strength.");
+    crate::accessibility::field(
+        response,
+        label,
+        "Choose Auto or Manual shadow correction to adjust strength.",
+    );
     ui.end_row();
 }
 
@@ -399,10 +403,18 @@ fn advanced_profile(ui: &mut egui::Ui, options: &mut CameraProfile) {
         .on_hover_text("Default: 2. More threads can process frames faster but use more CPU and memory. Choose 1 to minimize worker resources. Requires Restart camera.");
     ui.end_row();
     let label = ui.label("Frame rate").id;
-    crate::accessibility::field(ui.add(egui::Slider::new(&mut options.fps, 5..=30).suffix(" FPS")), label, "Camera frame rate");
+    crate::accessibility::field(
+        ui.add(egui::Slider::new(&mut options.fps, 5..=30).suffix(" FPS")),
+        label,
+        "Camera frame rate",
+    );
     ui.end_row();
     let label = ui.label("Camera bitrate ceiling").id;
-    crate::accessibility::field(ui.add(egui::Slider::new(&mut options.bitrate, 256..=20000).suffix(" kbit/s")), label, "Maximum camera bitrate");
+    crate::accessibility::field(
+        ui.add(egui::Slider::new(&mut options.bitrate, 256..=20000).suffix(" kbit/s")),
+        label,
+        "Maximum camera bitrate",
+    );
     ui.end_row();
     ui.label("Adaptive camera bitrate");
     ui.checkbox(
@@ -964,8 +976,10 @@ mod close_tests {
 
     #[test]
     fn t1669_camera_close_retains_pending_start_and_original_retirement() {
-        let mut panel = Panel::default();
-        panel.pending = Some(CameraProfile::default());
+        let mut panel = Panel {
+            pending: Some(CameraProfile::default()),
+            ..Default::default()
+        };
         assert!(panel.is_sharing());
         panel.pending = None;
         let (start, acknowledgement) = blent_config::media_start::Start::pending();

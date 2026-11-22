@@ -1,0 +1,22 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.63s
+     Running unittests src/main.rs (target/debug/build/blent-gui/ac7a5b3c8d48d8bb/out/blent_gui-ac7a5b3c8d48d8bb)
+
+running 14 tests
+test audio_settings::close_tests::t1669_audio_close_retains_pending_start_and_original_retirement ... ok
+test camera_settings::close_tests::t1669_camera_close_retains_pending_start_and_original_retirement ... ok
+test tests::close_tests::native::t1669_native_close_reactivate_and_explicit_stop_on_private_display ... ok
+test tests::close_tests::native::t1783_native_clean_startup_closes_without_a_prompt ... ok
+test tests::close_tests::t1669_close_preserves_camera_and_reactivation_restores_original_state ... ok
+test tests::close_tests::t1669_close_preserves_each_audio_direction_independently ... ok
+test tests::close_tests::t1669_close_retains_camera_intent_and_allows_terminal_states_to_exit ... ok
+test tests::close_tests::t1669_ordinary_frames_do_not_minimize_or_schedule_close_work ... ok
+test tests::close_tests::t1783_dirty_or_pending_preferences_cancel_native_close ... ok
+test tests::close_tests::t1783_failed_save_keeps_dialog_and_draft_for_retry ... ok
+test tests::close_tests::t1783_keep_editing_and_discard_are_explicit_choices ... ok
+test tests::close_tests::t1783_pending_save_cannot_be_discarded_or_duplicated_on_close ... ok
+test tests::close_tests::t1783_save_on_close_waits_and_does_not_restart_displays ... ok
+test tests::media_validation::t1553_save_discloses_invalid_media_target_and_remains_disabled ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 287 filtered out; finished in 1.16s
+
