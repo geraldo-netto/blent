@@ -1,0 +1,86 @@
+[
+  {
+    "file": "gui/src/action_feedback.rs",
+    "name": "new",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/action_feedback.rs",
+    "name": "completed",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/action_feedback.rs",
+    "name": "lost_result",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/action_feedback.rs",
+    "name": "recovery",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "run_action",
+    "covered": 7,
+    "total": 7
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "change_service_state",
+    "covered": 13,
+    "total": 15
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "poll_action",
+    "covered": 18,
+    "total": 19
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_system_setup",
+    "covered": 20,
+    "total": 20
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "request_daemon_state",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "setting_plug_and_play",
+    "covered": 23,
+    "total": 23
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "display_action",
+    "covered": 18,
+    "total": 18
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "activity",
+    "covered": 11,
+    "total": 11
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "card",
+    "covered": 27,
+    "total": 27
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "resource_error",
+    "covered": 8,
+    "total": 8
+  }
+]

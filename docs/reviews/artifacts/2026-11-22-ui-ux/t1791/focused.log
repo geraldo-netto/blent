@@ -1,0 +1,14 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.37s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 3 tests
+test resource_workspace::tests::t1791_resource_recovery_keeps_diagnostics_expandable ... ok
+test tests::overview::t1791_lost_action_result_names_its_scope_and_next_step ... ok
+test tests::overview::t1791_pending_and_completed_action_keep_original_identity ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 277 filtered out; finished in 0.01s
+
+
+    Finished report saved to /tmp/blent-t1791.lcov

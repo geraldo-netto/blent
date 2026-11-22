@@ -47,7 +47,7 @@ fn verify_controls(mode: u8, running: bool) {
     let (_root, mut app) = settings_test_app(Tab::Settings);
     let (sender, receiver) = std::sync::mpsc::channel();
     match mode {
-        1 => app.action = Some(receiver),
+        1 => app.action = Some(action_feedback::Job::new(FeedbackArea::Display, "Fixture action", receiver)),
         2 => app.apply(false),
         _ => {}
     }

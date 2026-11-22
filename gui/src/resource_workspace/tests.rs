@@ -624,3 +624,25 @@ fn t1789_saved_target_can_be_restored_without_starting_camera() {
     assert!(app.camera.backend.is_none());
     frame(&mut app, &context, vec![]);
 }
+
+fn recovery_frame(app: &mut crate::App, context: &egui::Context, events: Vec<egui::Event>) -> Vec<(String, egui::Rect)> {
+    crate::tests::settings_test_frame(app, context, events, |_app, ui| {
+        ui.vertical(|ui| {
+            card(ui, Resource::Camera, ResourceView::Here(Activity::Failed), false, Some("fixture backend diagnostic"));
+        });
+    })
+}
+
+#[test]
+fn t1791_resource_recovery_keeps_diagnostics_expandable() {
+    let (_root, mut app) = settings_test_app(crate::Tab::Overview);
+    let context = egui::Context::default();
+    recovery_frame(&mut app, &context, vec![]);
+    let labels = recovery_frame(&mut app, &context, vec![]);
+    assert!(labels.iter().any(|(label, _)| label.contains("open Configure for recovery details")));
+    assert!(!labels.iter().any(|(label, _)| label == "fixture backend diagnostic"));
+    click_settings_text(&mut app, &context, "Details", recovery_frame);
+    let labels = recovery_frame(&mut app, &context, vec![]);
+    assert!(labels.iter().any(|(label, _)| label == "fixture backend diagnostic"));
+    assert_eq!(activity(Activity::Unknown), "Activity unconfirmed · open Configure to check status");
+}

@@ -1,0 +1,19 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.91s
+     Running unittests src/main.rs (target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 1 test
+test tests::overview::t1791_lost_action_result_names_its_scope_and_next_step ... 
+thread 'tests::overview::t1791_lost_action_result_names_its_scope_and_next_step' (706190) panicked at gui/src/tests/overview.rs:333:9:
+T1791 missing recovery: Action failed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    tests::overview::t1791_lost_action_result_names_its_scope_and_next_step
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 275 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

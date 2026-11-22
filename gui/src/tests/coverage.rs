@@ -181,17 +181,17 @@ fn t1230_lower_stream_presets_save_exact_output_without_starting_display() {
 fn t497_action_retirement_reports_failure_and_refreshes_status() {
     let (_settings_directory, mut app) = settings_test_app(Tab::Video);
     let (tx, rx) = std::sync::mpsc::channel();
-    app.action = Some(rx);
-    app.run_action(FeedbackArea::Settings, || {
+    app.action = Some(action_feedback::Job::new(FeedbackArea::Settings, "Fixture action", rx));
+    app.run_action(FeedbackArea::Settings, "Fixture action", || {
         panic!("T497 busy action must not dispatch")
     });
     drop(tx);
     app.poll_action();
-    assert_eq!(app.message, "Action failed");
+    assert_eq!(app.message, "Fixture action returned no result; its effect is unconfirmed. Check saved preferences in General before retrying.");
     assert!(!app.busy());
-    app.run_action(FeedbackArea::Settings, || "Completed fixture action".into());
+    app.run_action(FeedbackArea::Settings, "Fixture action", || "Completed fixture action".into());
     wait_for_work(&mut app);
-    assert_eq!(app.message, "Completed fixture action");
+    assert_eq!(app.message, "Fixture action: Completed fixture action");
 }
 
 #[test]
@@ -248,10 +248,10 @@ fn t497_setup_and_lifecycle_actions_use_private_stub_commands() {
         setup_frame,
     );
     wait_for_work(&mut app);
-    assert_eq!(app.message, "System setup complete");
+    assert_eq!(app.message, "Set up display and input: System setup complete");
     for (running, expected) in [
-        (false, "Display service starting…"),
-        (true, "Display service stopped"),
+        (false, "Start Blent service: Display service starting…"),
+        (true, "Stop Blent service: Display service stopped"),
     ] {
         app.status.lock().unwrap().daemon_running = running;
         click_settings_text(
@@ -280,7 +280,7 @@ fn autostart_actions(app: &mut App, ctx: &egui::Context) {
         app.status.lock().unwrap().autostart = enabled;
         click_settings_text(app, ctx, "Start Blent with the desktop", autostart_frame);
         wait_for_work(app);
-        assert_eq!(app.message, message);
+        assert_eq!(app.message, format!("Change login startup preference: {message}"));
     }
 }
 

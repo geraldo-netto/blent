@@ -5,6 +5,7 @@ mod monitor_inventory;
 mod overview;
 
 mod about;
+mod action_feedback;
 #[cfg(target_os = "linux")]
 mod activation;
 mod audio_settings;
@@ -144,7 +145,7 @@ struct App {
     /// Newer release, if the check made when the window opened found one.
     update: Arc<Mutex<Option<String>>>,
     tab: Tab,
-    action: Option<std::sync::mpsc::Receiver<String>>,
+    action: Option<action_feedback::Job>,
 }
 
 /// The settings are more than fit in one column, so they are grouped.
@@ -334,11 +335,11 @@ impl App {
         }
     }
 
-    fn run_action(&mut self, area: FeedbackArea, action: impl FnOnce() -> String + Send + 'static) {
+    fn run_action(&mut self, area: FeedbackArea, operation: &str, action: impl FnOnce() -> String + Send + 'static) {
         if !self.busy() {
             self.feedback_area = area;
-            self.message = "Working…".into();
-            self.action = Some(dispatch_action(action));
+            self.message = format!("{operation}…");
+            self.action = Some(action_feedback::Job::new(area, operation, dispatch_action(action)));
         }
     }
 
@@ -382,6 +383,32 @@ impl App {
             Err(error) => self.message = error,
         }
     }
+}
+
+fn change_service_state(running: bool) -> String {
+            if running {
+                stop_daemon()
+                    .map(|_| {
+                        if capabilities().display {
+                            "Display service stopped"
+                        } else {
+                            "Blent daemon stopped"
+                        }
+                        .into()
+                    })
+                    .unwrap_or_else(|e| e)
+            } else {
+                start_daemon()
+                    .map(|_| {
+                        if capabilities().display {
+                            "Display service starting…"
+                        } else {
+                            "Blent daemon starting…"
+                        }
+                        .into()
+                    })
+                    .unwrap_or_else(|e| e)
+            }
 }
 
 fn bitrate_slider(ui: &mut egui::Ui, bitrate: &mut u32) -> egui::Response {
@@ -506,14 +533,16 @@ impl App {
     fn poll_action(&mut self) {
         let was_busy = self.busy();
         self.poll_save();
-        if let Some(receiver) = &self.action {
-            match receiver.try_recv() {
+        if let Some(job) = &self.action {
+            match job.receiver.try_recv() {
                 Ok(message) => {
-                    self.message = message;
+                    self.message = job.completed(&message);
+                    self.feedback_area = job.area;
                     self.action = None;
                 }
                 Err(std::sync::mpsc::TryRecvError::Disconnected) => {
-                    self.message = "Action failed".into();
+                    self.message = job.lost_result();
+                    self.feedback_area = job.area;
                     self.action = None;
                 }
                 Err(std::sync::mpsc::TryRecvError::Empty) => {}
@@ -663,7 +692,7 @@ impl App {
             .clicked()
         {
             let max_tablets = self.cfg.max_tablets;
-            self.run_action(FeedbackArea::Setup, move || {
+            self.run_action(FeedbackArea::Setup, "Set up display and input", move || {
                 run_system_setup(max_tablets)
                     .map(|_| "System setup complete".into())
                     .unwrap_or_else(|e| e)
@@ -761,31 +790,8 @@ impl App {
     }
 
     fn request_daemon_state(&mut self, running: bool) {
-        self.run_action(FeedbackArea::Display, move || {
-            if running {
-                stop_daemon()
-                    .map(|_| {
-                        if capabilities().display {
-                            "Display service stopped"
-                        } else {
-                            "Blent daemon stopped"
-                        }
-                        .into()
-                    })
-                    .unwrap_or_else(|e| e)
-            } else {
-                start_daemon()
-                    .map(|_| {
-                        if capabilities().display {
-                            "Display service starting…"
-                        } else {
-                            "Blent daemon starting…"
-                        }
-                        .into()
-                    })
-                    .unwrap_or_else(|e| e)
-            }
-        });
+        let operation = if running { "Stop Blent service" } else { "Start Blent service" };
+        self.run_action(FeedbackArea::Display, operation, move || change_service_state(running));
     }
 
     fn setting_encoder(&mut self, ui: &mut egui::Ui) {
@@ -1115,7 +1121,7 @@ impl App {
                 )
                 .changed()
             {
-                self.run_action(FeedbackArea::Settings, move || {
+                self.run_action(FeedbackArea::Settings, "Change login startup preference", move || {
                     set_autostart(auto)
                         .map(|_| {
                             if auto {
@@ -1726,12 +1732,12 @@ mod tests {
             "T409: idle UI keeps scheduling repaint"
         );
         let (done, receiver) = std::sync::mpsc::channel();
-        app.action = Some(receiver);
+        app.action = Some(action_feedback::Job::new(FeedbackArea::Settings, "Fixture action", receiver));
         assert!(frame(&mut app, 11.0) <= Duration::from_millis(100));
         done.send("Completed".into()).unwrap();
         frame(&mut app, 12.0);
         assert!(!app.busy());
-        assert_eq!(app.message, "Completed");
+        assert_eq!(app.message, "Fixture action: Completed");
     }
 
     #[test]

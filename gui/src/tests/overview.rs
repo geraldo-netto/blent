@@ -86,7 +86,7 @@ fn t1268_navigation_retains_drafts_without_starting_media() {
 fn t1268_display_operation_feedback_is_visible_by_its_control() {
     let (_root, mut app) = settings_test_app(Tab::default());
     let (sender, receiver) = std::sync::mpsc::channel();
-    app.action = Some(receiver);
+    app.action = Some(action_feedback::Job::new(FeedbackArea::Display, "Fixture action", receiver));
     app.feedback_area = FeedbackArea::Display;
     app.message = "Starting selected display service".into();
     let labels = settings_test_frame(&mut app, &egui::Context::default(), vec![], |app, ui| {
@@ -102,7 +102,7 @@ fn t1268_display_operation_feedback_is_visible_by_its_control() {
         .send("Display service failed: fixture error".into())
         .unwrap();
     app.poll_action();
-    assert_eq!(app.message, "Display service failed: fixture error");
+    assert_eq!(app.message, "Fixture action: Display service failed: fixture error");
     assert!(!app.busy());
 }
 
@@ -319,4 +319,35 @@ fn t1781_settings_parent_stays_selected_on_every_child() {
         assert_eq!(selected, expected, "T1781 parent selection");
         assert!(app.tab == tab, "render must preserve current child");
     }
+}
+
+#[test]
+fn t1791_lost_action_result_names_its_scope_and_next_step() {
+    for area in [FeedbackArea::Display, FeedbackArea::Setup, FeedbackArea::Settings] {
+        let (_root, mut app) = settings_test_app(Tab::Settings);
+        let (sender, receiver) = std::sync::mpsc::channel();
+        app.action = Some(action_feedback::Job::new(area, "Fixture action", receiver));
+        app.feedback_area = FeedbackArea::default();
+        drop(sender);
+        app.poll_action();
+        assert!(app.message.contains("Check"), "T1791 missing recovery: {}", app.message);
+        assert!(app.message.starts_with("Fixture action returned no result; its effect is unconfirmed."));
+        assert!(app.feedback_area == area);
+        assert!(!app.busy());
+    }
+}
+
+#[test]
+fn t1791_pending_and_completed_action_keep_original_identity() {
+    let (_root, mut app) = settings_test_app(Tab::Settings);
+    let (sender, receiver) = std::sync::mpsc::channel();
+    app.action = Some(action_feedback::Job::new(FeedbackArea::Display, "Start display for Tablet A", receiver));
+    app.poll_action();
+    assert!(app.busy());
+    app.feedback_area = FeedbackArea::Settings;
+    sender.send("Request accepted; video unconfirmed".into()).unwrap();
+    app.poll_action();
+    assert_eq!(app.message, "Start display for Tablet A: Request accepted; video unconfirmed");
+    assert!(app.feedback_area == FeedbackArea::Display);
+    assert!(!app.busy());
 }

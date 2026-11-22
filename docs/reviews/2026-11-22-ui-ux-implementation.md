@@ -105,3 +105,23 @@ lifecycle test passes. Three changed methods measure 81.0–100% line coverage;
 190 measured functions have complexity <=9.
 [Evidence](artifacts/2026-11-22-ui-ux/t1792/). Widget borrows remain frame-local;
 existing action workers and service ownership are unchanged.
+
+## T1791 — contextual action recovery
+
+Each action receipt owns its original operation and feedback area. Completion and
+lost-result messages retain that identity, distinguish an unconfirmed effect from
+failure, and name a supported next check. Resource errors expose recovery guidance
+with expandable diagnostics. Admission and native retirement are unchanged; losing
+an already-disconnected receipt does not settle delegated effects.
+
+The original recovery regression failed; three targeted regressions pass, including
+pending/completed identity and diagnostic disclosure. The full GUI run passed
+274/278 tests: two exact-message fixtures needed the intentional operation prefix
+and now pass; two responsive-layout failures are tracked separately as T1793.
+The private-command service/setup regression also passes. All 14 maintained
+production methods measure 86.7–100% line coverage; 289 measured functions have
+complexity <=9. [Evidence](artifacts/2026-11-22-ui-ux/t1791/).
+
+One bounded operation string travels with the existing single receiver. It is
+released with that receipt on completion/disconnection; no worker, queue or native
+lease is added. Resource diagnostics remain borrowed during the frame.

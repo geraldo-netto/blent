@@ -206,7 +206,7 @@ fn exercise_display_actions() {
         }
         assert_eq!(
             app.message,
-            "Display request accepted; waiting for tablet state."
+            format!("{} display for first: Display request accepted; waiting for tablet state.", if enabled { "Start" } else { "Stop" })
         );
         status.display.as_mut().unwrap().assignments.clear();
     }

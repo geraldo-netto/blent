@@ -281,7 +281,7 @@ impl App {
             expected: if enabled { None } else { expected },
         };
         let pid = status.daemon_pid;
-        self.run_action(crate::FeedbackArea::Display, move || {
+        self.run_action(crate::FeedbackArea::Display, &format!("{} display for {}", if enabled { "Start" } else { "Stop" }, selected.label()), move || {
             crate::platform::display_command(pid, &command)
         });
     }
@@ -391,14 +391,14 @@ pub(super) fn title(resource: Resource) -> &'static str {
 
 fn activity(value: Activity) -> &'static str {
     match value {
-        Activity::Unknown => "Activity unconfirmed",
+        Activity::Unknown => "Activity unconfirmed · open Configure to check status",
         Activity::Off => "Stopped here",
         Activity::Starting => "Starting…",
         Activity::Waiting => "Waiting for tablet permission or video",
         Activity::InUse => "In use",
         Activity::Paused => "Waiting for host availability",
         Activity::Stopping => "Stopping · waiting for cleanup",
-        Activity::Failed => "Unavailable · inspect settings",
+        Activity::Failed => "Unavailable · open Configure for recovery details",
     }
 }
 
@@ -434,7 +434,7 @@ pub(super) fn card(
             ui.heading(title(resource));
             ui.label(if resource == Resource::Display && view == ResourceView::Here(Activity::InUse) { "Display assigned · video not verified".into() } else { label(view) });
             if let Some(error) = error {
-                egui::ScrollArea::vertical().id_salt("resource-error").max_height(64.0).show(ui, |ui| { ui.colored_label(ui.visuals().error_fg_color, error); });
+                resource_error(ui, error);
             }
             ui.add_space(8.0);
             ui.horizontal_wrapped(|ui| {
@@ -489,3 +489,13 @@ fn buttons(
 
 #[cfg(all(test, target_os = "linux"))]
 mod tests;
+
+/// Frame-local presentation borrows existing bounded backend diagnostics.
+fn resource_error(ui: &mut egui::Ui, error: &str) {
+    ui.label("Open Configure to check permissions and connection status.");
+    ui.collapsing("Details", |ui| {
+        egui::ScrollArea::vertical().id_salt("resource-error").max_height(64.0).show(ui, |ui| {
+            ui.colored_label(ui.visuals().error_fg_color, error);
+        });
+    });
+}
