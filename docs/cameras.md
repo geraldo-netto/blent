@@ -74,10 +74,12 @@ tablet, even if the saved target is automatic or another Overview row is selecte
 Stop the camera before starting it for another tablet; editing the saved target
 alone does not retarget a running session.
 
-The small live preview shows the selected webcam’s exported image, including
-rotation, mirroring and automatic brightness. It uses a thumbnail at up to five updates per second; it
-does not open a second camera. Stopped or stale previews clear rather than
-retaining the last camera image. Select **180°** when the tablet is upside down,
+The live preview shows the selected webcam’s exported image, including rotation,
+mirroring and automatic brightness. It retains up to 640 pixels on its longest
+side and fits a 640×480 area or the available window width, preserving aspect
+ratio. Smaller source images retain their original detail. Preview updates stay
+limited to five per second and do not open a second camera. Stopped or stale
+previews clear rather than retaining the last camera image. Select **180°** when the tablet is upside down,
 the rotation applies live while preserving the exported webcam dimensions.
 
 The camera helper is embedded in the host GUI through a reusable host library.

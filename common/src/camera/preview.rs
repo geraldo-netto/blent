@@ -2,7 +2,7 @@
 use super::Lens;
 use anyhow::{ensure, Result};
 
-const SIDE: usize = 160;
+const SIDE: usize = 640;
 
 #[derive(Debug)]
 pub struct CameraPreview {
@@ -54,9 +54,10 @@ impl CameraPreview {
         validate_yuv(width, height, bytes.len())?;
         let (width, height) = (width as usize, height as usize);
         let longest = width.max(height);
+        let target = longest.min(SIDE);
         let size = [
-            (width * SIDE / longest).max(1),
-            (height * SIDE / longest).max(1),
+            (width * target / longest).max(1),
+            (height * target / longest).max(1),
         ];
         let mut rgba = Vec::with_capacity(size[0] * size[1] * 4);
         for y in 0..size[1] {
@@ -123,10 +124,10 @@ mod tests {
         assert!(frame.fresh());
         frame.created -= std::time::Duration::from_secs(2);
         assert!(!frame.fresh());
-        assert_eq!(frame.size(), [160, 160]);
+        assert_eq!(frame.size(), [2, 2]);
         assert_eq!(frame.lens(), Lens::Rear);
         assert_eq!(&frame.rgba()[..4], &[0, 0, 0, 255]);
-        assert_eq!(&frame.rgba()[80 * 4..80 * 4 + 4], &[255, 255, 255, 255]);
+        assert_eq!(&frame.rgba()[4..8], &[255, 255, 255, 255]);
         let red = CameraPreview::from_yuv420(
             Lens::Front,
             2,
@@ -139,7 +140,7 @@ mod tests {
         let wide =
             CameraPreview::from_yuv420(Lens::Front, 4, 2, &[128; 12], std::time::Instant::now())
                 .unwrap();
-        assert_eq!(wide.size(), [160, 80]);
+        assert_eq!(wide.size(), [4, 2]);
         for width in [0, 1, 2, 3, 1920, 1921, u32::MAX] {
             for length in [0, 1, 5, 6, 7, 100] {
                 assert_eq!(
@@ -155,7 +156,7 @@ mod tests {
                 );
             }
         }
-        for size in [[0, 1], [1, 0], [161, 1], [usize::MAX, usize::MAX], [1, 1]] {
+        for size in [[0, 1], [1, 0], [641, 1], [usize::MAX, usize::MAX], [1, 1]] {
             assert!(CameraPreview::new(Lens::Front, size, vec![]).is_err());
         }
     }
@@ -188,5 +189,52 @@ mod invalid_publication_tests {
             !preview.fresh(),
             "T1457 future timestamp extended freshness"
         );
+    }
+}
+
+#[cfg(test)]
+mod quality_tests {
+    use super::*;
+
+    #[test]
+    fn t1729_preview_preserves_vga_pixel_detail() {
+        let mut bytes = vec![128; 640 * 480 * 3 / 2];
+        for (index, value) in bytes[..640 * 480].iter_mut().enumerate() {
+            *value = if index % 2 == 0 { 16 } else { 235 };
+        }
+        let preview =
+            CameraPreview::from_yuv420(Lens::Front, 640, 480, &bytes, std::time::Instant::now())
+                .unwrap();
+        assert_eq!(preview.size(), [640, 480]);
+        for pair in preview.rgba().chunks_exact(8) {
+            assert_eq!(pair, &[0, 0, 0, 255, 255, 255, 255, 255]);
+        }
+    }
+
+    #[test]
+    fn t1729_preview_bounds_preserve_aspect_without_upscaling() {
+        for (width, height, expected) in [
+            (1920, 1080, [640, 360]),
+            (480, 640, [480, 640]),
+            (160, 120, [160, 120]),
+            (2, 2, [2, 2]),
+        ] {
+            let bytes = vec![128; (width * height * 3 / 2) as usize];
+            let preview = CameraPreview::from_yuv420(
+                Lens::Rear,
+                width,
+                height,
+                &bytes,
+                std::time::Instant::now(),
+            )
+            .unwrap();
+            assert_eq!(preview.size(), expected);
+            assert_eq!(preview.rgba().len(), expected[0] * expected[1] * 4);
+            assert!(preview.rgba().len() <= 640 * 640 * 4);
+        }
+        assert!(CameraPreview::new(Lens::Front, [640, 640], vec![0; 640 * 640 * 4]).is_ok());
+        for size in [[641, 1], [1, 641], [0, 640], [usize::MAX, 1]] {
+            assert!(CameraPreview::new(Lens::Front, size, vec![]).is_err());
+        }
     }
 }

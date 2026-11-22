@@ -28,18 +28,23 @@ impl Preview {
         ui.label("Preview");
         ui.vertical(|ui| {
             if let (Some(texture), Some(frame)) = (&self.texture, &self.frame) {
-                ui.image((texture.id(), texture.size_vec2()));
+                ui.image((
+                    texture.id(),
+                    display_size(ui.available_width(), texture.size_vec2()),
+                ));
                 ui.label(match frame.lens() {
                     Lens::Front => "Front webcam output",
                     Lens::Rear => "Rear webcam output",
                 });
             } else {
-                ui.allocate_ui(egui::vec2(160.0, 90.0), |ui| {
-                    ui.centered_and_justified(|ui| ui.label("No live video"));
-                });
+                ui.allocate_ui(
+                    display_size(ui.available_width(), egui::vec2(16.0, 9.0)),
+                    |ui| {
+                        ui.centered_and_justified(|ui| ui.label("No live video"));
+                    },
+                );
             }
         });
-        ui.end_row();
     }
 
     fn update(&mut self, context: &egui::Context, frame: Option<Arc<CameraPreview>>) {
@@ -66,9 +71,30 @@ impl Preview {
     }
 }
 
+/// Frame-local geometry only: finite available width and positive image size
+/// come from egui and the bounded CameraPreview contract. No retained state.
+fn display_size(available: f32, image: egui::Vec2) -> egui::Vec2 {
+    let width = available.clamp(0.0, 640.0);
+    image * (width / image.x).min(480.0 / image.y)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn t1729_preview_fits_window_and_preserves_aspect() {
+        for (available, source, expected) in [
+            (960.0, [640.0, 480.0], [640.0, 480.0]),
+            (320.0, [640.0, 480.0], [320.0, 240.0]),
+            (960.0, [480.0, 640.0], [360.0, 480.0]),
+            (960.0, [1920.0, 1080.0], [640.0, 360.0]),
+            (0.0, [640.0, 480.0], [0.0, 0.0]),
+            (-10.0, [640.0, 480.0], [0.0, 0.0]),
+        ] {
+            assert_eq!(display_size(available, source.into()), expected.into());
+        }
+    }
+
     #[test]
     fn t543_preview_uses_exported_lens_and_clears_texture_after_stop() {
         let context = egui::Context::default();

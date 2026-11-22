@@ -50,9 +50,10 @@ impl Panel {
     pub(super) fn show(&mut self, ui: &mut egui::Ui, options: &mut CameraProfile) {
         ui.vertical(|ui| {
             self.summary(ui, options);
+            self.live_adjustments(ui, options);
+            let frame = self.backend.as_ref().and_then(|backend| backend.preview());
+            self.preview.show(ui, frame);
             super::settings_grid(ui, "camera-basic-grid", |ui| {
-                let frame = self.backend.as_ref().and_then(|backend| backend.preview());
-                self.preview.show(ui, frame);
                 profile(ui, options);
             });
             egui::CollapsingHeader::new("Advanced camera settings")
@@ -65,7 +66,6 @@ impl Panel {
                     });
                 });
         });
-        self.live_adjustments(ui, options);
     }
 
     fn live_adjustments(&mut self, ui: &mut egui::Ui, options: &CameraProfile) {
