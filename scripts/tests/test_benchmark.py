@@ -13,6 +13,16 @@ from summarize import battery_summary, cpu_delta, load_lines, window_values
 
 
 class BaselineMeasurementTests(unittest.TestCase):
+    def test_t1690_capture_window_preserves_sample_count_and_capacity(self):
+        logs = [dict(message='capture→fifo p50 128.0ms p95 242.0ms (first 256 samples; cap 256 per report)'),
+                dict(message='capture→fifo p50 8.0ms p95 7.0ms (first 2 samples; cap 256 per report)')]
+        result = window_values(logs)['capture_to_fifo_window']
+        self.assertEqual(result['samples']['minimum'], 2)
+        self.assertEqual(result['samples']['maximum'], 256)
+        self.assertEqual(result['capacity']['minimum'], 256)
+        self.assertEqual(result['p50_ms']['n'], 2)
+        self.assertEqual(window_values([dict(message='capture→fifo p50 1ms p95 2ms (256 frames)')]), {})
+
     def test_t457_current_and_historical_labels_have_identical_boundaries(self):
         historical = [dict(message='Latency encode→display: p50 20ms  p95 90ms  max 90ms  (3 samples'),
                       dict(message='of which tablet decode+render p50 30ms  p95 30ms → wire ~0ms')]

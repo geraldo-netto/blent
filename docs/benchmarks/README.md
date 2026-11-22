@@ -250,7 +250,10 @@ the misleading difference-of-medians `wire` estimate is no longer logged.
 The Android timing ends when its render callback runs; callbacks can be delayed
 or batched, so it is not optical input-to-photon latency. See the
 [MediaCodec callback contract](https://developer.android.com/reference/android/media/MediaCodec.OnFrameRenderedListener).
-The helper's `capture→fifo` interval starts after the framebuffer grab. Never add
+The helper's `capture→fifo` interval starts after the framebuffer grab. Its report
+covers the first 256 eligible samples since the previous report (0–999.999 ms),
+with sample count and capacity explicit. This bounded sample set is not an
+all-frame distribution. Never add
 their independently reported percentiles to estimate end-to-end latency.
 
 Logs contain five-second window percentiles, not per-frame raw durations. The

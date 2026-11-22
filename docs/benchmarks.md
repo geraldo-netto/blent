@@ -99,7 +99,10 @@ Benchmark readers accept both the current and historical labels.
 Capture, encoding, and time already spent assembling an access unit are outside
 that host timer. The helper's separate `capture→fifo` timer begins after
 `evdi_grab_pixels` returns and ends after the frame is written to the FIFO;
-it excludes the compositor wait and the grab itself. These uncorrelated metrics
+it excludes the compositor wait and the grab itself. Each report retains only
+the first 256 eligible samples (durations from 0 up to, but excluding, 1000 ms)
+since the preceding report. The logged count is sampled observations, not all
+frames; the five-second reporting interval can be delayed. These uncorrelated metrics
 do not add up to a measured total display latency.
 
 ## Results

@@ -604,3 +604,23 @@ fn t750_ready_callbacks_acknowledge_without_erasing_rate_deadlines() {
 fn t750_coalesced_snapshots_preserve_pixels_order_and_retained_leases() {
     Harness::build("T750-snapshot").run("T750-snapshot");
 }
+
+#[test]
+fn t1690_latency_log_discloses_bounded_first_sample_window() {
+    let harness = Harness::build("T1690");
+    let output = Command::new(harness.0.path().join("helper-test"))
+        .arg("T1690")
+        .output()
+        .unwrap();
+    let log = String::from_utf8(output.stderr).unwrap();
+    assert!(output.status.success(), "{log}");
+    assert_eq!(log.matches("capture→fifo").count(), 2);
+    assert!(
+        log.contains("(first 256 samples; cap 256 per report)"),
+        "T1690: {log}"
+    );
+    assert!(
+        log.contains("(first 2 samples; cap 256 per report)"),
+        "T1690: {log}"
+    );
+}

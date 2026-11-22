@@ -632,3 +632,9 @@ Three new regression cases failed before implementation; strengthening the admis
 Every completed framebuffer grab now resets the existing fallback deadline, including an empty grab. Ordinary update events therefore prevent an extra grab each second; watchdog recovery and the no-event fallback remain available. The capture event loop remains the sole deadline owner; allocation, native registration, writer borrowing and cleanup boundaries are unchanged.
 
 The permanent regression failed before the fix. All 72 helper tests pass, including the new ASan/UBSan case covering 240 ordinary update callbacks and the subsequent 999/1000 ms fallback boundary. The changed function has 100% executable-line coverage (24/24); all measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1688.json). This is deterministic mocked-EVDI evidence; no physical performance claim or installed-session change.
+
+## T1690 — disclose the latency sample window (2026-11-22)
+
+Capture-to-FIFO logs now identify the first eligible samples and the 256-sample cap per report. Current benchmark parsing preserves both sample count and capacity and rejects the obsolete frame-count form. Documentation describes the 0–999.999 ms eligibility range and potentially delayed reporting interval; these are not all-frame percentiles.
+
+Both the native log and parser regressions failed before the fix. The native log regression and all 12 benchmark/parser/plot tests pass. The changed production function measures 90% line coverage (18/20); all 96 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1690.json). No ownership or allocation boundary changed. The separate two-sample quantile inconsistency remains tracked as T1692.

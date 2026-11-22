@@ -582,7 +582,8 @@ static void recover_capture_if_stalled(capture_context_t *capture, long long now
 
 }
 
-static void report_capture_stats(capture_context_t *capture, long long now, long long *last_stats_ms, long long *stats_grab_base) {
+static void report_capture_stats(capture_context_t *capture, long long now, long long *last_stats_ms, long long *stats_grab_base)
+{
     double elapsed = (now - (*last_stats_ms)) / 1000.0;
     long long grabs = capture->grab_count - (*stats_grab_base);
     fprintf(stderr, "[evdi-helper] %.1f grabs/s (total %lld), mode:%d dpms:%d pending:%d\n",
@@ -597,12 +598,13 @@ static void report_capture_stats(capture_context_t *capture, long long now, long
     /* Capture-side latency: grab → convert → into the encoder's FIFO. */
     int snapshot[LAT_SAMPLES];
     int n = (int)frame_exchange_latency_take(capture->frames, snapshot, LAT_SAMPLES);
-    if (n > 0) {
+    if (n > 0)
+    {
         qsort(snapshot, (size_t)n, sizeof(int), cmp_int);
         fprintf(stderr,
-                "[evdi-helper] capture→fifo p50 %.1fms p95 %.1fms (%d frames)\n",
+                "[evdi-helper] capture→fifo p50 %.1fms p95 %.1fms (first %d samples; cap %d per report)\n",
                 snapshot[n / 2] / 1000.0,
-                snapshot[(int)((n - 1) * 0.95)] / 1000.0, n);
+                snapshot[(int)((n - 1) * 0.95)] / 1000.0, n, LAT_SAMPLES);
     }
 
     (*stats_grab_base) = capture->grab_count;
