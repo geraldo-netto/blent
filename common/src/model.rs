@@ -8,6 +8,8 @@ mod diagnostic_tests;
 #[cfg(test)]
 mod media_tests;
 mod merge;
+#[cfg(test)]
+mod schema_tests;
 
 /// Maximum accepted configured bitrate, in kbps. This is a project policy
 /// limit, not a measured capacity for every USB link. VAAPI CQP does not
@@ -97,7 +99,7 @@ pub fn validated_pipe_capacity(value: u32) -> u32 {
 /// Persistent settings, shared by the CLI daemon, the GUI and the tablet app
 /// (which pushes changes over the input WebSocket).
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
-#[serde(default)]
+#[serde(default, deny_unknown_fields)]
 pub struct FileConfig {
     /// Requested CPU scheduling preference; native permission can limit it.
     pub scheduling_priority: crate::scheduling::Priority,
@@ -555,19 +557,25 @@ mod tests {
 
     #[test]
     fn t480_t1194_obsolete_cache_preference_is_not_in_current_schema() {
-        for input in ["", "profile_cache = true", "profile_cache = false"] {
-            let config: FileConfig = toml::from_str(input).unwrap();
-            let value = toml::Value::try_from(config).unwrap();
+        let config: FileConfig = toml::from_str("").unwrap();
+        let value = toml::Value::try_from(config).unwrap();
+        assert!(value.get("profile_cache").is_none());
+        assert_eq!(value["calibration_generation"].as_integer(), Some(0));
+        for input in ["profile_cache = true", "profile_cache = false"] {
             assert!(
-                value.get("profile_cache").is_none(),
-                "T1194: obsolete preference persisted: {input:?}"
+                toml::from_str::<FileConfig>(input).is_err(),
+                "T1679 accepted obsolete settings"
             );
-            assert_eq!(value["calibration_generation"].as_integer(), Some(0));
         }
     }
 
     #[test]
     fn t1194_unknown_obsolete_values_cannot_change_current_tuning_controls() {
+        let current = "calibration_generation = 42\nadaptive_idle = true";
+        let config: FileConfig = toml::from_str(current).unwrap();
+        assert_eq!(config.calibration_generation, 42);
+        assert!(config.adaptive_idle);
+        assert!(!toml::to_string(&config).unwrap().contains("profile_cache"));
         for value in [
             "true",
             "false",
@@ -578,13 +586,11 @@ mod tests {
             "{}",
             "'unused'",
         ] {
-            let input = format!(
-                "profile_cache = {value}\ncalibration_generation = 42\nadaptive_idle = true"
+            let input = format!("profile_cache = {value}\n{current}");
+            assert!(
+                toml::from_str::<FileConfig>(&input).is_err(),
+                "T1679 accepted obsolete settings"
             );
-            let config: FileConfig = toml::from_str(&input).unwrap();
-            assert_eq!(config.calibration_generation, 42);
-            assert!(config.adaptive_idle);
-            assert!(!toml::to_string(&config).unwrap().contains("profile_cache"));
         }
     }
 

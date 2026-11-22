@@ -69,7 +69,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1679 | open | low | small | Reject obsolete and unknown root settings instead of silently stripping them. `common/src/model.rs::FileConfig` uses generic Serde unknown-field acceptance; `t480_t1194_obsolete_cache_preference_is_not_in_current_schema`, `t1194_unknown_obsolete_values_cannot_change_current_tuning_controls` and `storage/merge_tests.rs::t1194_real_locked_edit_rewrites_only_the_current_schema` explicitly accept `profile_cache` and rewrite it away. `docs/video-codecs.md` documents that behavior, contradicting the current no-compatibility requirement to reject obsolete configuration inputs. Completion: make root schema rejection explicit, retain current defaults/known-field behavior, retarget permanent tests to rejection and preservation of invalid saved files, update current documentation, and verify as its own local commit. This is the confirmed root-schema outcome; do not claim a complete nested-schema audit. |
 
 ## Installation and distribution
 

@@ -279,3 +279,8 @@ When `check_updates` is enabled, the daemon first checks after 30 seconds. A val
 response schedules the next check in 24 hours. Failed or invalid responses retry
 after one minute, doubling up to one hour; a valid response resets the retry delay.
 Failures retain the last valid update notice. Checks do not download or install updates.
+
+Root configuration keys must belong to the current schema; unknown and obsolete
+keys are parse errors. Existing read-error handling warns and uses defaults in
+memory, but locked edits preserve the invalid file and return an error. Correct
+the reported key before saving. No automatic obsolete-field migration is used.

@@ -359,9 +359,10 @@ is incrementing `calibration_generation` before restarting. At its maximum
 (`4294967295`), further GUI recalibration requests are disabled and show
 “Recalibration limit reached.” Existing profiles remain usable; the counter
 cannot wrap and select an older cache identity. Manual encoder
-preferences take precedence. `profile_cache` is absent from the current schema;
-unknown configuration keys follow generic parsing policy and are not persisted
-by a current settings save. Automatic tuning remains durable.
+preferences take precedence. The root configuration schema rejects obsolete keys
+such as `profile_cache` and other unknown root keys. Locked edits refuse to
+rewrite an invalid saved configuration; fix the reported key before saving.
+Automatic tuning remains durable.
 
 <details>
 <summary>Saved profile identity, storage and invalidation</summary>
