@@ -1,0 +1,16 @@
+{
+  "item": "T1755",
+  "record_meter_tests": {
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  "normal_tool_tests": 1,
+  "retained_idle_benchmark_tool_tests": 2,
+  "analysis_sha256": "f932387bc8a79c27a57d620f7d8cb6279068cad26d05dbafc4d3b09fdda3941b",
+  "fault_control": "Omitting Socket base close retains one descriptor; permanent descriptor-identity test fails. Fixed cleanup passes. Faulty worker JVM exited.",
+  "native_android_execution": false,
+  "installed": false,
+  "production_changes": false
+}

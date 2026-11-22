@@ -17,6 +17,7 @@ from test_secure_connection_interop import SecureConnectionInteropTest
 def inputs():
     paths = list((ROOT / 'android/app/src').rglob('*.kt'))
     paths += list(DIRECTORY.rglob('*.kt'))
+    paths += list((ROOT / 'scripts/benchmarks/android-hosted').rglob('*.kt'))
     paths += [Path(__file__).resolve(), DIRECTORY / 'benchmark.init.gradle']
     paths += [ROOT / name for name in [
         'android/app/build.gradle.kts', 'android/build.gradle.kts', 'android/settings.gradle.kts',
