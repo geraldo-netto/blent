@@ -37,3 +37,12 @@ Remove the unused serde declaration and move TOML to dev-dependencies. Four T155
 configuration-observation tests and the production release GUI build pass.
 Transitive serde/TOML uses remain; this cleans ownership of direct dependencies
 without claiming fewer resolved package versions. No function body changes.
+
+## T1737: restore the retained capture integration test
+
+The all-target compile exposed an existing stale caller in
+`host/tests/capture_contract.rs`: `subscribe()` omitted the now-required optional
+liveness capability (E0061). The fixture now passes None explicitly and retains
+all pointer identity, generation, rejection and ownership assertions. All four
+T820 integration tests pass. No production code or compatibility overload was
+added. This repairs the test caller, not a new runtime behavior defect.
