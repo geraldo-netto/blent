@@ -1,0 +1,30 @@
+{
+  "id": "T1617",
+  "integration_commit": "40422ffe806d311452c2c4d7bac10bd530459073",
+  "resolved_children": [
+    "T1682",
+    "T1683",
+    "T1684",
+    "T1685"
+  ],
+  "acceptance": "T1683 final suites execute all current retry, reader, GPU and guarded teardown code together. Original retirement gates remain mandatory. No further code change after those tests.",
+  "evidence": "t1683.json",
+  "default_capture": {
+    "passed": 266,
+    "failed": 0,
+    "ignored_opt_in_benchmarks": 3
+  },
+  "native_encoder_capture": {
+    "passed": 126,
+    "failed": 0,
+    "ignored": 0
+  },
+  "kscreen_library": {
+    "passed": 9
+  },
+  "c_cleanup": {
+    "rust_integration_tests": 1,
+    "native_fake_evdi_cases": 3
+  },
+  "limits": "Source-only; no installed reload or physical compositor relocation observation. The teardown subfinding was obsolete code/prose, not a reproduced missing disconnect."
+}
