@@ -1,0 +1,43 @@
+{
+  "issue": "T1697",
+  "date": "2026-11-22",
+  "regression_before": "F\n======================================================================\nFAIL: test_t1697_delayed_removal_reads_current_routes (test_daemon_adb_fixture.DaemonAdbFixtureTest.test_t1697_delayed_removal_reads_current_routes)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/backups/disk2/projects/blent/scripts/tests/test_daemon_adb_fixture.py\", line 30, in test_t1697_delayed_removal_reads_current_routes\n    self.assertEqual(json.loads(route_file.read_text()), {})\nAssertionError: {'tcp:1': 'tcp:3'} != {}\n- {'tcp:1': 'tcp:3'}\n+ {}\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (failures=1)\n",
+  "verification": {
+    "permanent_python_tests_passed": 1,
+    "namespace_drain": "Still fails for separately recorded T1698: command deadline precedes body drain."
+  },
+  "complexity_tool": "project Python AST checker / Python 3.12",
+  "complexity": [
+    [
+      "host/tests/daemon_startup/fake_adb.py",
+      11,
+      "reverse",
+      3
+    ],
+    [
+      "host/tests/daemon_startup/fake_adb.py",
+      20,
+      "update_routes",
+      3
+    ],
+    [
+      "host/tests/daemon_startup/fake_adb.py",
+      36,
+      "main",
+      2
+    ],
+    [
+      "scripts/tests/test_daemon_adb_fixture.py",
+      16,
+      "test_t1697_delayed_removal_reads_current_routes",
+      1
+    ],
+    [
+      "scripts/tests/test_daemon_adb_fixture.py",
+      24,
+      "other_removal",
+      1
+    ]
+  ],
+  "ownership": "Each private fake command opens one stable lock file; wait occurs before acquisition; current route read and write occur under one exclusive descriptor; with closes on normal or exceptional return. No real ADB state or production behavior changed."
+}

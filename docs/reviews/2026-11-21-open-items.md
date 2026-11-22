@@ -704,3 +704,9 @@ The process owns one listener; cutoff fences queued callbacks before unregisteri
 The broker now forwards PermissionRequired with the original registration request and route. The current wire enum and client phase retain that pending state without admitting media or releasing ownership. Closing suppresses late server notices; the client rejects regression from active/terminal states and does not undo local cancellation. The bridge's no-op is intentional: pending permission must not open local I/O.
 
 Both client-contract regressions and the broker delivery regression failed first. All 288 broker, 17 registered-display, 13 client-model and five wire-contract tests pass. The independent transition matrix covers all 36 state pairs; the wire test checks all 256 byte values. All five changed production functions measure 87.5–100% line coverage; all 98 measured functions meet complexity ≤9 (maximum 8). [Evidence](artifacts/2026-11-21-open-items/t1603.json). No new worker, native handle or cleanup obligation was added. Tests used private helper/TLS/IPC fixtures, without contacting installed Blent or the tablet.
+
+## T1697 — serialize private ADB fixture routes (2026-11-22)
+
+A held fake removal previously read its route snapshot before waiting, so another removal could be overwritten and a retired route resurrected. The fixture now waits first and serializes current reads/mutations with one stable file lock. Each command owns and closes its descriptor; no production or installed ADB state changes.
+
+The permanent delayed-removal test fails before and passes after the fix. All five measured fixture/test functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1697.json). The namespace drain test still exposes a separate deadline mismatch, tracked as T1698; this fixture correction alone does not close that integration check.

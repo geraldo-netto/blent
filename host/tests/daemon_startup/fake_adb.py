@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Permanent private file-backed ADB fixture; never invokes a real ADB server."""
+import fcntl
 import json
 import os
 from pathlib import Path
@@ -8,6 +9,15 @@ import time
 
 
 def reverse(root, args):
+    if args[3] == '--remove':
+        while (root / 'hold-removal').exists():
+            time.sleep(0.01)
+    with (root / 'routes.lock').open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        update_routes(root, args)
+
+
+def update_routes(root, args):
     path = root / 'routes.json'
     routes = json.loads(path.read_text()) if path.exists() else {}
     action = args[3]
@@ -17,8 +27,6 @@ def reverse(root, args):
         routes[args[4]] = args[5]
         path.write_text(json.dumps(routes))
     elif action == '--remove':
-        while (root / 'hold-removal').exists():
-            time.sleep(0.01)
         routes.pop(args[4], None)
         path.write_text(json.dumps(routes))
     else:
