@@ -140,3 +140,14 @@ trials and ratios between separate runs; historical artifacts preserve earlier
 source hashes without retaining an executable old implementation. Production
 snapshot capacity and exact behavior still require separate ownership/regression
 checks; a lower allocation counter is not a leak-freedom proof.
+
+The TLS/local stream trials also report `driver_and_io_allocated_bytes` from the
+same original driver and three native I/O workers used for CPU accounting. All
+four counters must be available; a missing counter fails the trial. The analyzer
+reports the median allocation per frame. These totals include native-adapter,
+framing, library, token and measurement allocations; they are an upper bound on
+request/receipt allocation within that region, not per-class attribution. Initial
+connections, payload arrays and owner construction remain outside the measured
+region, and peer-thread allocations are excluded. These are cumulative allocated
+bytes, not retained/peak memory, collection counts or leak evidence. Historical
+summaries remain historical; current results require the allocation field.

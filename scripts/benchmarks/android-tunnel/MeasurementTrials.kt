@@ -6,8 +6,21 @@ import kotlinx.serialization.json.*
 
 internal const val MEASUREMENT_FRAMES = 60
 
-internal fun measurementCpu(counters: NativeCounters, threads: List<Thread>): Long =
-    (threads + Thread.currentThread()).sumOf { counters.read(it).cpu }
+internal fun measurementSnapshot(counters: NativeCounters, threads: List<Thread>): Counters {
+    var cpu = 0L
+    var allocated = 0L
+    for (thread in threads + Thread.currentThread()) {
+        val value = counters.read(thread)
+        cpu += value.cpu
+        allocated += checkNotNull(value.allocated) { "T1767 original thread allocation counter unavailable" }
+    }
+    return Counters(cpu, allocated)
+}
+
+internal fun measurementDelta(counters: NativeCounters, threads: List<Thread>, before: Counters): Counters {
+    val after = measurementSnapshot(counters, threads)
+    return Counters(after.cpu - before.cpu, checkNotNull(after.allocated) - checkNotNull(before.allocated))
+}
 
 internal fun paceMeasurement(start: Long, frame: Int, fps: Int) {
     if (fps == 0) return
@@ -20,10 +33,11 @@ internal fun paceMeasurement(start: Long, frame: Int, fps: Int) {
     }
 }
 
-internal fun measurementResult(size: Int, fps: Int, combined: Boolean, elapsed: Long, cpu: Long,
+internal fun measurementResult(size: Int, fps: Int, combined: Boolean, elapsed: Long, counters: Counters,
                                io: MeasuredIo, latency: LongArray, extra: JsonObject): JsonObject = buildJsonObject {
     put("payload_bytes", size); put("fps", fps); put("combined", combined); put("frames", latency.size)
-    put("elapsed_ns", elapsed); put("driver_and_io_cpu_ns", cpu)
+    put("elapsed_ns", elapsed); put("driver_and_io_cpu_ns", counters.cpu)
+    put("driver_and_io_allocated_bytes", checkNotNull(counters.allocated))
     put("native_completions_including_ack", io.completions)
     put("driver_poll_calls", io.polls); put("driver_wait_calls", io.waits); put("ready_hints_observed", io.readyHints)
     put("latency_ns", JsonArray(latency.map { JsonPrimitive(it) }))

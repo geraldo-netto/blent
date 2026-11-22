@@ -20,7 +20,7 @@ internal fun localSample(size: Int, fps: Int, direct: Boolean, frames: Int = MEA
             val endpoint = LocalMeasurementEndpoint()
             val payload = ByteArray(size + 6) { 91 }.also { it.fill(7, 3, 3 + size) }
             val latency = LongArray(frames)
-            val cpuBefore = measurementCpu(counters, io.threads)
+            val before = measurementSnapshot(counters, io.threads)
             val start = System.nanoTime()
             repeat(frames) { sequence ->
                 paceMeasurement(start, sequence, fps)
@@ -33,7 +33,7 @@ internal fun localSample(size: Int, fps: Int, direct: Boolean, frames: Int = MEA
                 latency[sequence] = System.nanoTime() - begin
             }
             return measurementResult(size, fps, direct, System.nanoTime() - start,
-                measurementCpu(counters, io.threads) - cpuBefore, io, latency, buildJsonObject {
+                measurementDelta(counters, io.threads, before), io, latency, buildJsonObject {
                     put("transport", "loopback_tcp_local_stream_analogue")
                     put("mode", if (direct) "direct_native_transaction" else "production_local_consumer")
                     // The transport is explicitly plaintext; no TLS records exist.

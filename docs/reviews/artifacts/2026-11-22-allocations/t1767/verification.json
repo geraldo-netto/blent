@@ -1,0 +1,13 @@
+{
+  "item": "T1767",
+  "hosted_cases": 18,
+  "hosted_classes": 5,
+  "measurement_trials": 128,
+  "unchanged_inputs": true,
+  "complexity_functions": 237,
+  "maximum_complexity": 7,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI / Python 3.12 AST",
+  "coverage": "benchmark/nonessential tool exemption",
+  "production_behavior_changed": false,
+  "scope": "cumulative driver plus three native I/O worker allocations; not per-class, retained memory or native Android counters"
+}

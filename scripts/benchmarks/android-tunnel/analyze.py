@@ -18,6 +18,7 @@ def p95(row):
 def mode_summary(rows):
     return dict(trials=len(rows),
         cpu_ns_median=statistics.median(r['driver_and_io_cpu_ns'] for r in rows),
+        allocated_bytes_per_frame_median=statistics.median(r['driver_and_io_allocated_bytes'] / r['frames'] for r in rows),
         p95_ns_median=statistics.median(p95(r) for r in rows),
         tls_records_per_frame=sorted({r['tls_application_records'] / r['frames'] for r in rows}),
         native_completions_per_frame=sorted({r['native_completions_including_ack'] / r['frames'] for r in rows}),

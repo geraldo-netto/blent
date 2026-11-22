@@ -53,3 +53,60 @@ measures four task DSL closures (maximum 3). Benchmark line coverage is exempt.
 Evidence: `artifacts/2026-11-22-allocations/t1765/`. Native Android allocation,
 retained/peak process memory and end-to-end acceptance remain in T1527, alongside
 producer-buffer, native-receipt and actor-wait work. No installed session was changed.
+
+## T1767: native request and receipt allocation
+
+Keep fresh immutable native request/receipt objects. The hosted plaintext path's
+entire driver and three I/O workers allocate about 458 bytes per payload through
+the production local consumer, or about 410 bytes through the direct native
+transaction control. Every payload includes an ACK read. Both modes use original
+StreamConnectionIo workers; initial payload/connection/owner allocation and the
+peer thread are excluded. The median total is constant across 64-byte, 4-KiB,
+16-KiB and 64-KiB payloads, in burst and 60-fps modes. The difference is 48 bytes
+of consumer bookkeeping per payload. At 60 payloads/s, the entire measured
+production-consumer region allocates about 26.8 KiB/s, before removing fixed
+counter-sampling overhead. This is an upper bound on request/receipt allocations
+in that region; there is no per-class allocation attribution.
+
+Each fresh request/loan identity is part of rejecting foreign, duplicated or late
+completions. Pooling those identities would require a new independently checked
+generation/settlement contract and bounded retained state. The small measured
+upper bound does not justify that change now. This is a measured decision to
+retain the existing policy, not an implemented memory optimization or proof that
+all allocation rates are harmless. Producer arrays and actor waits remain separate
+T1766/T1768 work, including workloads outside this one-outstanding-payload domain.
+
+The same counters also measure actual JSSE TLS framing and native I/O:
+
+| Payload | Allocation/frame at 60 fps, no gather | Allocation/frame at 60 fps, gather ≤16 KiB |
+| --- | --- | --- |
+| 64 bytes | 4623.7 bytes | 3365.5 bytes |
+| 4096 bytes | 4828.8 bytes | 3572.5 bytes |
+| 16384 bytes | 6764.0 bytes | 5352.0 bytes |
+| 65536 bytes | 10114.9 bytes | 10114.3 bytes |
+
+These totals include library/framing allocations, not just Blent receipts. Gathering
+reduces small-frame allocation, but remains disabled by default under T1762. At
+64 KiB, both modes bypass gathering and allocate essentially the same amount inside
+the timed region. That does not rule out effects from the fixed scratch allocated
+before measurement, JIT, collections or scheduling. This run's 64-KiB gather/no-gather
+CPU and p95 ratios are 1.015/0.980 in burst mode and 1.118/1.189 at 60 fps, further
+showing that the earlier slowdown is not a universal per-frame allocation increase.
+T1762 retains the unresolved investigation and the conservative default.
+
+MeasurementSnapshot now collects CPU and allocated bytes together from the original
+four threads. Any missing counter fails rather than becoming zero. Its temporary
+list and counter records are bounded by those four identities and do not escape
+the sample. Connections, streams, original workers and peer cleanup retain their
+existing exact ownership. The shared result schema requires allocation data; there
+is no compatibility reader for historical result formats. Historical summaries and
+source hashes remain unchanged. These are cumulative allocations, not retained or
+peak memory, collection counts, leak evidence or Android ART acceptance.
+
+All 18 hosted cases across five classes pass, including positive allocation counters
+for actual local and TLS exchanges. Both 64-trial domains complete with unchanged
+source hashes: 16 warmup and 48 measured trials each, three alternating mode pairs
+per size/rate. The repository checker measures 237 Kotlin/Python functions, maximum
+complexity 7; benchmark line coverage is exempt. No production behavior, installed
+session or saved setting changed. Evidence:
+`artifacts/2026-11-22-allocations/t1767/`.

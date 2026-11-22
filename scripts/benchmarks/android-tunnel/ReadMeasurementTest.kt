@@ -72,6 +72,7 @@ class ReadMeasurementTest {
             assertEquals("TLSv1.3", result.getValue("tls_protocol").jsonPrimitive.content)
             assertEquals(if (ahead) 2L * (size + 40) else 0L, result.getValue("extra_copied_bytes").jsonPrimitive.long)
             assertEquals(2L, result.getValue("tls_application_records").jsonPrimitive.long)
+            assertTrue(result.getValue("driver_and_io_allocated_bytes").jsonPrimitive.long > 0)
             assertTrue(result.getValue("native_completions_including_ack").jsonPrimitive.long >= 4)
         }
     }

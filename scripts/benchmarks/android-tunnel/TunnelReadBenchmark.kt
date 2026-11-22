@@ -48,7 +48,7 @@ internal fun readSample(server: SSLContext, client: SSLContext, size: Int, fps: 
             val reader = MeasuredFrameReader(if (ahead) 16384 else 0)
             val latency = LongArray(frames)
             val recordsBefore = connection.records
-            val cpuBefore = measurementCpu(counters, io.threads)
+            val before = measurementSnapshot(counters, io.threads)
             val start = System.nanoTime()
             repeat(frames) { sequence ->
                 paceMeasurement(start, sequence, fps)
@@ -60,7 +60,7 @@ internal fun readSample(server: SSLContext, client: SSLContext, size: Int, fps: 
                 latency[sequence] = System.nanoTime() - begin
             }
             return measurementResult(size, fps, ahead, System.nanoTime() - start,
-                measurementCpu(counters, io.threads) - cpuBefore, io, latency, buildJsonObject {
+                measurementDelta(counters, io.threads, before), io, latency, buildJsonObject {
                     put("transport", "loopback_tls_read")
                     put("tls_protocol", connection.socket.session.protocol); put("tls_cipher", connection.socket.session.cipherSuite)
                     put("peer_gather_payload_bytes", gather); put("read_ahead_bytes", if (ahead) 16384 else 0)
