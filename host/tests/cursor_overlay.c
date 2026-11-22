@@ -172,27 +172,47 @@ static void test_t753_bounds(void) {
     t753_event_lifecycle();
 }
 
-static void test_t753_shared(void) {
+static void test_t753_shared(void)
+{
     raw_ring_t ring = RAW_RING_INITIALIZER;
-    int pair[2]; assert(socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_NONBLOCK, 0, pair) == 0);
+    int pair[2];
+    assert(socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_NONBLOCK, 0, pair) == 0);
     assert(raw_ring_init(&ring, pair[0]));
-    frame_exchange_init(&g_frames); g_capture.raw_ring = &ring; g_running = 1;
-    on_mode_changed((struct evdi_mode){16,16,60,32,0x34325258}, &g_capture);
-    raw_ring_t hello = ring; hello.nonce = 8; t418_control(&hello,pair[1],4);
-    mock_monotonic_ms=1000; assert(service_shared_capture(&g_capture));
+    frame_exchange_init(&g_frames);
+    g_capture.raw_ring = &ring;
+    g_running = 1;
+    on_mode_changed((struct evdi_mode){16, 16, 60, 32, 0x34325258}, &g_capture);
+    raw_ring_t hello = ring;
+    hello.nonce = 8;
+    t418_control(&hello, pair[1], 4);
+    mock_monotonic_ms = 1000;
+    assert(service_shared_capture(&g_capture));
     unsigned char baseline = ring.memory[RAW_CONTROL_BYTES];
-    unsigned char leased[384]; memcpy(leased,ring.memory+RAW_CONTROL_BYTES,sizeof(leased));
-    struct evdi_cursor_set event={.width=2,.height=2,.stride=8,.buffer_length=16,.enabled=1,.pixel_format=0x34325241};
-    event.buffer=malloc(16);assert(event.buffer);memset(event.buffer,255,16);
-    on_cursor_set(event,&g_capture);
-    assert(g_capture.raw_pending && !memcmp(leased,ring.memory+RAW_CONTROL_BYTES,sizeof(leased)));
-    mock_monotonic_ms+=17;assert(publish_shared_capture(&g_capture));
-    assert(ring.memory[RAW_CONTROL_BYTES+ring.slot_bytes]==235);
-    on_cursor_set((struct evdi_cursor_set){0},&g_capture);
-    mock_monotonic_ms+=17;assert(publish_shared_capture(&g_capture));
-    assert(ring.memory[RAW_CONTROL_BYTES+2*ring.slot_bytes]==baseline);
-    assert(!memcmp(leased,ring.memory+RAW_CONTROL_BYTES,sizeof(leased)) && "T753: cursor update cannot mutate leased slots");
-    t418_drain(pair[1]);close(pair[1]);raw_ring_close(&ring);
-    free(g_capture.framebuffer);g_capture.framebuffer=NULL;g_capture.raw_ring=NULL;
-    frame_exchange_free(&g_frames);conv_pool_destroy(&g_conversion);pthread_cond_destroy(&g_frames.ready);
+    unsigned char leased[384];
+    memcpy(leased, ring.memory + RAW_CONTROL_BYTES, sizeof(leased));
+    struct evdi_cursor_set event = {
+        .width = 2, .height = 2, .stride = 8, .buffer_length = 16, .enabled = 1, .pixel_format = 0x34325241};
+    event.buffer = malloc(16);
+    assert(event.buffer);
+    memset(event.buffer, 255, 16);
+    on_cursor_set(event, &g_capture);
+    assert(g_capture.publication.pending && !memcmp(leased, ring.memory + RAW_CONTROL_BYTES, sizeof(leased)));
+    mock_monotonic_ms += 17;
+    assert(publish_shared_capture(&g_capture));
+    assert(ring.memory[RAW_CONTROL_BYTES + ring.slot_bytes] == 235);
+    on_cursor_set((struct evdi_cursor_set){0}, &g_capture);
+    mock_monotonic_ms += 17;
+    assert(publish_shared_capture(&g_capture));
+    assert(ring.memory[RAW_CONTROL_BYTES + 2 * ring.slot_bytes] == baseline);
+    assert(!memcmp(leased, ring.memory + RAW_CONTROL_BYTES, sizeof(leased)) &&
+           "T753: cursor update cannot mutate leased slots");
+    t418_drain(pair[1]);
+    close(pair[1]);
+    raw_ring_close(&ring);
+    free(g_capture.framebuffer);
+    g_capture.framebuffer = NULL;
+    g_capture.raw_ring = NULL;
+    frame_exchange_free(&g_frames);
+    conv_pool_destroy(&g_conversion);
+    pthread_cond_destroy(&g_frames.ready);
 }

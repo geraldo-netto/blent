@@ -3,6 +3,44 @@
 use std::{path::PathBuf, process::Command};
 
 #[test]
+fn t1709_cadence_policy_needs_no_native_adapter() {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let directory = tempfile::tempdir().unwrap();
+    let binary = directory.path().join("cadence-test");
+    let compiled = Command::new("cc")
+        .args([
+            "-std=c11",
+            "-O1",
+            "-g",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-fsanitize=address,undefined",
+            "-fno-pie",
+            "-no-pie",
+            "-I",
+        ])
+        .arg(root.join("evdi"))
+        .arg(root.join("tests/capture_cadence_policy.c"))
+        .arg(root.join("evdi/capture_cadence.c"))
+        .arg("-o")
+        .arg(&binary)
+        .output()
+        .unwrap();
+    assert!(
+        compiled.status.success(),
+        "{}",
+        String::from_utf8_lossy(&compiled.stderr)
+    );
+    let tested = Command::new(binary).output().unwrap();
+    assert!(
+        tested.status.success(),
+        "{}",
+        String::from_utf8_lossy(&tested.stderr)
+    );
+}
+
+#[test]
 fn t380_independent_contexts_preserve_frame_and_callback_lifetimes() {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let dir = tempfile::tempdir().unwrap();
@@ -26,6 +64,7 @@ fn t380_independent_contexts_preserve_frame_and_callback_lifetimes() {
                 "frame_exchange.c",
                 "fifo_writer.c",
                 "capture.c",
+                "capture_cadence.c",
                 "capture_activity.c",
                 "capture_control.c",
                 "cursor_overlay.c",

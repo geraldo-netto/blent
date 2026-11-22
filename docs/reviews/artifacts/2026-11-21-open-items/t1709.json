@@ -1,0 +1,1804 @@
+{
+  "issue": "T1709",
+  "parent": "T1613",
+  "date": "2026-11-22",
+  "verification": {
+    "baseline_native_cadence_tests": 3,
+    "native_helper_tests_passed": 81,
+    "native_module_tests_passed": 2,
+    "shared_damage_tests_passed": 3,
+    "benchmark_numeric_admission_tests_passed": 2,
+    "shared_build_recipe_tests_passed": 2,
+    "native_build": "GCC 13.3.0 C11 O3 Wall Wextra Werror; private helper output, not launched",
+    "deliberate_controls": {
+      "output": "/tmp/blent-t1709-controls-em3sd97z",
+      "outcomes": [
+        {
+          "control": "baseline",
+          "exit": 0,
+          "stderr": ""
+        },
+        {
+          "control": "period",
+          "exit": -6,
+          "stderr": "test: test.c:41: periods: Assertion `period * fps >= 1000000000' failed.\n"
+        },
+        {
+          "control": "phase",
+          "exit": -6,
+          "stderr": "test: test.c:18: t1689_late_phase: Assertion `(cadence.next_request_ns - 1000000000) % period == 0' failed.\n"
+        },
+        {
+          "control": "restored",
+          "exit": 0,
+          "stderr": ""
+        }
+      ]
+    }
+  },
+  "functions": [
+    {
+      "file": "host/evdi/capture.c",
+      "name": "publish_frame",
+      "line": 102,
+      "language": "c",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "grab_snapshot",
+      "line": 358,
+      "language": "c",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "on_update_ready",
+      "line": 397,
+      "language": "c",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_poll_timeout",
+      "line": 473,
+      "language": "c",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "request_capture_if_due",
+      "line": 481,
+      "language": "c",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "recover_pending_update",
+      "line": 505,
+      "language": "c",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "recover_capture_if_stalled",
+      "line": 516,
+      "language": "c",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "resume_capture",
+      "line": 584,
+      "language": "c",
+      "covered": 13,
+      "total": 14,
+      "percent": 92.85714285714286,
+      "passes": true,
+      "missing": [
+        587
+      ]
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "apply_capture_activity",
+      "line": 603,
+      "language": "c",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "publish_shared_capture",
+      "line": 687,
+      "language": "c",
+      "covered": 17,
+      "total": 18,
+      "percent": 94.44444444444444,
+      "passes": true,
+      "missing": [
+        692
+      ]
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "shared_poll_timeout",
+      "line": 720,
+      "language": "c",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_tick",
+      "line": 730,
+      "language": "c",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "service_display_progress",
+      "line": 767,
+      "language": "c",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_run",
+      "line": 787,
+      "language": "c",
+      "covered": 24,
+      "total": 25,
+      "percent": 96.0,
+      "passes": true,
+      "missing": [
+        824
+      ]
+    },
+    {
+      "file": "host/evdi/capture_cadence.c",
+      "name": "capture_period_ns",
+      "line": 4,
+      "language": "c",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture_cadence.c",
+      "name": "capture_cadence_schedule",
+      "line": 10,
+      "language": "c",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture_cadence.c",
+      "name": "capture_request_wait_ms",
+      "line": 19,
+      "language": "c",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture_cadence.c",
+      "name": "capture_watchdog_delay",
+      "line": 30,
+      "language": "c",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture_cadence.c",
+      "name": "capture_cadence_backoff",
+      "line": 37,
+      "language": "c",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture_cadence.c",
+      "name": "capture_cadence_poll",
+      "line": 43,
+      "language": "c",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture_cadence.c",
+      "name": "capture_watchdog_due",
+      "line": 54,
+      "language": "c",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture_cadence.c",
+      "name": "capture_fallback_due",
+      "line": 59,
+      "language": "c",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture_cadence.c",
+      "name": "capture_publication_interval_us",
+      "line": 64,
+      "language": "c",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/evdi/capture_cadence.c",
+      "name": "capture_publication_wait_ms",
+      "line": 69,
+      "language": "c",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "host/evdi/capture.c",
+      14,
+      "capture_now_ns",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      21,
+      "capture_now_us",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      26,
+      "capture_now_ms",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      28,
+      "cmp_int",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      33,
+      "on_dpms",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      39,
+      "capture_pixel_order",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      43,
+      "capture_to_nv12",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      53,
+      "mark_all_dirty",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      63,
+      "apply_damage",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      74,
+      "mark_damage",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      80,
+      "cursor_damage",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      86,
+      "restore_cursor",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      90,
+      "draw_cursor",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      95,
+      "capture_active",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      102,
+      "publish_frame",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      124,
+      "reject_mode",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      131,
+      "validate_frame_format",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      144,
+      "validate_mode_dimensions",
+      7
+    ],
+    [
+      "host/evdi/capture.c",
+      157,
+      "retire_mode_buffers",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      179,
+      "configure_mode_geometry",
+      9
+    ],
+    [
+      "host/evdi/capture.c",
+      211,
+      "allocate_framebuffer",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      240,
+      "allocate_stream_buffers",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      258,
+      "mode_buffers_allocated",
+      7
+    ],
+    [
+      "host/evdi/capture.c",
+      264,
+      "on_mode_changed",
+      7
+    ],
+    [
+      "host/evdi/capture.c",
+      310,
+      "normalize_framebuffer_rect",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      324,
+      "normalize_full_frame",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      337,
+      "normalize_framebuffer",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      346,
+      "normalize_snapshot",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      358,
+      "grab_snapshot",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      392,
+      "grab_now",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      397,
+      "on_update_ready",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      416,
+      "on_crtc_state",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      421,
+      "cursor_event_image",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      435,
+      "publish_cursor",
+      1
+    ],
+    [
+      "host/evdi/capture.c",
+      441,
+      "on_cursor_set",
+      7
+    ],
+    [
+      "host/evdi/capture.c",
+      464,
+      "on_cursor_move",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      473,
+      "capture_poll_timeout",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      481,
+      "request_capture_if_due",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      505,
+      "recover_pending_update",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      516,
+      "recover_capture_if_stalled",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      540,
+      "latency_rank",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      547,
+      "report_capture_stats",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      578,
+      "capture_wakeup_fd",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      584,
+      "resume_capture",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      603,
+      "apply_capture_activity",
+      2
+    ],
+    [
+      "host/evdi/capture.c",
+      618,
+      "acknowledge_capture_activity",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      625,
+      "service_capture_control",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      637,
+      "capture_event_count",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      650,
+      "dispatch_capture_events",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      660,
+      "poll_capture_events",
+      6
+    ],
+    [
+      "host/evdi/capture.c",
+      687,
+      "publish_shared_capture",
+      8
+    ],
+    [
+      "host/evdi/capture.c",
+      715,
+      "service_shared_capture",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      720,
+      "shared_poll_timeout",
+      5
+    ],
+    [
+      "host/evdi/capture.c",
+      730,
+      "capture_tick",
+      4
+    ],
+    [
+      "host/evdi/capture.c",
+      749,
+      "trace_display_progress",
+      3
+    ],
+    [
+      "host/evdi/capture.c",
+      767,
+      "service_display_progress",
+      8
+    ],
+    [
+      "host/evdi/capture.c",
+      787,
+      "capture_run",
+      7
+    ],
+    [
+      "host/tests/async_pacing.c",
+      2,
+      "t750_async_case",
+      9
+    ],
+    [
+      "host/tests/async_pacing.c",
+      35,
+      "test_t750_async",
+      3
+    ],
+    [
+      "host/tests/capture_cadence.c",
+      2,
+      "t1689_window",
+      3
+    ],
+    [
+      "host/tests/capture_cadence.c",
+      26,
+      "test_t1689_sixty",
+      1
+    ],
+    [
+      "host/tests/capture_cadence.c",
+      31,
+      "test_t1689_ninety",
+      1
+    ],
+    [
+      "host/tests/capture_cadence.c",
+      36,
+      "t1689_no_catchup_burst",
+      3
+    ],
+    [
+      "host/tests/capture_cadence.c",
+      54,
+      "test_t1689_boundaries",
+      1
+    ],
+    [
+      "host/tests/capture_diagnostics.c",
+      4,
+      "t1186_pending_writer",
+      1
+    ],
+    [
+      "host/tests/capture_diagnostics.c",
+      10,
+      "t1186_native_return",
+      1
+    ],
+    [
+      "host/tests/capture_diagnostics.c",
+      19,
+      "test_t1186_trace",
+      2
+    ],
+    [
+      "host/tests/capture_diagnostics.c",
+      66,
+      "t1186_admission_case",
+      1
+    ],
+    [
+      "host/tests/capture_diagnostics.c",
+      80,
+      "test_t1186_admission",
+      5
+    ],
+    [
+      "host/tests/capture_fallback.c",
+      2,
+      "test_t1688_regular_grabs",
+      3
+    ],
+    [
+      "host/tests/capture_watchdog.c",
+      2,
+      "t1607_empty_watchdog",
+      2
+    ],
+    [
+      "host/tests/capture_watchdog.c",
+      34,
+      "t1607_recovery_bounds",
+      3
+    ],
+    [
+      "host/tests/capture_watchdog.c",
+      70,
+      "t1607_nonempty_recovery",
+      1
+    ],
+    [
+      "host/tests/capture_watchdog.c",
+      84,
+      "test_t1607_empty_watchdog",
+      1
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      2,
+      "t789_take_variants",
+      7
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      19,
+      "t789_take_failures",
+      3
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      36,
+      "t789_adoption_boundary",
+      2
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      50,
+      "test_t789_owned_cursor",
+      2
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      70,
+      "t753_invalid_images",
+      4
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      99,
+      "t753_clip_positions",
+      7
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      121,
+      "t753_alpha_and_format",
+      7
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      141,
+      "t753_event_lifecycle",
+      3
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      168,
+      "test_t753_bounds",
+      1
+    ],
+    [
+      "host/tests/cursor_overlay.c",
+      175,
+      "test_t753_shared",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      49,
+      "t779_counted_copy",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      77,
+      "mock_eventfd",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      83,
+      "mock_fcntl",
+      7
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      99,
+      "now_ms",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      115,
+      "Xorg_running",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      123,
+      "mock_clock_gettime",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      141,
+      "mock_pthread_cond_timedwait",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      153,
+      "mock_malloc",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      157,
+      "mock_posix_memalign",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      164,
+      "mock_nanosleep",
+      4
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      172,
+      "mock_pthread_create",
+      6
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      179,
+      "mock_sched_getaffinity",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      193,
+      "mock_sysconf",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      196,
+      "mock_poll",
+      4
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      213,
+      "evdi_add_device",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      216,
+      "mock_opendir",
+      7
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      233,
+      "evdi_open",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      244,
+      "evdi_close",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      254,
+      "evdi_disconnect",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      255,
+      "evdi_connect",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      260,
+      "evdi_enable_cursor_events",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      261,
+      "evdi_get_event_ready",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      263,
+      "evdi_handle_events",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      268,
+      "evdi_request_update",
+      4
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      278,
+      "evdi_grab_pixels",
+      6
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      308,
+      "make_test_card",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      319,
+      "sample_latency",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      327,
+      "evdi_register_buffer",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      342,
+      "evdi_unregister_buffer",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      360,
+      "test_conversion",
+      8
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      384,
+      "start_test_writer",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      400,
+      "read_test_frame",
+      6
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      412,
+      "stop_test_writer",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      425,
+      "cancel_fifo_write",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      432,
+      "assert_stalled_write_exits",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      447,
+      "test_stalled_fifo",
+      8
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      480,
+      "test_helper_options",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      507,
+      "assert_external_card_preserved",
+      6
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      527,
+      "test_t108",
+      9
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      557,
+      "test_t752",
+      9
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      579,
+      "test_t753",
+      6
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      601,
+      "test_t751",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      622,
+      "assert_small_scaled_modes",
+      8
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      634,
+      "test_t082",
+      4
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      652,
+      "test_t113",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      658,
+      "test_t083",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      673,
+      "test_t081",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      688,
+      "test_t012",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      696,
+      "test_t013",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      712,
+      "stop_test_pool",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      716,
+      "test_t383_affinity",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      735,
+      "t474_capacity_case",
+      6
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      761,
+      "test_t474_capacity",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      774,
+      "test_t047",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      784,
+      "seed_test_pool_epoch",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      796,
+      "test_t272",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      819,
+      "check_t315_exit_status",
+      6
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      842,
+      "test_t315_channel",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      843,
+      "test_t315_mode",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      844,
+      "test_t315_signal",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      846,
+      "test_t324",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      873,
+      "test_t274",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      896,
+      "check_allocation_failure",
+      7
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      913,
+      "test_t279",
+      6
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      930,
+      "test_t254",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      952,
+      "test_t048",
+      4
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      963,
+      "test_t049",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      977,
+      "test_t050",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      990,
+      "test_t051",
+      4
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1009,
+      "test_t052",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1018,
+      "t293_uniform_color",
+      8
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1046,
+      "test_t293",
+      4
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1056,
+      "test_t750_period",
+      4
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1076,
+      "test_t623",
+      9
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1112,
+      "test_t294",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1136,
+      "test_t405_writable_fifo",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1151,
+      "test_t405_capture_deadline",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1162,
+      "test_t405_idle_writer",
+      2
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1186,
+      "test_t290",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1219,
+      "t340_startup_case",
+      7
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1245,
+      "test_t340_missing",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1246,
+      "test_t340_directory",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1247,
+      "test_t340_empty",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1248,
+      "test_t340_oversized",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1249,
+      "test_t340_readable",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1251,
+      "t341_regular_edid",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1277,
+      "test_t341",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1300,
+      "t343_regular_destination",
+      4
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1321,
+      "t343_fifo_destination",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1347,
+      "test_t343",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1356,
+      "t330_command_lease",
+      3
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1369,
+      "test_t226",
+      7
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1407,
+      "t226_mark",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1416,
+      "t226_requests",
+      5
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1436,
+      "t226_command",
+      8
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1478,
+      "t415_request",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1485,
+      "test_t415_open",
+      6
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1517,
+      "test_t415_live",
+      9
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1550,
+      "test_t415_rounding",
+      1
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1594,
+      "canonical_format_fixture",
+      4
+    ],
+    [
+      "host/tests/evdi_helper_test.c",
+      1598,
+      "main",
+      6
+    ],
+    [
+      "host/tests/evdi_modules.rs",
+      6,
+      "t1709_cadence_policy_needs_no_native_adapter",
+      1
+    ],
+    [
+      "host/tests/evdi_modules.rs",
+      44,
+      "t380_independent_contexts_preserve_frame_and_callback_lifetimes",
+      2
+    ],
+    [
+      "host/tests/shared_capture.c",
+      2,
+      "t418_control",
+      1
+    ],
+    [
+      "host/tests/shared_capture.c",
+      8,
+      "t418_drain",
+      3
+    ],
+    [
+      "host/tests/shared_capture.c",
+      22,
+      "test_t418_ring",
+      7
+    ],
+    [
+      "host/tests/shared_capture.c",
+      77,
+      "test_t418_capture",
+      8
+    ],
+    [
+      "host/tests/shared_capture.c",
+      140,
+      "test_t418_startup",
+      3
+    ],
+    [
+      "host/tests/shared_capture.c",
+      155,
+      "test_t570_idle",
+      3
+    ],
+    [
+      "host/tests/shared_damage.c",
+      14,
+      "t570_init",
+      2
+    ],
+    [
+      "host/tests/shared_damage.c",
+      35,
+      "t570_pixels",
+      1
+    ],
+    [
+      "host/tests/shared_damage.c",
+      39,
+      "t570_publish",
+      1
+    ],
+    [
+      "host/tests/shared_damage.c",
+      49,
+      "t570_release",
+      1
+    ],
+    [
+      "host/tests/shared_damage.c",
+      54,
+      "t570_mutate",
+      1
+    ],
+    [
+      "host/tests/shared_damage.c",
+      67,
+      "t570_retained",
+      5
+    ],
+    [
+      "host/tests/shared_damage.c",
+      83,
+      "t570_bounds",
+      3
+    ],
+    [
+      "host/tests/shared_damage.c",
+      96,
+      "t570_generation",
+      2
+    ],
+    [
+      "host/tests/shared_damage.c",
+      116,
+      "t570_grab",
+      1
+    ],
+    [
+      "host/tests/shared_damage.c",
+      124,
+      "t570_finish",
+      1
+    ],
+    [
+      "host/tests/shared_damage.c",
+      131,
+      "test_t570_histories",
+      3
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      25,
+      "now_ns",
+      1
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      30,
+      "initialize",
+      2
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      49,
+      "mutate",
+      4
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      59,
+      "drain",
+      2
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      64,
+      "hash_slot",
+      2
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      70,
+      "compare",
+      1
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      77,
+      "prepare_publication",
+      2
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      84,
+      "measure",
+      3
+    ],
+    [
+      "scripts/benchmarks/shared-damage.c",
+      114,
+      "main",
+      1
+    ],
+    [
+      "scripts/benchmarks/shared-damage.py",
+      13,
+      "fixture_headers",
+      1
+    ],
+    [
+      "scripts/benchmarks/shared-damage.py",
+      19,
+      "build",
+      2
+    ],
+    [
+      "scripts/benchmarks/shared-damage.py",
+      31,
+      "pair",
+      4
+    ],
+    [
+      "scripts/benchmarks/shared-damage.py",
+      45,
+      "metadata",
+      1
+    ],
+    [
+      "scripts/benchmarks/shared-damage.py",
+      53,
+      "main",
+      4
+    ],
+    [
+      "scripts/tests/test_benchmark_numbers.py",
+      15,
+      "compile_harness",
+      3
+    ],
+    [
+      "scripts/tests/test_benchmark_numbers.py",
+      37,
+      "check_arguments",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_numbers.py",
+      43,
+      "invalid_field",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_numbers.py",
+      52,
+      "test_t1286_malformed_overflow_and_range_rejected_before_admission",
+      3
+    ],
+    [
+      "scripts/tests/test_benchmark_numbers.py",
+      62,
+      "test_t1286_valid_boundaries_reach_admission",
+      3
+    ],
+    [
+      "scripts/tests/test_evdi_build.py",
+      18,
+      "copy_helper",
+      1
+    ],
+    [
+      "scripts/tests/test_evdi_build.py",
+      23,
+      "compiler_spy",
+      1
+    ],
+    [
+      "scripts/tests/test_evdi_build.py",
+      33,
+      "test_t1611_local_build_uses_strict_shared_recipe",
+      3
+    ],
+    [
+      "scripts/tests/test_evdi_build.py",
+      53,
+      "test_t1611_shared_recipe_preserves_literal_output_and_library_paths",
+      1
+    ],
+    [
+      "scripts/tests/test_shared_damage_native.py",
+      16,
+      "test_t1720_historical_baseline_option_is_rejected",
+      1
+    ],
+    [
+      "scripts/tests/test_shared_damage_native.py",
+      26,
+      "test_t1288_current_policy_variants_build",
+      1
+    ],
+    [
+      "scripts/tests/test_shared_damage_native.py",
+      30,
+      "test_t1288_bounded_replay_matches_independent_pixels_and_checksum",
+      2
+    ],
+    [
+      "host/evdi/capture_cadence.c",
+      4,
+      "capture_period_ns",
+      2
+    ],
+    [
+      "host/evdi/capture_cadence.c",
+      10,
+      "capture_cadence_schedule",
+      2
+    ],
+    [
+      "host/evdi/capture_cadence.c",
+      19,
+      "capture_request_wait_ms",
+      3
+    ],
+    [
+      "host/evdi/capture_cadence.c",
+      30,
+      "capture_watchdog_delay",
+      3
+    ],
+    [
+      "host/evdi/capture_cadence.c",
+      37,
+      "capture_cadence_backoff",
+      2
+    ],
+    [
+      "host/evdi/capture_cadence.c",
+      43,
+      "capture_cadence_poll",
+      4
+    ],
+    [
+      "host/evdi/capture_cadence.c",
+      54,
+      "capture_watchdog_due",
+      1
+    ],
+    [
+      "host/evdi/capture_cadence.c",
+      59,
+      "capture_fallback_due",
+      1
+    ],
+    [
+      "host/evdi/capture_cadence.c",
+      64,
+      "capture_publication_interval_us",
+      2
+    ],
+    [
+      "host/evdi/capture_cadence.c",
+      69,
+      "capture_publication_wait_ms",
+      2
+    ],
+    [
+      "host/tests/capture_cadence_policy.c",
+      6,
+      "t1689_late_phase",
+      2
+    ],
+    [
+      "host/tests/capture_cadence_policy.c",
+      22,
+      "t1689_poll_rounding",
+      2
+    ],
+    [
+      "host/tests/capture_cadence_policy.c",
+      36,
+      "periods",
+      3
+    ],
+    [
+      "host/tests/capture_cadence_policy.c",
+      51,
+      "watchdog",
+      3
+    ],
+    [
+      "host/tests/capture_cadence_policy.c",
+      67,
+      "polls",
+      2
+    ],
+    [
+      "host/tests/capture_cadence_policy.c",
+      81,
+      "publication",
+      2
+    ],
+    [
+      "host/tests/capture_cadence_policy.c",
+      99,
+      "main",
+      1
+    ]
+  ],
+  "coverage_tool": "GCC/gcov 13.3.0 through normal native suites; AddressSanitizer/UndefinedBehaviorSanitizer retained",
+  "complexity_tool": "project C tree-sitter 0.25.2 / Rust syn 2.0.119 / Python AST 3.12 checkers",
+  "sources": {
+    "host/evdi/capture.c": "00d64064de6991538a8761ce02d9234c9023b904e2993c6d7423ce096f18e3f2",
+    "host/evdi/capture_cadence.c": "11782e2e837b6aa885d3c4dbb89e7ce243f945091c025edc9b0e501a928d4be6"
+  },
+  "ownership": "Capture event loop remains sole owner of cadence and publication scalar records. Policy borrows records synchronously and takes explicit monotonic clock observations; no allocation, OS state, callback, saved borrow or new resource. Zero initialization remains valid. Native mode/update readiness, framebuffer registration, pause acknowledgements, writer leases, buffer fences and exact cleanup remain in their adapters. Input contract requires due-only scheduling, positive representable period and next deadline, nonnegative monotonic observations, and admitted positive publication FPS; bounded phase/property/invalid-value oracles retain those domains. No duplicate mutable clock state or output-memory ownership added.",
+  "scope": "Ten timing-policy functions extracted; fourteen capture adapter functions maintained. Existing 60/90-Hz request counts, asynchronous callbacks, full-ring backpressure and paused-native progress retained. Pure phase/rounding tests now link only cadence module. Private deliberate rounding/phase faults are caught, baseline/restored pass. GPU cadence unchanged; no physical device/session operation and no speedup claimed.",
+  "review": "Read-only subagent confirmed core equivalence and identified benchmark caller/link omissions. T1720 first removes historical source shims (1e1ded85), then current fields/source lists are retargeted here. Both benchmark policy variants retain independent pixel/checksum and admission oracles."
+}

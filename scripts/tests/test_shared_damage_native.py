@@ -39,7 +39,7 @@ class SharedDamageNativeTest(unittest.TestCase):
                        '-include', str(sources / 'conversion_private.h'),
                        str(ROOT / 'scripts/tests/shared_damage_native.c'),
                        *[str(sources / name) for name in
-                         ['conversion.c', 'frame_exchange.c', 'raw_ring.c', 'cursor_overlay.c']],
+                         ['conversion.c', 'frame_exchange.c', 'raw_ring.c', 'cursor_overlay.c', 'capture_cadence.c']],
                        '-o', str(binary)]
             for full in [0, 1]:
                 subprocess.run([*command, f'-DBLENT_BENCH_FULL_DAMAGE={full}'], check=True)

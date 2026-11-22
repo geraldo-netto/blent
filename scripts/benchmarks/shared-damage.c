@@ -78,7 +78,7 @@ static void prepare_publication(replay_t *r)
 {
     if (BLENT_BENCH_FULL_DAMAGE)
         raw_ring_mark_all(&r->ring);
-    r->capture.raw_sent_us = 0;
+    r->capture.publication.sent_us = 0;
 }
 
 static void measure(replay_t *r)

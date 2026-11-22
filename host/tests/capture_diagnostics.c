@@ -70,7 +70,7 @@ static void t1186_admission_case(capture_control_t *control, unsigned flags)
     g_capture.capture_failed = (flags >> 2) & 1;
     g_capture.buffer_registered = (flags >> 3) & 1;
     g_running = (flags >> 4) & 1;
-    g_capture.last_fallback_grab_ms = 1000;
+    g_capture.cadence.last_fallback_grab_ms = 1000;
     mock_monotonic_ms = 1100;
     int before = mock_grab_calls;
     service_display_progress(&g_capture, EVDI_INVALID_HANDLE);

@@ -242,6 +242,7 @@ host/              Rust daemon
   src/edid.rs        virtual-display EDID cache and atomic publication
   evdi/              C helper: EVDI capture → NV12 → FIFO or leased shared slots
     capture.c        EVDI callbacks, mode and framebuffer lifetime
+    capture_cadence.c request/watchdog/publication policy with explicit clock inputs
     conversion.c     per-context workers and native/scaled BT.709 kernels
     frame_exchange.c triple buffers, dirty histories and generation-tagged leases
     fifo_writer.c    nonblocking writes and damaged-inode quarantine

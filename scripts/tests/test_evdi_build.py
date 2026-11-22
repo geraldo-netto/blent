@@ -10,7 +10,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[2]
 MODULES = {
     'evdi_helper.c', 'conversion.c', 'frame_exchange.c', 'fifo_writer.c',
-    'capture.c', 'capture_activity.c', 'capture_control.c', 'cursor_overlay.c',
+    'capture.c', 'capture_cadence.c', 'capture_activity.c', 'capture_control.c', 'cursor_overlay.c',
     'raw_ring.c', 'writer.c', 'idle_control.c',
 }
 

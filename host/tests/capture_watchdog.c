@@ -37,8 +37,8 @@ static void t1607_recovery_bounds(void)
     const int expected[] = {250, 250, 250, 250, 250, 500, 1000, 1000, 1000};
     for (unsigned i = 0; i < sizeof(values) / sizeof(values[0]); i++)
     {
-        g_capture.watchdog_ms = values[i];
-        assert(watchdog_delay(&g_capture) == expected[i]);
+        g_capture.cadence.watchdog_ms = values[i];
+        assert(capture_watchdog_delay(&g_capture.cadence) == expected[i]);
     }
     mock_grab_calls = 0;
     t623_request_calls = 0;
@@ -53,14 +53,14 @@ static void t1607_recovery_bounds(void)
         mock_monotonic_ms++;
         recover_capture_if_stalled(&g_capture, mock_monotonic_ms, &fallback);
         assert(mock_grab_calls == step + 1);
-        assert(watchdog_delay(&g_capture) == 1000);
+        assert(capture_watchdog_delay(&g_capture.cadence) == 1000);
     }
     on_update_ready(0, &g_capture);
-    assert(watchdog_delay(&g_capture) == 250);
-    g_capture.watchdog_ms = 1000;
+    assert(capture_watchdog_delay(&g_capture.cadence) == 250);
+    g_capture.cadence.watchdog_ms = 1000;
     t623_ready = 1;
     request_capture_if_due(&g_capture, g_capture.handle, (mock_monotonic_ms) * 1000000LL, 16000000);
-    assert(watchdog_delay(&g_capture) == 250);
+    assert(capture_watchdog_delay(&g_capture.cadence) == 250);
     t623_ready = 0;
     t623_request_calls = -1;
     mock_grab_calls = -1;
@@ -74,9 +74,9 @@ static void t1607_nonempty_recovery(void)
     t752_grabs = 1;
     t752_count = 1;
     t752_rects[0] = (struct evdi_rect){0, 0, 8, 8};
-    g_capture.watchdog_ms = 1000;
+    g_capture.cadence.watchdog_ms = 1000;
     recover_pending_update(&g_capture);
-    assert(watchdog_delay(&g_capture) == 250);
+    assert(capture_watchdog_delay(&g_capture.cadence) == 250);
     t752_grabs = 0;
     t497_free_capture();
 }

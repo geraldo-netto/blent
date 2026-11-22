@@ -107,7 +107,7 @@ static void publish_frame(capture_context_t *capture)
         return;
     if (capture->raw_ring)
     {
-        capture->raw_pending = 1;
+        capture->publication.pending = 1;
         return;
     }
 
@@ -365,7 +365,7 @@ static void grab_snapshot(capture_context_t *capture, int full)
     long long t0 = capture_now_us();
     evdi_grab_pixels(capture->handle, rects, &num_rects);
     long long grabbed_us = capture_now_us();
-    capture->last_fallback_grab_ms = grabbed_us / 1000;
+    capture->cadence.last_fallback_grab_ms = grabbed_us / 1000;
     capture->grab_sum_us += grabbed_us - t0;
     normalize_snapshot(capture, rects, num_rects, full);
     draw_cursor(capture);
@@ -374,7 +374,7 @@ static void grab_snapshot(capture_context_t *capture, int full)
         capture->empty_n++;
     if (num_rects > 0)
     {
-        capture->watchdog_ms = 250;
+        capture->cadence.watchdog_ms = 250;
         capture->grab_count++;
         capture->grab_us = grabbed_us;
         /* Under the swap lock: the writer thread reassigns the mask pointers
@@ -406,7 +406,7 @@ static void on_update_ready(int buffer_to_be_updated, void *user_data)
         capture->wait_n++;
     }
     capture->update_pending = 0;
-    capture->watchdog_ms = 250;
+    capture->cadence.watchdog_ms = 250;
     grab_now(capture);
     /* GRABPIX acknowledges the pending flip before any subsequent request
        (T599). Keep the request's deadline: an early ready callback must not
@@ -470,91 +470,28 @@ static void on_cursor_move(struct evdi_cursor_move event, void *user_data) {
     publish_cursor(capture);
 }
 
-static long long capture_period_ns(const capture_context_t *capture)
-{
-    long long fps = capture->fps > 0 ? capture->fps : 60;
-    return (1000000000 + fps - 1) / fps;
-}
-
-/* The original event-loop owns this absolute phase. Skip missed deadlines;
- * never issue more than one request at a given observation. */
-static void schedule_next_capture(capture_context_t *capture, long long now, long long period)
-{
-    long long remaining = period;
-    if (capture->next_request_ns > 0)
-        remaining -= (now - capture->next_request_ns) % period;
-    capture->next_request_ns = now + remaining;
-}
-
-static int capture_request_wait_ms(const capture_context_t *capture)
-{
-    long long remaining = capture->next_request_ns - capture_now_ns();
-    if (remaining <= 0)
-        return 0;
-    if (remaining >= (long long)INT_MAX * 1000000)
-        return INT_MAX;
-    /* Only the OS poll wait rounds up. The absolute request phase never drifts. */
-    return (int)((remaining + 999999) / 1000000);
-}
-
-static int watchdog_delay(const capture_context_t *capture)
-{
-    if (capture->watchdog_ms < 250)
-        return 250;
-    return capture->watchdog_ms > 1000 ? 1000 : capture->watchdog_ms;
-}
-
 static int capture_poll_timeout(capture_context_t *capture)
 {
-    if (!capture_active(capture))
+    /* Quiescent or modeless capture waits only for native notifications. */
+    if (!capture_active(capture) || !capture->have_mode)
         return 100;
-    /* Round only this poll wait up to millisecond resolution; retain the
-       absolute sub-millisecond request phase across late wakeups.
-       With no mode there is nothing to request, and the deadline below
-       would sit permanently in the past — poll would return instantly and
-       the loop would spin at 100% of a core. Wait on events only. */
-    long long timeout_ms;
-    if (!capture->have_mode)
-    {
-        timeout_ms = 100;
-    }
-    else if (capture->update_pending)
-    {
-        /* Waiting for update_ready. The capture deadline below has already
-           passed and cannot advance until the request completes, so
-           deriving a timeout from it yields 0 forever and poll returns
-           instantly — the loop then burns a whole core. This is not a
-           rare state: disabling the virtual output leaves a mode set with
-           nothing rendering to it, which is exactly what happens when the
-           tablet is unplugged or switched to pen-only.
-           Sleep until the watchdog is due instead. update_ready wakes poll
-           the moment it arrives, so nothing is delayed when the
-           compositor is actually running. */
-        int delay = watchdog_delay(capture);
-        long long left = capture->last_request_ms + delay - capture_now_ms();
-        timeout_ms = left < 0 ? 0 : (left > delay ? delay : (int)left);
-    }
-    else
-    {
-        timeout_ms = capture_request_wait_ms(capture);
-    }
-
-    return (int)timeout_ms;
+    return capture_cadence_poll(&capture->cadence, capture_now_ns(), capture->update_pending);
 }
 
-static void request_capture_if_due(capture_context_t *capture, evdi_handle handle, long long now, long long request_period_ns)
+static void request_capture_if_due(capture_context_t *capture, evdi_handle handle, long long now,
+                                   long long request_period_ns)
 {
     /* Core capture cycle: request a fresh frame from the compositor at
        the target fps. If the kernel says pixels are ready right away,
        grab immediately; otherwise update_ready will fire and grab. */
-    if (!capture->update_pending && now >= capture->next_request_ns)
+    if (!capture->update_pending && now >= capture->cadence.next_request_ns)
     {
-        schedule_next_capture(capture, now, request_period_ns);
-        capture->last_request_ms = now / 1000000;
+        capture_cadence_schedule(&capture->cadence, now, request_period_ns);
+        capture->cadence.last_request_ms = now / 1000000;
         capture->req_us = capture_now_us();
         if (evdi_request_update(handle, 0))
         {
-            capture->watchdog_ms = 250;
+            capture->cadence.watchdog_ms = 250;
             capture->immediate_n++;
             grab_now(capture);
         }
@@ -563,7 +500,6 @@ static void request_capture_if_due(capture_context_t *capture, evdi_handle handl
             capture->update_pending = 1;
         }
     }
-
 }
 
 static void recover_pending_update(capture_context_t *capture)
@@ -573,16 +509,16 @@ static void recover_pending_update(capture_context_t *capture)
     grab_now(capture);
     if (capture->grab_count == previous)
     {
-        int delay = watchdog_delay(capture) * 2;
-        capture->watchdog_ms = delay > 1000 ? 1000 : delay;
+        capture_cadence_backoff(&capture->cadence);
     }
 }
 
-static void recover_capture_if_stalled(capture_context_t *capture, long long now, long long *last_fallback_grab_ms)
+static void recover_capture_if_stalled(capture_context_t *capture, long long now,
+                                       long long *last_fallback_grab_ms)
 {
     /* Watchdog: if a request got lost (compositor hiccup), don't stay
        stuck waiting for update_ready forever. */
-    if (capture->update_pending && (now - capture->last_request_ms) >= watchdog_delay(capture))
+    if (capture->update_pending && capture_watchdog_due(&capture->cadence, now))
     {
         recover_pending_update(capture);
         /* This recovery also satisfies the fallback deadline. A second grab
@@ -591,13 +527,12 @@ static void recover_capture_if_stalled(capture_context_t *capture, long long now
     }
 
     /* Fallback grab once a second in case no events flow at all */
-    if ((now - (*last_fallback_grab_ms)) >= 1000)
+    if (capture_fallback_due(*last_fallback_grab_ms, now))
     {
         (*last_fallback_grab_ms) = now;
         if (!capture->update_pending)
             grab_now(capture);
     }
-
 }
 
 /* Empirical inverse-CDF rank: first sorted sample whose cumulative fraction
@@ -653,14 +588,14 @@ static void resume_capture(capture_context_t *capture)
     mark_all_dirty(capture);
     frame_exchange_set_ready(capture->frames, 1);
     capture->update_pending = 0;
-    capture->last_request_ms = capture_now_ms();
-    capture->next_request_ns = capture_now_ns() + capture_period_ns(capture);
-    capture->raw_sent_us = 0;
+    capture->cadence.last_request_ms = capture_now_ms();
+    capture->cadence.next_request_ns = capture_now_ns() + capture_period_ns(capture->fps);
+    capture->publication.sent_us = 0;
     long long previous = capture->grab_count;
     /* A queued flip must be acknowledged before any new update request (T599).
      * Even an unchanged image must seed the new encoder's first full frame. */
     grab_snapshot(capture, 1);
-    capture->last_fallback_grab_ms = capture_now_ms();
+    capture->cadence.last_fallback_grab_ms = capture_now_ms();
     if (capture->grab_count == previous)
         publish_frame(capture);
 }
@@ -671,12 +606,12 @@ static void apply_capture_activity(capture_context_t *capture)
         resume_capture(capture);
     else
     {
-        capture->last_fallback_grab_ms = capture_now_ms();
+        capture->cadence.last_fallback_grab_ms = capture_now_ms();
         capture->display_progress_trace.reported = 0;
         /* Invalidate exactly once. A timeout preserves all original buffers;
          * later iterations observe completion without manufacturing a lease. */
         frame_exchange_retire(capture->frames);
-        capture->raw_pending = 0;
+        capture->publication.pending = 0;
     }
 }
 
@@ -756,8 +691,8 @@ static int publish_shared_capture(capture_context_t *capture)
     if (!capture->have_mode || !frame_exchange_is_ready(capture->frames))
         return 1;
     long long now = capture_now_us();
-    long long interval = capture->raw_pending ? 1000000 / capture->fps : 200000;
-    if (now - capture->raw_sent_us < interval)
+    long long interval = capture_publication_interval_us(&capture->publication, capture->fps);
+    if (now - capture->publication.sent_us < interval)
         return 1;
     uint32_t slot;
     unsigned char *pixels = raw_ring_acquire(capture->raw_ring, &slot);
@@ -771,8 +706,8 @@ static int publish_shared_capture(capture_context_t *capture)
         return 0;
     if (result > 0)
     {
-        capture->raw_sent_us = now;
-        capture->raw_pending = 0;
+        capture->publication.sent_us = now;
+        capture->publication.pending = 0;
     }
     return 1;
 }
@@ -788,11 +723,7 @@ static int shared_poll_timeout(capture_context_t *capture, int timeout_ms)
         return timeout_ms;
     if (!capture->raw_ring || !capture->have_mode)
         return timeout_ms;
-    long long interval = capture->raw_pending ? 1000000 / capture->fps : 200000;
-    long long remaining = capture->raw_sent_us + interval - capture_now_us();
-    /* A full ring must not spin while libavcodec retains all slots. Release
-     * notifications wake poll immediately; 1 ms also covers a lost hint. */
-    int due = remaining <= 0 ? 1 : (int)((remaining + 999) / 1000);
+    int due = capture_publication_wait_ms(&capture->publication, capture->fps, capture_now_us());
     return due < timeout_ms ? due : timeout_ms;
 }
 
@@ -805,7 +736,7 @@ static int capture_tick(capture_context_t *capture, evdi_handle handle, long lon
         return 1;
     long long now = capture_now_ms();
     request_capture_if_due(capture, handle, capture_now_ns(), request_period_ns);
-    recover_capture_if_stalled(capture, now, &capture->last_fallback_grab_ms);
+    recover_capture_if_stalled(capture, now, &capture->cadence.last_fallback_grab_ms);
     if (now - *last_stats_ms >= 5000)
         report_capture_stats(capture, now, last_stats_ms, stats_grab_base);
     return service_shared_capture(capture);
@@ -839,9 +770,9 @@ static void service_display_progress(capture_context_t *capture, evdi_handle han
         !capture->buffer_registered || !*capture->running)
         return;
     long long now = capture_now_ms();
-    if (now - capture->last_fallback_grab_ms < 100)
+    if (now - capture->cadence.last_fallback_grab_ms < 100)
         return;
-    capture->last_fallback_grab_ms = now;
+    capture->cadence.last_fallback_grab_ms = now;
     restore_cursor(capture);
     struct evdi_rect rects[64];
     int count = 64;
@@ -849,8 +780,7 @@ static void service_display_progress(capture_context_t *capture, evdi_handle han
     int traced = trace_display_progress(capture, now);
     evdi_grab_pixels(handle, rects, &count);
     if (traced)
-        fprintf(stderr, "[evdi-helper] display-progress end sequence=%" PRIu64
-                        " elapsed_us=%lld\n",
+        fprintf(stderr, "[evdi-helper] display-progress end sequence=%" PRIu64 " elapsed_us=%lld\n",
                 capture->control->current.sequence, capture_now_us() - started);
 }
 
@@ -876,11 +806,11 @@ int capture_run(capture_context_t *capture, evdi_handle handle)
     long long last_stats_ms = capture_now_ms();
     if (!capture_active(capture))
     {
-        capture->last_fallback_grab_ms = last_stats_ms;
+        capture->cadence.last_fallback_grab_ms = last_stats_ms;
         capture->display_progress_trace.reported = 0;
     }
     long long stats_grab_base = 0;
-    long long request_period_ns = capture_period_ns(capture);
+    long long request_period_ns = capture_period_ns(capture->fps);
 
     while ((*capture->running))
     {

@@ -51,6 +51,7 @@ static void t779_counted_copy(unsigned char *destination, const unsigned char *s
     conv_copy_rgba_to_bgra(destination, source, pixels);
 }
 #define conv_copy_rgba_to_bgra t779_counted_copy
+#include "../evdi/capture_cadence.c"
 #include "../evdi/capture.c"
 #undef conv_copy_rgba_to_bgra
 #undef add_period
@@ -1052,26 +1053,31 @@ static void test_t293(void) {
 }
 
 /* T750: periodic requests must not exceed their configured integer rate. */
-static void test_t750_period(void) {
-    for (int fps=1;fps<=240;fps++) {
-        g_capture.fps=fps;
-        long long period=capture_period_ns(&g_capture);
-        assert((long long)period*fps >= 1000000000 && "T750: truncated period exceeds configured FPS");
-        assert((long long)(period-1)*fps < 1000000000);
+static void test_t750_period(void)
+{
+    for (int fps = 1; fps <= 240; fps++)
+    {
+        g_capture.fps = fps;
+        long long period = capture_period_ns(g_capture.fps);
+        assert((long long)period * fps >= 1000000000 && "T750: truncated period exceeds configured FPS");
+        assert((long long)(period - 1) * fps < 1000000000);
     }
-    const int invalid[]={INT_MIN,-1,0};
-    for (unsigned i=0;i<3;i++) {
-        g_capture.fps=invalid[i];
-        assert(capture_period_ns(&g_capture)==16666667);
+    const int invalid[] = {INT_MIN, -1, 0};
+    for (unsigned i = 0; i < 3; i++)
+    {
+        g_capture.fps = invalid[i];
+        assert(capture_period_ns(g_capture.fps) == 16666667);
     }
-    g_capture.fps=INT_MAX;assert(capture_period_ns(&g_capture)==1);
+    g_capture.fps = INT_MAX;
+    assert(capture_period_ns(g_capture.fps) == 1);
 }
 
 /* T623: preserve retry recovery, but coalesce watchdog/fallback on one tick. */
-static void test_t623(void) {
+static void test_t623(void)
+{
     g_capture.have_mode = 1;
     g_capture.update_pending = 0;
-    g_capture.last_request_ms = 0;
+    g_capture.cadence.last_request_ms = 0;
     mock_monotonic_ms = 1000;
     mock_grab_calls = 0;
     t623_request_calls = 0;
@@ -1103,19 +1109,22 @@ static void test_t623(void) {
     t623_request_calls = -1;
 }
 
-static void test_t294(void) {
+static void test_t294(void)
+{
     g_capture.have_mode = 1;
-    for (long long elapsed = 249; elapsed <= 251; elapsed++) {
-        g_capture.watchdog_ms = 250;
+    for (long long elapsed = 249; elapsed <= 251; elapsed++)
+    {
+        g_capture.cadence.watchdog_ms = 250;
         mock_grab_calls = 0;
         g_capture.update_pending = 1;
-        g_capture.last_request_ms = 1000;
+        g_capture.cadence.last_request_ms = 1000;
         mock_monotonic_ms = 1000 + elapsed;
         long long last_fallback = mock_monotonic_ms;
         const int expired = elapsed >= 250;
         assert(capture_poll_timeout(&g_capture) == (expired ? 0 : 1));
         recover_capture_if_stalled(&g_capture, mock_monotonic_ms, &last_fallback);
-        assert(g_capture.update_pending == !expired && "T294: zero-timeout polling cannot retain an expired request");
+        assert(g_capture.update_pending == !expired &&
+               "T294: zero-timeout polling cannot retain an expired request");
         assert(mock_grab_calls == expired);
         recover_capture_if_stalled(&g_capture, mock_monotonic_ms, &last_fallback);
         assert(mock_grab_calls == expired && "T294: watchdog must not grab twice");
@@ -1139,11 +1148,12 @@ static void test_t405_writable_fifo(void) {
     g_fifo.fd = -1;
 }
 
-static void test_t405_capture_deadline(void) {
+static void test_t405_capture_deadline(void)
+{
     mock_monotonic_ms = 1000;
     g_capture.have_mode = 1;
     g_capture.update_pending = 0;
-    g_capture.next_request_ns = 1016000000;
+    g_capture.cadence.next_request_ns = 1016000000;
     assert(capture_poll_timeout(&g_capture) == 16 &&
            "T405: capture must wait for its deadline; events wake poll immediately");
     mock_monotonic_ms = -1;
@@ -1173,28 +1183,32 @@ static void test_t405_idle_writer(void) {
     mock_monotonic_ms = -1;
 }
 
-static void test_t290(void) {
-    const long long uptimes[] = {
-        1234, (long long)INT_MAX - 1, (long long)INT_MAX + 17,
-        (long long)INT_MAX + 18, (long long)UINT_MAX + 18,
-        (1LL << 40) + INT_MAX + 1000
-    };
-    for (size_t i = 0; i < sizeof(uptimes) / sizeof(uptimes[0]); i++) {
+static void test_t290(void)
+{
+    const long long uptimes[] = {1234,
+                                 (long long)INT_MAX - 1,
+                                 (long long)INT_MAX + 17,
+                                 (long long)INT_MAX + 18,
+                                 (long long)UINT_MAX + 18,
+                                 (1LL << 40) + INT_MAX + 1000};
+    for (size_t i = 0; i < sizeof(uptimes) / sizeof(uptimes[0]); i++)
+    {
         mock_monotonic_ms = uptimes[i];
         g_capture.have_mode = 1;
         g_capture.update_pending = 0;
-        g_capture.next_request_ns = 0; /* first request, or an overdue request after a long wait */
+        g_capture.cadence.next_request_ns = 0; /* first request, or an overdue request after a long wait */
         assert(capture_poll_timeout(&g_capture) == 0 && "T290: overdue pipeline capture gained a poll delay");
-        g_capture.next_request_ns = mock_monotonic_ms * 1000000 + 16000000;
-        assert(capture_poll_timeout(&g_capture) == 16); /* T405: exact deadline, still wide before clamping. */
-        g_capture.next_request_ns = mock_monotonic_ms * 1000000 + 1000000;
+        g_capture.cadence.next_request_ns = mock_monotonic_ms * 1000000 + 16000000;
+        assert(capture_poll_timeout(&g_capture) ==
+               16); /* T405: exact deadline, still wide before clamping. */
+        g_capture.cadence.next_request_ns = mock_monotonic_ms * 1000000 + 1000000;
         assert(capture_poll_timeout(&g_capture) == 1);
-        g_capture.next_request_ns = mock_monotonic_ms * 1000000;
+        g_capture.cadence.next_request_ns = mock_monotonic_ms * 1000000;
         assert(capture_poll_timeout(&g_capture) == 0);
         g_capture.update_pending = 1;
-        g_capture.last_request_ms = mock_monotonic_ms - 100;
+        g_capture.cadence.last_request_ms = mock_monotonic_ms - 100;
         assert(capture_poll_timeout(&g_capture) == 150);
-        g_capture.last_request_ms = mock_monotonic_ms - 251;
+        g_capture.cadence.last_request_ms = mock_monotonic_ms - 251;
         assert(capture_poll_timeout(&g_capture) == 0);
         g_capture.have_mode = 0;
         assert(capture_poll_timeout(&g_capture) == 100);

@@ -1,17 +1,24 @@
 /* T750: ready callbacks acknowledge immediately, without resetting the rate cap. */
-static void t750_async_case(int fps, int delay) {
-    g_capture.fps = fps; g_capture.have_mode = 1; g_capture.update_pending = 0;
-    g_capture.last_request_ms = 0; g_capture.next_request_ns = 0;
-    mock_monotonic_ms = 1000; mock_grab_calls = 0;
-    t623_request_calls = 0; t623_ready = 0;
-    long long period = capture_period_ns(&g_capture);
+static void t750_async_case(int fps, int delay)
+{
+    g_capture.fps = fps;
+    g_capture.have_mode = 1;
+    g_capture.update_pending = 0;
+    g_capture.cadence.last_request_ms = 0;
+    g_capture.cadence.next_request_ns = 0;
+    mock_monotonic_ms = 1000;
+    mock_grab_calls = 0;
+    t623_request_calls = 0;
+    t623_ready = 0;
+    long long period = capture_period_ns(g_capture.fps);
     request_capture_if_due(&g_capture, g_capture.handle, 1000000000, period);
     assert(t623_request_calls == 1 && g_capture.update_pending);
     mock_monotonic_ms += delay;
     int waits = g_capture.wait_n;
     on_update_ready(0, &g_capture);
     assert(mock_grab_calls == 1 && !g_capture.update_pending && g_capture.wait_n == waits + 1);
-    assert(g_capture.last_request_ms == 1000 && "T750: early ready callback erased the capture rate deadline");
+    assert(g_capture.cadence.last_request_ms == 1000 &&
+           "T750: early ready callback erased the capture rate deadline");
     long long remaining_ns = period - (long long)delay * 1000000;
     int remaining = remaining_ns > 0 ? (int)((remaining_ns + 999999) / 1000000) : 0;
     assert(capture_poll_timeout(&g_capture) == remaining);
@@ -25,12 +32,17 @@ static void t750_async_case(int fps, int delay) {
     assert(t623_request_calls == 2 && g_capture.update_pending);
 }
 
-static void test_t750_async(void) {
-    for (int fps = 1; fps <= 240; fps++) {
+static void test_t750_async(void)
+{
+    for (int fps = 1; fps <= 240; fps++)
+    {
         g_capture.fps = fps;
-        int period = (int)((capture_period_ns(&g_capture) + 999999) / 1000000);
+        int period = (int)((capture_period_ns(g_capture.fps) + 999999) / 1000000);
         const int delays[] = {0, 1, period - 1, period, period + 1, 250};
-        for (unsigned i = 0; i < sizeof(delays)/sizeof(delays[0]); i++) t750_async_case(fps, delays[i]);
+        for (unsigned i = 0; i < sizeof(delays) / sizeof(delays[0]); i++)
+            t750_async_case(fps, delays[i]);
     }
-    mock_monotonic_ms = -1; mock_grab_calls = -1; t623_request_calls = -1;
+    mock_monotonic_ms = -1;
+    mock_grab_calls = -1;
+    t623_request_calls = -1;
 }

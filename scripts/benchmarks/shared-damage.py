@@ -24,7 +24,7 @@ def build(directory):
                         f'-DBLENT_BENCH_FULL_DAMAGE={full}', *fixture_headers(sources),
                         '-I', str(sources), str(ROOT / 'scripts/benchmarks/shared-damage.c'),
                         *[str(sources / name) for name in
-                          ['conversion.c', 'frame_exchange.c', 'raw_ring.c', 'cursor_overlay.c']],
+                          ['conversion.c', 'frame_exchange.c', 'raw_ring.c', 'cursor_overlay.c', 'capture_cadence.c']],
                         '-o', str(directory / variant)], check=True)
 
 

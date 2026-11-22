@@ -20,7 +20,7 @@ def compile_harness(folder, name):
         extra = [str(sources / p) for p in ['frame_exchange.c', 'fifo_writer.c', 'idle_control.c']]
     if name == 'shared-damage':
         extra = [*SHARED.fixture_headers(sources), *[str(sources / p) for p in
-                 ['conversion.c', 'frame_exchange.c', 'raw_ring.c', 'cursor_overlay.c']]]
+                 ['conversion.c', 'frame_exchange.c', 'raw_ring.c', 'cursor_overlay.c', 'capture_cadence.c']]]
     binary = folder / name
     subprocess.run(['cc', '-std=c11', '-O1', '-g', '-pthread',
                     '-ffunction-sections', '-fdata-sections', '-Wl,--gc-sections',

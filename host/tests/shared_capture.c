@@ -74,55 +74,65 @@ static void test_t418_ring(void) {
     raw_ring_close(&ring);
 }
 
-static void test_t418_capture(void) {
+static void test_t418_capture(void)
+{
     raw_ring_t ring = RAW_RING_INITIALIZER;
-    int pair[2]; assert(socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_NONBLOCK, 0, pair) == 0);
+    int pair[2];
+    assert(socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_NONBLOCK, 0, pair) == 0);
     assert(raw_ring_init(&ring, pair[0]));
     frame_exchange_init(&g_frames);
     g_capture.raw_ring = &ring;
     g_running = 1;
     assert(service_shared_capture(&g_capture)); /* Partial startup with no mode. */
-    on_mode_changed((struct evdi_mode){.width=64, .height=64, .refresh_rate=60,
-        .bits_per_pixel=32, .pixel_format=0x34325258}, &g_capture);
+    on_mode_changed(
+        (struct evdi_mode){
+            .width = 64, .height = 64, .refresh_rate = 60, .bits_per_pixel = 32, .pixel_format = 0x34325258},
+        &g_capture);
     assert(g_capture.have_mode);
-    assert(g_capture.raw_pending);
+    assert(g_capture.publication.pending);
     assert(!g_frames.fill);
-    raw_ring_t hello = ring; hello.nonce = 8;
+    raw_ring_t hello = ring;
+    hello.nonce = 8;
     t418_control(&hello, pair[1], 4);
     mock_monotonic_ms = 1000;
     assert(service_shared_capture(&g_capture));
-    assert(!g_capture.raw_pending && ring.sequence == 1);
+    assert(!g_capture.publication.pending && ring.sequence == 1);
     assert(shared_poll_timeout(&g_capture, 250) == 200);
     assert(publish_shared_capture(&g_capture) && ring.sequence == 1);
     memset(g_capture.framebuffer, 0xff, g_capture.fb_size);
     mark_all_dirty(&g_capture);
-    g_capture.raw_pending = 1;
+    g_capture.publication.pending = 1;
     assert(shared_poll_timeout(&g_capture, 250) == 17);
     mock_monotonic_ms += 17;
     assert(publish_shared_capture(&g_capture));
     assert(ring.sequence == 2);
     unsigned char *pixels = ring.memory + RAW_CONTROL_BYTES + ring.slot_bytes;
     assert(pixels[0] == 235 && pixels[64 * 64] == 128);
-    for (int i = 0; i < 2; i++) {
-        mock_monotonic_ms += 200; assert(publish_shared_capture(&g_capture));
+    for (int i = 0; i < 2; i++)
+    {
+        mock_monotonic_ms += 200;
+        assert(publish_shared_capture(&g_capture));
     }
     memset(g_capture.framebuffer, 0, g_capture.fb_size);
     mark_all_dirty(&g_capture);
-    g_capture.raw_pending = 1;
+    g_capture.publication.pending = 1;
     mock_monotonic_ms += 200;
-    assert(publish_shared_capture(&g_capture) && g_capture.raw_pending);
+    assert(publish_shared_capture(&g_capture) && g_capture.publication.pending);
     assert(shared_poll_timeout(&g_capture, 250) == 1);
     atomic_store_explicit((_Atomic uint32_t *)ring.memory, RAW_FREE, memory_order_release);
-    assert(publish_shared_capture(&g_capture) && !g_capture.raw_pending);
+    assert(publish_shared_capture(&g_capture) && !g_capture.publication.pending);
     assert(ring.memory[RAW_CONTROL_BYTES] == 16); /* Final fresh update survives a full ring. */
     t418_drain(pair[1]);
     close(pair[1]);
     assert(!service_shared_capture(&g_capture));
-    on_mode_changed((struct evdi_mode){.width=66, .height=64, .refresh_rate=60,
-        .bits_per_pixel=32, .pixel_format=0x34325258}, &g_capture);
+    on_mode_changed(
+        (struct evdi_mode){
+            .width = 66, .height = 64, .refresh_rate = 60, .bits_per_pixel = 32, .pixel_format = 0x34325258},
+        &g_capture);
     assert(g_capture.capture_failed && !g_running);
     raw_ring_close(&ring);
-    free(g_capture.framebuffer); g_capture.framebuffer = NULL;
+    free(g_capture.framebuffer);
+    g_capture.framebuffer = NULL;
     frame_exchange_free(&g_frames);
     g_capture.raw_ring = NULL;
 }

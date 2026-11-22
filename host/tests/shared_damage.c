@@ -64,17 +64,19 @@ static void t570_mutate(t570_fixture *f, unsigned step) {
     publish_frame(&f->capture);
 }
 
-static void t570_retained(t570_fixture *f) {
-    for (unsigned step = 1; step <= 96; step++) {
+static void t570_retained(t570_fixture *f)
+{
+    for (unsigned step = 1; step <= 96; step++)
+    {
         t570_mutate(f, step);
         for (unsigned slot = 0; slot < RAW_SLOTS; slot++)
             assert(memcmp(t570_pixels(f, slot), f->snapshots[slot], sizeof(f->snapshots[slot])) == 0);
-        assert(publish_shared_capture(&f->capture) && f->capture.raw_pending);
+        assert(publish_shared_capture(&f->capture) && f->capture.publication.pending);
         /* Slot 3 misses 80 updates. Its accumulated history must survive. */
         unsigned slot = step < 80 ? step % 3 : step % RAW_SLOTS;
         t570_release(f, slot);
         t570_publish(f, slot);
-        assert(!f->capture.raw_pending);
+        assert(!f->capture.publication.pending);
     }
 }
 
