@@ -94,7 +94,8 @@ Their legacy **wire** estimate subtracts independent medians. That subtraction
 does not isolate transport, host queueing or acknowledgement time. T457 removes
 this invalid decomposition; no replacement component can be reconstructed
 without the missing paired historical samples.
-Benchmark readers accept both the current and historical labels.
+Current benchmark readers accept only current producer labels. Historical reports
+remain historical; obsolete labels are not interpreted as current measurements.
 
 Capture, encoding, and time already spent assembling an access unit are outside
 that host timer. The helper's separate `capture→fifo` timer begins after

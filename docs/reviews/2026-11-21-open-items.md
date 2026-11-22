@@ -644,3 +644,9 @@ Both the native log and parser regressions failed before the fix. The native log
 Both capture percentiles now select the first sorted sample whose cumulative fraction reaches the requested percentage. The old mixed indexing logged p50=8 ms and p95=7 ms for samples [7,8]; the new result is p50=7 ms and p95=8 ms. Invalid rank inputs reject before indexing.
 
 The actual log regression failed before the fix. Both native tests pass under ASan/UBSan, including 26,418 bounded count/percentile pairs against an independently iterated rank oracle and two extreme invalid inputs. All 12 benchmark/parser tests pass. Both changed functions measure 100% line coverage; all 90 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1692.json). Pure bounded arithmetic uses the reporter's existing stack snapshot; no ownership boundary changes.
+
+## T1691 — remove historical benchmark label aliases (2026-11-22)
+
+Current summary and plot readers no longer interpret obsolete encode→display or decode+render labels. They retain the current host-clock and tablet-clock boundaries. Permanent tests now require old-label rejection while retaining current-field, independent-window and no-derived-wire oracles; historical reports remain unchanged.
+
+Both rejection regressions failed before removal. All 12 benchmark/plot tests pass; all 25 measured functions meet complexity ≤9. Constants-only benchmark changes are within the existing coverage exemption and introduce no resource lifetime. [Evidence](artifacts/2026-11-21-open-items/t1691.json).

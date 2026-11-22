@@ -1,0 +1,170 @@
+{
+  "issue": "T1691",
+  "date": "2026-11-22",
+  "regressions_before": {
+    "failed": 2,
+    "passed": 10
+  },
+  "verification": {
+    "benchmark_and_plot_tests_passed": 12
+  },
+  "complexity": [
+    [
+      "scripts/benchmarks/summarize.py",
+      12,
+      "load_lines",
+      3
+    ],
+    [
+      "scripts/benchmarks/summarize.py",
+      22,
+      "distribution",
+      2
+    ],
+    [
+      "scripts/benchmarks/summarize.py",
+      29,
+      "cpu_delta",
+      7
+    ],
+    [
+      "scripts/benchmarks/summarize.py",
+      38,
+      "host_cpu",
+      4
+    ],
+    [
+      "scripts/benchmarks/summarize.py",
+      52,
+      "process_summary",
+      7
+    ],
+    [
+      "scripts/benchmarks/summarize.py",
+      72,
+      "battery_summary",
+      3
+    ],
+    [
+      "scripts/benchmarks/summarize.py",
+      106,
+      "window_values",
+      5
+    ],
+    [
+      "scripts/benchmarks/summarize.py",
+      120,
+      "phase_summary",
+      3
+    ],
+    [
+      "scripts/benchmarks/summarize.py",
+      129,
+      "visibility_integrity",
+      8
+    ],
+    [
+      "scripts/benchmarks/summarize.py",
+      144,
+      "read_evidence",
+      1
+    ],
+    [
+      "scripts/benchmarks/summarize.py",
+      152,
+      "summarize",
+      9
+    ],
+    [
+      "scripts/tests/test_benchmark.py",
+      16,
+      "test_t1690_capture_window_preserves_sample_count_and_capacity",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark.py",
+      26,
+      "test_t457_current_boundaries_reject_t1691_historical_aliases",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark.py",
+      36,
+      "test_t410_journal_byte_array_messages_are_retained",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark.py",
+      53,
+      "test_t382_native_stat_fields_and_cpu_units",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark.py",
+      65,
+      "test_t382_charge_is_net_current_not_input_power",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark.py",
+      78,
+      "test_t382_window_percentiles_are_never_pooled",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark.py",
+      90,
+      "test_t382_compressed_raw_samples_round_trip",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_plot.py",
+      18,
+      "setUp",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_plot.py",
+      27,
+      "test_t442_empty_observations_preserve_empty_series",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_plot.py",
+      32,
+      "test_t457_plot_keeps_current_timing_and_rejects_t1691_aliases",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_plot.py",
+      38,
+      "render",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_plot.py",
+      49,
+      "test_t442_missing_traces_are_labelled",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_plot.py",
+      55,
+      "test_t442_title_uses_only_recorded_settings",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_plot.py",
+      63,
+      "test_t442_unknown_pipeline_cpu_is_not_an_observation",
+      1
+    ]
+  ],
+  "tools": {
+    "python": "3.12",
+    "complexity": "project PythonAST standard cyclomatic counter"
+  },
+  "coverage": "Benchmark tool exempt from per-function coverage; existing permanent tests retained and retargeted to current labels. Only regex constants changed in production.",
+  "ownership": "Existing parsing call owns input iteration and per-call result dictionaries; regex change adds no retained state or allocation owner. Current timing-boundary, independent-window and no-derived-wire oracles preserved.",
+  "limits": "Historical reports unchanged; obsolete timing labels are ignored, not interpreted as current samples."
+}

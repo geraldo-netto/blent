@@ -23,16 +23,18 @@ class BaselineMeasurementTests(unittest.TestCase):
         self.assertEqual(result['p50_ms']['n'], 2)
         self.assertEqual(window_values([dict(message='capture→fifo p50 1ms p95 2ms (256 frames)')]), {})
 
-    def test_t457_current_and_historical_labels_have_identical_boundaries(self):
+    def test_t457_current_boundaries_reject_t1691_historical_aliases(self):
         historical = [dict(message='Latency encode→display: p50 20ms  p95 90ms  max 90ms  (3 samples'),
                       dict(message='of which tablet decode+render p50 30ms  p95 30ms → wire ~0ms')]
         current = [dict(message='Latency packet-ready→render-ACK (host clock): p50 20ms  p95 90ms  max 90ms  (3 samples'),
                    dict(message='Latency tablet arrival→render-callback (tablet clock): p50 30ms  p95 30ms  (2 samples)')]
-        self.assertEqual(window_values(current), window_values(historical))
+        self.assertEqual(window_values(historical), {})
+        self.assertEqual(set(window_values(current)), {
+            'packet_ready_to_ack_window', 'tablet_arrival_to_callback_window'})
         self.assertEqual(len(window_values(current)), 2)
 
     def test_t410_journal_byte_array_messages_are_retained(self):
-        message = '\x1b[32mINFO\x1b[0m Latency encode→display: p50 5ms'
+        message = '\x1b[32mINFO\x1b[0m Latency packet-ready→render-ACK (host clock): p50 5ms'
         entries = [{'__REALTIME_TIMESTAMP': '123456789', 'MESSAGE': message},
                    {'__REALTIME_TIMESTAMP': '124456789', 'MESSAGE': list(message.encode())}]
         code = 'import json; rows=' + repr(entries) + '; [print(json.dumps(r)) for r in rows]'
@@ -46,7 +48,7 @@ class BaselineMeasurementTests(unittest.TestCase):
             self.assertEqual(len(rows), 2, 'T410: text and binary MESSAGE forms must survive')
             self.assertEqual([row['utc'] for row in rows], [123.456789, 124.456789])
             self.assertEqual(rows[0]['message'], rows[1]['message'])
-            self.assertIn('Latency encode→display', rows[1]['message'])
+            self.assertIn('Latency packet-ready→render-ACK (host clock)', rows[1]['message'])
 
     def test_t382_native_stat_fields_and_cpu_units(self):
         raw = '42 (worker (name)) S 1 1 0 0 -1 0 0 0 0 0 200 50 0 0 20 0 3 0 900 1000000 12'
@@ -74,8 +76,8 @@ class BaselineMeasurementTests(unittest.TestCase):
         self.assertEqual(result['usb_reported_values'], [('true', '500000', '5000000')])
 
     def test_t382_window_percentiles_are_never_pooled(self):
-        logs = [dict(message='Latency encode→display: p50 5ms  p95 6ms  max 7ms  (100 samples'),
-                dict(message='Latency encode→display: p50 100ms  p95 101ms  max 102ms  (1 samples'),
+        logs = [dict(message='Latency packet-ready→render-ACK (host clock): p50 5ms  p95 6ms  max 7ms  (100 samples'),
+                dict(message='Latency packet-ready→render-ACK (host clock): p50 100ms  p95 101ms  max 102ms  (1 samples'),
                 dict(message='Encoder: 300 access units in 5.0s, 0.1 MB/s (800 kbps)')]
         result = window_values(logs)
         window = result['packet_ready_to_ack_window']
