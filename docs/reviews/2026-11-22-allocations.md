@@ -199,3 +199,63 @@ The repository checker measures 90 Kotlin/Python functions, maximum complexity 5
 The temporary Gradle progress observer has two closures, both complexity 1 under
 Groovy 3.0.17 compiler AST. Evidence:
 `artifacts/2026-11-22-allocations/t1769/`.
+
+## T1768: shared actor wake/deadline wait
+
+The worker and admission actors now share awaitConnectionWake, a coroutine adapter
+that selects an original channel hint or the existing timeout. ConnectionWait
+still owns the pure scheduling policy, including its 0..1000 ms result. A zero
+wait returns without consuming a retained hint or observing channel closure,
+preserving the previous behavior. Positive waits preserve closed-channel failures,
+external cancellation and the original fallback/deadline cadence. Other cleanup
+and retirement timeouts remain separate and unchanged.
+
+The adapter borrows each actor's own conflated ReceiveChannel until that wait
+settles; it adds no shared mutable state, worker thread, native I/O, resource lease
+or queue. Coroutine channel/timer registrations belong to that wait and are disposed
+on selection/cancellation under the library contract. Permanent tests verify that
+post-timeout and post-cancellation hints remain available, including 64 cancellation
+cycles. This is not a native I/O fence: original worker, socket and lease retirement
+still belongs to the existing resource owners. Eventual coroutine progress assumes
+fair dispatcher/timer execution; no timeout is treated as native retirement.
+
+A finite hosted benchmark uses the actual worker actor, one original executor thread
+and an identified cue/receipt pair. Every cue must be acknowledged before another
+is admitted. Two runs each have twelve trials, alternating burst and 60-events/s
+pacing: one whole warmup trial and five measured trials per rate. Each burst trial
+also warms 2,000 cues before 10,000 measured cues; each paced trial warms 32 before
+120 measured cues. CPU/allocation counters cover the original actor and driver
+separately, so shifting work onto the sender is visible.
+
+| Case | Actor allocated bytes/event, before → after | Driver allocated bytes/event, before → after | Total allocation/event, before → after | Total CPU ratio, after / before | p95 wake latency ratio |
+| --- | --- | --- | --- | --- | --- |
+| burst | 773.0 → 670.4 | 144.0 → 176.0 | 917.2 → 846.4 | 0.947 | 0.915 |
+| 60 events/s | 880.2 → 784.2 | 146.9 → 178.9 | 1027.1 → 963.1 | 0.853 | 0.864 |
+
+The paced case saves 64 total bytes/event; the driver allocates 32 bytes/event more,
+while the actor saves 96. Burst totals save about 71 bytes/event. Both measured
+CPU and p95 latency improve in these hosted runs. These are medians from separate
+runs, not confidence intervals or a native Android/media/battery claim. Snapshots
+are not atomic across threads, so a surrounding actor iteration and sampler overhead
+can cross a boundary. Raw data and current source hashes remain in the artifacts.
+The result supports the small shared adapter change; it adds no pooling or identity
+reuse and changes no user default.
+
+Six new permanent wait regressions pass with the original timeout behavior and
+the selected implementation. An intentionally omitted zero-delay guard fails the
+retained-hint regression; restoring the guard passes. The broader 777 hosted cases
+across 104 classes pass. All 58 measured production functions meet the 80% line
+coverage requirement (minimum 80%); Profile compilation passes. Five normal Python
+tool tests pass, covering shared benchmark compilation, the active fixture, the
+complete idle/allocation output regressions and all tunnel fixture cases after
+moving pacing to its shared owner. The checker measures 216 Kotlin/Python functions,
+maximum complexity 8. Benchmark coverage remains exempt.
+
+Active and idle experiments now use one shared actor/probe owner; their exact original
+thread is cancelled, awaited, retired and joined before replacement. The probe
+retains one cue and one receipt, bounded to 20,000 admitted identities per actor;
+selected trials need at most 12,000. Raw latency storage is bounded by 10,000 values
+per trial and twelve reports. No actor/native reference enters the returned results.
+Existing setup/permission owners are synthetic, so no physical tablet or installed
+session participates. Native process memory/GC acceptance remains in T1527.
+Evidence: `artifacts/2026-11-22-allocations/t1768/`.

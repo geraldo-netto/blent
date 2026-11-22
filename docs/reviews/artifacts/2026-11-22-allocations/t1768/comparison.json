@@ -1,0 +1,53 @@
+{
+  "scope": "separate hosted runs; five measured trials per rate/run",
+  "comparisons": [
+    {
+      "fps": 0,
+      "before": {
+        "actor_cpu_ns_per_event": 12213.6275,
+        "actor_allocated_bytes_per_event": 773.0016,
+        "driver_cpu_ns_per_event": 8934.5411,
+        "driver_allocated_bytes_per_event": 144.02,
+        "total_allocated_bytes_per_event": 917.188,
+        "total_cpu_ns_per_event": 21148.1686,
+        "p95_latency_ns": 11682
+      },
+      "after": {
+        "actor_cpu_ns_per_event": 11017.8223,
+        "actor_allocated_bytes_per_event": 670.3984,
+        "driver_cpu_ns_per_event": 8771.6652,
+        "driver_allocated_bytes_per_event": 175.9544,
+        "total_allocated_bytes_per_event": 846.4064,
+        "total_cpu_ns_per_event": 20033.2813,
+        "p95_latency_ns": 10690
+      },
+      "total_cpu_ratio": 0.947282087584643,
+      "latency_p95_ratio": 0.9150830337271015,
+      "saved_total_bytes_per_event": 70.78160000000003
+    },
+    {
+      "fps": 60,
+      "before": {
+        "actor_cpu_ns_per_event": 39203.38333333333,
+        "actor_allocated_bytes_per_event": 880.2,
+        "driver_cpu_ns_per_event": 44488.825,
+        "driver_allocated_bytes_per_event": 146.93333333333334,
+        "total_allocated_bytes_per_event": 1027.1333333333334,
+        "total_cpu_ns_per_event": 85126.30833333333,
+        "p95_latency_ns": 52892
+      },
+      "after": {
+        "actor_cpu_ns_per_event": 33724.48333333333,
+        "actor_allocated_bytes_per_event": 784.2,
+        "driver_cpu_ns_per_event": 38930.308333333334,
+        "driver_allocated_bytes_per_event": 178.93333333333334,
+        "total_allocated_bytes_per_event": 963.1333333333333,
+        "total_cpu_ns_per_event": 72654.79166666667,
+        "p95_latency_ns": 45719
+      },
+      "total_cpu_ratio": 0.8534939795834758,
+      "latency_p95_ratio": 0.8643840278302957,
+      "saved_total_bytes_per_event": 64.00000000000011
+    }
+  ]
+}

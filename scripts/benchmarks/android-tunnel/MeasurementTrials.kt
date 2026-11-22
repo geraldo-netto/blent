@@ -1,7 +1,6 @@
 package com.blent.connection
 
 import java.io.File
-import java.util.concurrent.locks.LockSupport
 import kotlinx.serialization.json.*
 
 internal const val MEASUREMENT_FRAMES = 60
@@ -22,16 +21,6 @@ internal fun measurementDelta(counters: NativeCounters, threads: List<Thread>, b
     return Counters(after.cpu - before.cpu, checkNotNull(after.allocated) - checkNotNull(before.allocated))
 }
 
-internal fun paceMeasurement(start: Long, frame: Int, fps: Int) {
-    if (fps == 0) return
-    val due = start + frame * (1_000_000_000L / fps)
-    while (true) {
-        val remaining = due - System.nanoTime()
-        if (remaining <= 0) return
-        LockSupport.parkNanos(remaining)
-        check(!Thread.interrupted()) { "Measurement cancelled" }
-    }
-}
 
 internal fun measurementResult(size: Int, fps: Int, combined: Boolean, elapsed: Long, counters: Counters,
                                io: MeasuredIo, latency: LongArray, extra: JsonObject): JsonObject = buildJsonObject {

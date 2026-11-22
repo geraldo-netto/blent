@@ -1,0 +1,17 @@
+{
+  "item": "T1768",
+  "hosted_cases": 777,
+  "hosted_classes": 104,
+  "production_functions": 58,
+  "minimum_function_line_coverage": 80.0,
+  "complexity_functions": 216,
+  "maximum_complexity": 8,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI / Python 3.12 AST",
+  "normal_tool_cases": 5,
+  "active_trials": 24,
+  "wait_contract_cases": 6,
+  "contract_before": "Six new wait regressions pass with original timeout behavior",
+  "fault_control": "Omitting the due-wait guard consumes a retained hint and fails the permanent zero-delay regression",
+  "production_change": "Shared select-based wait for worker and admission actors; timing policy and native retirement unchanged",
+  "scope": "Hosted event scheduling and allocation, not native Android/media/battery acceptance"
+}

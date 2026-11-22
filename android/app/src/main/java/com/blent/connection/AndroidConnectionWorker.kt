@@ -112,7 +112,7 @@ internal class AndroidConnectionWorker(
         val deadline = ConnectionDeadline.observe(owned as? ConnectionDeadlineSource)
         val fallback = ConnectionWait.fallback(waitLimits, stopping.get())
         val delay = ConnectionWait.delayMs(clock(), deadline, fallback)
-        withTimeoutOrNull(delay) { wake.receive() }
+        awaitConnectionWake(wake, delay)
     }
     private suspend fun cleanup(owned: ConnectionRuntime): Boolean {
         owned.stop()

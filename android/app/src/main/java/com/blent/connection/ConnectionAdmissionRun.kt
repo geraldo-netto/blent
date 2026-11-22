@@ -181,7 +181,7 @@ internal class ConnectionAdmissionRun(
         val deadline = ConnectionDeadline.observe(admission as? ConnectionDeadlineSource)
         val fallback = ConnectionWait.fallback(waitLimits, stopping.get())
         val delay = ConnectionWait.delayMs(clock(), deadline, fallback)
-        withTimeoutOrNull(delay) { wake.receive() }
+        awaitConnectionWake(wake, delay)
     }
     private fun nativeCleanup(): Deferred<Unit> {
         val task = synchronized(gate) {

@@ -29,7 +29,9 @@ def inputs():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
-    parser.add_argument('--allocations', action='store_true')
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument('--allocations', action='store_true')
+    modes.add_argument('--active', action='store_true')
     arguments = parser.parse_args()
     output = arguments.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -38,6 +40,8 @@ def main():
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     (output / 'revision.txt').write_text(head + '\n')
     entry = 'DeadlineAllocationBenchmarkKt' if arguments.allocations else 'ConnectionIdleBenchmarkKt'
+    if arguments.active:
+        entry = 'ActiveAllocationBenchmarkKt'
     SecureConnectionInteropTest().command([
         str(ROOT / 'android/gradlew'), '-p', str(ROOT / 'android'), '--offline', '--no-daemon', '--max-workers=2',
         '-I', str(ROOT / 'scripts/coverage/android.init.gradle'), '-I', str(DIRECTORY / 'benchmark.init.gradle'),
@@ -46,6 +50,10 @@ def main():
     ], dict(os.environ), output / 'run.log')
     if inputs() != original:
         raise RuntimeError('T918 measurement inputs changed during the run')
+    if arguments.active:
+        report = json.loads((output / 'results.json').read_text())
+        if len(report['trials']) != 12:
+            raise RuntimeError('T1768 incomplete active trial domain')
     print(output / 'results.json')
 
 

@@ -63,3 +63,34 @@ includes JVM compilation/GC and has coarser resolution than thread counters.
 Hosted CPU, wake and allocation measurements establish neither native Android
 idle/battery results nor complete media performance. Retain those limits when
 comparing results or changing defaults.
+
+## Active worker allocation
+
+```sh
+python3 scripts/benchmarks/android-connection-idle/run.py --active /tmp/blent-active
+python3 scripts/benchmarks/android-connection-idle/analyze_active.py /tmp/earlier-active/results.json /tmp/blent-active/results.json
+```
+
+This separate domain measures the production worker actor with a synthetic known-
+deadline setup owner. Every cue has an original identity and must be acknowledged
+before the next one. Twelve trials alternate burst and 60-events/s scheduling;
+one whole trial per rate is warmup, leaving five measured trials per rate. Each
+burst trial also warms 2,000 cues before measuring 10,000; each paced trial warms
+32 before measuring 120. The actor's fallback remains 1,000 ms. The probe admits
+at most 20,000 cues per owner; the largest selected trial needs 12,000.
+
+CPU/allocation counters record the original actor thread and driver separately.
+Snapshots bracket completed receipts but are not atomic across the two threads;
+a surrounding actor iteration and fixed sampler overhead can cross those edges.
+Raw cue latencies remain in the report. The analyzer validates the finite domain
+and reports medians of five trials, total allocation/CPU and nearest-rank p95
+latency. Comparisons between separate runs are local point estimates, not confidence
+intervals or Android battery/media performance. All counters must be available.
+
+The active and idle experiments share the same actor/probe ownership implementation.
+Each actor has one original executor thread, scope, worker, conflated wake channel,
+one pending cue and one receipt slot. Cleanup cancels and awaits the original actor,
+requests retirement, closes the dispatcher and joins that exact thread. The active
+experiment retains at most 10,000 raw latency values per trial and twelve finite
+trial reports. Shared pacing retains no actor state. The normal Python fixture
+runs active valid/invalid-domain cases as well as the full idle output regressions.

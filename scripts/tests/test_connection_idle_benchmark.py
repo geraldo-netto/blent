@@ -31,6 +31,9 @@ class ConnectionIdleBenchmarkTest(unittest.TestCase):
         self.command([':app:testDebugUnitTest', '--tests', 'com.blent.connection.IdleOutputTest',
                       '--tests', 'com.blent.connection.MeasurementOutputTest'])
 
+    def test_t1768_active_actor_probe_validates_cues_and_finite_domains(self):
+        self.command([':app:testDebugUnitTest', '--tests', 'com.blent.connection.ActiveAllocationTest'])
+
 
 if __name__ == '__main__':
     unittest.main()
