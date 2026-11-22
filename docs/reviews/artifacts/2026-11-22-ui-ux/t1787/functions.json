@@ -1,0 +1,92 @@
+[
+  {
+    "file": "gui/src/accessibility.rs",
+    "name": "field",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/accessibility.rs",
+    "name": "combo",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "file": "gui/src/accessibility.rs",
+    "name": "selected",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_sections",
+    "covered": 16,
+    "total": 16
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "setting_encoder",
+    "covered": 26,
+    "total": 26
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "setting_frame_rate",
+    "covered": 12,
+    "total": 12
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_navigation",
+    "covered": 9,
+    "total": 9
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "shadow_settings",
+    "covered": 15,
+    "total": 15
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "advanced_profile",
+    "covered": 37,
+    "total": 37
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "rotation",
+    "covered": 12,
+    "total": 12
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "resolution",
+    "covered": 26,
+    "total": 26
+  },
+  {
+    "file": "gui/src/camera_settings/tuning.rs",
+    "name": "exposure",
+    "covered": 13,
+    "total": 13
+  },
+  {
+    "file": "gui/src/camera_settings/tuning.rs",
+    "name": "metering",
+    "covered": 14,
+    "total": 14
+  },
+  {
+    "file": "gui/src/camera_settings/tuning.rs",
+    "name": "flicker",
+    "covered": 14,
+    "total": 14
+  },
+  {
+    "file": "gui/src/camera_settings/tuning/noise.rs",
+    "name": "show",
+    "covered": 14,
+    "total": 14
+  }
+]

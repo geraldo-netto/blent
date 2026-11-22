@@ -232,3 +232,24 @@ private native production-startup test pass. All 19 maintained Rust functions ha
 [Evidence](artifacts/2026-11-22-ui-ux/t1786/). Dedicated KDE integration and live
 appearance refresh are explicitly decomposed as T1794/T1795, rather than claimed
 implemented by this GTK prototype. Native visual acceptance follows deployment.
+
+## T1787 — field semantics and keyboard navigation
+
+Encoder/FPS and camera image/sensor controls associate their visible labels with
+accessible controls. Combo boxes expose the selected value; sliders retain their
+numeric value and bounds. Disabled shadow/adaptive/exposure controls explain the
+capability or prerequisite. Parent/child navigation publishes selected state.
+No focus order, configuration transaction, capture or resource admission changes.
+
+The original encoder association regression failed. Four semantic/keyboard tests
+pass, including Tab from Encoder to Frame rate, camera names/values and disabled
+reasons, sensor associations and parent/child selection. All 44 camera-filtered,
+16 Overview, existing encoder/dropdown and sensor regressions pass. All 15
+maintained methods have 100% measured line coverage; 263 measured functions have
+complexity <=9. [Evidence](artifacts/2026-11-22-ui-ux/t1787/).
+
+The adapters borrow frame-local widget responses and copy bounded field labels or
+values into egui-owned accessibility nodes. No retained widget reference, native
+subscription or duplicate configuration owner is created. Native Orca/AT-SPI
+consumer qualification is separately visible as T1796; the emitted tree and
+hosted keyboard checks do not establish that acceptance.

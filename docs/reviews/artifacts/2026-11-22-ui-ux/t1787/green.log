@@ -1,0 +1,15 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.80s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/ac7a5b3c8d48d8bb/out/blent_gui-ac7a5b3c8d48d8bb)
+
+running 4 tests
+test camera_settings::tuning::tests::t1787_sensor_controls_expose_associated_names_and_values ... ok
+test tests::accessibility::t1787_camera_fields_retain_values_and_explain_disabled_controls ... ok
+test tests::accessibility::t1787_encoder_and_frame_rate_have_names_values_and_keyboard_focus ... ok
+test tests::accessibility::t1787_navigation_announces_parent_and_current_child_selection ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 297 filtered out; finished in 0.04s
+
+
+    Finished report saved to /tmp/blent-t1787.lcov

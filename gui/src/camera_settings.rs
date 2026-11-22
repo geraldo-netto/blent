@@ -383,25 +383,26 @@ fn shadow_settings(ui: &mut egui::Ui, options: &mut CameraProfile) {
         }
     }).response.on_hover_text("Lift dark tones while protecting bright areas. Auto meters the image center; Manual uses fixed strength. May reveal noise.");
     ui.end_row();
-    ui.label("Shadow strength");
-    ui.add_enabled(
+    let label = ui.label("Shadow strength").id;
+    let response = ui.add_enabled(
         options.shadow_mode != ShadowMode::Off,
         egui::Slider::new(&mut options.shadow_strength, 0..=100).suffix("%"),
     );
+    crate::accessibility::field(response, label, "Choose Auto or Manual shadow correction to adjust strength.");
     ui.end_row();
 }
 
 fn advanced_profile(ui: &mut egui::Ui, options: &mut CameraProfile) {
     rotation(ui, &mut options.rotation);
-    ui.label("Image processing threads");
-    ui.add(egui::Slider::new(&mut options.filter_threads, 1..=4))
+    let label = ui.label("Image processing threads").id;
+    crate::accessibility::field(ui.add(egui::Slider::new(&mut options.filter_threads, 1..=4)), label, "Requires Restart camera.")
         .on_hover_text("Default: 2. More threads can process frames faster but use more CPU and memory. Choose 1 to minimize worker resources. Requires Restart camera.");
     ui.end_row();
-    ui.label("Frame rate");
-    ui.add(egui::Slider::new(&mut options.fps, 5..=30).suffix(" FPS"));
+    let label = ui.label("Frame rate").id;
+    crate::accessibility::field(ui.add(egui::Slider::new(&mut options.fps, 5..=30).suffix(" FPS")), label, "Camera frame rate");
     ui.end_row();
-    ui.label("Camera bitrate ceiling");
-    ui.add(egui::Slider::new(&mut options.bitrate, 256..=20000).suffix(" kbit/s"));
+    let label = ui.label("Camera bitrate ceiling").id;
+    crate::accessibility::field(ui.add(egui::Slider::new(&mut options.bitrate, 256..=20000).suffix(" kbit/s")), label, "Maximum camera bitrate");
     ui.end_row();
     ui.label("Adaptive camera bitrate");
     ui.checkbox(
@@ -409,13 +410,13 @@ fn advanced_profile(ui: &mut egui::Ui, options: &mut CameraProfile) {
         "Reduce bitrate when the route falls behind",
     );
     ui.end_row();
-    ui.label("Camera bitrate floor");
-    ui.add_enabled(options.adaptive_bitrate,
-        egui::Slider::new(&mut options.min_bitrate, 256..=20000).suffix(" kbit/s"))
+    let label = ui.label("Camera bitrate floor").id;
+    crate::accessibility::field(ui.add_enabled(options.adaptive_bitrate,
+        egui::Slider::new(&mut options.min_bitrate, 256..=20000).suffix(" kbit/s")), label, "Enable adaptive camera bitrate to adjust its floor.")
         .on_hover_text("Effective floor is capped by the requested ceiling. Lower rates may reduce picture quality.");
     ui.end_row();
-    ui.label("Freshness budget");
-    ui.add(egui::Slider::new(&mut options.freshness_ms, 50..=2000).suffix(" ms"))
+    let label = ui.label("Freshness budget").id;
+    crate::accessibility::field(ui.add(egui::Slider::new(&mut options.freshness_ms, 50..=2000).suffix(" ms")), label, "Discard frames exceeding this age; this is not total camera latency.")
         .on_hover_text("Lower budgets discard backlog sooner, but may freeze more often on a slow route. This is not total camera latency.");
     ui.end_row();
     ui.label("Mirror");
@@ -430,20 +431,23 @@ fn advanced_profile(ui: &mut egui::Ui, options: &mut CameraProfile) {
 }
 
 fn rotation(ui: &mut egui::Ui, rotation: &mut u16) {
-    ui.label("Rotate clockwise");
-    egui::ComboBox::from_id_salt("camera-rotation")
+    let label = ui.label("Rotate clockwise").id;
+    let value = format!("{rotation}°");
+    let response = egui::ComboBox::from_id_salt("camera-rotation")
         .selected_text(format!("{rotation}°"))
         .show_ui(ui, |ui| {
             for degrees in [0, 90, 180, 270] {
                 ui.selectable_value(rotation, degrees, format!("{degrees}°"));
             }
         });
+    crate::accessibility::combo(response.response, label, &value);
     ui.end_row();
 }
 
 fn resolution(ui: &mut egui::Ui, options: &mut CameraProfile) {
-    ui.label("Camera resolution");
-    egui::ComboBox::from_id_salt("camera-resolution")
+    let label = ui.label("Camera resolution").id;
+    let value = format!("{} × {}", options.width, options.height);
+    let response = egui::ComboBox::from_id_salt("camera-resolution")
         .selected_text(format!("{} × {}", options.width, options.height))
         .show_ui(ui, |ui| {
             for (width, height) in [
@@ -465,6 +469,7 @@ fn resolution(ui: &mut egui::Ui, options: &mut CameraProfile) {
                 }
             }
         });
+    crate::accessibility::combo(response.response, label, &value);
     ui.end_row();
 }
 

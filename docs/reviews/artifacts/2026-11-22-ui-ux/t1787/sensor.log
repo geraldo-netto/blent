@@ -1,0 +1,13 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.12s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/ac7a5b3c8d48d8bb/out/blent_gui-ac7a5b3c8d48d8bb)
+
+running 3 tests
+test camera_settings::tuning::tests::t1468_camera_capability_controls_preserve_settings_and_render_all_labels ... ok
+test camera_settings::tuning::tests::t1468_supported_camera_menus_apply_and_reset_without_starting ... ok
+test camera_settings::tuning::tests::t1468_unavailable_exposure_does_not_silently_rewrite_saved_preference ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 298 filtered out; finished in 0.02s
+
+
+    Finished report saved to /tmp/blent-t1787.lcov

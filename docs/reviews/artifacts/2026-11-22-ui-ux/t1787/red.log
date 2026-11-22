@@ -1,0 +1,33 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+warning: falling back to `f32` as the trait bound `f32: From<f64>` is not satisfied
+  --> gui/src/workspace_style.rs:75:58
+   |
+75 |     visuals.widgets.active.bg_stroke = egui::Stroke::new(2.0, readable(rgb(native.accent), background));
+   |                                                          ^^^ help: explicitly specify the type as `f32`: `2.0_f32`
+   |
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #154024 <https://github.com/rust-lang/rust/issues/154024>
+   = note: `#[warn(float_literal_f32_fallback)]` (part of `#[warn(future_incompatible)]`) on by default
+
+warning: `blent-gui` (bin "blent-gui" test) generated 1 warning (run `cargo fix --bin "blent-gui" -p blent-gui --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.57s
+     Running unittests src/main.rs (target/debug/build/blent-gui/ac7a5b3c8d48d8bb/out/blent_gui-ac7a5b3c8d48d8bb)
+
+running 1 test
+test tests::accessibility::t1787_encoder_and_frame_rate_have_names_values_and_keyboard_focus ... FAILED
+
+failures:
+
+---- tests::accessibility::t1787_encoder_and_frame_rate_have_names_values_and_keyboard_focus stdout ----
+
+thread 'tests::accessibility::t1787_encoder_and_frame_rate_have_names_values_and_keyboard_focus' (756105) panicked at gui/src/tests/accessibility.rs:21:28:
+T1787 missing associated Encoder
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tests::accessibility::t1787_encoder_and_frame_rate_have_names_values_and_keyboard_focus
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 297 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

@@ -2,8 +2,9 @@ use blent_config::camera::tuning::Noise;
 use eframe::egui;
 
 pub(super) fn show(ui: &mut egui::Ui, noise: &mut Noise, mask: u8) {
-    ui.label("Noise reduction");
-    egui::ComboBox::from_id_salt("camera-noise")
+    let name = ui.label("Noise reduction").id;
+    let value = label(*noise);
+    let response = egui::ComboBox::from_id_salt("camera-noise")
         .selected_text(label(*noise))
         .show_ui(ui, |ui| {
             for value in [Noise::Device, Noise::Off, Noise::Fast] {
@@ -12,6 +13,7 @@ pub(super) fn show(ui: &mut egui::Ui, noise: &mut Noise, mask: u8) {
                 });
             }
         }).response.on_hover_text("Fast uses the camera's low-latency noise reduction. It may soften detail or behave like Off on some cameras.");
+    crate::accessibility::combo(response, name, value);
     ui.end_row();
 }
 fn label(noise: Noise) -> &'static str {

@@ -209,3 +209,22 @@ fn t1654_portable_camera_controls_expose_their_rendered_labels() {
     assert!(labels.iter().all(|(_, rect)| rect.is_finite()));
     assert_eq!(sensor, Sensor::default());
 }
+
+#[test]
+fn t1787_sensor_controls_expose_associated_names_and_values() {
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let caps = Capabilities { minimum: -2, maximum: 2, numerator: 1, denominator: 1, center: true, noise_mask: 7, flicker_mask: 15 };
+    let mut sensor = Sensor::default();
+    let output = context.run(Default::default(), |context| {
+        egui::CentralPanel::default().show(context, |ui| {
+            egui::Grid::new("sensor-names").show(ui, |ui| show(ui, &mut sensor, Some(caps)));
+        });
+    });
+    let nodes = output.platform_output.accesskit_update.unwrap().nodes;
+    for name in ["Exposure compensation", "Exposure metering", "Anti-flicker", "Noise reduction"] {
+        let label = nodes.iter().find(|(_, node)| node.role() == egui::accesskit::Role::Label && node.value() == Some(name)).unwrap().0;
+        let control = nodes.iter().find(|(_, node)| node.labelled_by().contains(&label)).unwrap().1.clone();
+        assert!(control.numeric_value().is_some() || control.value().is_some());
+    }
+}

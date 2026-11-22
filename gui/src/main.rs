@@ -6,6 +6,7 @@ mod overview;
 
 mod about;
 mod action_feedback;
+mod accessibility;
 mod appearance_contract;
 mod draft_scope;
 #[cfg(target_os = "linux")]
@@ -525,10 +526,14 @@ impl App {
     fn show_sections(&mut self, ui: &mut egui::Ui) {
         let mut section = self.tab.section();
         ui.horizontal_wrapped(|ui| {
-            ui.selectable_value(&mut section, Tab::Overview, "Tablets");
-            ui.selectable_value(&mut section, Tab::Connections, "Connections");
-            ui.selectable_value(&mut section, Tab::Settings, "Settings");
-            ui.selectable_value(&mut section, Tab::About, "About");
+            let response = ui.selectable_value(&mut section, Tab::Overview, "Tablets");
+            accessibility::selected(response, section == Tab::Overview);
+            let response = ui.selectable_value(&mut section, Tab::Connections, "Connections");
+            accessibility::selected(response, section == Tab::Connections);
+            let response = ui.selectable_value(&mut section, Tab::Settings, "Settings");
+            accessibility::selected(response, section == Tab::Settings);
+            let response = ui.selectable_value(&mut section, Tab::About, "About");
+            accessibility::selected(response, section == Tab::About);
         });
         if section != self.tab.section() {
             self.tab = section;
@@ -801,7 +806,7 @@ impl App {
     }
 
     fn setting_encoder(&mut self, ui: &mut egui::Ui) {
-        ui.label("Encoder");
+        let label = ui.label("Encoder").id;
         let selected = if self.cfg.encoder == "auto" {
             "Automatic (measure compatible encoders)"
         } else {
@@ -809,7 +814,8 @@ impl App {
                 .map(|encoder| encoder.label)
                 .unwrap_or(&self.cfg.encoder)
         };
-        egui::ComboBox::from_id_salt("encoder")
+        let value = selected.to_owned();
+        let response = egui::ComboBox::from_id_salt("encoder")
             .selected_text(selected)
             .show_ui(ui, |ui| {
                 ui.selectable_value(
@@ -825,6 +831,7 @@ impl App {
                     );
                 }
             });
+        accessibility::combo(response.response, label, &value);
         ui.end_row();
     }
 
@@ -875,16 +882,18 @@ impl App {
     }
 
     fn setting_frame_rate(&mut self, ui: &mut egui::Ui) {
-        ui.label("Frame rate");
+        let label = ui.label("Frame rate").id;
+        let value = format!("{} fps", self.cfg.fps);
         // Blent supports at most 90 FPS. Validation also checks the
         // selected resolution/FPS against the generated EDID clock limit.
-        egui::ComboBox::from_id_salt("fps")
+        let response = egui::ComboBox::from_id_salt("fps")
             .selected_text(format!("{} fps", self.cfg.fps))
             .show_ui(ui, |ui| {
                 for f in [30u32, 60, 90] {
                     ui.selectable_value(&mut self.cfg.fps, f, format!("{} fps", f));
                 }
             });
+        accessibility::combo(response.response, label, &value);
         ui.end_row();
     }
 
@@ -1273,7 +1282,8 @@ impl App {
                 .into_iter()
                 .filter(|tab| !matches!(tab, Tab::Overview | Tab::Connections | Tab::About))
             {
-                ui.selectable_value(&mut self.tab, tab, tab.title());
+                let response = ui.selectable_value(&mut self.tab, tab, tab.title());
+                accessibility::selected(response, self.tab == tab);
             }
         });
     }
@@ -1369,6 +1379,7 @@ mod tests {
     include!("config_refresh_tests.rs");
     mod about;
     mod appearance;
+    mod accessibility;
     mod audio_tabs;
     mod busy_controls;
     mod close_tests;
