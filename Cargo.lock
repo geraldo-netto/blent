@@ -665,7 +665,6 @@ dependencies = [
  "blent-config",
  "eframe",
  "raw-window-handle",
- "serde",
  "sha2",
  "tempfile",
  "tokio",

@@ -29,3 +29,11 @@ zbus, zbus_macros, zbus_names, zvariant, zvariant_derive, zvariant_utils and nix
 Lockfile totals cover all recorded targets/features, not Linux runtime code:
 551 -> 542 package versions; 43 -> 36 names with multiple versions. Remaining
 release-graph and installed-notice evidence belongs to T1734.
+
+## T1735: remove unused direct GUI edges
+
+GUI sources have no serde caller; the only direct TOML use is the T1552 fixture.
+Remove the unused serde declaration and move TOML to dev-dependencies. Four T1552
+configuration-observation tests and the production release GUI build pass.
+Transitive serde/TOML uses remain; this cleans ownership of direct dependencies
+without claiming fewer resolved package versions. No function body changes.
