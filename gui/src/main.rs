@@ -5,12 +5,11 @@ mod monitor_inventory;
 mod overview;
 
 mod about;
-mod action_feedback;
 mod accessibility;
-mod appearance_contract;
-mod draft_scope;
+mod action_feedback;
 #[cfg(target_os = "linux")]
 mod activation;
+mod appearance_contract;
 mod audio_settings;
 mod camera_preview;
 mod camera_settings;
@@ -19,6 +18,7 @@ mod connection_settings;
 mod conversion_settings;
 #[cfg(any(windows, test))]
 mod direct_input_settings;
+mod draft_scope;
 mod gpu_settings;
 mod media_owner;
 mod media_target_settings;
@@ -327,7 +327,7 @@ impl App {
             _status_worker: Some(worker),
             store,
             save: None,
-                close_intent: Default::default(),
+            close_intent: Default::default(),
             config_observed_after: None,
             saved_cfg: cfg.clone(),
             cfg,
@@ -340,11 +340,20 @@ impl App {
         }
     }
 
-    fn run_action(&mut self, area: FeedbackArea, operation: &str, action: impl FnOnce() -> String + Send + 'static) {
+    fn run_action(
+        &mut self,
+        area: FeedbackArea,
+        operation: &str,
+        action: impl FnOnce() -> String + Send + 'static,
+    ) {
         if !self.busy() {
             self.feedback_area = area;
             self.message = format!("{operation}…");
-            self.action = Some(action_feedback::Job::new(area, operation, dispatch_action(action)));
+            self.action = Some(action_feedback::Job::new(
+                area,
+                operation,
+                dispatch_action(action),
+            ));
         }
     }
 
@@ -391,29 +400,29 @@ impl App {
 }
 
 fn change_service_state(running: bool) -> String {
-            if running {
-                stop_daemon()
-                    .map(|_| {
-                        if capabilities().display {
-                            "Display service stopped"
-                        } else {
-                            "Blent daemon stopped"
-                        }
-                        .into()
-                    })
-                    .unwrap_or_else(|e| e)
-            } else {
-                start_daemon()
-                    .map(|_| {
-                        if capabilities().display {
-                            "Display service starting…"
-                        } else {
-                            "Blent daemon starting…"
-                        }
-                        .into()
-                    })
-                    .unwrap_or_else(|e| e)
-            }
+    if running {
+        stop_daemon()
+            .map(|_| {
+                if capabilities().display {
+                    "Display service stopped"
+                } else {
+                    "Blent daemon stopped"
+                }
+                .into()
+            })
+            .unwrap_or_else(|e| e)
+    } else {
+        start_daemon()
+            .map(|_| {
+                if capabilities().display {
+                    "Display service starting…"
+                } else {
+                    "Blent daemon starting…"
+                }
+                .into()
+            })
+            .unwrap_or_else(|e| e)
+    }
 }
 
 fn bitrate_slider(ui: &mut egui::Ui, bitrate: &mut u32) -> egui::Response {
@@ -569,7 +578,9 @@ impl App {
         match self.cfg.validate() {
             Ok(()) => true,
             Err(error) => {
-                ui.label(egui::RichText::new(format!("{error:#}")).color(ui.visuals().error_fg_color));
+                ui.label(
+                    egui::RichText::new(format!("{error:#}")).color(ui.visuals().error_fg_color),
+                );
                 false
             }
         }
@@ -620,7 +631,9 @@ impl App {
             {
                 self.cfg = self.saved_cfg.clone();
             }
-            if let Some(page) = draft_scope::show(ui, &self.cfg, &self.saved_cfg) { self.tab = page; }
+            if let Some(page) = draft_scope::show(ui, &self.cfg, &self.saved_cfg) {
+                self.tab = page;
+            }
         });
     }
 
@@ -762,9 +775,12 @@ impl App {
             .inner_margin(12.0)
             .show(ui, |ui| {
                 ui.set_min_width(ui.available_width());
-                status_dot(ui, status.daemon_running,
-                    overview::service_label(caps.display, status.daemon_running));
-                self.show_daemon_control(ui, status.daemon_running);
+                status_dot(
+                    ui,
+                    status.daemon_running,
+                    overview::service_label(caps.display, status.daemon_running),
+                );
+                self.show_daemon_control(ui, status.daemon_running, caps);
                 self.show_feedback(ui, FeedbackArea::Display);
             });
         if caps.display {
@@ -776,23 +792,25 @@ impl App {
         ui.add_space(10.0);
     }
 
-    fn show_daemon_control(&mut self, ui: &mut egui::Ui, running: bool) {
-        if !capabilities().daemon {
+    fn show_daemon_control(
+        &mut self,
+        ui: &mut egui::Ui,
+        running: bool,
+        caps: blent_config::platform::Capabilities,
+    ) {
+        if !caps.daemon {
             ui.add_enabled(false, egui::Button::new("Start (unavailable)"));
             return;
         }
         ui.horizontal(|ui| {
-            let label = match (capabilities().display, running) {
+            let label = match (caps.display, running) {
                 (true, true) => "Stop display service (all tablets)",
                 (true, false) => "Start display service (all tablets)",
                 (false, true) => "Stop daemon",
                 (false, false) => "Start daemon",
             };
             if ui
-                .add_enabled(
-                    !self.busy(),
-                    egui::Button::new(label),
-                )
+                .add_enabled(!self.busy(), egui::Button::new(label))
                 .clicked()
             {
                 self.request_daemon_state(running);
@@ -801,8 +819,14 @@ impl App {
     }
 
     fn request_daemon_state(&mut self, running: bool) {
-        let operation = if running { "Stop Blent service" } else { "Start Blent service" };
-        self.run_action(FeedbackArea::Display, operation, move || change_service_state(running));
+        let operation = if running {
+            "Stop Blent service"
+        } else {
+            "Start Blent service"
+        };
+        self.run_action(FeedbackArea::Display, operation, move || {
+            change_service_state(running)
+        });
     }
 
     fn setting_encoder(&mut self, ui: &mut egui::Ui) {
@@ -1136,17 +1160,21 @@ impl App {
                 )
                 .changed()
             {
-                self.run_action(FeedbackArea::Settings, "Change login startup preference", move || {
-                    set_autostart(auto)
-                        .map(|_| {
-                            if auto {
-                                "Autostart on — opens the app on a fresh attachment".into()
-                            } else {
-                                "Autostart off".into()
-                            }
-                        })
-                        .unwrap_or_else(|e| e)
-                });
+                self.run_action(
+                    FeedbackArea::Settings,
+                    "Change login startup preference",
+                    move || {
+                        set_autostart(auto)
+                            .map(|_| {
+                                if auto {
+                                    "Autostart on — opens the app on a fresh attachment".into()
+                                } else {
+                                    "Autostart off".into()
+                                }
+                            })
+                            .unwrap_or_else(|e| e)
+                    },
+                );
             }
         });
         ui.end_row();
@@ -1378,8 +1406,8 @@ fn native_options() -> eframe::NativeOptions {
 mod tests {
     include!("config_refresh_tests.rs");
     mod about;
-    mod appearance;
     mod accessibility;
+    mod appearance;
     mod audio_tabs;
     mod busy_controls;
     mod close_tests;
@@ -1751,7 +1779,11 @@ mod tests {
             "T409: idle UI keeps scheduling repaint"
         );
         let (done, receiver) = std::sync::mpsc::channel();
-        app.action = Some(action_feedback::Job::new(FeedbackArea::Settings, "Fixture action", receiver));
+        app.action = Some(action_feedback::Job::new(
+            FeedbackArea::Settings,
+            "Fixture action",
+            receiver,
+        ));
         assert!(frame(&mut app, 11.0) <= Duration::from_millis(100));
         done.send("Completed".into()).unwrap();
         frame(&mut app, 12.0);

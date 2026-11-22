@@ -314,3 +314,13 @@ Verification evidence: [T1785](artifacts/2026-11-22-ui-ux/t1785/).
 All 98 test executions across eight selected classes pass. All 64 emitted
 production methods with JaCoCo line counters are covered at 100%; measured
 Kotlin complexity is at most 7. Native tablet acceptance follows installation.
+
+
+## T1805 — explicit service presentation capabilities
+
+Connections service controls receive the existing independent capability contract
+from their caller. Production capabilities and service ownership remain unchanged;
+tests exercise unavailable, daemon-only and display-capable states without enabling
+any unsupported backend. The permanent eight-case presentation test and private
+start/stop action test pass. No native state, allocation or callback owner is added.
+Final per-function coverage includes the formerly unmeasured capability branches.

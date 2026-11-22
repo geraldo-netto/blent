@@ -63,6 +63,17 @@ fn setup_frame(
     window_test_frame(app, ctx, events)
 }
 
+fn daemon_frame(
+    app: &mut App,
+    ctx: &egui::Context,
+    events: Vec<egui::Event>,
+) -> Vec<(String, egui::Rect)> {
+    settings_test_frame(app, ctx, events, |app, ui| {
+        let running = app.status.lock().unwrap().daemon_running;
+        app.show_daemon_control(ui, running, capabilities());
+    })
+}
+
 fn autostart_frame(
     app: &mut App,
     ctx: &egui::Context,
@@ -181,7 +192,11 @@ fn t1230_lower_stream_presets_save_exact_output_without_starting_display() {
 fn t497_action_retirement_reports_failure_and_refreshes_status() {
     let (_settings_directory, mut app) = settings_test_app(Tab::Video);
     let (tx, rx) = std::sync::mpsc::channel();
-    app.action = Some(action_feedback::Job::new(FeedbackArea::Settings, "Fixture action", rx));
+    app.action = Some(action_feedback::Job::new(
+        FeedbackArea::Settings,
+        "Fixture action",
+        rx,
+    ));
     app.run_action(FeedbackArea::Settings, "Fixture action", || {
         panic!("T497 busy action must not dispatch")
     });
@@ -189,7 +204,9 @@ fn t497_action_retirement_reports_failure_and_refreshes_status() {
     app.poll_action();
     assert_eq!(app.message, "Fixture action returned no result; its effect is unconfirmed. Check saved preferences in General before retrying.");
     assert!(!app.busy());
-    app.run_action(FeedbackArea::Settings, "Fixture action", || "Completed fixture action".into());
+    app.run_action(FeedbackArea::Settings, "Fixture action", || {
+        "Completed fixture action".into()
+    });
     wait_for_work(&mut app);
     assert_eq!(app.message, "Fixture action: Completed fixture action");
 }
@@ -248,7 +265,10 @@ fn t497_setup_and_lifecycle_actions_use_private_stub_commands() {
         setup_frame,
     );
     wait_for_work(&mut app);
-    assert_eq!(app.message, "Set up display and input: System setup complete");
+    assert_eq!(
+        app.message,
+        "Set up display and input: System setup complete"
+    );
     for (running, expected) in [
         (false, "Start Blent service: Display service starting…"),
         (true, "Stop Blent service: Display service stopped"),
@@ -266,6 +286,19 @@ fn t497_setup_and_lifecycle_actions_use_private_stub_commands() {
         );
         wait_for_work(&mut app);
         assert_eq!(app.message, expected);
+        // T1805: Connections uses a separate control, with the same service owner.
+        click_settings_text(
+            &mut app,
+            &ctx,
+            if running {
+                "Stop display service (all tablets)"
+            } else {
+                "Start display service (all tablets)"
+            },
+            daemon_frame,
+        );
+        wait_for_work(&mut app);
+        assert_eq!(app.message, expected);
     }
     autostart_actions(&mut app, &ctx);
     restart_daemon().unwrap();
@@ -280,7 +313,10 @@ fn autostart_actions(app: &mut App, ctx: &egui::Context) {
         app.status.lock().unwrap().autostart = enabled;
         click_settings_text(app, ctx, "Start Blent with the desktop", autostart_frame);
         wait_for_work(app);
-        assert_eq!(app.message, format!("Change login startup preference: {message}"));
+        assert_eq!(
+            app.message,
+            format!("Change login startup preference: {message}")
+        );
     }
 }
 
