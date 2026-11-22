@@ -1,0 +1,285 @@
+{
+  "issue": "T1611",
+  "date": "2026-11-22",
+  "prerequisite": "T1700 (0a38ad32) resolves the GCC optimized latency-index warning exposed by the stricter recipe.",
+  "regression_before": "F\n======================================================================\nFAIL: test_t1611_local_build_uses_strict_shared_recipe (test_evdi_build.EvdiBuildTest.test_t1611_local_build_uses_strict_shared_recipe)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/backups/disk2/projects/blent/scripts/tests/test_evdi_build.py\", line 40, in test_t1611_local_build_uses_strict_shared_recipe\n    self.assertIn(flag, args, f'T1611: missing required compiler flag {flag}')\nAssertionError: '-std=c11' not found in ['-O3', '-o', 'host/evdi/evdi_helper', 'host/evdi/evdi_helper.c', 'host/evdi/conversion.c', 'host/evdi/frame_exchange.c', 'host/evdi/fifo_writer.c', 'host/evdi/capture.c', 'host/evdi/capture_activity.c', 'host/evdi/capture_control.c', 'host/evdi/cursor_overlay.c', 'host/evdi/raw_ring.c', 'host/evdi/writer.c', 'host/evdi/idle_control.c', '-levdi', '-lpthread', '-Ihost/evdi', '-Wl,-rpath,$ORIGIN'] : T1611: missing required compiler flag -std=c11\n\n----------------------------------------------------------------------\nRan 1 test in 0.045s\n\nFAILED (failures=1)\n",
+  "verification": {
+    "shared_recipe_tests_passed": 2,
+    "arch_build_tests_passed": 2,
+    "make_tests_passed": 8,
+    "distribution_tests_passed": 2,
+    "package_tests_passed": 9,
+    "production_optimization_compile_tests_passed": 1,
+    "native_build": {
+      "status": "success",
+      "compiler": "GCC 13.3.0",
+      "make": "GNU Make 4.3",
+      "output_sha256": "0de27457f80347d6562ab4a5fc986b2fd73f2a5427fbcc0ef0bdca720a0dc816",
+      "needed": [
+        "libevdi.so.1",
+        "libc.so.6"
+      ],
+      "runpath": "$ORIGIN",
+      "library": "Private linker name referencing cached pinned libevdi 1.15.0; no installed library modified."
+    }
+  },
+  "functions": [
+    {
+      "file": "packaging/arch/PKGBUILD",
+      "name": "build",
+      "line": 20,
+      "language": "shell",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "coverage_tool": "Native Bash location tracing, exact source hash, maintained PKGBUILD build function 6/6 executable lines. build-release.sh has no function declarations; its actual embedded program is executed by private release fixtures. Make recipes are declarative and have no reported function percentage.",
+  "complexity_tool": "Project shell tree-sitter 0.25.2 standard branch count and Python AST 3.12 checker",
+  "complexity": [
+    [
+      "packaging/arch/PKGBUILD",
+      20,
+      "build",
+      1
+    ],
+    [
+      "packaging/arch/PKGBUILD",
+      31,
+      "package",
+      1
+    ],
+    [
+      "scripts/tests/test_arch_build.py",
+      14,
+      "executable",
+      1
+    ],
+    [
+      "scripts/tests/test_arch_build.py",
+      20,
+      "test_t1624_evdi_archive_matches_the_release_commit_pin",
+      1
+    ],
+    [
+      "scripts/tests/test_arch_build.py",
+      29,
+      "test_t497_arch_build_uses_one_target_directory_and_replaceable_evdi_library",
+      2
+    ],
+    [
+      "scripts/tests/test_distribution.py",
+      15,
+      "tree_contents",
+      3
+    ],
+    [
+      "scripts/tests/test_distribution.py",
+      30,
+      "assert_apk_gate",
+      3
+    ],
+    [
+      "scripts/tests/test_distribution.py",
+      43,
+      "compare_shared_bundle",
+      1
+    ],
+    [
+      "scripts/tests/test_distribution.py",
+      55,
+      "test_t102_apk_failure_and_bundled_helper_loading",
+      6
+    ],
+    [
+      "scripts/tests/test_distribution.py",
+      126,
+      "test_t379_missing_bundle_inputs_cannot_produce_an_archive",
+      4
+    ],
+    [
+      "scripts/tests/test_distribution.py",
+      60,
+      "write",
+      2
+    ],
+    [
+      "scripts/tests/test_make.py",
+      27,
+      "native_make_fixtures",
+      2
+    ],
+    [
+      "scripts/tests/test_make.py",
+      35,
+      "make_environment",
+      3
+    ],
+    [
+      "scripts/tests/test_make.py",
+      43,
+      "run_dist",
+      6
+    ],
+    [
+      "scripts/tests/test_make.py",
+      74,
+      "test_t304_dist_uses_the_requested_build_container",
+      4
+    ],
+    [
+      "scripts/tests/test_make.py",
+      92,
+      "test_t291_dist_inspection_never_executes_release_scripts",
+      3
+    ],
+    [
+      "scripts/tests/test_make.py",
+      101,
+      "test_t291_dist_still_dispatches_portable_and_parallel_local_builds",
+      1
+    ],
+    [
+      "scripts/tests/test_make.py",
+      110,
+      "run_build",
+      1
+    ],
+    [
+      "scripts/tests/test_make.py",
+      121,
+      "test_t261_failed_make_install_preserves_existing_binaries",
+      3
+    ],
+    [
+      "scripts/tests/test_make.py",
+      144,
+      "test_t619_android_install_grants_runtime_permissions_without_starting_camera",
+      1
+    ],
+    [
+      "scripts/tests/test_make.py",
+      159,
+      "test_t1213_explicit_usb_build_uses_selected_compiler_and_refreshes_output",
+      5
+    ],
+    [
+      "scripts/tests/test_make.py",
+      186,
+      "test_t220_parallel_build_passes_open_jobserver",
+      1
+    ],
+    [
+      "scripts/tests/test_make.py",
+      191,
+      "test_t220_dry_run_does_not_execute_cargo",
+      2
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      15,
+      "test_t428_portable_build_rejects_unverified_evdi_cache",
+      5
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      58,
+      "test_t101_container_and_appimage_failures_reject_stale_assets",
+      5
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      75,
+      "test_t1624_generated_arch_sources_have_real_checksums",
+      1
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      92,
+      "verify_arch_digest",
+      2
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      101,
+      "test_t1624_download_failure_cannot_publish_arch_recipe",
+      1
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      115,
+      "test_t1217_supported_outputs_need_only_current_package_tools",
+      2
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      127,
+      "test_t235_checkout_paths_are_literal_container_arguments",
+      2
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      142,
+      "test_t235_portable_build_uses_literal_checkout_path",
+      2
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      161,
+      "test_t236_release_rejects_new_glibc_in_bundled_evdi",
+      1
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      174,
+      "portable_fixture",
+      4
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      198,
+      "test_t235_make_preserves_release_notes_path",
+      1
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      213,
+      "create_fixture",
+      7
+    ],
+    [
+      "scripts/tests/test_packages.py",
+      214,
+      "write",
+      2
+    ],
+    [
+      "scripts/tests/test_evdi_build.py",
+      18,
+      "copy_helper",
+      1
+    ],
+    [
+      "scripts/tests/test_evdi_build.py",
+      23,
+      "compiler_spy",
+      1
+    ],
+    [
+      "scripts/tests/test_evdi_build.py",
+      33,
+      "test_t1611_local_build_uses_strict_shared_recipe",
+      3
+    ],
+    [
+      "scripts/tests/test_evdi_build.py",
+      53,
+      "test_t1611_shared_recipe_preserves_literal_output_and_library_paths",
+      1
+    ]
+  ],
+  "ownership": "Each caller synchronously owns the shared Make/compiler child and existing output lifecycle. Fixtures own private trees, native compilation objects and command logs, with subprocess completion before cleanup. Shared recipe retains only static source/flag values and explicitly selected output/library paths; no daemon/device access or runtime allocation changes.",
+  "scope": "Real native helper compilation/link on this Linux host plus private local/portable/Arch caller fixtures. No full Debian-container or Arch package installation, distribution publishing, installed helper replacement or physical capture acceptance."
+}

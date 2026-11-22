@@ -91,6 +91,11 @@ in a terminal. See [installation](installation.md) before attaching EVDI.
 Make delegates user-file installation to `scripts/install.sh --user-install`;
 both routes honor absolute XDG data/config base directories, falling back to
 HOME defaults for unset, empty or relative values.
+Local, portable-release and Arch helper builds share `host/evdi/Makefile` for
+the source list, C11 mode and `-Wall -Wextra -Werror`. Its default optimization
+is generic `-O3`; the recipe accepts `CC`, `CFLAGS`, `CPPFLAGS` and `LDFLAGS`.
+`OUTPUT` selects the helper path and `EVDI_LIBRARY_DIR` selects an optional
+linker-library directory, both relative to `host/evdi` unless absolute.
 The source helper normally finds the system libevdi installed above; bundling
 is a separate release step. Add `~/.local/bin` to PATH if needed.
 

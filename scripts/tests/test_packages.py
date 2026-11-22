@@ -6,6 +6,8 @@ import subprocess
 import tempfile
 import unittest
 
+from test_evdi_build import copy_helper
+
 REPO = Path(__file__).resolve().parents[2]
 
 
@@ -152,9 +154,9 @@ exit 0
                 self.assertTrue((root / f'dist/blent-{version}-linux-x86_64.tar.gz').is_file())
                 self.assertFalse((root / 'INJECTED').exists())
                 arguments = (root / 'native-helper-arguments').read_text()
-                self.assertIn('host/evdi/capture_activity.c', arguments, 'T1021: release links wire contract')
-                self.assertIn('host/evdi/capture_control.c', arguments, 'T1021: release links native control')
-                self.assertIn('host/evdi/idle_control.c', arguments, 'T1119: release links shared idle validation')
+                self.assertIn('capture_activity.c', arguments, 'T1021: release links wire contract')
+                self.assertIn('capture_control.c', arguments, 'T1021: release links native control')
+                self.assertIn('idle_control.c', arguments, 'T1119: release links shared idle validation')
 
     def test_t236_release_rejects_new_glibc_in_bundled_evdi(self):
         from test_notices import NoticeTest
@@ -170,6 +172,7 @@ exit 0
             self.assertFalse((root / f'dist/blent-{version}-linux-x86_64.tar.gz').exists())
 
     def portable_fixture(self, root):
+        copy_helper(root)
         import release_signing_fixture
         release_signing_fixture.install_tools(root / "bin")
         files = {
@@ -182,7 +185,8 @@ exit 0
         }
         for name in ['cargo', 'make', 'gcc']:
             files['bin/' + name] = '#!/bin/sh\nexit 0\n'
-        files['bin/gcc'] = '#!/bin/sh\nprintf "%s\\n" "$*" > "$PWD/native-helper-arguments"\n'
+        files['bin/make'] = '#!/bin/sh\ncase " $* " in *" -C host/evdi "*) exec /usr/bin/make "$@";; esac\n'
+        files['bin/gcc'] = '#!/bin/sh\nprintf "%s\\n" "$*" > "$PWD/../../native-helper-arguments"\n'
         for name in ['release/blent', 'release/blent-gui', 'release/blent-audio', 'release/blent-usb-broker', 'release/blent-usb-io', 'evdi_helper', 'evdi-src/library/libevdi.so.1.15.0']:
             files['target-deb12/' + name] = '#!/bin/sh\nexit 0\n'
         for name, text in files.items():

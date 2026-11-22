@@ -6,6 +6,8 @@ import subprocess
 import tempfile
 import unittest
 
+from test_evdi_build import copy_helper
+
 REPO = Path(__file__).resolve().parents[2]
 CARGO = '''#!/usr/bin/env python3
 import os, re, stat
@@ -22,7 +24,8 @@ print('T220: cargo executed with usable jobserver')
 
 
 class MakeTest(unittest.TestCase):
-    def usb_make_fixture(self, root):
+    def native_make_fixtures(self, root):
+        copy_helper(root)
         source = REPO/'host/accessory'
         destination = root/'host/accessory'
         destination.mkdir(parents=True)
@@ -40,7 +43,7 @@ class MakeTest(unittest.TestCase):
     def run_dist(self, portable, *flags, container=None, listed='blent-build'):
         with tempfile.TemporaryDirectory(prefix='blent-make-dist-') as tmp:
             root = Path(tmp)
-            self.usb_make_fixture(root)
+            self.native_make_fixtures(root)
             makefile = (REPO / 'Makefile').read_text()
             for directory in ['scripts', 'packaging', 'bin']:
                 (root / directory).mkdir()
@@ -107,7 +110,7 @@ class MakeTest(unittest.TestCase):
     def run_build(self, *flags):
         with tempfile.TemporaryDirectory(prefix='blent-make-') as tmp:
             root = Path(tmp)
-            self.usb_make_fixture(root)
+            self.native_make_fixtures(root)
             (root / 'Makefile').write_text((REPO / 'Makefile').read_text())
             cargo = root / 'cargo'
             cargo.write_text(CARGO)
@@ -118,7 +121,7 @@ class MakeTest(unittest.TestCase):
     def test_t261_failed_make_install_preserves_existing_binaries(self):
         with tempfile.TemporaryDirectory(prefix='blent-make-install-') as tmp:
             root = Path(tmp)
-            self.usb_make_fixture(root)
+            self.native_make_fixtures(root)
             (root / 'Makefile').write_text((REPO / 'Makefile').read_text())
             (root / 'scripts').mkdir()
             (root / 'scripts/install.sh').write_text((REPO / 'scripts/install.sh').read_text())
@@ -141,7 +144,7 @@ class MakeTest(unittest.TestCase):
     def test_t619_android_install_grants_runtime_permissions_without_starting_camera(self):
         with tempfile.TemporaryDirectory(prefix='blent-android-install-') as tmp:
             root = Path(tmp)
-            self.usb_make_fixture(root)
+            self.native_make_fixtures(root)
             (root / 'Makefile').write_text((REPO / 'Makefile').read_text())
             adb = root / 'adb'
             adb.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > adb-arguments\n')
@@ -167,7 +170,7 @@ exit 43
 '''
         for explicit, stale in [(False, False), (False, True), (True, True)]:
             with self.subTest(explicit=explicit, stale=stale), tempfile.TemporaryDirectory() as tmp:
-                root = Path(tmp); self.usb_make_fixture(root)
+                root = Path(tmp); self.native_make_fixtures(root)
                 (root/'Makefile').write_text((REPO/'Makefile').read_text())
                 (root/'tools').mkdir()
                 for name, text in [('gcc', compiler), ('cc', '#!/bin/sh\nexit 42\n')]:

@@ -9,6 +9,7 @@ import unittest
 
 import test_notices
 import release_signing_fixture
+from test_evdi_build import copy_helper
 
 
 def tree_contents(root):
@@ -70,6 +71,7 @@ class DistributionTest(unittest.TestCase):
                 # T1301: independent USB build fixture honors the real output contract.
                 write('host/accessory/Makefile', '$(OUTPUT): helper.c\n\t$(CC) helper.c -o "$(OUTPUT)"\n')
                 write('host/accessory/helper.c', 'int main(void)\n{\n    return 0;\n}\n')
+                copy_helper(root)
                 write('library.c', 'int blent_distribution_probe(void) { return 0; }\n')
                 write('host/evdi/evdi_helper.c', 'extern int blent_distribution_probe(void); int main(void) { return blent_distribution_probe(); }\n')
                 # T380: stub the other C units too; this fixture checks loader
@@ -130,6 +132,7 @@ class DistributionTest(unittest.TestCase):
             with self.subTest(missing=missing), tempfile.TemporaryDirectory() as tmp:
                 root = Path(tmp)
                 version = test_notices.NoticeTest().copy_sources(root)
+                copy_helper(root)
                 for name in inputs:
                     path = root / name
                     path.parent.mkdir(parents=True, exist_ok=True)

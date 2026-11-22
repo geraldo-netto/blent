@@ -6,6 +6,8 @@ import subprocess
 import tempfile
 import unittest
 
+from test_evdi_build import copy_helper
+
 REPO = Path(__file__).resolve().parents[2]
 
 
@@ -31,29 +33,35 @@ class ArchBuildTest(unittest.TestCase):
             version = re.search(r'^pkgver=(.+)$', package.read_text(), re.M)[1]
             # T661: GitHub archives use the renamed repository as their root.
             source = root/('blent-' + version)
-            (source/'host/evdi').mkdir(parents=True)
+            copy_helper(source)
             (root/'evdi-2713cd41932f2bd8697953a205862a68a966b5ba/library').mkdir(parents=True)
             bin = root/'bin'
             bin.mkdir()
             for name in ['cargo', 'make', 'gcc']:
                 executable(bin/name, 'printf "%s|%s|%s\\n" "${0##*/}" "$PWD" "$*" >> "$T497_COMMANDS"\n')
+            with (bin/'make').open('a') as make:
+                make.write('case " $* " in *" -C host/evdi "*) exec /usr/bin/make "$@";; esac\n')
             environment = dict(os.environ, PATH=str(bin) + os.pathsep + os.environ['PATH'], T497_COMMANDS=str(root/'commands'))
             result = subprocess.run(['bash', '-c', 'set -e; source "$1"; srcdir="$2"; build', 't497', str(package), str(root)],
                                     cwd=root, env=environment, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             commands = (root/'commands').read_text().splitlines()
-            self.assertEqual(len(commands), 5)
-            self.assertTrue(all(f'|{source}|' in command for command in commands))
+            self.assertEqual(len(commands), 6)
+            self.assertTrue(all(f'|{source}|' in command for command in commands[:5]))
+            self.assertIn(f'|{source}/host/evdi|', commands[5])
+            self.assertIn('--always-make -C host/evdi', commands[4])
             self.assertIn('--target-dir target --manifest-path host/Cargo.toml', commands[0])
             self.assertIn('--target-dir target --manifest-path gui/Cargo.toml', commands[1])
             self.assertIn('OUTPUT=../../target/release/blent-usb-io', commands[2])
             self.assertIn('evdi-2713cd41932f2bd8697953a205862a68a966b5ba/library', commands[3])
-            self.assertIn('-levdi -lpthread -Wl,-rpath,$ORIGIN', commands[4])
-            self.assertIn('host/evdi/frame_exchange.c host/evdi/fifo_writer.c', commands[4])
-            self.assertIn('host/evdi/raw_ring.c', commands[4], 'T418: shared capture must link in Arch packages')
-            self.assertIn('host/evdi/capture_activity.c', commands[4], 'T1021: link portable activity records')
-            self.assertIn('host/evdi/capture_control.c', commands[4], 'T1021: link native activity adapter')
-            self.assertIn('host/evdi/idle_control.c', commands[4], 'T1119: link shared idle validation')
+            self.assertIn('-L' + str(root/'evdi-2713cd41932f2bd8697953a205862a68a966b5ba/library'), commands[5])
+            self.assertIn('-std=c11 -O3 -Wall -Wextra -Werror', commands[5])
+            self.assertIn('-levdi -lpthread -Wl,-rpath,$ORIGIN', commands[5])
+            self.assertIn('frame_exchange.c fifo_writer.c', commands[5])
+            self.assertIn('raw_ring.c', commands[5], 'T418: shared capture must link in Arch packages')
+            self.assertIn('capture_activity.c', commands[5], 'T1021: link portable activity records')
+            self.assertIn('capture_control.c', commands[5], 'T1021: link native activity adapter')
+            self.assertIn('idle_control.c', commands[5], 'T1119: link shared idle validation')
 
 
 if __name__ == '__main__':
