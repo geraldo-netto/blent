@@ -14,7 +14,7 @@ SHARED = ['DecoderSession.kt', 'VideoTiming.kt', 'DecoderOutputWatchdog.kt', 'Co
           'DecoderDiagnostics.kt', 'DecoderInput.kt', 'DecoderMailbox.kt', 'CallbackDecoder.kt', 'DecoderConfiguration.kt',
           'ChannelPacketReader.kt', 'VideoPacketReader.kt', 'DecodedOutputDrainer.kt', 'VideoCodec.kt',
           'MediaProfiles.kt', 'MediaInventory.kt', 'DecoderSelection.kt', 'JsonNumbers.kt',
-          'VideoContract.kt', 'VideoProfiles.kt', 'DecoderCapabilities.kt',
+          'VideoContract.kt', 'VideoProfiles.kt', 'DecoderCapabilities.kt', 'DecoderEligibility.kt',
           'DecoderSelectionJson.kt', 'DecoderSelectionAndroid.kt']
 MANIFEST = '''<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 <uses-permission android:name="android.permission.INTERNET" />

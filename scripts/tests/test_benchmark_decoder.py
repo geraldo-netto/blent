@@ -16,6 +16,18 @@ SPEC.loader.exec_module(BENCH)
 
 
 class DecoderBenchmarkTests(unittest.TestCase):
+    def test_t1746_generated_replay_includes_exact_decoder_eligibility_contract(self):
+        spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
+        project = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(project)
+        with tempfile.TemporaryDirectory() as directory:
+            args = SimpleNamespace(directory=Path(directory) / 'replay', revision=None,
+                                   package='com.blent.decoderbench.candidate')
+            output = project.prepare(args)
+            source = (project.SOURCE / 'DecoderEligibility.kt').read_bytes()
+            for folder in ['originals', 'app/src/main/java']:
+                self.assertEqual((output / folder / 'DecoderEligibility.kt').read_bytes(), source)
+
     def test_t1644_missing_current_dependency_rejects_old_snapshot(self):
         spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
         project = importlib.util.module_from_spec(spec)
