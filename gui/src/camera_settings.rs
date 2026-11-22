@@ -1,6 +1,7 @@
 //! Portable settings/UI; only create_backend selects a native implementation.
 use blent_config::camera::{CameraBackend, CameraProfile, CameraState, Lens};
 use eframe::egui;
+use std::sync::Arc;
 mod connection;
 mod context;
 #[cfg(all(test, target_os = "linux"))]
@@ -55,20 +56,44 @@ impl Panel {
             self.summary(ui, options);
             self.live_adjustments(ui, options);
             let frame = self.backend.as_ref().and_then(|backend| backend.preview());
-            self.preview.show(ui, frame);
-            super::settings_grid(ui, "camera-basic-grid", |ui| {
-                profile(ui, options);
-            });
+            self.image_workspace(ui, options, frame);
             egui::CollapsingHeader::new("Advanced camera settings")
                 .id_salt("camera-advanced")
                 .show(ui, |ui| {
                     super::settings_grid(ui, "camera-advanced-grid", |ui| {
                         advanced_profile(ui, options);
-                        tuning::show(ui, &mut options.sensor, self.capabilities);
                         self.connection_controls(ui, options);
                     });
                 });
         });
+    }
+
+    fn image_workspace(
+        &mut self,
+        ui: &mut egui::Ui,
+        options: &mut CameraProfile,
+        frame: Option<Arc<blent_config::camera::CameraPreview>>,
+    ) {
+        if frame.is_some() && ui.available_width() >= 980.0 {
+            ui.horizontal_top(|ui| {
+                ui.allocate_ui(egui::vec2(640.0, 0.0), |ui| self.preview.show(ui, frame));
+                ui.vertical(|ui| self.image_controls(ui, options));
+            });
+        } else {
+            self.preview.show(ui, frame);
+            self.image_controls(ui, options);
+        }
+    }
+
+    fn image_controls(&mut self, ui: &mut egui::Ui, options: &mut CameraProfile) {
+        super::settings_grid(ui, "camera-basic-grid", |ui| profile(ui, options));
+        egui::CollapsingHeader::new("Tablet image adjustments")
+            .id_salt("camera-sensor")
+            .show(ui, |ui| {
+                super::settings_grid(ui, "camera-sensor-grid", |ui| {
+                    tuning::show(ui, &mut options.sensor, self.capabilities);
+                });
+            });
     }
 
     fn live_adjustments(&mut self, ui: &mut egui::Ui, options: &CameraProfile) {

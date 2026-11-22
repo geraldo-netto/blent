@@ -47,3 +47,28 @@ fn t1780_validation_text_meets_normal_text_contrast() {
         egui::CentralPanel::default().show(context, |ui| assert!(app.show_validation_error(ui)));
     });
 }
+
+#[test]
+fn t1788_stopped_camera_keeps_image_controls_in_default_window() {
+    let (_root, mut app) = settings_test_app(Tab::Camera);
+    let context = egui::Context::default();
+    let size = egui::vec2(1040.0, 740.0);
+    sized_window_frame(&mut app, &context, vec![], size);
+    let labels = sized_window_frame(&mut app, &context, vec![], size);
+    let bottom = labels.iter().find(|(text, _)| text == "Save & restart all displays").unwrap().1.top();
+    for required in ["Start camera", "Lens", "Camera resolution", "Shadow correction", "Shadow strength"] {
+        let rect = labels.iter().find(|(text, _)| text == required).unwrap().1;
+        assert!(rect.bottom() < bottom, "T1788 {required} below visible controls: {rect:?}");
+    }
+    assert!(app.camera.backend.is_none());
+}
+
+#[test]
+fn t1788_sensor_controls_are_available_without_transport_tuning() {
+    let (_root, mut app) = settings_test_app(Tab::Camera);
+    let context = egui::Context::default();
+    click_settings_text(&mut app, &context, "Tablet image adjustments", window_test_frame);
+    let labels = window_test_frame(&mut app, &context, vec![]);
+    assert!(labels.iter().any(|(label, _)| label == "Start the camera to discover supported controls."));
+    assert!(app.camera.backend.is_none());
+}

@@ -58,3 +58,22 @@ in the affected source/tests have complexity <=9. Tools match T1781.
 and display name from the bounded workspace; replacement/drop frees those values.
 It holds no native lease, frame, borrowed widget or callback. Existing backend
 admission, original-task settlement and stop/reuse boundaries remain authoritative.
+
+## T1788 — camera preview and controls
+
+The stopped preview reserves only 48 points instead of a full video rectangle.
+At >=980 available points, the live preview keeps its 640-point area with image
+controls beside it; narrower layouts stack. Camera pages may use up to 1280 points.
+Sensor adjustments have their own disclosure beside basic image controls, separate
+from advanced transport/worker tuning.
+
+The original default-size regression failed because clipped image controls were
+not rendered; it now sees Start, Lens, resolution and both shadow controls above
+the footer. Additional fixtures cover 380/1040-wide live layouts and discovering
+sensor controls while stopped. All 43 camera-filtered tests pass; the stopped and
+sensor regressions also passed in the focused run. Five changed methods measure
+85.7–100% line coverage; 251 measured functions have complexity <=9.
+[Evidence](artifacts/2026-11-22-ui-ux/t1788/). The existing single Arc thumbnail and
+texture remain context-owned and expire through the same maintenance path; layout
+borrows them per frame, adds no capture and preserves aspect ratio. Native scaled
+layout acceptance follows the combined installation.

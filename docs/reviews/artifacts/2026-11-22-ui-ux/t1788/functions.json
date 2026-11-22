@@ -1,0 +1,32 @@
+[
+  {
+    "file": "gui/src/main.rs",
+    "name": "maximum_width",
+    "covered": 6,
+    "total": 7
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "show",
+    "covered": 16,
+    "total": 16
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "image_workspace",
+    "covered": 14,
+    "total": 14
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "image_controls",
+    "covered": 10,
+    "total": 10
+  },
+  {
+    "file": "gui/src/camera_preview.rs",
+    "name": "show",
+    "covered": 19,
+    "total": 19
+  }
+]

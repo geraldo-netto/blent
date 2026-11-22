@@ -187,6 +187,7 @@ impl Tab {
     fn maximum_width(self, available: f32) -> f32 {
         match self {
             Self::Overview => 1960.0,
+            Self::Camera => 1280.0,
             Self::About => available,
             _ => workspace_style::FORM_WIDTH,
         }

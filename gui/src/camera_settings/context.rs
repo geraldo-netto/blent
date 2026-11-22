@@ -101,3 +101,38 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+mod layout_tests {
+    use super::*;
+
+    #[test]
+    fn t1788_live_layout_places_controls_beside_large_preview_or_stacks() {
+        for width in [380.0, 1040.0] {
+            let context = egui::Context::default();
+            let mut panel = Panel::default();
+            let mut options = CameraProfile::default();
+            let frame = Arc::new(blent_config::camera::CameraPreview::new(Lens::Front, [640, 480], vec![100; 640 * 480 * 4]).unwrap());
+            for _ in 0..2 {
+                let output = context.run(egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(width, 1200.0))),
+                    ..Default::default()
+                }, |context| {
+                    egui::CentralPanel::default().show(context, |ui| panel.image_workspace(ui, &mut options, Some(frame.clone())));
+                });
+                let mut labels = Vec::new();
+                for shape in output.shapes { crate::test_shapes::collect_text_rects(&shape.shape, &mut labels); }
+                let lens = labels.iter().find(|(text, _)| text == "Lens").unwrap().1;
+                let preview = labels.iter().find(|(text, _)| text == "Preview").unwrap().1;
+                assert_eq!(lens.left() > 640.0, width >= 980.0);
+                if width >= 980.0 {
+                    assert!(lens.top() < preview.top() + 64.0, "side-by-side controls: {lens:?}, {preview:?}");
+                } else {
+                    assert!(lens.top() > preview.bottom() + 120.0, "stacked controls follow image");
+                }
+            }
+            assert_eq!(options, CameraProfile::default());
+            assert!(panel.backend.is_none());
+        }
+    }
+}

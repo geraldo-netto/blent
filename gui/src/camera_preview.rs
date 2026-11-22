@@ -38,9 +38,9 @@ impl Preview {
                 });
             } else {
                 ui.allocate_ui(
-                    display_size(ui.available_width(), egui::vec2(16.0, 9.0)),
+                    egui::vec2(ui.available_width().min(640.0), 48.0),
                     |ui| {
-                        ui.centered_and_justified(|ui| ui.label("No live video"));
+                        ui.centered_and_justified(|ui| ui.label("No live video · Start camera to preview"));
                     },
                 );
             }
