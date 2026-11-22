@@ -625,7 +625,9 @@ static void report_capture_stats(capture_context_t *capture, long long now, long
     /* Capture-side latency: grab → convert → into the encoder's FIFO. */
     int snapshot[LAT_SAMPLES];
     int n = (int)frame_exchange_latency_take(capture->frames, snapshot, LAT_SAMPLES);
-    if (n > 0)
+    /* Make the snapshot contract explicit before quantile indexing, including
+     * non-LTO builds where the producer's capacity bound is not visible. */
+    if (n > 0 && n <= LAT_SAMPLES)
     {
         qsort(snapshot, (size_t)n, sizeof(int), cmp_int);
         fprintf(stderr,
