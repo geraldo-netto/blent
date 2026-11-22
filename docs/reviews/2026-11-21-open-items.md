@@ -798,3 +798,9 @@ All 38 helper tests pass. The maintained command function has 94.9% line coverag
 ## T1715 — correct metric parser attribution (2026-11-22)
 
 T1610/T1701/T1702 artifact labels incorrectly named tree-sitter for Rust. The checked-in runner uses the locked syn 2.0.119 frontend; only C uses tree-sitter 0.25.2. Labels now name those actual tools. Function counters and results are unchanged; this documentation correction claims no additional execution.
+
+## T1716 — retarget selector preparation ownership fixtures (2026-11-22)
+
+The T1704 baseline exposed two stale regressions: T1037/T1050 waited for a blocking FIFO fingerprint read, but current hashing opens nonblocking and rejects non-regular files. Both failed at FIFO writer admission before T1704 production changes. Their private helper is now a regular file, with a test-only per-path barrier in the actual blocking preparation thread. The registry admits at most two original guards; dropping a guard removes only its matching identity and disconnects the waiter, including unwind.
+
+Both previously failing tests pass, as do all three selected cache-context regressions (five executed cases total). No-overlap, original lifetime retained after parent cancellation, late native child publication and quiescence fences retain their original assertions. The containing host-stamp function measures 96.7% line coverage (29/30), and all 53 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1716.json). Production hashing/acceptance is unchanged; the barrier is compiled only for tests. No installed session or physical device changed.

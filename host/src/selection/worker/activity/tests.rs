@@ -304,26 +304,6 @@ async fn first_proof(report: &Report) -> blent_config::retirement::Completion {
     .await
     .unwrap()
 }
-async fn writer(path: &std::path::Path) -> std::fs::File {
-    use std::os::unix::fs::OpenOptionsExt;
-    timeout(Duration::from_secs(30), async {
-        loop {
-            match std::fs::OpenOptions::new()
-                .write(true)
-                .custom_flags(libc::O_NONBLOCK)
-                .open(path)
-            {
-                Ok(writer) => return writer,
-                Err(error) if error.raw_os_error() == Some(libc::ENXIO) => {
-                    tokio::time::sleep(Duration::from_millis(1)).await
-                }
-                Err(error) => panic!("T1037 FIFO writer: {error}"),
-            }
-        }
-    })
-    .await
-    .unwrap()
-}
 async fn joined(report: &Report) {
     timeout(Duration::from_secs(5), async {
         loop {
@@ -365,7 +345,7 @@ async fn t1037_controller_cannot_overlap_original_cache_preparation_or_lose_late
         },
     ));
     let original = first_proof(&report).await;
-    preparation.hold().await; // Actual preflight reader now blocks on the original FIFO.
+    preparation.hold().await; // T1716: original blocking preparation is held before hashing.
     observe(&mut feed, 2, true);
     publish.send_replace(state(&feed));
     observe(&mut feed, 3, false);
@@ -420,27 +400,6 @@ fn isolated_controller(test: &str) -> bool {
         String::from_utf8_lossy(&output.stderr)
     );
     true
-}
-
-// Release both an already-blocked reader and a creator which opens only after
-// cancellation. Rename first while a nonblocking rescue writer admits old opens.
-struct Fingerprint {
-    path: std::path::PathBuf,
-    fallback: std::path::PathBuf,
-    writer: Option<std::fs::File>,
-}
-impl Drop for Fingerprint {
-    fn drop(&mut self) {
-        use std::os::unix::fs::OpenOptionsExt;
-        let rescue = std::fs::OpenOptions::new()
-            .read(true)
-            .write(true)
-            .custom_flags(libc::O_NONBLOCK)
-            .open(&self.path);
-        let _ = std::fs::rename(&self.fallback, &self.path);
-        drop(self.writer.take());
-        drop(rescue);
-    }
 }
 
 #[tokio::test]
@@ -553,7 +512,7 @@ async fn t1045_selector_uses_original_viewer_demand_and_saved_preference() {
 // Own the FIFO, rescue writer and temporary directory together. Native readers
 // retire before directory reuse; release remains available on panic through Drop.
 struct Preparation {
-    fingerprint: Option<Fingerprint>,
+    fingerprint: Option<super::super::cache::PreparationGate>,
     config: CaptureConfig,
     settings: watch::Sender<crate::media::EncoderSettings>,
     attachment: crate::attachment::Attachment,
@@ -562,18 +521,10 @@ struct Preparation {
 impl Preparation {
     fn new() -> Self {
         use blent_config::connection::routes::{Identity, Link};
-        use std::os::unix::ffi::OsStrExt;
         let directory = tempfile::tempdir().unwrap();
-        let fifo = directory.path().join("held-helper-fingerprint");
-        let name = std::ffi::CString::new(fifo.as_os_str().as_bytes()).unwrap();
-        assert_eq!(unsafe { libc::mkfifo(name.as_ptr(), 0o600) }, 0);
-        let fallback = directory.path().join("retired-helper-fingerprint");
-        std::fs::write(&fallback, b"T1037 harmless retired fingerprint").unwrap();
-        let fingerprint = Fingerprint {
-            path: fifo.clone(),
-            fallback,
-            writer: None,
-        };
+        let helper = directory.path().join("helper-fingerprint");
+        std::fs::write(&helper, b"T1716 regular helper fingerprint").unwrap();
+        let fingerprint = super::super::cache::PreparationGate::new(helper.clone());
         let (mut snapshot, _) = super::super::cache::tests::setup();
         snapshot.decoder_epoch = 7;
         let (settings, _) = watch::channel(snapshot.clone());
@@ -590,7 +541,7 @@ impl Preparation {
             fingerprint: Some(fingerprint),
             config: CaptureConfig {
                 instance: u32::MAX,
-                helper_path: fifo,
+                helper_path: helper,
                 gpu_policy: blent_config::gpu::Policy::Software,
                 ..Default::default()
             },
@@ -600,7 +551,7 @@ impl Preparation {
         }
     }
     async fn hold(&mut self) {
-        self.fingerprint.as_mut().unwrap().writer = Some(writer(&self.config.helper_path).await);
+        self.fingerprint.as_mut().unwrap().entered().await;
     }
     fn release(&mut self) {
         drop(self.fingerprint.take());

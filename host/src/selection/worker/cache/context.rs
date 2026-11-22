@@ -6,6 +6,8 @@ use std::path::Path;
 
 mod runtime_identity;
 #[cfg(test)]
+pub(super) mod test_gate;
+#[cfg(test)]
 pub(super) mod timing;
 
 impl Cache {
@@ -81,6 +83,8 @@ pub(super) fn fingerprint(
 }
 
 fn host_stamp(base: &CaptureConfig, scope: &blent::native_scope::Scope) -> Option<String> {
+    #[cfg(test)]
+    test_gate::wait(&base.helper_path);
     let mut digest = Sha256::new();
     let ffmpeg = blent_config::linux::programs::find_in("ffmpeg", &std::env::var_os("PATH")?)?;
     for path in [std::env::current_exe().ok()?, base.helper_path.clone()] {

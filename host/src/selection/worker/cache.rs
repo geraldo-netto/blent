@@ -240,3 +240,6 @@ fn supports_choice(
             choice == *expected || unhinted == *expected
         })
 }
+
+#[cfg(test)]
+pub(super) use context::test_gate::Gate as PreparationGate;
