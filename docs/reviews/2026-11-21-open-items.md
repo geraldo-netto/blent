@@ -768,3 +768,9 @@ The helper rejects FPS outside 10–90, scale outside 1–4, conversion workers 
 All three new regressions fail before and pass after the fix. All 81 native helper tests pass, including 1,325 numeric option cases, 16 malformed/reserved descriptor cases, two unusable-descriptor cases, and the retained bounded text/number fuzz and worker-failure tests. The native helper also builds with GCC 13.3.0 at C11/O3/Wall/Wextra/Werror. All 11 maintained production functions meet the 80% line-coverage requirement; all measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1610.json).
 
 Parsing retains only process-lifetime argument borrows and scalar settings. Invalid options admit no native work; existing socket and worker ownership is unchanged. No installed sessions or physical device acceptance were involved.
+
+## T1701 — resolve the EDID cache through the platform adapter (2026-11-22)
+
+Generated EDIDs now use the shared data-directory resolver. Missing, empty and relative HOME fail before creating directories; an absolute non-UTF-8 HOME is preserved. The isolated subprocess regression fails before and passes after the fix. All 19 EDID tests pass, the changed production function has 100% line coverage (11/11), and all 30 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1701.json).
+
+The existing 128-byte generator and atomic file replacement retain their owners and cleanup. Every fixture child settles before its private directory is removed; no installed data or device is touched. T1621 retains cache-name, helper-rate and unused-API integration work.

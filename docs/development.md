@@ -295,6 +295,8 @@ With auto-resolution disabled, Blent validates the configured capture geometry
 independently of the tablet's native size. The native report must still have
 nonzero width and height; an oversized native size does not invalidate a supported
 manual mode. An explicit `--edid` pins the supplied EDID instead of generating one.
+Generated EDIDs use the shared application data directory (`$HOME/.local/share/blent/edid`
+on Linux). Missing, empty or relative HOME is rejected before cache creation.
 `list-displays` invokes `kscreen-doctor -o` and, when present, `wpctl status`;
 it is not a universal compositor enumeration API.
 

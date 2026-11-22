@@ -1,0 +1,205 @@
+{
+  "issue": "T1701",
+  "parent": "T1621",
+  "date": "2026-11-22",
+  "regression_before": "   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 15.97s\n     Running unittests src/main.rs (target/debug/build/blent/44d015232584822c/out/blent-44d015232584822c)\n\nrunning 1 test\ntest edid::location_tests::t1701_data_location_requires_absolute_home ... FAILED\n\nfailures:\n\n---- edid::location_tests::t1701_data_location_requires_absolute_home stdout ----\n\nthread 'edid::location_tests::t1701_data_location_requires_absolute_home' (192578) panicked at host/src/edid/location_tests.rs:28:5:\n\nrunning 1 test\ntest edid::location_tests::t1701_data_location_requires_absolute_home ... FAILED\n\nfailures:\n\nfailures:\n    edid::location_tests::t1701_data_location_requires_absolute_home\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 700 filtered out; finished in 0.05s\n\n\nthread 'edid::location_tests::t1701_data_location_requires_absolute_home' (192580) panicked at host/src/edid/location_tests.rs:14:9:\nT1701 accepted an unavailable data location\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    edid::location_tests::t1701_data_location_requires_absolute_home\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 700 filtered out; finished in 0.05s\n\nerror: test failed, to rerun pass `-p blent --bin blent`\n",
+  "verification_log": "info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage\n   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)\n   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 28.97s\n     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent/44d015232584822c/out/blent-44d015232584822c)\n\nrunning 19 tests\ntest edid::identity_tests::t1496_instance_serials_are_injective_and_reject_overflow ... ok\ntest edid::location_tests::t1701_data_location_requires_absolute_home ... ok\ntest edid::tests::edid_checksum_is_valid ... ok\ntest edid::tests::t061_rejects_unrepresentable_edid_modes ... ok\ntest edid::tests::t114_old_edid_cache_is_not_reused ... ok\ntest edid::tests::t114_python_dtd_reports_exact_physical_size ... ok\ntest edid::tests::t114_rust_dtd_reports_exact_physical_size ... ok\ntest edid::tests::t115_both_generators_reject_unrepresentable_or_unsupported_values ... ok\ntest edid::tests::t115_generators_agree_on_boundaries_color_and_ranges ... ok\ntest edid::tests::t115_old_range_cache_is_not_reused ... ok\ntest edid::tests::t246_cache_directory_is_not_returned_as_an_edid ... ok\ntest edid::tests::t246_repairs_incomplete_and_wrong_generated_edids ... ok\ntest edid::tests::t320_python_unused_descriptor_is_valid ... ok\ntest edid::tests::t320_rust_unused_descriptor_is_valid ... ok\ntest edid::tests::t321_python_rejects_low_clock_modes ... ok\ntest edid::tests::t321_range_minimum_tracks_supported_geometry ... ok\ntest edid::tests::t321_rust_rejects_low_clock_modes ... ok\ntest edid::tests::t332_shared_mode_validation_agrees_with_both_generators_at_clock_boundary ... ok\ntest edid::tests::t585_blent_monitor_descriptor_has_fixed_width_and_checksum ... ok\n\ntest result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 682 filtered out; finished in 1.35s\n\n\n    Finished report saved to /tmp/blent-t1701.lcov\n",
+  "coverage_tool": "cargo-llvm-cov 0.8.7 / LLVM 23.1.5-rust-1.100.0-stable / Rust 1.100.0",
+  "functions": [
+    {
+      "file": "host/src/edid.rs",
+      "name": "ensure_edid_sized",
+      "line": 170,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity_tool": "project Rust tree-sitter 0.25.2 checker",
+  "complexity": [
+    [
+      "host/src/edid.rs",
+      8,
+      "encode_manufacturer_id",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      27,
+      "make_edid_sized",
+      5
+    ],
+    [
+      "host/src/edid.rs",
+      152,
+      "make_edid",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      170,
+      "ensure_edid_sized",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      182,
+      "ensure_edid_in",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      220,
+      "ensure_edid",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      234,
+      "t585_blent_monitor_descriptor_has_fixed_width_and_checksum",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      247,
+      "t321_range_minimum_tracks_supported_geometry",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      262,
+      "t321_python_rejects_low_clock_modes",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      273,
+      "t321_rust_rejects_low_clock_modes",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      283,
+      "assert_t320_dummy_descriptor",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      297,
+      "t320_rust_unused_descriptor_is_valid",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      304,
+      "t320_python_unused_descriptor_is_valid",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      311,
+      "t246_repairs_incomplete_and_wrong_generated_edids",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      339,
+      "t246_cache_directory_is_not_returned_as_an_edid",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      352,
+      "physical_size",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      360,
+      "t114_rust_dtd_reports_exact_physical_size",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      370,
+      "t114_old_edid_cache_is_not_reused",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      380,
+      "t114_python_dtd_reports_exact_physical_size",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      396,
+      "python_edid",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      413,
+      "t332_shared_mode_validation_agrees_with_both_generators_at_clock_boundary",
+      3
+    ],
+    [
+      "host/src/edid.rs",
+      445,
+      "t115_generators_agree_on_boundaries_color_and_ranges",
+      5
+    ],
+    [
+      "host/src/edid.rs",
+      473,
+      "t115_both_generators_reject_unrepresentable_or_unsupported_values",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      498,
+      "t115_old_range_cache_is_not_reused",
+      1
+    ],
+    [
+      "host/src/edid.rs",
+      507,
+      "t061_rejects_unrepresentable_edid_modes",
+      2
+    ],
+    [
+      "host/src/edid.rs",
+      523,
+      "edid_checksum_is_valid",
+      3
+    ],
+    [
+      "host/src/edid.rs",
+      541,
+      "t1496_instance_serials_are_injective_and_reject_overflow",
+      2
+    ],
+    [
+      "host/src/edid/location_tests.rs",
+      6,
+      "check_location",
+      2
+    ],
+    [
+      "host/src/edid/location_tests.rs",
+      22,
+      "location_case",
+      3
+    ],
+    [
+      "host/src/edid/location_tests.rs",
+      51,
+      "t1701_data_location_requires_absolute_home",
+      3
+    ]
+  ],
+  "ownership": "Environment path resolved before directory or file admission. Inputs are six scalar geometry/identity values; generator output remains 128 bytes. Result owns a PathBuf; existing atomic replacement owns and settles its temporary file on success/error. No native session, shared environment mutation or borrowed view escapes. Each regression child is waited; private roots are removed after child settlement. No installed paths/devices accessed."
+}

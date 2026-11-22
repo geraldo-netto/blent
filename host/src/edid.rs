@@ -175,8 +175,7 @@ pub fn ensure_edid_sized(
     height_mm: u32,
     instance: u32,
 ) -> Result<PathBuf> {
-    let home = std::env::var("HOME").unwrap_or_default();
-    let dir = PathBuf::from(home).join(".local/share/blent/edid");
+    let dir = blent_config::platform::data_dir()?.join("edid");
     ensure_edid_in(&dir, width, height, refresh, width_mm, height_mm, instance)
 }
 
@@ -554,3 +553,6 @@ mod identity_tests {
         assert!(make_edid_sized(1280, 800, 60, 310, 194, u32::MAX).is_err());
     }
 }
+
+#[cfg(test)]
+mod location_tests;
