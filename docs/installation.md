@@ -106,10 +106,15 @@ The full installer and native package hooks preserve loaded EVDI devices:
 | Xorg is running, or its process inventory cannot be checked | Defer loading/growth to reboot. |
 | Provisioning fails | Report failure and ask you to check setup and reboot. |
 
-Source/tarball reinstallation and `make setup-system` preserve an existing
+Source/tarball installation, `make setup-system` and Arch package hooks use the
+same privileged setup transaction (`scripts/setup-system.sh`). They preserve an existing
 `/etc/modprobe.d/blent-evdi.conf` exactly. They write the two-device boot default
 only when that file is absent. Review empty, invalid or externally managed files
-manually; do not overwrite them blindly.
+manually; do not overwrite them blindly. The transaction refreshes Blent’s owned
+uinput rule and boot module list, then reloads/triggers udev. Configuration write
+errors stop setup before activation. Unavailable GPU ordering, udev or safe EVDI
+activation produces actionable warnings; installed configuration remains for
+manual activation or reboot. AppImage user registration does no privileged setup.
 
 GUI setup and `make setup-system` share the provisioning script. The GUI saves
 its selected tablet capacity (one to four) for the next boot. If live growth is

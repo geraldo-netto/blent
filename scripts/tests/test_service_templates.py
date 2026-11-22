@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def package_fixture(root):
     source = root / 'blent-1.2.3'
-    files = ['scripts/gpu-boot-order.sh', 'scripts/setup-evdi.sh',
+    files = ['scripts/setup-system.sh', 'scripts/gpu-boot-order.sh', 'scripts/setup-evdi.sh',
              'scripts/blent.desktop', 'packaging/icons/blent.svg',
              'packaging/icons/blent-pen.svg', 'packaging/blent-evdi.conf',
              'packaging/blent-modules.conf', 'packaging/60-blent-uinput.rules',

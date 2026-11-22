@@ -7,23 +7,15 @@ import tempfile
 import unittest
 
 from shell_fixture import run
-from test_installer import REPO, SOURCE
+from test_installer import REPO
+from system_setup_fixture import SOURCE
 from test_evdi_setup import setup_program
 
 
 STUBS = r'''
 T700_ROOT=$1
 SCRIPT_DIR=$2
-sudo() {
-    case "$1" in
-        mkdir) command mkdir -p "$T700_ROOT/etc/modprobe.d" "$T700_ROOT/etc/modules-load.d" ;;
-        bash) command bash "$2" "$T700_ROOT/sys/class/drm" "$T700_ROOT/etc/modprobe.d" ;;
-        tee) command tee "$T700_ROOT$2" ;;
-        sh) command sh -c "$3" fixture "$T700_ROOT$5" ;;
-        *) echo "unexpected privileged command: $1" >&2; return 99 ;;
-    esac
-}
-configure_boot_modules "$T700_ROOT/sys/class/drm"
+configure_boot_modules "$T700_ROOT/etc" "$SCRIPT_DIR/../packaging" "$SCRIPT_DIR" "$T700_ROOT/sys/class/drm" "$T700_ROOT/init"
 '''
 
 
@@ -215,23 +207,23 @@ export -f ln
                 root = Path(directory)
                 self.card(root, 'card0', 'amdgpu')
                 source, args = setup_program(entry)
-                stubs = r'''
+                stubs = SOURCE + r'''
 T700_ROOT=$1
 T700_HELPER=$2
 shift 2
 bash() {
-    [[ $1 == /usr/share/blent/gpu-boot-order.sh ]] || return 91
-    command bash "$T700_HELPER" "$T700_ROOT/sys/class/drm" "$T700_ROOT/etc/modprobe.d"
-}
-sh() {
-    [[ $1 == /usr/share/blent/setup-evdi.sh ]] || return 92
-    [[ $(cat "$T700_ROOT/etc/modprobe.d/blent-gpu-order.conf") == 'softdep evdi pre: amdgpu' ]] || return 93
-    echo 'T700 GPU configured before EVDI'
+    case "$1" in
+        */setup-system.sh) setup_system "$T700_ROOT/etc" "$(dirname "$T700_HELPER")/../packaging" "$(dirname "$T700_HELPER")" "$T700_ROOT/sys/class/drm" "$T700_ROOT/init" ;;
+        */gpu-boot-order.sh) command bash "$T700_HELPER" "${@:2}" ;;
+        */setup-evdi.sh)
+            [[ $(cat "$T700_ROOT/etc/modprobe.d/blent-gpu-order.conf") == 'softdep evdi pre: amdgpu' ]] || return 93
+            echo 'T700 GPU configured before EVDI' ;;
+        *) return 91 ;;
+    esac
 }
 touch() { :; }
 modprobe() { :; }
 udevadm() { :; }
-gtk-update-icon-cache() { :; }
 '''
                 result = run(stubs + source.replace('%{_datadir}', '/usr/share'),
                              [root, REPO / 'scripts/gpu-boot-order.sh', *args],
@@ -255,9 +247,10 @@ gtk-update-icon-cache() { :; }
                                 capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
         commands = result.stdout
-        order = 'sudo bash scripts/gpu-boot-order.sh'
-        self.assertIn(order, commands, 'T700: make setup omitted GPU boot ordering')
-        self.assertLess(commands.index(order), commands.index('sudo sh scripts/setup-evdi.sh'))
+        self.assertIn('sudo bash scripts/setup-system.sh packaging', commands)
+        shared = (REPO / 'scripts/setup-system.sh').read_text()
+        flow = shared[shared.index('setup_system()'):shared.index('system_setup_main()')]
+        self.assertLess(flow.index('configure_boot_modules'), flow.index('activate_evdi'))
 
 
 if __name__ == '__main__':

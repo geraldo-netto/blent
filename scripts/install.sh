@@ -274,55 +274,9 @@ install_files() {
     install_user_service "${1:-enable}"
 }
 
-configure_boot_modules() {
-    # Neither directory is guaranteed to exist on a minimal install, and with
-    # set -e a missing one used to kill the whole script here, silently, with
-    # the binaries already copied and the udev rule not yet installed.
-    sudo mkdir -p /etc/modprobe.d /etc/modules-load.d
-    sudo bash "$SCRIPT_DIR/gpu-boot-order.sh" \
-        || warn "Could not configure GPU boot ordering; see docs/installation.md."
-    # Reinstallation must retain GUI/admin-provisioned capacity and other
-    # module options. A new install gets the default; noclobber also protects
-    # a configuration created between the existence check and the write.
-    echo "options evdi initial_device_count=2" | sudo sh -c '
-        if [ -e "$1" ] || [ -L "$1" ]; then
-            cat >/dev/null
-        else
-            (set -C; cat > "$1")
-        fi
-    ' sh /etc/modprobe.d/blent-evdi.conf \
-        || warn "Could not write /etc/modprobe.d/blent-evdi.conf"
-    printf "evdi\nuinput\n" | sudo tee /etc/modules-load.d/blent.conf >/dev/null \
-        || warn "Could not write /etc/modules-load.d/blent.conf"
-    if [ ! -d /run/systemd/system ]; then
-        warn "Configure your init system to load evdi and uinput at boot; modules-load.d support is not guaranteed. See docs/installation.md."
-    fi
-}
-
-configure_uinput() {
-    sudo modprobe uinput 2>/dev/null || true
-    # /dev/uinput is root-only on a stock system. Bazzite ships a rule that
-    # opens it to the seat user; everyone else needs this one.
-    if [ ! -e /etc/udev/rules.d/60-blent-uinput.rules ] && [ ! -e /usr/lib/udev/rules.d/60-blent-uinput.rules ]; then
-        if [ -f "$PROJECT_DIR/packaging/60-blent-uinput.rules" ]; then
-            sudo install -Dm644 "$PROJECT_DIR/packaging/60-blent-uinput.rules" /etc/udev/rules.d/60-blent-uinput.rules
-            sudo udevadm control --reload 2>/dev/null || warn "Reload the uinput rule with your device manager"
-            sudo udevadm trigger --name-match=uinput 2>/dev/null || warn "Activate the uinput permissions with your device manager"
-        else
-            warn "packaging/60-blent-uinput.rules not found — /dev/uinput may stay root-only"
-        fi
-    fi
-}
-
-activate_evdi() {
-    sudo sh "$SCRIPT_DIR/setup-evdi.sh" 2 || warn "EVDI setup deferred; existing devices were preserved"
-}
-
 system_setup() {
     info "System setup (needs sudo): EVDI module and input permissions"
-    configure_boot_modules
-    configure_uinput
-    activate_evdi
+    sudo bash "$SCRIPT_DIR/setup-system.sh" "$PROJECT_DIR/packaging"
 }
 
 main() {

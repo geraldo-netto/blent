@@ -44,11 +44,11 @@ elif name not in ['touch', 'udevadm', 'gtk-update-icon-cache', 'pgrep']:
 def setup_program(entry):
     if entry == 'script':
         return (REPO / 'scripts/setup-evdi.sh').read_text(), ['2']
-    if entry in ['installer', 'system_setup']:
+    if entry == 'system_setup':
+        return ('source "$1/setup-system.sh"\nsetup_system "$BLENT_SETUP_FIXTURE/etc" "$2/packaging" "$1" "$BLENT_SETUP_FIXTURE/drm" "$BLENT_SETUP_FIXTURE/init"\n', [str(REPO/'scripts'),str(REPO)])
+    if entry == 'installer':
         source = (REPO / 'scripts/install.sh').read_text().removesuffix('main "$@"\n')
-        workflow = 'activate_evdi' if entry == 'installer' else 'system_setup'
-        source += '\nconfigure_boot_modules() { :; }\nconfigure_uinput() { :; }\n'
-        return source + '\nSCRIPT_DIR=$1\n' + workflow + '\n', [str(REPO / 'scripts')]
+        return source + '\nSCRIPT_DIR=$1\nPROJECT_DIR=$2\nsystem_setup\n', [str(REPO/'scripts'),str(REPO)]
     source = (REPO / 'packaging/arch/blent.install').read_text()
     return source + '\n' + entry + '\n', []
 
@@ -67,17 +67,18 @@ class EvdiSetupTest(unittest.TestCase):
                 program.chmod(0o755)
             source, args = setup_program(entry)
             # Map the installed, architecture-independent script into the source fixture.
-            source = '''sh() {
-    [[ $1 == /usr/share/blent/setup-evdi.sh ]] || return 91
-    command sh "$BLENT_SETUP_SCRIPT" "${@:2}"
-}
+            from system_setup_fixture import SOURCE
+            source = SOURCE + '''sudo() { "$@"; }
 bash() {
-    [[ $1 == /usr/share/blent/gpu-boot-order.sh ]] || return 92
-    command bash "$BLENT_GPU_SCRIPT" "$BLENT_SETUP_FIXTURE/drm" "$BLENT_SETUP_FIXTURE/modprobe.d"
+    case "$1" in
+        */setup-system.sh) setup_system "$BLENT_SETUP_FIXTURE/etc" "$BLENT_SETUP_RESOURCES" "$BLENT_SETUP_SCRIPTS" "$BLENT_SETUP_FIXTURE/drm" "$BLENT_SETUP_FIXTURE/init" ;;
+        *) command bash "$@" ;;
+    esac
 }
 ''' + source
             env = dict(os.environ, PATH=f'{root}/bin:{os.environ["PATH"]}', BLENT_SETUP_FIXTURE=tmp,
                        BLENT_SETUP_SCRIPT=str(REPO / 'scripts/setup-evdi.sh'),
+                       BLENT_SETUP_RESOURCES=str(REPO/'packaging'), BLENT_SETUP_SCRIPTS=str(REPO/'scripts'),
                        BLENT_GPU_SCRIPT=str(REPO / 'scripts/gpu-boot-order.sh'))
             if failure:
                 env[failure] = '1'

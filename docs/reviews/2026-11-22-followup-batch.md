@@ -20,3 +20,25 @@ session or new retained process owner is created: package() writes only within
 its caller-owned staging directory. Native retirement fixtures use private units;
 installed Blent services are untouched. Broader installation integration remains
 T1625. [Evidence](artifacts/2026-11-22-followup-batch/t1710/).
+
+## T1711 — shared privileged setup
+
+Source/tarball, Make and Arch hooks delegate to `scripts/setup-system.sh`. The
+canonical resource templates are staged with it. Existing EVDI configuration and
+live devices are preserved; owned uinput rules refresh consistently. Configuration
+write failures stop activation; GPU, udev and safe EVDI activation failures warn
+without discarding installed configuration. AppImage user registration stays
+unprivileged. There is no retained Debian package hook in the current tree.
+
+New route/behavior regressions failed before consolidation. All 58 focused
+installation tests pass afterward, including existing capacity, GPU ordering and
+no-unload tests. All 11 maintained shell functions have 100% executable-line
+coverage, using exact source hashes or body-hash-attested fixture extraction.
+Complexity is at most 9 across the changed source/test files; measurement uses
+the repository tree-sitter checker and Bash DEBUG counters. No native root setup
+was performed. Temporary config publication owns one same-directory file until
+synchronous install/link settlement; EXIT removes that exact temporary, and
+no-clobber linking preserves concurrent external ownership. No background owner,
+retained callback or unbounded buffer is introduced. Fault tests cover copy
+failure, existing symlinks and concurrent publication.
+[Evidence](artifacts/2026-11-22-followup-batch/t1711/).

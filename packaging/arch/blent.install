@@ -1,8 +1,6 @@
 # shellcheck shell=bash
 post_install() {
-  bash /usr/share/blent/gpu-boot-order.sh || echo "==> GPU boot ordering needs manual review" >&2
-  sh /usr/share/blent/setup-evdi.sh 2 || true
-  modprobe uinput 2>/dev/null || true
+  bash /usr/share/blent/setup-system.sh /usr/share/blent/setup || return
   # pacman's hicolor hook refreshes the icon cache; the mtime bump is what
   # KDE's own cache keys on.
   touch /usr/share/icons/hicolor 2>/dev/null || true

@@ -98,31 +98,30 @@ echo preserved
 ''')
         self.assertIn('preserved', output)
 
-    def test_t497_boot_configuration_errors_are_reported_without_aborting(self):
-        output = self.execute('''
-sudo() { if [[ $1 == tee || ( $1 == sh && ${2:-} == -c ) ]]; then command cat >/dev/null; return 9; fi; }
-configure_boot_modules
-''')
-        self.assertIn('Could not write /etc/modprobe.d/blent-evdi.conf', output)
-        self.assertIn('Could not write /etc/modules-load.d/blent.conf', output)
+    def test_t497_boot_configuration_errors_stop_activation(self):
+        from test_system_setup import SystemSetupTest
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'etc').write_text('invalid destination')
+            result = SystemSetupTest().exercise(root)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('Not a directory', result.stderr)
+            self.assertFalse((root/'calls').exists())
 
     def test_t497_uinput_missing_rule_and_manager_failures_remain_actionable(self):
-        stubs = '''
-sudo() { printf 'request: %s\\n' "$*" >&3; [[ $1 != udevadm ]]; }
-[() {
-    if [[ $1 == '!' && $2 == -e && $3 == */60-blent-uinput.rules ]]; then return 0;
-    else builtin [ "$@"; fi
-}
-PROJECT_DIR=$1
-configure_uinput 3>&1
-'''
-        installed = self.execute(stubs, [REPO])
-        self.assertIn('request: install -Dm644', installed)
-        self.assertIn('Reload the uinput rule', installed)
-        self.assertIn('Activate the uinput permissions', installed)
-        missing = self.execute(stubs, ['/no/fixture/project'])
-        self.assertIn('not found', missing)
-        self.assertNotIn('request: install', missing)
+        from test_system_setup import SystemSetupTest
+        from system_setup_fixture import SOURCE as SHARED
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            result = SystemSetupTest().exercise(root, fail='udev')
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('reload your device manager', result.stderr)
+            self.assertIn('trigger your device manager', result.stderr)
+            missing = run(SHARED + 'configure_uinput "$1" /no/fixture/rule\n',
+                          [root/'missing'], capture_output=True, text=True)
+            self.assertNotEqual(missing.returncode, 0)
+            self.assertIn('cannot stat', missing.stderr)
+            self.assertFalse((root/'missing/udev/rules.d/60-blent-uinput.rules').exists())
 
     def test_t497_full_install_dispatch_preserves_order(self):
         output = self.execute('''

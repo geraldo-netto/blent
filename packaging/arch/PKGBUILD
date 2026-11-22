@@ -30,6 +30,10 @@ build() {
 
 package() {
   cd "blent-$pkgver"
+  install -Dm755 scripts/setup-system.sh "$pkgdir/usr/share/blent/setup-system.sh"
+  install -Dm644 packaging/blent-evdi.conf "$pkgdir/usr/share/blent/setup/blent-evdi.conf"
+  install -Dm644 packaging/blent-modules.conf "$pkgdir/usr/share/blent/setup/blent-modules.conf"
+  install -Dm644 packaging/60-blent-uinput.rules "$pkgdir/usr/share/blent/setup/60-blent-uinput.rules"
   install -Dm755 scripts/gpu-boot-order.sh "$pkgdir/usr/share/blent/gpu-boot-order.sh"
   install -Dm755 scripts/setup-evdi.sh "$pkgdir/usr/share/blent/setup-evdi.sh"
   install -Dm755 target/release/blent     "$pkgdir/usr/bin/blent"

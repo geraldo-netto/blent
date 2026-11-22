@@ -29,16 +29,12 @@ ls() { return 1; }
 
 class InstallerTest(unittest.TestCase):
     def test_t231_other_init_systems_receive_boot_module_guidance(self):
-        output = self.run_installer(r'''
-sudo() { if [[ $1 == tee ]]; then command cat >/dev/null; fi; }
-[() {
-    if [[ $* == '! -d /run/systemd/system ]' ]]; then return 0;
-    else builtin [ "$@"; fi
-}
-configure_boot_modules
-''')
-        self.assertIn('Configure your init system to load evdi and uinput at boot', output)
-        self.assertIn('modules-load.d support is not guaranteed', output)
+        from test_system_setup import SystemSetupTest
+        with tempfile.TemporaryDirectory() as directory:
+            result = SystemSetupTest().exercise(Path(directory))
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('Configure your init system to load evdi and uinput at boot', result.stderr)
+            self.assertIn('modules-load.d support is not guaranteed', result.stderr)
 
     def distribution_fixture(self, distro):
         stubs = r'''
@@ -264,22 +260,15 @@ install_debian_deps
         self.assertIn('apt-get install -y evdi-dkms', output)
 
     def test_t216_system_setup_keeps_boot_configuration_and_live_fallback(self):
-        output = self.run_installer(r'''
-sudo() {
-    printf 'sudo %s\n' "$*" >&3
-    if [[ $1 == tee || ( $1 == sh && ${2:-} == -c ) ]]; then command cat >&3; fi
-}
-lsmod() { echo 'evdi 123 0'; }
-cat() {
-    if [ "$1" = /sys/devices/evdi/count ]; then echo 0;
-    else command cat "$@"; fi
-}
-system_setup 3>&1 2>&1
-''')
-        for expected in ['mkdir -p /etc/modprobe.d /etc/modules-load.d',
-                         'options evdi initial_device_count=2', 'evdi\nuinput',
-                         'sudo modprobe uinput', 'sudo sh', '/setup-evdi.sh 2']:
-            self.assertIn(expected, output)
+        from test_system_setup import SystemSetupTest
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            result = SystemSetupTest().exercise(root)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('options evdi initial_device_count=2', (root/'etc/modprobe.d/blent-evdi.conf').read_text())
+            self.assertEqual((root/'etc/modules-load.d/blent.conf').read_text(), 'evdi\nuinput\n')
+            for expected in ['modprobe uinput', 'gpu-boot-order.sh', 'setup-evdi.sh']:
+                self.assertIn(expected, (root/'calls').read_text())
 
 
 if __name__ == '__main__':

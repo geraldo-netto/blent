@@ -4,20 +4,13 @@ import tempfile
 import unittest
 
 from shell_fixture import run
-from test_installer import REPO, SOURCE
+from test_installer import REPO
+from system_setup_fixture import SOURCE
 
 
 STUBS = r'''
 T709_ROOT=$1
-sudo() {
-    case "$1" in
-        mkdir) command mkdir -p "$T709_ROOT/etc/modprobe.d" "$T709_ROOT/etc/modules-load.d" ;;
-        tee) command tee "$T709_ROOT$2" ;;
-        sh) command sh -c "$3" fixture "$T709_ROOT$5" ;;
-        *) echo "unexpected privileged command: $1" >&2; return 99 ;;
-    esac
-}
-configure_boot_modules
+configure_boot_modules "$T709_ROOT/etc" packaging scripts "$T709_ROOT/drm" "$T709_ROOT/init"
 '''
 
 
@@ -44,7 +37,9 @@ class InstallerBootCapacityTest(unittest.TestCase):
             root = Path(directory)
             self.configure(root)
             self.assertEqual((root / 'etc/modprobe.d/blent-evdi.conf').read_text(),
-                             'options evdi initial_device_count=2\n')
+                             (REPO / 'packaging/blent-evdi.conf').read_text())
+            self.assertEqual((root / 'etc/modprobe.d/blent-evdi.conf').read_text().splitlines()[-1],
+                             'options evdi initial_device_count=2')
 
     def test_t709_existing_empty_or_unrecognized_configuration_is_not_replaced(self):
         for content in ['', '# intentionally managed elsewhere\n', 'options evdi initial_device_count=invalid\n']:
