@@ -16,6 +16,7 @@ pub(super) fn configure(context: &egui::Context) {
     ] {
         style.text_styles.insert(kind, FontId::proportional(size));
     }
+    style.animation_time = egui::Style::default().animation_time;
     style.spacing.item_spacing = egui::vec2(10.0, 8.0);
     style.spacing.interact_size.y = 32.0;
     style.spacing.button_padding = egui::vec2(10.0, 6.0);
@@ -193,6 +194,17 @@ mod tests {
             text_scale: 1.0,
             animations: false,
         }
+    }
+
+    #[test]
+    fn t1814_reenabling_desktop_animations_restores_animation_duration() {
+        let context = egui::Context::default();
+        let mut native = fixture();
+        apply_native(&context, &native);
+        assert_eq!(context.style().animation_time, 0.0);
+        native.animations = true;
+        apply_native(&context, &native);
+        assert!(context.style().animation_time > 0.0);
     }
 
     #[test]

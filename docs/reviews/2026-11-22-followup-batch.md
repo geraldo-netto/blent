@@ -207,3 +207,12 @@ stream and an explicitly owned fixture admission, not USB hardware. These are
 outer-dispatcher results; inner link polling T1773 and tablet power remain
 unmeasured. No production function changed; measured test complexity <=9.
 [Evidence](artifacts/2026-11-22-followup-batch/t1772/).
+
+## T1814 — restore animations when the desktop enables them again
+
+Reapplying native appearance now resets animation duration to the toolkit default
+before honoring reduced motion. The permanent disabled-to-enabled regression
+failed before the change and passes with the two existing native-style tests.
+The maintained configure function has 100% line coverage; measured style/test
+functions have complexity <=9. This changes only context-owned scalar style
+values, with no new resource or lifecycle. [Evidence](artifacts/2026-11-22-followup-batch/t1814/).

@@ -1,0 +1,21 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.48s
+     Running unittests src/main.rs (target/debug/build/blent-gui/ac7a5b3c8d48d8bb/out/blent_gui-ac7a5b3c8d48d8bb)
+
+running 1 test
+test workspace_style::tests::t1814_reenabling_desktop_animations_restores_animation_duration ... 
+thread 'workspace_style::tests::t1814_reenabling_desktop_animations_restores_animation_duration' (975378) panicked at gui/src/workspace_style.rs:206:9:
+assertion failed: context.style().animation_time > 0.0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    workspace_style::tests::t1814_reenabling_desktop_animations_restores_animation_duration
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 302 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

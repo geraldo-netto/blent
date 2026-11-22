@@ -1,0 +1,13 @@
+[
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "configure",
+    "line": 7,
+    "language": "rust",
+    "covered": 22,
+    "total": 22,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

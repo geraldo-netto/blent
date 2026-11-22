@@ -1,0 +1,99 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling log v0.4.32
+   Compiling smallvec v1.15.1
+   Compiling hashbrown v0.17.1
+   Compiling syn v2.0.117
+   Compiling accesskit v0.19.0
+   Compiling bytemuck v1.25.0
+   Compiling zvariant_utils v3.4.0
+   Compiling hashbrown v0.15.5
+   Compiling epaint_default_fonts v0.32.3
+   Compiling memoffset v0.9.1
+   Compiling wayland-sys v0.31.11
+   Compiling tracing v0.1.44
+   Compiling calloop v0.13.0
+   Compiling xkbcommon-dl v0.4.2
+   Compiling parking_lot_core v0.9.12
+   Compiling gl_generator v0.14.0
+   Compiling tracing-log v0.2.0
+   Compiling icu_normalizer v2.2.0
+   Compiling tungstenite v0.30.0
+   Compiling glow v0.16.0
+   Compiling h264-reader v0.9.0
+   Compiling wayland-backend v0.3.15
+   Compiling tiny-skia-path v0.11.4
+   Compiling emath v0.32.3
+   Compiling image v0.25.10
+   Compiling calloop v0.14.4
+   Compiling tracing-subscriber v0.3.23
+   Compiling parking_lot v0.12.5
+   Compiling tokio v1.52.3
+   Compiling idna_adapter v1.2.2
+   Compiling accesskit_consumer v0.28.0
+   Compiling ecolor v0.32.3
+   Compiling indexmap v2.14.0
+   Compiling glutin_glx_sys v0.6.1
+   Compiling glutin_egl_sys v0.7.1
+   Compiling idna v1.1.0
+   Compiling tiny-skia v0.11.4
+   Compiling epaint v0.32.3
+   Compiling url v2.5.8
+   Compiling wayland-client v0.31.14
+   Compiling wayland-csd-frame v0.3.0
+   Compiling glutin v0.32.3
+   Compiling toml_edit v0.25.12+spec-1.1.0
+   Compiling toml_edit v0.22.27
+   Compiling webbrowser v1.2.1
+   Compiling egui v0.32.3
+   Compiling proc-macro-crate v3.5.0
+   Compiling zvariant_derive v5.12.0
+   Compiling arboard v3.6.1
+   Compiling wayland-protocols v0.32.12
+   Compiling wayland-cursor v0.31.14
+   Compiling calloop-wayland-source v0.3.0
+   Compiling calloop-wayland-source v0.4.1
+   Compiling zvariant v5.12.0
+   Compiling toml v0.8.23
+   Compiling zbus_names v4.3.2
+   Compiling tokio-util v0.7.18
+   Compiling tokio-tungstenite v0.30.0
+   Compiling tokio-rustls v0.26.5
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling zbus_xml v5.1.1
+   Compiling zbus_macros v5.16.0
+   Compiling zbus-lockstep v0.5.2
+   Compiling zbus-lockstep-macros v0.5.2
+   Compiling egui_glow v0.32.3
+   Compiling zbus v5.16.0
+   Compiling wayland-protocols-wlr v0.3.12
+   Compiling wayland-protocols-plasma v0.3.12
+   Compiling wayland-protocols-experimental v20250721.0.1
+   Compiling wayland-protocols-misc v0.3.12
+   Compiling smithay-client-toolkit v0.19.2
+   Compiling smithay-client-toolkit v0.20.0
+   Compiling sctk-adwaita v0.10.1
+   Compiling smithay-clipboard v0.7.3
+   Compiling winit v0.30.13
+   Compiling atspi-common v0.9.0
+   Compiling ksni v0.3.6
+   Compiling glutin-winit v0.5.0
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+   Compiling atspi-proxies v0.9.0
+   Compiling accesskit_atspi_common v0.12.0
+   Compiling atspi-connection v0.9.0
+   Compiling atspi v0.25.0
+   Compiling accesskit_unix v0.15.0
+   Compiling accesskit_winit v0.27.0
+   Compiling egui-winit v0.32.3
+   Compiling eframe v0.32.3
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.19s
+     Running unittests src/main.rs (/home/netto/.cache/blent-followup-20261122/coverage/debug/build/blent-gui/ac7a5b3c8d48d8bb/out/blent_gui-ac7a5b3c8d48d8bb)
+
+running 3 tests
+test workspace_style::tests::t1786_native_palette_and_font_size_replace_custom_theme ... ok
+test workspace_style::tests::t1786_semantic_contrast_and_large_text_remain_readable ... ok
+test workspace_style::tests::t1814_reenabling_desktop_animations_restores_animation_duration ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 300 filtered out; finished in 0.02s
+
