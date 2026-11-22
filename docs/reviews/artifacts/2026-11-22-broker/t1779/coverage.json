@@ -1,0 +1,20 @@
+{
+  "tool": "Rust 1.100.0, cargo-llvm-cov 0.8.7; exact executed host unit object",
+  "object": "target/llvm-cov-target/debug/build/blent/8a4c416e38fc28de/out/blent-8a4c416e38fc28de",
+  "object_sha256": "73b305d4b572075082cabb809534304880f818800b034cbad275ee617e1ad639",
+  "functions": [
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "next",
+      "line": 58,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        68
+      ]
+    }
+  ]
+}

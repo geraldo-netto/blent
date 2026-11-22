@@ -61,7 +61,12 @@ impl Peer {
             message = self.requests.recv() => {
                 match message {
                     Some(message) => Ok(message),
-                    None => { self.finished = true; (&mut self.task).await??; anyhow::bail!("local client closed") }
+                    None => {
+                        let result = (&mut self.task).await;
+                        self.finished = true;
+                        result??;
+                        anyhow::bail!("local client closed")
+                    }
                 }
             }
             result = &mut self.task => { self.finished = true; result??; anyhow::bail!("local client exited") }

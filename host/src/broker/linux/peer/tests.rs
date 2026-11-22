@@ -123,3 +123,29 @@ fn admission() -> Admission {
         .reserve()
         .unwrap()
 }
+
+#[tokio::test]
+async fn t1779_cancelled_closed_notice_wait_retains_pending_original_join() {
+    let (_client, socket) = pair().await;
+    let mut peer = Peer::start(admission(), socket, Duration::from_secs(1)).unwrap();
+    let (sender, closed) = mpsc::channel(1);
+    drop(sender);
+    peer.requests = closed;
+    let completion = peer.completion();
+    let mut context = std::task::Context::from_waker(futures_util::task::noop_waker_ref());
+    let first = std::pin::pin!(peer.next()).poll(&mut context).is_pending();
+    let second = std::pin::pin!(peer.next()).poll(&mut context).is_pending();
+    let premature = peer.finished;
+    peer.stop();
+    drop(peer);
+    retired(completion).await;
+    assert!(first);
+    assert!(
+        second,
+        "T1779 cancelled channel-close wait abandoned original task join"
+    );
+    assert!(
+        !premature,
+        "T1779 terminal state published before exact join"
+    );
+}
