@@ -1,0 +1,54 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+warning: multiple fields are never read
+  --> gui/src/appearance_contract.rs:5:9
+   |
+ 4 | pub(crate) struct Appearance {
+   |                   ---------- fields in this struct
+ 5 |     pub source: String,
+   |         ^^^^^^
+ 6 |     pub background: [u8; 3],
+   |         ^^^^^^^^^^
+ 7 |     pub surface: [u8; 3],
+   |         ^^^^^^^
+ 8 |     pub foreground: [u8; 3],
+   |         ^^^^^^^^^^
+ 9 |     pub accent: [u8; 3],
+   |         ^^^^^^
+10 |     pub selected_text: [u8; 3],
+   |         ^^^^^^^^^^^^^
+11 |     pub font_family: String,
+   |         ^^^^^^^^^^^
+12 |     pub font_points: f32,
+   |         ^^^^^^^^^^^
+13 |     pub text_scale: f32,
+   |         ^^^^^^^^^^
+14 |     pub animations: bool,
+   |         ^^^^^^^^^^
+   |
+   = note: `Appearance` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blent-gui` (bin "blent-gui" test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.36s
+     Running unittests src/main.rs (target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 1 test
+test workspace_style::tests::t1786_native_palette_and_font_size_replace_custom_theme ... FAILED
+
+failures:
+
+---- workspace_style::tests::t1786_native_palette_and_font_size_replace_custom_theme stdout ----
+
+thread 'workspace_style::tests::t1786_native_palette_and_font_size_replace_custom_theme' (742320) panicked at gui/src/workspace_style.rs:64:9:
+assertion `left == right` failed: T1786 native surface ignored
+  left: #F8_F8_F8_FF
+ right: #F8_F8_F9_FF
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    workspace_style::tests::t1786_native_palette_and_font_size_replace_custom_theme
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 290 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

@@ -1,0 +1,33 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+warning: falling back to `f32` as the trait bound `f32: From<f64>` is not satisfied
+  --> gui/src/workspace_style.rs:73:58
+   |
+73 |     visuals.widgets.active.bg_stroke = egui::Stroke::new(2.0, readable(rgb(native.accent), background));
+   |                                                          ^^^ help: explicitly specify the type as `f32`: `2.0_f32`
+   |
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #154024 <https://github.com/rust-lang/rust/issues/154024>
+   = note: `#[warn(float_literal_f32_fallback)]` (part of `#[warn(future_incompatible)]`) on by default
+
+warning: `blent-gui` (bin "blent-gui" test) generated 1 warning (run `cargo fix --bin "blent-gui" -p blent-gui --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.17s
+     Running unittests src/main.rs (target/debug/build/blent-gui/ac7a5b3c8d48d8bb/out/blent_gui-ac7a5b3c8d48d8bb)
+
+running 1 test
+test platform::appearance::tests::t1786_font_fifo_is_rejected_without_waiting_for_a_writer ... FAILED
+
+failures:
+
+---- platform::appearance::tests::t1786_font_fifo_is_rejected_without_waiting_for_a_writer stdout ----
+
+thread 'platform::appearance::tests::t1786_font_fifo_is_rejected_without_waiting_for_a_writer' (748340) panicked at gui/src/platform/appearance/tests.rs:89:5:
+T1786 blocked on nonregular font input
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    platform::appearance::tests::t1786_font_fifo_is_rejected_without_waiting_for_a_writer
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 296 filtered out; finished in 0.10s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

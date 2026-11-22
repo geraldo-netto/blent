@@ -661,9 +661,11 @@ dependencies = [
 name = "blent-gui"
 version = "1.2.3"
 dependencies = [
+ "ab_glyph",
  "blent",
  "blent-config",
  "eframe",
+ "libc",
  "raw-window-handle",
  "sha2",
  "tempfile",

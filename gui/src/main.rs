@@ -6,6 +6,7 @@ mod overview;
 
 mod about;
 mod action_feedback;
+mod appearance_contract;
 mod draft_scope;
 #[cfg(target_os = "linux")]
 mod activation;
@@ -280,7 +281,7 @@ fn check_for_update() -> Option<String> {
 
 impl App {
     fn new(cc: &eframe::CreationContext<'_>, scheduling_status: String) -> Self {
-        workspace_style::configure(&cc.egui_ctx);
+        workspace_style::configure_desktop(&cc.egui_ctx);
         let store = ConfigStore::default();
         let cfg = store.load();
         let status = Arc::new(Mutex::new(Status::default()));
@@ -1220,6 +1221,7 @@ impl App {
             .id_salt("app-advanced")
             .show(ui, |ui| {
                 settings_grid(ui, "app-advanced-grid", |ui| self.setting_scheduling(ui));
+                workspace_style::appearance_info(ui);
             });
     }
 

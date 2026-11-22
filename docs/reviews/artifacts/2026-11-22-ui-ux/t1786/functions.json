@@ -1,0 +1,116 @@
+[
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "load",
+    "covered": 7,
+    "total": 7
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "parse",
+    "covered": 15,
+    "total": 15
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "text",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "number",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "color",
+    "covered": 8,
+    "total": 8
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "font",
+    "covered": 7,
+    "total": 7
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "read_font",
+    "covered": 10,
+    "total": 10
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "configure",
+    "covered": 21,
+    "total": 21
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "apply_native",
+    "covered": 11,
+    "total": 11
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "native_palette",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "luminance",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "contrast",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "readable",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "configure_desktop",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "install_desktop",
+    "covered": 9,
+    "total": 9
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "install_font",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "appearance_info",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "new",
+    "covered": 44,
+    "total": 47
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_general_settings",
+    "covered": 16,
+    "total": 16
+  }
+]

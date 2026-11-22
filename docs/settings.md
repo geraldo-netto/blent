@@ -317,3 +317,13 @@ Camera options, camera sensor controls and host activity tables also reject unkn
 keys. Camera options stay directly under `[camera]`; sensor controls belong under
 `[camera.sensor]`. There is no `[camera.options]` configuration wrapper. Current
 known fields and omitted-field defaults retain their existing meaning.
+
+### Desktop appearance
+
+On Linux with GTK3/PyGObject and fontconfig available, Blent reads the desktop's
+light palette, font, text scale and animation preference at GUI startup. It keeps
+readable text contrast, including selected controls. This themes egui controls;
+it does not replace them with native GTK widgets. General → Advanced app settings
+shows the appearance source or why standard light defaults were used. Theme
+changes apply at the next GUI start, not when a tray click reveals the same window.
+On Debian/Ubuntu the optional packages are `python3-gi gir1.2-gtk-3.0 fontconfig`.

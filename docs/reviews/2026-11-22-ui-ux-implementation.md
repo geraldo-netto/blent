@@ -182,3 +182,53 @@ resource. The existing worker remains authoritative through file-lock waits and
 failure; results are collected before approved exit. Media is checked again at
 final close. Abnormal process termination retains the existing atomic-file limit;
 this change does not claim transactional rollback on process death.
+
+## T1786 — native light appearance prototype and integration
+
+The Linux startup adapter imports GTK's light palette, font, text scale and
+animation preference into the independent Appearance contract. This machine reports
+Mint-Y-Aqua, Ubuntu 10 pt, scale 1.0, background RGB(248,248,249), foreground
+RGB(32,32,32), and accent RGB(31,158,222). The font bytes come from fontconfig.
+The owner’s light preference is retained: a dark-only palette is rejected with
+an explicit standard-light fallback. No desktop preference is changed.
+
+| Appearance input | Existing egui-only setup | Implemented GTK adapter | KDE boundary |
+| --- | --- | --- | --- |
+| Window/view colors and accent | Fixed light colors | Native semantic colors; text contrast >=4.5:1 | KColorScheme provides separate role/state sets; dedicated adapter remains tracked |
+| Font | Bundled default | Actual desktop font, point-size conversion | Requires native QFont/KDE font extraction |
+| Text scaling | Fixed sizes | Desktop text scale via UI zoom, including explicitly sized labels | Requires native scale acceptance |
+| Reduced animation | egui default | GTK animation preference | Requires native preference extraction |
+| High contrast | Generic light palette | Imported light colors with contrast correction | Dedicated native high-contrast session remains unvalidated |
+| Widget rendering/metrics | egui | Still egui; not GTK widgets | Still egui; no Qt-widget parity claim |
+| Live appearance changes | None | Read once at GUI startup; explicit in General | Future bounded subscription outcome tracked |
+
+Source contracts: [GTK color lookup](https://docs.gtk.org/gtk3/method.StyleContext.lookup_color.html),
+[GTK default font](https://docs.gtk.org/gtk3/property.Settings.gtk-font-name.html),
+and [KColorScheme roles/states](https://api.kde.org/kcolorscheme.html). Mapping native
+values into egui is Blent's adapter design, not a toolkit guarantee of native rendering.
+
+Runtime dependencies are optional `/usr/bin/python3`, PyGObject/GTK3 introspection
+and fontconfig; unavailable probes retain explicit light defaults. Debian/Ubuntu:
+`python3-gi gir1.2-gtk-3.0 fontconfig`. The script is embedded in the GUI binary.
+No new Rust package/version is introduced: direct ab_glyph/libc usage reuses the
+existing resolved versions. The current GTK snapshot is used at startup, not on
+tray reactivation of an already-running window.
+
+Lifetime: the existing bounded command supervisor owns each original Python and
+fontconfig child/collector, including cancellation and unknown retirement. Its
+configured capture budgets apply before the 8-KiB snapshot/4-KiB path validation.
+One regular font is read with nonblocking open, capped at 8 MiB, and validated by
+the same font parser family as egui before handoff. The context owns the font bytes
+until context retirement. Snapshot strings are <=256 bytes; no listener, native
+window or borrowed toolkit pointer escapes. The GTK window is destroyed even on
+partial lookup failure. A FIFO fault regression exposed a blocking-open risk in
+the draft adapter; it failed before nonblocking open and passes afterward.
+
+Verification: the original palette/font regression failed before integration;
+seven targeted Rust tests, 13 appearance-filtered tests, four Python tests and the
+private native production-startup test pass. All 19 maintained Rust functions have
+93.6–100% line coverage; all four Python probe functions have 100% line coverage
+(coverage.py 7.15.2). Measured Rust/Python functions have complexity <=9.
+[Evidence](artifacts/2026-11-22-ui-ux/t1786/). Dedicated KDE integration and live
+appearance refresh are explicitly decomposed as T1794/T1795, rather than claimed
+implemented by this GTK prototype. Native visual acceptance follows deployment.
