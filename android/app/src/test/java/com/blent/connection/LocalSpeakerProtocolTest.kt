@@ -46,6 +46,7 @@ class LocalSpeakerProtocolTest {
         repeat(4096) {
             while (cursor < io.requests.size) {
                 when (val request = io.requests[cursor++]) {
+                    is ConnectionIoRequest.WriteFlushed -> error("Tunnel transaction reached local consumer")
                     is ConnectionIoRequest.Read -> Unit
                     is ConnectionIoRequest.Write -> {
                         val size = minOf(7, request.loan.length)

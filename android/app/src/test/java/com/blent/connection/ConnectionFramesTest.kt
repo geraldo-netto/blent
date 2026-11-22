@@ -11,6 +11,14 @@ class ConnectionFramesTest {
     )
     private fun rejects(block: () -> Unit) { assertTrue(runCatching(block).isFailure) }
 
+    private fun writePrefix(output: ByteArrayOutputStream, loan: ConnectionWriteTransaction, count: Int) {
+        val first = minOf(count, loan.first.length)
+        output.write(loan.first.bytes, loan.first.offset, first)
+        if (count > first) {
+            val second = checkNotNull(loan.second)
+            output.write(second.bytes, second.offset, count - first)
+        }
+    }
     private fun encode(frame: ConnectionFrame, chunk: Int): ByteArray {
         val writer = ConnectionFrameWriter(1000)
         writer.begin(frame, 0)
@@ -18,18 +26,14 @@ class ConnectionFramesTest {
         while (true) {
             val loan = writer.write(1) ?: break
             assertNull(writer.write(1))
-            assertNull(writer.flush(1))
+            assertTrue(writer.nativePending())
             val count = minOf(chunk, loan.length)
-            output.write(loan.bytes, loan.offset, count)
-            writer.writeComplete(loan, count, 1)
+            writePrefix(output, loan, count)
+            val finished = writer.writeComplete(loan, count, 1)
+            if (count == loan.length) assertSame(frame, finished) else assertNull(finished)
+            rejects { writer.writeComplete(loan, count, 1) }
         }
-        val flush = checkNotNull(writer.flush(1))
-        assertNull(writer.flush(1))
-        assertNull(writer.write(1))
-        assertTrue(writer.nativePending())
-        assertSame(frame, writer.flushComplete(flush, 1))
         assertFalse(writer.nativePending())
-        rejects { writer.flushComplete(flush, 1) }
         return output.toByteArray()
     }
     private fun deliver(reader: ConnectionFrameReader, bytes: ByteArray, chunk: Int) {
@@ -110,15 +114,11 @@ class ConnectionFramesTest {
         val writer = ConnectionFrameWriter(10)
         val frame = data(1)
         writer.begin(frame, 0)
-        while (true) {
-            val loan = writer.write(1) ?: break
-            writer.writeComplete(loan, loan.length, 1)
-        }
-        val flush = checkNotNull(writer.flush(1))
+        val flush = checkNotNull(writer.write(1))
         writer.tick(9)
         rejects { writer.tick(10) }
         assertTrue(writer.nativePending())
-        rejects { writer.flushComplete(flush, 10) }
+        rejects { writer.writeComplete(flush, flush.length, 10) }
         assertFalse(writer.nativePending())
         rejects { writer.begin(frame, 11) }
     }
@@ -126,10 +126,10 @@ class ConnectionFramesTest {
         val writer = ConnectionFrameWriter(1000)
         writer.begin(data(), 0)
         val loan = checkNotNull(writer.write(0))
-        val original = loan.bytes.copyOf()
+        val original = loan.first.bytes.copyOf()
         writer.cancel()
         rejects { writer.begin(data(100), 1) }
-        assertArrayEquals(original, loan.bytes)
+        assertArrayEquals(original, loan.first.bytes)
         assertTrue(writer.nativePending())
         rejects { writer.writeComplete(loan, 1, 1) }
         assertFalse(writer.nativePending())
@@ -162,7 +162,7 @@ class ConnectionFramesTest {
             val writer = ConnectionFrameWriter(1000)
             writer.begin(data(), 0)
             val output = checkNotNull(writer.write(0))
-            rejects { writer.writeComplete(output, count, 0) }
+            rejects { writer.writeComplete(output, if (count == 41) output.length + 1 else count, 0) }
             assertFalse(writer.nativePending())
             rejects { writer.write(0) }
         }
@@ -226,19 +226,15 @@ class ConnectionFramesTest {
         for (size in listOf(1, 10, ConnectionWire.MAX_PAYLOAD)) {
             val frame = data(size)
             writer.begin(frame, 0)
-            val header = checkNotNull(writer.write(0))
-            writer.writeComplete(header, header.length, 0)
-            val body = checkNotNull(writer.write(0))
+            val transaction = checkNotNull(writer.write(0))
+            val body = checkNotNull(transaction.second)
             assertSame(frame.bytes, body.bytes)
             assertEquals(frame.offset, body.offset)
             assertEquals(frame.length, body.length)
-            writer.writeComplete(body, body.length, 0)
             rejects { writer.begin(data(), 0) }
-            val flush = checkNotNull(writer.flush(0))
-            assertSame(frame, writer.flushComplete(flush, 0))
+            assertSame(frame, writer.writeComplete(transaction, transaction.length, 0))
         }
         assertNull(writer.write(1))
-        assertNull(writer.flush(1))
     }
 
     @Test fun t881BoundedHeaderMutationsNeverEscapeBufferExtents() {
@@ -267,11 +263,8 @@ class ConnectionFramesTest {
         val writer = ConnectionFrameWriter(1000)
         val frame = data(4096)
         writer.begin(frame, 0)
-        while (true) {
-            val write = writer.write(1) ?: break
-            writer.writeComplete(write, write.length, 1)
-        }
-        assertSame(frame, writer.flushComplete(checkNotNull(writer.flush(1)), 1))
+        val write = checkNotNull(writer.write(1))
+        assertSame(frame, writer.writeComplete(write, write.length, 1))
         assertTrue(reader.nativePending())
         reader.tick(100000)
         assertNull(reader.read(100000))

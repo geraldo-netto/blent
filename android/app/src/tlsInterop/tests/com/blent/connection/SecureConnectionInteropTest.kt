@@ -214,25 +214,31 @@ class SecureConnectionInteropTest {
             val frame = mux.next() ?: return
             val owned = ConnectionFrame(frame.header, frame.bytes, frame.offset, frame.length)
             writer.begin(owned, now())
-            writeFrame(socket, writer, now)
-            val receipt = writer.flush(now())!!
-            assertNull(writer.flush(now()))
-            socket.getOutputStream().flush()
-            assertSame(owned, writer.flushComplete(receipt, now()))
+            assertSame(owned, writeFrame(socket, writer, now))
             mux.finish(true)
         }
         error("Unbounded fixture output")
     }
 
-    private fun writeFrame(socket: Socket, writer: ConnectionFrameWriter, now: () -> Long) {
+    private fun writeFrame(socket: Socket, writer: ConnectionFrameWriter, now: () -> Long): ConnectionFrame {
         repeat(128) {
-            val loan = writer.write(now()) ?: return
+            val loan = checkNotNull(writer.write(now()))
             assertNull(writer.write(now()))
             val count = minOf(7, loan.length)
-            socket.getOutputStream().write(loan.bytes, loan.offset, count)
-            writer.writeComplete(loan, count, now())
+            writePrefix(socket, loan, count)
+            if (count == loan.length) socket.getOutputStream().flush()
+            writer.writeComplete(loan, count, now())?.let { return it }
         }
         error("Unbounded fixture frame")
+    }
+
+    private fun writePrefix(socket: Socket, loan: ConnectionWriteTransaction, count: Int) {
+        val first = minOf(count, loan.first.length)
+        socket.getOutputStream().write(loan.first.bytes, loan.first.offset, first)
+        if (count > first) {
+            val second = checkNotNull(loan.second)
+            socket.getOutputStream().write(second.bytes, second.offset, count - first)
+        }
     }
 
     private fun readFrame(socket: Socket, reader: ConnectionFrameReader, now: () -> Long): ConnectionFrame {
@@ -282,10 +288,8 @@ class SecureConnectionInteropTest {
     private fun drainSession(socket: Socket, session: ConnectionSession, writer: ConnectionFrameWriter, now: () -> Long) {
         repeat(32) {
             val frame = session.nextFrame(now()) ?: return
-            writer.begin(frame, now()); writeFrame(socket, writer, now)
-            val receipt = checkNotNull(writer.flush(now()))
-            socket.getOutputStream().flush()
-            assertSame(frame, writer.flushComplete(receipt, now()))
+            writer.begin(frame, now())
+            assertSame(frame, writeFrame(socket, writer, now))
             session.written(frame, now())
         }
         error("T882 unbounded resource output")

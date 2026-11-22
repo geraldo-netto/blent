@@ -1,0 +1,100 @@
+[
+  {
+    "name": "com.blent.connection.AndroidConnectionWorkerRunTest",
+    "tests": "66",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionLocalDeadlineTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.SocketConnectionSetupTest",
+    "tests": "20",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.LocalSpeakerProtocolTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.StreamFrameTransactionTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.StreamConnectionIoTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.LocalEndpointNativeTest",
+    "tests": "15",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionProducerAllocationTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionTransportDeadlineTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionFramesTest",
+    "tests": "15",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionSessionRunnerTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionRunnerInvalidTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.AndroidConnectionWorkerTest",
+    "tests": "30",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionLocalPumpTest",
+    "tests": "19",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  }
+]

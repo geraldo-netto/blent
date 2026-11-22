@@ -7,6 +7,16 @@ package com.blent.connection
 internal class ConnectionBuffer internal constructor(val bytes: ByteArray, val offset: Int, val length: Int)
 internal class ConnectionFlush internal constructor()
 
+/** T1759 ordered prefix followed by an optional second slice, then one flush.
+ * A successful completion of length bytes acknowledges the final flush too.
+ * A shorter completion acknowledges only that exact prefix, without flush;
+ * failure never acknowledges any frame/credit release or authorizes retry.
+ * Both slices stay borrowed until this exact transaction completes or the
+ * original native owner retires. No staging allocation or payload copy. */
+internal class ConnectionWriteTransaction(val first: ConnectionBuffer, val second: ConnectionBuffer? = null) {
+    val length: Int get() = first.length + (second?.length ?: 0)
+}
+
 /** The caller transfers the selected array range until actual frame completion.
  * Native adapters and consumers must not retain it after acknowledging release. */
 internal data class ConnectionFrame(

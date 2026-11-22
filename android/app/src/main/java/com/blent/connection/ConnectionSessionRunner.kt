@@ -11,7 +11,7 @@ internal class ConnectionSessionRunner(
     private val reader = ConnectionFrameReader(limits.ioTimeoutMs)
     private val writer = ConnectionFrameWriter(limits.ioTimeoutMs)
     private var reading: ConnectionIoRequest.Read? = null
-    private var writing: ConnectionIoRequest? = null
+    private var writing: ConnectionIoRequest.WriteFlushed? = null
     private var frame: ConnectionFrame? = null
     private var previous = 0L
     private var stoppedAt: Long? = null
@@ -46,7 +46,8 @@ internal class ConnectionSessionRunner(
             val completion = io.poll() ?: return
             when (val request = completion.request) {
                 is ConnectionIoRequest.Read -> readComplete(request, completion, now)
-                else -> writeComplete(request, completion, now)
+                is ConnectionIoRequest.WriteFlushed -> writeComplete(request, completion, now)
+                else -> error("Unexpected native tunnel completion")
             }
         }
     }
@@ -59,21 +60,14 @@ internal class ConnectionSessionRunner(
         val complete = reader.frame() ?: return
         try { session.receive(complete, now) } finally { reader.release(complete) }
     }
-    private fun writeComplete(request: ConnectionIoRequest, result: ConnectionIoCompletion, now: Long) {
+    private fun writeComplete(request: ConnectionIoRequest.WriteFlushed, result: ConnectionIoCompletion, now: Long) {
         require(writing === request) { "Foreign or retired native write completion" }
         writing = null
         if (stoppedAt != null) return
         result.failure?.let { throw it }
-        when (request) {
-            is ConnectionIoRequest.Write -> writer.writeComplete(request.loan, result.count, now)
-            is ConnectionIoRequest.Flush -> {
-                require(result.count == 0)
-                val complete = writer.flushComplete(request.loan, now)
-                frame = null
-                session.written(complete, now)
-            }
-            else -> error("Read completion reached writer")
-        }
+        val complete = writer.writeComplete(request.loan, result.count, now) ?: return
+        frame = null
+        session.written(complete, now)
     }
     private fun startRead(now: Long) {
         if (reading != null) return
@@ -88,13 +82,10 @@ internal class ConnectionSessionRunner(
             frame = session.nextFrame(now) ?: return
             writer.begin(checkNotNull(frame), now)
         }
-        val request = nextWrite(now) ?: return
+        val loan = writer.write(now) ?: return
+        val request = ConnectionIoRequest.WriteFlushed(loan)
         writing = request
         check(io.submit(request)) { "Native write capacity lost" }
-    }
-    private fun nextWrite(now: Long): ConnectionIoRequest? {
-        writer.write(now)?.let { return ConnectionIoRequest.Write(it) }
-        return writer.flush(now)?.let { ConnectionIoRequest.Flush(it) }
     }
     override fun stop(now: Long) {
         time(now)

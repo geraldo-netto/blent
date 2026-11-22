@@ -182,16 +182,12 @@ class AndroidConnectionWorkerTest {
         } }, {}, { 0 })
         val execution = async { worker.execute() }
         try {
-            until { io.requests.any { it is ConnectionIoRequest.Write } }
+            until { io.requests.any { it is ConnectionIoRequest.WriteFlushed } }
             val credit = ConnectionWire.Header(ConnectionWire.CREDIT, ConnectionWire.MANAGEMENT, 1, 1, 0, 0, 4096)
             val read = io.read(); ConnectionWire.encode(credit, read.loan.bytes); io.complete(read, ConnectionWire.HEADER_BYTES)
-            val grant = io.write(); io.complete(grant, grant.loan.length)
-            until { io.requests.any { it is ConnectionIoRequest.Flush } }
-            io.complete(io.flush(), 0)
-            until { io.write() !== grant }
-            val header = io.write(); io.complete(header, header.loan.length)
-            until { io.write() !== header }
-            val body = io.write().loan
+            val grant = io.frameWrite(); io.complete(grant, grant.loan.length)
+            until { io.frameWrite() !== grant }
+            val body = checkNotNull(io.frameWrite().loan.second)
             assertEquals(ConnectionManagement.Capabilities(15),
                 ConnectionManagement.decode(body.bytes.copyOfRange(body.offset, body.offset + body.length)))
         } finally { worker.cancel(); execution.await(); worker.retire() }

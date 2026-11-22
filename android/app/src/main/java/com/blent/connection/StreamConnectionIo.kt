@@ -53,11 +53,19 @@ internal class StreamConnectionIo(
         return slot.submit(request)
     }
     private fun validate(request: ConnectionIoRequest) {
-        val loan = when (request) {
-            is ConnectionIoRequest.Read -> request.loan
-            is ConnectionIoRequest.Write -> request.loan
-            is ConnectionIoRequest.Flush -> return
+        when (request) {
+            is ConnectionIoRequest.Read -> validateBuffer(request.loan)
+            is ConnectionIoRequest.Write -> validateBuffer(request.loan)
+            is ConnectionIoRequest.WriteFlushed -> validateTransaction(request.loan)
+            is ConnectionIoRequest.Flush -> Unit
         }
+    }
+    private fun validateTransaction(loan: ConnectionWriteTransaction) {
+        validateBuffer(loan.first)
+        loan.second?.let(::validateBuffer)
+        require(loan.length <= ConnectionWire.HEADER_BYTES + ConnectionWire.MAX_PAYLOAD)
+    }
+    private fun validateBuffer(loan: ConnectionBuffer) {
         require(loan.offset in 0..loan.bytes.size)
         require(loan.length in 1..ConnectionWire.MAX_PAYLOAD && loan.length <= loan.bytes.size - loan.offset)
     }
@@ -91,6 +99,13 @@ internal class StreamConnectionIo(
         is ConnectionIoRequest.Read -> request.loan.let { input.read(it.bytes, it.offset, it.length) }
         is ConnectionIoRequest.Write -> request.loan.let { output.write(it.bytes, it.offset, it.length); it.length }
         is ConnectionIoRequest.Flush -> { output.flush(); 0 }
+        is ConnectionIoRequest.WriteFlushed -> writeFlushed(request.loan)
+    }
+    private fun writeFlushed(loan: ConnectionWriteTransaction): Int {
+        loan.first.let { output.write(it.bytes, it.offset, it.length) }
+        loan.second?.let { output.write(it.bytes, it.offset, it.length) }
+        output.flush()
+        return loan.length
     }
     override fun stop() {
         if (!stopped.compareAndSet(false, true)) return

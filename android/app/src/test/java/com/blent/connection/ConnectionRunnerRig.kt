@@ -23,6 +23,7 @@ internal class RunnerIo : ConnectionIo {
     }
     fun read(): ConnectionIoRequest.Read = requests.filterIsInstance<ConnectionIoRequest.Read>().last()
     fun write(): ConnectionIoRequest.Write = requests.filterIsInstance<ConnectionIoRequest.Write>().last()
+    fun frameWrite(): ConnectionIoRequest.WriteFlushed = requests.filterIsInstance<ConnectionIoRequest.WriteFlushed>().last()
     fun flush(): ConnectionIoRequest.Flush = requests.filterIsInstance<ConnectionIoRequest.Flush>().last()
 }
 

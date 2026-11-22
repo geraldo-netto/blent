@@ -5,19 +5,33 @@ import org.junit.Test
 import java.io.IOException
 
 class ConnectionSessionRunnerTest {
+    @Test fun t1759OneNativeCompletionIncludesHeaderPayloadAndFlush() {
+        val rig = ConnectionRunnerRig()
+        val frame = rig.frame(ByteArray(ConnectionWire.MAX_PAYLOAD) { it.toByte() })
+        rig.session.output.add(frame)
+        rig.runner.advance(0)
+        val write = rig.io.requests.single { it !is ConnectionIoRequest.Read }
+        assertTrue(rig.session.written.isEmpty())
+        rig.io.complete(write, ConnectionWire.HEADER_BYTES + frame.length)
+        rig.runner.advance(1)
+        assertNull("T1759 one transaction must cover the entire frame and flush", rig.runner.failure())
+        assertSame(frame, rig.session.written.single())
+        assertEquals(1, rig.io.requests.count { it !is ConnectionIoRequest.Read })
+    }
+
     @Test fun t883BlockedReaderDoesNotStallWriterOrSerializedControl() {
         val rig = ConnectionRunnerRig()
         val frame = rig.frame(); rig.session.output.add(frame)
         rig.runner.advance(0)
-        val read = rig.io.read(); val header = rig.io.write()
-        assertEquals(40, header.loan.length); rig.io.complete(header, header.loan.length)
+        val read = rig.io.read(); val header = rig.io.frameWrite()
+        assertEquals(40, header.loan.first.length); rig.io.complete(header, header.loan.first.length)
         rig.runner.advance(1)
-        val body = rig.io.write(); assertSame(frame.bytes, body.loan.bytes)
-        rig.io.complete(body, body.loan.length); rig.runner.advance(2)
-        val flush = rig.io.flush(); assertTrue(rig.session.written.isEmpty())
-        rig.io.complete(flush, 0); rig.runner.advance(3)
+        val body = rig.io.frameWrite(); assertSame(frame.bytes, body.loan.first.bytes)
+        assertTrue(rig.session.written.isEmpty())
+        rig.io.complete(body, body.loan.length); rig.runner.advance(3)
         assertSame(frame, rig.session.written.single()); assertSame(read, rig.io.read())
         assertSame(rig.session, rig.runner.endpoints()); assertEquals(3L, rig.session.clock)
+        assertNull(rig.runner.display())
         assertNull(rig.runner.failure()); assertFalse(rig.runner.retired())
     }
     private fun receive(rig: ConnectionRunnerRig, bytes: ByteArray, chunk: Int) {
@@ -33,11 +47,11 @@ class ConnectionSessionRunnerTest {
     @Test fun t883PartialReadsDeliverExactFramesWhileWriterRemainsBlocked() {
         val rig = ConnectionRunnerRig(); val frame = rig.frame(ByteArray(512) { it.toByte() })
         rig.session.output.add(frame); rig.runner.advance(0)
-        val write = rig.io.write()
+        val write = rig.io.frameWrite()
         receive(rig, rig.encoded(frame), 7)
         assertArrayEquals(frame.bytes, rig.session.input.single().bytes)
         assertEquals(frame.header, rig.session.input.single().header)
-        assertSame(write, rig.io.write()); assertTrue(rig.session.written.isEmpty())
+        assertSame(write, rig.io.frameWrite()); assertTrue(rig.session.written.isEmpty())
         assertNull(rig.runner.failure())
     }
     @Test fun t883WriteDeadlineQuarantinesUntilActualNativeRetirement() {
@@ -60,7 +74,7 @@ class ConnectionSessionRunnerTest {
     }
     @Test fun t883CancelledExactCallbacksRetireWithoutDeliveringPartialMedia() {
         val rig = ConnectionRunnerRig(); rig.session.output.add(rig.frame()); rig.runner.advance(0)
-        val read = rig.io.read(); val write = rig.io.write()
+        val read = rig.io.read(); val write = rig.io.frameWrite()
         rig.runner.stop(1); rig.runner.stop(1)
         rig.io.complete(read, -1, IOException("cancelled")); rig.io.complete(write, -1, IOException("cancelled"))
         rig.runner.advance(2)

@@ -4,6 +4,7 @@ package com.blent.connection
 internal sealed interface ConnectionIoRequest {
     data class Read(val loan: ConnectionBuffer) : ConnectionIoRequest
     data class Write(val loan: ConnectionBuffer) : ConnectionIoRequest
+    data class WriteFlushed(val loan: ConnectionWriteTransaction) : ConnectionIoRequest
     data class Flush(val loan: ConnectionFlush) : ConnectionIoRequest
 }
 internal data class ConnectionIoCompletion(

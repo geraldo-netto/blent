@@ -9,13 +9,9 @@ private const val FRAMES = 60
 
 private fun framedWrite(io: MeasuredIo, writer: ConnectionFrameWriter, frame: ConnectionFrame) {
     writer.begin(frame, io.now())
-    while (true) {
-        val loan = writer.write(io.now()) ?: break
-        writer.writeComplete(loan, io.perform(ConnectionIoRequest.Write(loan)), io.now())
-    }
-    val flush = checkNotNull(writer.flush(io.now()))
-    check(io.perform(ConnectionIoRequest.Flush(flush)) == 0)
-    check(writer.flushComplete(flush, io.now()) === frame)
+    val loan = checkNotNull(writer.write(io.now()))
+    val count = io.perform(ConnectionIoRequest.WriteFlushed(loan))
+    check(writer.writeComplete(loan, count, io.now()) === frame)
 }
 
 /** One bounded copy per frame. Chunking preserves the current native request

@@ -1,0 +1,59 @@
+{
+  "item": "T1759",
+  "regression_before": {
+    "cases": 1,
+    "failures": 1,
+    "reason": "separate header request cannot complete entire frame"
+  },
+  "omitted_flush_control": {
+    "cases": 1,
+    "failures": 1,
+    "restored": true
+  },
+  "android_cases": 224,
+  "android_classes": 14,
+  "covered_functions": 70,
+  "minimum_function_line_coverage_percent": 100,
+  "complexity_functions": 493,
+  "maximum_complexity": 9,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI cyclomatic counter",
+  "coverage_tool": "JaCoCo through scripts/coverage/android.init.gradle with Kotlin inline ownership",
+  "integration": {
+    "tlsInteropTest": [
+      {
+        "name": "com.blent.connection.SecureConnectionInteropTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ],
+    "testDebugUnitTest": [
+      {
+        "name": "com.blent.connection.RecordMeterTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "source_sha256": {
+    "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt": "af97ad1ad3e5851fa88735f7534d364c6fad460d080d5730a4566ede087c136b",
+    "android/app/src/main/java/com/blent/connection/ConnectionFrames.kt": "7f807dba3f383d0eafbc55b6c3af4dea322e372938b63783898eead8ff6d3f9d",
+    "android/app/src/main/java/com/blent/connection/ConnectionIo.kt": "c7cdc15bca9a2d69632fe6c38a9030be919ee68e6e07952596c31a20d64a2950",
+    "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt": "4c1b9498af0217c5c49138d293e79eb5257d4bad4b155ea93d4526ce3acb641c",
+    "android/app/src/main/java/com/blent/connection/StreamConnectionIo.kt": "1187898cc0249a3310aebfe0abdee787abd46a6a64c268f87cf0d33b15b025ab",
+    "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt": "4e890e58a6b37c61199df8e1e46619e6ab7956fce0e9042541aecb7ea2a2adb5",
+    "android/app/src/test/java/com/blent/connection/ConnectionFramesTest.kt": "06bd061fbeb5b450a9b13481f2a16d980e59a2a0f068a74414b716a427b324f6",
+    "android/app/src/test/java/com/blent/connection/ConnectionRunnerInvalidTest.kt": "31830534b107a203e5a913feac4255694b07b91e61ea1c3209e4bb69d5c57abc",
+    "android/app/src/test/java/com/blent/connection/ConnectionRunnerRig.kt": "b092732c60bc094b2e6091e9057ec4d99ad12028049336f9d6abcbbabe090752",
+    "android/app/src/test/java/com/blent/connection/ConnectionSessionRunnerTest.kt": "7301c448c725850120352599795fe7c6f1b10b24e3d75b6a85a69c5a9e114036",
+    "android/app/src/test/java/com/blent/connection/ConnectionTransportDeadlineTest.kt": "ae5cc350773bfbacb673bc818d5b10ba86077156d63ecec754bafa38a64c21ae",
+    "android/app/src/test/java/com/blent/connection/LocalSpeakerProtocolTest.kt": "c399e4aa02e15817cdcc6fc7d24383b90caf5f3817442fa8de43636552627950",
+    "android/app/src/tlsInterop/tests/com/blent/connection/SecureConnectionInteropTest.kt": "8ccfa084505d123c28ea6d59f7e7259f9e8aefcf287971cdadd0ba484e0f739f",
+    "scripts/benchmarks/android-tunnel/TunnelHandoffBenchmark.kt": "aaf538988856f518db06bcd8fde5b49fef114a0291587633c17b6371de9591d4",
+    "android/app/src/test/java/com/blent/connection/StreamFrameTransactionTest.kt": "df094e11242c3a2e9a288a55c95d74cef3771a9b7ad945f90b6a7374c7dfeee3"
+  },
+  "scope": "hosted JVM tests, Rust loopback interop and Profile compile; no installed/native tablet session touched"
+}

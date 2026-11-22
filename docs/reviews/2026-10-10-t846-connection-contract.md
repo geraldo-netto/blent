@@ -1014,8 +1014,11 @@ flush complete. Exact opaque receipts reject stale callbacks. A single absolute
 deadline spans proposal, reply and flush; byte progress does not extend it.
 
 `ConnectionFrameReader` and `ConnectionFrameWriter` are separate portable state
-owners. Native adapters receive one exact array-range loan per operation and
-return it only after that operation actually finishes. Header/body offsets
+owners. Native adapters receive exact borrowed array ranges and return them only
+after the original operation finishes. T1759 groups up to two write slices plus
+flush into one bounded transaction (at most 40 + 65,536 bytes); a full successful
+completion acknowledges flush, while a shorter result acknowledges only its
+written prefix. Generic local-stream writes/flush remain separate. Header/body offsets
 survive short reads/writes and zero progress. The reader has a fixed 64 KiB body
 buffer; the writer borrows the caller-owned payload without another full-frame
 copy. A completed receive frame has one consumer claim, remains retained until
