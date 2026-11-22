@@ -9,6 +9,11 @@ use std::{path::PathBuf, process::Command};
 struct Harness(tempfile::TempDir);
 
 #[test]
+fn t1688_regular_grabs_suppress_redundant_fallbacks() {
+    Harness::build("T1688").run("T1688");
+}
+
+#[test]
 fn t1607_empty_capture_watchdog_backs_off_without_losing_recovery() {
     Harness::build("T1607").run("T1607");
 }
@@ -224,6 +229,7 @@ impl Harness {
             case,
             "T1021"
                 | "T1607"
+                | "T1688"
                 | "T752"
                 | "T753"
                 | "T760"

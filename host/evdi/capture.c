@@ -358,6 +358,7 @@ static void grab_snapshot(capture_context_t *capture, int full)
     long long t0 = capture_now_us();
     evdi_grab_pixels(capture->handle, rects, &num_rects);
     long long grabbed_us = capture_now_us();
+    capture->last_fallback_grab_ms = grabbed_us / 1000;
     capture->grab_sum_us += grabbed_us - t0;
     normalize_snapshot(capture, rects, num_rects, full);
     draw_cursor(capture);
