@@ -1,0 +1,44 @@
+[
+  {
+    "name": "desktop selected",
+    "foreground": [
+      28,
+      28,
+      28
+    ],
+    "background": [
+      38,
+      92,
+      165
+    ],
+    "contrast": 2.562
+  },
+  {
+    "name": "desktop light red error",
+    "foreground": [
+      255,
+      128,
+      128
+    ],
+    "background": [
+      248,
+      248,
+      248
+    ],
+    "contrast": 2.286
+  },
+  {
+    "name": "android explanatory",
+    "foreground": [
+      106,
+      106,
+      126
+    ],
+    "background": [
+      22,
+      22,
+      31
+    ],
+    "contrast": 3.402
+  }
+]
