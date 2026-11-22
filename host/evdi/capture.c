@@ -582,6 +582,15 @@ static void recover_capture_if_stalled(capture_context_t *capture, long long now
 
 }
 
+/* Empirical inverse-CDF rank: first sorted sample whose cumulative fraction
+ * reaches the requested percentage. Input bounds fund the integer arithmetic. */
+static int latency_rank(size_t count, unsigned percentile)
+{
+    if (count == 0 || count > LAT_SAMPLES || percentile == 0 || percentile > 100)
+        return -1;
+    return (int)((count * percentile + 99) / 100) - 1;
+}
+
 static void report_capture_stats(capture_context_t *capture, long long now, long long *last_stats_ms, long long *stats_grab_base)
 {
     double elapsed = (now - (*last_stats_ms)) / 1000.0;
@@ -603,8 +612,8 @@ static void report_capture_stats(capture_context_t *capture, long long now, long
         qsort(snapshot, (size_t)n, sizeof(int), cmp_int);
         fprintf(stderr,
                 "[evdi-helper] capture→fifo p50 %.1fms p95 %.1fms (first %d samples; cap %d per report)\n",
-                snapshot[n / 2] / 1000.0,
-                snapshot[(int)((n - 1) * 0.95)] / 1000.0, n, LAT_SAMPLES);
+                snapshot[latency_rank((size_t)n, 50)] / 1000.0,
+                snapshot[latency_rank((size_t)n, 95)] / 1000.0, n, LAT_SAMPLES);
     }
 
     (*stats_grab_base) = capture->grab_count;

@@ -230,6 +230,7 @@ impl Harness {
             "T1021"
                 | "T1607"
                 | "T1688"
+                | "T1692"
                 | "T752"
                 | "T753"
                 | "T760"
@@ -623,4 +624,28 @@ fn t1690_latency_log_discloses_bounded_first_sample_window() {
         log.contains("(first 2 samples; cap 256 per report)"),
         "T1690: {log}"
     );
+}
+
+#[test]
+fn t1692_capture_percentiles_use_one_empirical_rank_convention() {
+    let harness = Harness::build("T1692");
+    let output = Command::new(harness.0.path().join("helper-test"))
+        .arg("T1690")
+        .output()
+        .unwrap();
+    let log = String::from_utf8(output.stderr).unwrap();
+    assert!(output.status.success(), "{log}");
+    assert!(
+        log.contains("capture→fifo p50 7.0ms p95 8.0ms"),
+        "T1692: {log}"
+    );
+    assert!(
+        log.contains("capture→fifo p50 127.0ms p95 243.0ms"),
+        "T1692: {log}"
+    );
+}
+
+#[test]
+fn t1692_capture_percentile_ranks_bound_invalid_inputs() {
+    Harness::build("T1692").run("T1692");
 }

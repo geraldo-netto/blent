@@ -1570,6 +1570,7 @@ int main(int argc, char **argv)
         {"T1607", test_t1607_empty_watchdog},
         {"T1688", test_t1688_regular_grabs},
         {"T1690", test_t1690_sample_window},
+        {"T1692", test_t1692_ranks},
         {"T1284", test_t1284_shutdown_registration},
         {"T1186-trace", test_t1186_trace},
         {"T1186-admission", test_t1186_admission},

@@ -638,3 +638,9 @@ The permanent regression failed before the fix. All 72 helper tests pass, includ
 Capture-to-FIFO logs now identify the first eligible samples and the 256-sample cap per report. Current benchmark parsing preserves both sample count and capacity and rejects the obsolete frame-count form. Documentation describes the 0–999.999 ms eligibility range and potentially delayed reporting interval; these are not all-frame percentiles.
 
 Both the native log and parser regressions failed before the fix. The native log regression and all 12 benchmark/parser/plot tests pass. The changed production function measures 90% line coverage (18/20); all 96 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1690.json). No ownership or allocation boundary changed. The separate two-sample quantile inconsistency remains tracked as T1692.
+
+## T1692 — use consistent empirical percentile ranks (2026-11-22)
+
+Both capture percentiles now select the first sorted sample whose cumulative fraction reaches the requested percentage. The old mixed indexing logged p50=8 ms and p95=7 ms for samples [7,8]; the new result is p50=7 ms and p95=8 ms. Invalid rank inputs reject before indexing.
+
+The actual log regression failed before the fix. Both native tests pass under ASan/UBSan, including 26,418 bounded count/percentile pairs against an independently iterated rank oracle and two extreme invalid inputs. All 12 benchmark/parser tests pass. Both changed functions measure 100% line coverage; all 90 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1692.json). Pure bounded arithmetic uses the reporter's existing stack snapshot; no ownership boundary changes.

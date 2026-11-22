@@ -14,8 +14,8 @@ from summarize import battery_summary, cpu_delta, load_lines, window_values
 
 class BaselineMeasurementTests(unittest.TestCase):
     def test_t1690_capture_window_preserves_sample_count_and_capacity(self):
-        logs = [dict(message='capture→fifo p50 128.0ms p95 242.0ms (first 256 samples; cap 256 per report)'),
-                dict(message='capture→fifo p50 8.0ms p95 7.0ms (first 2 samples; cap 256 per report)')]
+        logs = [dict(message='capture→fifo p50 127.0ms p95 243.0ms (first 256 samples; cap 256 per report)'),
+                dict(message='capture→fifo p50 7.0ms p95 8.0ms (first 2 samples; cap 256 per report)')]
         result = window_values(logs)['capture_to_fifo_window']
         self.assertEqual(result['samples']['minimum'], 2)
         self.assertEqual(result['samples']['maximum'], 256)
