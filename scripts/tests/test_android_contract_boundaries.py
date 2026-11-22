@@ -24,7 +24,7 @@ class AndroidContractBoundariesTest(unittest.TestCase):
 
     def test_t1750_input_contracts_are_independent_of_native_ownership(self):
         forbidden = r'\b(android\.|androidx\.|MediaCodec|DecoderSession|CodecLifetime|CodecInputAccess)\b'
-        for name in ('DecoderInputPacket.kt', 'DecoderInputAccess.kt'):
+        for name in ('DecoderInputPacket.kt', 'DecoderInputAccess.kt', 'DecoderOutputPolicy.kt'):
             with self.subTest(file=name):
                 self.assertIsNone(re.search(forbidden, (ROOT / name).read_text()))
 

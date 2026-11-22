@@ -1,7 +1,6 @@
 package com.blent
 
 import android.media.MediaCodec
-import android.media.MediaFormat
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
@@ -44,11 +43,11 @@ internal class DecoderSession(
     private var retiring: CodecLifetime? = null
     private var callbackDecoder: DecoderInputConsumer? = null
     var callbackFactory: DecoderCallbackFactory? = null
-    var profile = DecoderProfile()
+    var outputDriver = defaultDecoderOutputDriver()
     private val diagnosticState = MutableStateFlow(DecoderDiagnostics())
     val diagnostics = diagnosticState.asStateFlow()
 
-    private class Startup(val epoch: FrameTiming.Epoch, val profile: DecoderProfile,
+    private class Startup(val epoch: FrameTiming.Epoch, val output: DecoderOutputDriver,
                           val format: DecoderFormatFactory, val callbacksFactory: DecoderCallbackFactory?, val hints: Boolean, val valid: () -> Boolean) {
         var owner: CodecLifetime? = null
         var thread: HandlerThread? = null
@@ -85,7 +84,7 @@ internal class DecoderSession(
         if (!CodecLifetime.beginStartup()) return null
         retiring = null
         outputWatchdog.restarted(outputClock())
-        Startup(timing.beginEpoch(), profile, formatCodec, callbackFactory, outputWatchdog.lowLatencyHints, valid).also { startup = it }
+        Startup(timing.beginEpoch(), outputDriver, formatCodec, callbackFactory, outputWatchdog.lowLatencyHints, valid).also { startup = it }
     }
 
     private fun startupCurrent(attempt: Startup): Boolean = synchronized(monitor) {
@@ -122,7 +121,7 @@ internal class DecoderSession(
         callbackDecoder = attempt.callbacks
         frameCallbackThread = attempt.thread
         codecAlive = true
-        if (attempt.callbacks == null) startOutputThread(owner.codec, attempt.epoch)
+        if (attempt.callbacks == null) startOutputThread(owner.codec, attempt.epoch, attempt.output)
         diagnosticState.value = DecoderDiagnostics(attempt.diagnostics, !attempt.hints)
         startup = null
         Log.i(TAG, "Codec configured and started with surface")
@@ -191,13 +190,13 @@ internal class DecoderSession(
      * surface as soon as they're ready, independent of network reads. This
      * reduces coupling to network stalls; it does not impose a latency bound.
      */
-    fun startOutputThread(codec: MediaCodec, codecTiming: FrameTiming.Epoch = timingEpoch) {
+    fun startOutputThread(codec: MediaCodec, codecTiming: FrameTiming.Epoch = timingEpoch,
+                          driver: DecoderOutputDriver = outputDriver) {
         val outputStatistics = statistics()
         val outputOwner = synchronized(monitor) { ownerFor(codec) } ?: return
-        outputThread = Thread({
+        val worker = Runnable {
             val info = MediaCodec.BufferInfo()
-            val drainer = outputDrainer(codec, outputOwner)
-            val latest = profile.renderLatest
+            val policy = outputPolicy(codec, outputOwner, driver) ?: return@Runnable
             var rendered = 0L
             while (codecAlive && mediaCodec === codec) {
                 try {
@@ -205,7 +204,7 @@ internal class DecoderSession(
                     if (mediaCodec !== codec || !codecAlive || outputOwner.retired) break
                     if (index >= 0) {
                         val seq = outputOwner.use {
-                            drainer.release(index, info.presentationTimeUs.toInt(), latest)
+                            policy.release(index, info.presentationTimeUs.toInt())
                         } ?: break
                         recordOutput(codec, codecTiming, outputStatistics, seq)
                         rendered++
@@ -219,15 +218,18 @@ internal class DecoderSession(
                     break
                 }
             }
-        }, "blent-render").apply {
-            priority = profile.renderPriority
-            start()
         }
+        outputThread = driver.thread(worker).apply { start() }
     }
 
-    private fun outputDrainer(codec: MediaCodec, owner: CodecLifetime) = DecodedOutputDrainer(codec,
-        { mediaCodec === codec && codecAlive && !owner.retired },
-        { discardedCount.incrementAndGet() })
+    private fun outputPolicy(codec: MediaCodec, owner: DecoderCodecAccess,
+                             driver: DecoderOutputDriver): DecoderOutputPolicy? = try {
+        driver.policy(codec, { mediaCodec === codec && codecAlive && !owner.retired },
+            { discardedCount.incrementAndGet() })
+    } catch (error: Exception) {
+        retireFailedOutput(codec, "Output policy failed", error)
+        null
+    }
 
     private fun retireFailedOutput(codec: MediaCodec, message: String, error: Exception) {
         if (codecAlive) Log.w(TAG, message, error)

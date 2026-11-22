@@ -99,6 +99,47 @@ class DecoderStartupTest {
         } finally { receiver.stop(); surface.release() }
     }
 
+    @Test fun t1751StartupCapturesOriginalOutputAdapters() {
+        StartupCodecShadow.stage = ""
+        val surface = Surface(SurfaceTexture(1))
+        val receiver = VideoReceiver { error("T1751 no transport") }
+        org.robolectric.util.ReflectionHelpers.setField(receiver, "isRunning", true)
+        val policyCreated = java.util.concurrent.CountDownLatch(1)
+        val original = defaultDecoderOutputDriver()
+        receiver.decoder.outputDriver = original.copy(policy = { codec, alive, discarded ->
+            policyCreated.countDown()
+            original.policy(codec, alive, discarded)
+        })
+        receiver.decoder.createCodec = { parameters ->
+            receiver.decoder.outputDriver = original.copy(thread = { error("T1751 replaced thread factory") },
+                policy = { _, _, _ -> error("T1751 replaced output policy") })
+            MediaCodec.createDecoderByType(parameters.mimeType)
+        }
+        try {
+            assertTrue(receiver.setupCodec(surface))
+            assertTrue(policyCreated.await(2, java.util.concurrent.TimeUnit.SECONDS))
+        } finally { receiver.stop(); surface.release() }
+    }
+
+    @Test fun t1751OutputPolicyFailureRetiresItsOriginalCodec() {
+        StartupCodecShadow.stage = ""
+        val surface = Surface(SurfaceTexture(1))
+        val invalidated = java.util.concurrent.CountDownLatch(1)
+        val decoder = DecoderSession(Any(), { true }, FrameTiming(), object : DecoderEvents {
+            override fun rendered(receipt: RenderAcknowledgement) {}
+            override fun invalidated() { invalidated.countDown() }
+        }, { ReceiverStatistics() })
+        decoder.createCodec = { MediaCodec.createDecoderByType(it.mimeType) }
+        decoder.outputDriver = defaultDecoderOutputDriver().copy(policy = { _, _, _ -> error("T1751 policy failure") })
+        try {
+            assertTrue(decoder.setupCodec(surface, DecoderFormat("video/avc", 1280, 800, 60)))
+            assertTrue("T1751 policy failure must invalidate the decoder", invalidated.await(2, java.util.concurrent.TimeUnit.SECONDS))
+            decoder.releaseCodec()
+            awaitDecoderRetirement(decoder)
+            assertNull(decoder.mediaCodec)
+        } finally { decoder.releaseCodec(); surface.release() }
+    }
+
     @Test fun t497_factoryFailureRetiresStartupAndAcknowledgementsIgnoreRetiredCodec() {
         StartupCodecShadow.stage = ""
         StartupCodecShadow.renderedListener = null

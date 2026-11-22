@@ -43,15 +43,17 @@ class DecodedOutputDrainerTest {
         org.robolectric.util.ReflectionHelpers.setField(receiver.decoder, "codecAlive", true)
         org.robolectric.util.ReflectionHelpers.setField(receiver.decoder, "lifetime", owner)
         try {
-            val drainer = org.robolectric.util.ReflectionHelpers.callInstanceMethod<DecodedOutputDrainer>(
-                receiver.decoder, "outputDrainer",
+            val drainer = org.robolectric.util.ReflectionHelpers.callInstanceMethod<DecoderOutputPolicy>(
+                receiver.decoder, "outputPolicy",
                 org.robolectric.util.ReflectionHelpers.ClassParameter.from(MediaCodec::class.java, codec),
-                org.robolectric.util.ReflectionHelpers.ClassParameter.from(CodecLifetime::class.java, owner))
-            assertEquals(102, drainer.release(0, 100, true))
+                org.robolectric.util.ReflectionHelpers.ClassParameter.from(DecoderCodecAccess::class.java, owner),
+                org.robolectric.util.ReflectionHelpers.ClassParameter.from(DecoderOutputDriver::class.java,
+                    com.blent.benchmark.replayOutputDriver("render-latest")))
+            assertEquals(102, drainer.release(0, 100))
             assertEquals(2L, receiver.decoder.discardedOutputs)
             assertEquals(listOf(0 to false, 1 to false, 2 to true), DrainCodecShadow.releases)
             owner.closeAdmission()
-            assertNull(drainer.release(3, 103, true))
+            assertNull(drainer.release(3, 103))
             assertEquals(3, DrainCodecShadow.releases.size)
             assertEquals(2L, receiver.decoder.discardedOutputs)
         } finally { receiver.stop(); owner.awaitRetirement(2000) }
@@ -65,9 +67,35 @@ class DecodedOutputDrainerTest {
         val codec = MediaCodec.createDecoderByType("video/avc")
         val dropped = mutableListOf<Int>()
         try {
-            val result = DecodedOutputDrainer(codec, { alive }, dropped::add).release(0, 100, latest)
+            val policy = if (latest) DecodedOutputDrainer(codec, { alive }, dropped::add)
+                         else PresentDecodedOutput(codec) { alive }
+            val result = policy.release(0, 100)
             return result to dropped
         } finally { codec.release() }
+    }
+
+    @Test fun t1751_currentPolicyRejectsRetiredOutputWithoutLookahead() {
+        DrainCodecShadow.releases.clear(); DrainCodecShadow.dequeues = 0
+        val codec = MediaCodec.createDecoderByType("video/avc")
+        try {
+            assertNull(PresentDecodedOutput(codec) { false }.release(0, 100))
+            assertTrue(DrainCodecShadow.releases.isEmpty())
+            assertEquals(0, DrainCodecShadow.dequeues)
+        } finally { codec.release() }
+    }
+
+    @Test fun t1751_replayPrioritySelectionDoesNotStartThreads() {
+        for (name in listOf("legacy", "socket-heap", "socket-direct", "render-latest", "callback-legacy")) {
+            val thread = com.blent.benchmark.replayOutputDriver(name).thread(Runnable {})
+            assertEquals(Thread.State.NEW, thread.state)
+            assertEquals(Thread.MAX_PRIORITY, thread.priority)
+        }
+        for (name in listOf("sync-normal", "callback-supported", "callback-supported1", "callback-unhinted")) {
+            val thread = com.blent.benchmark.replayOutputDriver(name).thread(Runnable {})
+            assertEquals(Thread.State.NEW, thread.state)
+            assertEquals(Thread.NORM_PRIORITY, thread.priority)
+        }
+        assertThrows(IllegalStateException::class.java) { com.blent.benchmark.replayOutputDriver("unknown") }
     }
 
     @Test fun t399_default_releases_every_output_without_lookahead() {

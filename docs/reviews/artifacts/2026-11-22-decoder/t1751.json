@@ -1,0 +1,1837 @@
+{
+  "item": "T1751",
+  "source_sha256": {
+    "android/app/src/main/java/com/blent/DecoderConfiguration.kt": "6fa4b6d4c06f2b8e80719fb73b6235c2607f2c597546779220d208c986dd6583",
+    "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt": "25bab7d2f8f3d85a29898bf9342eedfde847e1282bbaa288b37b2f5732fc7afc",
+    "android/app/src/main/java/com/blent/DecoderOutputPolicy.kt": "e45c1d697be146eba5c24e17d675dd81db0eb6b60f628d156ad7ea64e48a30c2",
+    "android/app/src/main/java/com/blent/DecoderSession.kt": "f7082a87c555364aa5b2af4ad4b2423e0f409646b3860fe5818e0ce58c70ef1b",
+    "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt": "feeda216d7898982095bd6c084573284f011b3517cdbdfc7086d40ff64f220a0",
+    "android/app/src/test/java/com/blent/DecoderStartupTest.kt": "f494698d10d6ec47db9ff8c3786b792286d5fabc9287f075746b41c934d3eb9c",
+    "scripts/benchmarks/android-decoder/experiments/DecodedOutputDrainer.kt": "91dcc1c085c908dede052dd1cc27c9d0327b934ac08e4c6c2b63afe7f6ea12c1",
+    "scripts/benchmarks/android-decoder/experiments/ReplayOutput.kt": "6464c0f67c4423e57c9f5726341a37dcbf90cf2d7c14baf36fd6581362dfe604",
+    "scripts/benchmarks/android-decoder/experiments/ReplayProfiles.kt": "883684c3343694b0b3784501ad4c6e5e669d332f38d39b73a658ff3201c6bebb",
+    "scripts/benchmarks/decoder-project.py": "89511c4f29058127611342b0457fd89701978db12f614d0952b4f1e1cd1502fb",
+    "scripts/tests/test_android_contract_boundaries.py": "d47c8eca29ce0bd8eb137d8c6d0a8db2edcf84660d1e09704bf0bc3e81d0ba2d",
+    "scripts/tests/test_benchmark_decoder.py": "d813c2f3aa7a9456cfc982d45aba296b77620741c2ee4f2ecdfd24fa7d60c808"
+  },
+  "coverage_tool": "JaCoCo 0.8.15, repository Kotlin per-method/inline mapping",
+  "coverage": [
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "<init>",
+      "line": 19,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession$callbacks$1",
+          "name": "<init>",
+          "signature": "(Lcom/blent/DecoderSession;Lcom/blent/DecoderCodecAccess;Lcom/blent/FrameTiming$Epoch;Lcom/blent/ReceiverStatistics;)V",
+          "line": 171,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession",
+          "name": "<init>",
+          "signature": "(Ljava/lang/Object;Lkotlin/jvm/functions/Function0;Lcom/blent/FrameTiming;Lcom/blent/DecoderEvents;Lkotlin/jvm/functions/Function0;)V",
+          "line": 21,
+          "covered": 17,
+          "total": 17
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "<init>",
+      "line": 50,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession$Startup",
+          "name": "<init>",
+          "signature": "(Lcom/blent/FrameTiming$Epoch;Lcom/blent/DecoderOutputDriver;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;ZLkotlin/jvm/functions/Function0;)V",
+          "line": 50,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "reserveStartup",
+      "line": 82,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession",
+          "name": "reserveStartup",
+          "signature": "(Lkotlin/jvm/functions/Function0;)Lcom/blent/DecoderSession$Startup;",
+          "line": 82,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "publishStartup",
+      "line": 113,
+      "language": "kotlin",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession",
+          "name": "publishStartup",
+          "signature": "(Lcom/blent/DecoderSession$Startup;)Z",
+          "line": 113,
+          "covered": 17,
+          "total": 17
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "startOutputThread",
+      "line": 188,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession",
+          "name": "startOutputThread",
+          "signature": "(Landroid/media/MediaCodec;Lcom/blent/FrameTiming$Epoch;Lcom/blent/DecoderOutputDriver;)V",
+          "line": 195,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "<lambda>",
+      "line": 197,
+      "language": "kotlin",
+      "covered": 16,
+      "total": 20,
+      "percent": 80.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession",
+          "name": "startOutputThread$lambda$12",
+          "signature": "(Lcom/blent/DecoderSession;Landroid/media/MediaCodec;Lcom/blent/CodecLifetime;Lcom/blent/DecoderOutputDriver;Lcom/blent/FrameTiming$Epoch;Lcom/blent/ReceiverStatistics;)V",
+          "line": 198,
+          "covered": 16,
+          "total": 20
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "<lambda>",
+      "line": 203,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession$startOutputThread$worker$1$index$1",
+          "name": "invoke",
+          "signature": "()Ljava/lang/Integer;",
+          "line": 203,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "<lambda>",
+      "line": 206,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession$startOutputThread$worker$1$seq$1",
+          "name": "invoke",
+          "signature": "()Ljava/lang/Integer;",
+          "line": 207,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "outputPolicy",
+      "line": 225,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession",
+          "name": "outputPolicy",
+          "signature": "(Landroid/media/MediaCodec;Lcom/blent/DecoderCodecAccess;Lcom/blent/DecoderOutputDriver;)Lcom/blent/DecoderOutputPolicy;",
+          "line": 226,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "<lambda>",
+      "line": 227,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession$outputPolicy$1",
+          "name": "invoke",
+          "signature": "()Ljava/lang/Boolean;",
+          "line": 227,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+      "name": "<lambda>",
+      "line": 228,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderSession.kt",
+          "owner": "com/blent/DecoderSession$outputPolicy$2",
+          "name": "invoke",
+          "signature": "(I)V",
+          "line": 228,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      "name": "<init>",
+      "line": 5,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+          "owner": "com/blent/DecoderOutputDriver",
+          "name": "<init>",
+          "signature": "(Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;)V",
+          "line": 6,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      "name": "defaultDecoderOutputDriver",
+      "line": 11,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+          "owner": "com/blent/DecoderOutputAndroidKt",
+          "name": "defaultDecoderOutputDriver",
+          "signature": "()Lcom/blent/DecoderOutputDriver;",
+          "line": 11,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      "name": "<lambda>",
+      "line": 12,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+          "owner": "com/blent/DecoderOutputAndroidKt$defaultDecoderOutputDriver$2",
+          "name": "invoke",
+          "signature": "(Landroid/media/MediaCodec;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)Lcom/blent/DecoderOutputPolicy;",
+          "line": 12,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      "name": "decoderRenderThread",
+      "line": 14,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+          "owner": "com/blent/DecoderOutputAndroidKt",
+          "name": "decoderRenderThread",
+          "signature": "(Ljava/lang/Runnable;)Ljava/lang/Thread;",
+          "line": 14,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      "name": "<init>",
+      "line": 16,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+          "owner": "com/blent/PresentDecodedOutput",
+          "name": "<init>",
+          "signature": "(Landroid/media/MediaCodec;Lkotlin/jvm/functions/Function0;)V",
+          "line": 17,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      "name": "release",
+      "line": 18,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+          "owner": "com/blent/PresentDecodedOutput",
+          "name": "release",
+          "signature": "(II)Ljava/lang/Integer;",
+          "line": 19,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "name": "com.blent.DecoderStartupTest",
+      "tests": "20",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderDeadlineTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.CodecRetirementFailureTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderMailboxDefaultTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderWaitUiTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderDiagnosticsTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderDiagnosticsUiTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.SparseDecoderWindowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderNegotiationTest",
+      "tests": "18",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.CodecReportTest",
+      "tests": "28",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderWatchdogTest",
+      "tests": "28",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.FramedDecoderTest",
+      "tests": "18",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecodedOutputDrainerTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderSchedulingTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderSetupTest",
+      "tests": "34",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DirectDecoderInputTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderConfigurationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.CallbackDecoderTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.VideoCodecTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.DecoderEligibilityTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "complexity_tool": "Repository Kotlin 1.9.20 PSI / Python 3.12 AST",
+  "complexity": [
+    [
+      "scripts/tests/test_android_contract_boundaries.py",
+      10,
+      "test_t822_wire_contracts_have_no_android_or_owner_dependencies",
+      2
+    ],
+    [
+      "scripts/tests/test_android_contract_boundaries.py",
+      25,
+      "test_t1750_input_contracts_are_independent_of_native_ownership",
+      2
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      64,
+      "source",
+      4
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      72,
+      "shared_sources",
+      3
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      86,
+      "instrument_timing",
+      3
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      102,
+      "instrument_cache",
+      2
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      110,
+      "prepare",
+      2
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      125,
+      "copy_replay_sources",
+      3
+    ],
+    [
+      "scripts/benchmarks/decoder-project.py",
+      133,
+      "main",
+      4
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      19,
+      "test_t1743_experimental_reader_is_replay_owned_and_not_a_production_source",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      32,
+      "test_t1747_replay_format_policies_are_not_production_sources",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      44,
+      "test_t1749_callback_implementation_is_replay_owned",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      56,
+      "test_t1750_direct_input_is_a_replay_adapter",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      67,
+      "test_t1751_latest_output_policy_is_replay_owned",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      79,
+      "test_t1746_generated_replay_includes_exact_decoder_eligibility_contract",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      91,
+      "test_t1644_missing_current_dependency_rejects_old_snapshot",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      104,
+      "test_t569_generated_replay_preserves_json_number_dependency",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      119,
+      "test_t479_selection_reaches_replay_as_exact_bounded_request",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      126,
+      "test_t460_replay_can_remain_visible_over_the_same_keyguard_as_blent",
+      3
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      142,
+      "test_t803_render_receipts_preserve_current_identity_and_reject_old_api",
+      1
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      159,
+      "test_t458_generated_replay_includes_current_decoder_dependencies",
+      2
+    ],
+    [
+      "scripts/tests/test_benchmark_decoder.py",
+      184,
+      "test_t386_selected_variants_match_provenance_and_trials",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      21,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      33,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      35,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      39,
+      "get:discardedOutputs",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      50,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      61,
+      "setupCodec",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      61,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      82,
+      "reserveStartup",
+      6
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      82,
+      "<lambda>",
+      6
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      87,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      90,
+      "startupCurrent",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      90,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      94,
+      "configureStartup",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      99,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      108,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      113,
+      "publishStartup",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      113,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      131,
+      "discardStartup",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      132,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      144,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      150,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      153,
+      "notifyRendered",
+      7
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      157,
+      "<lambda>",
+      7
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      160,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      167,
+      "callbacks",
+      6
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      172,
+      "queued",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      172,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      173,
+      "output",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      174,
+      "failed",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      178,
+      "recordOutput",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      181,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      193,
+      "startOutputThread",
+      8
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      196,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      197,
+      "<lambda>",
+      8
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      203,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      206,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      222,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      225,
+      "outputPolicy",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      227,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      228,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      234,
+      "retireFailedOutput",
+      4
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      236,
+      "<lambda>",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      247,
+      "feedDecoder",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      251,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      260,
+      "useInput",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      261,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      265,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      266,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      266,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      277,
+      "ownerFor",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      280,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      283,
+      "checkOutputProgress",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      295,
+      "retireOutput",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      299,
+      "awaitRetirement",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      301,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      307,
+      "releaseCodec",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      308,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      309,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      313,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      329,
+      "resetCodec",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderSession.kt",
+      330,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      15,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      16,
+      "<clinit>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      20,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      22,
+      "dequeueOutputBuffer",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      30,
+      "releaseOutputBuffer",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      36,
+      "t497_sessionReportsDiscardedDecodedOutputsAndHonorsRetirement",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      38,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      40,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      62,
+      "exercise",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      66,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      70,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      71,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      77,
+      "t1751_currentPolicyRejectsRetiredOutputWithoutLookahead",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      81,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      87,
+      "t1751_replayPrioritySelectionDoesNotStartThreads",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      89,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      94,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      98,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      101,
+      "t399_default_releases_every_output_without_lookahead",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      106,
+      "t399_latest_preserves_decoding_and_presents_only_last_ready_output",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      110,
+      "t399_continuous_output_cannot_starve_presentation",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      115,
+      "t399_sparse_or_format_change_preserves_the_available_frame",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecodedOutputDrainerTest.kt",
+      121,
+      "t399_retirement_during_lookahead_cannot_present_an_old_surface_frame",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      6,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      11,
+      "defaultDecoderOutputDriver",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      12,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      14,
+      "decoderRenderThread",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      14,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      17,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderOutputAndroid.kt",
+      18,
+      "release",
+      2
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/DecodedOutputDrainer.kt",
+      7,
+      "<init>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/DecodedOutputDrainer.kt",
+      14,
+      "release",
+      4
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/DecodedOutputDrainer.kt",
+      17,
+      "<lambda>",
+      4
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/DecodedOutputDrainer.kt",
+      30,
+      "present",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderConfiguration.kt",
+      10,
+      "create",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderConfiguration.kt",
+      13,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderConfiguration.kt",
+      20,
+      "format",
+      3
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderConfiguration.kt",
+      26,
+      "baseFormat",
+      2
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderConfiguration.kt",
+      28,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderConfiguration.kt",
+      28,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/main/java/com/blent/DecoderConfiguration.kt",
+      40,
+      "defaultHints",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      24,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      25,
+      "<clinit>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      31,
+      "gate",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      37,
+      "configure",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      38,
+      "setVideoScalingMode",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      39,
+      "setOnFrameRenderedListener",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      42,
+      "start",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      43,
+      "stop",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      44,
+      "release",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      45,
+      "dequeueOutputBuffer",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      54,
+      "awaitFixtureRetirement",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      55,
+      "t1747StartupRetainsItsOriginalFormatFactory",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      58,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      61,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      65,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      66,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      75,
+      "t1749StartupCapturesCallbackOwnerAndClosesFailedInstallation",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      79,
+      "callbackStartup",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      82,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      85,
+      "<lambda>",
+      4
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      86,
+      "install",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      86,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      87,
+      "offer",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      88,
+      "close",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      90,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      91,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      102,
+      "t1751StartupCapturesOriginalOutputAdapters",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      105,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      109,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      113,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      114,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      115,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      124,
+      "t1751OutputPolicyFailureRetiresItsOriginalCodec",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      128,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      129,
+      "rendered",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      130,
+      "invalidated",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      131,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      132,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      133,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      143,
+      "t497_factoryFailureRetiresStartupAndAcknowledgementsIgnoreRetiredCodec",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      147,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      149,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      152,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      156,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      168,
+      "t425_stopDuringNativeCreation",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      169,
+      "t425_stopDuringNativeConfiguration",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      170,
+      "t425_stopDuringNativeStart",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      171,
+      "t425_surfaceDestructionDuringNativeConfiguration",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      173,
+      "t425_surfaceCallbackDefersNativeSetup",
+      3
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      175,
+      "<init>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      176,
+      "getHolder",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      177,
+      "getSurface",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      182,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      184,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      191,
+      "blockedSetup",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      200,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      204,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      207,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      209,
+      "<lambda>",
+      2
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      227,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      235,
+      "recreatedReceiverCannotAllocate",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      237,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/DecoderStartupTest.kt",
+      239,
+      "<lambda>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/ReplayOutput.kt",
+      5,
+      "replayOutputDriver",
+      5
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/ReplayOutput.kt",
+      11,
+      "<lambda>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/ReplayOutput.kt",
+      11,
+      "<lambda>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/ReplayProfiles.kt",
+      3,
+      "applyProfile",
+      2
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/ReplayProfiles.kt",
+      8,
+      "replayFormatFactory",
+      5
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/ReplayProfiles.kt",
+      9,
+      "<lambda>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/ReplayProfiles.kt",
+      10,
+      "<lambda>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/ReplayProfiles.kt",
+      11,
+      "<lambda>",
+      1
+    ],
+    [
+      "scripts/benchmarks/android-decoder/experiments/ReplayProfiles.kt",
+      12,
+      "<lambda>",
+      1
+    ]
+  ],
+  "generator_tests": 13,
+  "contract_tests": 2,
+  "fault_control": "t1751OutputPolicyFailureRetiresItsOriginalCodec: fails on API27/34 before construction-error handling; same tests pass afterward",
+  "builds": [
+    "Android Debug and Profile compilation",
+    "Standalone replay APK"
+  ],
+  "replay_provenance": {
+    "revision": "working-tree",
+    "package": "com.blent.decoderbench.candidate",
+    "apk_sha256": "5709535dbed43295bc6a01b61458a088ff3bda9d038f514945090ba00200f511",
+    "sources": {
+      "originals/DecoderOutputWatchdog.kt": "21f7b428126cb0787e027c79981e06fef6350dd1b85d154476fe2b8520d18f9d",
+      "originals/DecoderSelectionAndroid.kt": "d9310da0fa7594189dbb77e4f82ed4eabd6f69e255092e81400ee5a04b83277e",
+      "originals/DecoderOutputAndroid.kt": "25bab7d2f8f3d85a29898bf9342eedfde847e1282bbaa288b37b2f5732fc7afc",
+      "originals/MediaInventory.kt": "94c3e25b38450084e718352ccb1d997509e83b14d796cca901205b591747ac69",
+      "originals/GenerationFence.kt": "4ee7320bb836a4ca1ae5cc44a2f8ffb0ff06b853a1b494965000a07d28ce7a37",
+      "originals/VideoContract.kt": "51b86cb31dbf20f9925c877d15dc98da88b34a637112a49e8ff3a5c1d16fef42",
+      "originals/DecoderConfiguration.kt": "6fa4b6d4c06f2b8e80719fb73b6235c2607f2c597546779220d208c986dd6583",
+      "originals/JsonNumbers.kt": "b9b8bc6d66e0240ae0a6016e7d986a99cfc3d7279a3928cead8381e1c859188b",
+      "originals/DecoderSelection.kt": "65b340c266752fd45827862865b4d61b40550e8d68f2610de70b7c6025e1ec4f",
+      "originals/DecoderEligibility.kt": "6e7abdf4c34f0563006cc23e97478984fe61111a506dc375df5dec45fb60c3b2",
+      "originals/DecoderSession.kt": "f7082a87c555364aa5b2af4ad4b2423e0f409646b3860fe5818e0ce58c70ef1b",
+      "originals/VideoPacketReader.kt": "ddc7e5a15a15a065cfe73c6178215566b700f0f9f2ceba110759aff4cbfb6dee",
+      "originals/DecoderCapabilities.kt": "f5534573500bc1867326193f31b0d6984e856cf86609f80aa6bbc0ae4c185671",
+      "originals/NativeQueryLane.kt": "e53e0c7dfe8e750f4002178a1c86eeba7c2c868636f78a93d83caadc00425750",
+      "originals/DecoderInput.kt": "5e082ba9b93bcc570b50cbd3382606c1be3940b5859f951c3b84f40003d318a8",
+      "originals/DecoderSelectionJson.kt": "417262758ba92522bd4a0dd94ca424b549db9ec14930f1734713ae24357241e0",
+      "originals/DecoderInputAccess.kt": "f37298572e66941ebb570263bf6cb03212289760df5179ad3a6545755fbe7cf0",
+      "originals/CodecInputAccess.kt": "37c47e2d45057f51fea3e70e4342b396e01b5ded96d9e70531c5d8c4c7959010",
+      "originals/VideoCodec.kt": "dbd111beb7bc3fd53c14680500ef0aa347d9ccd0143152d5306ebea3c9d8e864",
+      "originals/DecoderCodecAccess.kt": "b5bb04e8cd35d836293b95a134a5f6940290b250fc8e89a0251c16141be6287a",
+      "originals/MediaProfiles.kt": "8dc2aa1a2bdb52ad3359a6df471fcbcc2ed2a6bdebdac1981e85463b4104a0dd",
+      "originals/NativeDeadline.kt": "959a2b904d6e064ef544b34a97e44befa85402c181fc074dcca15946ff82e493",
+      "originals/DecoderDiagnostics.kt": "1206e55b67de58392c00f57404dd872f0a07265f10a825e98f2edfa7ba07b5af",
+      "originals/VideoTiming.kt": "de29c5310400e2b00a8f95abcd5001d0275aa26bf89596571cbe0f58027b5aff",
+      "originals/VideoProfiles.kt": "cbbcdb076e79ebd99a1d8e90caf3af4fcdcdfe023f29f0ea67df49e985b30370",
+      "originals/DecoderInputPacket.kt": "cc9025e89d7768c50f42ff2b48d3d49779f44cbcbfec55b1414943b0a61b64f5",
+      "originals/CodecLifetime.kt": "6fdaf42b284cc37af7143276cd63a41c19c2835fee8f814d35ea08cabd1b03d4",
+      "originals/DecoderOutputPolicy.kt": "e45c1d697be146eba5c24e17d675dd81db0eb6b60f628d156ad7ea64e48a30c2",
+      "app/src/main/java/ReplayInput.kt": "921681f520cf3cfbda69183d99a5498b2c2ce9ab503c394158040d41ac95db10",
+      "app/src/main/java/DecoderOutputWatchdog.kt": "21f7b428126cb0787e027c79981e06fef6350dd1b85d154476fe2b8520d18f9d",
+      "app/src/main/java/DecoderSelectionAndroid.kt": "d9310da0fa7594189dbb77e4f82ed4eabd6f69e255092e81400ee5a04b83277e",
+      "app/src/main/java/ReplayClip.kt": "05c7091de92b43c1624a7a01ba9b01be51171ea6238c4aa8d925158544a2b170",
+      "app/src/main/java/ProfileBridge.kt": "f7e49362bfbcbbaa4a16be7c33d09935e0760b9cdf71d77368d63e320ae70f31",
+      "app/src/main/java/DecoderOutputAndroid.kt": "25bab7d2f8f3d85a29898bf9342eedfde847e1282bbaa288b37b2f5732fc7afc",
+      "app/src/main/java/MediaInventory.kt": "94c3e25b38450084e718352ccb1d997509e83b14d796cca901205b591747ac69",
+      "app/src/main/java/GenerationFence.kt": "4ee7320bb836a4ca1ae5cc44a2f8ffb0ff06b853a1b494965000a07d28ce7a37",
+      "app/src/main/java/VideoContract.kt": "51b86cb31dbf20f9925c877d15dc98da88b34a637112a49e8ff3a5c1d16fef42",
+      "app/src/main/java/ReplayProfiles.kt": "883684c3343694b0b3784501ad4c6e5e669d332f38d39b73a658ff3201c6bebb",
+      "app/src/main/java/DecoderConfiguration.kt": "6fa4b6d4c06f2b8e80719fb73b6235c2607f2c597546779220d208c986dd6583",
+      "app/src/main/java/ReplayPacing.kt": "34d624418f56d7132a624f717e5a97c1054358722a0e050fa2c2c0a8eabce95a",
+      "app/src/main/java/MainActivity.kt": "7097506e093819eda12f288d554fe868534df25907c42a52794b1037a4dc9b46",
+      "app/src/main/java/JsonNumbers.kt": "b9b8bc6d66e0240ae0a6016e7d986a99cfc3d7279a3928cead8381e1c859188b",
+      "app/src/main/java/DecoderSelection.kt": "65b340c266752fd45827862865b4d61b40550e8d68f2610de70b7c6025e1ec4f",
+      "app/src/main/java/DecoderEligibility.kt": "6e7abdf4c34f0563006cc23e97478984fe61111a506dc375df5dec45fb60c3b2",
+      "app/src/main/java/DecoderSession.kt": "a81f8a40c6bbca8341c4d18227f22708417802164412faa45fdd1ffa4bbdfd28",
+      "app/src/main/java/DirectReplayInput.kt": "4dc4e5f082628638f64cccdfe22605fc4167f2c2f7afad8122ddf857f80c2f2d",
+      "app/src/main/java/NegotiatedInventory.kt": "382dd0113e7cb85d5dc1296cc6063d37efa160ccd24d9f768a9e78d74530ff7e",
+      "app/src/main/java/VideoReceiver.kt": "9222bfacf0c32d6ab3e040d2ae9f39f6ef99ff219b3abe8d3ac61a5e08ff8f0e",
+      "app/src/main/java/DecoderMailbox.kt": "2c490aaeedca0c04fc1a86e58aac41766d5d4646171d57c7ec533c802e2bf38a",
+      "app/src/main/java/VideoPacketReader.kt": "ddc7e5a15a15a065cfe73c6178215566b700f0f9f2ceba110759aff4cbfb6dee",
+      "app/src/main/java/ReplayRetirement.kt": "efbe06cd2437bb7ac7c14a20ae0e4816bbb6da43ce08e133db8b6633a8c91725",
+      "app/src/main/java/DecoderCapabilities.kt": "f5534573500bc1867326193f31b0d6984e856cf86609f80aa6bbc0ae4c185671",
+      "app/src/main/java/NativeQueryLane.kt": "e53e0c7dfe8e750f4002178a1c86eeba7c2c868636f78a93d83caadc00425750",
+      "app/src/main/java/DecoderInput.kt": "5e082ba9b93bcc570b50cbd3382606c1be3940b5859f951c3b84f40003d318a8",
+      "app/src/main/java/DecoderSelectionJson.kt": "417262758ba92522bd4a0dd94ca424b549db9ec14930f1734713ae24357241e0",
+      "app/src/main/java/DecoderReplay.kt": "fb8beff99980fd9a26f8a84f593b762b6ac5b92f625ed89c1672332570f94c88",
+      "app/src/main/java/DecodedOutputDrainer.kt": "91dcc1c085c908dede052dd1cc27c9d0327b934ac08e4c6c2b63afe7f6ea12c1",
+      "app/src/main/java/DecoderInputAccess.kt": "f37298572e66941ebb570263bf6cb03212289760df5179ad3a6545755fbe7cf0",
+      "app/src/main/java/CodecInputAccess.kt": "7dd69f8ded8b1b5759b50650dcb11c7916436664f8ad4000e31343aede20032c",
+      "app/src/main/java/ReplayStats.kt": "3451f6416ee82df63360e66cc92dfd8b8f3e7e5dbded8fb7e710f7d2b7b6fd9b",
+      "app/src/main/java/ChannelPacketReader.kt": "e27eac50fa2cf686b98132510968ac2a72b138b996abc39cd3cb8f6f8b725b2d",
+      "app/src/main/java/VideoCodec.kt": "dbd111beb7bc3fd53c14680500ef0aa347d9ccd0143152d5306ebea3c9d8e864",
+      "app/src/main/java/DecoderCodecAccess.kt": "b5bb04e8cd35d836293b95a134a5f6940290b250fc8e89a0251c16141be6287a",
+      "app/src/main/java/ReplayOutput.kt": "6464c0f67c4423e57c9f5726341a37dcbf90cf2d7c14baf36fd6581362dfe604",
+      "app/src/main/java/SocketReplay.kt": "8b55cb4af384d420cf9ade10a155c6104899d652920fa00905bf8fa17ad8e60c",
+      "app/src/main/java/MediaProfiles.kt": "8dc2aa1a2bdb52ad3359a6df471fcbcc2ed2a6bdebdac1981e85463b4104a0dd",
+      "app/src/main/java/NativeDeadline.kt": "959a2b904d6e064ef544b34a97e44befa85402c181fc074dcca15946ff82e493",
+      "app/src/main/java/ReplayDecoderConfiguration.kt": "591b2d570f10cf8ff6ed093e891817cb4f02e7e2f53554f54cab68b77050d473",
+      "app/src/main/java/DecoderDiagnostics.kt": "1206e55b67de58392c00f57404dd872f0a07265f10a825e98f2edfa7ba07b5af",
+      "app/src/main/java/VideoTiming.kt": "48af73d5b422fbcf06c538934d5ba6dfdbcf5d7c3d0a384657b2f8747ee2b551",
+      "app/src/main/java/VideoProfiles.kt": "cbbcdb076e79ebd99a1d8e90caf3af4fcdcdfe023f29f0ea67df49e985b30370",
+      "app/src/main/java/DecoderInputPacket.kt": "cc9025e89d7768c50f42ff2b48d3d49779f44cbcbfec55b1414943b0a61b64f5",
+      "app/src/main/java/UsbReplay.kt": "b3b2e4aed63888cb92cfe50fa24f310b44b2bcca19f421935092661b02d5f93e",
+      "app/src/main/java/CodecLifetime.kt": "6fdaf42b284cc37af7143276cd63a41c19c2835fee8f814d35ea08cabd1b03d4",
+      "app/src/main/java/BenchMetrics.kt": "2eb1d138f35b22065dc9658457a65148e69e722093854e07874cd63aa24568ed",
+      "app/src/main/java/DecoderOutputPolicy.kt": "e45c1d697be146eba5c24e17d675dd81db0eb6b60f628d156ad7ea64e48a30c2",
+      "app/src/main/java/CallbackDecoder.kt": "e78d55ad7e61612a69c4fe55c22ef5442baee49b5699f1b23064dccfd874e13f"
+    }
+  },
+  "native_execution": false,
+  "production_class_exclusion": {
+    "debug": [],
+    "profile": []
+  }
+}

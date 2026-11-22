@@ -64,6 +64,18 @@ class DecoderBenchmarkTests(unittest.TestCase):
             expected = project.ROOT / 'scripts/benchmarks/android-decoder/experiments/DirectReplayInput.kt'
             self.assertEqual((output / 'app/src/main/java/DirectReplayInput.kt').read_bytes(), expected.read_bytes())
 
+    def test_t1751_latest_output_policy_is_replay_owned(self):
+        spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
+        project = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(project)
+        self.assertFalse((project.SOURCE / 'DecodedOutputDrainer.kt').exists())
+        with tempfile.TemporaryDirectory() as directory:
+            output = project.prepare(SimpleNamespace(directory=Path(directory) / 'replay', revision=None,
+                package='com.blent.decoderbench.candidate'))
+            for name in ['DecodedOutputDrainer.kt', 'ReplayOutput.kt']:
+                expected = project.ROOT / 'scripts/benchmarks/android-decoder/experiments' / name
+                self.assertEqual((output / 'app/src/main/java' / name).read_bytes(), expected.read_bytes())
+
     def test_t1746_generated_replay_includes_exact_decoder_eligibility_contract(self):
         spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
         project = importlib.util.module_from_spec(spec)

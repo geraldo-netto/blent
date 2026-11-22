@@ -8,23 +8,23 @@ internal class DecodedOutputDrainer(
     private val codec: MediaCodec,
     private val alive: () -> Boolean,
     private val discarded: (Int) -> Unit,
-) {
+) : DecoderOutputPolicy {
     private val nextInfo = MediaCodec.BufferInfo()
 
-    fun release(firstIndex: Int, firstSequence: Int, latest: Boolean): Int? {
-        var index = firstIndex
-        var sequence = firstSequence
-        if (latest) repeat(3) { // At most four outputs per batch: no starvation.
+    override fun release(index: Int, sequence: Int): Int? {
+        var pendingIndex = index
+        var pendingSequence = sequence
+        repeat(3) { // At most four outputs per batch: no starvation.
             if (!alive()) return null
             val next = codec.dequeueOutputBuffer(nextInfo, 0)
-            if (next < 0) return present(index, sequence)
+            if (next < 0) return present(pendingIndex, pendingSequence)
             if (!alive()) return null
-            codec.releaseOutputBuffer(index, false)
-            discarded(sequence)
-            index = next
-            sequence = nextInfo.presentationTimeUs.toInt()
+            codec.releaseOutputBuffer(pendingIndex, false)
+            discarded(pendingSequence)
+            pendingIndex = next
+            pendingSequence = nextInfo.presentationTimeUs.toInt()
         }
-        return present(index, sequence)
+        return present(pendingIndex, pendingSequence)
     }
 
     private fun present(index: Int, sequence: Int): Int? {

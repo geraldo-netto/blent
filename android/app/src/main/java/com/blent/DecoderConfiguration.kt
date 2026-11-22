@@ -4,12 +4,6 @@ import android.media.MediaCodec
 import android.media.MediaFormat
 import android.os.Build
 
-/** I/O experiment selection is extracted separately under T1748. */
-internal data class DecoderProfile(
-    val renderPriority: Int = Thread.MAX_PRIORITY,
-    val renderLatest: Boolean = false,
-)
-
 internal typealias DecoderFormatFactory = (MediaCodec, DecoderFormat, Boolean) -> MediaFormat
 
 internal object DecoderConfiguration {
