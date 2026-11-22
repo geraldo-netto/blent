@@ -224,3 +224,33 @@ also retains the inventory collector and measurement tool with their own measure
 closure/method scores. These tools borrow Gradle's resolved graph and close file
 operations; they add no application allocation, thread or native-resource owner.
 Evidence is in `artifacts/2026-11-22-dependencies/t1752/`. Nothing was installed.
+
+## T1753: intentional Android shrinking
+
+Remove project-wide keeps for com.blent, OkHttp, Okio and platform JSON, including
+the obsolete TouchCapture listener rule and broad package warning suppression.
+The app has no name-based reflective class lookup requiring these keeps. AGP's
+generated manifest/resource entry rules and dependency-provided consumer rules
+remain authoritative. Future project rules must identify an actual entry contract.
+No production function, resource ownership or library API changed.
+
+The permanent rule regression fails for all four blanket package keeps before
+removal and passes afterward; both shrinker cases and three notice cases pass.
+Release and optimized assembly, R8, resource shrinking and vital lint pass. APK
+inspection confirms all 21 release and 24 optimized manifest/application-factory
+entry points have defined classes and zero-argument constructors. All eight notice
+assets in both APKs match source bytes. No device was launched or installed, so
+these checks do not establish native execution of the optimized applications.
+
+The local release APK shrank from 2,230,367 to 1,884,107 bytes (15.5%). Uncompressed
+DEX shrank from 3,792,640 to 2,791,008 bytes. The two builds include regenerated
+build identity; this is a packaging comparison, not measured CPU, memory or
+startup improvement. The resulting optimized benchmark APK is 1,906,587 bytes.
+The two maintained Python test methods measure complexity 2 and 1; ProGuard
+configuration introduces no executable production functions. Evidence is in
+`artifacts/2026-11-22-dependencies/t1753/`.
+
+Builds also report an SDK metadata mismatch: AGP 8.2.0's reader accepts schema 3
+while the installed command-line tools revision 22.0 supplies schema 4 metadata.
+The builds succeed. T1754 retains investigation of the exact emitting reader and
+an intentional tool pairing; no runtime failure is inferred from that warning.

@@ -1,0 +1,14 @@
+[
+  [
+    "scripts/tests/test_android_shrinker.py",
+    10,
+    "test_t1753_no_blanket_keeps_or_warning_suppression",
+    2
+  ],
+  [
+    "scripts/tests/test_android_shrinker.py",
+    18,
+    "test_t1753_release_uses_android_entrypoint_rules",
+    1
+  ]
+]

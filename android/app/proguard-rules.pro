@@ -1,14 +1,5 @@
-# OkHttp
--dontwarn okhttp3.**
--dontwarn okio.**
--keep class okhttp3.** { *; }
--keep class okio.** { *; }
-
-# Keep WebSocket listener
--keep class com.blent.TouchCapture$* { *; }
-
-# JSON
--keep class org.json.** { *; }
-
-# Keep all classes in our package
--keep class com.blent.** { *; }
+# AGP generates precise manifest/resource entry-point rules for the Application,
+# activities, receivers and services. Library reflection/JNI requirements belong
+# to their bundled consumer rules. Blent has no name-based reflective class lookup
+# requiring a package-wide keep. Add only specific proven entry-point rules here,
+# with permanent coverage; keep optimization and missing-class diagnostics enabled.

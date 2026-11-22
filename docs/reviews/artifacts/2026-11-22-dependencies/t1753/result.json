@@ -1,0 +1,16 @@
+{
+  "item": "T1753",
+  "tests": {
+    "normal_python_shrinker_cases": 2,
+    "normal_python_notice_cases": 3
+  },
+  "builds": [
+    "assembleRelease",
+    "assembleOptimized"
+  ],
+  "native_execution": false,
+  "installed": false,
+  "source_change": "Project blanket keep/dontwarn rules removed; AGP manifest/resource and library consumer rules retained",
+  "artifact_limits": "Before/after APKs include regenerated build identity; sizes are packaging measurements, not startup/CPU/memory benchmarks",
+  "sdk_warning_item": "T1754"
+}
