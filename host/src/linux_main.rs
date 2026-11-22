@@ -16,6 +16,7 @@ use blent::camera;
 mod capture;
 use blent::config;
 mod daemon_activity;
+mod daemon_instance;
 mod daemon_pid;
 mod daemon_shutdown;
 mod daemon_supervision;
@@ -1702,22 +1703,20 @@ where
         &file_cfg.encoding_gpu,
     ))?;
     blent::runtime_owner::check_running()?;
+    let directory = runtime::runtime_dir().context("validate private runtime directory")?;
+    let instance = daemon_instance::Lease::acquire(&directory)?;
     let keyboard_restoration = osk::Restoration::new()?;
-
-    runtime::runtime_dir().context("validate private runtime directory")?;
     let helper_path = find_helper(cli.helper.as_deref())?;
     let pid_path = get_pid_path();
     if let Some(parent) = pid_path.parent() {
         let _ = std::fs::create_dir_all(parent);
     }
 
-    ensure_single_daemon(&pid_path)?;
-
     blent_config::scheduling::apply_configured();
     blent_config::scheduling::apply_shared_adb(file_cfg.scheduling_priority);
 
     // T1509: entry retains identity through success, error and unwind drain.
-    *publication = Some(daemon_pid::Publication::new(pid_path)?);
+    *publication = Some(daemon_pid::Publication::new(pid_path, instance)?);
 
     heal_config(&file_cfg);
     blent_config::linux::pipe::publish_current()?;
@@ -1955,37 +1954,6 @@ async fn wait_for_shutdown(mut quit_rx: watch::Receiver<bool>) {
             break;
         }
     }
-}
-
-fn ensure_single_daemon(pid_path: &std::path::Path) -> Result<()> {
-    // Refuse to start a second daemon on top of a live one: the PID file is
-    // a single slot, so `blent stop` only ever kills the most recently
-    // started process — any earlier instance still running would become
-    // permanently untracked, and both would keep writing/reading the same
-    // EVDI FIFO, corrupting frames and starving the encoder.
-    if let Ok(existing) = std::fs::read_to_string(pid_path) {
-        if let Ok(existing_pid) = existing.trim().parse::<i32>() {
-            let alive = is_daemon_process(existing_pid as u32, unsafe { libc::getuid() });
-            if alive {
-                anyhow::bail!(
-                    "blent daemon already running (PID: {}). Run `blent stop` first.",
-                    existing_pid
-                );
-            }
-        }
-    }
-
-    // A daemon that lost its PID file (see remove_pid_file_if_ours) is still
-    // a daemon; two of them fight over the EVDI device and the FIFO.
-    let others = other_daemons();
-    if !others.is_empty() {
-        anyhow::bail!(
-            "blent daemon already running (PID {:?}, untracked). Run `blent stop` first.",
-            others
-        );
-    }
-
-    Ok(())
 }
 
 fn heal_config(file_cfg: &config::FileConfig) {

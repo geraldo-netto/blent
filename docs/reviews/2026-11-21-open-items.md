@@ -720,3 +720,11 @@ The existing permanent T1509 test fails before and passes after this fixture cor
 ## T1699 — retarget the Stop deadline oracle (2026-11-22)
 
 The permanent T497 Stop test still expected the obsolete ten-second diagnostic after T1513 enlarged the client observation budget. It now independently checks the accepted 126-second bound and elapsed virtual time, retaining its assertions that the original nonresponsive daemon remains alive and is explicitly killed/waited only by the fixture. The test fails before and passes after; every measured function in the fixture file has complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1699.json). No production behavior changed.
+
+## T1695 — arbitrate daemon startup with one retained lease (2026-11-22)
+
+Startup now acquires an exclusive regular-file lock in the validated runtime directory before publishing daemon state. The entry retains the original descriptor with its PID publication until native exit drain completes; the lock inode is never unlinked. The process-scan startup veto was removed. Existing same-user discovery remains for status and Stop.
+
+The real two-contender regression fails before the fix: a daemon blocked reading configuration prevents the ready contender from starting. Afterward, all 33 selected binary tests and all four namespace integration tests pass. They cover concurrent admission, rejection while active and draining, settled reuse, invalid lock objects, failed/partial publication, cancellation and unwind. Fixture defects exposed by broader verification were resolved separately as T1697–T1699, preserving their original ownership assertions.
+
+All four measured production functions have 94.4–100% line coverage, including 96.3% for the actual daemon startup workflow; all 129 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1695.json). Tests use private PID/device namespaces and fake ADB. Installed sessions remain unchanged. T1512 still requires original-process Stop handling under T1696.

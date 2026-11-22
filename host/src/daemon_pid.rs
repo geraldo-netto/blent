@@ -7,10 +7,11 @@ use std::{
 pub(crate) struct Publication {
     path: PathBuf,
     pid: u32,
+    _instance: crate::daemon_instance::Lease,
 }
 
 impl Publication {
-    pub(crate) fn new(path: PathBuf) -> io::Result<Self> {
+    pub(crate) fn new(path: PathBuf, instance: crate::daemon_instance::Lease) -> io::Result<Self> {
         let pid = std::process::id();
         let parent = path
             .parent()
@@ -20,7 +21,11 @@ impl Publication {
             .as_file_mut()
             .write_all(pid.to_string().as_bytes())?;
         pending.persist(&path).map_err(|error| error.error)?;
-        Ok(Self { path, pid })
+        Ok(Self {
+            path,
+            pid,
+            _instance: instance,
+        })
     }
 }
 
@@ -38,14 +43,22 @@ mod tests {
     fn t1428_publication_removes_only_its_own_pid() {
         let root = tempfile::tempdir().unwrap();
         let path = root.path().join("daemon.pid");
-        let publication = Publication::new(path.clone()).unwrap();
+        let publication = Publication::new(
+            path.clone(),
+            crate::daemon_instance::Lease::acquire(root.path()).unwrap(),
+        )
+        .unwrap();
         assert_eq!(
             std::fs::read_to_string(&path).unwrap(),
             std::process::id().to_string()
         );
         drop(publication);
         assert!(!path.exists());
-        let publication = Publication::new(path.clone()).unwrap();
+        let publication = Publication::new(
+            path.clone(),
+            crate::daemon_instance::Lease::acquire(root.path()).unwrap(),
+        )
+        .unwrap();
         std::fs::write(&path, "0").unwrap();
         drop(publication);
         assert_eq!(std::fs::read_to_string(&path).unwrap(), "0");
@@ -54,10 +67,18 @@ mod tests {
     #[test]
     fn t1428_failed_publication_and_unwind_leave_no_owned_pid() {
         let root = tempfile::tempdir().unwrap();
-        assert!(Publication::new(root.path().join("missing/daemon.pid")).is_err());
+        assert!(Publication::new(
+            root.path().join("missing/daemon.pid"),
+            crate::daemon_instance::Lease::acquire(root.path()).unwrap()
+        )
+        .is_err());
         let path = root.path().join("daemon.pid");
         let result = std::panic::catch_unwind(|| {
-            let _publication = Publication::new(path.clone()).unwrap();
+            let _publication = Publication::new(
+                path.clone(),
+                crate::daemon_instance::Lease::acquire(root.path()).unwrap(),
+            )
+            .unwrap();
             panic!("T1428: workflow unwinds after publication");
         });
         assert!(result.is_err());
@@ -70,8 +91,9 @@ mod tests {
         let path = root.path().join("daemon.pid");
         let owned_path = path.clone();
         let (ready, published) = tokio::sync::oneshot::channel();
+        let instance = crate::daemon_instance::Lease::acquire(root.path()).unwrap();
         let task = tokio::spawn(async move {
-            let _publication = Publication::new(owned_path).unwrap();
+            let _publication = Publication::new(owned_path, instance).unwrap();
             ready.send(()).unwrap();
             std::future::pending::<()>().await;
         });
@@ -121,7 +143,10 @@ mod tests {
         let path = root.join("daemon.pid");
         let original = std::fs::read(&path).ok();
         let limit = FileLimit::shorter_than_pid();
-        let result = Publication::new(path.clone());
+        let result = Publication::new(
+            path.clone(),
+            crate::daemon_instance::Lease::acquire(&root).unwrap(),
+        );
         drop(limit);
         let error = result.err().unwrap();
         assert_eq!(error.raw_os_error(), Some(libc::EFBIG), "{error:?}");
@@ -132,7 +157,7 @@ mod tests {
         );
         assert_eq!(
             std::fs::read_dir(root).unwrap().count(),
-            usize::from(original.is_some()),
+            1 + usize::from(original.is_some()),
             "T1443 temporary publication leaked"
         );
     }
@@ -167,8 +192,12 @@ mod tests {
         let root = tempfile::tempdir().unwrap();
         let destination = root.path().join("occupied");
         std::fs::create_dir(&destination).unwrap();
-        assert!(Publication::new(destination.clone()).is_err());
+        assert!(Publication::new(
+            destination.clone(),
+            crate::daemon_instance::Lease::acquire(root.path()).unwrap()
+        )
+        .is_err());
         assert!(destination.is_dir());
-        assert_eq!(std::fs::read_dir(root.path()).unwrap().count(), 1);
+        assert_eq!(std::fs::read_dir(root.path()).unwrap().count(), 2);
     }
 }

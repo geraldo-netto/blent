@@ -808,6 +808,13 @@ the new epoch and survives a delayed display-gate consumer. Extra slots apply
 the same rules through their session runtime; their transport migration still
 recreates that slot. Capture waits for current geometry before starting a helper.
 
+Daemon startup is arbitrated by an exclusive `daemon.lock` file in the validated
+runtime directory. The original open descriptor is retained through PID publication,
+startup failure and entry-level native exit drain. A contender still loading its
+configuration has no lease and cannot veto another start. The stable lock file is
+never unlinked; process exit releases the descriptor. PID files and process scans
+remain discovery hints, not startup authority.
+
 The CLI and GUI share the Linux CLI grammar and same-user daemon discovery.
 A PID file is a hint: its entry receives priority only after UID, liveness and
 full command-line validation. Missing, stale or diagnostic-command PID entries

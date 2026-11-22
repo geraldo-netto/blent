@@ -15,6 +15,11 @@ fn t1509_actual_daemon_retains_pid_and_reports_pending_cleanup() {
     run_fixture("drain.py");
 }
 
+#[test]
+fn t1695_concurrent_startup_has_one_owner_through_exit_drain() {
+    run_fixture("startup_lock.py");
+}
+
 fn run_fixture(script: &str) {
     let output = std::process::Command::new("/usr/bin/unshare")
         .args([
