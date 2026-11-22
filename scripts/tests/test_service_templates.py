@@ -58,6 +58,15 @@ package
             self.assertEqual(unit.read_text(), expected, 'T1710: package policy diverges from canonical renderer')
             self.assertEqual(unit.stat().st_mode & 0o777, 0o644)
             self.assertIn('SendSIGKILL=no', expected)
+            self.assert_setup_artifacts(source, output)
+
+    def assert_setup_artifacts(self, source, output):
+        # T1625: package resources remain byte-identical to the canonical owner.
+        shared = output / 'usr/share/blent'
+        for name in ['setup-system.sh', 'setup-evdi.sh', 'gpu-boot-order.sh']:
+            self.assertEqual((shared/name).read_bytes(), (source/'scripts'/name).read_bytes())
+        for name in ['blent-evdi.conf', 'blent-modules.conf', '60-blent-uinput.rules']:
+            self.assertEqual((shared/'setup'/name).read_bytes(), (source/'packaging'/name).read_bytes())
 
     def test_t1710_only_one_authoritative_unit_template(self):
         self.assertFalse((ROOT / 'packaging/blent.service').exists())

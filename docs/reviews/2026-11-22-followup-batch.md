@@ -56,3 +56,17 @@ permanent pin/minimum/documentation fixture failed at 1.90 and passes afterward.
 This is toolchain qualification, not a full application or distribution build.
 No production function or native session ownership changes.
 [Evidence](artifacts/2026-11-22-followup-batch/t1808/).
+
+## T1625 — installation integration
+
+All current routes consume the canonical service template and shared privileged
+setup where applicable. Added permanent Arch resource-byte checks and portable
+bundle checks for the shared setup and absence of a duplicate service template.
+The combined run passed 109 executed tests across source, Make, package staging,
+AppImage and setup fixtures; one mistyped module name failed discovery, then the
+actual identity module passed separately. All four artifact/parity tests also
+pass with the new assertions. No assertion was removed. Changed test functions
+pass complexity <=9. These isolated fixtures cover files, outcome policy and
+private native-loader behavior; no pacman transaction, privileged setup or live
+service reload was performed. Existing native module acceptance remains separate.
+[Evidence](artifacts/2026-11-22-followup-batch/t1625/).

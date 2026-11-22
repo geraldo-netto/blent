@@ -51,6 +51,9 @@ class DistributionTest(unittest.TestCase):
         self.assertEqual(os.readlink(staged / 'bin/libevdi.so.1'), 'libevdi.so.1.15.0')
         self.assertFalse((staged / 'bin/libevdi.so.1.15.0').is_symlink())
         test_notices.NoticeTest().verify_docs(staged)
+        self.assertEqual((staged/'scripts/setup-system.sh').read_bytes(),
+                         (root/'scripts/setup-system.sh').read_bytes(), 'T1625: missing shared setup')
+        self.assertFalse((staged/'packaging/blent.service').exists(), 'T1625: duplicate policy')
 
     def test_t102_apk_failure_and_bundled_helper_loading(self):
         for mode in ['failed-apk', 'missing-apk', 'success']:

@@ -1,0 +1,16 @@
+.....................................................................................................E........
+======================================================================
+ERROR: test_service_identity (unittest.loader._FailedTest.test_service_identity)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_service_identity
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'test_service_identity'
+
+
+----------------------------------------------------------------------
+Ran 110 tests in 202.742s
+
+FAILED (errors=1)
