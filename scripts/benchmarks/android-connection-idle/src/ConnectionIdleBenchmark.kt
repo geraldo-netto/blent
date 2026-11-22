@@ -1,7 +1,6 @@
 package com.blent.connection
 
 import java.nio.file.Files
-import java.nio.file.Path
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
@@ -156,6 +155,7 @@ private fun trial(fallback: Long, known: Boolean, counters: NativeCounters, cloc
 
 fun main(arguments: Array<String>) {
     require(arguments.size == 1)
+    val output = measurementOutput(arguments.single()).toPath()
     val counters = NativeCounters()
     val origin = System.nanoTime()
     val clock = { (System.nanoTime() - origin) / 1_000_000 }
@@ -173,7 +173,5 @@ fun main(arguments: Array<String>) {
         put("warmup_ms", 1000); put("idle_ms", 3000); put("hinted_samples_per_role", 32); put("missed_samples_per_role", 2)
         put("trials", JsonArray(results))
     }
-    val output = Path.of(arguments.single())
-    Files.createDirectories(output.parent)
     Files.write(output, (Json { prettyPrint = true }.encodeToString(JsonObject.serializer(), report) + "\n").toByteArray(Charsets.UTF_8))
 }

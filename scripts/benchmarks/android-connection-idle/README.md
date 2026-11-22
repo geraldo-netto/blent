@@ -18,7 +18,10 @@ audio device, network connection or application installation. The opt-in init
 script adds benchmark sources and their serialization dependency to hosted
 unit-test compilation only for this
 invocation; ordinary application and test builds retain their existing inputs.
-The permanent Python tool regressions exercise task registration and compilation.
+The permanent Python tool regressions exercise task registration, compilation and
+complete actor/allocation reports written through bare output filenames. Both
+entrypoints resolve and validate the output through the shared hosted helper
+before constructing measurement owners; filesystem-root outputs are rejected.
 
 ## What the experiment owns
 

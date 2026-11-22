@@ -1,0 +1,13 @@
+{
+  "item": "T1769",
+  "failing_before_entrypoint_cases": 2,
+  "passing_after_output_cases": 6,
+  "tunnel_cases": 20,
+  "complexity_functions": 90,
+  "maximum_complexity": 5,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI / Python 3.12 AST",
+  "observer_closures": 2,
+  "observer_maximum_complexity": 1,
+  "coverage": "benchmark/nonessential tool exemption",
+  "production_behavior_changed": false
+}

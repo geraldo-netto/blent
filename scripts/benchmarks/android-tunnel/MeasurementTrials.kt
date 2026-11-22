@@ -53,12 +53,6 @@ internal fun persistMeasurement(output: File, results: List<JsonObject>) {
     } finally { pending.delete() }
 }
 
-internal fun measurementOutput(path: String): File {
-    val output = File(path).absoluteFile
-    requireNotNull(output.parentFile) { "Output must name a file below a directory" }.mkdirs()
-    return output
-}
-
 internal fun runMeasurements(output: File, sample: (Int, Int, Boolean) -> JsonObject) {
     val results = mutableListOf<JsonObject>()
     repeat(4) { trial ->

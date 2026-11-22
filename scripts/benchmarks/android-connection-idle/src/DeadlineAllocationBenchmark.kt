@@ -1,7 +1,6 @@
 package com.blent.connection
 
 import java.nio.file.Files
-import java.nio.file.Path
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.serialization.json.*
 
@@ -38,6 +37,7 @@ private fun allocationTrial(combine: Boolean, escaping: Boolean, counters: Nativ
 
 fun main(arguments: Array<String>) {
     require(arguments.size == 1)
+    val output = measurementOutput(arguments.single()).toPath()
     val counters = NativeCounters()
     val results = buildJsonArray {
         for (combine in listOf(false, true)) for (escaping in listOf(false, true)) {
@@ -50,7 +50,5 @@ fun main(arguments: Array<String>) {
         put("java", System.getProperty("java.runtime.version")); put("warmup_iterations", 1_000_000)
         put("trials", results)
     }
-    val output = Path.of(arguments.single())
-    Files.createDirectories(output.parent)
     Files.write(output, (Json { prettyPrint = true }.encodeToString(JsonObject.serializer(), report) + "\n").toByteArray(Charsets.UTF_8))
 }

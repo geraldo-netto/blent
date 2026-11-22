@@ -1,0 +1,16 @@
+[
+  {
+    "name": "com.blent.connection.MeasurementOutputTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.IdleOutputTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  }
+]

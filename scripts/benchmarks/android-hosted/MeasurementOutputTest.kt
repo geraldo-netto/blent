@@ -4,7 +4,7 @@ import java.nio.file.Files
 import org.junit.Assert.*
 import org.junit.Test
 
-class TunnelOutputTest {
+class MeasurementOutputTest {
     @Test fun t1761FilesystemRootIsNotAnOutputFilename() {
         assertThrows(IllegalArgumentException::class.java) { measurementOutput(java.io.File.listRoots().first().path) }
     }

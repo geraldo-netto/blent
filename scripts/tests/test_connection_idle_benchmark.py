@@ -27,6 +27,10 @@ class ConnectionIdleBenchmarkTest(unittest.TestCase):
     def test_t918_hosted_counter_adapter_compiles_with_android_unit_sources(self):
         self.command([':app:compileDebugUnitTestKotlin'])
 
+    def test_t1769_entrypoints_publish_complete_reports_to_bare_filenames(self):
+        self.command([':app:testDebugUnitTest', '--tests', 'com.blent.connection.IdleOutputTest',
+                      '--tests', 'com.blent.connection.MeasurementOutputTest'])
+
 
 if __name__ == '__main__':
     unittest.main()

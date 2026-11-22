@@ -1,0 +1,21 @@
+{
+    "tool": "Groovy 3.0.17 compiler AST",
+    "results": [
+        {
+            "file": "/tmp/blent-t1769-observe.gradle",
+            "closures": [
+                {
+                    "line": 1,
+                    "complexity": 1
+                },
+                {
+                    "line": 2,
+                    "complexity": 1
+                }
+            ],
+            "methods": [
+                
+            ]
+        }
+    ]
+}

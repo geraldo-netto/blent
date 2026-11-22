@@ -167,3 +167,35 @@ coverage is exempt. All 28 trials preserve source hashes. Evidence:
 `artifacts/2026-11-22-allocations/t1766/`. No production code, installed session or
 saved setting changed. The measurement and policy decision are one cohesive outcome;
 no pool implementation is claimed.
+
+## T1769: shared benchmark output paths
+
+Both idle benchmark entrypoints now resolve and validate their destination before
+constructing measurement owners. A bare filename writes its complete report in the
+working directory; a filesystem root is rejected as a filename. The existing
+correct tunnel helper and its three T1761/T1764 regressions moved to the shared
+android-hosted source set, with one implementation and current callers updated.
+The shared test class is MeasurementOutputTest; no old alias or wrapper remains.
+
+Two permanent entrypoint regressions failed before the fix: the complete seven-trial
+actor run and four-case allocation run each ended in a null-parent exception for
+a bare filename. The same tests now pass and check their complete report counts.
+A third entrypoint test rejects root paths for both programs. Shared bare, absolute
+and root helper cases also pass, giving six hosted output cases across two classes.
+The normal Python idle-tool fixture invokes these regressions; the tunnel fixture
+uses the moved shared tests. Benchmark coverage remains exempt; these correctness
+regressions remain in the normal tool suite.
+
+The helper retains only its local File/path values and creates the requested
+parent before any actor or probe admission. Existing actor and probe lifetimes
+are unchanged; each original actor executor is still stopped and joined before
+report publication. Regression filenames have unique owned identities and are
+removed in finally on success or failure; absolute-path test directories remain
+scoped to their owned temporary directory. Invalid roots admit no measurement
+owners. Host filename/path limits remain filesystem constraints, not new invented
+capacity or compatibility rules. No installed session is involved.
+
+The repository checker measures 90 Kotlin/Python functions, maximum complexity 5.
+The temporary Gradle progress observer has two closures, both complexity 1 under
+Groovy 3.0.17 compiler AST. Evidence:
+`artifacts/2026-11-22-allocations/t1769/`.
