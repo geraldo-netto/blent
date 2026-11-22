@@ -55,9 +55,7 @@ internal class StreamConnectionIo(
     private fun validate(request: ConnectionIoRequest) {
         when (request) {
             is ConnectionIoRequest.Read -> validateBuffer(request.loan)
-            is ConnectionIoRequest.Write -> validateBuffer(request.loan)
             is ConnectionIoRequest.WriteFlushed -> validateTransaction(request.loan)
-            is ConnectionIoRequest.Flush -> Unit
         }
     }
     private fun validateTransaction(loan: ConnectionWriteTransaction) {
@@ -97,8 +95,6 @@ internal class StreamConnectionIo(
     }
     private fun perform(request: ConnectionIoRequest): Int = when (request) {
         is ConnectionIoRequest.Read -> request.loan.let { input.read(it.bytes, it.offset, it.length) }
-        is ConnectionIoRequest.Write -> request.loan.let { output.write(it.bytes, it.offset, it.length); it.length }
-        is ConnectionIoRequest.Flush -> { output.flush(); 0 }
         is ConnectionIoRequest.WriteFlushed -> writeFlushed(request.loan)
     }
     private fun writeFlushed(loan: ConnectionWriteTransaction): Int {

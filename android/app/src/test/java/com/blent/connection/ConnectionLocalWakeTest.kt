@@ -85,8 +85,7 @@ class ConnectionLocalWakeTest {
             rig.discardHints()
             assertTrue(rig.protocol.host.offer(1, byteArrayOf(7, 8, 9)))
             rig.protocol.hostDrain(); rig.step()
-            rig.hintStep() // Exact stream write completion enables flush.
-            rig.hintStep() // Flush completion returns the borrowed ring receipt.
+            rig.hintStep() // T1758: one write-and-flush completion returns the borrowed ring receipt.
             val received = ByteArray(3)
             DataInputStream(socket.getInputStream()).readFully(received)
             assertArrayEquals(byteArrayOf(7, 8, 9), received)

@@ -1,0 +1,55 @@
+{
+  "scope": "Different hosted runs, not paired causal or native acceptance evidence",
+  "baseline": "T1763",
+  "current": "T1758",
+  "comparisons": [
+    {
+      "fps": 0,
+      "payload_bytes": 64,
+      "consumer_cpu_ratio": 0.8177419155109187,
+      "consumer_p95_ratio": 0.7552204460329506
+    },
+    {
+      "fps": 0,
+      "payload_bytes": 4096,
+      "consumer_cpu_ratio": 0.7093822776170593,
+      "consumer_p95_ratio": 0.7105354252621928
+    },
+    {
+      "fps": 0,
+      "payload_bytes": 16384,
+      "consumer_cpu_ratio": 0.8181683731890121,
+      "consumer_p95_ratio": 0.8303212307158577
+    },
+    {
+      "fps": 0,
+      "payload_bytes": 65536,
+      "consumer_cpu_ratio": 0.7094738968149578,
+      "consumer_p95_ratio": 1.2119956812022123
+    },
+    {
+      "fps": 60,
+      "payload_bytes": 64,
+      "consumer_cpu_ratio": 0.8698903939147961,
+      "consumer_p95_ratio": 0.7336890909305408
+    },
+    {
+      "fps": 60,
+      "payload_bytes": 4096,
+      "consumer_cpu_ratio": 0.9652527181849003,
+      "consumer_p95_ratio": 0.9677933261571582
+    },
+    {
+      "fps": 60,
+      "payload_bytes": 16384,
+      "consumer_cpu_ratio": 0.8459664584817213,
+      "consumer_p95_ratio": 0.8849775678866588
+    },
+    {
+      "fps": 60,
+      "payload_bytes": 65536,
+      "consumer_cpu_ratio": 0.9378763194326909,
+      "consumer_p95_ratio": 1.0822554764215615
+    }
+  ]
+}

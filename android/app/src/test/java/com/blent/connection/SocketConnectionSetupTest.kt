@@ -39,10 +39,8 @@ class SocketConnectionSetupTest {
             assertEquals(4096, backend.negotiate(4096, 3000))
             val owned = backend.io {}; io = owned
             rejected { backend.io {} }; rejected { backend.negotiate(4096, 3000) }
-            val write = ConnectionIoRequest.Write(ConnectionBuffer(byteArrayOf(42), 0, 1))
+            val write = ConnectionIoRequest.WriteFlushed(ConnectionWriteTransaction(ConnectionBuffer(byteArrayOf(42), 0, 1)))
             assertTrue(owned.submit(write)); until { owned.poll()?.request === write }
-            val flush = ConnectionIoRequest.Flush(ConnectionFlush())
-            assertTrue(owned.submit(flush)); until { owned.poll()?.request === flush }
             val bytes = ByteArray(1); val read = ConnectionIoRequest.Read(ConnectionBuffer(bytes, 0, 1))
             assertTrue(owned.submit(read)); until { owned.poll()?.request === read }
             assertEquals(43, bytes[0].toInt())

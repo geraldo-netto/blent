@@ -47,7 +47,6 @@ internal class ConnectionSessionRunner(
             when (val request = completion.request) {
                 is ConnectionIoRequest.Read -> readComplete(request, completion, now)
                 is ConnectionIoRequest.WriteFlushed -> writeComplete(request, completion, now)
-                else -> error("Unexpected native tunnel completion")
             }
         }
     }

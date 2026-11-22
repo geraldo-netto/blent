@@ -5,7 +5,6 @@ package com.blent.connection
  * completion. Cancellation never establishes completion or permits buffer reuse.
  * These types grant neither authenticated identity nor resource authority. */
 internal class ConnectionBuffer internal constructor(val bytes: ByteArray, val offset: Int, val length: Int)
-internal class ConnectionFlush internal constructor()
 
 /** T1759 ordered prefix followed by an optional second slice, then one flush.
  * A successful completion of length bytes acknowledges the final flush too.

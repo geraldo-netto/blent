@@ -44,17 +44,28 @@ internal class LocalPumpRig(block: Int = 8) {
 }
 
 class ConnectionLocalPumpTest {
+    @Test fun t1758OneNativeCompletionFlushesAndReleasesTheExactLocalRingReceipt() {
+        val rig = LocalPumpRig(); val receipt = rig.incoming()
+        rig.pump.advance(0)
+        val request = rig.io.requests.single { it !is ConnectionIoRequest.Read }
+        assertTrue(rig.endpoint.consumed.isEmpty())
+        rig.io.complete(request, receipt.length); rig.pump.advance(1)
+        assertSame(receipt, rig.endpoint.consumed.single())
+        assertEquals(1, rig.io.requests.count { it !is ConnectionIoRequest.Read })
+        assertNull(rig.pump.failure())
+    }
+
+
     @Test fun t905DirectRingLoanWaitsForAllWritesAndFlushWhileReaderStaysIdle() {
         val rig = LocalPumpRig(); val receipt = rig.incoming()
         rig.pump.advance(0)
         val read = rig.io.read(); val first = rig.io.write()
-        assertSame(receipt.bytes, first.loan.bytes); assertEquals(1, first.loan.offset)
+        assertSame(receipt.bytes, first.loan.first.bytes); assertEquals(1, first.loan.first.offset)
         rig.io.complete(first, 1); rig.pump.advance(1)
         val rest = rig.io.write()
-        assertSame(receipt.bytes, rest.loan.bytes); assertEquals(2, rest.loan.offset); assertEquals(2, rest.loan.length)
-        rig.io.complete(rest, 2); rig.pump.advance(2)
-        assertTrue(rig.endpoint.consumed.isEmpty())
-        rig.io.complete(rig.io.flush(), 0); rig.pump.advance(3)
+        assertSame(receipt.bytes, rest.loan.first.bytes); assertEquals(2, rest.loan.first.offset); assertEquals(2, rest.loan.length)
+        assertNull(rest.loan.second); assertTrue(rig.endpoint.consumed.isEmpty())
+        rig.io.complete(rest, 2); rig.pump.advance(3)
         assertSame(receipt, rig.endpoint.consumed.single()); assertSame(read, rig.io.read())
         assertNull(rig.pump.failure()); assertFalse(rig.pump.retired()); assertFalse(rig.pump.quarantined())
     }
@@ -101,8 +112,8 @@ class ConnectionLocalPumpTest {
         val rig = LocalPumpRig(); rig.pump.advance(0); val read = rig.io.read()
         rig.pump.advance(1000); assertNull(rig.pump.failure()); assertSame(read, rig.io.read())
         rig.incoming(); rig.pump.advance(1001)
-        rig.io.complete(rig.io.write(), 3); rig.pump.advance(1009)
-        rig.io.complete(rig.io.flush(), 0); rig.pump.advance(1011)
+        rig.io.complete(rig.io.write(), 1); rig.pump.advance(1009)
+        rig.io.complete(rig.io.write(), 2); rig.pump.advance(1011)
         assertNotNull(rig.pump.failure()); assertTrue(rig.endpoint.consumed.isEmpty())
     }
     @Test fun t905RevocationSuppressesLateCompletionWithoutReleasingBorrowedRing() {
@@ -126,20 +137,20 @@ class ConnectionLocalPumpTest {
         rig.io.complete(foreign, 1); rig.pump.advance(1)
         assertNotNull(rig.pump.failure()); assertTrue(rig.endpoint.sent.isEmpty())
     }
-    @Test fun t905InvalidWriterProgressAndForeignFlushNeverReturnCredit() {
+    @Test fun t905InvalidWriterProgressAndForeignTransactionNeverReturnCredit() {
         for (count in listOf(Int.MIN_VALUE, -1, 0, 4, Int.MAX_VALUE)) {
             val rig = LocalPumpRig(); rig.incoming(); rig.pump.advance(0)
             rig.io.complete(rig.io.write(), count); rig.pump.advance(1)
             assertNotNull(rig.pump.failure()); assertTrue(rig.endpoint.consumed.isEmpty())
         }
         val rig = LocalPumpRig(); rig.incoming(); rig.pump.advance(0)
-        rig.io.complete(ConnectionIoRequest.Flush(ConnectionFlush()), 0); rig.pump.advance(1)
+        rig.io.complete(rig.io.write().copy(), 0); rig.pump.advance(1)
         assertNotNull(rig.pump.failure()); assertTrue(rig.endpoint.consumed.isEmpty())
     }
-    @Test fun t905FlushCountAndNativeErrorsRetainOriginalFailure() {
+    @Test fun t905FinalTransactionCountAndNativeErrorsRetainOriginalFailure() {
         val rig = LocalPumpRig(); rig.incoming(); rig.pump.advance(0)
-        rig.io.complete(rig.io.write(), 3); rig.pump.advance(1)
-        rig.io.complete(rig.io.flush(), 1); rig.pump.advance(2)
+        rig.io.complete(rig.io.write(), 1); rig.pump.advance(1)
+        rig.io.complete(rig.io.write(), 3); rig.pump.advance(2)
         assertNotNull(rig.pump.failure()); assertTrue(rig.endpoint.consumed.isEmpty())
         val failure = IOException("read failed"); val other = LocalPumpRig(); other.pump.advance(0)
         other.io.complete(other.io.read(), 0, failure); other.pump.advance(1)
@@ -167,7 +178,7 @@ class ConnectionLocalPumpTest {
         for ((offset, length) in listOf(-1 to 1, 6 to 1, 0 to 0, 0 to 9, 4 to 2, Int.MAX_VALUE to Int.MAX_VALUE)) {
             val rig = LocalPumpRig(); rig.incoming(ByteArray(5), offset, length); rig.pump.advance(0)
             assertNotNull(rig.pump.failure())
-            assertTrue(rig.io.requests.none { it is ConnectionIoRequest.Write })
+            assertTrue(rig.io.requests.none { it is ConnectionIoRequest.WriteFlushed })
             assertTrue(rig.endpoint.consumed.isEmpty())
         }
     }
@@ -201,12 +212,12 @@ class ConnectionLocalPumpTest {
     }
     @Test fun t905CancelledFlushAndRejectedWriteNeverAcknowledgeBorrow() {
         val rig = LocalPumpRig(); rig.incoming(); rig.pump.advance(0)
-        rig.io.complete(rig.io.write(), 3); rig.pump.advance(1)
-        rig.pump.stop(2); rig.io.complete(rig.io.flush(), 0); rig.pump.advance(3)
+        rig.io.complete(rig.io.write(), 1); rig.pump.advance(1)
+        rig.pump.stop(2); rig.io.complete(rig.io.write(), 2); rig.pump.advance(3)
         assertTrue(rig.endpoint.consumed.isEmpty()); assertFalse(rig.pump.retired())
         val rejected = LocalPumpRig(); rejected.incoming()
         val io = object : ConnectionIo by rejected.io {
-            override fun submit(request: ConnectionIoRequest) = if (request is ConnectionIoRequest.Write) false else rejected.io.submit(request)
+            override fun submit(request: ConnectionIoRequest) = if (request is ConnectionIoRequest.WriteFlushed) false else rejected.io.submit(request)
         }
         val pump = ConnectionLocalPump(rejected.endpoint, rejected.lease, 1, io, 8)
         pump.advance(0)
@@ -261,10 +272,10 @@ class ConnectionLocalPumpTest {
             while (written < expected.size) {
                 val request = rig.io.write()
                 val count = 1 + random.nextInt(request.loan.length)
-                assertArrayEquals(expected.copyOfRange(written, written + count), request.loan.bytes.copyOfRange(request.loan.offset, request.loan.offset + count))
+                assertArrayEquals(expected.copyOfRange(written, written + count), request.loan.first.bytes.copyOfRange(request.loan.first.offset, request.loan.first.offset + count))
+                assertTrue(rig.endpoint.consumed.isEmpty())
                 rig.io.complete(request, count); rig.pump.advance(2); written += count
             }
-            assertTrue(rig.endpoint.consumed.isEmpty()); rig.io.complete(rig.io.flush(), 0); rig.pump.advance(3)
             assertSame(receipt, rig.endpoint.consumed.single()); assertArrayEquals(expected, rig.endpoint.sent.single())
             assertNull(rig.pump.failure())
         }

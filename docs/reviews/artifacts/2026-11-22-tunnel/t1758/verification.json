@@ -1,0 +1,27 @@
+{
+  "item": "T1758",
+  "hosted_cases": 811,
+  "hosted_classes": 107,
+  "failures": 0,
+  "production_functions": 80,
+  "minimum_function_line_coverage": 100.0,
+  "complexity_functions": 552,
+  "maximum_complexity": 9,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI",
+  "benchmark_hosted_cases": 11,
+  "benchmark_hosted_classes": 3,
+  "interop": [
+    {
+      "name": "com.blent.connection.SecureConnectionInteropTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "local_trials": 64,
+  "unchanged_measurement_inputs": true,
+  "before_regression": "t1758OneNativeCompletionFlushesAndReleasesTheExactLocalRingReceipt failed: receipt not consumed",
+  "native_flush_oracles": "Three actual-worker tests pass before and after; retain receipt until flush, through expiry and failure",
+  "native_acceptance": "Not run; no installed session touched"
+}

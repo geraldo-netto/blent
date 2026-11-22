@@ -10,7 +10,7 @@ class ConnectionSessionRunnerTest {
         val frame = rig.frame(ByteArray(4096) { it.toByte() })
         val runner = ConnectionSessionRunner(rig.session, rig.io, ConnectionRunLimits(write = ConnectionWritePolicy(16384)))
         rig.session.output.add(frame); runner.advance(0)
-        val request = rig.io.frameWrite()
+        val request = rig.io.write()
         assertNull("T1760 configured small-frame policy must gather the header and payload", request.loan.second)
         assertEquals(40 + frame.length, request.loan.first.length)
         val slice = request.loan.first
@@ -38,10 +38,10 @@ class ConnectionSessionRunnerTest {
         val rig = ConnectionRunnerRig()
         val frame = rig.frame(); rig.session.output.add(frame)
         rig.runner.advance(0)
-        val read = rig.io.read(); val header = rig.io.frameWrite()
+        val read = rig.io.read(); val header = rig.io.write()
         assertEquals(40, header.loan.first.length); rig.io.complete(header, header.loan.first.length)
         rig.runner.advance(1)
-        val body = rig.io.frameWrite(); assertSame(frame.bytes, body.loan.first.bytes)
+        val body = rig.io.write(); assertSame(frame.bytes, body.loan.first.bytes)
         assertTrue(rig.session.written.isEmpty())
         rig.io.complete(body, body.loan.length); rig.runner.advance(3)
         assertSame(frame, rig.session.written.single()); assertSame(read, rig.io.read())
@@ -62,11 +62,11 @@ class ConnectionSessionRunnerTest {
     @Test fun t883PartialReadsDeliverExactFramesWhileWriterRemainsBlocked() {
         val rig = ConnectionRunnerRig(); val frame = rig.frame(ByteArray(512) { it.toByte() })
         rig.session.output.add(frame); rig.runner.advance(0)
-        val write = rig.io.frameWrite()
+        val write = rig.io.write()
         receive(rig, rig.encoded(frame), 7)
         assertArrayEquals(frame.bytes, rig.session.input.single().bytes)
         assertEquals(frame.header, rig.session.input.single().header)
-        assertSame(write, rig.io.frameWrite()); assertTrue(rig.session.written.isEmpty())
+        assertSame(write, rig.io.write()); assertTrue(rig.session.written.isEmpty())
         assertNull(rig.runner.failure())
     }
     @Test fun t883WriteDeadlineQuarantinesUntilActualNativeRetirement() {
@@ -89,7 +89,7 @@ class ConnectionSessionRunnerTest {
     }
     @Test fun t883CancelledExactCallbacksRetireWithoutDeliveringPartialMedia() {
         val rig = ConnectionRunnerRig(); rig.session.output.add(rig.frame()); rig.runner.advance(0)
-        val read = rig.io.read(); val write = rig.io.frameWrite()
+        val read = rig.io.read(); val write = rig.io.write()
         rig.runner.stop(1); rig.runner.stop(1)
         rig.io.complete(read, -1, IOException("cancelled")); rig.io.complete(write, -1, IOException("cancelled"))
         rig.runner.advance(2)

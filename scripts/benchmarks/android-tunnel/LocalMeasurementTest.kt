@@ -13,7 +13,7 @@ class LocalMeasurementTest {
             assertEquals("loopback_tcp_local_stream_analogue", result.getValue("transport").jsonPrimitive.content)
             assertEquals(0, result.getValue("tls_application_records").jsonPrimitive.int)
             assertTrue(result.getValue("driver_and_io_cpu_ns").jsonPrimitive.long > 0)
-            assertEquals(if (direct) 4L else 6L, result.getValue("native_completions_including_ack").jsonPrimitive.long)
+            assertEquals(4L, result.getValue("native_completions_including_ack").jsonPrimitive.long)
         }
     }
     @Test fun t1763FiniteTrialBoundsRejectBeforeNativeAdmission() {

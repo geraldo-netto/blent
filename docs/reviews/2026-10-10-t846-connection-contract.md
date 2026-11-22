@@ -1018,7 +1018,8 @@ owners. Native adapters receive exact borrowed array ranges and return them only
 after the original operation finishes. T1759 groups up to two write slices plus
 flush into one bounded transaction (at most 40 + 65,536 bytes); a full successful
 completion acknowledges flush, while a shorter result acknowledges only its
-written prefix. Generic local-stream writes/flush remain separate. Header/body offsets
+written prefix. T1758 local-stream writes use that same transaction with one borrowed
+slice and no gathering. Header/body offsets
 survive short reads/writes and zero progress. The reader has a fixed 64 KiB body
 buffer; the writer retains the caller-owned payload until final flush. Its
 next-connection write policy can gather payloads up to 16 KiB with their header

@@ -66,8 +66,9 @@ holds the original payload through exact write/flush completion; neither mode
 copies payloads. Prefix/suffix sentinels and peer byte checks detect wrong ranges.
 Both use TCP_NODELAY, private five-second setup/read deadlines and one ACK per
 payload. This is Linux JDK TCP, not Android LocalSocket or a full resource pump.
-The direct control quantifies potential coordination savings; it does not by itself
-establish the gain of a future consumer implementation. Later runs always use the
+Both modes now submit one native write-and-flush transaction per payload. The
+direct control measures remaining consumer bookkeeping; comparison to historical
+baselines also changes measurement runs and cannot isolate causality by itself. Later runs always use the
 current consumer source, so historical baselines remain artifacts rather than
 executable legacy paths. The shared `tls_application_records` field is known zero
 for this explicitly plaintext transport, not a TLS measurement.

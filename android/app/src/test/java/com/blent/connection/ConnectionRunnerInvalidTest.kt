@@ -5,10 +5,10 @@ import org.junit.Test
 import java.io.IOException
 
 class ConnectionRunnerInvalidTest {
-    @Test fun t1759ForeignTransactionAndNonTunnelCompletionCannotReleaseCredit() {
+    @Test fun t1759ForeignTransactionAndUnownedReadCannotReleaseCredit() {
         for (foreign in listOf(false, true)) {
             val rig = ConnectionRunnerRig(); rig.session.output.add(rig.frame()); rig.runner.advance(0)
-            val request = if (foreign) rig.io.frameWrite().copy() else ConnectionIoRequest.Flush(ConnectionFlush())
+            val request = if (foreign) rig.io.write().copy() else rig.io.read().copy()
             rig.io.complete(request, 43); rig.runner.advance(1)
             assertNotNull(rig.runner.failure()); assertTrue(rig.io.stopping)
             assertTrue(rig.session.written.isEmpty()); assertFalse(rig.runner.retired())
@@ -21,7 +21,7 @@ class ConnectionRunnerInvalidTest {
         assertTrue(rig.runner.failure() is IllegalArgumentException); assertTrue(rig.io.stopping)
         assertFalse(rig.runner.retired())
         val writing = ConnectionRunnerRig(); writing.session.output.add(writing.frame()); writing.runner.advance(0)
-        val first = writing.io.frameWrite(); writing.io.complete(first, 1); writing.runner.advance(1)
+        val first = writing.io.write(); writing.io.complete(first, 1); writing.runner.advance(1)
         writing.io.complete(first, 1); writing.runner.advance(2)
         assertTrue(writing.runner.failure() is IllegalArgumentException)
         assertTrue(writing.session.written.isEmpty())
@@ -32,7 +32,7 @@ class ConnectionRunnerInvalidTest {
             reading.io.complete(reading.io.read(), count); reading.runner.advance(1)
             assertNotNull(reading.runner.failure()); assertTrue(reading.session.input.isEmpty())
             val writing = ConnectionRunnerRig(); writing.session.output.add(writing.frame()); writing.runner.advance(0)
-            writing.io.complete(writing.io.frameWrite(), if (count == 41) 44 else count); writing.runner.advance(1)
+            writing.io.complete(writing.io.write(), if (count == 41) 44 else count); writing.runner.advance(1)
             assertNotNull(writing.runner.failure()); assertTrue(writing.session.written.isEmpty())
         }
     }
@@ -47,7 +47,7 @@ class ConnectionRunnerInvalidTest {
         for (write in listOf(false, true)) {
             val rig = ConnectionRunnerRig(); rig.session.output.add(rig.frame()); rig.runner.advance(0)
             val failure = IOException("native I/O")
-            val request = if (write) rig.io.frameWrite() else rig.io.read()
+            val request = if (write) rig.io.write() else rig.io.read()
             rig.io.complete(request, 0, failure); rig.runner.advance(1)
             assertSame(failure, rig.runner.failure()); assertTrue(rig.io.stopping)
             rig.io.gone = true; rig.io.closeError = IOException("close"); rig.runner.advance(2)
@@ -56,12 +56,12 @@ class ConnectionRunnerInvalidTest {
     }
     private fun flushing(): ConnectionRunnerRig {
         val rig = ConnectionRunnerRig(); rig.session.output.add(rig.frame()); rig.runner.advance(0)
-        rig.io.complete(rig.io.frameWrite(), 40); rig.runner.advance(1)
-        rig.io.complete(rig.io.frameWrite(), 2); rig.runner.advance(2)
+        rig.io.complete(rig.io.write(), 40); rig.runner.advance(1)
+        rig.io.complete(rig.io.write(), 2); rig.runner.advance(2)
         return rig
     }
     @Test fun t883FinalTransactionCannotOverclaimBytesOrOutliveDeadline() {
-        val invalid = flushing(); invalid.io.complete(invalid.io.frameWrite(), 2); invalid.runner.advance(3)
+        val invalid = flushing(); invalid.io.complete(invalid.io.write(), 2); invalid.runner.advance(3)
         assertNotNull(invalid.runner.failure()); assertTrue(invalid.session.written.isEmpty())
         val stalled = flushing(); stalled.runner.advance(10)
         assertNotNull(stalled.runner.failure()); assertTrue(stalled.io.stopping)
@@ -70,7 +70,7 @@ class ConnectionRunnerInvalidTest {
     @Test fun t883BoundedZeroProgressAndMalformedHeadersKeepAbsoluteDeadline() {
         val rig = ConnectionRunnerRig(); rig.session.output.add(rig.frame()); rig.runner.advance(0)
         repeat(64) {
-            rig.io.complete(rig.io.read(), 0); rig.io.complete(rig.io.frameWrite(), 0); rig.runner.advance(1)
+            rig.io.complete(rig.io.read(), 0); rig.io.complete(rig.io.write(), 0); rig.runner.advance(1)
         }
         rig.runner.advance(10); assertNotNull(rig.runner.failure()); assertTrue(rig.io.stopping)
         val corrupt = ConnectionRunnerRig(); corrupt.runner.advance(0)

@@ -28,12 +28,15 @@ class StreamConnectionIoTest {
     private fun read(bytes: ByteArray = ByteArray(8), offset: Int = 0, length: Int = bytes.size) =
         ConnectionIoRequest.Read(ConnectionBuffer(bytes, offset, length))
     private fun write(bytes: ByteArray = byteArrayOf(1, 2), offset: Int = 0, length: Int = bytes.size) =
-        ConnectionIoRequest.Write(ConnectionBuffer(bytes, offset, length))
+        ConnectionIoRequest.WriteFlushed(ConnectionWriteTransaction(ConnectionBuffer(bytes, offset, length)))
     private fun retire(io: ConnectionIo) { io.stop(); await(io::retired) }
     private fun latch(latch: CountDownLatch) { check(latch.await(3, TimeUnit.SECONDS)) { "T883 worker never entered" } }
 
     @Test fun t883StreamsPreservePartialReadOffsetsEofAndWriteFlush() {
-        val output = ByteArrayOutputStream()
+        val output = object : ByteArrayOutputStream() {
+            var flushes = 0
+            override fun flush() { flushes++ }
+        }
         val io = StreamConnectionIo(ByteArrayInputStream(byteArrayOf(7, 8)), output)
         try {
             assertNull(io.poll()); assertFalse(io.retired())
@@ -44,8 +47,7 @@ class StreamConnectionIoTest {
             assertTrue(io.submit(read())); assertEquals(-1, completion(io).count)
             val sending = write(byteArrayOf(3, 4, 5, 6), 1, 2)
             assertTrue(io.submit(sending)); assertEquals(2, completion(io).count)
-            val flush = ConnectionIoRequest.Flush(ConnectionFlush())
-            assertTrue(io.submit(flush)); assertSame(flush, completion(io).request)
+            assertEquals(1, output.flushes)
             assertArrayEquals(byteArrayOf(4, 5), output.toByteArray()); assertNull(io.closeFailure())
         } finally { retire(io) }
         assertFalse(io.submit(read())); assertNull(io.poll())
@@ -77,9 +79,9 @@ class StreamConnectionIoTest {
         })
         try {
             val first = write(byteArrayOf(9)); assertTrue(io.submit(first)); latch(output)
-            assertFalse(io.submit(write())); assertFalse(io.submit(ConnectionIoRequest.Flush(ConnectionFlush())))
+            assertFalse(io.submit(write())); assertFalse(io.submit(write(byteArrayOf(7))))
             assertSame(first, completion(io).request)
-            assertTrue(io.submit(ConnectionIoRequest.Flush(ConnectionFlush()))); completion(io)
+            assertTrue(io.submit(write(byteArrayOf(7)))); completion(io)
         } finally { retire(io) }
     }
     @Test fun t883BothCompletedDirectionsArePolledFairly() {
@@ -94,17 +96,20 @@ class StreamConnectionIoTest {
         } finally { retire(io) }
     }
     @Test fun t883NativeReadWriteAndFlushFailuresPreserveExactReceipt() {
+        val failWrite = java.util.concurrent.atomic.AtomicBoolean(true)
         val io = StreamConnectionIo(object : InputStream() {
             override fun read(): Int = throw IOException("read")
         }, object : OutputStream() {
-            override fun write(value: Int) { throw IOException("write") }
+            override fun write(value: Int) { if (failWrite.get()) throw IOException("write") }
             override fun flush() { throw IOException("flush") }
         })
         try {
-            for (request in listOf(read(), write(), ConnectionIoRequest.Flush(ConnectionFlush()))) {
+            for ((request, message) in listOf(read() to "read", write() to "write", write() to "flush")) {
+                if (message == "flush") failWrite.set(false)
                 assertTrue(io.submit(request))
                 val result = completion(io)
                 assertSame(request, result.request); assertTrue(result.failure is IOException); assertEquals(0, result.count)
+                assertEquals(message, result.failure?.message)
             }
         } finally { retire(io) }
     }
@@ -166,7 +171,7 @@ class StreamConnectionIoTest {
             val sending = write(); assertTrue(io.submit(sending)); latch(entered)
             val reading = read(); assertTrue(io.submit(reading))
             assertSame(reading, completion(io).request)
-            assertFalse(io.submit(ConnectionIoRequest.Flush(ConnectionFlush())))
+            assertFalse(io.submit(write(byteArrayOf(7))))
             io.stop(); await(io::retired)
             assertSame(sending, completion(io).request)
         } finally { release.countDown(); retire(io) }

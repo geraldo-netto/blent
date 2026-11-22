@@ -22,9 +22,7 @@ internal class RunnerIo : ConnectionIo {
         results.addLast(ConnectionIoCompletion(request, count, failure))
     }
     fun read(): ConnectionIoRequest.Read = requests.filterIsInstance<ConnectionIoRequest.Read>().last()
-    fun write(): ConnectionIoRequest.Write = requests.filterIsInstance<ConnectionIoRequest.Write>().last()
-    fun frameWrite(): ConnectionIoRequest.WriteFlushed = requests.filterIsInstance<ConnectionIoRequest.WriteFlushed>().last()
-    fun flush(): ConnectionIoRequest.Flush = requests.filterIsInstance<ConnectionIoRequest.Flush>().last()
+    fun write(): ConnectionIoRequest.WriteFlushed = requests.filterIsInstance<ConnectionIoRequest.WriteFlushed>().last()
 }
 
 internal class RunnerSession : ConnectionSession by TabletSession(

@@ -42,21 +42,22 @@ class LocalSpeakerProtocolTest {
     }
     private fun consume(io: RunnerIo, count: Int, local: ConnectionLocalResources, rig: TabletSessionRig): ByteArray {
         val bytes = ByteArrayOutputStream(); var cursor = 0
-        var lastFlush: ConnectionIoRequest.Flush? = null
+        var lastFlushed: ConnectionIoRequest.WriteFlushed? = null
         repeat(4096) {
             while (cursor < io.requests.size) {
                 when (val request = io.requests[cursor++]) {
-                    is ConnectionIoRequest.WriteFlushed -> error("Tunnel transaction reached local consumer")
                     is ConnectionIoRequest.Read -> Unit
-                    is ConnectionIoRequest.Write -> {
+                    is ConnectionIoRequest.WriteFlushed -> {
                         val size = minOf(7, request.loan.length)
-                        bytes.write(request.loan.bytes, request.loan.offset, size); io.complete(request, size)
+                        val slice = request.loan.first
+                        assertNull(request.loan.second)
+                        bytes.write(slice.bytes, slice.offset, size); io.complete(request, size)
+                        if (size == request.loan.length) lastFlushed = request
                     }
-                    is ConnectionIoRequest.Flush -> { io.complete(request, 0); lastFlush = request }
                 }
             }
             local.advance(0); rig.pump()
-            if (bytes.size() == count && io.requests.lastOrNull() === lastFlush && io.results.isEmpty()) return bytes.toByteArray()
+            if (bytes.size() == count && io.requests.lastOrNull() === lastFlushed && io.results.isEmpty()) return bytes.toByteArray()
         }
         error("T984 bounded local PCM writes did not finish")
     }

@@ -129,13 +129,15 @@ internal class LocalChannelProducer(private val block: Int, timeoutMs: Long) : C
     override fun nextDeadline(): ConnectionDeadline = clock.nextDeadline()
 }
 
-/** Serialized local consumer keeps the ring receipt while partial writes and
- * flush are pending. No credit or array reuse on cancellation, failure or timeout. */
+/** Serialized local consumer keeps the ring receipt through the exact combined
+ * write/flush transaction, including partial prefix progress. No credit or array
+ * reuse on cancellation, failure or timeout. Its caller stops the native channel
+ * on any completion error; a failed transaction must never be retried. */
 internal class LocalChannelConsumer(private val block: Int, timeoutMs: Long) : ConnectionDeadlineSource {
     private val clock = ConnectionFrameClock(timeoutMs)
     private var receipt: ConnectionChannelRead? = null
     private var offset = 0
-    private var native: ConnectionIoRequest? = null
+    private var native: ConnectionIoRequest.WriteFlushed? = null
     init { require(block in 1..ConnectionWire.MAX_PAYLOAD) }
 
     fun tick(now: Long) = clock.check(now)
@@ -152,29 +154,25 @@ internal class LocalChannelConsumer(private val block: Int, timeoutMs: Long) : C
             clock.start(now)
         }
         val read = checkNotNull(receipt)
-        val request = if (offset < read.length) ConnectionIoRequest.Write(ConnectionBuffer(read.bytes, read.offset + offset, read.length - offset))
-            else ConnectionIoRequest.Flush(ConnectionFlush())
+        val loan = ConnectionWriteTransaction(ConnectionBuffer(read.bytes, read.offset + offset, read.length - offset))
+        val request = ConnectionIoRequest.WriteFlushed(loan)
         native = request
         check(io.submit(request)) { "Local write admission lost" }
     }
     fun complete(result: ConnectionIoCompletion, endpoint: ConnectionEndpoints, lease: ConnectionResourceLease, channel: Int, stopped: Boolean, now: Long) {
-        require(native != null && result.request === native) { "Foreign or retired local write" }
+        val request = checkNotNull(native)
+        require(result.request === request) { "Foreign or retired local write" }
         native = null
         if (stopped) return
         result.failure?.let { throw it }
         clock.check(now)
-        when (val request = result.request) {
-            is ConnectionIoRequest.Write -> {
-                require(result.count in 1..request.loan.length) { "Invalid local write progress" }
-                offset += result.count
-            }
-            is ConnectionIoRequest.Flush -> {
-                require(result.count == 0)
-                endpoint.consumed(lease, channel, checkNotNull(receipt))
-                receipt = null
-                clock.clear()
-            }
-            else -> error("Local read delivered to consumer")
+        require(result.count in 1..request.loan.length) { "Invalid local write progress" }
+        offset += result.count
+        val read = checkNotNull(receipt)
+        if (offset == read.length) {
+            endpoint.consumed(lease, channel, read)
+            receipt = null
+            clock.clear()
         }
     }
     override fun nextDeadline(): ConnectionDeadline = clock.nextDeadline()

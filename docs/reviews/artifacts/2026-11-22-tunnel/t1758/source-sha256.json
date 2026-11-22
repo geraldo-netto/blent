@@ -1,0 +1,19 @@
+{
+  "android/app/src/main/java/com/blent/connection/ConnectionFrames.kt": "353fcedd5b2612a0aa5e199bf5288abd89c35642cc4308d60589b2e7575371bd",
+  "android/app/src/main/java/com/blent/connection/ConnectionIo.kt": "9caf1b23b781d3438284bf8a810fe393d3525ac52f266be3a70f512fe5583c17",
+  "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt": "bc937b2aa9444182da2b8d128b5e7377839e93a62e2a6963379a477131903593",
+  "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt": "1bddf66d63e35db907cd6b3f073286a8b9dd0220599888483d39cd10f87c04da",
+  "android/app/src/main/java/com/blent/connection/StreamConnectionIo.kt": "b5833c4f629299d708c7a0f0d0c4155a6f18d9a1271c2a7bed694e9af04d20b8",
+  "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt": "d4e0b0a7335bd47b59fc535b7f137d2c45b75f528f9b93ad172fe24ce0f20c52",
+  "android/app/src/test/java/com/blent/connection/ConnectionLocalDeadlineTest.kt": "ba113cd83797268bc4708829ef150b0898e8cdaab48e1d11738a2fd98ec60eb5",
+  "android/app/src/test/java/com/blent/connection/ConnectionLocalPumpTest.kt": "1b8465581853fe1ded9d654be2b38d8f12e5b75b0fdab68a0796e6a790d7f712",
+  "android/app/src/test/java/com/blent/connection/ConnectionLocalWakeTest.kt": "308e94a7147e38695bd0e1a56a6375bca837d88b04bd7ee00b83378682445fb9",
+  "android/app/src/test/java/com/blent/connection/ConnectionRunnerInvalidTest.kt": "9bf40131175d05d21455bfcd4eecb461b6e207942af70368c62d802c4007bf92",
+  "android/app/src/test/java/com/blent/connection/ConnectionRunnerRig.kt": "c0634dbf589699f6eaeacae9c30105287671feb4464511d77b19911a47dc87c9",
+  "android/app/src/test/java/com/blent/connection/ConnectionSessionRunnerTest.kt": "abe4c16fbcc4b8b1e7207419776ae6dc70ad91d9e3b766ae08a0e3c755487dbd",
+  "android/app/src/test/java/com/blent/connection/LocalSpeakerProtocolTest.kt": "f294076a3fe7ed6fad2b186618e7a28308ad227b256be87dba24fe9587e6c8f7",
+  "android/app/src/test/java/com/blent/connection/SocketConnectionSetupTest.kt": "7cf1a8f76a6e1424d65fae480ab6d41ee973df11b78ee0c86f2b41268462d33d",
+  "android/app/src/test/java/com/blent/connection/StreamConnectionIoTest.kt": "4a2c1d7dc4fc28004e631025c7fc1f860abd8a4515e7310d272c95e8755d6c7b",
+  "scripts/benchmarks/android-tunnel/LocalMeasurementTest.kt": "75ea3502886e24cd644e9c25909f2612c6f48bf2adbfcecf78077d1dd83fbfae",
+  "android/app/src/test/java/com/blent/connection/ConnectionLocalTransactionTest.kt": "31f3b91e9c39a465908895e03a3c12a648963cad5b47ed9e8be9aa396b7dc3ba"
+}
