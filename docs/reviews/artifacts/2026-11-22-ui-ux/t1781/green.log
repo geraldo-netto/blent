@@ -1,0 +1,37 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.99s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 14 tests
+test camera_settings::live_tests::t1548_overview_target_survives_live_adjustment_and_camera_tab_restart ... ok
+test resource_workspace::tests::t1664_overview_configure_opens_the_selected_audio_resource ... ok
+test tests::overview::t1268_assignments_have_individual_rows_even_with_commas_in_names ... ok
+test tests::overview::t1268_bounded_assignment_names_wrap_without_horizontal_overflow ... ok
+test tests::overview::t1268_connection_navigation_supports_keyboard_activation ... ok
+test tests::overview::t1268_display_operation_feedback_is_visible_by_its_control ... ok
+test tests::overview::t1268_feedback_is_scoped_and_keeps_completed_errors_visible ... ok
+test tests::overview::t1268_initial_view_centres_connection_and_service_actions ... ok
+test tests::overview::t1268_long_error_keeps_navigation_and_apply_visible_in_short_window ... ok
+test tests::overview::t1268_navigation_and_apply_stay_visible_when_content_scrolls ... ok
+test tests::overview::t1268_navigation_exposes_named_accessibility_actions ... ok
+test tests::overview::t1268_navigation_retains_drafts_without_starting_media ... ok
+test tests::overview::t1268_service_labels_cover_running_and_unavailable_backends ... ok
+test tests::overview::t1781_settings_parent_stays_selected_on_every_child ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 248 filtered out; finished in 0.37s
+
+     Running tests/process_exit.rs (target/llvm-cov-target/debug/build/blent-gui/aedadd94ee289043/out/process_exit-aedadd94ee289043)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/startup.rs (target/llvm-cov-target/debug/build/blent-gui/8955abefde941bf4/out/startup-8955abefde941bf4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+
+    Finished report saved to /tmp/blent-t1781.lcov

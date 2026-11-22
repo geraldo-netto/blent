@@ -177,6 +177,13 @@ impl Tab {
         Self::Audio(AudioDirection::Speakers),
     ];
 
+    fn section(self) -> Self {
+        match self {
+            Self::Overview | Self::Connections | Self::About => self,
+            _ => Self::Settings,
+        }
+    }
+
     fn maximum_width(self, available: f32) -> f32 {
         match self {
             Self::Overview => 1960.0,
@@ -463,12 +470,7 @@ impl App {
         egui::TopBottomPanel::top("navigation").show(ctx, |ui| {
             ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
             self.show_header(ui);
-            ui.horizontal_wrapped(|ui| {
-                ui.selectable_value(&mut self.tab, Tab::Overview, "Tablets");
-                ui.selectable_value(&mut self.tab, Tab::Connections, "Connections");
-                ui.selectable_value(&mut self.tab, Tab::Settings, "Settings");
-                ui.selectable_value(&mut self.tab, Tab::About, "About");
-            });
+            self.show_sections(ui);
             if matches!(self.tab, Tab::Overview) && ctx.screen_rect().width() < 860.0 {
                 self.tablet_selector(ui, devices);
             }
@@ -484,6 +486,19 @@ impl App {
                         self.tablet_selector(ui, devices);
                     });
                 });
+        }
+    }
+
+    fn show_sections(&mut self, ui: &mut egui::Ui) {
+        let mut section = self.tab.section();
+        ui.horizontal_wrapped(|ui| {
+            ui.selectable_value(&mut section, Tab::Overview, "Tablets");
+            ui.selectable_value(&mut section, Tab::Connections, "Connections");
+            ui.selectable_value(&mut section, Tab::Settings, "Settings");
+            ui.selectable_value(&mut section, Tab::About, "About");
+        });
+        if section != self.tab.section() {
+            self.tab = section;
         }
     }
 

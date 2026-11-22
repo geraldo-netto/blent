@@ -1,0 +1,17 @@
+[
+  {
+    "name": "section",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "name": "show_workspace_navigation",
+    "covered": 26,
+    "total": 26
+  },
+  {
+    "name": "show_sections",
+    "covered": 12,
+    "total": 12
+  }
+]

@@ -290,3 +290,33 @@ fn t1268_navigation_exposes_named_accessibility_actions() {
         );
     }
 }
+
+fn selection_at(shape: &egui::Shape, position: egui::Pos2, color: egui::Color32) -> bool {
+    match shape {
+        egui::Shape::Rect(rect) => rect.fill == color && rect.rect.contains(position),
+        egui::Shape::Vec(shapes) => shapes.iter().any(|shape| selection_at(shape, position, color)),
+        _ => false,
+    }
+}
+
+#[test]
+fn t1781_settings_parent_stays_selected_on_every_child() {
+    for tab in Tab::ALL {
+        let (_root, mut app) = settings_test_app(tab);
+        let context = egui::Context::default();
+        let _ = context.run(Default::default(), |context| app.show_workspace_navigation(context, &[]));
+        let output = context.run(Default::default(), |context| {
+            app.show_workspace_navigation(context, &[]);
+        });
+        let mut text = Vec::new();
+        for shape in &output.shapes {
+            crate::test_shapes::collect_text_rects(&shape.shape, &mut text);
+        }
+        let position = text.iter().find(|(label, _)| label == "Settings").unwrap().1.center();
+        let color = context.style().visuals.selection.bg_fill;
+        let selected = output.shapes.iter().any(|shape| selection_at(&shape.shape, position, color));
+        let expected = !matches!(tab, Tab::Overview | Tab::Connections | Tab::About);
+        assert_eq!(selected, expected, "T1781 parent selection");
+        assert!(app.tab == tab, "render must preserve current child");
+    }
+}
