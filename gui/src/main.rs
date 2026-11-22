@@ -722,12 +722,8 @@ impl App {
             .inner_margin(12.0)
             .show(ui, |ui| {
                 ui.set_min_width(ui.available_width());
-                status_dot(
-                    ui,
-                    status.daemon_running,
-                    overview::service_label(caps.display, status.daemon_running),
-                );
-                ui.add_space(8.0);
+                status_dot(ui, status.daemon_running,
+                    overview::service_label(caps.display, status.daemon_running));
                 self.show_daemon_control(ui, status.daemon_running);
                 self.show_feedback(ui, FeedbackArea::Display);
             });
@@ -746,7 +742,6 @@ impl App {
             return;
         }
         ui.horizontal(|ui| {
-            let big = egui::vec2(ui.available_width(), 34.0);
             let label = match (capabilities().display, running) {
                 (true, true) => "Stop display service (all tablets)",
                 (true, false) => "Start display service (all tablets)",
@@ -756,7 +751,7 @@ impl App {
             if ui
                 .add_enabled(
                     !self.busy(),
-                    egui::Button::new(egui::RichText::new(label).size(16.0)).min_size(big),
+                    egui::Button::new(label),
                 )
                 .clicked()
             {
@@ -1203,13 +1198,18 @@ impl App {
 
     fn show_general_settings(&mut self, ui: &mut egui::Ui, status: &Status) {
         self.show_setup(ui, status);
-        self.show_status(ui, status);
         settings_grid(ui, ("settings", Tab::Settings), |ui| {
-            self.setting_scheduling(ui);
-            self.setting_security(ui);
             self.setting_updates(ui);
             self.setting_plug_and_play(ui, status);
+            self.setting_security(ui);
         });
+        ui.separator();
+        self.show_status(ui, status);
+        egui::CollapsingHeader::new("Advanced app settings")
+            .id_salt("app-advanced")
+            .show(ui, |ui| {
+                settings_grid(ui, "app-advanced-grid", |ui| self.setting_scheduling(ui));
+            });
     }
 
     fn setting_scheduling(&mut self, ui: &mut egui::Ui) {

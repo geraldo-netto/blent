@@ -1,0 +1,13 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.42s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 2 tests
+test tests::appearance::t1792_advanced_app_settings_retain_scheduling_controls ... ok
+test tests::appearance::t1792_general_prioritizes_preferences_and_compact_service_actions ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 273 filtered out; finished in 0.11s
+
+
+    Finished report saved to /tmp/blent-t1792.lcov

@@ -72,3 +72,29 @@ fn t1788_sensor_controls_are_available_without_transport_tuning() {
     assert!(labels.iter().any(|(label, _)| label == "Start the camera to discover supported controls."));
     assert!(app.camera.backend.is_none());
 }
+
+#[test]
+fn t1792_general_prioritizes_preferences_and_compact_service_actions() {
+    let (_root, mut app) = settings_test_app(Tab::Settings);
+    let context = egui::Context::default();
+    let size = egui::vec2(1040.0, 740.0);
+    sized_window_frame(&mut app, &context, vec![], size);
+    let labels = sized_window_frame(&mut app, &context, vec![], size);
+    let login = labels.iter().find(|(text, _)| text == "Start Blent with the desktop").unwrap().1;
+    let stop = labels.iter().find(|(text, _)| text == "Stop display service (all tablets)").unwrap().1;
+    assert!(login.top() < stop.top(), "T1792 preferences precede service controls");
+    assert!(login.bottom() < 600.0);
+    assert!(!labels.iter().any(|(text, _)| text == "CPU scheduling"));
+}
+
+#[test]
+fn t1792_advanced_app_settings_retain_scheduling_controls() {
+    let (_root, mut app) = settings_test_app(Tab::Settings);
+    let context = egui::Context::default();
+    fn tall(app: &mut App, context: &egui::Context, events: Vec<egui::Event>) -> Vec<(String, egui::Rect)> {
+        sized_window_frame(app, context, events, egui::vec2(1040.0, 1400.0))
+    }
+    click_settings_text(&mut app, &context, "Advanced app settings", tall);
+    let labels = tall(&mut app, &context, vec![]);
+    assert!(labels.iter().any(|(text, _)| text == "CPU scheduling"));
+}

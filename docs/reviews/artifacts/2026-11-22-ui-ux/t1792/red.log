@@ -1,0 +1,19 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.30s
+     Running unittests src/main.rs (target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 1 test
+test tests::appearance::t1792_general_prioritizes_preferences_and_compact_service_actions ... 
+thread 'tests::appearance::t1792_general_prioritizes_preferences_and_compact_service_actions' (696343) panicked at gui/src/tests/appearance.rs:83:88:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    tests::appearance::t1792_general_prioritizes_preferences_and_compact_service_actions
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 273 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

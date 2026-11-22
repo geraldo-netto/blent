@@ -91,3 +91,17 @@ maintained methods measure 90.9–100% line coverage; 212 measured functions hav
 complexity <=9. [Evidence](artifacts/2026-11-22-ui-ux/t1790/).
 Guidance borrows the existing bounded device snapshot for one frame; it retains no
 endpoint or helper and issues no connect/disconnect/mode-switch command.
+
+## T1792 — General preference hierarchy
+
+General shows ordinary preferences before the service section; required setup
+still comes first when unavailable. The service command is a normal compact
+button with its all-tablets scope intact. CPU scheduling remains under Advanced
+app settings. General stays first and no command/persistence behavior changes.
+
+The original default-size regression could not find the clipped login control.
+Both new layout/disclosure tests pass; the existing private-command setup/service
+lifecycle test passes. Three changed methods measure 81.0–100% line coverage;
+190 measured functions have complexity <=9.
+[Evidence](artifacts/2026-11-22-ui-ux/t1792/). Widget borrows remain frame-local;
+existing action workers and service ownership are unchanged.

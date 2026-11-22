@@ -1,0 +1,20 @@
+[
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_status",
+    "covered": 19,
+    "total": 22
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_daemon_control",
+    "covered": 17,
+    "total": 21
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_general_settings",
+    "covered": 15,
+    "total": 15
+  }
+]
