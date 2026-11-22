@@ -1,0 +1,522 @@
+{
+  "issue": "T1619",
+  "date": "2026-11-22",
+  "before": {
+    "failed": 2,
+    "reason": "neither asynchronous receive lag nor drain lag raised the shared IDR flag; existing decode wait and discard behavior still executed"
+  },
+  "after": {
+    "stream_tests_passed": 51,
+    "existing_ignored_tests": 1,
+    "ignored_reason": "T784 opt-in local TCP timing benchmark",
+    "new_tests_passed": 2,
+    "preserved_oracles": [
+      "latest queued IDR",
+      "drop obsolete batch dependencies",
+      "no request on ordinary packet delivery",
+      "closed producer terminates receive",
+      "budget returns to zero after batches drop",
+      "existing liveness, attachment cutoff, stop and generation tests"
+    ]
+  },
+  "coverage": [
+    {
+      "file": "host/src/stream.rs",
+      "name": "handle_client",
+      "line": 168,
+      "language": "rust",
+      "covered": 32,
+      "total": 32,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream.rs",
+      "name": "stream_packets",
+      "line": 218,
+      "language": "rust",
+      "covered": 26,
+      "total": 26,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream.rs",
+      "name": "recover_lag",
+      "line": 351,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream.rs",
+      "name": "next_packet",
+      "line": 386,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream.rs",
+      "name": "drain_batch",
+      "line": 433,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "tool": "tree-sitter 0.25.2 Rust; scripts/complexity/check.py",
+    "functions": [
+      [
+        "host/src/stream.rs",
+        44,
+        "default",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        68,
+        "new",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        82,
+        "with_attachment",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        87,
+        "bind",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        95,
+        "run_with_listener",
+        5
+      ],
+      [
+        "host/src/stream.rs",
+        149,
+        "handle_attached_client",
+        3
+      ],
+      [
+        "host/src/stream.rs",
+        168,
+        "handle_client",
+        5
+      ],
+      [
+        "host/src/stream.rs",
+        218,
+        "stream_packets",
+        2
+      ],
+      [
+        "host/src/stream.rs",
+        250,
+        "set_send_buffer",
+        2
+      ],
+      [
+        "host/src/stream.rs",
+        256,
+        "write_packet",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        268,
+        "write_packet_bytes",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        283,
+        "write_frame",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        291,
+        "write_frame_bytes",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        303,
+        "write_parts",
+        3
+      ],
+      [
+        "host/src/stream.rs",
+        326,
+        "stop",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        351,
+        "recover_lag",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        356,
+        "send_liveness",
+        2
+      ],
+      [
+        "host/src/stream.rs",
+        366,
+        "next_event",
+        2
+      ],
+      [
+        "host/src/stream.rs",
+        386,
+        "next_packet",
+        8
+      ],
+      [
+        "host/src/stream.rs",
+        410,
+        "send_initial_config",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        433,
+        "drain_batch",
+        9
+      ],
+      [
+        "host/src/stream.rs",
+        468,
+        "prepare_packet",
+        5
+      ],
+      [
+        "host/src/stream.rs",
+        494,
+        "send_batch",
+        6
+      ],
+      [
+        "host/src/stream.rs",
+        529,
+        "t497_lagged_batch_forgets_old_dependencies_and_uses_the_latest_idr",
+        3
+      ],
+      [
+        "host/src/stream.rs",
+        569,
+        "t391_initial_config_counts_backing_before_first_frame",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        602,
+        "t391_stalled_frame_and_config_writes_have_a_deadline",
+        3
+      ],
+      [
+        "host/src/stream.rs",
+        625,
+        "t391_replay_batch_allocations",
+        4
+      ],
+      [
+        "host/src/stream.rs",
+        675,
+        "t227_read_packet",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        685,
+        "t227_queued_frame_keeps_its_codec_configuration",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        730,
+        "t227_retirement_case",
+        2
+      ],
+      [
+        "host/src/stream.rs",
+        788,
+        "t227_retired_batches_are_discarded_across_codec_and_resolution_changes",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        793,
+        "t267_connection",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        816,
+        "t267_expect_stream",
+        3
+      ],
+      [
+        "host/src/stream.rs",
+        864,
+        "t267_reject_obsolete_prefix",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        880,
+        "t267_current_token_rotation_preserves_fragmented_authentication",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        890,
+        "t267_explicit_standalone_stream_has_no_prefix_and_cleans_up_when_idle",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        895,
+        "t267_enabled_auth_rejects_stale_and_missing_tokens_before_video",
+        2
+      ],
+      [
+        "host/src/stream.rs",
+        914,
+        "t267_disabled_auth_bounds_optional_prefix_and_rejects_extra_input",
+        2
+      ],
+      [
+        "host/src/stream.rs",
+        942,
+        "authenticated_test_server",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        968,
+        "t139_only_authenticated_clients_request_capture",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        1003,
+        "t139_pending_admission_is_bounded_and_reusable",
+        5
+      ],
+      [
+        "host/src/stream.rs",
+        1039,
+        "t139_idle_authenticated_disconnect_frees_capture",
+        2
+      ],
+      [
+        "host/src/stream.rs",
+        1063,
+        "t138_server_shutdown_retires_authenticated_clients",
+        4
+      ],
+      [
+        "host/src/stream.rs",
+        1115,
+        "t056_idle_server_does_not_count_as_a_video_client",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        1143,
+        "poll_write",
+        2
+      ],
+      [
+        "host/src/stream.rs",
+        1157,
+        "poll_write_vectored",
+        2
+      ],
+      [
+        "host/src/stream.rs",
+        1165,
+        "is_write_vectored",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        1168,
+        "poll_flush",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        1171,
+        "poll_shutdown",
+        1
+      ],
+      [
+        "host/src/stream.rs",
+        1177,
+        "t071_frame_header_and_payload_share_one_write_and_handle_short_writes",
+        3
+      ],
+      [
+        "host/src/stream/lag_tests.rs",
+        4,
+        "playback",
+        1
+      ],
+      [
+        "host/src/stream/lag_tests.rs",
+        26,
+        "packet",
+        1
+      ],
+      [
+        "host/src/stream/lag_tests.rs",
+        37,
+        "t1619_async_lag_requests_recovery_without_repeating_for_every_packet",
+        2
+      ],
+      [
+        "host/src/stream/lag_tests.rs",
+        106,
+        "t1619_drain_lag_requests_recovery_and_discards_old_dependencies",
+        2
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        6,
+        "pair",
+        1
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        27,
+        "record",
+        7
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        47,
+        "t1038_no_frames_for_longer_than_android_deadline_retain_original_viewer_and_fresh_resume",
+        2
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        95,
+        "t1038_ready_obsolete_packets_cannot_postpone_transport_liveness_or_revive_codec",
+        2
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        134,
+        "t1567_authenticated_current_client_gets_liveness_without_ack_and_stop_releases_it",
+        1
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        173,
+        "t1038_actual_frame_writes_postpone_liveness_without_extra_packets",
+        3
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        210,
+        "t1038_configured_interval_rejects_invalid_values_and_honors_user_bounds",
+        7
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        257,
+        "t1038_revoked_and_closed_original_presence_cannot_emit",
+        3
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        276,
+        "t1038_presence_change_wakes_idle_playback_without_producer_packet",
+        1
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        299,
+        "t1038_failed_liveness_write_does_not_renew_deadline",
+        1
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        312,
+        "t1038_lagged_legacy_viewer_still_waits_for_fresh_idr",
+        2
+      ],
+      [
+        "host/src/stream/liveness_tests.rs",
+        340,
+        "t1038_stalled_liveness_write_retains_whole_record_deadline",
+        1
+      ],
+      [
+        "host/src/stream/wake_tests.rs",
+        6,
+        "t405_idle_listener_has_no_periodic_wakeups",
+        1
+      ],
+      [
+        "host/src/stream/wake_tests.rs",
+        19,
+        "t405_stop_wakes_listener_without_waiting_for_a_tick",
+        1
+      ],
+      [
+        "host/src/stream/wake_tests.rs",
+        32,
+        "playback",
+        1
+      ],
+      [
+        "host/src/stream/wake_tests.rs",
+        56,
+        "t405_codec_config_publication_wakes_waiters_immediately",
+        1
+      ],
+      [
+        "host/src/stream/wake_tests.rs",
+        77,
+        "t405_codec_config_wait_has_only_its_final_deadline",
+        1
+      ],
+      [
+        "host/src/stream/wake_tests.rs",
+        95,
+        "t405_stop_before_first_poll_remains_latched",
+        1
+      ]
+    ],
+    "maximum": 9
+  },
+  "ownership": "Each bounded admitted viewer holds the existing shared atomic refresh signal for its original playback lifetime. No new task, native handle or frame storage. Receive/drain set the coalescing flag; encoder consumes it; playback drop releases its Arc. Socket/read/presence retirement remains unchanged.",
+  "limitations": [
+    "No physical encoder/transport performance claim",
+    "CLI FFmpeg continues periodic keyframe scheduling; dynamic request consumed only by optional in-process encoder"
+  ]
+}

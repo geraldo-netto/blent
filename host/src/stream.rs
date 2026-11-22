@@ -1,3 +1,5 @@
+#[cfg(test)]
+mod lag_tests;
 mod liveness;
 mod presence;
 #[cfg(test)]
@@ -57,7 +59,7 @@ pub struct StreamServer {
     attachment: Option<crate::attachment::Attachment>,
     stop: tokio::sync::watch::Sender<bool>,
     codec_config: CodecConfig,
-    /// Raised on attachment for the optional in-process encoder's next-frame
+    /// Raised on attachment or viewer lag for the optional in-process encoder's next-frame
     /// keyframe request. The CLI uses its one-second wall-clock IDR schedule.
     idr_wanted: Arc<AtomicBool>,
 }
@@ -207,7 +209,7 @@ impl StreamServer {
         idr_wanted.store(true, Ordering::SeqCst);
         let (mut reader, writer) = socket.into_split();
         tokio::select! {
-            result = Self::stream_packets(writer, rx, codec_config, video_tx.budget(), liveness, capabilities) => result,
+            result = Self::stream_packets(writer, rx, codec_config, video_tx.budget(), liveness, capabilities, idr_wanted) => result,
             // EOF or unexpected client bytes retire this original viewer.
             _ = presence::watch(&mut reader, presence_owner) => Ok(()),
         }
@@ -220,6 +222,7 @@ impl StreamServer {
         budget: Arc<crate::media_storage::Budget>,
         liveness: blent_config::video::liveness::Interval,
         capabilities: presence::View,
+        idr_wanted: Arc<AtomicBool>,
     ) -> Result<()> {
         let mut client = ClientPlayback {
             socket,
@@ -228,6 +231,7 @@ impl StreamServer {
             capabilities,
             last_generation: None,
             wait_for_idr: true,
+            idr_wanted,
             dropped: 0,
             scratch: VecDeque::with_capacity(crate::video_queue::QUEUE_PACKETS),
         };
@@ -332,6 +336,7 @@ struct ClientPlayback {
     capabilities: presence::View,
     last_generation: Option<Arc<AtomicBool>>,
     wait_for_idr: bool,
+    idr_wanted: Arc<AtomicBool>,
     dropped: u64,
     scratch: VecDeque<VideoPacket>,
 }
@@ -343,6 +348,11 @@ enum PlaybackEvent {
 }
 
 impl ClientPlayback {
+    fn recover_lag(&mut self, lost: u64) {
+        warn!("Client lagged {} frames, resuming at next IDR", lost);
+        self.wait_for_idr = true;
+        self.idr_wanted.store(true, Ordering::Release);
+    }
     async fn send_liveness(&mut self) -> Result<()> {
         use blent_config::video::liveness;
         if !self.capabilities.supported() {
@@ -391,8 +401,7 @@ impl ClientPlayback {
                 PlaybackEvent::Capability => {}
                 PlaybackEvent::Packet(Ok(packet)) => return Ok(Some(packet)),
                 PlaybackEvent::Packet(Err(broadcast::error::RecvError::Lagged(n))) => {
-                    warn!("Client lagged {} frames, resuming at next IDR", n);
-                    self.wait_for_idr = true;
+                    self.recover_lag(n);
                 }
                 PlaybackEvent::Packet(Err(broadcast::error::RecvError::Closed)) => return Ok(None),
             }
@@ -435,8 +444,7 @@ impl ClientPlayback {
             match rx.try_recv() {
                 Ok(p) => batch.push_back(p),
                 Err(broadcast::error::TryRecvError::Lagged(n)) => {
-                    warn!("Client lagged {} frames, resuming at next IDR", n);
-                    self.wait_for_idr = true;
+                    self.recover_lag(n);
                     batch.clear();
                 }
                 Err(_) => break,
@@ -532,6 +540,7 @@ mod tests {
             capabilities: presence::channel().1,
             last_generation: None,
             wait_for_idr: false,
+            idr_wanted: Default::default(),
             dropped: 0,
             scratch: VecDeque::new(),
         };
@@ -627,6 +636,7 @@ mod tests {
             capabilities: presence::channel().1,
             last_generation: None,
             wait_for_idr: true,
+            idr_wanted: Default::default(),
             dropped: 0,
             scratch: VecDeque::with_capacity(crate::video_queue::QUEUE_PACKETS),
         };
@@ -699,6 +709,7 @@ mod tests {
             tx.budget(),
             blent_config::video::liveness::interval(2000).unwrap(),
             presence::channel().1,
+            Default::default(),
         ));
         assert_eq!(
             t227_read_packet(&mut viewer).await,
@@ -730,6 +741,7 @@ mod tests {
             capabilities: presence::channel().1,
             last_generation: None,
             wait_for_idr: true,
+            idr_wanted: Default::default(),
             dropped: 0,
             scratch: VecDeque::with_capacity(crate::video_queue::QUEUE_PACKETS),
         };

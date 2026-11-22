@@ -17,6 +17,7 @@ async fn pair() -> (ClientPlayback, TcpStream) {
             capabilities: presence::channel().1,
             last_generation: None,
             wait_for_idr: true,
+            idr_wanted: Default::default(),
             dropped: 0,
             scratch: VecDeque::new(),
         },
@@ -57,6 +58,7 @@ async fn t1038_no_frames_for_longer_than_android_deadline_retain_original_viewer
         tx.budget(),
         blent_config::video::liveness::interval(2000).unwrap(),
         capabilities,
+        Default::default(),
     ));
     let mut initial = [0; 8];
     viewer.read_exact(&mut initial).await.unwrap();

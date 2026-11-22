@@ -684,3 +684,9 @@ The new domain values are bounded immutable records. Control intent and the subm
 ## T1569 — host settings and sparse tablet intent integration (2026-11-22)
 
 T1693 (`bd94f3d2`) exposes a paired host observation; T1694 (`417deccc`) connects it to sparse edits, persistence, clear and reconnect. All 49 host input-contract tests pass again against the final tree. The integrated Android suite passes all 333 selected cases, including 34 new sparse-intent cases and the retained stale-response, generation-exhaustion, camera-ownership and display-lifecycle checks. Per-function coverage and complexity are recorded in the child artifacts. No installed session or tablet was changed.
+
+## T1619 — request a fresh keyframe after viewer lag (2026-11-22)
+
+Both asynchronous receive lag and batch-drain lag now raise the existing encoder refresh signal while restoring the viewer's IDR wait state. A shared helper keeps the two paths consistent. The viewer retains the existing bounded shared atomic signal; no new task, native handle or frame storage was added.
+
+Both regressions failed before the behavior change. All 51 stream tests pass; the existing T784 opt-in TCP timing benchmark remains ignored. New cases verify both refresh paths, no repeat request for ordinary packets, newest-IDR selection, closed-producer completion and zero retained batch bytes. All five changed functions measure 100% line coverage; all 72 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1619.json). The optional in-process encoder consumes this request; CLI FFmpeg keeps its periodic schedule. No physical performance gain is claimed.

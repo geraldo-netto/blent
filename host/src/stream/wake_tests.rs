@@ -44,6 +44,7 @@ async fn playback() -> (ClientPlayback, TcpStream) {
             capabilities: presence::channel().1,
             last_generation: None,
             wait_for_idr: true,
+            idr_wanted: Default::default(),
             dropped: 0,
             scratch: VecDeque::new(),
         },
