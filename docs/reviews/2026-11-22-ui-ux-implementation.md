@@ -77,3 +77,17 @@ sensor regressions also passed in the focused run. Five changed methods measure
 texture remain context-owned and expire through the same maintenance path; layout
 borrows them per frame, adds no capture and preserves aspect ratio. Native scaled
 layout acceptance follows the combined installation.
+
+## T1790 — connection route guidance
+
+Connections explains Direct USB and ADB separately, shows observed ADB tablet names
+and links back to Tablets. Missing ADB offers an actionable installation/direct-USB
+choice. ADB identity is not presented as proof of a physical USB connection.
+The direct-USB panel retains its existing capability and permission behavior.
+
+The permanent missing-route regression failed before the change and passes after
+it. 33 connection-filtered, 2 focused route and 14 Overview tests pass. All five
+maintained methods measure 90.9–100% line coverage; 212 measured functions have
+complexity <=9. [Evidence](artifacts/2026-11-22-ui-ux/t1790/).
+Guidance borrows the existing bounded device snapshot for one frame; it retains no
+endpoint or helper and issues no connect/disconnect/mode-switch command.

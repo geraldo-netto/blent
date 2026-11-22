@@ -1,0 +1,19 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.14s
+     Running unittests src/main.rs (target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 1 test
+test tests::connection_guidance::t1790_connections_distinguishes_adb_from_direct_usb ... 
+thread 'tests::connection_guidance::t1790_connections_distinguishes_adb_from_direct_usb' (689907) panicked at gui/src/tests/connection_guidance.rs:105:9:
+T1790 missing route guidance: USB debugging (ADB)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    tests::connection_guidance::t1790_connections_distinguishes_adb_from_direct_usb
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 271 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

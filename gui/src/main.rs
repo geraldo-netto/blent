@@ -1245,7 +1245,7 @@ impl App {
         match self.tab {
             Tab::Overview => self.show_overview(ui, status),
             Tab::Video => self.show_video_settings(ui, status),
-            Tab::Connections => self.connection.show(ui),
+            Tab::Connections => self.show_connections(ui, status),
             Tab::About => self.show_about(ui, status),
             Tab::Audio(direction) => self.show_audio_settings(ui, direction),
             Tab::Camera => self.camera.show(ui, &mut self.cfg.camera.options),
@@ -1263,6 +1263,13 @@ impl App {
                 ui.selectable_value(&mut self.tab, tab, tab.title());
             }
         });
+    }
+
+    fn show_connections(&mut self, ui: &mut egui::Ui, status: &Status) {
+        if connection_guidance::routes(ui, status.adb_ok, &status.tablets) {
+            self.tab = Tab::Overview;
+        }
+        self.connection.show(ui);
     }
 
     fn show_audio_settings(&mut self, ui: &mut egui::Ui, direction: AudioDirection) {

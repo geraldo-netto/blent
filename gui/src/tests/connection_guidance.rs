@@ -90,3 +90,33 @@ fn t1270_connection_help_matches_each_capability_combination() {
         }
     }
 }
+
+#[test]
+fn t1790_connections_distinguishes_adb_from_direct_usb() {
+    let (_root, mut app) = settings_test_app(Tab::Connections);
+    app.status.lock().unwrap().tablets = vec![blent_config::workspace::Device::new(
+        blent_config::tablets::Identity::Adb("known-adb".into()),
+        "Known tablet".into(), blent_config::workspace::Presence::Connected, false,
+    ).unwrap()];
+    let context = egui::Context::default();
+    window_test_frame(&mut app, &context, vec![]);
+    let labels = window_test_frame(&mut app, &context, vec![]);
+    for expected in ["USB debugging (ADB)", "Direct USB", "Observed ADB tablet: Known tablet"] {
+        assert!(labels.iter().any(|(text, _)| text == expected), "T1790 missing route guidance: {expected}");
+    }
+    click_settings_text(&mut app, &context, "Open Tablets", window_test_frame);
+    assert!(app.tab == Tab::Overview);
+    assert!(app.camera.backend.is_none());
+}
+
+#[test]
+fn t1790_unavailable_adb_and_usb_identity_are_not_reported_as_adb() {
+    let (_root, mut app) = settings_test_app(Tab::Connections);
+    let usb = blent_config::workspace::Device::new(
+        blent_config::tablets::Identity::UsbPeer(blent_config::connection::pairing::PeerId::parse("ab".repeat(32)).unwrap()),
+        "USB only".into(), blent_config::workspace::Presence::Connected, false,
+    ).unwrap();
+    let labels = rendered(&mut app, |_, ui| { crate::connection_guidance::routes(ui, false, std::slice::from_ref(&usb)); });
+    assert!(labels.contains("ADB is unavailable"));
+    assert!(!labels.contains("Observed ADB tablet"));
+}

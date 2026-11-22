@@ -1,0 +1,32 @@
+[
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_page_content",
+    "covered": 10,
+    "total": 11
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_connections",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/connection_guidance.rs",
+    "name": "routes",
+    "covered": 13,
+    "total": 13
+  },
+  {
+    "file": "gui/src/connection_guidance.rs",
+    "name": "observed_adb",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/connection_settings.rs",
+    "name": "show",
+    "covered": 22,
+    "total": 23
+  }
+]

@@ -54,7 +54,7 @@ impl Panel {
     }
     pub(super) fn show(&mut self, ui: &mut egui::Ui) {
         let status = self.refresh();
-        ui.heading("USB connection");
+        ui.heading("Direct USB");
         ui.label("Pair Blent with a tablet over USB without USB debugging.");
         self.controls(ui);
         if let Some(status) = &status {

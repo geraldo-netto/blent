@@ -1,0 +1,13 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.86s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 2 tests
+test tests::connection_guidance::t1790_connections_distinguishes_adb_from_direct_usb ... ok
+test tests::connection_guidance::t1790_unavailable_adb_and_usb_identity_are_not_reported_as_adb ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 271 filtered out; finished in 0.03s
+
+
+    Finished report saved to /tmp/blent-t1790.lcov

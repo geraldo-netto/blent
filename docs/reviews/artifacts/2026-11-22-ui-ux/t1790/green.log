@@ -1,0 +1,45 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.73s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 33 tests
+test connection_settings::backend::native_tests::t894_environment_composition_is_lazy_in_isolated_process ... ok
+test connection_settings::backend::native_tests::t894_native_start_failure_remains_bounded_and_retires ... Failed to find executable /tmp/.tmpM038My/missing-broker: No such file or directory
+ok
+test connection_settings::tablets::tests::t1375_missing_descriptors_have_explicit_bounded_fallbacks ... ok
+test connection_settings::tests::t1273_only_current_authenticated_links_supply_workspace_tablets ... ok
+test connection_settings::tests::t1336_long_names_wrap_in_small_windows ... ok
+test connection_settings::tests::t1336_unnamed_device_remains_explicit_and_selectable ... ok
+test connection_settings::tests::t1336_usb_list_shows_model_and_manufacturer ... ok
+test connection_settings::tests::t1337_owned_usb_row_shows_state_and_disables_connect ... ok
+test connection_settings::tests::t1337_row_stays_locked_through_approval_and_cleanup ... ok
+test connection_settings::tests::t1338_reserved_or_unknown_device_disables_connect ... ok
+test connection_settings::tests::t1339_column_counts_are_bounded_for_invalid_and_extreme_widths ... ok
+test connection_settings::tests::t1339_columns_keep_target_identity_and_reserved_buttons_disabled ... ok
+test connection_settings::tests::t1339_grid_connect_buttons_remain_keyboard_accessible ... ok
+test connection_settings::tests::t1339_usb_cards_use_columns_and_reflow_in_narrow_windows ... ok
+test connection_settings::tests::t1358_approval_remembers_matching_fingerprints_by_default ... ok
+test connection_settings::tests::t1375_workspace_retains_the_connected_usb_model_and_manufacturer ... ok
+test connection_settings::tests::t1598_inventory_failure_keeps_connection_and_trust_controls_visible ... ok
+test connection_settings::tests::t894_device_disconnect_and_saved_peer_buttons_issue_exact_commands ... ok
+test connection_settings::tests::t894_empty_inventory_and_small_window_keep_labels_readable ... ok
+test connection_settings::tests::t894_failed_and_cancelled_commands_stay_unconfirmed ... ok
+test connection_settings::tests::t894_refresh_does_not_complete_queued_command_or_clear_rejection ... ok
+test connection_settings::tests::t894_rejected_admission_and_invalid_input_do_not_claim_success ... ok
+test connection_settings::tests::t894_remember_choice_is_scoped_to_exact_ticket_and_pending_state ... ok
+test connection_settings::tests::t894_retry_requires_actual_retirement_and_reuses_source ... ok
+test connection_settings::tests::t894_terminal_status_does_not_hide_incomplete_cleanup ... ok
+test connection_settings::tests::t894_widgets_match_fingerprint_labels_and_explicit_remembered_approval ... ok
+test tests::connection_guidance::t1270_connection_help_matches_each_capability_combination ... ok
+test tests::connection_guidance::t1270_disconnected_help_offers_direct_usb_without_debugging ... ok
+test tests::connection_guidance::t1270_missing_adb_is_not_a_direct_usb_setup_failure ... ok
+test tests::connection_guidance::t1270_optional_adb_does_not_hide_display_prerequisites ... ok
+test tests::connection_guidance::t1790_connections_distinguishes_adb_from_direct_usb ... ok
+test tests::overview::t1268_connection_navigation_supports_keyboard_activation ... ok
+test tests::overview::t1268_initial_view_centres_connection_and_service_actions ... ok
+
+test result: ok. 33 passed; 0 failed; 0 ignored; 0 measured; 239 filtered out; finished in 0.30s
+
+
+    Finished report saved to /tmp/blent-t1790.lcov
