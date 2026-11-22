@@ -1,0 +1,22 @@
+FF
+======================================================================
+FAIL: test_t1710_arch_package_uses_canonical_policy (test_service_templates.ServiceTemplateTest.test_t1710_arch_package_uses_canonical_policy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_service_templates.py", line 62, in test_t1710_arch_package_uses_canonical_policy
+    self.assertEqual(unit.read_text(), expected, 'T1710: package policy diverges from canonical renderer')
+AssertionError: "[Unit]\nDescription=Blent — Android tabl[900 chars]et\n" != '[Unit]\nDescription=T1710 canonical Blen[1571 chars]et\n'
+Diff is 1976 characters long. Set self.maxDiff to None to see it. : T1710: package policy diverges from canonical renderer
+
+======================================================================
+FAIL: test_t1710_only_one_authoritative_unit_template (test_service_templates.ServiceTemplateTest.test_t1710_only_one_authoritative_unit_template)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_service_templates.py", line 67, in test_t1710_only_one_authoritative_unit_template
+    self.assertFalse((ROOT / 'packaging/blent.service').exists())
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.029s
+
+FAILED (failures=2)

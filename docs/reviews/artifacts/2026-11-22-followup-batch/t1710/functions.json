@@ -1,0 +1,8 @@
+[
+  {
+    "file": "packaging/arch/PKGBUILD",
+    "name": "package",
+    "covered": 23,
+    "total": 23
+  }
+]

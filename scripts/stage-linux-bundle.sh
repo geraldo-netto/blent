@@ -11,6 +11,6 @@ cp "$BINARIES/blent" "$BINARIES/blent-gui" "$BINARIES/blent-audio" "$BINARIES/bl
 cp -L "$LIBRARY" "$DEST/bin/libevdi.so.1.15.0"
 ln -sf libevdi.so.1.15.0 "$DEST/bin/libevdi.so.1"
 cp scripts/install.sh scripts/gpu-boot-order.sh scripts/setup-evdi.sh scripts/write-desktop-entry.sh scripts/write-systemd-service.sh scripts/blent.desktop scripts/blent-autostart.desktop scripts/blent-service-autostart.desktop scripts/blent.service scripts/copy-distribution-docs.sh "$DEST/scripts/"
-cp packaging/distribution-docs.txt packaging/blent-evdi.conf packaging/blent-modules.conf packaging/blent.service packaging/60-blent-uinput.rules "$DEST/packaging/"
+cp packaging/distribution-docs.txt packaging/blent-evdi.conf packaging/blent-modules.conf packaging/60-blent-uinput.rules "$DEST/packaging/"
 cp packaging/icons/blent.svg packaging/icons/blent-pen.svg "$DEST/packaging/icons/"
 ./scripts/copy-distribution-docs.sh "$DEST/"

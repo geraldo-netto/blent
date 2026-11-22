@@ -9,7 +9,7 @@ import unittest
 import uuid
 
 ROOT = Path(__file__).resolve().parents[2]
-TEMPLATES = ('scripts/blent.service', 'packaging/blent.service')
+TEMPLATES = ('scripts/blent.service',)
 
 
 def service_policy(template):

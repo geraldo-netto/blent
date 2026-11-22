@@ -230,7 +230,7 @@ exit 0
         for name in ['blent', 'blent-gui', 'blent-audio', 'evdi_helper', 'libevdi.so.1.15.0']:
             write('dist/blent-1.2.3/bin/' + name, 'binary', True)
         for name in ['scripts/setup-evdi.sh', 'scripts/blent.desktop', 'packaging/icons/blent.svg', 'packaging/icons/blent-pen.svg',
-                     'packaging/blent.service', 'packaging/blent-evdi.conf', 'packaging/blent-modules.conf',
+                     'packaging/blent-evdi.conf', 'packaging/blent-modules.conf',
                      'packaging/60-blent-uinput.rules']:
             write(name, 'fixture')
         assets = ['blent-1.2.3-x86_64.AppImage', 'blent-1.2.3-AppImage-sources.tar.gz', 'blent-1.2.3-PKGBUILD.tar.gz']

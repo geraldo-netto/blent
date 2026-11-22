@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """T585: fresh Blent identities retain inherited license notices."""
 import hashlib
+import subprocess
 from pathlib import Path
 import unittest
 
@@ -30,7 +31,9 @@ class BlentIdentityTests(unittest.TestCase):
         for directory, package in [('host', 'blent'), ('gui', 'blent-gui'),
                                    ('common', 'blent-config')]:
             self.assertIn(f'name = "{package}"', (ROOT / directory / 'Cargo.toml').read_text())
-        self.assertIn('/usr/bin/blent start', (ROOT / 'packaging/blent.service').read_text())
+        unit = subprocess.check_output(['bash', str(ROOT / 'scripts/write-systemd-service.sh'),
+            '/usr/bin/blent', str(ROOT / 'scripts/blent.service')], text=True)
+        self.assertIn('"/usr/bin/blent" start', unit)
         self.assertIn('Name=Blent', (ROOT / 'scripts/blent.desktop').read_text())
 
     def test_t585_android_display_name_and_namespace(self):
