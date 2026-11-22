@@ -1,0 +1,43 @@
+{
+  "issue": "T1698",
+  "date": "2026-11-22",
+  "regression_before": "Existing permanent T1509 namespace test fails: 6100 ms default body deadline exceeds 5000 ms command deadline; original removal is killed before hold release and retained unknown route prevents completion. /tmp/blent-t1695-green.log retains failure after T1697 serialization.",
+  "verification": {
+    "existing_namespace_tests_passed": 3,
+    "preserved_oracles": [
+      "PID retained through entry drain",
+      "repeated signals observed",
+      "original removal still live at entry drain",
+      "after release exit zero, PID absent and routes empty",
+      "passive CLI commands do not touch ADB"
+    ]
+  },
+  "complexity_tool": "project Python AST checker / Python 3.12",
+  "complexity": [
+    [
+      "host/tests/daemon_startup/drain.py",
+      14,
+      "pending_removals",
+      4
+    ],
+    [
+      "host/tests/daemon_startup/drain.py",
+      26,
+      "retained_drain",
+      1
+    ],
+    [
+      "host/tests/daemon_startup/drain.py",
+      58,
+      "cli_dispatch",
+      2
+    ],
+    [
+      "host/tests/daemon_startup/drain.py",
+      72,
+      "main",
+      1
+    ]
+  ],
+  "scope": "Private fixture only. Explicit 100 ms session grace plus 100 ms reap and unchanged 1 s margin; production budgets unchanged. Original test assertions preserved."
+}

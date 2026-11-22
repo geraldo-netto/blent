@@ -11,11 +11,26 @@ import tempfile
 from signals import configure, await_condition, routes, reap
 
 
+def pending_removals(root):
+    count = 0
+    for process in Path('/proc').glob('[0-9]*'):
+        try:
+            args = (process / 'cmdline').read_bytes().split(b'\0')
+            if os.fsencode(root / 'adb') in args and b'--remove' in args:
+                count += (process / 'stat').read_text().split(') ', 1)[1][0] != 'Z'
+        except FileNotFoundError:
+            pass
+    return count
+
+
 def retained_drain(binary):
     with tempfile.TemporaryDirectory(prefix='blent-t1509-') as directory:
         root = Path(directory)
         env, _ = configure(root)
         env['RUST_LOG'] = 'warn'
+        # T1698: reach entry drain before the original ADB command's 5s deadline.
+        env['BLENT_SESSION_STOP_MS'] = '100'
+        env['BLENT_REAP_TIMEOUT_MS'] = '100'
         (root / 'hold-removal').touch()
         errors = root / 'stderr'
         with errors.open('w') as output:
@@ -25,6 +40,7 @@ def retained_drain(binary):
             await_condition(child, lambda: len(routes(root)) == 2, 'original routes')
             child.send_signal(signal.SIGTERM)
             await_condition(child, lambda: 'Waiting for native retirement' in errors.read_text(), 'entry drain diagnostic')
+            assert pending_removals(root) == 1, 'T1698 original removal already exited'
             pid_file = root / '.local/share/blent/blent.pid'
             assert pid_file.read_text() == str(child.pid), 'T1509 PID disappeared during drain'
             child.send_signal(signal.SIGINT)

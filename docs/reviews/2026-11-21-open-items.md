@@ -710,3 +710,9 @@ Both client-contract regressions and the broker delivery regression failed first
 A held fake removal previously read its route snapshot before waiting, so another removal could be overwritten and a retired route resurrected. The fixture now waits first and serializes current reads/mutations with one stable file lock. Each command owns and closes its descriptor; no production or installed ADB state changes.
 
 The permanent delayed-removal test fails before and passes after the fix. All five measured fixture/test functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1697.json). The namespace drain test still exposes a separate deadline mismatch, tracked as T1698; this fixture correction alone does not close that integration check.
+
+## T1698 — preserve the intended native-drain fixture ordering (2026-11-22)
+
+T1513's default 6100 ms body observation budget exceeds the ADB command's 5000 ms deadline. The private T1509 fixture consequently killed its held original command before releasing it, leaving an intentionally unknown effect. It now explicitly selects 100 ms session grace and 100 ms reap, preserving the one-second margin. It also verifies that the original fake removal is still alive when entry drain starts.
+
+The existing permanent T1509 test fails before and passes after this fixture correction; all three existing namespace tests pass. Original PID, repeated-signal, exact route settlement and CLI command-absence assertions remain. All four measured fixture functions have complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1698.json). No production deadline, cleanup proof or installed process changed.
