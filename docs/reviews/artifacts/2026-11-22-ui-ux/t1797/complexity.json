@@ -1,0 +1,20 @@
+[
+  [
+    "gui/src/activation/idle_tests.rs",
+    18,
+    "update",
+    5
+  ],
+  [
+    "gui/src/activation/idle_tests.rs",
+    32,
+    "measured_window",
+    9
+  ],
+  [
+    "gui/src/activation/idle_tests.rs",
+    98,
+    "t1550_t1551_private_window_idle_callback_measurements",
+    3
+  ]
+]

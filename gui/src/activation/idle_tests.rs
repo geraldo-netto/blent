@@ -32,6 +32,7 @@ impl eframe::App for Probe {
 fn measured_window(mode: &str) {
     use winit::platform::x11::EventLoopBuilderExtX11;
     let (_root, mut app) = crate::tests::settings_test_app(crate::Tab::Overview);
+    app.cfg = app.saved_cfg.clone();
     app.selected = Some(blent_config::tablets::Identity::Adb("T1551-tablet".into()));
     app.status.lock().unwrap().daemon_running = true;
     app.status.lock().unwrap().display = Some(blent_config::display_control::Snapshot {

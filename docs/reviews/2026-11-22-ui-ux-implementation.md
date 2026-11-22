@@ -253,3 +253,11 @@ values into egui-owned accessibility nodes. No retained widget reference, native
 subscription or duplicate configuration owner is created. Native Orca/AT-SPI
 consumer qualification is separately visible as T1796; the emitted tree and
 hosted keyboard checks do not establish that acceptance.
+
+## T1797 — clean native idle fixture
+
+The final suite exposed an idle fixture inheriting an unrelated dirty draft. Its
+scheduled close correctly opened T1783's new prompt, so the old fixture could not
+finish. It now explicitly starts clean. All four private native modes complete
+with their original idle callback bounds and old-timer fault controls intact.
+No production idle behavior changed. [Evidence](artifacts/2026-11-22-ui-ux/t1797/).
