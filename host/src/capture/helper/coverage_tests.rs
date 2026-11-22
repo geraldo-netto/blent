@@ -27,7 +27,7 @@ fn t497_helper_command_prepares_private_edid_and_respects_card_priority() {
         helper_path: "/never/execute/helper".into(),
         width: 640,
         height: 480,
-        fps: 120,
+        fps: 90,
         conversion_threads: 128,
         stream_scale: 2,
         ..Default::default()
@@ -45,14 +45,7 @@ fn t497_helper_command_prepares_private_edid_and_respects_card_priority() {
     let args = arguments(&config);
     assert_eq!(
         &args[2..8],
-        [
-            "--fps",
-            "120",
-            "--conversion-threads",
-            "128",
-            "--scale",
-            "2"
-        ]
+        ["--fps", "90", "--conversion-threads", "128", "--scale", "2"]
     );
     assert_eq!(&args[args.len() - 2..], ["--preferred-card", "17"]);
     let edid = std::fs::read(&args[1]).unwrap();
@@ -65,6 +58,17 @@ fn t497_helper_command_prepares_private_edid_and_respects_card_priority() {
         Path::new(&args[1]),
         crate::edid::ensure_edid(640, 480, 90).unwrap()
     );
+    // T1703: generated modes reject invalid product rates instead of clamping.
+    for fps in [0, 9, 91, 120, u32::MAX] {
+        let invalid = CaptureConfig {
+            fps,
+            ..config.clone()
+        };
+        assert!(
+            helper.command(&invalid, &fifo).is_err(),
+            "T1703 accepted FPS {fps}"
+        );
+    }
     config.card = Some(23);
     let args = arguments(&config);
     assert_eq!(&args[args.len() - 2..], ["--card", "23"]);

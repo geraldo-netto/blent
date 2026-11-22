@@ -350,17 +350,12 @@ impl HelperProcess {
     }
 
     pub(super) fn command(&self, config: &CaptureConfig, fifo: &Path) -> Result<Command> {
-        // EDID 1.4 pixel-clock field is 16-bit (max 655 MHz).
-        // 2960×1848 @120 Hz needs ~706 MHz which overflows.
-        // Cap the EDID at 90 Hz so KDE can render at 90 fps; the helper
-        // paces capture requests independently with absolute deadlines in its poll loop.
-        let edid_fps = config.fps.min(90);
         let edid_path = match &config.edid_path {
             Some(p) => p.clone(),
             None => crate::edid::ensure_edid_sized(
                 config.width,
                 config.height,
-                edid_fps,
+                config.fps,
                 config.width_mm,
                 config.height_mm,
                 config.instance,

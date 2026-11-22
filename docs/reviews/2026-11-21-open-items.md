@@ -788,3 +788,9 @@ Static screening examined 3,877 production functions in 504 Rust files and found
 T1613 now retains separate cadence, readiness, idle-advice and GPU-query outcomes; T1625 retains independent service-template and shared-system-setup outcomes. The queue sequences current EDID cleanup before encoder consolidation, capture policy before readiness optimization, Android dead-path cleanup before shrinking, tunnel handoffs before allocation work, and broker polling before reaper measurements. These preferences do not invent prerequisite failures. Original lifecycle fences, native acceptance obligations, permanent independent oracles and category pauses remain. No performance gains or runtime bugs are claimed from this structural review.
 
 The daemon composition root was reviewed and not flagged merely for length. T1536's unused-data-directory assertion was corrected after T1701 introduced a current production caller. [Scope, candidates and queue](artifacts/2026-11-21-open-items/structure-2026-11-22.json). All confirmed outcomes are recorded in the domain ledger.
+
+## T1703 — pass the selected refresh directly to EDID validation (2026-11-22)
+
+Helper command construction no longer clamps generated refresh to 90 or carries the obsolete 120-Hz rationale. The generator receives the selected FPS and rejects invalid product modes. The existing private command fixture now uses valid 90-FPS input and permanently checks 0, 9, 91, 120 and u32::MAX rejection; it fails before on 91 and passes after. Explicit EDID paths and card priority retain their behavior.
+
+All 38 helper tests pass. The maintained command function has 94.9% line coverage (37/39); all 36 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1703.json). Command construction spawns no child; existing cache/argument ownership is unchanged. Installed sessions were untouched.
