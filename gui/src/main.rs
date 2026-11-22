@@ -46,7 +46,7 @@ use blent_config::commands::SyncCommandExt;
 use blent_config::model::{
     FileConfig, MAX_BITRATE_KBPS, MAX_DIMENSION, MAX_QUALITY, MIN_BITRATE_KBPS, MIN_QUALITY,
 };
-use blent_config::storage::{config_path, ConfigStore};
+use blent_config::storage::ConfigStore;
 use eframe::egui;
 #[cfg(all(test, target_os = "linux"))]
 use std::path::PathBuf;
@@ -137,6 +137,7 @@ struct App {
     _monitor_worker: Option<monitor_inventory::Worker>,
     store: ConfigStore,
     save: Option<settings::PendingSave>,
+    close_intent: window_lifecycle::CloseIntent,
     cfg: FileConfig,
     saved_cfg: FileConfig,
     config_observed_after: Option<std::time::Instant>,
@@ -324,6 +325,7 @@ impl App {
             _status_worker: Some(worker),
             store,
             save: None,
+                close_intent: Default::default(),
             config_observed_after: None,
             saved_cfg: cfg.clone(),
             cfg,
@@ -485,6 +487,7 @@ impl App {
                     workspace_style::content(ui, maximum, |ui| self.show_page(ui, &status));
                 });
         });
+        self.show_close_dialog(ctx);
         // Include work started by a button during this frame.
         if self.busy() {
             ctx.request_repaint_after(Duration::from_millis(100));
@@ -1690,6 +1693,7 @@ mod tests {
                 _monitor_worker: None,
                 store,
                 save: None,
+                close_intent: Default::default(),
                 cfg,
                 saved_cfg,
                 config_observed_after: None,

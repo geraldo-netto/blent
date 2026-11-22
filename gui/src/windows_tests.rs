@@ -15,6 +15,7 @@ fn app(store: ConfigStore) -> App {
         _monitor_worker: None,
         store,
         save: None,
+                close_intent: Default::default(),
         cfg: cfg.clone(),
         saved_cfg: cfg,
         config_observed_after: None,

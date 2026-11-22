@@ -159,3 +159,26 @@ strings and tables only, freed after rendering. Popup expansion belongs to egui;
 no second draft, transaction, native resource or subscription is created. The TOML
 dependency already used by Blent is promoted from GUI test-only use, without a new
 version or package.
+
+## T1783 — explicit close decisions
+
+Dirty or busy windows cancel native close and offer Save preferences and close,
+Discard and close, or Keep editing. Save from this prompt explicitly avoids a
+display restart. Pending original saves cannot be discarded, duplicated or lost;
+Keep editing dismisses the prompt while their work continues. Failure retains the
+draft and prompt. Active media still minimizes; its original owner is retained.
+
+The close regression failed before implementation. All 12 close/media lifecycle
+tests pass, including the private X11 close/reactivation fixture. A separate private
+native startup test executes the production constructor with isolated config/runtime
+paths and a local curl stub, then closes a clean window without a prompt. Existing
+media-close fixtures now explicitly start clean, preserving their original exit
+oracle; dirty behavior has separate permanent coverage. All ten maintained methods
+measure 95.7–100% line coverage; 219 measured functions have complexity <=9.
+[Evidence](artifacts/2026-11-22-ui-ux/t1783/).
+
+Close intent is one enum owned by App. It owns no draft, transaction or native
+resource. The existing worker remains authoritative through file-lock waits and
+failure; results are collected before approved exit. Media is checked again at
+final close. Abnormal process termination retains the existing atomic-file limit;
+this change does not claim transactional rollback on process death.

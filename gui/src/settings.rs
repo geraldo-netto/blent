@@ -45,10 +45,9 @@ pub struct PendingSave {
     worker: JoinHandle<Result<Saved, String>>,
 }
 
-// Dropping the window does not synchronously join a file-lock wait. A started
-// transaction cannot be rolled back by dropping its handle; the process may
-// terminate it on exit, and atomic file replacement preserves the old/new
-// config boundary. While the UI lives, it owns and collects this single job.
+// The window intercepts close while this original transaction is pending and
+// collects its result before approved exit. Dropping a handle is not rollback;
+// abnormal process termination still relies on atomic old/new file replacement.
 
 impl PendingSave {
     pub fn start(

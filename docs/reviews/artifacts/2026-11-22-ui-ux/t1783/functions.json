@@ -1,0 +1,62 @@
+[
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "handle_close",
+    "covered": 13,
+    "total": 13
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "media_is_active",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "minimize_for_media",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "finish_window_close",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "show_close_dialog",
+    "covered": 10,
+    "total": 10
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "choose_close",
+    "covered": 9,
+    "total": 9
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "close_choices",
+    "covered": 10,
+    "total": 10
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "close_buttons",
+    "covered": 9,
+    "total": 9
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "new",
+    "covered": 45,
+    "total": 47
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_window",
+    "covered": 28,
+    "total": 28
+  }
+]
