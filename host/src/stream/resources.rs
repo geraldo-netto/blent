@@ -90,7 +90,7 @@ async fn control(instance: u32) -> Control {
         .unwrap();
     let auth = serde_json::json!({"type":"auth", "token":"a".repeat(64)}).to_string();
     client
-        .send(tokio_tungstenite::tungstenite::Message::Text(auth))
+        .send(tokio_tungstenite::tungstenite::Message::Text(auth.into()))
         .await
         .unwrap();
     assert!(client

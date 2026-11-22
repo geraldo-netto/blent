@@ -221,7 +221,7 @@ async fn pump(
 }
 async fn json(client: &mut WebSocketStream<DuplexStream>, message: serde_json::Value) {
     client
-        .send(WebSocketMessage::Text(message.to_string()))
+        .send(WebSocketMessage::Text(message.to_string().into()))
         .await
         .unwrap();
 }

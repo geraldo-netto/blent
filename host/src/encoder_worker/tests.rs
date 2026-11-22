@@ -304,7 +304,7 @@ async fn measure(
     let measured = serde_json::json!({"isolated": isolated, "width": width, "height": height, "frames": frames,
         "startup_us": startup_us, "parent_rss_kib": parent_rss, "worker_rss_kib": worker_rss,
         "parent_encoder_cpu_ms": elapsed_cpu, "p50_us": timings[timings.len()/2], "p95_us": timings[timings.len()*95/100]});
-    (measured, format!("{:x}", hash.finalize()))
+    (measured, blent::hash_text::encode(hash.finalize().into()))
 }
 #[tokio::test]
 async fn t819_worker_matches_inprocess_shared_output_with_paired_measurements() {

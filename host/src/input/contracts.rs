@@ -268,7 +268,7 @@ async fn t281_socket_accepted_before_replacement_cannot_authenticate_after_it() 
         .unwrap();
     tablet.begin(Some("b".into()));
     ws.send(Message::Text(
-        serde_json::json!({"type":"auth", "token":token}).to_string(),
+        serde_json::json!({"type":"auth", "token":token}).to_string().into(),
     ))
     .await
     .unwrap();

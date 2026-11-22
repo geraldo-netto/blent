@@ -51,8 +51,8 @@ pub(super) fn display(identity: &str, ports: (u16, u16)) -> Result<Box<dyn Send>
     let private = blent_config::windows::private::Directory::create(&directory)?;
     let mut keys = vec![
         format!(
-            "display-device-{:x}",
-            sha2::Sha256::digest(identity.as_bytes())
+            "display-device-{}",
+            crate::hash_text::encode(sha2::Sha256::digest(identity.as_bytes()).into())
         ),
         format!("display-port-{}", ports.0),
         format!("display-port-{}", ports.1),

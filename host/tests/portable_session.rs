@@ -169,7 +169,7 @@ async fn t523_shared_session_authenticates_streams_and_joins_native_workers() {
         .unwrap();
     control
         .send(Message::Text(
-            serde_json::json!({"type":"auth","token":"a".repeat(64)}).to_string(),
+            serde_json::json!({"type":"auth","token":"a".repeat(64)}).to_string().into(),
         ))
         .await
         .unwrap();
@@ -205,7 +205,7 @@ async fn t523_shared_session_authenticates_streams_and_joins_native_workers() {
     );
     control
         .send(Message::Text(
-            serde_json::json!({"type":"rendered","seq":u32::MAX,"decode_us":100}).to_string(),
+            serde_json::json!({"type":"rendered","seq":u32::MAX,"decode_us":100}).to_string().into(),
         ))
         .await
         .unwrap();

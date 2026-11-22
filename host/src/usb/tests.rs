@@ -438,7 +438,7 @@ async fn control(
         .unwrap();
     socket
         .send(tokio_tungstenite::tungstenite::Message::Text(
-            serde_json::json!({"type":"auth","token":token}).to_string(),
+            serde_json::json!({"type":"auth","token":token}).to_string().into(),
         ))
         .await
         .unwrap();
@@ -808,7 +808,7 @@ async fn t1386_malformed_serial_preserves_connected_attachment_and_credential() 
             "T1386/T650: malformed inventory detached known tablet"
         );
         assert_eq!(delivered(&adb), token);
-        socket.send(Message::Ping(vec![42])).await.unwrap();
+        socket.send(Message::Ping(vec![42].into())).await.unwrap();
         let reply = tokio::time::timeout(Duration::from_secs(2), socket.next())
             .await
             .unwrap()
@@ -816,7 +816,7 @@ async fn t1386_malformed_serial_preserves_connected_attachment_and_credential() 
             .unwrap();
         assert_eq!(
             reply,
-            Message::Pong(vec![42]),
+            Message::Pong(vec![42].into()),
             "T650: old authenticated lease was retired"
         );
     }

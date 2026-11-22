@@ -133,7 +133,7 @@ async fn t444_late_control_cannot_use_replaced_tablet_token() {
     let (mut client, _) = connect_async(format!("ws://{}", f.input)).await.unwrap();
     client
         .send(Message::Text(
-            serde_json::json!({"type":"auth", "token":"a".repeat(64)}).to_string(),
+            serde_json::json!({"type":"auth", "token":"a".repeat(64)}).to_string().into(),
         ))
         .await
         .unwrap();
@@ -180,7 +180,7 @@ async fn t444_current_credential_reconnects_and_same_identity_migrates() {
     let (mut client, _) = connect_async(format!("ws://{}", f.input)).await.unwrap();
     client
         .send(Message::Text(
-            serde_json::json!({"type":"auth", "token":token}).to_string(),
+            serde_json::json!({"type":"auth", "token":token}).to_string().into(),
         ))
         .await
         .unwrap();
@@ -238,7 +238,7 @@ async fn t444_invalid_and_out_of_bounds_auth_corpus_is_rejected() {
         let (mut client, _) = connect_async(format!("ws://{}", f.input)).await.unwrap();
         let _ = client
             .send(Message::Text(
-                serde_json::json!({"type":"auth", "token":token}).to_string(),
+                serde_json::json!({"type":"auth", "token":token}).to_string().into(),
             ))
             .await;
         let reply = tokio::time::timeout(Duration::from_secs(1), client.next())

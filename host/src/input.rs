@@ -317,11 +317,10 @@ async fn handle_connection(
     // Input events are a few hundred bytes. The library default of 64 MiB
     // per message is a memory bill nobody on this socket should be able to
     // run up.
-    let ws_cfg = WebSocketConfig {
-        max_message_size: Some(64 * 1024),
-        max_frame_size: Some(64 * 1024),
-        ..Default::default()
-    };
+    let ws_cfg = WebSocketConfig::default()
+        .read_buffer_size(4 * 1024)
+        .max_message_size(Some(64 * 1024))
+        .max_frame_size(Some(64 * 1024));
     let deadline = incoming.deadline;
     let ws_stream = tokio::time::timeout_at(
         deadline,
@@ -420,7 +419,7 @@ async fn serve_controller(
 
     if !send_controller_message(
         &mut ws_sender,
-        Message::Text(serde_json::to_string(&resp)?),
+        Message::Text(serde_json::to_string(&resp)?.into()),
         &mut ownership,
     )
     .await?
@@ -457,7 +456,7 @@ async fn serve_controller(
                 let mut response = config.response("mode", *mode_rx.borrow(), &settings_tx);
                 response.direct_input = controllers.devices.direct_status();
                 if !send_controller_message(&mut ws_sender,
-                    Message::Text(serde_json::to_string(&response)?), &mut ownership)
+                    Message::Text(serde_json::to_string(&response)?.into()), &mut ownership)
                     .await.unwrap_or(false) {
                     break;
                 }
@@ -474,7 +473,7 @@ async fn serve_controller(
                 let mut resp = config.response("mode", pen_only, &settings_tx);
                 resp.direct_input = controllers.devices.direct_status();
                 if !send_controller_message(&mut ws_sender,
-                    Message::Text(serde_json::to_string(&resp)?), &mut ownership)
+                    Message::Text(serde_json::to_string(&resp)?.into()), &mut ownership)
                     .await.unwrap_or(false)
                 {
                     break;
@@ -518,7 +517,7 @@ async fn handle_controller_message(
                 let reply = serde_json::json!({"status":"input", "direct_input":dispatch.controllers.devices.direct_status()});
                 return send_controller_message(
                     sender,
-                    Message::Text(reply.to_string()),
+                    Message::Text(reply.to_string().into()),
                     ownership,
                 )
                 .await;
@@ -552,7 +551,7 @@ async fn send_settings_rejection(
     ownership: &mut watch::Receiver<u64>,
 ) -> Result<bool> {
     match settings.rejection_reply() {
-        Some(reply) => send_controller_message(sender, Message::Text(reply), ownership).await,
+        Some(reply) => send_controller_message(sender, Message::Text(reply.into()), ownership).await,
         None => Ok(true),
     }
 }
@@ -1684,7 +1683,7 @@ esac
             ))
             .await
             .unwrap();
-        clients[1].send(Message::Ping(vec![1])).await.unwrap();
+        clients[1].send(Message::Ping(vec![1].into())).await.unwrap();
         assert!(matches!(
             clients[1].next().await,
             Some(Ok(Message::Pong(_)))
@@ -1772,7 +1771,7 @@ esac
         response(&mut client).await;
         task.abort();
         let _ = task.await;
-        let _ = client.send(Message::Ping(vec![42])).await;
+        let _ = client.send(Message::Ping(vec![42].into())).await;
         let next = tokio::time::timeout(std::time::Duration::from_millis(300), client.next()).await;
         assert!(
             !matches!(next, Ok(Some(Ok(Message::Pong(_))))),
@@ -2539,7 +2538,7 @@ fi
         client.send(Message::Text(serde_json::json!({"type":"decoders", "capabilities": {
             "protocol": 2, "scope": greeting["decoder_scope"], "width": greeting["video_width"], "height": greeting["video_height"],
             "fps": greeting["fps"], "codecs": ["h264"], "hardware": []
-        }}).to_string())).await.unwrap();
+        }}).to_string().into())).await.unwrap();
         response(&mut client).await;
         assert!(tx.borrow().decoders.is_some());
         client.close(None).await.unwrap();
@@ -2565,7 +2564,7 @@ fi
             "height": greeting["video_height"], "fps": greeting["fps"], "codecs": [codec] });
         client
             .send(Message::Text(
-                serde_json::json!({"type":"decoders", "capabilities":caps}).to_string(),
+                serde_json::json!({"type":"decoders", "capabilities":caps}).to_string().into(),
             ))
             .await
             .unwrap();

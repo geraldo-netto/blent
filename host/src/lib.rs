@@ -38,6 +38,7 @@ pub mod display_connections;
 pub mod display_quiescence;
 pub mod display_slots;
 pub mod ffmpeg_args;
+pub mod hash_text;
 pub mod latency;
 pub mod media;
 #[cfg(any(test, all(target_os = "linux", feature = "accessory-transport")))]

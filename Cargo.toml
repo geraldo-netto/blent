@@ -1,3 +1,6 @@
 [workspace]
 members = ["host", "gui", "common"]
 resolver = "2"
+
+[workspace.dependencies]
+sha2 = "0.11"

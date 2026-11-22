@@ -79,7 +79,7 @@ pub(super) fn fingerprint(
         ),
     ))
     .ok()?;
-    Some(format!("{:x}", Sha256::digest(data)))
+    Some(blent::hash_text::encode(Sha256::digest(data).into()))
 }
 
 fn host_stamp(base: &CaptureConfig, scope: &blent::native_scope::Scope) -> Option<String> {
@@ -113,7 +113,7 @@ fn host_stamp(base: &CaptureConfig, scope: &blent::native_scope::Scope) -> Optio
             .pipe_capacity_mib
             .to_le_bytes(),
     );
-    Some(format!("{:x}", digest.finalize()))
+    Some(blent::hash_text::encode(digest.finalize().into()))
 }
 
 // Linux adapter: identify the render device and bound driver changes without boot IDs.

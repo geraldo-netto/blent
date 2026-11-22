@@ -1,0 +1,124 @@
+{
+  "tool": "Rust 1.100.0 / cargo-llvm-cov 0.8.7; exact executed objects",
+  "functions": [
+    {
+      "file": "host/src/input.rs",
+      "name": "handle_connection",
+      "line": 308,
+      "language": "rust",
+      "covered": 53,
+      "total": 53,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input.rs",
+      "name": "serve_controller",
+      "line": 376,
+      "language": "rust",
+      "covered": 85,
+      "total": 93,
+      "percent": 91.39784946236558,
+      "passes": true,
+      "missing": [
+        398,
+        401,
+        427,
+        438,
+        446,
+        461,
+        470,
+        479
+      ]
+    },
+    {
+      "file": "host/src/input.rs",
+      "name": "handle_controller_message",
+      "line": 502,
+      "language": "rust",
+      "covered": 28,
+      "total": 29,
+      "percent": 96.55172413793103,
+      "passes": true,
+      "missing": [
+        535
+      ]
+    },
+    {
+      "file": "host/src/input.rs",
+      "name": "send_settings_rejection",
+      "line": 548,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/activity.rs",
+      "name": "message",
+      "line": 32,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/hash_text.rs",
+      "name": "encode",
+      "line": 5,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/route_lock.rs",
+      "name": "display",
+      "line": 47,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/context.rs",
+      "name": "fingerprint",
+      "line": 47,
+      "language": "rust",
+      "covered": 36,
+      "total": 36,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/cache/context.rs",
+      "name": "host_stamp",
+      "line": 85,
+      "language": "rust",
+      "covered": 29,
+      "total": 30,
+      "percent": 96.66666666666667,
+      "passes": true,
+      "missing": [
+        107
+      ]
+    }
+  ],
+  "source_sha256": {
+    "host/src/hash_text.rs": "0729ffab10bd7cf2ec36e19605e658af7f2b0c5dabe4cf1b82f4a7fdd4a4e7ed",
+    "host/src/input.rs": "26c862ffd859a421998841eb4a68c8eadab69bbc55f30092fad08648050b46b2",
+    "host/src/input/activity.rs": "3c159d4397af1986ccae5e55da8a6b8d8759db9b45924795b710c6614db6dcb4",
+    "host/src/selection/worker/cache/context.rs": "cc9f8611d48c3fec0572bf4522568cb39a6bb7d82bbf85022464aebf74388d2b",
+    "host/src/usb/route_lock.rs": "61001b885936d51f9738ab27bce1c4b3410c22df8512692c265c302bb5d80264"
+  }
+}

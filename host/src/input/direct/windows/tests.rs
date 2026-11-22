@@ -72,11 +72,11 @@ async fn t673_native_authenticated_session_delivers_and_retires_in_owned_window(
     };
     socket
         .send(Message::Text(
-            serde_json::json!({"type":"direct_input","command":command}).to_string(),
+            serde_json::json!({"type":"direct_input","command":command}).to_string().into(),
         ))
         .await
         .unwrap();
-    socket.send(Message::Ping(vec![1])).await.unwrap();
+    socket.send(Message::Ping(vec![1].into())).await.unwrap();
     socket.next().await.unwrap().unwrap();
     window::pump();
     assert!(
@@ -99,8 +99,8 @@ async fn t673_native_authenticated_session_delivers_and_retires_in_owned_window(
     assert_eq!(store.load().direct_input.unwrap().mode, Mode::Touch);
     let touch = window::TOUCH.load(Ordering::SeqCst);
     for action in [0, 2, 1, 0] {
-        socket.send(Message::Text(serde_json::json!({"type":"touch","x":0.5,"y":0.5,"pressure":1,"action":action,"slot":0}).to_string())).await.unwrap();
-        socket.send(Message::Ping(vec![2])).await.unwrap();
+        socket.send(Message::Text(serde_json::json!({"type":"touch","x":0.5,"y":0.5,"pressure":1,"action":action,"slot":0}).to_string().into())).await.unwrap();
+        socket.send(Message::Ping(vec![2].into())).await.unwrap();
         assert!(matches!(socket.next().await, Some(Ok(Message::Pong(_)))));
         window::pump();
     }

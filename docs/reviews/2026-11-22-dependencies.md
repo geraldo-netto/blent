@@ -46,3 +46,37 @@ liveness capability (E0061). The fixture now passes None explicitly and retains
 all pointer identity, generation, rejection and ownership assertions. All four
 T820 integration tests pass. No production code or compatibility overload was
 added. This repairs the test caller, not a new runtime behavior defect.
+
+## T1732: current WebSocket and shared digest adapters
+
+Update tokio-tungstenite/tungstenite from 0.21 to 0.30 and both direct SHA-2
+consumers from 0.10 to 0.11.1 through a workspace declaration. SHA-1 0.11 and SHA-2
+0.11 now share digest 0.11; no second digest/crypto-common/block-buffer family is
+introduced. SHA-1 and SHA-2 remain distinct required algorithms. This removes two
+more lockfile package versions: all-target total 542 -> 540, duplicate names stay
+36. Upstream API references: <https://docs.rs/tokio-tungstenite/0.30.0/> and
+<https://docs.rs/sha2/0.11.1/>.
+
+Current WebSocket messages take owned Utf8Bytes/Bytes; callers transfer their
+existing String/Vec payloads with Into. No old-version overload or shim remains.
+Message/frame limits stay 64 KiB; read capacity stays explicit at 4 KiB pending
+T1738's separate workload comparison. Sixteen admitted input handlers and the
+existing bounded read-ahead queue retain their original cutoff and drop paths.
+No extra capture, borrowed frame escape or detached cleanup owner is introduced.
+
+Digest text now uses a library-independent `[u8; 32] -> String` helper. It owns
+32 input bytes and produces 64 lowercase ASCII bytes in one allocation, retaining
+no references or native resources. A known vector preserves order/leading zeroes;
+a bounded property test checks all 256 byte values against Rust's independent
+hex formatter. Device lock keys and cache fingerprints preserve their bytes.
+
+Verification: Linux workspace all-target check passes; 166 input/route-lock/hash
+library tests pass; 61 cache/credential binary tests pass (one pre-existing ignored
+performance test remains ignored); three portable-session integration tests and
+two actual private-display GUI startup/relaunch tests pass. Nine maintained
+production functions have individually measured coverage between 91.4% and 100%;
+exact counts and source hashes are in `artifacts/2026-11-22-dependencies/t1732-metrics.json`.
+Local Rust syntax complexity remains <=9 throughout changed Rust files. Existing
+Windows fixture constructors received mechanical current-API conversions only;
+Windows native validation and feature work remain paused, with no support claim.
+Release-bundle rebuild and notice attribution remain T1734 integration work.

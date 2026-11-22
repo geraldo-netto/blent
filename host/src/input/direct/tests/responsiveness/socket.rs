@@ -34,7 +34,7 @@ async fn connect(sink: Arc<dyn InputSink>) -> (InputSocket, tokio::task::JoinHan
 async fn command(client: &mut InputSocket, command: Command) {
     client
         .send(Message::Text(
-            serde_json::json!({"type":"direct_input","command":command}).to_string(),
+            serde_json::json!({"type":"direct_input","command":command}).to_string().into(),
         ))
         .await
         .unwrap();

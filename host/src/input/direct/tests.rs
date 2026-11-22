@@ -399,8 +399,8 @@ async fn t673_authenticated_owner_replacement_and_disconnect_retire_buttons() {
         .into_text()
         .unwrap()
         .contains("\"negotiated\":true"));
-    first.send(Message::Text(serde_json::json!({"type":"direct_input","command":mouse(Phase::Down,Some(Button::Left),0.5)}).to_string())).await.unwrap();
-    first.send(Message::Ping(vec![1])).await.unwrap();
+    first.send(Message::Text(serde_json::json!({"type":"direct_input","command":mouse(Phase::Down,Some(Button::Left),0.5)}).to_string().into())).await.unwrap();
+    first.send(Message::Ping(vec![1].into())).await.unwrap();
     assert!(matches!(first.next().await, Some(Ok(Message::Pong(_)))));
     let (mut second, _) = tokio_tungstenite::connect_async(&address).await.unwrap();
     second

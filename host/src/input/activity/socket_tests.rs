@@ -84,7 +84,7 @@ impl Fixture {
                 .unwrap();
         client
             .send(Message::Text(
-                serde_json::json!({"type":"auth","token":token}).to_string(),
+                serde_json::json!({"type":"auth","token":token}).to_string().into(),
             ))
             .await
             .unwrap();

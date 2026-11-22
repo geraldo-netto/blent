@@ -35,7 +35,7 @@ pub(super) fn message(signal: Signal) -> Result<Message> {
             status: "display_activity",
             display_activity: signal,
         },
-    )?))
+    )?.into()))
 }
 
 #[cfg(test)]
