@@ -892,3 +892,22 @@ The media adapter now reserves a receipt for the original death-link call before
 The permanent asynchronous regression fails on API 27 and 34 before the fix. Removing only the new wait also fails both cases; restored code passes all 40 media-worker and 60 connection-worker cases. The constructor, connection callback and retirement method each measure 100% executable-line coverage; all 38 measured production methods/callbacks have 85.7–100% coverage. All 234 measured production/test functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1725.json).
 
 The bounded receipt adds no native owner or replacement attempt. Admission and retirement use the same gate; callback settlement, original native-job joins and once-only cleanup remain distinct requirements. Independent read-only review found no remaining defect. Physical Binder acceptance remains in T1651; no running sessions or devices changed. T1706 can now consolidate these lifetimes while preserving the new regression.
+
+
+## T1726: current profile setup caller
+
+The unchanged profile build failed at AoaSecureRun.kt:158 because the current
+SecureConnection.connect contract requires a remaining-budget callback. The
+profile adapter now supplies the original approval deadline and cancellation
+state on every TLS read; it never resets that deadline or returns a zero socket
+timeout. There is no old-signature overload or cryptographic policy change.
+
+The profile Kotlin build passes. The normal Debug unit suite retains three new
+T1726 tests: all 120,000 valid millisecond offsets, expiry/cancellation, and
+negative/extreme clock values. Selected diagnostics/echo/transport regressions
+also pass. Native USB/TLS qualification was not executed. The new stateless helper
+owns only scalar values; the callback borrows the existing run for synchronous
+setup and retains no new socket/thread owner. Existing transport close and worker
+retirement obligations are unchanged. All 48 functions/callbacks measured in the
+three changed Kotlin files score <=3 with the repository Kotlin syntax checker;
+benchmark code remains exempt from production coverage requirements.

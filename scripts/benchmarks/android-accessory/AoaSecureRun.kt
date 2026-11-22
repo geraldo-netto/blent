@@ -155,7 +155,9 @@ internal class AoaSecureRun(
         val tls = SecureConnection(identity.keyManagers(), peer)
         stage("Starting mutual TLS handshake and authenticated protocol preface")
         record(AoaNativeDiagnostics.socket(socket))
-        val secured = tls.connect(socket)
+        val secured = tls.connect(socket) {
+            aoaSetupRemaining(begun + 120000, SystemClock.elapsedRealtime(), stopped.get())
+        }
         try {
             stage("Checking current approval after verified TLS")
             check(!stopped.get())
