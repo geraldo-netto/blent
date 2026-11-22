@@ -611,9 +611,6 @@ impl CaptureManager {
         run.encoder_mode = None;
         // Reset codec config so it gets re-extracted on restart
         self.codec_config.publish(None);
-        if changes.crashed() {
-            run.pause(run.backoff_ms).await;
-        }
         Ok(())
     }
 
@@ -685,11 +682,9 @@ impl CaptureRun {
         }
     }
 
-    fn adjust_backoff(&mut self, changes: SessionChanges) {
+    fn reset_backoff_if_stable(&mut self) {
         if self.pipeline_started_at.elapsed().as_secs() >= 30 {
             self.backoff_ms = RECONNECT_DELAY_MS;
-        } else if changes.crashed() {
-            self.backoff_ms = (self.backoff_ms * 2).min(30_000);
         }
     }
 }

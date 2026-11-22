@@ -1,0 +1,148 @@
+{
+  "coverage": [
+    {
+      "file": "host/src/capture.rs",
+      "name": "finish_encoder_session",
+      "line": 592,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "reset_backoff_if_stable",
+      "line": 685,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/supervision.rs",
+      "name": "capture_attempt",
+      "line": 63,
+      "language": "rust",
+      "covered": 14,
+      "total": 16,
+      "percent": 87.5,
+      "passes": true,
+      "missing": [
+        72,
+        75
+      ]
+    },
+    {
+      "file": "host/src/capture/supervision.rs",
+      "name": "recover_encoder_session",
+      "line": 80,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "host/src/capture.rs",
+      592,
+      "finish_encoder_session",
+      4
+    ],
+    [
+      "host/src/capture.rs",
+      685,
+      "reset_backoff_if_stable",
+      2
+    ],
+    [
+      "host/src/capture/supervision.rs",
+      63,
+      "capture_attempt",
+      3
+    ],
+    [
+      "host/src/capture/supervision.rs",
+      80,
+      "recover_encoder_session",
+      2
+    ],
+    [
+      "host/src/capture/supervision/tests.rs",
+      14,
+      "new",
+      1
+    ],
+    [
+      "host/src/capture/supervision/tests.rs",
+      29,
+      "recover",
+      1
+    ],
+    [
+      "host/src/capture/supervision/tests.rs",
+      38,
+      "crash",
+      1
+    ],
+    [
+      "host/src/capture/supervision/tests.rs",
+      49,
+      "t1682_crash_waits_current_delay_before_growing_to_cap",
+      2
+    ],
+    [
+      "host/src/capture/supervision/tests.rs",
+      66,
+      "t1682_stable_session_resets_delay_before_waiting",
+      1
+    ],
+    [
+      "host/src/capture/supervision/tests.rs",
+      75,
+      "t1682_clean_stop_neither_waits_nor_grows_delay",
+      1
+    ],
+    [
+      "host/src/capture/supervision/tests.rs",
+      90,
+      "t1682_pending_native_retirement_prevents_retry_and_backoff_growth",
+      1
+    ],
+    [
+      "host/src/capture/supervision/tests.rs",
+      110,
+      "t1682_retry_sleep_is_cancelled_by_display_loss_or_shutdown",
+      3
+    ],
+    [
+      "host/src/capture/ownership_tests.rs",
+      175,
+      "restart_run",
+      1
+    ]
+  ],
+  "id": "T1682",
+  "regression_before": {
+    "passed": 2,
+    "failed": 3,
+    "reason": "Current crash delay doubled before wait; growth preceded native retirement; stable crash did not prepare the next doubled delay."
+  },
+  "capture_suite": {
+    "passed": 256,
+    "failed": 0,
+    "ignored": 3
+  },
+  "tools": {
+    "coverage": "cargo-llvm-cov / LLVM source counters, per-function executable lines",
+    "complexity": "project checker; Rust syn 2.0.119"
+  },
+  "ownership": "No new allocations, native children or leases. CaptureRun owns the bounded scalar delay; current helper/encoder retirement must settle before reset/wait/growth. The awaited timer borrows run exclusively and display/shutdown can cancel it. No deadline is treated as native settlement.",
+  "scope": "Linux default build, source only; installed sessions unchanged."
+}

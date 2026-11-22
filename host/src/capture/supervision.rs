@@ -74,9 +74,20 @@ impl CaptureManager {
         let Some(changes) = self.run_encoder_session(output, run).await? else {
             return Ok(true);
         };
-        run.adjust_backoff(changes);
-        self.finish_encoder_session(changes, run).await?;
+        self.recover_encoder_session(changes, run).await?;
         Ok(false)
+    }
+    async fn recover_encoder_session(
+        &mut self,
+        changes: super::SessionChanges,
+        run: &mut CaptureRun,
+    ) -> Result<()> {
+        self.finish_encoder_session(changes, run).await?;
+        run.reset_backoff_if_stable();
+        if changes.crashed() {
+            run.back_off().await;
+        }
+        Ok(())
     }
     async fn await_replacement(&mut self, needs_pause: bool) -> Result<()> {
         if needs_pause && self.display_work.is_some() && self.helper.is_running() {
@@ -145,3 +156,6 @@ async fn wait_demand(run: &mut CaptureRun, notice: Signal<'static>) {
         _ = notice => {},
     }
 }
+
+#[cfg(test)]
+mod tests;

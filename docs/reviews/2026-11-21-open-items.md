@@ -507,3 +507,9 @@ The cache producer uses an exact owned staging namespace. A new writer first acq
 The permanent regression exits an owned private native child immediately after production staging fsync, bypasses Rust Drop, and waits for that original process before re-admission. Before the fix, the staging file remained; afterward, it is reclaimed. All 47 cache tests pass, including four new staging cases. Twelve production methods measure 85.71–100% executable-line coverage; all 29 measured production/test functions have complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1681.json).
 
 Reclamation retains only one entry/metadata/name at a time and requires a subsequent writer plus successful filesystem operations. Historical unknown names do not acquire guessed ownership. The original blocking worker remains the native completion sponsor; the abrupt-exit hook is test-only. No installed session changed.
+
+## T1682 — capture retry cadence
+
+Crash recovery now verifies original retirement before waiting at the current delay and doubling it for the next attempt. The sequence is 2, 4, 8, 16 and at most 30 seconds; a stable 30-second pipeline resets to 2 seconds. Clean transitions do not wait, and display loss/shutdown interrupts the timer. No new resource owner is introduced. The scalar retry state belongs to CaptureRun; the timer borrows it only during recovery. Unknown native obligations remain owned and prevent replacement.
+
+Three of five new permanent virtual-time tests failed before the behavior change; all five now pass. The full capture selection passes 256 tests with three opt-in benchmarks ignored. The four maintained production functions measure 87.5–100% line coverage, and all 13 measured source/test functions have complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1682.json). These tests use private state and do not start a capture session. Installed binaries remain unchanged.

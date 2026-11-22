@@ -172,7 +172,7 @@ fn t429_ownership_does_not_hold_fifo_endpoints_open() {
     assert!(!path.exists(), "T429: owned FIFO leaked on Drop");
 }
 
-fn restart_run(manager: &CaptureManager) -> CaptureRun {
+pub(super) fn restart_run(manager: &CaptureManager) -> CaptureRun {
     let config = &manager.config;
     let settings = EncoderSettings {
         encoder: config.encoder.clone(),

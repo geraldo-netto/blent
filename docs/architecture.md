@@ -584,6 +584,12 @@ FIFO creation, preferred-card identity and geometry announcements;
 independent private protocol to native execution and compressed packet delivery. `capture::cli_encoder` translates policy to FFmpeg arguments and drains its
 encoded output. `capture::placement` handles desktop placement, while
 `capture::process` provides bounded termination and validated orphan retirement.
+Capture crash recovery first verifies original helper/encoder retirement, then
+waits at the current retry delay: 2, 4, 8, 16 and at most 30 seconds. A pipeline
+that has run for at least 30 seconds resets the next delay to 2 seconds; clean
+settings/mode transitions do not wait. Display loss or shutdown interrupts the
+wait. An unconfirmed native retirement prevents replacement and does not advance
+the retry state.
 The `media` module owns codec, packet, generation and live-settings contracts,
 so streaming, input and encoding do not depend on capture management.
 `ivf` reads bounded VP9/AV1 packets and classifies random-access headers.
