@@ -82,3 +82,37 @@ construction closes already-admitted originals. Wrong-byte controls require the
 peer's explicit mismatch error and confirm the client socket is closed afterward.
 The normal tool fixture runs local valid/invalid/fault cases alongside TLS-record
 and output-path tests, and checks registration of both executable tasks.
+
+For receive-side read staging, run both peer write policies:
+
+```sh
+python3 scripts/benchmarks/android-tunnel/run.py /tmp/blent-read-default --kind tls-read
+python3 scripts/benchmarks/android-tunnel/run.py /tmp/blent-read-gather --kind tls-read --peer-gather-bytes 16384
+```
+
+Here `combined=false` borrows the production ConnectionFrameReader's exact header
+and body destinations directly into StreamConnectionIo. `combined=true` reads into
+one benchmark-only 16-KiB array, then copies its retained prefix into those same
+production framing loans. A native loan blocks scratch reuse; remaining bytes must
+be consumed before another native read. The parser's single completed frame must
+be released before subsequent framing. This experiment changes no production read
+policy and does not change the independent 16-KiB WebSocket default.
+
+A request token paces each peer frame, giving one outstanding frame and a measured
+round trip. The peer uses the production frame writer and selected gather policy,
+then synchronously writes its exact slices and flushes. Both reader modes validate
+the header, sequence and every payload byte. `extra_copied_bytes` records the added
+staging copy; exact reads add none. The shared completion count includes the outgoing
+request token (the role previously occupied by the writer benchmark's incoming ACK).
+`tls_application_records` measures only outgoing request-token records here, as
+explicitly labelled by `record_direction`; it is not an incoming record count.
+
+Read-ahead retains 16 KiB in addition to the production reader's 40-byte header and
+64-KiB body arrays, excluding object headers. It copies each received byte once and
+keeps at most one native scratch loan and one parsed frame. The same private TLS
+connection/native-worker owner handles both directions. Any fixture failure closes
+the original streams and joins the exact workers/peer before releasing its storage.
+Tests cover foreign/duplicate/invalid completions, prefix fragmentation, guarded
+extents, retained-loan reuse rejection, wrong bytes/headers and actual TLS exchange.
+The one-outstanding-frame domain does not measure pipelined multi-frame read-ahead,
+Android ART/LocalSocket behavior or full-reactor deadlines under native cancellation.

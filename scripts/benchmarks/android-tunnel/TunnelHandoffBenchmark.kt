@@ -2,6 +2,7 @@ package com.blent.connection
 
 import java.io.File
 import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocket
 import kotlinx.serialization.json.*
 
 private fun framedWrite(io: MeasuredIo, writer: ConnectionFrameWriter, frame: ConnectionFrame) {
@@ -11,8 +12,22 @@ private fun framedWrite(io: MeasuredIo, writer: ConnectionFrameWriter, frame: Co
     check(writer.writeComplete(loan, count, io.now()) === frame)
 }
 
+private fun receiveMeasurementFrames(connection: SSLSocket, frames: Int, payloadBytes: Int) {
+    val input = connection.inputStream
+    val headerBytes = ByteArray(ConnectionWire.HEADER_BYTES)
+    repeat(frames) { sequence ->
+        check(input.readNBytes(headerBytes, 0, headerBytes.size) == headerBytes.size)
+        val header = ConnectionWire.decode(headerBytes)
+        check(header == ConnectionWire.Header(ConnectionWire.DATA, ConnectionWire.DISPLAY, 1, 1,
+            sequence.toLong(), payloadBytes, 0))
+        val body = input.readNBytes(header.length)
+        check(body.size == header.length && body.all { it == 7.toByte() })
+        connection.outputStream.write(1)
+    }
+}
+
 private fun sample(server: SSLContext, client: SSLContext, size: Int, fps: Int, combined: Boolean): JsonObject {
-    TunnelMeasurement(server, client, MEASUREMENT_FRAMES, size).use { connection ->
+    TunnelMeasurement(server, client) { receiveMeasurementFrames(it, MEASUREMENT_FRAMES, size) }.use { connection ->
         MeasuredIo(connection).use { io ->
             val counters = NativeCounters()
             val policy = ConnectionWritePolicy(if (combined) 16384 else 0)

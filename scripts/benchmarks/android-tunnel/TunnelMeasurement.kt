@@ -18,11 +18,12 @@ internal interface MeasurementConnection : AutoCloseable {
     fun finishPeer()
 }
 
-internal class TunnelMeasurement(server: SSLContext, client: SSLContext, frames: Int, payloadBytes: Int) : MeasurementConnection {
+internal class TunnelMeasurement(server: SSLContext, client: SSLContext,
+                                 private val exchange: (SSLSocket) -> Unit) : MeasurementConnection {
     private val resources = ArrayList<java.io.Closeable>(3)
     private val finish = CountDownLatch(1)
     private val accepted = CountDownLatch(1)
-    private val peerWork = FutureTask { serve(frames, payloadBytes) }
+    private val peerWork = FutureTask { serve() }
     private val peer = Thread(peerWork, "blent-bench-peer")
     private val listener = (server.serverSocketFactory.createServerSocket(0, 1, InetAddress.getLoopbackAddress()) as SSLServerSocket).also { resources.add(it) }
     private val raw: Socket
@@ -57,21 +58,11 @@ internal class TunnelMeasurement(server: SSLContext, client: SSLContext, frames:
             throw error
         }
     }
-    private fun serve(frames: Int, payloadBytes: Int) {
+    private fun serve() {
         (listener.accept() as SSLSocket).use { connection ->
             connection.tcpNoDelay = true; connection.soTimeout = 5000
             try { connection.startHandshake() } finally { accepted.countDown() }
-            val input = connection.inputStream
-            val headerBytes = ByteArray(ConnectionWire.HEADER_BYTES)
-            repeat(frames) { sequence ->
-                check(input.readNBytes(headerBytes, 0, headerBytes.size) == headerBytes.size)
-                val header = ConnectionWire.decode(headerBytes)
-                check(header == ConnectionWire.Header(ConnectionWire.DATA, ConnectionWire.DISPLAY, 1, 1,
-                    sequence.toLong(), payloadBytes, 0))
-                val body = input.readNBytes(header.length)
-                check(body.size == header.length && body.all { it == 7.toByte() })
-                connection.outputStream.write(1)
-            }
+            exchange(connection)
             finish.await() // Keep the peer alive until final CPU/record snapshots.
         }
     }

@@ -1,0 +1,17 @@
+{
+  "item": "T1757",
+  "hosted_cases": 16,
+  "hosted_classes": 4,
+  "read_trials": 128,
+  "shared_writer_verification_trials": 64,
+  "unchanged_inputs": true,
+  "complexity_functions": 216,
+  "maximum_complexity": 7,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI / Python 3.12 AST",
+  "groovy_closures": 4,
+  "groovy_maximum": 3,
+  "coverage": "benchmark/nonessential tool exemption",
+  "production_behavior_changed": false,
+  "retained_extra_bytes": 16384,
+  "scope": "Hosted JSSE TLS, one outstanding frame; not Rustls/Android/native end-to-end acceptance"
+}

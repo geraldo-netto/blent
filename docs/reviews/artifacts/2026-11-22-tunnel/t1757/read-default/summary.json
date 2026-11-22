@@ -1,0 +1,470 @@
+{
+  "warmup_trials": 16,
+  "measured_trials": 48,
+  "comparisons": [
+    {
+      "fps": 0,
+      "payload_bytes": 64,
+      "baseline": {
+        "trials": 3,
+        "cpu_ns_median": 6009101,
+        "p95_ns_median": 156022,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          3.0
+        ],
+        "driver_poll_calls": [
+          360,
+          360,
+          360
+        ],
+        "driver_wait_calls": [
+          180,
+          180,
+          180
+        ],
+        "observed_ready_hints": [
+          180,
+          180,
+          180
+        ]
+      },
+      "combined": {
+        "trials": 3,
+        "cpu_ns_median": 5639903,
+        "p95_ns_median": 141574,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          3.0
+        ],
+        "driver_poll_calls": [
+          360,
+          360,
+          360
+        ],
+        "driver_wait_calls": [
+          180,
+          180,
+          180
+        ],
+        "observed_ready_hints": [
+          180,
+          180,
+          180
+        ]
+      },
+      "paired_cpu_ratio_median": 1.1613231099880756,
+      "paired_p95_ratio_median": 0.9073976746869031
+    },
+    {
+      "fps": 0,
+      "payload_bytes": 4096,
+      "baseline": {
+        "trials": 3,
+        "cpu_ns_median": 5537182,
+        "p95_ns_median": 135373,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          3.0
+        ],
+        "driver_poll_calls": [
+          360,
+          360,
+          360
+        ],
+        "driver_wait_calls": [
+          180,
+          180,
+          180
+        ],
+        "observed_ready_hints": [
+          180,
+          180,
+          180
+        ]
+      },
+      "combined": {
+        "trials": 3,
+        "cpu_ns_median": 6185930,
+        "p95_ns_median": 177053,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          3.0
+        ],
+        "driver_poll_calls": [
+          360,
+          360,
+          360
+        ],
+        "driver_wait_calls": [
+          180,
+          180,
+          180
+        ],
+        "observed_ready_hints": [
+          180,
+          180,
+          180
+        ]
+      },
+      "paired_cpu_ratio_median": 1.1171621232605322,
+      "paired_p95_ratio_median": 1.2778311057404168
+    },
+    {
+      "fps": 0,
+      "payload_bytes": 16384,
+      "baseline": {
+        "trials": 3,
+        "cpu_ns_median": 5146984,
+        "p95_ns_median": 137457,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          4.0
+        ],
+        "driver_poll_calls": [
+          480,
+          480,
+          480
+        ],
+        "driver_wait_calls": [
+          240,
+          240,
+          240
+        ],
+        "observed_ready_hints": [
+          240,
+          240,
+          240
+        ]
+      },
+      "combined": {
+        "trials": 3,
+        "cpu_ns_median": 6413003,
+        "p95_ns_median": 130544,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          4.0
+        ],
+        "driver_poll_calls": [
+          480,
+          480,
+          480
+        ],
+        "driver_wait_calls": [
+          240,
+          240,
+          240
+        ],
+        "observed_ready_hints": [
+          240,
+          240,
+          240
+        ]
+      },
+      "paired_cpu_ratio_median": 1.047583397448817,
+      "paired_p95_ratio_median": 1.1492898901832214
+    },
+    {
+      "fps": 0,
+      "payload_bytes": 65536,
+      "baseline": {
+        "trials": 3,
+        "cpu_ns_median": 7964303,
+        "p95_ns_median": 157105,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          7.0
+        ],
+        "driver_poll_calls": [
+          840,
+          840,
+          840
+        ],
+        "driver_wait_calls": [
+          420,
+          420,
+          420
+        ],
+        "observed_ready_hints": [
+          420,
+          420,
+          420
+        ]
+      },
+      "combined": {
+        "trials": 3,
+        "cpu_ns_median": 9680527,
+        "p95_ns_median": 197723,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          7.0
+        ],
+        "driver_poll_calls": [
+          840,
+          840,
+          840
+        ],
+        "driver_wait_calls": [
+          420,
+          420,
+          420
+        ],
+        "observed_ready_hints": [
+          420,
+          420,
+          420
+        ]
+      },
+      "paired_cpu_ratio_median": 1.2154895412693365,
+      "paired_p95_ratio_median": 1.2585404665669457
+    },
+    {
+      "fps": 60,
+      "payload_bytes": 64,
+      "baseline": {
+        "trials": 3,
+        "cpu_ns_median": 9310720,
+        "p95_ns_median": 237360,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          3.0
+        ],
+        "driver_poll_calls": [
+          360,
+          360,
+          360
+        ],
+        "driver_wait_calls": [
+          180,
+          180,
+          180
+        ],
+        "observed_ready_hints": [
+          180,
+          180,
+          180
+        ]
+      },
+      "combined": {
+        "trials": 3,
+        "cpu_ns_median": 10832364,
+        "p95_ns_median": 284993,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          3.0
+        ],
+        "driver_poll_calls": [
+          360,
+          360,
+          360
+        ],
+        "driver_wait_calls": [
+          180,
+          180,
+          180
+        ],
+        "observed_ready_hints": [
+          180,
+          180,
+          180
+        ]
+      },
+      "paired_cpu_ratio_median": 1.1491572299154869,
+      "paired_p95_ratio_median": 1.2006782945736434
+    },
+    {
+      "fps": 60,
+      "payload_bytes": 4096,
+      "baseline": {
+        "trials": 3,
+        "cpu_ns_median": 12082527,
+        "p95_ns_median": 277288,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          3.0
+        ],
+        "driver_poll_calls": [
+          360,
+          360,
+          360
+        ],
+        "driver_wait_calls": [
+          180,
+          180,
+          180
+        ],
+        "observed_ready_hints": [
+          180,
+          180,
+          180
+        ]
+      },
+      "combined": {
+        "trials": 3,
+        "cpu_ns_median": 9754632,
+        "p95_ns_median": 255064,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          3.0
+        ],
+        "driver_poll_calls": [
+          360,
+          360,
+          360
+        ],
+        "driver_wait_calls": [
+          180,
+          180,
+          180
+        ],
+        "observed_ready_hints": [
+          180,
+          180,
+          180
+        ]
+      },
+      "paired_cpu_ratio_median": 1.0918882166186874,
+      "paired_p95_ratio_median": 1.047678848596021
+    },
+    {
+      "fps": 60,
+      "payload_bytes": 16384,
+      "baseline": {
+        "trials": 3,
+        "cpu_ns_median": 13654295,
+        "p95_ns_median": 340631,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          4.0
+        ],
+        "driver_poll_calls": [
+          480,
+          480,
+          480
+        ],
+        "driver_wait_calls": [
+          240,
+          240,
+          240
+        ],
+        "observed_ready_hints": [
+          240,
+          240,
+          240
+        ]
+      },
+      "combined": {
+        "trials": 3,
+        "cpu_ns_median": 15476382,
+        "p95_ns_median": 333847,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          4.0
+        ],
+        "driver_poll_calls": [
+          480,
+          480,
+          480
+        ],
+        "driver_wait_calls": [
+          240,
+          240,
+          240
+        ],
+        "observed_ready_hints": [
+          240,
+          240,
+          240
+        ]
+      },
+      "paired_cpu_ratio_median": 1.0560396679975221,
+      "paired_p95_ratio_median": 0.9800840205383539
+    },
+    {
+      "fps": 60,
+      "payload_bytes": 65536,
+      "baseline": {
+        "trials": 3,
+        "cpu_ns_median": 23902546,
+        "p95_ns_median": 507154,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          7.0
+        ],
+        "driver_poll_calls": [
+          840,
+          840,
+          840
+        ],
+        "driver_wait_calls": [
+          420,
+          420,
+          420
+        ],
+        "observed_ready_hints": [
+          420,
+          420,
+          420
+        ]
+      },
+      "combined": {
+        "trials": 3,
+        "cpu_ns_median": 24093105,
+        "p95_ns_median": 499920,
+        "tls_records_per_frame": [
+          1.0
+        ],
+        "native_completions_per_frame": [
+          7.0
+        ],
+        "driver_poll_calls": [
+          840,
+          840,
+          840
+        ],
+        "driver_wait_calls": [
+          420,
+          420,
+          420
+        ],
+        "observed_ready_hints": [
+          420,
+          420,
+          420
+        ]
+      },
+      "paired_cpu_ratio_median": 1.0079723306462836,
+      "paired_p95_ratio_median": 1.0468812234548086
+    }
+  ]
+}

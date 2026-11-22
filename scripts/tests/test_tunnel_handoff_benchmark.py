@@ -20,10 +20,12 @@ class TunnelHandoffBenchmarkTest(unittest.TestCase):
                 ':app:testDebugUnitTest', '--tests', 'com.blent.connection.RecordMeterTest',
                 '--tests', 'com.blent.connection.TunnelOutputTest',
                 '--tests', 'com.blent.connection.LocalMeasurementTest',
+                '--tests', 'com.blent.connection.ReadMeasurementTest',
                 'help', '--task', 'tunnelHandoffBenchmark', 'tasks', '--all',
             ], dict(os.environ), logfile)
             self.assertIn('tunnelHandoffBenchmark', logfile.read_text())
             self.assertIn('localHandoffBenchmark', logfile.read_text())
+            self.assertIn('tunnelReadBenchmark', logfile.read_text())
 
 
 if __name__ == '__main__':

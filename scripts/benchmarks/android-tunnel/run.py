@@ -13,10 +13,12 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / 'scripts/benchmarks'))
 import profile_process
 
-TASKS = {'tls-write': 'tunnelHandoffBenchmark', 'local-write': 'localHandoffBenchmark'}
+TASKS = {'tls-write': 'tunnelHandoffBenchmark', 'local-write': 'localHandoffBenchmark',
+         'tls-read': 'tunnelReadBenchmark'}
 SCOPES = {
     'tls-write': 'Hosted Linux JDK loopback TLS 1.3; production framing/native I/O; production gather limits 0/16384; not Android native or full reactor',
     'local-write': 'Hosted Linux JDK plaintext loopback TCP; production local consumer versus direct native transaction; not Android LocalSocket or full reactor',
+    'tls-read': 'Hosted Linux JDK TLS receive; production exact framing versus benchmark 16-KiB read-ahead feeding the same reader; not Android native or full reactor',
 }
 
 
@@ -36,6 +38,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
     parser.add_argument('--kind', choices=tuple(TASKS), default='tls-write')
+    parser.add_argument('--peer-gather-bytes', type=int, choices=(0, 16384), default=0)
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True)
@@ -45,11 +48,12 @@ def main():
         platform=platform.platform(), java=subprocess.run(['java', '-version'], capture_output=True, text=True, check=True).stderr,
         domain=dict(warmup_trials=16, measured_trials=48, frames_per_trial=60,
                     payload_bytes=[64, 4096, 16384, 65536], rates=[0, 60]),
-        kind=args.kind, scope=SCOPES[args.kind])
+        kind=args.kind, peer_gather_bytes=args.peer_gather_bytes, scope=SCOPES[args.kind])
     (output / 'metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
     command = [str(ROOT / 'android/gradlew'), '-p', str(ROOT / 'android'), '--offline', '--no-daemon',
                '-I', str(ROOT / 'scripts/benchmarks/android-tunnel/benchmark.init.gradle'),
-               ':app:' + TASKS[args.kind], '-PblentTunnelOutput=' + str(output / 'results.json')]
+               ':app:' + TASKS[args.kind], '-PblentTunnelOutput=' + str(output / 'results.json'),
+               '-PblentPeerGatherBytes=' + str(args.peer_gather_bytes)]
     status = profile_process.logged(command, dict(os.environ), output / 'run.log', ROOT)
     if status != 0:
         raise RuntimeError(f'Benchmark failed ({status}); retained {output}/run.log')
