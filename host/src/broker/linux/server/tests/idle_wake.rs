@@ -184,3 +184,51 @@ async fn t1777_maintenance_selects_earliest_and_observes_only_retiring_clients()
         .unwrap();
     fixture.finish().await;
 }
+
+fn pending_allocations(server: &mut Server) -> crate::allocation_probe::Counts {
+    let mut context = TaskContext::from_waker(futures_util::task::noop_waker_ref());
+    let mut running = Box::pin(server.run());
+    assert!(running.as_mut().poll(&mut context).is_pending());
+    let (_, counts) = crate::allocation_probe::measure(|| {
+        for _ in 0..256 {
+            assert!(running.as_mut().poll(&mut context).is_pending());
+        }
+    });
+    counts
+}
+
+#[tokio::test]
+async fn t1772_zero_link_dispatcher_has_no_steady_pending_allocations() {
+    let mut fixture = Fixture::new().await;
+    let counts = pending_allocations(&mut fixture.server);
+    fixture
+        .server
+        .shutdown(Duration::from_secs(5))
+        .await
+        .unwrap();
+    fixture.finish().await;
+    assert_eq!(counts.allocations + counts.reallocations, 0);
+    println!("T1772 zero links: 256 pending turns, 0 allocations/reallocations");
+}
+
+#[tokio::test]
+async fn t1772_authenticated_idle_link_suspends_dispatcher_and_retires_exactly() {
+    let mut authenticated = super::tls::authenticated().await;
+    let server = &mut authenticated.fixture.server;
+    server.next_inventory = Instant::now() + Duration::from_secs(2);
+    assert_eq!(server.links.len(), 1);
+    let completion = server.links[&authenticated.id].completion.clone();
+    let counts = pending_allocations(server);
+    let wakes = observe_wakes(server, Duration::from_millis(600)).await;
+    assert!(!completion.is_complete());
+    assert_eq!(server.link_pool.active(), 1);
+    server.shutdown(Duration::from_secs(5)).await.unwrap();
+    assert!(completion.is_complete());
+    assert_eq!(server.link_pool.active(), 0);
+    drop(authenticated.tablet);
+    drop(authenticated.remote);
+    authenticated.fixture.finish().await;
+    println!("T1772 one authenticated link: wakes in 600 ms={wakes}, pending turns=256, allocations={}, reallocations={}", counts.allocations, counts.reallocations);
+    assert_eq!(wakes, 0);
+    assert_eq!(counts.allocations + counts.reallocations, 0);
+}

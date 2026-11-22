@@ -192,3 +192,18 @@ expiry, channel and TLS regressions remain. All 17 maintained functions exceed
 still fails only on the previously recorded T1801 inventory return type; this
 batch does not suppress it. Native USB tablet/battery behavior was not measured.
 [Evidence](artifacts/2026-11-22-followup-batch/t1777/).
+
+## T1772 — integrate broker dispatcher reductions
+
+All 310 broker tests pass together, including native accept rejection/retry,
+approval/setup expiry, bounded automatic retry, inventory freshness, TLS routes
+and exact original retirement. New permanent integration checks measure zero
+steady pending-turn allocations/reallocations across 256 turns with zero links
+and with one authenticated link. Both empty and authenticated idle dispatchers
+record zero wakes over isolated 600 ms windows. The authenticated case retains
+its native admission throughout observation and verifies its release after
+shutdown. Its link uses the production TLS/control path over a hosted duplex
+stream and an explicitly owned fixture admission, not USB hardware. These are
+outer-dispatcher results; inner link polling T1773 and tablet power remain
+unmeasured. No production function changed; measured test complexity <=9.
+[Evidence](artifacts/2026-11-22-followup-batch/t1772/).
