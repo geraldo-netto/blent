@@ -115,10 +115,18 @@ bool Xorg_running(void) { return t751_xorg_running; }
 static int mock_discovery_calls;
 static int allocation_countdown = 0;
 static long long mock_monotonic_ms = -1;
+static long long mock_monotonic_ns = -1;
 static int mock_grab_calls = -1;
 static int t623_request_calls = -1;
 static int t623_ready = 0;
-static int mock_clock_gettime(clockid_t clock, struct timespec *value) {
+static int mock_clock_gettime(clockid_t clock, struct timespec *value)
+{
+    if (clock == CLOCK_MONOTONIC && mock_monotonic_ns >= 0)
+    {
+        value->tv_sec = mock_monotonic_ns / 1000000000;
+        value->tv_nsec = mock_monotonic_ns % 1000000000;
+        return 0;
+    }
     if (clock == CLOCK_MONOTONIC && mock_monotonic_ms >= 0) {
         value->tv_sec = mock_monotonic_ms / 1000;
         value->tv_nsec = (mock_monotonic_ms % 1000) * 1000000;
@@ -1034,16 +1042,16 @@ static void test_t293(void) {
 static void test_t750_period(void) {
     for (int fps=1;fps<=240;fps++) {
         g_capture.fps=fps;
-        long period=capture_period_ms(&g_capture);
-        assert((long long)period*fps >= 1000 && "T750: truncated period exceeds configured FPS");
-        assert((long long)(period-1)*fps < 1000);
+        long long period=capture_period_ns(&g_capture);
+        assert((long long)period*fps >= 1000000000 && "T750: truncated period exceeds configured FPS");
+        assert((long long)(period-1)*fps < 1000000000);
     }
     const int invalid[]={INT_MIN,-1,0};
     for (unsigned i=0;i<3;i++) {
         g_capture.fps=invalid[i];
-        assert(capture_period_ms(&g_capture)==17);
+        assert(capture_period_ns(&g_capture)==16666667);
     }
-    g_capture.fps=INT_MAX;assert(capture_period_ms(&g_capture)==1);
+    g_capture.fps=INT_MAX;assert(capture_period_ns(&g_capture)==1);
 }
 
 /* T623: preserve retry recovery, but coalesce watchdog/fallback on one tick. */
@@ -1055,23 +1063,23 @@ static void test_t623(void) {
     mock_grab_calls = 0;
     t623_request_calls = 0;
     long long fallback = 0;
-    request_capture_if_due(&g_capture, g_capture.handle, 1000, 16);
+    request_capture_if_due(&g_capture, g_capture.handle, (1000) * 1000000LL, 16000000);
     assert(t623_request_calls == 1 && g_capture.update_pending);
     mock_monotonic_ms = 1250;
     recover_capture_if_stalled(&g_capture, 1250, &fallback);
     assert(mock_grab_calls == 1 && "T623 watchdog and fallback must not grab twice on the same tick");
     assert(fallback == 1250 && !g_capture.update_pending);
-    request_capture_if_due(&g_capture, g_capture.handle, 1250, 16);
+    request_capture_if_due(&g_capture, g_capture.handle, (1250) * 1000000LL, 16000000);
     assert(t623_request_calls == 2 && g_capture.update_pending);
     /* Driver sent readiness but its event was lost. Retry must restart capture. */
     t623_ready = 1;
     mock_monotonic_ms = 1750;
     recover_capture_if_stalled(&g_capture, 1750, &fallback);
-    request_capture_if_due(&g_capture, g_capture.handle, 1750, 16);
+    request_capture_if_due(&g_capture, g_capture.handle, (1750) * 1000000LL, 16000000);
     assert(t623_request_calls == 3 && !g_capture.update_pending);
     assert(mock_grab_calls == 3 && "T623 lost readiness still recovers to immediate captures");
     t623_ready = 0;
-    request_capture_if_due(&g_capture, g_capture.handle, 1766, 16);
+    request_capture_if_due(&g_capture, g_capture.handle, (1766) * 1000000LL, 16000000);
     assert(g_capture.update_pending);
     on_update_ready(0, &g_capture);
     assert(!g_capture.update_pending && mock_grab_calls == 4);
@@ -1092,7 +1100,7 @@ static void test_t294(void) {
         mock_monotonic_ms = 1000 + elapsed;
         long long last_fallback = mock_monotonic_ms;
         const int expired = elapsed >= 250;
-        assert(capture_poll_timeout(&g_capture, 16) == (expired ? 0 : 1));
+        assert(capture_poll_timeout(&g_capture) == (expired ? 0 : 1));
         recover_capture_if_stalled(&g_capture, mock_monotonic_ms, &last_fallback);
         assert(g_capture.update_pending == !expired && "T294: zero-timeout polling cannot retain an expired request");
         assert(mock_grab_calls == expired);
@@ -1122,8 +1130,8 @@ static void test_t405_capture_deadline(void) {
     mock_monotonic_ms = 1000;
     g_capture.have_mode = 1;
     g_capture.update_pending = 0;
-    g_capture.last_request_ms = 1000;
-    assert(capture_poll_timeout(&g_capture, 16) == 16 &&
+    g_capture.next_request_ns = 1016000000;
+    assert(capture_poll_timeout(&g_capture) == 16 &&
            "T405: capture must wait for its deadline; events wake poll immediately");
     mock_monotonic_ms = -1;
 }
@@ -1162,21 +1170,21 @@ static void test_t290(void) {
         mock_monotonic_ms = uptimes[i];
         g_capture.have_mode = 1;
         g_capture.update_pending = 0;
-        g_capture.last_request_ms = 0; /* first request, or an overdue request after a long wait */
-        assert(capture_poll_timeout(&g_capture, 16) == 0 && "T290: overdue pipeline capture gained a poll delay");
-        g_capture.last_request_ms = mock_monotonic_ms;
-        assert(capture_poll_timeout(&g_capture, 16) == 16); /* T405: exact deadline, still wide before clamping. */
-        g_capture.last_request_ms = mock_monotonic_ms - 15;
-        assert(capture_poll_timeout(&g_capture, 16) == 1);
-        g_capture.last_request_ms = mock_monotonic_ms - 16;
-        assert(capture_poll_timeout(&g_capture, 16) == 0);
+        g_capture.next_request_ns = 0; /* first request, or an overdue request after a long wait */
+        assert(capture_poll_timeout(&g_capture) == 0 && "T290: overdue pipeline capture gained a poll delay");
+        g_capture.next_request_ns = mock_monotonic_ms * 1000000 + 16000000;
+        assert(capture_poll_timeout(&g_capture) == 16); /* T405: exact deadline, still wide before clamping. */
+        g_capture.next_request_ns = mock_monotonic_ms * 1000000 + 1000000;
+        assert(capture_poll_timeout(&g_capture) == 1);
+        g_capture.next_request_ns = mock_monotonic_ms * 1000000;
+        assert(capture_poll_timeout(&g_capture) == 0);
         g_capture.update_pending = 1;
         g_capture.last_request_ms = mock_monotonic_ms - 100;
-        assert(capture_poll_timeout(&g_capture, 16) == 150);
+        assert(capture_poll_timeout(&g_capture) == 150);
         g_capture.last_request_ms = mock_monotonic_ms - 251;
-        assert(capture_poll_timeout(&g_capture, 16) == 0);
+        assert(capture_poll_timeout(&g_capture) == 0);
         g_capture.have_mode = 0;
-        assert(capture_poll_timeout(&g_capture, 16) == 100);
+        assert(capture_poll_timeout(&g_capture) == 100);
     }
     mock_monotonic_ms = -1;
 }
@@ -1553,6 +1561,7 @@ static void test_t415_rounding(void) {
 #include "capture_watchdog.c"
 #include "capture_fallback.c"
 #include "capture_latency.c"
+#include "capture_cadence.c"
 
 static void canonical_format_fixture(const char *id) {
     if (!strncmp(id, "T752", 4) || !strcmp(id, "T779") || !strcmp(id, "T780")) g_capture.normalize_rgba = 1;
@@ -1571,6 +1580,9 @@ int main(int argc, char **argv)
         {"T1688", test_t1688_regular_grabs},
         {"T1690", test_t1690_sample_window},
         {"T1692", test_t1692_ranks},
+        {"T1689-60", test_t1689_sixty},
+        {"T1689-90", test_t1689_ninety},
+        {"T1689-boundaries", test_t1689_boundaries},
         {"T1284", test_t1284_shutdown_registration},
         {"T1186-trace", test_t1186_trace},
         {"T1186-admission", test_t1186_admission},

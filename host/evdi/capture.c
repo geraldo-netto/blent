@@ -11,11 +11,18 @@
 #include <inttypes.h>
 #include <sys/mman.h>
 
-static long long capture_now_us(void) {
+static long long capture_now_ns(void)
+{
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (long long)ts.tv_sec * 1000000 + ts.tv_nsec / 1000;
+    return (long long)ts.tv_sec * 1000000000 + ts.tv_nsec;
 }
+
+static long long capture_now_us(void)
+{
+    return capture_now_ns() / 1000;
+}
+
 static long long capture_now_ms(void) { return capture_now_us() / 1000; }
 
 static int cmp_int(const void *a, const void *b) {
@@ -463,12 +470,31 @@ static void on_cursor_move(struct evdi_cursor_move event, void *user_data) {
     publish_cursor(capture);
 }
 
-static long capture_period_ms(capture_context_t *capture) {
-    /* Round up: 16ms requests would permit 62.5fps for a configured60fps.
-       Keep arithmetic wide for malformed/extreme inputs. The same deadline
-       applies to immediate and asynchronous request completion. */
+static long long capture_period_ns(const capture_context_t *capture)
+{
     long long fps = capture->fps > 0 ? capture->fps : 60;
-    return (long)((1000 + fps - 1) / fps);
+    return (1000000000 + fps - 1) / fps;
+}
+
+/* The original event-loop owns this absolute phase. Skip missed deadlines;
+ * never issue more than one request at a given observation. */
+static void schedule_next_capture(capture_context_t *capture, long long now, long long period)
+{
+    long long remaining = period;
+    if (capture->next_request_ns > 0)
+        remaining -= (now - capture->next_request_ns) % period;
+    capture->next_request_ns = now + remaining;
+}
+
+static int capture_request_wait_ms(const capture_context_t *capture)
+{
+    long long remaining = capture->next_request_ns - capture_now_ns();
+    if (remaining <= 0)
+        return 0;
+    if (remaining >= (long long)INT_MAX * 1000000)
+        return INT_MAX;
+    /* Only the OS poll wait rounds up. The absolute request phase never drifts. */
+    return (int)((remaining + 999999) / 1000000);
 }
 
 static int watchdog_delay(const capture_context_t *capture)
@@ -478,14 +504,12 @@ static int watchdog_delay(const capture_context_t *capture)
     return capture->watchdog_ms > 1000 ? 1000 : capture->watchdog_ms;
 }
 
-static int capture_poll_timeout(capture_context_t *capture, long request_period_ms)
+static int capture_poll_timeout(capture_context_t *capture)
 {
     if (!capture_active(capture))
         return 100;
-    /* Sleep exactly until the next capture request is due instead of a
-       fixed 4ms tick. The fixed tick quantised every request to a 4ms grid,
-       adding up to 4ms of jitter per frame — a quarter of the entire budget
-       at 60fps, and half of it at 120.
+    /* Round only this poll wait up to millisecond resolution; retain the
+       absolute sub-millisecond request phase across late wakeups.
        With no mode there is nothing to request, and the deadline below
        would sit permanently in the past — poll would return instantly and
        the loop would spin at 100% of a core. Wait on events only. */
@@ -512,27 +536,21 @@ static int capture_poll_timeout(capture_context_t *capture, long request_period_
     }
     else
     {
-        long long due = capture->last_request_ms + request_period_ms;
-        /* Keep overdue deadlines wide until bounded, including a first
-           request after weeks of system uptime. */
-        timeout_ms = due - capture_now_ms();
-        if (timeout_ms < 0)
-            timeout_ms = 0;
-        if (timeout_ms > INT_MAX)
-            timeout_ms = INT_MAX;
+        timeout_ms = capture_request_wait_ms(capture);
     }
 
     return (int)timeout_ms;
 }
 
-static void request_capture_if_due(capture_context_t *capture, evdi_handle handle, long long now, long request_period_ms)
+static void request_capture_if_due(capture_context_t *capture, evdi_handle handle, long long now, long long request_period_ns)
 {
     /* Core capture cycle: request a fresh frame from the compositor at
        the target fps. If the kernel says pixels are ready right away,
        grab immediately; otherwise update_ready will fire and grab. */
-    if (!capture->update_pending && (now - capture->last_request_ms) >= request_period_ms)
+    if (!capture->update_pending && now >= capture->next_request_ns)
     {
-        capture->last_request_ms = now;
+        schedule_next_capture(capture, now, request_period_ns);
+        capture->last_request_ms = now / 1000000;
         capture->req_us = capture_now_us();
         if (evdi_request_update(handle, 0))
         {
@@ -634,6 +652,7 @@ static void resume_capture(capture_context_t *capture)
     frame_exchange_set_ready(capture->frames, 1);
     capture->update_pending = 0;
     capture->last_request_ms = capture_now_ms();
+    capture->next_request_ns = capture_now_ns() + capture_period_ns(capture);
     capture->raw_sent_us = 0;
     long long previous = capture->grab_count;
     /* A queued flip must be acknowledged before any new update request (T599).
@@ -775,7 +794,7 @@ static int shared_poll_timeout(capture_context_t *capture, int timeout_ms)
     return due < timeout_ms ? due : timeout_ms;
 }
 
-static int capture_tick(capture_context_t *capture, evdi_handle handle, long request_period_ms,
+static int capture_tick(capture_context_t *capture, evdi_handle handle, long long request_period_ns,
                         long long *last_stats_ms, long long *stats_grab_base)
 {
     if (!capture_active(capture))
@@ -783,7 +802,7 @@ static int capture_tick(capture_context_t *capture, evdi_handle handle, long req
     if (!capture->have_mode)
         return 1;
     long long now = capture_now_ms();
-    request_capture_if_due(capture, handle, now, request_period_ms);
+    request_capture_if_due(capture, handle, capture_now_ns(), request_period_ns);
     recover_capture_if_stalled(capture, now, &capture->last_fallback_grab_ms);
     if (now - *last_stats_ms >= 5000)
         report_capture_stats(capture, now, last_stats_ms, stats_grab_base);
@@ -859,11 +878,11 @@ int capture_run(capture_context_t *capture, evdi_handle handle)
         capture->display_progress_trace.reported = 0;
     }
     long long stats_grab_base = 0;
-    long request_period_ms = capture_period_ms(capture);
+    long long request_period_ns = capture_period_ns(capture);
 
     while ((*capture->running))
     {
-        int timeout_ms = capture_poll_timeout(capture, request_period_ms);
+        int timeout_ms = capture_poll_timeout(capture);
         timeout_ms = shared_poll_timeout(capture, timeout_ms);
 
         int ret = poll_capture_events(handle, &evtctx, fds, timeout_ms);
@@ -875,7 +894,7 @@ int capture_run(capture_context_t *capture, evdi_handle handle)
         if (!service_shared_capture(capture))
             return 1;
 
-        if (!capture_tick(capture, handle, request_period_ms, &last_stats_ms, &stats_grab_base))
+        if (!capture_tick(capture, handle, request_period_ns, &last_stats_ms, &stats_grab_base))
             return 1;
     }
     return capture->capture_failed;

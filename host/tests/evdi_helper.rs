@@ -230,6 +230,7 @@ impl Harness {
             "T1021"
                 | "T1607"
                 | "T1688"
+                | "T1689"
                 | "T1692"
                 | "T752"
                 | "T753"
@@ -648,4 +649,19 @@ fn t1692_capture_percentiles_use_one_empirical_rank_convention() {
 #[test]
 fn t1692_capture_percentile_ranks_bound_invalid_inputs() {
     Harness::build("T1692").run("T1692");
+}
+
+#[test]
+fn t1689_sixty_fps_does_not_drift_at_poll_boundaries() {
+    Harness::build("T1689").run("T1689-60");
+}
+
+#[test]
+fn t1689_ninety_fps_does_not_drift_at_poll_boundaries() {
+    Harness::build("T1689").run("T1689-90");
+}
+
+#[test]
+fn t1689_absolute_phase_skips_missed_requests_and_bounds_poll_waits() {
+    Harness::build("T1689").run("T1689-boundaries");
 }

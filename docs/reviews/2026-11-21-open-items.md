@@ -650,3 +650,11 @@ The actual log regression failed before the fix. Both native tests pass under AS
 Current summary and plot readers no longer interpret obsolete encode→display or decode+render labels. They retain the current host-clock and tablet-clock boundaries. Permanent tests now require old-label rejection while retaining current-field, independent-window and no-derived-wire oracles; historical reports remain unchanged.
 
 Both rejection regressions failed before removal. All 12 benchmark/plot tests pass; all 25 measured functions meet complexity ≤9. Constants-only benchmark changes are within the existing coverage exemption and introduce no resource lifetime. [Evidence](artifacts/2026-11-21-open-items/t1691.json).
+
+## T1689 — preserve absolute capture request cadence (2026-11-22)
+
+EVDI requests now advance an absolute nanosecond phase. The native poll wait alone rounds up to milliseconds; late observations skip missed deadlines without issuing catch-up bursts. Actual request time remains separate for watchdog recovery, and resume starts a fresh phase after its original snapshot. Current callers and the obsolete clock_nanosleep comment were updated together.
+
+Both ten-second cadence regressions failed before the fix: configured60/90 FPS produced589/834 requests. They now produce600/900 respectively. These are scripted clock/native-request counts, not measured hardware throughput. All78 helper tests and14 conversion/module/retirement tests pass; final-source counters additionally execute17 existing native cases. Boundary checks cover24,000 late-phase steps across1–240 FPS, eight poll rounding/saturation inputs and100 same-time retries producing one request. Existing invalid-FPS, long-uptime, pause, lost-event and native-storage tests remain. All10 changed production functions measure96–100% line coverage; all186 measured functions meet complexity≤9. [Evidence](artifacts/2026-11-21-open-items/t1689.json).
+
+The deadline scalar is owned only by the original capture event loop. No allocation or native lifetime was added, and no installed session was touched.

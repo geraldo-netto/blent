@@ -44,7 +44,7 @@ static void test_t497_callbacks(void) {
     assert(g_frames.latest_valid);
     g_capture.update_pending = 0;
     t497_immediate = 0;
-    request_capture_if_due(&g_capture, &handle, 10000, 16);
+    request_capture_if_due(&g_capture, &handle, (10000) * 1000000LL, 16000000);
     assert(g_capture.update_pending);
     long long fallback = 0;
     recover_capture_if_stalled(&g_capture, 11000, &fallback);

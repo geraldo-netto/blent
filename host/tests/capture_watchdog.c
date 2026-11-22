@@ -6,21 +6,21 @@ static void t1607_empty_watchdog(void)
     t623_request_calls = 0;
     long long fallback = 1000;
     mock_monotonic_ms = 1000;
-    request_capture_if_due(&g_capture, g_capture.handle, 1000, 16);
+    request_capture_if_due(&g_capture, g_capture.handle, (1000) * 1000000LL, 16000000);
     mock_monotonic_ms = 1250;
     recover_capture_if_stalled(&g_capture, 1250, &fallback);
     assert(mock_grab_calls == 1);
-    request_capture_if_due(&g_capture, g_capture.handle, 1250, 16);
+    request_capture_if_due(&g_capture, g_capture.handle, (1250) * 1000000LL, 16000000);
     mock_monotonic_ms = 1500;
-    assert(capture_poll_timeout(&g_capture, 16) == 250);
+    assert(capture_poll_timeout(&g_capture) == 250);
     recover_capture_if_stalled(&g_capture, 1500, &fallback);
     assert(mock_grab_calls == 1 && "T1607 empty capture recovery did not back off");
     mock_monotonic_ms = 1750;
     recover_capture_if_stalled(&g_capture, 1750, &fallback);
     assert(mock_grab_calls == 2);
-    request_capture_if_due(&g_capture, g_capture.handle, 1750, 16);
+    request_capture_if_due(&g_capture, g_capture.handle, (1750) * 1000000LL, 16000000);
     mock_monotonic_ms = 2250;
-    assert(capture_poll_timeout(&g_capture, 16) == 500);
+    assert(capture_poll_timeout(&g_capture) == 500);
     recover_capture_if_stalled(&g_capture, 2250, &fallback);
     assert(mock_grab_calls == 2);
     mock_monotonic_ms = 2750;
@@ -46,7 +46,7 @@ static void t1607_recovery_bounds(void)
     long long fallback = 3000;
     for (int step = 0; step < 60; step++)
     {
-        request_capture_if_due(&g_capture, g_capture.handle, mock_monotonic_ms, 16);
+        request_capture_if_due(&g_capture, g_capture.handle, (mock_monotonic_ms) * 1000000LL, 16000000);
         mock_monotonic_ms += 999;
         recover_capture_if_stalled(&g_capture, mock_monotonic_ms, &fallback);
         assert(mock_grab_calls == step);
@@ -59,7 +59,7 @@ static void t1607_recovery_bounds(void)
     assert(watchdog_delay(&g_capture) == 250);
     g_capture.watchdog_ms = 1000;
     t623_ready = 1;
-    request_capture_if_due(&g_capture, g_capture.handle, mock_monotonic_ms, 16);
+    request_capture_if_due(&g_capture, g_capture.handle, (mock_monotonic_ms) * 1000000LL, 16000000);
     assert(watchdog_delay(&g_capture) == 250);
     t623_ready = 0;
     t623_request_calls = -1;

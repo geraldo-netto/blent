@@ -108,6 +108,11 @@ The logged count is sampled observations, not all
 frames; the five-second reporting interval can be delayed. These uncorrelated metrics
 do not add up to a measured total display latency.
 
+EVDI capture requests follow an absolute nanosecond schedule. The native poll
+wait rounds up to milliseconds without changing that schedule; late wakeups
+skip missed requests instead of replaying a burst. Request cadence is distinct
+from changed frames, published frames and delivered display FPS.
+
 ## Results
 
 ### Encoded packet to acknowledgement, USB
