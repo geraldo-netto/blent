@@ -740,3 +740,9 @@ All nine maintained production functions measure 93.3–100% line coverage; all 
 ## T1512 — daemon startup and Stop integration (2026-11-22)
 
 T1695 (`294731ae`) retains one startup lease through native exit drain; T1696 (`a06c1899`) signals and observes original process handles. The final eight binary tests and four namespace integration tests exercise both changes together, including real CLI Stop after settled startup-lease reuse. Shared Linux adapter verification passes all 76 selected tests. Child artifacts retain per-function metrics, failure controls and native scope. No installed daemon or device was changed.
+
+## T1554 — Autostart changes future logins only (2026-11-22)
+
+Per the owner's selected behavior, the Linux checkbox now only updates login registration. Its daemon-discovery/start/stop side effects and the obsolete injected running-state wrapper were removed. Explicit lifecycle controls continue to manage the current daemon. Installation and architecture instructions describe the same behavior.
+
+The permanent T231 regression fails before and passes after the change. All three GUI autostart tests and both shared autostart tests pass. Private fixtures cover desktop/service routes, absent or failed managers, preserved entries on unreachable-enabled-service errors, no daemon actions on either toggle, and survival of an unrelated live daemon. The changed production function has 100% line coverage; all 201 measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1554.json). No installed preferences or sessions changed; Windows work remains paused.

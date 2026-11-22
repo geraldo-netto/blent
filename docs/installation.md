@@ -130,7 +130,8 @@ is not on `PATH`, use `~/.local/bin/blent` or add `~/.local/bin` to your shell's
 path. `blent start` runs a foreground session in a terminal.
 
 To start at login, enable **Start Blent with the desktop** in the GUI. The setting
-also starts/stops the current daemon (the background desktop process).
+controls future logins only. Use the separate start/stop controls to change the
+current daemon (the background desktop process).
 
 - With systemd, a desktop login entry starts `blent.service`. This also works on
   desktops such as Cinnamon that do not activate `graphical-session.target`.

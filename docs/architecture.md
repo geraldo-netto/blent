@@ -846,9 +846,9 @@ available. This also supports desktops such as Cinnamon that do not activate
 `graphical-session.target`; both launch paths start the same unit, which keeps
 one daemon. Without an available unit, the entry starts the daemon directly.
 The installers and GUI share the service-entry template; the source installer
-and GUI also test their generated direct commands against each other. The GUI persists the login
-preference separately from controlling the current daemon; direct start/stop
-still follows the same validated daemon-discovery rules.
+and GUI also test their generated direct commands against each other. The Autostart checkbox changes only future-login registration. Explicit lifecycle
+controls manage the current daemon; direct start/stop follows the same validated
+daemon-discovery rules.
 
 The Android foreground service follows the Activity's started lifecycle,
 including waiting for connection and graphics-tablet mode; it is not proof

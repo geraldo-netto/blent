@@ -2702,7 +2702,7 @@ mod tests {
                 let path = blent_config::linux::autostart::desktop_path().unwrap();
                 let original = std::fs::read(&path).unwrap();
                 assert!(
-                    set_autostart_with(false, || false).is_err(),
+                    set_autostart(false).is_err(),
                     "T231: unreachable enabled service was reported disabled"
                 );
                 assert!(autostart_enabled());
@@ -2713,39 +2713,24 @@ mod tests {
                 autostart_enabled(),
                 "T231: enabled desktop autostart was ignored"
             );
-            set_autostart_with(false, || false).unwrap();
+            set_autostart(false).unwrap();
             assert!(
                 !autostart_enabled(),
                 "T231: disabling autostart did not persist"
             );
-            set_autostart_with(true, || false).unwrap();
+            set_autostart(true).unwrap();
             assert!(
                 autostart_enabled(),
                 "T231: enabling autostart did not persist"
             );
-            let log = std::env::var_os("BLENT_T231_ACTIONS").unwrap();
-            let deadline = std::time::Instant::now() + Duration::from_secs(2);
-            while std::fs::read_to_string(&log).unwrap_or_default() != "stop\nstart\n"
-                && std::time::Instant::now() < deadline
-            {
-                std::thread::sleep(Duration::from_millis(10));
+            // T1554: login registration never changes the current daemon.
+            for key in ["BLENT_T231_ACTIONS", "BLENT_T231_ROUTES"] {
+                let log = std::env::var_os(key).unwrap();
+                assert!(
+                    !std::path::Path::new(&log).exists(),
+                    "T1554: autostart changed the current daemon via {key}"
+                );
             }
-            assert_eq!(
-                std::fs::read_to_string(log).unwrap(),
-                "stop\nstart\n",
-                "T231: autostart toggle lost current-daemon actions"
-            );
-            let routes = std::env::var_os("BLENT_T231_ROUTES").unwrap();
-            let expected = if std::env::var("BLENT_T231_CHILD").unwrap() == "managed" {
-                "managed\nmanaged\n"
-            } else {
-                "direct\ndirect\n"
-            };
-            assert_eq!(
-                std::fs::read_to_string(routes).unwrap(),
-                expected,
-                "T436: unrelated daemon changed fixture service routing"
-            );
             return;
         }
         for mode in [

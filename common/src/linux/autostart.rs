@@ -112,7 +112,7 @@ fn write_desktop_entry(entry: &str) -> Result<()> {
     Ok(())
 }
 
-/// Persist the login preference. The GUI separately controls the current daemon.
+/// Persist the future-login preference only. Explicit lifecycle controls manage the current daemon.
 pub fn set_enabled(on: bool, binary: &Path) -> Result<()> {
     if systemd_available() {
         let verb = if on { "enable" } else { "disable" };

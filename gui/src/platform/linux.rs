@@ -12,27 +12,14 @@ pub(crate) fn autostart_enabled() -> bool {
     blent_config::linux::autostart::enabled()
 }
 
+/// Change future-login registration only; lifecycle controls own daemon actions.
 pub(crate) fn set_autostart(on: bool) -> Result<(), String> {
-    set_autostart_with(on, || !daemon::discover(Some(&pid_path())).is_empty())
-}
-
-pub(crate) fn set_autostart_with(on: bool, running: impl Fn() -> bool) -> Result<(), String> {
     let bin = if on {
         find_blent_bin().ok_or("blent binary not found")?
     } else {
         PathBuf::new()
     };
-    blent_config::linux::autostart::set_enabled(on, &bin).map_err(|e| e.to_string())?;
-    let result = if on {
-        if !running() {
-            start_daemon_with(service_managed_with(&running))
-        } else {
-            Ok(())
-        }
-    } else {
-        run_daemon_command("stop", service_managed_with(&running))
-    };
-    result.map_err(|e| format!("Autostart preference saved; daemon action failed: {e}"))
+    blent_config::linux::autostart::set_enabled(on, &bin).map_err(|e| e.to_string())
 }
 
 pub(crate) fn home() -> String {
