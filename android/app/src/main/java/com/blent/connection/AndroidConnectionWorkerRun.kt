@@ -1,17 +1,15 @@
 package com.blent.connection
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Binder
 import android.os.IBinder
 import android.os.Parcel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.selects.select
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
+import com.blent.WorkerProcessLifetime
 import com.blent.WorkerGenerations
 import java.util.concurrent.atomic.AtomicReference
 
@@ -48,38 +46,20 @@ internal class AndroidConnectionWorkerRun(
     private val app = context.applicationContext
     private val generation = generations.next()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private val guard = Any()
     private val admitted = AtomicBoolean()
     private val stopped = AtomicBoolean()
     private val failure = AtomicReference<Exception?>()
-    private val ready = CompletableDeferred<IBinder>()
     private val started = CompletableDeferred<Unit>()
-    private val dead = CompletableDeferred<Unit>()
-    private val ended = CompletableDeferred<Unit>()
     private val commands = Channel<ByteArray>(32)
     private val cleanupCommands = Channel<ByteArray>(32)
-    private val stopIssued = CompletableDeferred<Unit>()
     private val events = Channel<ByteArray>(32)
-    @Volatile private var bound = false
-    @Volatile private var remote: IBinder? = null
-    @Volatile private var startExposed = false
-    private var acceptingBinding = true
     private var outgoing: Job? = null
     private var cleanupRelay: Job? = null
-    private var stopping: Job? = null
-    private var stopCall: Job? = null
-    private var exitCall: Job? = null
-    private var cleanup: Deferred<Unit>? = null
-    @Volatile private var retired = false
     init {
         require(bindMillis in 1..60000 && startMillis in 1..60000)
         require(trustMillis in 1..60000)
         require(graceMillis == null || graceMillis in 0..60000)
         require(retireMillis == null || retireMillis in 1..60000)
-    }
-    private val death = IBinder.DeathRecipient {
-        dead.complete(Unit)
-        fail(IOException("Connection worker process exited"))
     }
     private val callback = object : Binder() {
         override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
@@ -90,32 +70,25 @@ internal class AndroidConnectionWorkerRun(
                 if (revision != generation) return true
                 val bytes = ConnectionWorkerIpc.bytes(data)
                 ConnectionWorkerIpc.end(data)
-                if (ConnectionWorkerCodec.event(bytes) is ConnectionWorkerEvent.Ended) ended.complete(Unit)
+                if (ConnectionWorkerCodec.event(bytes) is ConnectionWorkerEvent.Ended) process.ended.complete(Unit)
                 if (stopped.get()) return true
                 check(events.trySend(bytes).isSuccess) { "Connection worker event backlog exceeded" }
                 return true
             } catch (error: Exception) { fail(error); return false }
         }
     }
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            if (service == null) { onNullBinding(name); return }
-            connected(service)
-        }
-        override fun onServiceDisconnected(name: ComponentName?) = disconnected()
-        override fun onBindingDied(name: ComponentName?) = disconnected()
-        override fun onNullBinding(name: ComponentName?) = fail(IOException("Connection worker binding rejected"))
-    }
-    private fun connected(service: IBinder) {
-        synchronized(guard) {
-            if (!bound || !acceptingBinding || remote != null) return
-            remote = service
-        }
-        try { service.linkToDeath(death, 0); ready.complete(service) }
-        catch (error: Exception) { fail(error); ready.complete(service) }
+    private val process = WorkerProcessLifetime(app, scope, grace,
+        disconnected = ::disconnected,
+        rejected = { fail(IOException("Connection worker binding rejected")) },
+        linkFailed = ::linkFailed,
+        stopCommand = { ConnectionWorkerIpc.command(it, ConnectionWorkerIpc.STOP, generation) },
+        exitCommand = { ConnectionWorkerIpc.command(it, ConnectionWorkerIpc.EXIT, generation) })
+    private fun linkFailed(error: Exception, service: IBinder) {
+        fail(error)
+        process.ready.complete(service)
     }
     private fun disconnected() {
-        if (remote?.isBinderAlive == false) dead.complete(Unit)
+        process.observeDeath()
         fail(IOException("Connection worker binding disconnected"))
     }
     private fun fail(error: Exception) {
@@ -131,9 +104,9 @@ internal class AndroidConnectionWorkerRun(
     }
     /** Only retained proof can use this independent bounded native relay. It
      * never binds/starts a replacement and retains blocked IPC through retire. */
-    private fun cleanupCommand(bytes: ByteArray): Boolean = synchronized(guard) {
-        if (retired || dead.isCompleted || ended.isCompleted || !startExposed) return@synchronized false
-        val service = remote ?: return@synchronized false
+    private fun cleanupCommand(bytes: ByteArray): Boolean = synchronized(process.gate) {
+        if (process.retired || process.dead.isCompleted || process.ended.isCompleted || !process.startExposed) return@synchronized false
+        val service = process.remote ?: return@synchronized false
         val accepted = cleanupCommands.trySend(bytes).isSuccess
         if (accepted && cleanupRelay == null) {
             cleanupRelay = scope.launch(transmitDispatcher, start = CoroutineStart.LAZY) { cleanupControls(service) }
@@ -144,8 +117,8 @@ internal class AndroidConnectionWorkerRun(
     private suspend fun cleanupControls(service: IBinder) {
         try {
             for (bytes in cleanupCommands) {
-                if (stopped.get()) { stopIssued.await(); stopCall?.join() }
-                if (!dead.isCompleted && !ended.isCompleted) {
+                if (stopped.get()) { process.awaitStopCall() }
+                if (!process.dead.isCompleted && !process.ended.isCompleted) {
                     ConnectionWorkerIpc.command(service, ConnectionWorkerIpc.CONTROL, generation, bytes)
                 }
             }
@@ -154,7 +127,7 @@ internal class AndroidConnectionWorkerRun(
     override suspend fun execute() {
         check(admitted.compareAndSet(false, true)) { "Connection worker already executed" }
         try {
-            synchronized(guard) {
+            synchronized(process.gate) {
                 check(!stopped.get()) { "Connection worker stopped" }
                 outgoing = scope.launch(transmitDispatcher, start = CoroutineStart.LAZY) { transmit() }
                 outgoing!!.start()
@@ -166,10 +139,10 @@ internal class AndroidConnectionWorkerRun(
     private suspend fun transmit() {
         try {
             bind()
-            val service = connectionWorkerBudget("binding", bindMillis) { ready.await() }
+            val service = connectionWorkerBudget("binding", bindMillis) { process.ready.await() }
             currentCoroutineContext().ensureActive()
             check(!stopped.get())
-            startExposed = true // START may take effect before transact returns or throws.
+            process.startExposed = true // START may take effect before transact returns or throws.
             start(service)
             started.complete(Unit)
             for (bytes in commands) {
@@ -192,11 +165,8 @@ internal class AndroidConnectionWorkerRun(
     }
     private fun bind() {
         check(!stopped.get())
-        bound = true
-        try {
-            val intent = Intent(app, ConnectionWorkerService::class.java).putExtra("connection_generation", generation)
-            check(app.bindService(intent, connection, Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT)) { "Cannot bind connection worker" }
-        } catch (error: Exception) { bound = false; throw error }
+        val intent = Intent(app, ConnectionWorkerService::class.java).putExtra("connection_generation", generation)
+        process.bind(intent, Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT)
     }
     private suspend fun observeOperation() {
         if (launch is ConnectionProcessLaunch.Trust) connectionWorkerBudget("saved-trust operation", trustMillis) { observe() }
@@ -221,50 +191,16 @@ internal class AndroidConnectionWorkerRun(
     override fun cancel() {
         if (!stopped.compareAndSet(false, true)) return
         commands.close(); events.close(CancellationException("Connection worker stopped"))
-        synchronized(guard) {
+        synchronized(process.gate) {
             outgoing?.cancel()
-            stopping = scope.launch { stopAndExit() }
-        }
-    }
-    private suspend fun stopAndExit() {
-        val service = try { ready.await() } catch (_: Exception) { stopIssued.complete(Unit); return }
-        stopCall = scope.launch(Dispatchers.IO) { runCatching { ConnectionWorkerIpc.command(service, ConnectionWorkerIpc.STOP, generation) } }
-        stopIssued.complete(Unit)
-        withTimeoutOrNull(grace) {
-            select<Unit> { dead.onAwait {}; ended.onAwait {} }
-        }
-        if (!dead.isCompleted) {
-            exitCall = scope.launch(Dispatchers.IO) { runCatching { ConnectionWorkerIpc.command(service, ConnectionWorkerIpc.EXIT, generation) } }
+            process.stop()
         }
     }
     override suspend fun retire() {
         cancel()
-        if (retired) return
-        withTimeout(retirementWait) {
-            outgoing?.join()
-            if (requiresDeath()) awaitDeath()
-            else stopping?.cancel()
-            cleanupCommands.close(); cleanupRelay?.join()
-            stopping?.join(); stopCall?.join(); exitCall?.join()
-            clean().await()
-        }
-        retired = true
-        scope.cancel()
-    }
-    private fun requiresDeath(): Boolean = synchronized(guard) {
-        if (startExposed || remote != null) true
-        else { acceptingBinding = false; false }
-    }
-    private suspend fun awaitDeath() {
-        while (!dead.isCompleted) {
-            if (remote?.isBinderAlive == false) { dead.complete(Unit); return }
-            delay(5)
-        }
-    }
-    private fun clean(): Deferred<Unit> = synchronized(guard) {
-        cleanup ?: scope.async<Unit>(Dispatchers.IO) {
-            if (bound) { app.unbindService(connection); bound = false }
-            remote?.unlinkToDeath(death, 0)
-        }.also { cleanup = it }
+        process.retire(retirementWait, original = { outgoing?.join() }, drain = {
+            cleanupCommands.close()
+            cleanupRelay?.join()
+        })
     }
 }

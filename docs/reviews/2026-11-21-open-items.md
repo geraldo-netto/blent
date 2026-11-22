@@ -911,3 +911,40 @@ setup and retains no new socket/thread owner. Existing transport close and worke
 retirement obligations are unchanged. All 48 functions/callbacks measured in the
 three changed Kotlin files score <=3 with the repository Kotlin syntax checker;
 benchmark code remains exempt from production coverage requirements.
+
+
+## T1706: shared Android worker native lifetime
+
+`WorkerProcessLifetime` now owns the binding, original Binder/death link, START
+exposure, independent STOP/EXIT jobs, callback settlement and once-only unbind/unlink
+for both media and connection workers. Protocol adapters retain message encoding,
+event admission, original transmit jobs and connection-specific cleanup receipts.
+The cleanup relay still waits for the original STOP call and joins before native
+cleanup. No compatibility wrapper or duplicate mutable lifetime state remains.
+
+Ownership invariants: bind admission precedes callback publication; one guarded
+callback owns the original death-link receipt. Cutoff rejects late replacement
+Binders. Ended permits EXIT but cannot prove death. Original transmit, control,
+relay and death-link calls must settle before unbind/unlink; timeout keeps their
+same jobs and binding for retry. Cleanup is created once and its original result
+is retained. Success cancels the shared scope only after settlement. Event queues
+retain their previous 32-entry bounds; no additional task, message queue or native
+resource capacity was introduced. Eventual cleanup remains conditional on actual
+process death, original calls returning, and successful original unbind/unlink;
+unknown native obligations are not released merely to force termination.
+
+All 110 selected API-27/34 cases pass across the media worker, connection worker
+and existing maintenance-operation lifecycle suites. Three new permanent T1706
+cases cover held asynchronous death-link completion, observed death during a
+blocked original EXIT, and the primary launch's default event observer. A deliberate
+faulty control omitting the EXIT join fails both SDK cases at the retained-binding
+assertion; restoring the join passes. Earlier T1725 and STOP/START/cancellation,
+late-binding, generation and bounded-relay regressions remain unchanged.
+
+All 84 measured production methods/callbacks meet the per-method 80% line gate;
+inline bodies are attributed to enclosing methods. The local Kotlin 1.9.20 PSI
+checker measures 362 production/test functions/callbacks, maximum complexity 7.
+Exact JaCoCo 0.8.15 counters, source hashes and results are retained in
+`artifacts/2026-11-22-workers/t1706.json`. This is hosted lifecycle evidence, not
+physical Binder/provider validation; T1651 preserves native acceptance. Running
+host/tablet sessions and paused category-specific feature work were unchanged.

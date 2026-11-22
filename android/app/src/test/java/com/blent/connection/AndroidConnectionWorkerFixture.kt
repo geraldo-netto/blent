@@ -18,11 +18,14 @@ internal class ConnectionWorkerEndpoint : Binder() {
     var start: (ConnectionWorkerEndpoint) -> Unit = { it.emit(ConnectionWorkerEvent.Ended(null)) }
     var control: (ConnectionWorkerEndpoint) -> Unit = {}
     var stop: () -> Unit = {}
+    var exit: () -> Unit = {}
+    var linked: () -> Unit = {}
     override fun isBinderAlive(): Boolean = alive
     override fun linkToDeath(recipient: IBinder.DeathRecipient, flags: Int) {
         links++
         if (failLink) throw RemoteException("link rejected")
         deaths.add(recipient)
+        linked()
     }
     override fun unlinkToDeath(recipient: IBinder.DeathRecipient, flags: Int): Boolean = deaths.remove(recipient)
     override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
@@ -42,7 +45,7 @@ internal class ConnectionWorkerEndpoint : Binder() {
                 ConnectionWorkerIpc.end(data); control(this)
             }
             ConnectionWorkerIpc.STOP -> { ConnectionWorkerIpc.end(data); stop() }
-            ConnectionWorkerIpc.EXIT -> { ConnectionWorkerIpc.end(data); if (killOnExit) die() }
+            ConnectionWorkerIpc.EXIT -> { ConnectionWorkerIpc.end(data); if (killOnExit) die(); exit() }
         }
         return true
     }

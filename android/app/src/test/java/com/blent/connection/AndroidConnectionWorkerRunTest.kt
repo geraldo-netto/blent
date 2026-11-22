@@ -21,6 +21,74 @@ class AndroidConnectionWorkerRunTest {
     private suspend fun until(condition: () -> Boolean) = withTimeout(1500) { while (!condition()) delay(1) }
     private fun await(latch: CountDownLatch) { check(latch.await(3, TimeUnit.SECONDS)) }
 
+    @Test fun t1706OriginalDeathLinkRemainsOwnedThroughCancellation() = runBlocking {
+        val release = CountDownLatch(1)
+        val entered = CompletableDeferred<Unit>()
+        val endpoint = ConnectionWorkerEndpoint()
+        endpoint.linked = { endpoint.die(); entered.complete(Unit); release.await() }
+        val context = ConnectionWorkerContext(endpoint).apply { connect = false }
+        val worker = run(context, retire = 30)
+        val execution = async(Dispatchers.Default) { runCatching { worker.execute() } }
+        val callback = async(Dispatchers.IO, start = CoroutineStart.LAZY) {
+            checkNotNull(context.connection).onServiceConnected(context.component, endpoint)
+        }
+        try {
+            until { context.connection != null }
+            callback.start()
+            withTimeout(1000) { entered.await(); execution.await() }
+            assertTrue(runCatching { worker.retire() }.exceptionOrNull() is TimeoutCancellationException)
+            assertEquals(0, context.unbinds)
+            assertFalse(callback.isCompleted)
+            assertTrue(endpoint.deaths.isNotEmpty())
+        } finally {
+            release.countDown(); callback.join()
+            worker.cancel(); execution.join(); worker.retire()
+        }
+        assertEquals(1, context.unbinds)
+        assertTrue(endpoint.deaths.isEmpty())
+        assertFalse(endpoint.codes.contains(ConnectionWorkerIpc.START))
+    }
+
+    @Test fun t1706ObservedDeathCannotRetireBlockedOriginalExitCall() = runBlocking {
+        val release = CountDownLatch(1)
+        val entered = CompletableDeferred<Unit>()
+        val endpoint = ConnectionWorkerEndpoint().apply {
+            start = {}
+            exit = { entered.complete(Unit); release.await() }
+        }
+        val context = ConnectionWorkerContext(endpoint)
+        val worker = run(context, retire = 30)
+        val execution = async(Dispatchers.Default) { runCatching { worker.execute() } }
+        try {
+            until { endpoint.callback != null }
+            worker.cancel(); execution.await()
+            withTimeout(1000) { entered.await() }
+            assertFalse(endpoint.alive)
+            assertTrue(runCatching { worker.retire() }.exceptionOrNull() is TimeoutCancellationException)
+            assertEquals(0, context.unbinds)
+        } finally {
+            release.countDown()
+            worker.cancel(); execution.join(); worker.retire()
+        }
+        worker.retire()
+        assertEquals(1, context.unbinds)
+        assertTrue(endpoint.deaths.isEmpty())
+    }
+
+    @Test fun t1706PrimaryLaunchDefaultObserverSettlesTheOriginalProcess() = runBlocking {
+        val endpoint = ConnectionWorkerEndpoint().apply { start = {
+            it.emit(ConnectionWorkerEvent.State(ConnectionWorkerPhase.OPENING))
+            it.emit(ConnectionWorkerEvent.Ended(null))
+        } }
+        val context = ConnectionWorkerContext(endpoint)
+        val worker = AndroidConnectionWorkerRun(context, ConnectionProcessLaunch.Connect(spec), graceMillis = 1)
+        try { worker.execute() } finally { worker.cancel(); worker.retire() }
+        assertEquals(1, context.binds)
+        assertEquals(1, context.unbinds)
+        assertFalse(endpoint.alive)
+        assertTrue(endpoint.deaths.isEmpty())
+    }
+
     @Test fun t1078NullBindingFixtureUsesAvailableSdkCallbackWithoutNativeAdmission() {
         val endpoint = ConnectionWorkerEndpoint()
         val context = ConnectionWorkerContext(endpoint).apply { nullBinding = true }
