@@ -1,0 +1,24 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.65s
+     Running unittests src/main.rs (target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 1 test
+test test_shapes::tests::t1793_text_bounds_include_alignment_offset ... FAILED
+
+failures:
+
+---- test_shapes::tests::t1793_text_bounds_include_alignment_offset stdout ----
+
+thread 'test_shapes::tests::t1793_text_bounds_include_alignment_offset' (725368) panicked at gui/src/test_shapes.rs:36:17:
+assertion `left == right` failed: T1793 aligned galley
+  left: [[200.0 20.0] - [283.9 37.0]]
+ right: [[158.0 20.0] - [241.9 37.0]]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    test_shapes::tests::t1793_text_bounds_include_alignment_offset
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 280 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

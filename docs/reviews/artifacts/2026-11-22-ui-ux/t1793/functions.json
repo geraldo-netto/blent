@@ -1,0 +1,8 @@
+[
+  {
+    "file": "gui/src/test_shapes.rs",
+    "name": "collect_text_rects",
+    "covered": 8,
+    "total": 10
+  }
+]

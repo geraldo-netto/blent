@@ -99,8 +99,8 @@ fn t1277_about_exposes_version_credits_and_offline_notices() {
 #[test]
 fn t1290_wide_pages_and_footer_share_bounded_content() {
     for (tab, anchor) in [
-        (Tab::Settings, "CPU scheduling"),
-        (Tab::Connections, "USB connection"),
+        (Tab::Settings, "Updates"),
+        (Tab::Connections, "Direct USB"),
         (Tab::About, "Credits"),
     ] {
         let (_root, mut app) = settings_test_app(tab);

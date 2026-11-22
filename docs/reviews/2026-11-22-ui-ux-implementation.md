@@ -125,3 +125,15 @@ complexity <=9. [Evidence](artifacts/2026-11-22-ui-ux/t1791/).
 One bounded operation string travels with the existing single receiver. It is
 released with that receipt on completion/disconnection; no worker, queue or native
 lease is added. Resource diagnostics remain borrowed during the frame.
+
+## T1793 — responsive test geometry follow-up
+
+Full-suite verification exposed a test-oracle error: centered text anchors were
+interpreted as top-left corners. The permanent left/center/right geometry
+regression failed before correcting the helper to translate the actual galley
+bounds. Native clipping was not established; no production preview change was
+needed. Responsive fixtures now use the visible Updates and Direct USB anchors.
+The geometry, 380-point clipping and five-width alignment tests all pass, without
+weakening bounds. Helper coverage is 80% (8/10 executable lines); all measured functions have complexity
+<=9. [Evidence](artifacts/2026-11-22-ui-ux/t1793/). Borrowed immutable shape geometry
+is inspected synchronously; the test collector owns only its bounded label list.
