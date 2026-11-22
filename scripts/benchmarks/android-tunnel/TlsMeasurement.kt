@@ -36,16 +36,15 @@ internal fun measurementTls(fixtures: File, own: String, peer: String): SSLConte
     return SSLContext.getInstance("TLSv1.3").apply { init(managers.keyManagers, trusted.trustManagers, null) }
 }
 
-/** Observes actual encrypted TLS record boundaries without retaining payloads.
- * One TLS writer owns this parser; snapshots occur after exact write completion. */
-internal class RecordMeter(private val output: OutputStream) : OutputStream() {
+/** One stream owner feeds this fixed five-byte parser only after successful I/O.
+ * Snapshots follow exact native completion; no payload or socket is retained. */
+internal class TlsRecordCounter {
     private val header = ByteArray(5)
     private var used = 0
     private var remaining = 0
     var records = 0L; private set
-    override fun write(value: Int) = write(byteArrayOf(value.toByte()), 0, 1)
-    override fun write(bytes: ByteArray, offset: Int, length: Int) {
-        output.write(bytes, offset, length)
+    fun accept(bytes: ByteArray, offset: Int, length: Int) {
+        java.util.Objects.checkFromIndexSize(offset, length, bytes.size)
         var cursor = offset
         val end = offset + length
         while (cursor < end) {
@@ -70,14 +69,47 @@ internal class RecordMeter(private val output: OutputStream) : OutputStream() {
         }
         return count
     }
+}
+
+internal class RecordMeter(private val output: OutputStream) : OutputStream() {
+    private val counter = TlsRecordCounter()
+    val records: Long get() = counter.records
+    override fun write(value: Int) = write(byteArrayOf(value.toByte()), 0, 1)
+    override fun write(bytes: ByteArray, offset: Int, length: Int) {
+        output.write(bytes, offset, length)
+        counter.accept(bytes, offset, length)
+    }
     override fun flush() = output.flush()
     override fun close() = output.close()
+}
+
+internal class RecordInputMeter(private val input: InputStream) : InputStream() {
+    private val counter = TlsRecordCounter()
+    private val single = ByteArray(1)
+    val records: Long get() = counter.records
+    override fun read(): Int {
+        val value = input.read()
+        if (value >= 0) {
+            single[0] = value.toByte()
+            counter.accept(single, 0, 1)
+        }
+        return value
+    }
+    override fun read(bytes: ByteArray, offset: Int, length: Int): Int {
+        java.util.Objects.checkFromIndexSize(offset, length, bytes.size)
+        val count = input.read(bytes, offset, length)
+        if (count > 0) counter.accept(bytes, offset, count)
+        return count
+    }
+    override fun available(): Int = input.available()
+    override fun close() = input.close()
 }
 
 /** Layered JSSE uses this socket's original streams; no TCP relay or extra queue. */
 internal class MeteredSocket(private val original: Socket) : Socket() {
     val meter = RecordMeter(original.getOutputStream())
-    override fun getInputStream(): InputStream = original.getInputStream()
+    val incoming = RecordInputMeter(original.getInputStream())
+    override fun getInputStream(): InputStream = incoming
     override fun getOutputStream(): OutputStream = meter
     override fun getInetAddress(): InetAddress = original.inetAddress
     override fun getLocalAddress(): InetAddress = original.localAddress

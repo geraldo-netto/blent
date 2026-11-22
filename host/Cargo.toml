@@ -9,6 +9,10 @@ description = "Low-latency USB display server - turns your Android tablet into a
 name = "secure_connection_fixture"
 required-features = ["accessory-transport"]
 
+[[example]]
+name = "tunnel_read_fixture"
+required-features = ["accessory-transport"]
+
 [[bin]]
 name = "blent-audio"
 path = "src/bin/audio.rs"

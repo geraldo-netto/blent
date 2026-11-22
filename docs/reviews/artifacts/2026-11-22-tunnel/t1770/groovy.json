@@ -1,0 +1,33 @@
+{
+    "tool": "Groovy 3.0.17 compiler AST",
+    "results": [
+        {
+            "file": "scripts/benchmarks/android-tunnel/benchmark.init.gradle",
+            "closures": [
+                {
+                    "line": 1,
+                    "complexity": 1
+                },
+                {
+                    "line": 2,
+                    "complexity": 2
+                },
+                {
+                    "line": 7,
+                    "complexity": 2
+                },
+                {
+                    "line": 15,
+                    "complexity": 1
+                },
+                {
+                    "line": 16,
+                    "complexity": 3
+                }
+            ],
+            "methods": [
+                
+            ]
+        }
+    ]
+}

@@ -81,6 +81,7 @@ internal class MeasuredIo(private val connection: MeasurementConnection) : AutoC
     private val ready = Semaphore(0)
     val threads = ArrayList<Thread>(3)
     var completions = 0L; private set
+    var reads = 0L; private set
     var polls = 0L; private set
     var waits = 0L; private set
     private val hints = java.util.concurrent.atomic.AtomicLong()
@@ -102,6 +103,7 @@ internal class MeasuredIo(private val connection: MeasurementConnection) : AutoC
             val result = port.poll()
             if (result != null) {
                 completions++
+                if (result.request is ConnectionIoRequest.Read) reads++
                 return result
             }
             waits++

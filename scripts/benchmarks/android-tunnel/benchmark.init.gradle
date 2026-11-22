@@ -4,6 +4,12 @@ allprojects { project ->
             android.sourceSets.getByName('test').java.srcDir(new File(rootProject.projectDir.parentFile, 'scripts/benchmarks/android-hosted'))
             dependencies.add('testImplementation', 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2')
             android.sourceSets.getByName('test').java.srcDir(new File(rootProject.projectDir.parentFile, 'scripts/benchmarks/android-tunnel'))
+            tasks.withType(Test).configureEach {
+                if (providers.gradleProperty('blentRustReadFixture').isPresent()) {
+                    systemProperty 'blent.rustReadFixture', providers.gradleProperty('blentRustReadFixture').get()
+                    systemProperty 'blent.rustReadOutput', providers.gradleProperty('blentRustReadOutput').get()
+                }
+            }
             [tunnelHandoffBenchmark: 'TunnelHandoffBenchmarkKt', localHandoffBenchmark: 'LocalHandoffBenchmarkKt',
              tunnelReadBenchmark: 'TunnelReadBenchmarkKt', connectionAllocationBenchmark: 'MuxAllocationBenchmarkKt',
              producerAllocationBenchmark: 'ProducerAllocationBenchmarkKt'].each { taskName, entryPoint ->
