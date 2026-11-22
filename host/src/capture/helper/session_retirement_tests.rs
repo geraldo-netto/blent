@@ -218,7 +218,7 @@ impl CaptureBackend for NativeCapture {
                 let mut reader = self.expose(&mut manager, &context).await;
                 context.stop.wait_for(|stop| *stop).await.unwrap();
                 if let Some(reader) = reader.as_mut() {
-                    reader.finish(false).await.unwrap();
+                    reader.finish().await.unwrap();
                 }
                 drop(reader);
                 manager.shutdown().await;

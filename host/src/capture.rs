@@ -471,20 +471,14 @@ impl CaptureManager {
         #[allow(unused_labels)]
         'session: loop {
             let mut resume_same_encoder = false;
-            let mut encode_finished = false;
             tokio::select! {
                 status = self.helper.wait() => {
                     warn!("Capture helper exited: {:?}. Restarting...", status);
                 }
-                joined = &mut encode_task.handle => {
-                    encode_finished = true;
+                _ = encode_task.join() => {
                     #[cfg(not(feature = "inproc-encoder"))]
                     { gpu_fallback = self.encoder.gpu.encoder_finished(); }
-                    match joined {
-                        Ok(Ok(_)) => info!("Encoder finished"),
-                        Ok(Err(e)) => warn!("Encoder error: {}. Restarting...", e),
-                        Err(e) => warn!("Encoder task failed: {}. Restarting...", e),
-                    }
+
                 }
                 _ = run.fifo_reset_rx.changed() => {
                     if self.helper.fifo_reset_pending(self.config.instance)? {
@@ -575,7 +569,7 @@ impl CaptureManager {
             }
 
             // Retire the reader before the supervisor rebuilds the pipeline.
-            encode_task.finish(encode_finished).await?;
+            encode_task.finish_session().await?;
 
             break;
         }

@@ -59,7 +59,7 @@ async fn pause_helper(helper: &mut HelperProcess) -> anyhow::Result<()> {
 }
 async fn retire_reader(reader: Option<&mut EncoderTask>) -> anyhow::Result<()> {
     if let Some(reader) = reader {
-        reader.retire(false).await?;
+        reader.retire().await?;
     }
     Ok(())
 }

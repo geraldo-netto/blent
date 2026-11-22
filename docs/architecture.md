@@ -590,6 +590,11 @@ that has run for at least 30 seconds resets the next delay to 2 seconds; clean
 settings/mode transitions do not wait. Display loss or shutdown interrupts the
 wait. An unconfirmed native retirement prevents replacement and does not advance
 the retry state.
+The reader task retains its consumed outcome while its original idle controller
+retires. Both session event orders log recoverable read/assembly errors and
+restart only after cleanup. A task panic or incomplete retirement fails the
+session; strict cleanup callers still receive reader work errors. Cancelling a
+cleanup wait retains the original outcome for the next wait.
 The `media` module owns codec, packet, generation and live-settings contracts,
 so streaming, input and encoding do not depend on capture management.
 `ivf` reads bounded VP9/AV1 packets and classifies random-access headers.

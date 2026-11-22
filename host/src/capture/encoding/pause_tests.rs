@@ -21,7 +21,11 @@ fn reader(manager: &mut CaptureManager) -> EncoderTask {
     scope.retain(handle.completion());
     let child = Child::spawn(tokio::process::Command::new("/bin/sleep").arg("60")).unwrap();
     manager.encoder.adopt(child, scope);
-    EncoderTask { handle, idle: None }
+    EncoderTask {
+        handle,
+        idle: None,
+        outcome: None,
+    }
 }
 async fn until(mut predicate: impl FnMut() -> bool) {
     timeout(Duration::from_secs(5), async {
@@ -281,7 +285,11 @@ async fn t1046_reader_join_keeps_progress_after_stop_grace_without_canceling_tra
     .unwrap();
     scope.retain(handle.completion());
     manager.encoder.generation.activate(scope);
-    let mut reader = EncoderTask { handle, idle: None };
+    let mut reader = EncoderTask {
+        handle,
+        idle: None,
+        outcome: None,
+    };
     ready.await.unwrap();
     let mut pause = Box::pin(manager.quiesce_display(Some(&mut reader)));
     assert!(timeout(Duration::from_millis(50), &mut pause)
