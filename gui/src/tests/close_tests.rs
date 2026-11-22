@@ -53,7 +53,7 @@ fn t1669_close_preserves_camera_and_reactivation_restores_original_state() {
     assert!(commands.contains(&egui::ViewportCommand::CancelClose));
     assert!(commands.contains(&egui::ViewportCommand::Minimized(true)));
     assert_eq!(drops.get(), 0);
-    let output = context.run(Default::default(), |context| activation::show(context));
+    let output = context.run(Default::default(), activation::show);
     assert!(output.viewport_output[&egui::ViewportId::ROOT]
         .commands
         .contains(&egui::ViewportCommand::Minimized(false)));
@@ -82,7 +82,7 @@ fn t1669_close_retains_camera_intent_and_allows_terminal_states_to_exit() {
         CameraState::Failed("fixture".into()),
     ] {
         let (_root, mut app) = settings_test_app(Tab::Overview);
-    app.cfg = app.saved_cfg.clone();
+        app.cfg = app.saved_cfg.clone();
         let active = state.is_active();
         app.camera.backend = Some(Box::new(Camera(Rc::new(Cell::new(0)), state)));
         let output = close_frame(&mut app, &egui::Context::default());
@@ -127,7 +127,7 @@ fn t1669_close_preserves_each_audio_direction_independently() {
             AudioState::Failed,
         ] {
             let (_root, mut app) = settings_test_app(Tab::Overview);
-    app.cfg = app.saved_cfg.clone();
+            app.cfg = app.saved_cfg.clone();
             let panel = match direction {
                 Direction::Microphone => &mut app.microphone,
                 Direction::Speakers => &mut app.speakers,
@@ -168,11 +168,18 @@ fn t1783_dirty_or_pending_preferences_cancel_native_close() {
         let (sender, receiver) = std::sync::mpsc::channel();
         if pending {
             app.cfg = app.saved_cfg.clone();
-            app.action = Some(action_feedback::Job::new(FeedbackArea::Settings, "Pending fixture", receiver));
+            app.action = Some(action_feedback::Job::new(
+                FeedbackArea::Settings,
+                "Pending fixture",
+                receiver,
+            ));
         }
         let output = close_frame(&mut app, &egui::Context::default());
         let commands = &output.viewport_output[&egui::ViewportId::ROOT].commands;
-        assert!(commands.contains(&egui::ViewportCommand::CancelClose), "T1783 dirty/pending work was discarded");
+        assert!(
+            commands.contains(&egui::ViewportCommand::CancelClose),
+            "T1783 dirty/pending work was discarded"
+        );
         assert!(!commands.contains(&egui::ViewportCommand::Close));
         drop(sender);
         app.poll_action();
@@ -193,7 +200,9 @@ fn t1783_keep_editing_and_discard_are_explicit_choices() {
     assert_eq!(app.cfg, app.saved_cfg);
     assert!(app.save.is_none());
     let output = close_frame(&mut app, &context);
-    assert!(!output.viewport_output[&egui::ViewportId::ROOT].commands.contains(&egui::ViewportCommand::CancelClose));
+    assert!(!output.viewport_output[&egui::ViewportId::ROOT]
+        .commands
+        .contains(&egui::ViewportCommand::CancelClose));
 }
 
 #[test]
@@ -201,7 +210,12 @@ fn t1783_save_on_close_waits_and_does_not_restart_displays() {
     let (_root, mut app) = settings_test_app(Tab::Settings);
     let context = egui::Context::default();
     close_frame(&mut app, &context);
-    click_settings_text(&mut app, &context, "Save preferences and close", window_test_frame);
+    click_settings_text(
+        &mut app,
+        &context,
+        "Save preferences and close",
+        window_test_frame,
+    );
     wait_for_work(&mut app);
     window_test_frame(&mut app, &context, vec![]);
     assert!(app.close_intent == window_lifecycle::CloseIntent::Approved);
@@ -217,7 +231,12 @@ fn t1783_failed_save_keeps_dialog_and_draft_for_retry() {
     app.store = ConfigStore::new(path);
     let context = egui::Context::default();
     close_frame(&mut app, &context);
-    click_settings_text(&mut app, &context, "Save preferences and close", window_test_frame);
+    click_settings_text(
+        &mut app,
+        &context,
+        "Save preferences and close",
+        window_test_frame,
+    );
     wait_for_work(&mut app);
     window_test_frame(&mut app, &context, vec![]);
     assert!(app.close_intent == window_lifecycle::CloseIntent::Review);
@@ -226,7 +245,12 @@ fn t1783_failed_save_keeps_dialog_and_draft_for_retry() {
     click_settings_text(&mut app, &context, "Keep editing", window_test_frame);
     app.cfg.fps = 0;
     close_frame(&mut app, &context);
-    click_settings_text(&mut app, &context, "Save preferences and close", window_test_frame);
+    click_settings_text(
+        &mut app,
+        &context,
+        "Save preferences and close",
+        window_test_frame,
+    );
     assert!(app.save.is_none());
 }
 
@@ -238,7 +262,12 @@ fn t1783_pending_save_cannot_be_discarded_or_duplicated_on_close() {
     lock.lock().unwrap();
     let context = egui::Context::default();
     close_frame(&mut app, &context);
-    click_settings_text(&mut app, &context, "Save preferences and close", window_test_frame);
+    click_settings_text(
+        &mut app,
+        &context,
+        "Save preferences and close",
+        window_test_frame,
+    );
     assert!(app.busy());
     close_frame(&mut app, &context);
     click_settings_text(&mut app, &context, "Discard and close", window_test_frame);
