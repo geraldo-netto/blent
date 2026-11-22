@@ -1,0 +1,35 @@
+{
+  "host_source": "4f769de83bba1ceb5b98052f527d67aa2076de03",
+  "running": [
+    {
+      "pid": 813566,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent",
+      "sha256": "b970768f513a78ef7a504ffc35cf937d517cae8e54e4c664e18954e796eef471"
+    },
+    {
+      "pid": 813671,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent-usb-broker",
+      "sha256": "f6db7bc90f3d85b166e983028ccab7a9a4e8f24b8b4a7b366d369e595b096599"
+    },
+    {
+      "pid": 813675,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent",
+      "sha256": "b970768f513a78ef7a504ffc35cf937d517cae8e54e4c664e18954e796eef471"
+    },
+    {
+      "pid": 813812,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/evdi_helper",
+      "sha256": "4244a1351fe3916371b6042cee50bea7a754bef8ff719fa33d85c44a9a2dd3cd"
+    },
+    {
+      "pid": 827858,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent-gui",
+      "sha256": "132297a0b90161bf1cb001b559bbe596a3a6b5ad417e01fd784d1eacbc448039"
+    }
+  ],
+  "tablet": "8002RH1010011900",
+  "rollback_directory": "/home/netto/.cache/blent-ui-reload-20261122.4ym5xchb",
+  "notice_gap": "T1463; local installation only",
+  "android_source": "d2736a806cac70d0785bf4433462567db928c153",
+  "apk_sha256": "37e10aa84af838c178e9d8dfc60258f82d8e7f35f2a3d39f7771d763c3817296"
+}

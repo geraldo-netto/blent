@@ -358,3 +358,39 @@ The native Back key hides the Material sheet before its dismissal callback. Keep
 All 53 emitted maintained methods with JaCoCo line counters have 100%
 coverage; complexity <=9. The eight-class final run passes 100 test executions
 on API 27/34. [Evidence](artifacts/2026-11-22-ui-ux/t1807/).
+
+
+## Installed acceptance
+
+All 13 requested items T1780–T1792 have separate verified local commits. Native
+acceptance also resolved T1806/T1807 in separate commits. No push was performed.
+
+The host AppDir was reinstalled and the GUI, daemon and original USB broker were
+reloaded. Five running project executables match installed hashes. Host source
+identity is 4f769de8; subsequent production changes are Android-only. The final
+signed APK from d2736a80 was installed with data retained, and its pulled installed
+bytes match the verified APK. The app was relaunched after installation/testing.
+The backup AppDir/APK and detailed installation logs remain in the private
+rollback directory named in the deployment evidence.
+
+The live desktop uses the Mint-Y-Aqua light palette and Ubuntu 10 font, with the
+configured text scale and animation preference. Native screenshots verify selected
+parent/child navigation and the compact stopped camera layout. Tablet display
+streaming resumed at 1280×800 through h264_vaapi; rendered-frame acknowledgements
+were observed after reload. No webcam or audio session was started for acceptance.
+
+On the installed tablet, actual Back → Keep editing restores the visible sheet
+and selected 30-fps draft; Back → Discard closes it without applying that draft.
+At system font scale 2.0 in landscape, refresh guidance and Apply remain reachable
+by scrolling. The original system font scale 0.85 was restored and the app restarted.
+Final checks: 302 GUI tests, 100 Android test executions across eight classes,
+94 maintained Rust functions individually >=80% line coverage, and all 71 emitted
+Android methods in the three maintained presentation files at 100% line coverage.
+Complexity checks remain <=9; signed release verification passes.
+
+This imports GTK appearance into egui; it does not replace egui with native GTK
+widgets. Dedicated KDE appearance (T1794), live theme notifications (T1795), and
+native screen-reader qualification (T1796) remain explicit follow-ups. Preexisting
+repository-wide Clippy/format and portable license-qualification gaps remain
+tracked; this local installation does not claim those gates passed.
+[Deployment evidence](artifacts/2026-11-22-ui-ux/deployment/).
