@@ -109,7 +109,7 @@ impl Session {
     }
     #[zbus(property)]
     async fn user(&self) -> zbus::fdo::Result<(u32, OwnedObjectPath)> {
-        tokio::time::sleep(Duration::from_millis(
+        async_io::Timer::after(Duration::from_millis(
             self.0.user_delay_ms.load(Ordering::Acquire),
         ))
         .await;
@@ -133,7 +133,7 @@ struct Display(Arc<Values>);
 impl Display {
     #[zbus(property)]
     async fn power_save_mode(&self) -> zbus::fdo::Result<i32> {
-        tokio::time::sleep(Duration::from_millis(
+        async_io::Timer::after(Duration::from_millis(
             self.0.display_delay_ms.load(Ordering::Acquire),
         ))
         .await;

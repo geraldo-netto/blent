@@ -1,7 +1,7 @@
 use super::*;
 
 fn call() -> Message {
-    Message::method("/fixture", "Set")
+    Message::method_call("/fixture", "Set")
         .unwrap()
         .sender(":1.7")
         .unwrap()
@@ -9,7 +9,7 @@ fn call() -> Message {
         .unwrap()
 }
 fn error(name: &str, sender: &str) -> zbus::Error {
-    let message = Message::method_error(&call(), name)
+    let message = Message::error(&call().header(), name)
         .unwrap()
         .sender(sender)
         .unwrap()
@@ -21,7 +21,7 @@ fn error(name: &str, sender: &str) -> zbus::Error {
 #[test]
 fn t1640_original_reply_and_broker_predispatch_rejection_settle() {
     for sender_name in [":1.10", ":1.11"] {
-        let reply = Message::method_reply(&call())
+        let reply = Message::method_return(&call().header())
             .unwrap()
             .sender(sender_name)
             .unwrap()
@@ -75,7 +75,7 @@ fn t1640_lost_or_foreign_reply_is_not_a_settlement() {
         )
         .settled
     );
-    let reply = Message::method_reply(&call()).unwrap().build(&()).unwrap();
+    let reply = Message::method_return(&call().header()).unwrap().build(&()).unwrap();
     assert!(!classify(Ok(reply), ":1.10").settled);
 }
 

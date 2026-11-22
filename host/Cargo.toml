@@ -59,13 +59,15 @@ linux-raw-sys = { version = "0.12.1", default-features = false, features = ["std
 pipewire = { version = "0.8", optional = true }
 ffmpeg-next = { version = "9", optional = true }
 libc = "0.2"
-zbus = { version = "4", features = ["tokio"] }
+zbus = { version = "5.16", default-features = false, features = ["async-io"] }
 x11rb = { version = "0.13.2", features = ["randr", "xinput"] }
-# Share AccessKit's zbus 5 runtime in workspace builds. Enabling Tokio here
-# makes AccessKit's dedicated async-io worker panic without a Tokio reactor.
+# Share async-io across the host, tray and AccessKit. Enabling zbus Tokio
+# makes AccessKit's dedicated worker panic without a Tokio reactor.
 ksni = { version = "0.3", default-features = false, features = ["async-io"] }
 
 [dev-dependencies]
+# Private D-Bus service fixtures run on zbus's async-io executor.
+async-io = "2.6"
 tokio = { version = "1", features = ["test-util"] }
 tracing = { version = "0.1", features = ["log"] }
 

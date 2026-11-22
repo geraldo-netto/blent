@@ -364,3 +364,24 @@ fn t1438_session_identity_payload_bounds_and_uid_are_validated() {
         );
     }
 }
+
+#[test]
+fn t1730_shared_bus_runtime_works_without_a_tokio_reactor() {
+    if !private("activity::native::tests::t1730_shared_bus_runtime_works_without_a_tokio_reactor") {
+        return;
+    }
+    std::thread::spawn(|| {
+        async_io::block_on(async {
+            let connection = Connection::session().await.unwrap();
+            let proxy = zbus::fdo::DBusProxy::new(&connection).await.unwrap();
+            assert!(proxy
+                .name_has_owner("org.freedesktop.DBus".try_into().unwrap())
+                .await
+                .unwrap());
+            drop(proxy);
+            connection.close().await.unwrap();
+        });
+    })
+    .join()
+    .unwrap();
+}

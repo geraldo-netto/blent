@@ -1,5 +1,5 @@
 use super::*;
-use async_io::{AsyncListener, AsyncSocket};
+use super::async_io::{AsyncListener, AsyncSocket};
 use blent_config::connection::{
     control::{Command, Notice, State},
     pairing::{PeerId, Ticket},
