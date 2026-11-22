@@ -1,0 +1,355 @@
+{
+  "issue": "T1493",
+  "status": "open",
+  "source_base": "2ccfcad9",
+  "scope": "Private release test process, synthetic attachment and temporary configuration; 10 Cache::open/load observations and 10 component observations per runtime. Installed helper read only; Blent executable is the release test binary, not the installed host. First call is not a flushed filesystem-cache observation. No tablet/capture/install operation. Runtime comparisons share the same probe binary but use distinct test processes. No optimization is implemented by this measurement.",
+  "variants": {
+    "baseline": {
+      "components": [
+        {
+          "config_us": 10,
+          "executable_us": 16222,
+          "ffmpeg_identity_us": 165,
+          "helper_us": 123,
+          "iteration": 0,
+          "platform_us": 67,
+          "version_us": 53867
+        },
+        {
+          "config_us": 11,
+          "executable_us": 16348,
+          "ffmpeg_identity_us": 172,
+          "helper_us": 120,
+          "iteration": 1,
+          "platform_us": 72,
+          "version_us": 52868
+        },
+        {
+          "config_us": 4,
+          "executable_us": 16488,
+          "ffmpeg_identity_us": 169,
+          "helper_us": 123,
+          "iteration": 2,
+          "platform_us": 73,
+          "version_us": 55989
+        },
+        {
+          "config_us": 10,
+          "executable_us": 15720,
+          "ffmpeg_identity_us": 167,
+          "helper_us": 119,
+          "iteration": 3,
+          "platform_us": 52,
+          "version_us": 52855
+        },
+        {
+          "config_us": 10,
+          "executable_us": 16125,
+          "ffmpeg_identity_us": 168,
+          "helper_us": 119,
+          "iteration": 4,
+          "platform_us": 76,
+          "version_us": 50773
+        },
+        {
+          "config_us": 10,
+          "executable_us": 16236,
+          "ffmpeg_identity_us": 170,
+          "helper_us": 120,
+          "iteration": 5,
+          "platform_us": 67,
+          "version_us": 50845
+        },
+        {
+          "config_us": 6,
+          "executable_us": 16251,
+          "ffmpeg_identity_us": 167,
+          "helper_us": 121,
+          "iteration": 6,
+          "platform_us": 66,
+          "version_us": 54914
+        },
+        {
+          "config_us": 14,
+          "executable_us": 16010,
+          "ffmpeg_identity_us": 176,
+          "helper_us": 119,
+          "iteration": 7,
+          "platform_us": 59,
+          "version_us": 52845
+        },
+        {
+          "config_us": 4,
+          "executable_us": 16179,
+          "ffmpeg_identity_us": 168,
+          "helper_us": 119,
+          "iteration": 8,
+          "platform_us": 64,
+          "version_us": 53880
+        },
+        {
+          "config_us": 8,
+          "executable_us": 15617,
+          "ffmpeg_identity_us": 165,
+          "helper_us": 116,
+          "iteration": 9,
+          "platform_us": 52,
+          "version_us": 52858
+        }
+      ],
+      "executable_bytes": 32566360,
+      "helper_bytes": 245737,
+      "observations": [
+        {
+          "iteration": 0,
+          "load_us": 71,
+          "open_us": 73099
+        },
+        {
+          "iteration": 1,
+          "load_us": 42,
+          "open_us": 69600
+        },
+        {
+          "iteration": 2,
+          "load_us": 40,
+          "open_us": 72114
+        },
+        {
+          "iteration": 3,
+          "load_us": 42,
+          "open_us": 71720
+        },
+        {
+          "iteration": 4,
+          "load_us": 46,
+          "open_us": 72194
+        },
+        {
+          "iteration": 5,
+          "load_us": 36,
+          "open_us": 70631
+        },
+        {
+          "iteration": 6,
+          "load_us": 47,
+          "open_us": 69530
+        },
+        {
+          "iteration": 7,
+          "load_us": 34,
+          "open_us": 71002
+        },
+        {
+          "iteration": 8,
+          "load_us": 34,
+          "open_us": 70591
+        },
+        {
+          "iteration": 9,
+          "load_us": 26,
+          "open_us": 70586
+        }
+      ],
+      "repeat_medians_us": {
+        "open_us": 70631,
+        "load_us": 40
+      },
+      "component_medians_us": {
+        "config_us": 10.0,
+        "executable_us": 16200.5,
+        "ffmpeg_identity_us": 168.0,
+        "helper_us": 119.5,
+        "platform_us": 66.5,
+        "version_us": 52863.0
+      }
+    },
+    "packaged-baseline": {
+      "components": [
+        {
+          "config_us": 3,
+          "executable_us": 15614,
+          "ffmpeg_identity_us": 21341,
+          "helper_us": 116,
+          "iteration": 0,
+          "platform_us": 48,
+          "version_us": 4414
+        },
+        {
+          "config_us": 4,
+          "executable_us": 15334,
+          "ffmpeg_identity_us": 21385,
+          "helper_us": 114,
+          "iteration": 1,
+          "platform_us": 46,
+          "version_us": 5489
+        },
+        {
+          "config_us": 3,
+          "executable_us": 15416,
+          "ffmpeg_identity_us": 21345,
+          "helper_us": 119,
+          "iteration": 2,
+          "platform_us": 47,
+          "version_us": 5470
+        },
+        {
+          "config_us": 4,
+          "executable_us": 15377,
+          "ffmpeg_identity_us": 21359,
+          "helper_us": 121,
+          "iteration": 3,
+          "platform_us": 49,
+          "version_us": 5459
+        },
+        {
+          "config_us": 4,
+          "executable_us": 15440,
+          "ffmpeg_identity_us": 21432,
+          "helper_us": 116,
+          "iteration": 4,
+          "platform_us": 46,
+          "version_us": 5493
+        },
+        {
+          "config_us": 3,
+          "executable_us": 15408,
+          "ffmpeg_identity_us": 21404,
+          "helper_us": 116,
+          "iteration": 5,
+          "platform_us": 50,
+          "version_us": 4409
+        },
+        {
+          "config_us": 4,
+          "executable_us": 15402,
+          "ffmpeg_identity_us": 21356,
+          "helper_us": 119,
+          "iteration": 6,
+          "platform_us": 43,
+          "version_us": 4440
+        },
+        {
+          "config_us": 3,
+          "executable_us": 15329,
+          "ffmpeg_identity_us": 21279,
+          "helper_us": 117,
+          "iteration": 7,
+          "platform_us": 45,
+          "version_us": 4422
+        },
+        {
+          "config_us": 3,
+          "executable_us": 15328,
+          "ffmpeg_identity_us": 21303,
+          "helper_us": 119,
+          "iteration": 8,
+          "platform_us": 42,
+          "version_us": 5455
+        },
+        {
+          "config_us": 5,
+          "executable_us": 15934,
+          "ffmpeg_identity_us": 21632,
+          "helper_us": 119,
+          "iteration": 9,
+          "platform_us": 74,
+          "version_us": 5553
+        }
+      ],
+      "executable_bytes": 32566360,
+      "helper_bytes": 245737,
+      "observations": [
+        {
+          "iteration": 0,
+          "load_us": 73,
+          "open_us": 103587
+        },
+        {
+          "iteration": 1,
+          "load_us": 60,
+          "open_us": 103978
+        },
+        {
+          "iteration": 2,
+          "load_us": 56,
+          "open_us": 102999
+        },
+        {
+          "iteration": 3,
+          "load_us": 39,
+          "open_us": 98162
+        },
+        {
+          "iteration": 4,
+          "load_us": 30,
+          "open_us": 65592
+        },
+        {
+          "iteration": 5,
+          "load_us": 25,
+          "open_us": 45316
+        },
+        {
+          "iteration": 6,
+          "load_us": 31,
+          "open_us": 44513
+        },
+        {
+          "iteration": 7,
+          "load_us": 30,
+          "open_us": 44078
+        },
+        {
+          "iteration": 8,
+          "load_us": 30,
+          "open_us": 42274
+        },
+        {
+          "iteration": 9,
+          "load_us": 30,
+          "open_us": 43597
+        }
+      ],
+      "repeat_medians_us": {
+        "open_us": 45316,
+        "load_us": 30
+      },
+      "component_medians_us": {
+        "config_us": 3.5,
+        "executable_us": 15405.0,
+        "ffmpeg_identity_us": 21357.5,
+        "helper_us": 118.0,
+        "platform_us": 46.5,
+        "version_us": 5457.0
+      }
+    }
+  },
+  "complexity": [
+    [
+      "host/src/selection/worker/cache/tests.rs",
+      411,
+      "t1493_measure_cache_open_and_cached_selection",
+      3
+    ],
+    [
+      "host/src/selection/worker/cache/context/timing.rs",
+      4,
+      "elapsed",
+      1
+    ],
+    [
+      "host/src/selection/worker/cache/context/timing.rs",
+      10,
+      "observe",
+      9
+    ]
+  ],
+  "packaged_runtime": "Private copy of installed FFmpeg launcher/native codec runtime, with the current packaging ffmpeg_identity.write manifest; no installed files changed.",
+  "tools": {
+    "rustc": "1.100.0 (0ef1bc386 2026-11-09)",
+    "profile": "cargo test --release; offline locked dependencies",
+    "complexity": "project Rust syn 2.0.119; 3 functions, all <=9"
+  },
+  "decision": "Proceed with bounded process-local file-hash memoization and file-change invalidation. Keep fresh ffmpeg -version execution; unknown native shared-library changes are not fully described by binary file metadata."
+}

@@ -405,6 +405,43 @@ pub(in crate::selection::worker) fn attached_store(
     }
 }
 
+/// T1493: opt-in timing only; all storage and attachment state is private.
+#[tokio::test]
+#[ignore = "private release-build cache timing; set BLENT_T1493_HELPER"]
+async fn t1493_measure_cache_open_and_cached_selection() {
+    let root = tempfile::tempdir().unwrap();
+    std::env::set_var("XDG_CONFIG_HOME", root.path());
+    let (snapshot, candidate) = setup();
+    let (tx, _) = tokio::sync::watch::channel(snapshot.clone());
+    let attachment = Attachment::new(tx);
+    attachment.begin_with_transport(Some("device:T1493-private".into()), Some(Transport::Usb));
+    let config = CaptureConfig {
+        helper_path: std::env::var_os("BLENT_T1493_HELPER")
+            .expect("explicit read-only helper path")
+            .into(),
+        ..Default::default()
+    };
+    let scope = blent::native_scope::Scope::default();
+    let mut observations = Vec::new();
+    for iteration in 0..10 {
+        let started = std::time::Instant::now();
+        let cache = Cache::open(&config, &snapshot, &attachment, &scope)
+            .await
+            .unwrap();
+        let open_us = started.elapsed().as_micros();
+        if iteration == 0 {
+            cache.save(now(), &candidate).unwrap();
+        }
+        let selection = std::time::Instant::now();
+        assert!(cache.load(now(), &snapshot).unwrap().cached);
+        observations.push(serde_json::json!({"iteration":iteration,"open_us":open_us,"load_us":selection.elapsed().as_micros()}));
+    }
+    println!(
+        "T1493_MEASURE {}",
+        serde_json::json!({"observations":observations,"components":context::timing::observe(&config, &scope),"executable_bytes":std::env::current_exe().unwrap().metadata().unwrap().len(),"helper_bytes":config.helper_path.metadata().unwrap().len()})
+    );
+}
+
 #[test]
 fn t714_recalibration_generation_invalidates_without_changing_manual_preference() {
     let (snapshot, _) = setup();

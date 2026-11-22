@@ -5,6 +5,8 @@ use sha2::{Digest, Sha256};
 use std::path::Path;
 
 mod runtime_identity;
+#[cfg(test)]
+pub(super) mod timing;
 
 impl Cache {
     pub async fn open(
