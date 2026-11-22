@@ -224,3 +224,76 @@ async fn t1442_retryable_initial_creation_requires_original_completion() {
     assert_eq!(factory.calls.load(Ordering::Acquire), 2);
     finish(following, &state).await;
 }
+
+#[derive(Clone, Copy)]
+enum InitialFailure {
+    Error,
+    Panic,
+    Deadline,
+}
+struct InitiallyUnavailable {
+    native: Mutex<Option<Completion>>,
+    ready: Arc<Sequence>,
+    failure: InitialFailure,
+}
+impl SourceFactory for InitiallyUnavailable {
+    fn create(&self, settings: SourceSettings, lifetime: SourceLifetime) -> SourceCreation {
+        let Some(native) = self.native.lock().unwrap().take() else {
+            return self.ready.create(settings, lifetime);
+        };
+        let failure = self.failure;
+        Box::pin(async move {
+            lifetime.retain(native);
+            match failure {
+                InitialFailure::Error => anyhow::bail!("T1500 injected first creation failure"),
+                InitialFailure::Panic => panic!("T1500 injected first creation panic"),
+                InitialFailure::Deadline => std::future::pending().await,
+            }
+        })
+    }
+}
+#[tokio::test]
+async fn t1500_initial_failures_recover_only_after_original_settlement_and_backoff() {
+    for failure in [
+        InitialFailure::Error,
+        InitialFailure::Panic,
+        InitialFailure::Deadline,
+    ] {
+        let pool = Pool::new(1).unwrap();
+        let native = pool.reserve().unwrap();
+        let replacement = attempt(7, caps());
+        let state = replacement.state.clone();
+        let ready = sequence(vec![Some(replacement)]);
+        let following = Following::start(
+            Arc::new(InitiallyUnavailable {
+                native: Mutex::new(Some(native.completion())),
+                ready: ready.clone(),
+                failure,
+            }),
+            Settings {
+                startup_deadline: Duration::from_millis(10),
+                source: SourceSettings {
+                    deadline: Duration::from_millis(30),
+                    ..Default::default()
+                },
+                ..settings()
+            },
+            Default::default(),
+        )
+        .unwrap();
+        until(|| *following.subscribe().borrow() == Publication::Failed).await;
+        tokio::time::sleep(Duration::from_millis(50)).await;
+        assert_eq!(ready.calls.load(Ordering::Acquire), 0);
+        assert!(!following.retired());
+        drop(native);
+        tokio::time::sleep(Duration::from_millis(10)).await;
+        assert_eq!(
+            ready.calls.load(Ordering::Acquire),
+            0,
+            "T1500 retry bypassed backoff"
+        );
+        observed(&following, 7).await;
+        assert_eq!(ready.calls.load(Ordering::Acquire), 1);
+        finish(following, &state).await;
+    }
+}

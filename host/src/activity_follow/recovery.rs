@@ -45,16 +45,16 @@ impl Recovery {
         let creation = std::panic::AssertUnwindSafe(self.create(lifetime))
             .catch_unwind()
             .await;
-        let mut binding = match creation
-            .unwrap_or_else(|_| Err(anyhow::anyhow!("activity creator panicked")))
-        {
-            Ok(binding) => binding,
-            Err(error) => {
-                tracing::warn!(%error, "activity source creation failed");
-                self.shared.publish(Publication::Failed);
-                return (previous != 0 || error.is::<RetrySourceCreation>()).then_some(previous);
-            }
-        };
+        let mut binding =
+            match creation.unwrap_or_else(|_| Err(anyhow::anyhow!("activity creator panicked"))) {
+                Ok(binding) => binding,
+                Err(error) => {
+                    tracing::warn!(%error, "activity source creation failed");
+                    self.shared.publish(Publication::Failed);
+                    // Initial errors need the same original-settlement gate as replacements.
+                    return Some(previous);
+                }
+            };
         let outcome = std::panic::AssertUnwindSafe(self.follow(&mut binding, previous))
             .catch_unwind()
             .await;

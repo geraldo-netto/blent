@@ -250,6 +250,11 @@ camera/microphone consent. Lock, display-off and no-viewer reasons themselves
 affect display work, not auxiliary camera/audio work. Backend observation support
 is separate from physical-device acceptance.
 
+Activity-source creation failures, including the first attempt, remain supervised.
+Blent withholds display demand while evidence is unavailable, waits for the
+original creator's native completion, then retries after the source deadline.
+Stopping cancels retry admission; it does not discard unsettled native ownership.
+
 ### Other controls
 
 - **Battery saver** — an opt-in Android setting that preserves brightness,

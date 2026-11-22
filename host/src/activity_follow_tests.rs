@@ -275,6 +275,8 @@ async fn t1018_failed_timed_out_and_invalid_creation_never_publish_a_grant() {
         .unwrap();
         let reader = following.subscribe();
         until(|| *reader.borrow() == Publication::Failed).await;
+        // T1500: failed creation stays supervised until explicitly stopped.
+        following.stop();
         until(|| following.retired()).await;
     }
     let state = state();
