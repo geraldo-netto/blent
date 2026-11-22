@@ -12,7 +12,10 @@ Host settings live in `~/.config/blent/config.toml`; edit them with
 `XDG_CONFIG_HOME` changes the path to `$XDG_CONFIG_HOME/blent/config.toml`;
 empty or relative values use the default. The tablet’s ⚙
 sheet stores app preferences locally. Current host bitrate and FPS seed the stream
-controls; **Apply** sends only edited fields. An unchanged Apply sends nothing.
+controls; **Apply video changes**, directly below those controls, sends only edited
+fields and is disabled when nothing changed. **Done** closes the sheet; closing or
+dismissing with pending video edits asks whether to discard them or keep editing.
+Immediate display/app changes are retained when video edits are discarded.
 Explicit field overrides are saved and resent on reconnect. **Use host settings**
 clears those overrides and prevents future resend; it does not undo or cancel changes already
 sent to the host. Brightness/refresh preferences take effect immediately.

@@ -109,7 +109,7 @@ class ActivityUiContractTest {
             }
             compose.onNodeWithText("System default").performScrollTo().performClick().assertIsSelected()
             compose.runOnIdle { assertEquals(0f, prefs.displayRefreshRate, 0f) }
-            compose.onNodeWithText("Apply").performScrollTo().performClick()
+            compose.onNodeWithText("Done").performScrollTo().performClick()
             compose.onNodeWithText("Settings").assertDoesNotExist()
             compose.waitForIdle()
         } finally {

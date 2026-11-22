@@ -37,8 +37,8 @@ class SettingsContrastTest {
         assertReadable("Tap to open the release page", surface)
         compose.onNodeWithText("Advanced video settings").performScrollTo().performClick()
         assertReadable("This setting depends", surface)
-        assertReadable("Apply sends only edited fields", surface)
-        compose.onNodeWithText("Apply").performScrollTo().assertIsDisplayed()
+        assertReadable("Apply video changes sends only edited fields", surface)
+        compose.onNodeWithText("Apply video changes").performScrollTo().assertIsDisplayed()
     }
 
     private fun assertReadable(prefix: String, surface: Color) {

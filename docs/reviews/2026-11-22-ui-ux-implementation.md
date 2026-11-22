@@ -289,3 +289,28 @@ it previously inherited an unrelated width edit and contradicted T1782's require
 global dirty footer. Its no-Save and clipping assertions remain unchanged and pass
 at all three sizes. All six About tests also pass. Dirty navigation has separate T1782 coverage.
 [Evidence](artifacts/2026-11-22-ui-ux/t1800/). No production behavior changed.
+
+## T1785 — explicit tablet video draft
+
+The video section owns its adjacent **Apply video changes** action and pending
+indicator. Unchanged video cannot be applied. **Done**, back/outside dismissal
+and the sheet's dismiss gesture ask before discarding pending video edits; Keep
+editing preserves them. Immediately applied app/display switches remain applied.
+Only edited video fields are sent, persisted and resent on reconnect by the
+existing settings session. Rejection and camera state behavior remain unchanged.
+
+The sheet remains the sole draft owner. Compose owns the bounded two-field draft,
+confirmation flag and callbacks; the remembered sheet transition reads current
+pending state through rememberUpdatedState. No media owner, native resource or
+listener is added. Discard clears only the draft; Apply clears it after the
+existing event handoff. No duplicate settings persistence is introduced.
+
+The named/adjacent action regression failed before implementation. Permanent
+regressions cover unchanged rejection, immediate versus staged controls,
+Keep editing/discard and the sheet dismiss gesture on API 27 and 34. Existing
+settings-session tests retain rejection, reconnect and camera-state checks.
+Verification evidence: [T1785](artifacts/2026-11-22-ui-ux/t1785/).
+
+All 98 test executions across eight selected classes pass. All 64 emitted
+production methods with JaCoCo line counters are covered at 100%; measured
+Kotlin complexity is at most 7. Native tablet acceptance follows installation.

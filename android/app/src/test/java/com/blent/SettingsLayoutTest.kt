@@ -274,7 +274,7 @@ class SettingsLayoutTest {
             }
         }
         compose.onNodeWithText("30 fps").performScrollTo().performClick()
-        compose.onNodeWithText("Apply").performScrollTo().assertIsDisplayed().performClick()
+        compose.onNodeWithText("Apply video changes").performScrollTo().assertIsDisplayed().performClick()
         compose.runOnIdle { assertTrue(applied); assertTrue(dismissed) }
     }
 
@@ -287,7 +287,7 @@ class SettingsLayoutTest {
         compose.onNodeWithContentDescription("Open settings").assertIsDisplayed().performClick()
         compose.onNodeWithText("Advanced video settings").performScrollTo().performClick()
         compose.onNodeWithText("Bitrate:", substring = true).performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("Apply").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Apply video changes").performScrollTo().assertIsDisplayed()
     }
 
     @Test fun t337_githubLinkWithoutBrowserKeepsScreenAlive() = checkWebLinks(false, "Open GitHub")

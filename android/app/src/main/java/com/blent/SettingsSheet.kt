@@ -39,10 +39,16 @@ internal fun SettingsSheet(
     var edited by remember { mutableStateOf(StreamOverrides()) }
     val bitrateMbps = (edited.bitrateKbps ?: settings.bitrateKbps) / 1000f
     val fpsChoice = edited.fps ?: settings.fps
+    var confirmDiscard by remember { mutableStateOf(false) }
+    val pending by rememberUpdatedState(!edited.differentFrom(settings.bitrateKbps, settings.fps).empty)
+    val requestDismiss = { if (pending) confirmDiscard = true else onDismiss() }
 
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        onDismissRequest = requestDismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true,
+            confirmValueChange = { value ->
+                if (value == SheetValue.Hidden && pending) { confirmDiscard = true; false } else true
+            }),
         containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 24.dp, vertical = 8.dp)) {
@@ -63,7 +69,7 @@ internal fun SettingsSheet(
             DisplayControls(settings, displayRefreshRates, onSettingsEvent)
             Spacer(Modifier.height(20.dp))
 
-            ModeControl(penOnly) { onSettingsEvent(SettingsEvent.Mode(it)); onDismiss() }
+            ModeControl(penOnly) { onSettingsEvent(SettingsEvent.Mode(it)); requestDismiss() }
 
             OrientationControls(settings.orientation) { onSettingsEvent(SettingsEvent.Orientation(it)) }
 
@@ -72,6 +78,14 @@ internal fun SettingsSheet(
                 StreamControls(bitrateMbps, fpsChoice,
                     { edited = edited.copy(bitrateKbps = (it * 1000).roundToInt()) },
                     { edited = edited.copy(fps = it) })
+                VideoApplyControls(edited.differentFrom(settings.bitrateKbps, settings.fps),
+                    !settings.streamOverrides.empty,
+                    onApply = { change ->
+                        onSettingsEvent(SettingsEvent.Stream(change.bitrateKbps, change.fps))
+                        edited = StreamOverrides()
+                        onDismiss()
+                    },
+                    onUseHost = { edited = StreamOverrides(); onSettingsEvent(SettingsEvent.ClearStreamOverrides) })
             }
 
             connectionControls()
@@ -91,35 +105,16 @@ internal fun SettingsSheet(
             }
             Spacer(Modifier.height(24.dp))
 
-            if (!penOnly) {
-                Button(
-                    onClick = {
-                        val change = edited.differentFrom(settings.bitrateKbps, settings.fps)
-                        if (!change.empty) onSettingsEvent(SettingsEvent.Stream(change.bitrateKbps, change.fps))
-                        onDismiss()
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = Accent)
-                ) {
-                    Text("Apply", fontSize = 16.sp, modifier = Modifier.padding(vertical = 4.dp))
-                }
-                if (!settings.streamOverrides.empty) {
-                    TextButton(onClick = { edited = StreamOverrides(); onSettingsEvent(SettingsEvent.ClearStreamOverrides) }) {
-                        Text("Use host settings")
-                    }
-                }
-                Spacer(Modifier.height(8.dp))
-                Text(
-                    "Apply sends only edited fields and remembers them for reconnects. Use host settings clears these overrides; it does not undo changes already applied on the host. Display sharing may briefly restart. Camera sharing keeps its current state.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+            TextButton(onClick = requestDismiss, modifier = Modifier.fillMaxWidth()) { Text("Done") }
             Spacer(Modifier.height(24.dp))
         }
     }
+    if (confirmDiscard) {
+        DiscardVideoDialog(
+            onKeepEditing = { confirmDiscard = false },
+            onDiscard = { edited = StreamOverrides(); confirmDiscard = false; onDismiss() })
+    }
+
 }
 
 @Composable

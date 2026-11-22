@@ -47,7 +47,7 @@ class CameraControlsTest {
         try {
             compose.onNodeWithText("Start camera").performScrollTo().assertIsNotEnabled()
             compose.onNodeWithText("30 fps").performScrollTo().performClick()
-            compose.onNodeWithText("Apply").performScrollTo().performClick()
+            compose.onNodeWithText("Apply video changes").performScrollTo().performClick()
             compose.runOnIdle {
                 assertEquals(0, opened.get())
                 assertEquals(listOf(SettingsEvent.Stream(null, 30)), events)

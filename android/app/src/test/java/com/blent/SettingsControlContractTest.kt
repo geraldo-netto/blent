@@ -41,7 +41,7 @@ class SettingsControlContractTest {
         compose.onNodeWithText("Dismiss").performClick()
         compose.onNodeWithText("⚙").performClick()
         compose.onNodeWithContentDescription("Battery saver").performScrollTo().performClick()
-        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.onNodeWithText("Done").performScrollTo().performClick()
         compose.onNodeWithText("Settings").assertDoesNotExist()
         compose.runOnIdle { visible.value = false }
         compose.waitForIdle()
@@ -54,7 +54,7 @@ class SettingsControlContractTest {
             SettingsSheet(SettingsValues(), null, {}, false, { dismissals++ })
         } }
         compose.onNodeWithContentDescription("Battery saver").performScrollTo().performClick()
-        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.onNodeWithText("Done").performScrollTo().performClick()
         compose.runOnIdle { assertEquals(1, dismissals) }
     }
 
@@ -90,7 +90,7 @@ class SettingsControlContractTest {
                 (Prefs.MIN_BITRATE_KBPS / 1000f)..(Prefs.MAX_BITRATE_KBPS / 1000f)
         }
         compose.onNode(bitrate).performScrollTo().performSemanticsAction(SemanticsActions.SetProgress) { it(60f) }
-        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.onNodeWithText("Apply video changes").performScrollTo().performClick()
         compose.runOnIdle {
             assertTrue(events.contains(SettingsEvent.Stream(60000, 30)))
             assertEquals(60000, prefs.streamOverrides.bitrateKbps)
@@ -117,7 +117,7 @@ class SettingsControlContractTest {
             slider.performSemanticsAction(SemanticsActions.SetProgress) { it(value.toFloat()) }
             compose.onNodeWithText("Bitrate: $value Mbps").assertExists()
         }
-        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.onNodeWithText("Apply video changes").performScrollTo().performClick()
         compose.runOnIdle { assertTrue(events.none { it is SettingsEvent.Stream }) }
     }
 
@@ -128,7 +128,7 @@ class SettingsControlContractTest {
         } }
         compose.onNodeWithText("Advanced video settings").performScrollTo().performClick()
         compose.onNodeWithText("Bitrate: 25.005 Mbps").performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.onNodeWithText("Apply video changes").performScrollTo().performClick()
         compose.runOnIdle { assertTrue(events.none { it is SettingsEvent.Stream }) }
     }
 
@@ -138,7 +138,7 @@ class SettingsControlContractTest {
             SettingsSheet(SettingsValues(bitrateKbps = 25005, fps = 60), null, {}, false, {},
                 onSettingsEvent = events::add)
         } }
-        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.onNodeWithText("Apply video changes").performScrollTo().performClick()
         compose.runOnIdle { assertTrue("T1694 unchanged settings became an override", events.none { it is SettingsEvent.Stream }) }
     }
 
@@ -149,7 +149,7 @@ class SettingsControlContractTest {
                 onSettingsEvent = events::add)
         } }
         compose.onNodeWithText("30 fps").performScrollTo().performClick()
-        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.onNodeWithText("Apply video changes").performScrollTo().performClick()
         compose.runOnIdle {
             val event = events.filterIsInstance<SettingsEvent.Stream>().single()
             assertEquals(30, event.fps)
@@ -165,7 +165,7 @@ class SettingsControlContractTest {
         } }
         compose.onNodeWithText("Advanced video settings").performScrollTo().performClick()
         bitrateSlider().performScrollTo().performSemanticsAction(SemanticsActions.SetProgress) { it(25f) }
-        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.onNodeWithText("Apply video changes").performScrollTo().performClick()
         compose.runOnIdle {
             val event = events.filterIsInstance<SettingsEvent.Stream>().single()
             assertEquals(25000, event.bitrate)
@@ -198,7 +198,7 @@ class SettingsControlContractTest {
         compose.onNodeWithText("30 fps").assertIsSelected()
         compose.onNodeWithText("Advanced video settings").performScrollTo().performClick()
         compose.onNodeWithText("Bitrate: 25.005 Mbps").performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("Apply").performScrollTo().performClick()
+        compose.onNodeWithText("Apply video changes").performScrollTo().performClick()
         compose.runOnIdle { assertEquals(listOf(SettingsEvent.Stream(null, 30)), events) }
     }
 
