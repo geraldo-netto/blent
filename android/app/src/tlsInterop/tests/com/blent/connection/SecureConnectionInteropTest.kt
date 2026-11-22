@@ -192,7 +192,7 @@ class SecureConnectionInteropTest {
         val clock = { TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - origin) }
         val mux = ConnectionMux(1, 1, 4096, 8, 64)
         val reader = ConnectionFrameReader(3000)
-        val writer = ConnectionFrameWriter(3000)
+        val writer = ConnectionFrameWriter(3000, ConnectionWritePolicy(0))
         assertTrue(mux.offer(ConnectionWire.MANAGEMENT, "window-frame".toByteArray()))
         repeat(16) {
             drainFrames(socket, mux, writer, clock)
@@ -269,7 +269,7 @@ class SecureConnectionInteropTest {
         window(socket)
         val session = authenticatedSession(socket)
         val reader = ConnectionFrameReader(3000)
-        val writer = ConnectionFrameWriter(3000)
+        val writer = ConnectionFrameWriter(3000, ConnectionWritePolicy(0))
         val origin = System.nanoTime()
         val clock = { TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - origin) }
         var retired = 0

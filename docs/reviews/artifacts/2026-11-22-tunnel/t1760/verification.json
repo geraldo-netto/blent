@@ -1,0 +1,50 @@
+{
+  "item": "T1760",
+  "default_gather_payload_bytes": 0,
+  "configurable_maximum_payload_bytes": 16384,
+  "maximum_additional_array_capacity_bytes": 16424,
+  "array_capacity_scope": "one writer, excluding object overhead; zero allocates no scratch",
+  "automated_cases": 785,
+  "automated_classes": 104,
+  "coverage_functions": 103,
+  "minimum_per_function_line_coverage_percent": 88.88888888888889,
+  "complexity_functions": 458,
+  "maximum_complexity": 9,
+  "complexity_tool": "repository Kotlin 1.9.20 PSI / Python 3.12 AST",
+  "coverage_tool": "JaCoCo with repository Kotlin inline ownership mapper",
+  "before": {
+    "small_frame_gather_cases": 1,
+    "small_frame_gather_failures": 1,
+    "default_selection_cases": 1,
+    "default_selection_failures": 1
+  },
+  "hosted_measurements": {
+    "exploratory_trials": 64,
+    "production_runs": 2,
+    "production_trials_per_run": 64,
+    "unchanged_inputs": true,
+    "settings": "explicit 0/16384; subsequent default-only change to 0 does not change these modes",
+    "scope": "Linux JDK loopback TLS, not native Android or full reactor"
+  },
+  "open_evidence": "T1762 explains repeated large-frame slowdown; T1525 native/end-to-end; T1527 general allocations",
+  "source_sha256": {
+    "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt": "66ddc924dc6731e19e87e8e2450cf56e24885c8de533d46a3b2fb1983a3d7b13",
+    "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt": "e6fdcf16285ea13fef00c7c4cf9171e1074a5a9a9301b07c0e9b600c6cdcf363",
+    "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt": "78ce6a6f1e4ae854eed9bd27172c0496382387c0150bfe40b1d761ebf76d177b",
+    "android/app/src/main/java/com/blent/connection/ConnectionRun.kt": "e823fcca0112157727692e5dda11870a7e410aa4c224427e2af8b02ac55eb3f0",
+    "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt": "f489ecff93bc02b8b09c8cecd0ba5b618ce4203021a0941997975b304eba21fd",
+    "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt": "f96c694a3c3d8fa556035e69d2f67d378289eb59fa6c5ef9090ed71390fc7862",
+    "android/app/src/test/java/com/blent/connection/ConnectionFramesTest.kt": "ef067a40c6406418181bd0aee2c833d709f06da682c2aab610cdd6ca38a2906b",
+    "android/app/src/test/java/com/blent/connection/ConnectionPreferenceControlsTest.kt": "9116b649935c4e287c5c4d74850ba1123193e0f4cb2921d3719d733a8873de8e",
+    "android/app/src/test/java/com/blent/connection/ConnectionPreferencesTest.kt": "164dc8a240ec0373c2433fba63bf1b8b9b311c0cb818d9a602cf0da0b9f10036",
+    "android/app/src/test/java/com/blent/connection/ConnectionRunnerRig.kt": "7ca028bdc4e2f5493b1d287ee0417f6d170d22d62d6cfa04590b666742a16355",
+    "android/app/src/test/java/com/blent/connection/ConnectionSessionRunnerTest.kt": "f6e2bc24fa64558bf9d16e1ca08a9bada44ea17ab19f702dcbd167dea0415ce1",
+    "android/app/src/test/java/com/blent/connection/ConnectionTransportDeadlineTest.kt": "912483213114a5ec500033bfef786906bc3ef1995d2cf7370cdabd5346242d19",
+    "android/app/src/tlsInterop/tests/com/blent/connection/SecureConnectionInteropTest.kt": "f128d559feee4d76e2353d694b157123c2b05d76b9c7acbb904f4ff9f92633fb",
+    "scripts/benchmarks/android-tunnel/TunnelHandoffBenchmark.kt": "d3a38e988c6af0ac1aa7a8a27c24ca6658874a9c05ebe6d99b8ff1be302085ac",
+    "scripts/benchmarks/android-tunnel/TunnelMeasurement.kt": "b5f26b48cbc3506709d6250160926e339c220442a723da28fd9cae8e453d9ae5",
+    "scripts/benchmarks/android-tunnel/run.py": "eec41d77a33516167a34dceae22d9e09f1b1a8b89efb3fce907be9650f6a8053",
+    "android/app/src/main/java/com/blent/connection/ConnectionWritePolicy.kt": "ca25cd807efdc0b876beb8ecf6da9a98ad7f1d58ffe2b772304ef705bc759e11",
+    "android/app/src/test/java/com/blent/connection/ConnectionWritePolicyTest.kt": "6bd884aad1f01dedb75ebbd3a1a4c536c3f61bb763b3ebc0a420e1b077c1e6ce"
+  }
+}

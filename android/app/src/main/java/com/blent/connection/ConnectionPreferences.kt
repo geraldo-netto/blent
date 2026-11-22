@@ -13,6 +13,9 @@ internal enum class ConnectionPreferenceField(
     RESOURCE_TIMEOUT("resource_timeout_ms", { it.session.resourceTimeoutMs }, { spec, value -> spec.copy(session = spec.session.copy(resourceTimeoutMs = value)) }),
     IO_TIMEOUT("io_timeout_ms", { it.io.ioTimeoutMs }, { spec, value -> spec.copy(io = spec.io.copy(ioTimeoutMs = value)) }),
     RETIREMENT_TIMEOUT("retirement_timeout_ms", { it.io.retirementTimeoutMs }, { spec, value -> spec.copy(io = spec.io.copy(retirementTimeoutMs = value)) }),
+    WRITE_GATHER("write_gather_bytes", { it.io.write.gatherPayloadBytes.toLong() }, { spec, value ->
+        spec.copy(io = spec.io.copy(write = ConnectionWritePolicy(value.toInt())))
+    }),
     APPROVAL_TIMEOUT("approval_timeout_ms", { it.approvalTimeoutMs }, { spec, value -> spec.copy(approvalTimeoutMs = value) }),
     NATIVE_TIMEOUT("native_timeout_ms", { it.nativeTimeoutMs }, { spec, value -> spec.copy(nativeTimeoutMs = value) }),
     TRUSTED_PEERS("trusted_peers", { it.trustedPeers.toLong() }, { spec, value -> spec.copy(trustedPeers = value.toInt()) }),
@@ -45,14 +48,14 @@ internal object ConnectionPreferences {
         return result
     }
 
-    fun encode(spec: ConnectionWorkerSpec): String = "1\n" + ConnectionPreferenceField.entries.joinToString("\n") {
+    fun encode(spec: ConnectionWorkerSpec): String = "2\n" + ConnectionPreferenceField.entries.joinToString("\n") {
         "${it.key}=${it.value(spec)}"
     }
 
     fun decode(encoded: String, device: String = "usb"): ConnectionWorkerSpec {
         require(encoded.length in 1..MAX_ENCODING) { "Invalid USB settings size" }
         val lines = encoded.split('\n', limit = ConnectionPreferenceField.entries.size + 2)
-        require(lines.size == ConnectionPreferenceField.entries.size + 1 && lines.first() == "1") { "Invalid USB settings schema" }
+        require(lines.size == ConnectionPreferenceField.entries.size + 1 && lines.first() == "2") { "Invalid USB settings schema" }
         val fields = HashMap<String, String>(ConnectionPreferenceField.entries.size)
         for (line in lines.drop(1)) {
             val pair = line.split('=', limit = 2)

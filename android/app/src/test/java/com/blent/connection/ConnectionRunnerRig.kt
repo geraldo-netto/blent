@@ -49,7 +49,7 @@ internal class RunnerSession : ConnectionSession by TabletSession(
 internal class ConnectionRunnerRig(timeout: Long = 10) {
     val io = RunnerIo()
     val session = RunnerSession()
-    val runner = ConnectionSessionRunner(session, io, ConnectionRunLimits(timeout, 5))
+    val runner = ConnectionSessionRunner(session, io, ConnectionRunLimits(timeout, 5, ConnectionWritePolicy(0)))
     fun frame(body: ByteArray = byteArrayOf(1, 2, 3)) = ConnectionFrame(
         ConnectionWire.Header(ConnectionWire.DATA, 6, 1, 1, 0, body.size, 0), body, 0, body.size)
     fun encoded(frame: ConnectionFrame): ByteArray {

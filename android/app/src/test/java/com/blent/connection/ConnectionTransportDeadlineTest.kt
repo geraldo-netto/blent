@@ -34,7 +34,7 @@ class ConnectionTransportDeadlineTest {
     }
 
     @Test fun t1093WriterKeepsAbsoluteDeadlineThroughPartialWritesAndFlush() {
-        val writer = ConnectionFrameWriter(10)
+        val writer = ConnectionFrameWriter(10, ConnectionWritePolicy(0))
         val frame = ConnectionRunnerRig().frame()
         assertEquals(ConnectionDeadline.IDLE, writer.nextDeadline())
         writer.begin(frame, 3)

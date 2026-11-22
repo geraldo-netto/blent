@@ -16,13 +16,14 @@ deadline: 64 finite trials each send 60 frames. Sixteen trials warm up the JVM;
 48 measured trials provide three alternating pairs per payload/rate combination.
 Socket setup/read timeouts are five-second private protocol deadlines.
 
-The baseline reuses the current ConnectionFrameWriter and StreamConnectionIo:
-T1759 writes the borrowed header/payload slices and flushes in one native transaction.
-Historical T1755 measurements used three separate completions; their recorded
-source hashes/results remain historical and are not the current baseline.
-The candidate copies header/body into one reusable 65,576-byte staging array and
-flushes on the same native worker as each write. Each slice retains the 65,536-byte limit. A frame transaction admits at most
-65,576 bytes across two slices; a full payload still requires two candidate writes.
+Both modes use the current ConnectionFrameWriter and StreamConnectionIo, writing
+and flushing in one native transaction. The baseline disables gathering; the
+candidate uses the production 16-KiB payload threshold with a reusable 16,424-byte
+scratch array. Larger frames borrow their original arrays in both modes. Each
+result records its selected gather limit. Historical T1755/T1760 exploration
+artifacts preserve their original source hashes and benchmark-only candidates;
+those old implementations are not activated by the current runner.
+
 The same native worker owner performs reads, writes and flushes, and exact request
 identity is checked before accepting every completion. The peer validates every
 header and payload byte and acknowledges each frame; only one frame is outstanding.

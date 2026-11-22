@@ -4,9 +4,14 @@ package com.blent.connection
  * final flush. A full transaction completion releases the original frame; errors
  * retire the connection, never retry it as a new frame. Native deadlines and
  * actual worker/process retirement remain the supervisor's responsibility. */
-internal class ConnectionFrameWriter(timeoutMs: Long) : ConnectionDeadlineSource {
+internal class ConnectionFrameWriter(
+    timeoutMs: Long,
+    private val policy: ConnectionWritePolicy,
+) : ConnectionDeadlineSource {
     private val clock = ConnectionFrameClock(timeoutMs)
     private val headerBytes = ByteArray(ConnectionWire.HEADER_BYTES)
+    private val scratch = if (policy.gatherPayloadBytes == 0) null
+        else ByteArray(ConnectionWire.HEADER_BYTES + policy.gatherPayloadBytes)
     private var active: ConnectionFrame? = null
     private var position = 0
     private var native: ConnectionWriteTransaction? = null
@@ -19,6 +24,7 @@ internal class ConnectionFrameWriter(timeoutMs: Long) : ConnectionDeadlineSource
         require(frame.length == frame.header.length && frame.length <= frame.bytes.size - frame.offset)
         clock.start(now)
         ConnectionWire.encode(frame.header, headerBytes)
+        gather(frame)
         active = frame
         position = 0
     }
@@ -26,12 +32,24 @@ internal class ConnectionFrameWriter(timeoutMs: Long) : ConnectionDeadlineSource
         clock.check(now)
         val frame = active ?: return null
         if (native != null) return null
-        val body = body(frame)
-        val transaction = if (position < headerBytes.size) {
-            ConnectionWriteTransaction(ConnectionBuffer(headerBytes, position, headerBytes.size - position), body)
-        } else ConnectionWriteTransaction(checkNotNull(body))
+        val transaction = if (policy.gathers(frame.length)) gatheredWrite(frame) else borrowedWrite(frame)
         native = transaction
         return transaction
+    }
+    private fun gather(frame: ConnectionFrame) {
+        if (!policy.gathers(frame.length)) return
+        val bytes = checkNotNull(scratch)
+        headerBytes.copyInto(bytes)
+        frame.bytes.copyInto(bytes, headerBytes.size, frame.offset, frame.offset + frame.length)
+    }
+    private fun gatheredWrite(frame: ConnectionFrame): ConnectionWriteTransaction =
+        ConnectionWriteTransaction(ConnectionBuffer(checkNotNull(scratch), position, headerBytes.size + frame.length - position))
+
+    private fun borrowedWrite(frame: ConnectionFrame): ConnectionWriteTransaction {
+        val body = body(frame)
+        return if (position < headerBytes.size) {
+            ConnectionWriteTransaction(ConnectionBuffer(headerBytes, position, headerBytes.size - position), body)
+        } else ConnectionWriteTransaction(checkNotNull(body))
     }
     private fun body(frame: ConnectionFrame): ConnectionBuffer? {
         val offset = maxOf(0, position - headerBytes.size)

@@ -9,7 +9,7 @@ internal class ConnectionSessionRunner(
     private val limits: ConnectionRunLimits = ConnectionRunLimits(),
 ) : ConnectionRun, ConnectionDeadlineSource {
     private val reader = ConnectionFrameReader(limits.ioTimeoutMs)
-    private val writer = ConnectionFrameWriter(limits.ioTimeoutMs)
+    private val writer = ConnectionFrameWriter(limits.ioTimeoutMs, limits.write)
     private var reading: ConnectionIoRequest.Read? = null
     private var writing: ConnectionIoRequest.WriteFlushed? = null
     private var frame: ConnectionFrame? = null

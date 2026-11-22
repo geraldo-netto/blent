@@ -1020,8 +1020,11 @@ flush into one bounded transaction (at most 40 + 65,536 bytes); a full successfu
 completion acknowledges flush, while a shorter result acknowledges only its
 written prefix. Generic local-stream writes/flush remain separate. Header/body offsets
 survive short reads/writes and zero progress. The reader has a fixed 64 KiB body
-buffer; the writer borrows the caller-owned payload without another full-frame
-copy. A completed receive frame has one consumer claim, remains retained until
+buffer; the writer retains the caller-owned payload until final flush. Its
+next-connection write policy can gather payloads up to 16 KiB with their header
+in a reusable limit + 40-byte scratch array; zero disables gathering, and larger
+frames borrow the original arrays. Native completions cannot authorize scratch
+reuse before the original write/flush finishes. A completed receive frame has one consumer claim, remains retained until
 release and cannot be retrieved after cancellation. Cancellation prevents reuse
 but keeps outstanding native loans visible until their exact completion.
 

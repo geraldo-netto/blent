@@ -20,7 +20,7 @@ class ConnectionFramesTest {
         }
     }
     private fun encode(frame: ConnectionFrame, chunk: Int): ByteArray {
-        val writer = ConnectionFrameWriter(1000)
+        val writer = ConnectionFrameWriter(1000, ConnectionWritePolicy(0))
         writer.begin(frame, 0)
         val output = ByteArrayOutputStream()
         while (true) {
@@ -111,7 +111,7 @@ class ConnectionFramesTest {
         rejects { reader.read(110) }
     }
     @Test fun t881WriteDeadlineIncludesFlushAndKeepsNativeBorrow() {
-        val writer = ConnectionFrameWriter(10)
+        val writer = ConnectionFrameWriter(10, ConnectionWritePolicy(0))
         val frame = data(1)
         writer.begin(frame, 0)
         val flush = checkNotNull(writer.write(1))
@@ -123,7 +123,7 @@ class ConnectionFramesTest {
         rejects { writer.begin(frame, 11) }
     }
     @Test fun t881CancelledNativeWriteCannotAdvanceOrReplaceItsFrame() {
-        val writer = ConnectionFrameWriter(1000)
+        val writer = ConnectionFrameWriter(1000, ConnectionWritePolicy(0))
         writer.begin(data(), 0)
         val loan = checkNotNull(writer.write(0))
         val original = loan.first.bytes.copyOf()
@@ -143,7 +143,7 @@ class ConnectionFramesTest {
         rejects { reader.readComplete(oldRead, 1, 0) }
         assertTrue(reader.nativePending())
         reader.readComplete(newRead, 0, 0)
-        val writer = ConnectionFrameWriter(1000)
+        val writer = ConnectionFrameWriter(1000, ConnectionWritePolicy(0))
         writer.begin(data(), 0)
         val oldWrite = checkNotNull(writer.write(0))
         writer.writeComplete(oldWrite, 0, 0)
@@ -159,7 +159,7 @@ class ConnectionFramesTest {
             rejects { reader.readComplete(loan, count, 0) }
             assertFalse(reader.nativePending())
             rejects { reader.read(0) }
-            val writer = ConnectionFrameWriter(1000)
+            val writer = ConnectionFrameWriter(1000, ConnectionWritePolicy(0))
             writer.begin(data(), 0)
             val output = checkNotNull(writer.write(0))
             rejects { writer.writeComplete(output, if (count == 41) output.length + 1 else count, 0) }
@@ -168,7 +168,7 @@ class ConnectionFramesTest {
         }
     }
     @Test fun t881InvalidFrameBoundsRejectBeforeNativeWrite() {
-        val writer = ConnectionFrameWriter(1000)
+        val writer = ConnectionFrameWriter(1000, ConnectionWritePolicy(0))
         val valid = data()
         for (offset in listOf(Int.MIN_VALUE, -1, 6, Int.MAX_VALUE)) {
             rejects { writer.begin(valid.copy(offset = offset), 0) }
@@ -193,9 +193,9 @@ class ConnectionFramesTest {
         assertFalse(backwards.nativePending())
         for (budget in listOf(Long.MIN_VALUE, -1L, 0L, 60001L, Long.MAX_VALUE)) {
             rejects { ConnectionFrameReader(budget) }
-            rejects { ConnectionFrameWriter(budget) }
+            rejects { ConnectionFrameWriter(budget, ConnectionWritePolicy(0)) }
         }
-        rejects { ConnectionFrameWriter(1000).begin(data(), Long.MAX_VALUE) }
+        rejects { ConnectionFrameWriter(1000, ConnectionWritePolicy(0)).begin(data(), Long.MAX_VALUE) }
     }
 
     @Test fun t881CoalescedFramesStopAtEachConsumerBoundary() {
@@ -222,7 +222,7 @@ class ConnectionFramesTest {
     }
 
     @Test fun t881WriterBorrowsOriginalPayloadAndCannotReuseBeforeFlush() {
-        val writer = ConnectionFrameWriter(1000)
+        val writer = ConnectionFrameWriter(1000, ConnectionWritePolicy(0))
         for (size in listOf(1, 10, ConnectionWire.MAX_PAYLOAD)) {
             val frame = data(size)
             writer.begin(frame, 0)
@@ -260,7 +260,7 @@ class ConnectionFramesTest {
     @Test fun t881IndependentWriterProgressesWhileNativeReaderIsBlocked() {
         val reader = ConnectionFrameReader(1000)
         val read = checkNotNull(reader.read(0))
-        val writer = ConnectionFrameWriter(1000)
+        val writer = ConnectionFrameWriter(1000, ConnectionWritePolicy(0))
         val frame = data(4096)
         writer.begin(frame, 0)
         val write = checkNotNull(writer.write(1))

@@ -17,7 +17,10 @@ internal interface ConnectionEndpoints {
     fun nativeRetired(lease: ConnectionResourceLease)
 }
 
-internal data class ConnectionRunLimits(val ioTimeoutMs: Long = 5000, val retirementTimeoutMs: Long = 5000) {
+internal data class ConnectionRunLimits(
+    val ioTimeoutMs: Long = 5000, val retirementTimeoutMs: Long = 5000,
+    val write: ConnectionWritePolicy = ConnectionWritePolicy(),
+) {
     init { require(ioTimeoutMs in 1..60000 && retirementTimeoutMs in 1..60000) }
 }
 

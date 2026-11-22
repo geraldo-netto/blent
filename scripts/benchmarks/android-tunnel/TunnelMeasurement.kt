@@ -1,7 +1,6 @@
 package com.blent.connection
 
 import java.io.File
-import java.io.OutputStream
 import java.net.InetAddress
 import java.net.Socket
 import java.util.concurrent.CountDownLatch
@@ -75,15 +74,7 @@ internal class TunnelMeasurement(server: SSLContext, client: SSLContext, frames:
     }
 }
 
-/** Candidate flush stays on the same native worker as its write. This benchmark
- * adapter is specific to socket streams; it does not change generic I/O semantics. */
-internal class FlushingWrite(private val output: OutputStream) : OutputStream() {
-    override fun write(value: Int) { output.write(value); output.flush() }
-    override fun write(bytes: ByteArray, offset: Int, length: Int) { output.write(bytes, offset, length); output.flush() }
-    override fun flush() = output.flush()
-}
-
-internal class MeasuredIo(private val connection: TunnelMeasurement, combined: Boolean) : AutoCloseable {
+internal class MeasuredIo(private val connection: TunnelMeasurement) : AutoCloseable {
     private val origin = System.nanoTime()
     fun now(): Long = (System.nanoTime() - origin) / 1_000_000
     private val ready = Semaphore(0)
@@ -94,7 +85,7 @@ internal class MeasuredIo(private val connection: TunnelMeasurement, combined: B
     private val hints = java.util.concurrent.atomic.AtomicLong()
     val readyHints: Long get() = hints.get()
     private val io = StreamConnectionIo(connection.socket.inputStream,
-        if (combined) FlushingWrite(connection.socket.outputStream) else connection.socket.outputStream,
+        connection.socket.outputStream,
         closer = java.io.Closeable { connection.socket.close() }, ready = { hints.incrementAndGet(); ready.release() },
         threadFactory = { name, task -> Thread(task, name).also { threads.add(it) } })
     fun perform(request: ConnectionIoRequest): Int {

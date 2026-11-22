@@ -11,6 +11,7 @@ private fun preferenceRanges() = listOf(
     PreferenceRange(ConnectionPreferenceField.RESOURCE_TIMEOUT, 1, 600000),
     PreferenceRange(ConnectionPreferenceField.IO_TIMEOUT, 1, 60000),
     PreferenceRange(ConnectionPreferenceField.RETIREMENT_TIMEOUT, 1, 60000),
+    PreferenceRange(ConnectionPreferenceField.WRITE_GATHER, 0, 16384),
     PreferenceRange(ConnectionPreferenceField.APPROVAL_TIMEOUT, 1, 600000),
     PreferenceRange(ConnectionPreferenceField.NATIVE_TIMEOUT, 1, 60000),
     PreferenceRange(ConnectionPreferenceField.TRUSTED_PEERS, 1, 1024),
@@ -22,17 +23,17 @@ class ConnectionPreferencesTest {
     @Test fun t1098DefaultsHaveIndependentBoundedDeterministicRepresentation() {
         val expected = linkedMapOf("channel_bytes" to "262144", "queued_messages" to "64", "quantum" to "65536",
             "resource_timeout_ms" to "120000", "io_timeout_ms" to "5000", "retirement_timeout_ms" to "5000",
-            "approval_timeout_ms" to "120000", "native_timeout_ms" to "10000", "trusted_peers" to "64",
+            "write_gather_bytes" to "0", "approval_timeout_ms" to "120000", "native_timeout_ms" to "10000", "trusted_peers" to "64",
             "accessory_capacity" to "32", "fallback_ms" to "100")
         val original = ConnectionWorkerSpec("original-device")
         assertEquals(expected, ConnectionPreferences.fields(original))
-        val encoded = "1\n" + expected.entries.joinToString("\n") { "${it.key}=${it.value}" }
+        val encoded = "2\n" + expected.entries.joinToString("\n") { "${it.key}=${it.value}" }
         assertEquals(encoded, ConnectionPreferences.encode(original))
         assertTrue(encoded.length <= ConnectionPreferences.MAX_ENCODING)
         assertFalse(encoded.contains("original-device"))
         assertEquals(ConnectionWorkerSpec("usb"), ConnectionPreferences.decode(encoded))
         assertEquals(original, ConnectionPreferences.decode(encoded, "original-device"))
-        val reversed = "1\n" + encoded.lines().drop(1).reversed().joinToString("\n")
+        val reversed = "2\n" + encoded.lines().drop(1).reversed().joinToString("\n")
         assertEquals(original, ConnectionPreferences.decode(reversed, "original-device"))
         val padded = encoded.replace("fallback_ms=100", "fallback_ms=0000100")
         assertEquals(encoded, ConnectionPreferences.encode(ConnectionPreferences.decode(padded)))
@@ -55,10 +56,10 @@ class ConnectionPreferencesTest {
     @Test fun t1098IndependentSimultaneousEditsReachAllTypedDomains() {
         val fields = mapOf("channel_bytes" to "4096", "queued_messages" to "8", "quantum" to "64",
             "resource_timeout_ms" to "1", "io_timeout_ms" to "1", "retirement_timeout_ms" to "60000",
-            "approval_timeout_ms" to "600000", "native_timeout_ms" to "60000", "trusted_peers" to "1",
+            "write_gather_bytes" to "4096", "approval_timeout_ms" to "600000", "native_timeout_ms" to "60000", "trusted_peers" to "1",
             "accessory_capacity" to "1024", "fallback_ms" to "1000")
         val expected = ConnectionWorkerSpec("usb", ConnectionSessionLimits(4096, 8, 64, 1),
-            ConnectionRunLimits(1, 60000), 600000, 60000, 1, 1024, 1000)
+            ConnectionRunLimits(1, 60000, ConnectionWritePolicy(4096)), 600000, 60000, 1, 1024, 1000)
         val actual = ConnectionPreferences.parse(fields)
         assertEquals(expected, actual)
         assertEquals(fields, ConnectionPreferences.fields(actual))
@@ -96,7 +97,7 @@ class ConnectionPreferencesTest {
 
     @Test fun t1098MalformedAndOversizedPersistenceRejectBeforeAdmission() {
         val valid = ConnectionPreferences.encode(ConnectionWorkerSpec("usb"))
-        val malformed = listOf("", "1", valid.replaceFirst("1\n", "2\n"), valid + "\n", valid + "\nunknown=1",
+        val malformed = listOf("", "1", valid.replaceFirst("2\n", "1\n"), valid + "\n", valid + "\nunknown=1",
             valid.replace("channel_bytes=262144", "channel_bytes"),
             valid.replace("queued_messages=64", "channel_bytes=4096"),
             valid.replace("quantum=65536", "unknown=65536"),

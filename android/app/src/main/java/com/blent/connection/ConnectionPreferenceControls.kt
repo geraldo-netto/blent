@@ -20,6 +20,7 @@ private val preferenceDescriptions = listOf(
     PreferenceDescription(ConnectionPreferenceField.RESOURCE_TIMEOUT, "Resource request timeout (ms)", "1–600000. Longer waits retain pending resource requests longer."),
     PreferenceDescription(ConnectionPreferenceField.IO_TIMEOUT, "I/O timeout (ms)", "1–60000. Shorter budgets can reject slow operations."),
     PreferenceDescription(ConnectionPreferenceField.RETIREMENT_TIMEOUT, "Cleanup observation timeout (ms)", "1–60000. Expiry never proves a resource has stopped or allows unsafe replacement."),
+    PreferenceDescription(ConnectionPreferenceField.WRITE_GATHER, "Small-write payload limit (bytes)", "0–16384. Combines small headers and payloads before TLS; retains this limit plus 40 bytes per connection. 0 disables copying. Larger frames use their original buffers."),
     PreferenceDescription(ConnectionPreferenceField.APPROVAL_TIMEOUT, "Approval timeout (ms)", "1–600000. Time allowed for local pairing or permission approval."),
     PreferenceDescription(ConnectionPreferenceField.NATIVE_TIMEOUT, "Native setup timeout (ms)", "1–60000. Time allowed for native opening and setup."),
     PreferenceDescription(ConnectionPreferenceField.TRUSTED_PEERS, "Saved computer capacity", "1–1024. A limit below the saved count rejects setup; it does not erase trust."),

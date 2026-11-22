@@ -37,7 +37,7 @@ def main():
         platform=platform.platform(), java=subprocess.run(['java', '-version'], capture_output=True, text=True, check=True).stderr,
         domain=dict(warmup_trials=16, measured_trials=48, frames_per_trial=60,
                     payload_bytes=[64, 4096, 16384, 65536], rates=[0, 60]),
-        scope='Hosted Linux JDK loopback TLS 1.3; production framing/native I/O; candidate benchmark adapter; not Android native or full reactor')
+        scope='Hosted Linux JDK loopback TLS 1.3; production framing/native I/O; production gather limits 0/16384; not Android native or full reactor')
     (output / 'metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
     command = [str(ROOT / 'android/gradlew'), '-p', str(ROOT / 'android'), '--offline', '--no-daemon',
                '-I', str(ROOT / 'scripts/benchmarks/android-tunnel/benchmark.init.gradle'),

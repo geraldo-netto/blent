@@ -26,18 +26,19 @@ internal object ConnectionWorkerCodec {
     private fun string(input: DataInputStream, limit: Int): String = input.readUTF().also {
         require(it.length <= limit && '\u0000' !in it)
     }
-    fun spec(value: ConnectionWorkerSpec): ByteArray = encode(2) { out ->
+    fun spec(value: ConnectionWorkerSpec): ByteArray = encode(3) { out ->
         string(out, value.device, 512)
         out.writeInt(value.session.capacity); out.writeInt(value.session.messages); out.writeInt(value.session.quantum)
         out.writeLong(value.session.resourceTimeoutMs); out.writeLong(value.io.ioTimeoutMs)
-        out.writeLong(value.io.retirementTimeoutMs); out.writeLong(value.approvalTimeoutMs)
+        out.writeLong(value.io.retirementTimeoutMs); out.writeInt(value.io.write.gatherPayloadBytes)
+        out.writeLong(value.approvalTimeoutMs)
         out.writeLong(value.nativeTimeoutMs); out.writeInt(value.trustedPeers)
         out.writeInt(value.accessoryCapacity); out.writeLong(value.timerMs)
     }
-    fun spec(bytes: ByteArray): ConnectionWorkerSpec = decode(bytes, 2) { input ->
+    fun spec(bytes: ByteArray): ConnectionWorkerSpec = decode(bytes, 3) { input ->
         val device = string(input, 512)
         val session = ConnectionSessionLimits(input.readInt(), input.readInt(), input.readInt(), input.readLong())
-        ConnectionWorkerSpec(device, session, ConnectionRunLimits(input.readLong(), input.readLong()), input.readLong(),
+        ConnectionWorkerSpec(device, session, ConnectionRunLimits(input.readLong(), input.readLong(), ConnectionWritePolicy(input.readInt())), input.readLong(),
             input.readLong(), input.readInt(), input.readInt(), input.readLong())
     }
     fun command(value: ConnectionWorkerCommand): ByteArray = encode { out ->

@@ -5,6 +5,21 @@ import org.junit.Test
 import java.io.IOException
 
 class ConnectionSessionRunnerTest {
+    @Test fun t1760ConfiguredSmallFrameUsesOneContiguousNativeWriteSlice() {
+        val rig = ConnectionRunnerRig()
+        val frame = rig.frame(ByteArray(4096) { it.toByte() })
+        val runner = ConnectionSessionRunner(rig.session, rig.io, ConnectionRunLimits(write = ConnectionWritePolicy(16384)))
+        rig.session.output.add(frame); runner.advance(0)
+        val request = rig.io.frameWrite()
+        assertNull("T1760 configured small-frame policy must gather the header and payload", request.loan.second)
+        assertEquals(40 + frame.length, request.loan.first.length)
+        val slice = request.loan.first
+        assertArrayEquals(rig.encoded(frame), slice.bytes.copyOfRange(slice.offset, slice.offset + slice.length))
+        assertTrue(rig.session.written.isEmpty())
+        rig.io.complete(request, request.loan.length); runner.advance(1)
+        assertSame(frame, rig.session.written.single())
+    }
+
     @Test fun t1759OneNativeCompletionIncludesHeaderPayloadAndFlush() {
         val rig = ConnectionRunnerRig()
         val frame = rig.frame(ByteArray(ConnectionWire.MAX_PAYLOAD) { it.toByte() })

@@ -35,6 +35,7 @@ class ConnectionPreferenceControlsTest {
             compose.onNodeWithText("Connect USB").performClick()
             open()
             edit("Idle fallback (ms)", "250")
+            edit("Small-write payload limit (bytes)", "4096") // T1760 keeps active worker immutable.
             compose.onNodeWithText("Save USB settings").performClick()
             compose.onNodeWithText("Saved for the next USB connection.").assertExists()
             compose.onNodeWithText("Close settings").performClick()
@@ -47,7 +48,7 @@ class ConnectionPreferenceControlsTest {
             compose.runOnIdle { fixture.workers.single().released.complete(Unit) }
             compose.onNodeWithText("Connect USB").performClick()
             compose.runOnIdle {
-                assertEquals(listOf(ConnectionWorkerSpec("usb"), ConnectionWorkerSpec("usb", timerMs = 250)), fixture.specifications)
+                assertEquals(listOf(ConnectionWorkerSpec("usb"), ConnectionWorkerSpec("usb", timerMs = 250, io = ConnectionRunLimits(write = ConnectionWritePolicy(4096)))), fixture.specifications)
             }
         }
     }

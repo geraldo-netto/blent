@@ -1,0 +1,2774 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "<init>",
+    "line": 3,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "<init>",
+        "signature": "(JLcom/blent/connection/ConnectionWritePolicy;)V",
+        "line": 7,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "begin",
+    "line": 19,
+    "language": "kotlin",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "begin",
+        "signature": "(Lcom/blent/connection/ConnectionFrame;J)V",
+        "line": 20,
+        "covered": 11,
+        "total": 11
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "write",
+    "line": 31,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "write",
+        "signature": "(J)Lcom/blent/connection/ConnectionWriteTransaction;",
+        "line": 32,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "gather",
+    "line": 39,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "gather",
+        "signature": "(Lcom/blent/connection/ConnectionFrame;)V",
+        "line": 40,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "gatheredWrite",
+    "line": 45,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "gatheredWrite",
+        "signature": "(Lcom/blent/connection/ConnectionFrame;)Lcom/blent/connection/ConnectionWriteTransaction;",
+        "line": 46,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "borrowedWrite",
+    "line": 48,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "borrowedWrite",
+        "signature": "(Lcom/blent/connection/ConnectionFrame;)Lcom/blent/connection/ConnectionWriteTransaction;",
+        "line": 49,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "body",
+    "line": 54,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "body",
+        "signature": "(Lcom/blent/connection/ConnectionFrame;)Lcom/blent/connection/ConnectionBuffer;",
+        "line": 55,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "writeComplete",
+    "line": 59,
+    "language": "kotlin",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "writeComplete",
+        "signature": "(Lcom/blent/connection/ConnectionWriteTransaction;IJ)Lcom/blent/connection/ConnectionFrame;",
+        "line": 60,
+        "covered": 12,
+        "total": 12
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "nativePending",
+    "line": 73,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "nativePending",
+        "signature": "()Z",
+        "line": 73,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "tick",
+    "line": 74,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "tick",
+        "signature": "(J)V",
+        "line": 74,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "cancel",
+    "line": 75,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "cancel",
+        "signature": "()V",
+        "line": 75,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+    "name": "nextDeadline",
+    "line": 76,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionFrameWriter.kt",
+        "owner": "com/blent/connection/ConnectionFrameWriter",
+        "name": "nextDeadline",
+        "signature": "()Lcom/blent/connection/ConnectionDeadline;",
+        "line": 76,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWritePolicy.kt",
+    "name": "<init>",
+    "line": 3,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWritePolicy.kt",
+        "owner": "com/blent/connection/ConnectionWritePolicy",
+        "name": "<init>",
+        "signature": "(I)V",
+        "line": 6,
+        "covered": 2,
+        "total": 2
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWritePolicy.kt",
+        "owner": "com/blent/connection/ConnectionWritePolicy",
+        "name": "<init>",
+        "signature": "(IILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+        "line": 6,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWritePolicy.kt",
+    "name": "gathers",
+    "line": 8,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWritePolicy.kt",
+        "owner": "com/blent/connection/ConnectionWritePolicy",
+        "name": "gathers",
+        "signature": "(I)Z",
+        "line": 8,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionRun.kt",
+    "name": "<init>",
+    "line": 20,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionRun.kt",
+        "owner": "com/blent/connection/ConnectionRunLimits",
+        "name": "<init>",
+        "signature": "(JJLcom/blent/connection/ConnectionWritePolicy;)V",
+        "line": 20,
+        "covered": 4,
+        "total": 4
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionRun.kt",
+        "owner": "com/blent/connection/ConnectionRunLimits",
+        "name": "<init>",
+        "signature": "(JJLcom/blent/connection/ConnectionWritePolicy;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+        "line": 20,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<init>",
+    "line": 3,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField",
+        "name": "<init>",
+        "signature": "(Ljava/lang/String;ILjava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;)V",
+        "line": 5,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<clinit>",
+    "line": 3,
+    "language": "kotlin",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField",
+        "name": "<clinit>",
+        "signature": "()V",
+        "line": 10,
+        "covered": 12,
+        "total": 12
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 10,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$2",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 10,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$1",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 10,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 10,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$2",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 10,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$1",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 10,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 11,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$3",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 11,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$4",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 11,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 11,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$3",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 11,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$4",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 11,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 12,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$6",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 12,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$5",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 12,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 12,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$6",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 12,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$5",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 12,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 13,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$8",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 13,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$7",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 13,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 13,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$8",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 13,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$7",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 13,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 14,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$10",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 14,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$9",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 14,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 14,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$10",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 14,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$9",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 14,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 15,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$12",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 15,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$11",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 15,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 15,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$12",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 15,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$11",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 15,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 16,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$13",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 16,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 16,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$14",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 17,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 19,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$16",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 19,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$15",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 19,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 19,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$16",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 19,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$15",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 19,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 20,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$18",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 20,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$17",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 20,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 20,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$18",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 20,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$17",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 20,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 21,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$20",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 21,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$19",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 21,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 21,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$20",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 21,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$19",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 21,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 22,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$21",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 22,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$22",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 22,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 22,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$21",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 22,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$22",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 22,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 23,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$23",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 23,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$24",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 23,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 23,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$23",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/Long;",
+        "line": 23,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField$24",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;J)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 23,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "value",
+    "line": 25,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField",
+        "name": "value",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/String;",
+        "line": 25,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "update",
+    "line": 27,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceField",
+        "name": "update",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;Ljava/lang/String;)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 29,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "fields",
+    "line": 39,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferences",
+        "name": "fields",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/util/Map;",
+        "line": 40,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "parse",
+    "line": 42,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferences",
+        "name": "parse",
+        "signature": "(Ljava/util/Map;Ljava/lang/String;)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 43,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "encode",
+    "line": 51,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferences",
+        "name": "encode",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)Ljava/lang/String;",
+        "line": 51,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "<lambda>",
+    "line": 51,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferences$encode$1",
+        "name": "invoke",
+        "signature": "(Lcom/blent/connection/ConnectionPreferenceField;)Ljava/lang/CharSequence;",
+        "line": 52,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+    "name": "decode",
+    "line": 55,
+    "language": "kotlin",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferences.kt",
+        "owner": "com/blent/connection/ConnectionPreferences",
+        "name": "decode",
+        "signature": "(Ljava/lang/String;Ljava/lang/String;)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 56,
+        "covered": 9,
+        "total": 9
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "encode",
+    "line": 11,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "encode",
+        "signature": "(ILkotlin/jvm/functions/Function1;)[B",
+        "line": 12,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "decode",
+    "line": 16,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "decode",
+        "signature": "([BILkotlin/jvm/functions/Function1;)Ljava/lang/Object;",
+        "line": 17,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "string",
+    "line": 22,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "string",
+        "signature": "(Ljava/io/DataOutputStream;Ljava/lang/String;I)V",
+        "line": 23,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "string",
+    "line": 26,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "string",
+        "signature": "(Ljava/io/DataInputStream;I)Ljava/lang/String;",
+        "line": 26,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "spec",
+    "line": 29,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "spec",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)[B",
+        "line": 29,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "<lambda>",
+    "line": 29,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec$spec$1",
+        "name": "invoke",
+        "signature": "(Ljava/io/DataOutputStream;)V",
+        "line": 30,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "spec",
+    "line": 38,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "spec",
+        "signature": "([B)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 38,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "<lambda>",
+    "line": 38,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec$spec$2",
+        "name": "invoke",
+        "signature": "(Ljava/io/DataInputStream;)Lcom/blent/connection/ConnectionWorkerSpec;",
+        "line": 39,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "command",
+    "line": 44,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "command",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerCommand;)[B",
+        "line": 44,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "<lambda>",
+    "line": 44,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec$command$1",
+        "name": "invoke",
+        "signature": "(Ljava/io/DataOutputStream;)V",
+        "line": 45,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "command",
+    "line": 54,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "command",
+        "signature": "([B)Lcom/blent/connection/ConnectionWorkerCommand;",
+        "line": 54,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "<lambda>",
+    "line": 54,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec$command$2",
+        "name": "invoke",
+        "signature": "(Ljava/io/DataInputStream;)Lcom/blent/connection/ConnectionWorkerCommand;",
+        "line": 55,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "event",
+    "line": 62,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "event",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerEvent;)[B",
+        "line": 62,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "<lambda>",
+    "line": 62,
+    "language": "kotlin",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec$event$1",
+        "name": "invoke",
+        "signature": "(Ljava/io/DataOutputStream;)V",
+        "line": 63,
+        "covered": 12,
+        "total": 12
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "event",
+    "line": 78,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "event",
+        "signature": "([B)Lcom/blent/connection/ConnectionWorkerEvent;",
+        "line": 78,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "<lambda>",
+    "line": 78,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 9,
+    "percent": 88.88888888888889,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec$event$2",
+        "name": "invoke",
+        "signature": "(Ljava/io/DataInputStream;)Lcom/blent/connection/ConnectionWorkerEvent;",
+        "line": 79,
+        "covered": 8,
+        "total": 9
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+    "name": "ended",
+    "line": 92,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt",
+        "owner": "com/blent/connection/ConnectionWorkerCodec",
+        "name": "ended",
+        "signature": "(Ljava/io/DataInputStream;)Lcom/blent/connection/ConnectionWorkerEvent$Ended;",
+        "line": 92,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<clinit>",
+    "line": 1,
+    "language": "kotlin",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt",
+        "name": "<clinit>",
+        "signature": "()V",
+        "line": 16,
+        "covered": 13,
+        "total": 13
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt",
+        "name": "<clinit>",
+        "signature": "()V",
+        "line": 41,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<init>",
+    "line": 15,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/PreferenceDescription",
+        "name": "<init>",
+        "signature": "(Lcom/blent/connection/ConnectionPreferenceField;Ljava/lang/String;Ljava/lang/String;)V",
+        "line": 15,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "ConnectionPreferenceDialog",
+    "line": 31,
+    "language": "kotlin",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt",
+        "name": "ConnectionPreferenceDialog",
+        "signature": "(Lcom/blent/connection/ConnectionPreferenceStore;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V",
+        "line": 32,
+        "covered": 12,
+        "total": 12
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 35,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 35,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 41,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-3$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 41,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 42,
+    "language": "kotlin",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$4",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 42,
+        "covered": 9,
+        "total": 9
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 42,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "source lines with all instructions covered (conservative fallback)"
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 48,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-4$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 48,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 49,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-5$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 49,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$4$1$4$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 49,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$4$1$4",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 49,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 49,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-5$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 49,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$4$1$4$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 49,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$4$1$4",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 49,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 49,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-5$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 49,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$4$1$4$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 49,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$4$1$4",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 49,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 51,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-1$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2$1$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 51,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-1$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2$1$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 51,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-1$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2$1$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 51,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-1$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$2$1$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 51,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 52,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-2$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 52,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$3",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 52,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 52,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ComposableSingletons$ConnectionPreferenceControlsKt$lambda-2$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 52,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$ConnectionPreferenceDialog$3",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 52,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "PreferenceInput",
+    "line": 56,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt",
+        "name": "PreferenceInput",
+        "signature": "(Lcom/blent/connection/ConnectionPreferenceForm;Lcom/blent/connection/PreferenceDescription;Landroidx/compose/runtime/Composer;I)V",
+        "line": 57,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 60,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$PreferenceInput$1",
+        "name": "invoke",
+        "signature": "(Ljava/lang/String;)V",
+        "line": 60,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 61,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$PreferenceInput$2",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 61,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+    "name": "<lambda>",
+    "line": 62,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionPreferenceControls.kt",
+        "owner": "com/blent/connection/ConnectionPreferenceControlsKt$PreferenceInput$3",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 62,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "<init>",
+    "line": 3,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "<init>",
+        "signature": "(Lcom/blent/connection/ConnectionSession;Lcom/blent/connection/ConnectionIo;Lcom/blent/connection/ConnectionRunLimits;)V",
+        "line": 6,
+        "covered": 6,
+        "total": 6
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "<init>",
+        "signature": "(Lcom/blent/connection/ConnectionSession;Lcom/blent/connection/ConnectionIo;Lcom/blent/connection/ConnectionRunLimits;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+        "line": 6,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "time",
+    "line": 22,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "time",
+        "signature": "(J)V",
+        "line": 23,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "advance",
+    "line": 26,
+    "language": "kotlin",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "advance",
+        "signature": "(J)V",
+        "line": 27,
+        "covered": 9,
+        "total": 9
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "active",
+    "line": 37,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "active",
+        "signature": "(J)V",
+        "line": 38,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "completions",
+    "line": 43,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "completions",
+        "signature": "(J)V",
+        "line": 45,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "readComplete",
+    "line": 54,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "readComplete",
+        "signature": "(Lcom/blent/connection/ConnectionIoRequest$Read;Lcom/blent/connection/ConnectionIoCompletion;J)V",
+        "line": 55,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "writeComplete",
+    "line": 63,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "writeComplete",
+        "signature": "(Lcom/blent/connection/ConnectionIoRequest$WriteFlushed;Lcom/blent/connection/ConnectionIoCompletion;J)V",
+        "line": 64,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "startRead",
+    "line": 72,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "startRead",
+        "signature": "(J)V",
+        "line": 73,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "startWrite",
+    "line": 79,
+    "language": "kotlin",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "startWrite",
+        "signature": "(J)V",
+        "line": 80,
+        "covered": 9,
+        "total": 9
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "stop",
+    "line": 90,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "stop",
+        "signature": "(J)V",
+        "line": 91,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "retirement",
+    "line": 97,
+    "language": "kotlin",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "retirement",
+        "signature": "(J)V",
+        "line": 98,
+        "covered": 9,
+        "total": 9
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "display",
+    "line": 107,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "display",
+        "signature": "()Lcom/blent/connection/LocalDisplayRoute;",
+        "line": 107,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "endpoints",
+    "line": 108,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "endpoints",
+        "signature": "()Lcom/blent/connection/ConnectionEndpoints;",
+        "line": 108,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "failure",
+    "line": 109,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "failure",
+        "signature": "()Ljava/lang/Exception;",
+        "line": 109,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "retired",
+    "line": 110,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "retired",
+        "signature": "()Z",
+        "line": 110,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "terminationRequired",
+    "line": 111,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "terminationRequired",
+        "signature": "()Z",
+        "line": 111,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+    "name": "nextDeadline",
+    "line": 112,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionSessionRunner.kt",
+        "owner": "com/blent/connection/ConnectionSessionRunner",
+        "name": "nextDeadline",
+        "signature": "()Lcom/blent/connection/ConnectionDeadline;",
+        "line": 113,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  }
+]
