@@ -183,3 +183,20 @@ subsequent Gradle verification used separate CPU affinity. All 12 runner/analysi
 functions measure complexity <=6 under the local Python 3.12 AST checker.
 No running Blent process or device was touched. This resolves the requested
 comparison without changing the default on an unsupported performance claim.
+
+## T1742: owner-selected 16 KiB default
+
+The owner selected 16 KiB after reviewing T1741's tradeoffs. This supersedes the
+previous 4 KiB default recommendation; it is a preference decision, not a newly
+measured performance improvement. The input WebSocket adapter now requests 16 KiB
+while retaining the 64 KiB message/frame limits and 16-handler admission ceiling.
+Configured read capacity is therefore at most 256 KiB across admitted handlers,
+192 KiB more than the previous setting; actual whole-process residency and other
+transport/payload allocations are separate. Ownership, cutoff and socket drop
+paths are unchanged. Running sessions were not restarted.
+
+All 159 selected input tests pass, with no failures or ignored cases. The changed
+connection handler has 53/53 executable lines covered and complexity 6 under
+the local Rust syntax checker. Exact evidence is retained in
+`artifacts/2026-11-22-dependencies/t1742.json`. This source change has not yet been
+installed; deployment remains part of T1734.

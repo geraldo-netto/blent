@@ -318,7 +318,7 @@ async fn handle_connection(
     // per message is a memory bill nobody on this socket should be able to
     // run up.
     let ws_cfg = WebSocketConfig::default()
-        .read_buffer_size(4 * 1024)
+        .read_buffer_size(16 * 1024)
         .max_message_size(Some(64 * 1024))
         .max_frame_size(Some(64 * 1024));
     let deadline = incoming.deadline;

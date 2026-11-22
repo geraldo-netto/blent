@@ -1,0 +1,33 @@
+{
+  "item": "T1742",
+  "tests": {
+    "passed": 159,
+    "failed": 0,
+    "ignored": 0
+  },
+  "coverage_tool": "cargo-llvm-cov 0.8.7 / Rust 1.100.0",
+  "source_sha256": "de2ef34ab88ab0706a6cae06e2993a38c4a4721c5ecdbbcfcdd82e22f9f1135a",
+  "function": {
+    "file": "host/src/input.rs",
+    "name": "handle_connection",
+    "line": 308,
+    "language": "rust",
+    "covered": 53,
+    "total": 53,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  "complexity": [
+    [
+      "host/src/input.rs",
+      308,
+      "handle_connection",
+      6
+    ]
+  ],
+  "buffer_bytes": 16384,
+  "message_limit_bytes": 65536,
+  "frame_limit_bytes": 65536,
+  "installed_or_restarted": false
+}

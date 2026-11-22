@@ -355,6 +355,11 @@ released. On setup/refresh failure the monitor stops the session before awaiting
 route retirement, avoiding a dependency cycle. Windows display-route cleanup
 failure handling/native acceptance remains separately tracked in T1352.
 
+Input WebSocket connections reserve a 16 KiB read buffer by default (owner choice
+2026-11-22). Message and frame admission remain capped at 64 KiB. Across the
+16-handler ceiling, configured read capacity is 256 KiB; this excludes payload
+queues, socket/kernel storage and other runtime allocations.
+
 While awaiting direct input, a socket reads ahead at most 16 frames of at most
 64 KiB each. Close, read failure or overflow revokes the controller; buffered
 frames preserve wire order and are discarded at cutoff. This bounds the extra
