@@ -1,0 +1,35 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+warning: unused import: `config_path`
+  --> gui/src/main.rs:49:29
+   |
+49 | use blent_config::storage::{config_path, ConfigStore};
+   |                             ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blent-gui` (bin "blent-gui" test) generated 1 warning (run `cargo fix --bin "blent-gui" -p blent-gui --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 16 tests
+test camera_settings::live_tests::t1548_overview_target_survives_live_adjustment_and_camera_tab_restart ... ok
+test resource_workspace::tests::t1664_overview_configure_opens_the_selected_audio_resource ... ok
+test tests::overview::t1268_assignments_have_individual_rows_even_with_commas_in_names ... ok
+test tests::overview::t1268_bounded_assignment_names_wrap_without_horizontal_overflow ... ok
+test tests::overview::t1268_connection_navigation_supports_keyboard_activation ... ok
+test tests::overview::t1268_display_operation_feedback_is_visible_by_its_control ... ok
+test tests::overview::t1268_feedback_is_scoped_and_keeps_completed_errors_visible ... ok
+test tests::overview::t1268_initial_view_centres_connection_and_service_actions ... ok
+test tests::overview::t1268_long_error_keeps_navigation_and_apply_visible_in_short_window ... ok
+test tests::overview::t1268_navigation_and_apply_stay_visible_when_content_scrolls ... ok
+test tests::overview::t1268_navigation_exposes_named_accessibility_actions ... ok
+test tests::overview::t1268_navigation_retains_drafts_without_starting_media ... ok
+test tests::overview::t1268_service_labels_cover_running_and_unavailable_backends ... ok
+test tests::overview::t1781_settings_parent_stays_selected_on_every_child ... ok
+test tests::overview::t1791_lost_action_result_names_its_scope_and_next_step ... ok
+test tests::overview::t1791_pending_and_completed_action_keep_original_identity ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 268 filtered out; finished in 0.40s
+
+
+    Finished report saved to /tmp/blent-t1782.lcov

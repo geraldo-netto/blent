@@ -1,0 +1,68 @@
+[
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "changes",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "compare",
+    "covered": 9,
+    "total": 9
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "page",
+    "covered": 9,
+    "total": 9
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "audio_page",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "label",
+    "covered": 7,
+    "total": 7
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "show",
+    "covered": 7,
+    "total": 8
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "details",
+    "covered": 14,
+    "total": 14
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_window",
+    "covered": 25,
+    "total": 27
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "footer_visible",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "footer_content",
+    "covered": 14,
+    "total": 15
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "footer_actions",
+    "covered": 14,
+    "total": 16
+  }
+]

@@ -1,0 +1,13 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.12s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 3 tests
+test settings::tests::t378_restart_runs_once_after_commit_and_never_after_save_failure ... ok
+test tests::t378_held_config_lock_does_not_block_apply_or_lose_edits ... ok
+test tests::t378_save_failure_retains_baseline_and_edits_for_retry ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 280 filtered out; finished in 0.07s
+
+
+    Finished report saved to /tmp/blent-t1782.lcov

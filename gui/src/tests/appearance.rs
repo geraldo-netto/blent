@@ -98,3 +98,53 @@ fn t1792_advanced_app_settings_retain_scheduling_controls() {
     let labels = tall(&mut app, &context, vec![]);
     assert!(labels.iter().any(|(text, _)| text == "CPU scheduling"));
 }
+
+#[test]
+fn t1782_hidden_changes_remain_visible_and_name_restart_scope() {
+    let (_root, mut app) = settings_test_app(Tab::About);
+    let context = egui::Context::default();
+    app.cfg.camera.options.mirror = !app.saved_cfg.camera.options.mirror;
+    window_test_frame(&mut app, &context, vec![]);
+    let labels = window_test_frame(&mut app, &context, vec![]);
+    assert!(labels.iter().any(|(text, _)| text == "2 unsaved fields · all settings"), "T1782 missing global draft scope");
+    assert!(labels.iter().any(|(text, _)| text == "Saving restarts display sharing for every tablet."));
+    click_settings_text(&mut app, &context, "Review changed fields", window_test_frame);
+    let labels = window_test_frame(&mut app, &context, vec![]);
+    assert!(labels.iter().any(|(text, _)| text == "Cameras · mirror"));
+    assert!(labels.iter().any(|(text, _)| text == "Video · width"));
+    click_settings_text(&mut app, &context, "Video · width", window_test_frame);
+    assert!(app.tab == Tab::Video);
+    assert!(app.cfg != app.saved_cfg);
+}
+
+#[test]
+fn t1782_invalid_hidden_field_keeps_save_disabled_and_reachable() {
+    let (_root, mut app) = settings_test_app(Tab::Camera);
+    app.cfg = app.saved_cfg.clone();
+    app.cfg.fps = 0;
+    let context = egui::Context::default();
+    click_settings_text(&mut app, &context, "Review changed fields", window_test_frame);
+    let labels = window_test_frame(&mut app, &context, vec![]);
+    assert!(labels.iter().any(|(text, _)| text == "Video · fps"));
+    click_settings_text(&mut app, &context, "Save & restart all displays", window_test_frame);
+    assert!(app.save.is_none());
+    click_settings_text(&mut app, &context, "Review changed fields", window_test_frame);
+    click_settings_text(&mut app, &context, "Video · fps", window_test_frame);
+    assert!(app.tab == Tab::Video);
+}
+
+#[test]
+fn t1782_failed_save_preserves_named_pending_changes() {
+    let (root, mut app) = settings_test_app(Tab::Camera);
+    let path = root.path().join("broken-config.toml");
+    std::fs::write(&path, "invalid = [").unwrap();
+    app.store = ConfigStore::new(path);
+    app.apply(false);
+    wait_for_work(&mut app);
+    let context = egui::Context::default();
+    window_test_frame(&mut app, &context, vec![]);
+    let labels = window_test_frame(&mut app, &context, vec![]);
+    assert!(labels.iter().any(|(text, _)| text == "1 unsaved fields · all settings"));
+    assert!(labels.iter().any(|(text, _)| text.starts_with("Save failed:")));
+    assert!(app.cfg != app.saved_cfg);
+}

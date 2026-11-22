@@ -1,0 +1,29 @@
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.97s
+     Running unittests src/main.rs (target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 2 tests
+test tests::appearance::t1782_hidden_changes_remain_visible_and_name_restart_scope ... FAILED
+test tests::appearance::t1782_invalid_hidden_field_keeps_save_disabled_and_reachable ... FAILED
+
+failures:
+
+---- tests::appearance::t1782_hidden_changes_remain_visible_and_name_restart_scope stdout ----
+
+thread 'tests::appearance::t1782_hidden_changes_remain_visible_and_name_restart_scope' (719688) panicked at gui/src/tests/appearance.rs:109:5:
+T1782 missing global draft scope
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- tests::appearance::t1782_invalid_hidden_field_keeps_save_disabled_and_reachable stdout ----
+
+thread 'tests::appearance::t1782_invalid_hidden_field_keeps_save_disabled_and_reachable' (719689) panicked at gui/src/main.rs:2319:32:
+T240: missing Review changed fields: [("EDID refresh must be within 10..=90 Hz", [[8.0 804.0] - [273.9 821.0]]), ("Save & restart all displays", [[18.0 837.0] - [175.1 853.0]]), ("Discard", [[205.1 837.0] - [251.4 853.0]]), ("config: /home/netto/.config/blent/config.toml", [[8.0 877.0] - [217.5 888.0]]), ("Blent", [[8.0 8.0] - [70.0 38.0]]), ("Your tablet’s display, camera and audio", [[8.0 46.0] - [271.8 63.0]]), ("Tablets", [[18.0 85.0] - [65.1 101.0]]), ("Connections", [[95.1 85.0] - [174.2 101.0]]), ("Settings", [[204.2 85.0] - [256.3 101.0]]), ("About", [[286.3 85.0] - [324.8 101.0]]), ("Cameras", [[8.0 131.0] - [90.2 155.0]]), ("General", [[18.0 171.0] - [66.6 187.0]]), ("Video", [[96.6 171.0] - [132.9 187.0]]), ("Display & input", [[162.9 171.0] - [255.5 187.0]]), ("Cameras", [[285.5 171.0] - [339.6 187.0]]), ("Microphone", [[369.6 171.0] - [444.4 187.0]]), ("Speakers", [[474.4 171.0] - [530.5 187.0]]), ("Camera sharing", [[8.0 211.0] - [113.7 228.0]]), ("Stopped", [[8.0 236.0] - [65.8 253.0]]), ("Next camera start · Automatically choose one ADB tablet", [[8.0 261.0] - [391.9 278.0]]), ("Image preferences are shared defaults. Choosing a tablet here does not change saved preferences.", [[8.0 286.0] - [517.8 300.0]]), ("Start camera", [[18.0 316.0] - [98.2 332.0]]), ("Stop camera", [[128.2 316.0] - [206.5 332.0]]), ("Image adjustments apply live. Save remembers preferences. Other changes show Restart required. Display sharing is unaffected.", [[8.0 348.0] - [612.6 361.0]]), ("Closing this window while sharing minimizes it. Use Stop camera to end sharing. Select Blent Front or Blent Rear in your video call; only the selected lens is live.", [[8.0 369.0] - [660.4 395.0]]), ("Preview", [[8.0 413.0] - [61.8 430.0]]), ("No live video · Start camera to preview", [[328.0 453.5] - [585.8 470.5]]), ("Lens", [[8.0 523.5] - [39.5 540.5]]), ("Front", [[162.6 524.0] - [196.2 540.0]]), ("Rear", [[226.2 524.0] - [255.5 540.0]]), ("Camera resolution", [[8.0 549.5] - [132.6 566.5]]), ("1280 × 720", [[162.6 550.0] - [232.7 566.0]]), ("Shadow correction", [[8.0 623.5] - [136.6 640.5]]), ("Off", [[162.6 624.0] - [184.0 640.0]]), ("Auto", [[214.0 624.0] - [245.3 640.0]]), ("Manual", [[275.3 624.0] - [320.9 640.0]]), ("Shadow strength", [[8.0 627.5] - [124.6 644.5]]), ("40%", [[272.6 628.0] - [300.5 644.0]]), ("Tablet image adjustments", [[26.0 702.0] - [189.1 718.0]]), ("Advanced camera settings", [[26.0 742.0] - [191.1 758.0]])]
+
+
+failures:
+    tests::appearance::t1782_hidden_changes_remain_visible_and_name_restart_scope
+    tests::appearance::t1782_invalid_hidden_field_keeps_save_disabled_and_reachable
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 278 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

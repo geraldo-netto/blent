@@ -137,3 +137,25 @@ The geometry, 380-point clipping and five-width alignment tests all pass, withou
 weakening bounds. Helper coverage is 80% (8/10 executable lines); all measured functions have complexity
 <=9. [Evidence](artifacts/2026-11-22-ui-ux/t1793/). Borrowed immutable shape geometry
 is inspected synchronously; the test collector owns only its bounded label list.
+
+## T1782 — global draft scope
+
+The footer remains visible outside Settings while edits or transactions exist.
+It names the count of unsaved fields across all settings, exposes field/page links
+in a bounded review popup, and states when saving restarts every tablet display.
+Hidden invalid fields remain reachable and disable Save. The global Save/Discard
+transaction semantics are unchanged. The technical config-path footer was removed
+to preserve space for the actionable summary; camera basics still fit the default
+window. No configuration values are exposed in the summary.
+
+Two original regressions failed before implementation. Nine appearance tests,
+16 Overview tests, two leaf-diff tests, the shared-Save test and three save-lifecycle
+tests pass. Coverage for all 11 maintained methods is 87.5–100%; 205 measured
+functions have complexity <=9. [Evidence](artifacts/2026-11-22-ui-ux/t1782/).
+
+The summary is a frame-local projection of the existing draft and saved snapshot;
+its leaf count/depth follows the fixed configuration schema. It owns temporary
+strings and tables only, freed after rendering. Popup expansion belongs to egui;
+no second draft, transaction, native resource or subscription is created. The TOML
+dependency already used by Blent is promoted from GUI test-only use, without a new
+version or package.

@@ -1,0 +1,29 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+warning: unused import: `config_path`
+  --> gui/src/main.rs:49:29
+   |
+49 | use blent_config::storage::{config_path, ConfigStore};
+   |                             ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blent-gui` (bin "blent-gui" test) generated 1 warning (run `cargo fix --bin "blent-gui" -p blent-gui --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.53s
+     Running unittests src/main.rs (target/llvm-cov-target/debug/build/blent-gui/44fea584b3d9c2fb/out/blent_gui-44fea584b3d9c2fb)
+
+running 9 tests
+test tests::appearance::t1780_selected_text_meets_normal_text_contrast ... ok
+test tests::appearance::t1780_validation_text_meets_normal_text_contrast ... ok
+test tests::appearance::t1782_failed_save_preserves_named_pending_changes ... ok
+test tests::appearance::t1782_hidden_changes_remain_visible_and_name_restart_scope ... ok
+test tests::appearance::t1782_invalid_hidden_field_keeps_save_disabled_and_reachable ... ok
+test tests::appearance::t1788_sensor_controls_are_available_without_transport_tuning ... ok
+test tests::appearance::t1788_stopped_camera_keeps_image_controls_in_default_window ... ok
+test tests::appearance::t1792_advanced_app_settings_retain_scheduling_controls ... ok
+test tests::appearance::t1792_general_prioritizes_preferences_and_compact_service_actions ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 275 filtered out; finished in 0.14s
+
+
+    Finished report saved to /tmp/blent-t1782.lcov

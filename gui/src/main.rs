@@ -6,6 +6,7 @@ mod overview;
 
 mod about;
 mod action_feedback;
+mod draft_scope;
 #[cfg(target_os = "linux")]
 mod activation;
 mod audio_settings;
@@ -468,7 +469,7 @@ impl App {
         self.poll_action();
         let status = self.status.lock().map(|s| s.clone()).unwrap_or_default();
         self.refresh_config(status.config.as_ref());
-        if !matches!(self.tab, Tab::Overview | Tab::Connections | Tab::About) {
+        if self.footer_visible() {
             self.show_footer(ctx, &status);
         }
         let devices = self.workspace_devices(&status);
@@ -565,6 +566,10 @@ impl App {
         }
     }
 
+    fn footer_visible(&self) -> bool {
+        self.cfg != self.saved_cfg || self.busy() || self.tab.section() == Tab::Settings
+    }
+
     fn show_footer(&mut self, ctx: &egui::Context, status: &Status) {
         // Keep actions visible and aligned with the bounded settings page.
         egui::TopBottomPanel::bottom("footer").show(ctx, |ui| {
@@ -579,7 +584,19 @@ impl App {
         ui.add_space(8.0);
         let dirty = self.cfg != self.saved_cfg;
         let valid = self.show_validation_error(ui);
-        ui.horizontal(|ui| {
+        self.footer_actions(ui, status, dirty, valid);
+        if dirty && status.daemon_running && self.cfg.requires_restart_from(&self.saved_cfg) {
+            ui.small("Saving restarts display sharing for every tablet.");
+        }
+        if !self.message.is_empty() {
+            ui.add_space(8.0);
+            self.show_feedback(ui, self.feedback_area);
+        }
+        ui.add_space(2.0);
+    }
+
+    fn footer_actions(&mut self, ui: &mut egui::Ui, status: &Status, dirty: bool, valid: bool) {
+        ui.horizontal_wrapped(|ui| {
             let label = settings::apply_label(status.daemon_running, &self.cfg, &self.saved_cfg);
             if ui
                 .add_enabled(dirty && valid && !self.busy(), egui::Button::new(label))
@@ -594,23 +611,8 @@ impl App {
             {
                 self.cfg = self.saved_cfg.clone();
             }
+            if let Some(page) = draft_scope::show(ui, &self.cfg, &self.saved_cfg) { self.tab = page; }
         });
-        if !self.message.is_empty() {
-            ui.add_space(8.0);
-            self.show_feedback(ui, self.feedback_area);
-        }
-        ui.add_space(8.0);
-        ui.label(
-            egui::RichText::new(format!(
-                "config: {}",
-                config_path()
-                    .map(|path| path.display().to_string())
-                    .unwrap_or_else(|error| error.to_string())
-            ))
-            .weak()
-            .size(10.0),
-        );
-        ui.add_space(2.0);
     }
 
     fn show_feedback(&self, ui: &mut egui::Ui, area: FeedbackArea) {
