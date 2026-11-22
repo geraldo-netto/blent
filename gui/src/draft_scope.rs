@@ -13,16 +13,27 @@ struct Change {
 
 fn changes(edited: &FileConfig, saved: &FileConfig) -> Result<Vec<Change>, toml::ser::Error> {
     let mut result = Vec::new();
-    compare("", Some(&Value::try_from(edited)?), Some(&Value::try_from(saved)?), &mut result);
+    compare(
+        "",
+        Some(&Value::try_from(edited)?),
+        Some(&Value::try_from(saved)?),
+        &mut result,
+    );
     Ok(result)
 }
 
 fn compare(path: &str, edited: Option<&Value>, saved: Option<&Value>, result: &mut Vec<Change>) {
-    if edited == saved { return; }
+    if edited == saved {
+        return;
+    }
     if let (Some(Value::Table(edited)), Some(Value::Table(saved))) = (edited, saved) {
         let keys: std::collections::BTreeSet<_> = edited.keys().chain(saved.keys()).collect();
         for key in keys {
-            let path = if path.is_empty() { key.clone() } else { format!("{path}.{key}") };
+            let path = if path.is_empty() {
+                key.clone()
+            } else {
+                format!("{path}.{key}")
+            };
             compare(&path, edited.get(key), saved.get(key), result);
         }
     } else {
@@ -41,28 +52,56 @@ fn page(path: &str) -> Tab {
     }
 }
 
-const DISPLAY_FIELDS: &[&str] = &["pen_only", "position", "max_tablets", "input_touch", "input_pen", "input_pointer", "input_mouse", "direct_input"];
-const GENERAL_FIELDS: &[&str] = &["scheduling_priority", "host_activity", "check_updates", "wifi_address", "video_port", "input_port", "auto_launch_app"];
+const DISPLAY_FIELDS: &[&str] = &[
+    "pen_only",
+    "position",
+    "max_tablets",
+    "input_touch",
+    "input_pen",
+    "input_pointer",
+    "input_mouse",
+    "direct_input",
+];
+const GENERAL_FIELDS: &[&str] = &[
+    "scheduling_priority",
+    "host_activity",
+    "check_updates",
+    "wifi_address",
+    "video_port",
+    "input_port",
+    "auto_launch_app",
+];
 
 fn audio_page(path: &str) -> Tab {
-    if path.starts_with("audio.speakers") { Tab::Audio(AudioDirection::Speakers) }
-    else { Tab::Audio(AudioDirection::Microphone) }
+    if path.starts_with("audio.speakers") {
+        Tab::Audio(AudioDirection::Speakers)
+    } else {
+        Tab::Audio(AudioDirection::Microphone)
+    }
 }
 
 fn label(change: &Change) -> String {
-    let field = change.path.strip_prefix("camera.")
+    let field = change
+        .path
+        .strip_prefix("camera.")
         .or_else(|| change.path.strip_prefix("audio.microphone."))
         .or_else(|| change.path.strip_prefix("audio.speakers."))
-        .unwrap_or(&change.path).replace(['_', '.'], " ");
+        .unwrap_or(&change.path)
+        .replace(['_', '.'], " ");
     format!("{} · {field}", page(&change.path).title())
 }
 
 pub(super) fn show(ui: &mut egui::Ui, edited: &FileConfig, saved: &FileConfig) -> Option<Tab> {
     let changes = match changes(edited, saved) {
         Ok(changes) => changes,
-        Err(error) => { ui.label(format!("Unable to list pending fields: {error}")); return None; }
+        Err(error) => {
+            ui.label(format!("Unable to list pending fields: {error}"));
+            return None;
+        }
     };
-    if changes.is_empty() { return None; }
+    if changes.is_empty() {
+        return None;
+    }
     ui.label(format!("{} unsaved fields · all settings", changes.len()));
     details(ui, &changes)
 }
@@ -123,8 +162,19 @@ mod tests {
             ("a = {b = 1}", "a = {b = 2}", vec!["a.b"]),
         ] {
             let mut result = Vec::new();
-            compare("", Some(&edited.parse().unwrap()), Some(&saved.parse().unwrap()), &mut result);
-            assert_eq!(result.iter().map(|change| change.path.as_str()).collect::<Vec<_>>(), expected);
+            compare(
+                "",
+                Some(&edited.parse().unwrap()),
+                Some(&saved.parse().unwrap()),
+                &mut result,
+            );
+            assert_eq!(
+                result
+                    .iter()
+                    .map(|change| change.path.as_str())
+                    .collect::<Vec<_>>(),
+                expected
+            );
         }
     }
 }

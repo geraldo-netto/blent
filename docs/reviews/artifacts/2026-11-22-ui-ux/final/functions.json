@@ -1,0 +1,566 @@
+[
+  {
+    "file": "gui/src/main.rs",
+    "name": "section",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "maximum_width",
+    "covered": 7,
+    "total": 7
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "new",
+    "covered": 44,
+    "total": 47
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "run_action",
+    "covered": 16,
+    "total": 16
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "change_service_state",
+    "covered": 13,
+    "total": 15
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_window",
+    "covered": 28,
+    "total": 28
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_workspace_navigation",
+    "covered": 26,
+    "total": 26
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_sections",
+    "covered": 16,
+    "total": 16
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "poll_action",
+    "covered": 18,
+    "total": 19
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_validation_error",
+    "covered": 8,
+    "total": 8
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "footer_visible",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "footer_content",
+    "covered": 15,
+    "total": 15
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "footer_actions",
+    "covered": 17,
+    "total": 18
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_system_setup",
+    "covered": 20,
+    "total": 20
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_status",
+    "covered": 22,
+    "total": 25
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_daemon_control",
+    "covered": 23,
+    "total": 23
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "request_daemon_state",
+    "covered": 8,
+    "total": 8
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "setting_encoder",
+    "covered": 26,
+    "total": 26
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "setting_frame_rate",
+    "covered": 12,
+    "total": 12
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "setting_plug_and_play",
+    "covered": 26,
+    "total": 26
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_general_settings",
+    "covered": 16,
+    "total": 16
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_page",
+    "covered": 11,
+    "total": 11
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_page_content",
+    "covered": 11,
+    "total": 11
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_navigation",
+    "covered": 9,
+    "total": 9
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_connections",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/connection_guidance.rs",
+    "name": "routes",
+    "covered": 17,
+    "total": 17
+  },
+  {
+    "file": "gui/src/connection_guidance.rs",
+    "name": "observed_adb",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/connection_settings.rs",
+    "name": "show",
+    "covered": 22,
+    "total": 23
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "configure",
+    "covered": 21,
+    "total": 21
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "apply_native",
+    "covered": 20,
+    "total": 20
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "native_palette",
+    "covered": 26,
+    "total": 26
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "luminance",
+    "covered": 12,
+    "total": 12
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "contrast",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "readable",
+    "covered": 8,
+    "total": 8
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "configure_desktop",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "install_desktop",
+    "covered": 16,
+    "total": 16
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "install_font",
+    "covered": 13,
+    "total": 13
+  },
+  {
+    "file": "gui/src/workspace_style.rs",
+    "name": "appearance_info",
+    "covered": 8,
+    "total": 8
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "resource_action",
+    "covered": 12,
+    "total": 12
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "configure_resource",
+    "covered": 12,
+    "total": 12
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "display_action",
+    "covered": 21,
+    "total": 21
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "activity",
+    "covered": 11,
+    "total": 11
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "card",
+    "covered": 27,
+    "total": 27
+  },
+  {
+    "file": "gui/src/resource_workspace.rs",
+    "name": "resource_error",
+    "covered": 11,
+    "total": 11
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "default",
+    "covered": 13,
+    "total": 13
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "show",
+    "covered": 16,
+    "total": 16
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "image_workspace",
+    "covered": 14,
+    "total": 14
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "image_controls",
+    "covered": 10,
+    "total": 10
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "summary",
+    "covered": 12,
+    "total": 13
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "buttons",
+    "covered": 30,
+    "total": 30
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "shadow_settings",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "advanced_profile",
+    "covered": 45,
+    "total": 45
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "rotation",
+    "covered": 12,
+    "total": 12
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "name": "resolution",
+    "covered": 26,
+    "total": 26
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "configure_target",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "next_profile",
+    "covered": 11,
+    "total": 11
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "show_context",
+    "covered": 17,
+    "total": 17
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "connection_controls",
+    "covered": 12,
+    "total": 12
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "route",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/camera_settings/context.rs",
+    "name": "saved_target",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "handle_close",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "media_is_active",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "minimize_for_media",
+    "covered": 4,
+    "total": 4
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "finish_window_close",
+    "covered": 5,
+    "total": 6
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "show_close_dialog",
+    "covered": 13,
+    "total": 13
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "choose_close",
+    "covered": 9,
+    "total": 9
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "close_choices",
+    "covered": 14,
+    "total": 14
+  },
+  {
+    "file": "gui/src/window_lifecycle.rs",
+    "name": "close_buttons",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "changes",
+    "covered": 9,
+    "total": 9
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "compare",
+    "covered": 13,
+    "total": 13
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "page",
+    "covered": 9,
+    "total": 9
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "audio_page",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "label",
+    "covered": 10,
+    "total": 10
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "show",
+    "covered": 9,
+    "total": 11
+  },
+  {
+    "file": "gui/src/draft_scope.rs",
+    "name": "details",
+    "covered": 14,
+    "total": 14
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "load",
+    "covered": 8,
+    "total": 9
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "parse",
+    "covered": 29,
+    "total": 29
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "text",
+    "covered": 9,
+    "total": 10
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "number",
+    "covered": 14,
+    "total": 14
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "color",
+    "covered": 14,
+    "total": 14
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "font",
+    "covered": 9,
+    "total": 11
+  },
+  {
+    "file": "gui/src/platform/appearance.rs",
+    "name": "read_font",
+    "covered": 19,
+    "total": 20
+  },
+  {
+    "file": "gui/src/camera_preview.rs",
+    "name": "show",
+    "covered": 19,
+    "total": 19
+  },
+  {
+    "file": "gui/src/action_feedback.rs",
+    "name": "new",
+    "covered": 11,
+    "total": 11
+  },
+  {
+    "file": "gui/src/action_feedback.rs",
+    "name": "completed",
+    "covered": 3,
+    "total": 3
+  },
+  {
+    "file": "gui/src/action_feedback.rs",
+    "name": "lost_result",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/action_feedback.rs",
+    "name": "recovery",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/accessibility.rs",
+    "name": "field",
+    "covered": 10,
+    "total": 10
+  },
+  {
+    "file": "gui/src/accessibility.rs",
+    "name": "combo",
+    "covered": 6,
+    "total": 6
+  },
+  {
+    "file": "gui/src/accessibility.rs",
+    "name": "selected",
+    "covered": 5,
+    "total": 5
+  },
+  {
+    "file": "gui/src/camera_settings/tuning.rs",
+    "name": "exposure",
+    "covered": 17,
+    "total": 17
+  },
+  {
+    "file": "gui/src/camera_settings/tuning.rs",
+    "name": "metering",
+    "covered": 16,
+    "total": 16
+  },
+  {
+    "file": "gui/src/camera_settings/tuning.rs",
+    "name": "flicker",
+    "covered": 14,
+    "total": 14
+  },
+  {
+    "file": "gui/src/camera_settings/tuning/noise.rs",
+    "name": "show",
+    "covered": 14,
+    "total": 14
+  }
+]

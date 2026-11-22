@@ -5,9 +5,9 @@ pub(crate) use blent_config::platform::programs::command_exists;
 use std::path::PathBuf;
 #[cfg(target_os = "linux")]
 pub(crate) mod activation;
-mod lifetime;
 #[cfg(target_os = "linux")]
 pub(crate) mod appearance;
+mod lifetime;
 pub(crate) use lifetime::run_gui;
 mod notices;
 pub(crate) use notices::bundled_notices_url;

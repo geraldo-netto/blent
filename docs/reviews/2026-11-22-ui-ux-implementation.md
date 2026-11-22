@@ -324,3 +324,19 @@ tests exercise unavailable, daemon-only and display-capable states without enabl
 any unsupported backend. The permanent eight-case presentation test and private
 start/stop action test pass. No native state, allocation or callback owner is added.
 Final per-function coverage includes the formerly unmeasured capability branches.
+
+
+## T1798 — final GUI formatting and verification
+
+Authoritative rustfmt was applied to the maintained GUI source batch. The GUI
+format check passes. The final GUI suite passes all 302 tests; the table-driven
+capability fixture also passes after its complexity-only rewrite. All 94
+selected maintained Rust production functions meet >=80% executable-line coverage
+individually on the formatted source. Measured complexity remains <=9. The final
+coverage includes the full suite and isolated service-action run.
+
+Production GUI Clippy with dependency linting disabled passes under Rust 1.100.0.
+The full strict gate remains obstructed by preexisting broker type complexity
+(T1801) and a paused audio test initialization lint (T1804). Preexisting host format
+drift remains T1799; no whole-repository formatting or Clippy pass is claimed.
+[Final evidence](artifacts/2026-11-22-ui-ux/final/).

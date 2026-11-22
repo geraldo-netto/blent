@@ -14,7 +14,11 @@ pub(super) fn show(ui: &mut egui::Ui, direct_usb: bool, adb: bool) {
 }
 
 /// Observed identities inform guidance only; no connection is created or changed.
-pub(super) fn routes(ui: &mut egui::Ui, adb: bool, devices: &[blent_config::workspace::Device]) -> bool {
+pub(super) fn routes(
+    ui: &mut egui::Ui,
+    adb: bool,
+    devices: &[blent_config::workspace::Device],
+) -> bool {
     ui.heading("Choose a connection route");
     ui.label("Direct USB and USB debugging (ADB) are separate connection modes. Blent does not switch modes here.");
     ui.heading("USB debugging (ADB)");

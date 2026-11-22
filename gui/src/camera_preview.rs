@@ -37,12 +37,11 @@ impl Preview {
                     Lens::Rear => "Rear webcam output",
                 });
             } else {
-                ui.allocate_ui(
-                    egui::vec2(ui.available_width().min(640.0), 48.0),
-                    |ui| {
-                        ui.centered_and_justified(|ui| ui.label("No live video · Start camera to preview"));
-                    },
-                );
+                ui.allocate_ui(egui::vec2(ui.available_width().min(640.0), 48.0), |ui| {
+                    ui.centered_and_justified(|ui| {
+                        ui.label("No live video · Start camera to preview")
+                    });
+                });
             }
         });
     }

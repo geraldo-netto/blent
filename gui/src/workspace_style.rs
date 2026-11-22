@@ -47,10 +47,19 @@ fn apply_native(context: &egui::Context, appearance: &crate::appearance_contract
     context.style_mut(|style| {
         native_palette(&mut style.visuals, appearance);
         let body = appearance.font_points * (4.0 / 3.0);
-        for (kind, factor) in [(TextStyle::Body, 1.0), (TextStyle::Button, 1.0), (TextStyle::Small, 0.9), (TextStyle::Heading, 1.4)] {
-            style.text_styles.insert(kind, FontId::proportional(body * factor));
+        for (kind, factor) in [
+            (TextStyle::Body, 1.0),
+            (TextStyle::Button, 1.0),
+            (TextStyle::Small, 0.9),
+            (TextStyle::Heading, 1.4),
+        ] {
+            style
+                .text_styles
+                .insert(kind, FontId::proportional(body * factor));
         }
-        if !appearance.animations { style.animation_time = 0.0; }
+        if !appearance.animations {
+            style.animation_time = 0.0;
+        }
     });
 }
 
@@ -67,19 +76,35 @@ fn native_palette(visuals: &mut egui::Visuals, native: &crate::appearance_contra
     visuals.hyperlink_color = readable(rgb(native.accent), background);
     visuals.error_fg_color = readable(visuals.error_fg_color, background);
     visuals.weak_text_color = Some(foreground);
-    for widget in [&mut visuals.widgets.noninteractive, &mut visuals.widgets.inactive, &mut visuals.widgets.hovered, &mut visuals.widgets.active, &mut visuals.widgets.open] {
+    for widget in [
+        &mut visuals.widgets.noninteractive,
+        &mut visuals.widgets.inactive,
+        &mut visuals.widgets.hovered,
+        &mut visuals.widgets.active,
+        &mut visuals.widgets.open,
+    ] {
         widget.fg_stroke.color = foreground;
         widget.bg_fill = rgb(native.surface);
         widget.weak_bg_fill = background;
     }
-    visuals.widgets.active.bg_stroke = egui::Stroke::new(2.0_f32, readable(rgb(native.accent), background));
+    visuals.widgets.active.bg_stroke =
+        egui::Stroke::new(2.0_f32, readable(rgb(native.accent), background));
 }
 
 fn luminance(color: Color32) -> f64 {
-    [color.r(), color.g(), color.b()].into_iter().zip([0.2126, 0.7152, 0.0722]).map(|(byte, weight)| {
-        let channel = f64::from(byte) / 255.0;
-        weight * if channel <= 0.04045 { channel / 12.92 } else { ((channel + 0.055) / 1.055).powf(2.4) }
-    }).sum()
+    [color.r(), color.g(), color.b()]
+        .into_iter()
+        .zip([0.2126, 0.7152, 0.0722])
+        .map(|(byte, weight)| {
+            let channel = f64::from(byte) / 255.0;
+            weight
+                * if channel <= 0.04045 {
+                    channel / 12.92
+                } else {
+                    ((channel + 0.055) / 1.055).powf(2.4)
+                }
+        })
+        .sum()
 }
 
 fn contrast(left: Color32, right: Color32) -> f64 {
@@ -88,9 +113,14 @@ fn contrast(left: Color32, right: Color32) -> f64 {
 }
 
 fn readable(requested: Color32, background: Color32) -> Color32 {
-    if contrast(requested, background) >= 4.5 { return requested; }
-    if contrast(Color32::BLACK, background) >= contrast(Color32::WHITE, background) { Color32::BLACK }
-    else { Color32::WHITE }
+    if contrast(requested, background) >= 4.5 {
+        return requested;
+    }
+    if contrast(Color32::BLACK, background) >= contrast(Color32::WHITE, background) {
+        Color32::BLACK
+    } else {
+        Color32::WHITE
+    }
 }
 
 pub(super) fn configure_desktop(context: &egui::Context) {
@@ -100,12 +130,21 @@ pub(super) fn configure_desktop(context: &egui::Context) {
     install_desktop(context, Err("Native appearance adapter unavailable".into()));
 }
 
-fn install_desktop(context: &egui::Context, result: Result<(crate::appearance_contract::Appearance, Vec<u8>), String>) {
+fn install_desktop(
+    context: &egui::Context,
+    result: Result<(crate::appearance_contract::Appearance, Vec<u8>), String>,
+) {
     let description = match result {
         Ok((appearance, bytes)) => {
             apply_native(context, &appearance);
             install_font(context, bytes);
-            format!("{} · {} {} pt · text scale {}", appearance.source, appearance.font_family, appearance.font_points, appearance.text_scale)
+            format!(
+                "{} · {} {} pt · text scale {}",
+                appearance.source,
+                appearance.font_family,
+                appearance.font_points,
+                appearance.text_scale
+            )
         }
         Err(reason) => {
             configure(context);
@@ -117,13 +156,22 @@ fn install_desktop(context: &egui::Context, result: Result<(crate::appearance_co
 
 fn install_font(context: &egui::Context, bytes: Vec<u8>) {
     let mut fonts = egui::FontDefinitions::default();
-    fonts.font_data.insert("desktop".into(), std::sync::Arc::new(egui::FontData::from_owned(bytes)));
-    fonts.families.get_mut(&egui::FontFamily::Proportional).unwrap().insert(0, "desktop".into());
+    fonts.font_data.insert(
+        "desktop".into(),
+        std::sync::Arc::new(egui::FontData::from_owned(bytes)),
+    );
+    fonts
+        .families
+        .get_mut(&egui::FontFamily::Proportional)
+        .unwrap()
+        .insert(0, "desktop".into());
     context.set_fonts(fonts);
 }
 
 pub(super) fn appearance_info(ui: &mut egui::Ui) {
-    let description = ui.ctx().data(|data| data.get_temp::<String>(egui::Id::new("desktop-appearance")))
+    let description = ui
+        .ctx()
+        .data(|data| data.get_temp::<String>(egui::Id::new("desktop-appearance")))
         .unwrap_or_else(|| "Standard light defaults".into());
     ui.label(format!("Appearance: {description}"));
     ui.small("Desktop appearance is read when Blent opens. Theme changes apply the next time the Blent GUI starts.");
@@ -134,10 +182,16 @@ mod tests {
     use super::*;
     fn fixture() -> crate::appearance_contract::Appearance {
         crate::appearance_contract::Appearance {
-            source: "Fixture light theme".into(), background: [248, 248, 249],
-            surface: [255, 255, 255], foreground: [32, 32, 32], accent: [31, 158, 222],
-            selected_text: [255, 255, 255], font_family: "Sans".into(),
-            font_points: 10.0, text_scale: 1.0, animations: false,
+            source: "Fixture light theme".into(),
+            background: [248, 248, 249],
+            surface: [255, 255, 255],
+            foreground: [32, 32, 32],
+            accent: [31, 158, 222],
+            selected_text: [255, 255, 255],
+            font_family: "Sans".into(),
+            font_points: 10.0,
+            text_scale: 1.0,
+            animations: false,
         }
     }
 
@@ -146,14 +200,25 @@ mod tests {
         let context = egui::Context::default();
         apply_native(&context, &fixture());
         let style = context.style();
-        assert_eq!(style.visuals.panel_fill, Color32::from_rgb(248, 248, 249), "T1786 native surface ignored");
-        assert_eq!(style.visuals.selection.bg_fill, Color32::from_rgb(31, 158, 222));
-        assert!((style.text_styles[&TextStyle::Body].size - 40.0/3.0).abs() < 0.01);
+        assert_eq!(
+            style.visuals.panel_fill,
+            Color32::from_rgb(248, 248, 249),
+            "T1786 native surface ignored"
+        );
+        assert_eq!(
+            style.visuals.selection.bg_fill,
+            Color32::from_rgb(31, 158, 222)
+        );
+        assert!((style.text_styles[&TextStyle::Body].size - 40.0 / 3.0).abs() < 0.01);
         assert_eq!(style.animation_time, 0.0);
     }
     #[test]
     fn t1786_semantic_contrast_and_large_text_remain_readable() {
-        for background in [Color32::WHITE, Color32::BLACK, Color32::from_rgb(31, 158, 222)] {
+        for background in [
+            Color32::WHITE,
+            Color32::BLACK,
+            Color32::from_rgb(31, 158, 222),
+        ] {
             for foreground in [Color32::WHITE, Color32::BLACK, Color32::GRAY] {
                 assert!(contrast(readable(foreground, background), background) >= 4.5);
             }
@@ -164,12 +229,21 @@ mod tests {
         native.animations = true;
         apply_native(&context, &native);
         let _ = context.run(Default::default(), |_| {});
-        assert!((context.style().text_styles[&TextStyle::Body].size * context.zoom_factor() - 80.0/3.0).abs() < 0.01);
-        assert!(contrast(context.style().visuals.selection.stroke.color, context.style().visuals.selection.bg_fill) >= 4.5);
+        assert!(
+            (context.style().text_styles[&TextStyle::Body].size * context.zoom_factor()
+                - 80.0 / 3.0)
+                .abs()
+                < 0.01
+        );
+        assert!(
+            contrast(
+                context.style().visuals.selection.stroke.color,
+                context.style().visuals.selection.bg_fill
+            ) >= 4.5
+        );
         install_desktop(&context, Err("Fixture unavailable".into()));
         let _ = context.run(Default::default(), |context| {
             egui::CentralPanel::default().show(context, appearance_info);
         });
     }
-
 }

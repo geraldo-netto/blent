@@ -231,8 +231,14 @@ impl App {
 
     fn configure_resource(&mut self, status: &Status, selected: &Identity, resource: Resource) {
         if resource == Resource::Camera {
-            let name = status.tablets.iter().find(|device| device.identity() == selected)
-                .map_or_else(|| selected.label().to_owned(), |device| device.name().to_owned());
+            let name = status
+                .tablets
+                .iter()
+                .find(|device| device.identity() == selected)
+                .map_or_else(
+                    || selected.label().to_owned(),
+                    |device| device.name().to_owned(),
+                );
             self.camera.configure_target(selected.clone(), name);
         }
         self.tab = resource_tab(resource);
@@ -281,9 +287,15 @@ impl App {
             expected: if enabled { None } else { expected },
         };
         let pid = status.daemon_pid;
-        self.run_action(crate::FeedbackArea::Display, &format!("{} display for {}", if enabled { "Start" } else { "Stop" }, selected.label()), move || {
-            crate::platform::display_command(pid, &command)
-        });
+        self.run_action(
+            crate::FeedbackArea::Display,
+            &format!(
+                "{} display for {}",
+                if enabled { "Start" } else { "Stop" },
+                selected.label()
+            ),
+            move || crate::platform::display_command(pid, &command),
+        );
     }
 }
 
@@ -494,8 +506,11 @@ mod tests;
 fn resource_error(ui: &mut egui::Ui, error: &str) {
     ui.label("Open Configure to check permissions and connection status.");
     ui.collapsing("Details", |ui| {
-        egui::ScrollArea::vertical().id_salt("resource-error").max_height(64.0).show(ui, |ui| {
-            ui.colored_label(ui.visuals().error_fg_color, error);
-        });
+        egui::ScrollArea::vertical()
+            .id_salt("resource-error")
+            .max_height(64.0)
+            .show(ui, |ui| {
+                ui.colored_label(ui.visuals().error_fg_color, error);
+            });
     });
 }

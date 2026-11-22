@@ -591,19 +591,38 @@ fn t1664_overview_configure_opens_the_selected_audio_resource() {
 
 #[test]
 fn t1789_configure_camera_carries_target_without_editing_preferences() {
-    for target in [Identity::Adb("second".into()), Identity::UsbPeer(blent_config::connection::pairing::PeerId::parse("cd".repeat(32)).unwrap())] {
+    for target in [
+        Identity::Adb("second".into()),
+        Identity::UsbPeer(
+            blent_config::connection::pairing::PeerId::parse("cd".repeat(32)).unwrap(),
+        ),
+    ] {
         let (_root, mut app) = settings_test_app(Tab::Overview);
         app.cfg.camera.options.serial = Some("first".into());
         let original = app.cfg.clone();
         let received = Arc::new(Mutex::new(Vec::new()));
         app.camera.backend = Some(Box::new(Camera(received.clone(), Mutex::new(None))));
-        app.resource_action(&Status::default(), &target, Resource::Camera, Action::Configure);
+        app.resource_action(
+            &Status::default(),
+            &target,
+            Resource::Camera,
+            Action::Configure,
+        );
         assert!(app.tab == Tab::Camera);
         assert_eq!(app.cfg, original, "navigation must not edit defaults");
-        click_settings_text(&mut app, &egui::Context::default(), "Start camera", window_test_frame);
+        click_settings_text(
+            &mut app,
+            &egui::Context::default(),
+            "Start camera",
+            window_test_frame,
+        );
         let started = received.lock().unwrap();
         assert_eq!(started.len(), 1);
-        assert_eq!(crate::media_owner::identity(started[0].target().unwrap()), Some(target), "T1789 exact configured tablet");
+        assert_eq!(
+            crate::media_owner::identity(started[0].target().unwrap()),
+            Some(target),
+            "T1789 exact configured tablet"
+        );
     }
 }
 
@@ -611,25 +630,46 @@ fn t1789_configure_camera_carries_target_without_editing_preferences() {
 fn t1789_saved_target_can_be_restored_without_starting_camera() {
     let (_root, mut app) = settings_test_app(Tab::Camera);
     let original = app.cfg.clone();
-    app.camera.configure_target(Identity::Adb("chosen".into()), "Chosen tablet".into());
+    app.camera
+        .configure_target(Identity::Adb("chosen".into()), "Chosen tablet".into());
     let context = egui::Context::default();
     // The full page scrolls; exercise the same advanced connection controls directly.
-    fn frame(app: &mut App, context: &egui::Context, events: Vec<egui::Event>) -> Vec<(String, egui::Rect)> {
+    fn frame(
+        app: &mut App,
+        context: &egui::Context,
+        events: Vec<egui::Event>,
+    ) -> Vec<(String, egui::Rect)> {
         crate::tests::settings_test_frame(app, context, events, |app, ui| {
-            egui::Grid::new("t1789-target").show(ui, |ui| app.camera.connection_controls(ui, &mut app.cfg.camera.options));
+            egui::Grid::new("t1789-target").show(ui, |ui| {
+                app.camera
+                    .connection_controls(ui, &mut app.cfg.camera.options)
+            });
         })
     }
     click_settings_text(&mut app, &context, "Use saved target", frame);
-    assert_eq!(app.camera.next_profile(&app.cfg.camera.options), original.camera.options);
+    assert_eq!(
+        app.camera.next_profile(&app.cfg.camera.options),
+        original.camera.options
+    );
     assert_eq!(app.cfg, original);
     assert!(app.camera.backend.is_none());
     frame(&mut app, &context, vec![]);
 }
 
-fn recovery_frame(app: &mut crate::App, context: &egui::Context, events: Vec<egui::Event>) -> Vec<(String, egui::Rect)> {
+fn recovery_frame(
+    app: &mut crate::App,
+    context: &egui::Context,
+    events: Vec<egui::Event>,
+) -> Vec<(String, egui::Rect)> {
     crate::tests::settings_test_frame(app, context, events, |_app, ui| {
         ui.vertical(|ui| {
-            card(ui, Resource::Camera, ResourceView::Here(Activity::Failed), false, Some("fixture backend diagnostic"));
+            card(
+                ui,
+                Resource::Camera,
+                ResourceView::Here(Activity::Failed),
+                false,
+                Some("fixture backend diagnostic"),
+            );
         });
     })
 }
@@ -640,10 +680,19 @@ fn t1791_resource_recovery_keeps_diagnostics_expandable() {
     let context = egui::Context::default();
     recovery_frame(&mut app, &context, vec![]);
     let labels = recovery_frame(&mut app, &context, vec![]);
-    assert!(labels.iter().any(|(label, _)| label.contains("open Configure for recovery details")));
-    assert!(!labels.iter().any(|(label, _)| label == "fixture backend diagnostic"));
+    assert!(labels
+        .iter()
+        .any(|(label, _)| label.contains("open Configure for recovery details")));
+    assert!(!labels
+        .iter()
+        .any(|(label, _)| label == "fixture backend diagnostic"));
     click_settings_text(&mut app, &context, "Details", recovery_frame);
     let labels = recovery_frame(&mut app, &context, vec![]);
-    assert!(labels.iter().any(|(label, _)| label == "fixture backend diagnostic"));
-    assert_eq!(activity(Activity::Unknown), "Activity unconfirmed · open Configure to check status");
+    assert!(labels
+        .iter()
+        .any(|(label, _)| label == "fixture backend diagnostic"));
+    assert_eq!(
+        activity(Activity::Unknown),
+        "Activity unconfirmed · open Configure to check status"
+    );
 }

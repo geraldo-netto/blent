@@ -10,8 +10,16 @@ pub(super) struct Job {
 }
 
 impl Job {
-    pub fn new(area: FeedbackArea, operation: impl Into<String>, receiver: Receiver<String>) -> Self {
-        Self { receiver, area, operation: operation.into() }
+    pub fn new(
+        area: FeedbackArea,
+        operation: impl Into<String>,
+        receiver: Receiver<String>,
+    ) -> Self {
+        Self {
+            receiver,
+            area,
+            operation: operation.into(),
+        }
     }
 
     pub fn completed(&self, message: &str) -> String {
@@ -19,14 +27,22 @@ impl Job {
     }
 
     pub fn lost_result(&self) -> String {
-        format!("{} returned no result; its effect is unconfirmed. {}", self.operation, recovery(self.area))
+        format!(
+            "{} returned no result; its effect is unconfirmed. {}",
+            self.operation,
+            recovery(self.area)
+        )
     }
 }
 
 fn recovery(area: FeedbackArea) -> &'static str {
     match area {
-        FeedbackArea::Display => "Check Tablets and Connections for the latest state before retrying.",
-        FeedbackArea::Setup => "Check General for missing prerequisites or permission errors before retrying.",
+        FeedbackArea::Display => {
+            "Check Tablets and Connections for the latest state before retrying."
+        }
+        FeedbackArea::Setup => {
+            "Check General for missing prerequisites or permission errors before retrying."
+        }
         FeedbackArea::Settings => "Check saved preferences in General before retrying.",
     }
 }

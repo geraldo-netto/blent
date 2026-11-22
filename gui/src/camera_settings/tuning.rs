@@ -32,7 +32,11 @@ fn exposure(ui: &mut egui::Ui, sensor: &mut Sensor, caps: Capabilities) {
             .custom_formatter(|value, _| format!("{:+.2} EV", value/100.0))
             .custom_parser(parse_exposure))
         .on_hover_text("Positive values ask the camera for a brighter exposure; highlights can clip and motion can blur.");
-    crate::accessibility::field(response, label, "Disabled when the tablet reports no adjustable exposure range.");
+    crate::accessibility::field(
+        response,
+        label,
+        "Disabled when the tablet reports no adjustable exposure range.",
+    );
     ui.end_row();
 }
 fn parse_exposure(text: &str) -> Option<f64> {
@@ -42,7 +46,10 @@ fn parse_exposure(text: &str) -> Option<f64> {
 }
 fn metering(ui: &mut egui::Ui, sensor: &mut Sensor, caps: Capabilities) {
     let label = ui.label("Exposure metering").id;
-    let value = match sensor.metering { Metering::Device => "Device default", Metering::Center => "Center weighted" };
+    let value = match sensor.metering {
+        Metering::Device => "Device default",
+        Metering::Center => "Center weighted",
+    };
     let response = egui::ComboBox::from_id_salt("camera-metering")
         .selected_text(value)
         .show_ui(ui, |ui| {
