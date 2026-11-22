@@ -1,0 +1,25 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.55s
+     Running unittests src/lib.rs (target/debug/build/blent-config/cd955b6b72e59911/out/blent_config-cd955b6b72e59911)
+
+running 1 test
+test retirement::reporting_tests::t1812_subscriber_failure_cannot_unwind_the_quarantined_owner ... 
+thread 'retirement::reporting_tests::t1812_subscriber_failure_cannot_unwind_the_quarantined_owner' (946073) panicked at common/src/retirement.rs:388:47:
+T1812 adapter failed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'retirement::reporting_tests::t1812_subscriber_failure_cannot_unwind_the_quarantined_owner' (946073) panicked at common/src/retirement.rs:390:43:
+T1812 subscriber failed
+
+thread 'retirement::reporting_tests::t1812_subscriber_failure_cannot_unwind_the_quarantined_owner' (946073) panicked at common/src/retirement.rs:409:9:
+T1812 reporting escaped the reaper
+FAILED
+
+failures:
+
+failures:
+    retirement::reporting_tests::t1812_subscriber_failure_cannot_unwind_the_quarantined_owner
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 521 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent-config --lib`

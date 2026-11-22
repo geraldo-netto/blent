@@ -132,7 +132,8 @@ impl Admission {
                 .send(Record {
                     resource: Some(Box::new(resource)),
                     _admission: self,
-                    poisoned: false
+                    poisoned: false,
+                    failures: None,
                 })
                 .is_ok(),
             "Retirement owner outlives admissions"
@@ -145,10 +146,17 @@ impl Drop for Admission {
         self.complete.0.store(true, Ordering::Release);
     }
 }
+struct Failures {
+    _adapter: Box<dyn std::any::Any + Send>,
+    _report: std::thread::Result<()>,
+}
 struct Record {
     resource: Option<Box<dyn Observe>>,
     _admission: Admission,
     poisoned: bool,
+    // At most one adapter/report pair per admitted, permanently quarantined owner.
+    // Payload destructors are arbitrary code; never drop them on the reaper.
+    failures: Option<Failures>,
 }
 impl Record {
     fn poll(&mut self) -> bool {
@@ -165,12 +173,21 @@ impl Record {
         }));
         match outcome {
             Ok(complete) => complete,
-            Err(_) => {
-                self.poisoned = true;
-                tracing::error!("Retirement adapter panicked; capacity remains quarantined");
+            Err(payload) => {
+                self.quarantine(payload);
                 false
             }
         }
+    }
+    fn quarantine(&mut self, payload: Box<dyn std::any::Any + Send>) {
+        self.poisoned = true;
+        let report = std::panic::catch_unwind(|| {
+            tracing::error!("Retirement adapter panicked; capacity remains quarantined");
+        });
+        self.failures = Some(Failures {
+            _adapter: payload,
+            _report: report,
+        });
     }
 }
 fn pollable(pending: &[Record]) -> bool {
@@ -224,7 +241,7 @@ fn reap_ready(pending: &mut Vec<Record>) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    struct Held(Arc<AtomicBool>);
+    pub(super) struct Held(pub(super) Arc<AtomicBool>);
     impl Observe for Held {
         fn poll_complete(&mut self) -> bool {
             self.0.load(Ordering::Acquire)
@@ -247,6 +264,7 @@ mod tests {
             resource: Some(Box::new(Held(held.clone()))),
             _admission: admission,
             poisoned: false,
+            failures: None,
         };
         let mut pending = Vec::new();
         assert!(reap_message(Ok(record), &mut pending));
@@ -272,6 +290,7 @@ mod tests {
             resource: Some(Box::new(Broken)),
             _admission: admission,
             poisoned: false,
+            failures: None,
         };
         assert!(reap_message(Ok(broken), &mut pending));
         assert!(reap_message(
@@ -377,5 +396,60 @@ mod idle_tests {
         done.store(true, Ordering::Release);
         tests::complete(&completion);
         assert!(observed <= 20, "T1529 idle observation calls: {observed}");
+    }
+}
+
+#[cfg(test)]
+mod reporting_tests {
+    use super::*;
+    struct Payload(Arc<AtomicUsize>);
+    impl Drop for Payload {
+        fn drop(&mut self) {
+            self.0.fetch_add(1, Ordering::Relaxed);
+            panic!("T1812 payload destructor must not run");
+        }
+    }
+    struct Broken(Arc<AtomicUsize>);
+    impl Observe for Broken {
+        fn poll_complete(&mut self) -> bool {
+            std::panic::panic_any(Payload(self.0.clone()));
+        }
+    }
+    fn broken_writer() -> std::io::Sink {
+        panic!("T1812 subscriber failed");
+    }
+    #[test]
+    fn t1812_subscriber_failure_cannot_unwind_the_quarantined_owner() {
+        let pool = Pool::new(2).unwrap();
+        let drops = Arc::new(AtomicUsize::new(0));
+        let mut record = Record {
+            resource: Some(Box::new(Broken(drops.clone()))),
+            _admission: pool.reserve().unwrap(),
+            poisoned: false,
+            failures: None,
+        };
+        let completion = record._admission.completion();
+        let subscriber = tracing_subscriber::fmt()
+            .with_writer(broken_writer)
+            .finish();
+        let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            tracing::subscriber::with_default(subscriber, || record.poll())
+        }));
+        assert!(!completion.is_complete());
+        assert_eq!(pool.active(), 1);
+        let retained = record.resource.is_some();
+        assert!(!record.poll());
+        assert_eq!(drops.load(Ordering::Relaxed), 0);
+        assert!(record.failures.as_ref().unwrap()._report.is_err());
+        std::mem::forget(record); // Unknown adapter obligations remain funded.
+        assert!(retained);
+        assert!(
+            matches!(result, Ok(false)),
+            "T1812 reporting escaped the reaper"
+        );
+        let sibling = pool.reserve().unwrap();
+        let done = sibling.completion();
+        sibling.retain(tests::Held(Arc::new(AtomicBool::new(true))));
+        tests::complete(&done);
     }
 }

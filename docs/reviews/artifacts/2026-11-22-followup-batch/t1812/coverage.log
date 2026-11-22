@@ -1,0 +1,599 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.56s
+     Running unittests src/lib.rs (/home/netto/.cache/blent-followup-20261122/common-coverage/debug/build/blent-config/cd955b6b72e59911/out/blent_config-cd955b6b72e59911)
+
+running 522 tests
+test adb::identity_tests::t1383_physical_identity_contract_boundaries ... ok
+test adb::tests::t278_mdns_service_and_domain_forms_are_network_routes ... ok
+test adb_reverse::temporary::tests::t1090_endpoint_port_bounds_reject_before_admission ... ok
+test adb_reverse::temporary::tests::t1090_retirement_policy_exhausts_creation_and_route_boundaries ... ok
+test adb_reverse::temporary::tests::t1090_route_listing_rejects_ambiguity_and_preserves_unrelated_entries ... ok
+test adb_reverse::tests::t557_bounded_malformed_listing_fuzz_fails_closed ... ok
+test adb_reverse::tests::t557_only_absent_routes_are_repaired_without_stealing_destinations ... ok
+test android::tests::t250_fork_components_keep_original_class_namespace ... ok
+test audio::buffer::identity_tests::t818_identity_and_fractional_paths_match_signed_scalar_oracle ... ok
+test audio::clock::tests::t720_clock_encoding_has_fixed_bounds_and_explicit_unavailability ... ok
+test audio::clock::tests::t720_clocked_wire_is_negotiated_and_invalid_counters_do_not_advance_sequence ... ok
+test audio::clock::tests::t720_counter_windows_reject_resets_stalls_outliers_and_stale_measurements ... ok
+test audio::clock::tests::t720_fractional_excess_native_drift_is_rejected_before_rounding ... ok
+test audio::clock::tests::t720_native_windows_drive_bounded_resampling_without_cross_clock_subtraction ... ok
+test audio::connection::contract_tests::t977_acceptance_and_monitoring_do_not_grant_media_or_retire_other_direction ... ok
+test audio::connection::contract_tests::t977_invitation_cancellation_and_cleanup_retain_original_independent_authority ... ok
+test audio::connection::tests::t1650_audio_request_direction_is_checked_against_its_owner ... ok
+test audio::connection::tests::t977_all_peer_lengths_and_ascii_mutations_fail_closed ... ok
+test audio::connection::tests::t977_cli_selects_exact_transport_and_preserves_profile ... ok
+test audio::connection::tests::t977_invalid_json_types_and_unknown_schema_are_rejected ... ok
+test audio::connection::tests::t977_profile_projection_retains_direction_processing_buffer_and_background ... ok
+test audio::connection::tests::t977_saved_legacy_defaults_and_usb_roundtrips_are_passive ... ok
+test audio::connection::tests::t977_transport_selection_is_explicit_and_independent_per_direction ... ok
+test audio::session::tests::t717_generation_exhaustion_and_absent_owner_fail_closed ... ok
+test audio::session::tests::t736_entropy_failure_preserves_generation_for_retry ... ok
+test audio::staging_tests::t818_reusable_writer_is_atomic_on_invalid_input ... ok
+test audio::staging_tests::t818_views_validate_before_commit_and_preserve_endian_and_clock ... ok
+test audio::tests::t1298_current_grants_reject_old_version_and_keep_absent_clock_prefix ... ok
+test audio::tests::t1584_all_targets_keep_one_jitter_block_and_bound_surplus ... ok
+test audio::tests::t1584_capture_transfer_returns_to_target_after_each_stall ... ok
+test audio::tests::t1584_playback_returns_to_target_after_each_stall ... ok
+test audio::tests::t717_both_directions_stop_and_retirement_are_independent ... ok
+test audio::tests::t717_bounded_frame_mutations_never_escape_pcm_limits ... ok
+test audio::tests::t717_buffer_preferences_control_prefill_and_wire_golden_fields ... ok
+test audio::tests::t717_capabilities_fail_closed_per_direction_and_processing ... ok
+test audio::tests::t717_drift_bounds_overflow_and_discontinuity ... ok
+test audio::tests::t717_fake_backend_obeys_owned_retirement_before_restart ... ok
+test audio::tests::t717_fractional_excess_drift_is_rejected_before_rounding ... ok
+test audio::tests::t717_frame_truncation_and_size_errors_do_not_advance_sequence ... ok
+test audio::tests::t717_handshake_cannot_move_clock_backwards ... ok
+test audio::tests::t717_handshake_rejects_every_changed_byte_and_truncation ... ok
+test audio::tests::t717_malformed_receive_closes_admission_and_deadline_cannot_be_extended ... ok
+test audio::tests::t717_pcm_roundtrip_preserves_signed_extremes_and_stereo_order ... ok
+test audio::tests::t717_poll_clock_must_not_regress_before_frame_arrives ... ok
+test audio::tests::t717_profile_bounds_and_serialized_invalid_values ... ok
+test audio::tests::t717_queue_prefill_overflow_underflow_and_no_repeated_speech ... ok
+test audio::tests::t717_queue_rejects_channels_sizes_backwards_clock_and_expires_old_audio ... ok
+test audio::tests::t717_queue_stress_stays_bounded_with_extreme_samples_and_drift ... ok
+test audio::tests::t717_receive_and_render_enforce_deadline_without_poll ... ok
+test audio::tests::t717_receive_render_disconnect_and_fresh_start ... ok
+test audio::tests::t717_resampling_interpolates_across_block_boundary ... ok
+test audio::tests::t717_resampling_preserves_channels_and_bounded_consumption ... ok
+test audio::tests::t717_sequence_gaps_reordering_and_wrap ... ok
+test audio::tests::t717_session_rejects_implicit_unauthenticated_and_unsupported_start ... ok
+test audio::tests::t717_stale_failure_cannot_cancel_replacement_and_stop_cannot_restore_it ... ok
+test audio::tests::t717_stale_render_cannot_retire_replacement ... ok
+test audio::tests::t718_native_pcm_bounds_and_saved_preferences_are_passive ... ok
+test audio::tests::t719_capture_transfer_bounds_age_overflow_and_partial_rendering ... ok
+test audio::tests::t719_speaker_defaults_upgrade_old_settings_without_starting ... ok
+test audio::tests::t736_failed_entropy_never_admits_or_advances_a_session ... ok
+test audio::wire::writer_tests::t719_sender_preserves_first_sequence_gaps_and_atomic_rejection ... ok
+test auxiliary_activity::tests::t1085_only_retained_manual_intents_keep_stop_available ... ok
+test camera::brightness::tests::t1450_bright_and_black_frames_stay_unchanged ... ok
+test camera::brightness::tests::t1450_curve_is_bounded_monotonic_and_never_darkens ... ok
+test camera::brightness::tests::t1450_dark_center_bright_background_and_chroma ... ok
+test camera::brightness::tests::t1450_invalid_dimensions_fps_and_frames_are_atomic ... ok
+test camera::brightness::tests::t1450_t1466_defaults_saved_and_cli_selectable ... ok
+test camera::brightness::tests::t1450_temporal_smoothing_and_recovery_are_bounded ... ok
+test camera::brightness::tests::t1466_modes_strength_and_invalid_updates_are_bounded ... ok
+test camera::brightness::tests::t1466_shadow_lift_protects_upper_midtones ... ok
+test camera::connection_tests::t1231_export_and_native_capture_profiles_have_explicit_dimensions ... ok
+test camera::connection_tests::t931_cli_rejects_mixed_transports_and_keeps_native_selection_explicit ... ok
+test camera::connection_tests::t931_credentials_reject_all_invalid_lengths_and_ascii_bytes ... ok
+test camera::connection_tests::t931_target_selection_and_saved_legacy_defaults_are_explicit ... ok
+test camera::connection_tests::t931_usb_selection_rejects_ambiguous_or_invalid_settings ... ok
+test camera::connection_tests::t931_wire_projection_preserves_camera_controls_and_host_transforms ... ok
+test camera::connection_tests::t974_camera_transport_capabilities_are_independent_and_fail_closed ... ok
+test camera::filter_tests::t1671_filter_capacity_default_cli_and_saved_profile_agree ... ok
+test camera::filter_tests::t1671_filter_capacity_rejects_outside_the_bounded_grant ... ok
+test camera::preview::invalid_publication_tests::t1457_future_publication_cannot_extend_freshness ... ok
+test camera::preview::publication_tests::t1457_thumbnail_conversion_does_not_renew_source_age ... ok
+test camera::preview::quality_tests::t1729_preview_bounds_preserve_aspect_without_upscaling ... ok
+test camera::preview::quality_tests::t1729_preview_preserves_vga_pixel_detail ... ok
+test camera::preview::tests::t543_preview_bounds_colours_and_shape_preserve_exported_pixels ... ok
+test camera::stop::tests::t1204_bounded_invalid_stop_keys_never_become_requests ... ok
+test camera::stop::tests::t1204_shared_stop_key_retains_exact_original_credential_and_port ... ok
+test camera::tests::t539_profile_limits_and_bounded_invalid_inputs ... ok
+test camera::tests::t616_freshness_budget_is_bounded ... ok
+test camera::tests::t618_adaptive_rate_bounds_and_fixed_override ... ok
+test camera::tests::t938_dimension_boundaries_and_supported_sizes_are_exact ... ok
+test camera::tests::t938_unchecked_dimensions_never_panic_or_wrap_frame_size ... ok
+test camera::transform::oracle_tests::t1678_every_plane_matches_forward_rotation_oracle_across_live_changes ... ok
+test camera::transform::oracle_tests::t1678_invalid_frame_bounds_reject_without_modifying_pixels ... ok
+test camera::transform::tests::t1467_identity_mirror_and_half_turn_have_independent_pixel_oracles ... ok
+test camera::transform::tests::t1467_invalid_transform_is_atomic ... ok
+test camera::transform::tests::t1467_quarter_turn_quadrants_match_independent_orientation_oracle ... ok
+test camera::transform::tests::t1467_quarter_turns_keep_layout_and_chroma_aligned_letterboxing ... ok
+test camera::tuning::tests::t1468_capabilities_and_sensor_bounds_are_independent ... ok
+test camera::tuning::tests::t1468_command_has_independent_cross_language_byte_oracle ... ok
+test camera::tuning::tests::t1468_invalid_capability_fields_are_rejected ... ok
+test capture_activity::tests::t1023_bounded_record_mutations ... ok
+test capture_activity::tests::t1023_fixed_vectors_and_exhaustion ... ok
+test capture_capacity::tests::t697_defaults_auto_manual_and_configuration_limits ... ok
+test capture_capacity::tests::t697_effective_capacity_is_verified_separately_and_dirty_work_is_bounded ... ok
+test cli::backend::tests::t694_capability_admission_is_explicit_and_preserves_supported_arguments ... ok
+test cli::backend::tests::t694_connection_overrides_preserve_saved_values_and_bound_slot_ranges ... ok
+test cli::camera_tests::t539_camera_command_is_separate_from_display_startup ... ok
+test cli::camera_tests::t612_worker_cli_bounds_and_auto_are_explicit ... ok
+test commands::observation_tests::t1031_async_reports_original_proofs_on_input_timeout_and_spawn_failure ... ok
+test commands::observation_tests::t1031_cancelled_async_command_keeps_exact_original_proofs ... ok
+test commands::observation_tests::t1031_panicking_sync_observer_cannot_leak_exposed_child ... ok
+test commands::observation_tests::t1031_sync_reports_original_collector_and_child_on_success_or_timeout ... ok
+test commands::observation_tests::t1031_sync_spawn_failure_still_reports_exposed_collector ... ok
+test commands::observation_tests::t1031_unrepresentable_deadlines_reject_before_native_exposure ... ok
+test commands::observation_tests::t1139_delayed_startup_preserves_success_and_short_timeout_proofs ... ok
+test commands::output::tests::t1031_held_collector_reports_exact_original_thread_until_join ... ok
+test commands::output::tests::t1142_slow_preparation_does_not_count_as_blocked_collection_control ... ok
+test commands::output::tests::t1529_idle_output_waits_back_off_and_finish_without_losing_bytes ... ok
+test commands::output::tests::t815_child_exit_after_idle_probe_still_drains_final_bytes ... ok
+test commands::output::tests::t815_collection_failure_panic_and_cancellation_retire_owners ... ok
+test commands::output::tests::t815_held_collection_cannot_block_control_or_release_its_capacity ... ok
+test commands::output::tests::t815_interrupted_reads_retry_without_losing_budget_or_bytes ... ok
+test commands::output_limits::tests::t815_stream_and_total_boundaries_preserve_only_admitted_bytes ... ok
+test commands::retained_tests::t1444_native_child ... ok
+test commands::retained_tests::t1444_retained_execution_keeps_original_bounds_and_proofs ... ok
+test commands::retained_tests::t1444_retained_fixture ... ok
+test commands::spawn_tests::t1638_dropped_receipt_neither_kills_nor_releases_original_child ... ok
+test commands::spawn_tests::t1638_exit_receipt_reports_reaped_success_and_failure ... ok
+test commands::spawn_tests::t1638_unobserved_retirement_uses_the_same_original_reap ... ok
+test commands::tests::t094_async_command_is_bounded_and_reaped ... ok
+test commands::tests::t094_cancelled_command_is_reaped ... ok
+test commands::tests::t094_sync_command_is_bounded_and_reaped ... ok
+test commands::tests::t1197_readmitted_fixture_waits_for_actual_exit_without_a_startup_deadline ... 
+running 1 test
+test commands::tests::t814_unconfirmed_async_exit_retains_admission_after_control_deadline ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 521 filtered out; finished in 3.20s
+
+ok
+test commands::tests::t1513_client_wait_covers_a_daemon_with_different_configured_budgets ... ok
+test commands::tests::t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets ... ok
+test commands::tests::t328_denied_signal_does_not_extend_deadline ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 521 filtered out; finished in 0.40s
+
+ok
+test commands::tests::t496_fixture_process ... ok
+test commands::tests::t590_denied_group_signal_reports_unretired_work ... ok
+test commands::tests::t609_cancelled_stdin_writer_is_reaped ... ok
+test commands::tests::t609_stdin_delivery_closes_input_and_preserves_bytes ... ok
+test commands::tests::t609_timeout_covers_blocked_stdin_write ... ok
+test commands::tests::t814_accepted_signal_does_not_make_reaping_unbounded ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 521 filtered out; finished in 0.40s
+
+ok
+test commands::tests::t814_dependent_lease_cleanup_cannot_hold_control_deadline ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 521 filtered out; finished in 0.00s
+
+ok
+test commands::tests::t814_unconfirmed_async_exit_retains_admission_after_control_deadline ... ok
+test commands::tests::t815_collection_failure_after_reap_never_signals_a_reusable_pid ... ok
+test commands::tests::t836_extreme_retirement_grace_never_panics_or_loses_ownership ... 
+running 1 test
+test commands::tests::t496_fixture_process ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+test commands::tests::t836_representable_grace_and_cancelled_retirement_preserve_ownership ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 521 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 521 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 521 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 521 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+test connection::control::names::tests::t1336_control_and_direction_overrides_cannot_spoof_rows ... ok
+test connection::control::names::tests::t1336_names_bound_each_field_independently ... ok
+test connection::control::tests::t1336_device_name_and_model_survive_control_wire ... ok
+test connection::control::tests::t1336_maximum_names_fit_registration_and_reject_malformed_fields ... ok
+test connection::control::tests::t1337_device_owner_counter_is_bounded_and_canonical ... ok
+test connection::control::tests::t1338_availability_wire_domain_is_exhaustive ... ok
+test connection::control::tests::t1598_inventory_availability_is_required_and_strict_on_the_wire ... ok
+test connection::control::tests::t877_counter_range_and_invalid_decisions_reject_before_publication ... ok
+test connection::control::tests::t877_local_control_roundtrips_and_never_accepts_descriptors ... ok
+test connection::control::tests::t877_mutations_and_arbitrary_bounded_inputs_are_canonical_or_rejected ... ok
+test connection::control::tests::t877_state_ticket_and_boolean_contracts_reject_inconsistent_reports ... ok
+test connection::control::tests::t877_truncation_trailing_and_unknown_operations_rejected ... ok
+test connection::control_view::tests::t1337_snapshot_rejects_missing_or_duplicate_device_owner ... ok
+test connection::control_view::tests::t1598_unavailable_inventory_blocks_only_new_device_connections ... ok
+test connection::control_view::tests::t900_all_advertised_capacity_maxima_fit_one_bounded_snapshot ... ok
+test connection::control_view::tests::t900_capacity_and_counter_boundaries_are_rejected_by_the_shared_contract ... ok
+test connection::control_view::tests::t900_complete_snapshot_preserves_corresponding_identity_and_sorted_metadata ... ok
+test connection::control_view::tests::t900_conflicting_or_backward_snapshots_invalidate_all_displayed_actions ... ok
+test connection::control_view::tests::t900_displayed_actions_are_revalidated_without_optimistic_trust_or_approval ... ok
+test connection::control_view::tests::t900_identified_or_trusted_connections_require_a_displayed_peer_ticket ... ok
+test connection::control_view::tests::t900_invalid_order_revision_and_duplicate_records_discard_partial_state ... ok
+test connection::control_view::tests::t900_replacement_broker_cannot_reuse_any_old_approval_even_with_equal_counters ... ok
+test connection::control_view::tests::t900_seeded_invalid_sequences_remain_bounded_and_only_complete_on_end ... ok
+test connection::control_view::tests::t900_snapshot_capacities_reject_overflow_without_publishing_partial_lists ... ok
+test connection::control_view::tests::t900_unknown_mutated_and_stale_choices_never_become_control_commands ... ok
+test connection::control_view::tests::t924_equal_broker_counters_do_not_identify_a_lifetime ... ok
+test connection::control_view::tests::t924_lifetime_tokens_do_not_pin_obsolete_snapshots ... ok
+test connection::flow::tests::t846_sequences_never_wrap ... ok
+test connection::handshake::tests::t1104_tls_timeout_defaults_precision_and_seeded_boundaries ... ok
+test connection::management::boundary_tests::t981_audio_profile_boundaries_reject_invalid_values_and_other_resource_kinds ... ok
+test connection::management::boundary_tests::t981_every_outcome_byte_accepts_only_the_fixed_wire_mapping ... ok
+test connection::management::boundary_tests::t981_every_reason_byte_accepts_only_the_fixed_wire_mapping ... ok
+test connection::management::boundary_tests::t981_every_resource_byte_accepts_only_the_fixed_wire_mapping ... ok
+test connection::media::original::tests::t1086_bounded_serial_values_remain_exact_without_hidden_normalization ... ok
+test connection::media::original::tests::t1086_concurrent_native_free_callers_share_one_committed_original ... ok
+test connection::media::original::tests::t1086_explicit_adb_and_usb_never_discover_or_fallback ... ok
+test connection::media::original::tests::t1086_late_or_concurrent_resolution_returns_only_committed_original ... ok
+test connection::media::original::tests::t1086_original_target_survives_auto_selection_change_and_new_intent_can_reselect ... ok
+test connection::media::original::tests::t1086_rejected_or_cancelled_lookup_publishes_no_original ... ok
+test connection::registration_client::tests::t1007_original_exit_never_restores_authority_or_uses_socket_failure_as_proof ... ok
+test connection::registration_client::tests::t1603_late_permission_notice_never_undoes_cancellation ... ok
+test connection::registration_client::tests::t1603_permission_requirement_is_live_without_admitting_or_retiring_route ... ok
+test connection::registration_client::tests::t1603_registration_state_byte_domain_and_permission_status_roundtrip ... ok
+test connection::registration_client::tests::t910_admission_requires_current_route_status_and_retirement_requires_exact_proof ... ok
+test connection::registration_client::tests::t910_all_bounded_status_pairs_preserve_terminal_and_failed_admission ... ok
+test connection::registration_client::tests::t910_cancel_before_exposure_opens_nothing_and_cancel_during_start_waits_route ... ok
+test connection::registration_client::tests::t910_failed_status_and_native_loss_never_release_remote_ownership ... ok
+test connection::registration_client::tests::t910_invalid_and_extreme_counters_reject_before_retirement_proof ... ok
+test connection::registration_client::tests::t910_invalid_profile_and_response_before_exposure_do_not_start_native_work ... ok
+test connection::registration_client::tests::t910_malformed_foreign_and_replayed_responses_cannot_grant_or_retire_resources ... ok
+test connection::registration_client::tests::t910_peer_initiated_close_and_failed_admission_revoke_before_native_cleanup ... ok
+test connection::registration_client::tests::t910_rejection_is_retirement_only_before_registration_was_owned ... ok
+test connection::resources::tests::t851_request_and_generation_exhaustion_never_wrap ... ok
+test connection::resources::timeout::tests::t1103_invalid_and_overflowing_deadlines_publish_no_resource ... ok
+test connection::resources::timeout::tests::t1103_invalid_tablet_offers_reject_without_consuming_request_identity ... ok
+test connection::resources::timeout::tests::t1103_late_peer_preparation_cannot_grant_expired_resource ... ok
+test connection::resources::timeout::tests::t1103_tablet_offers_preserve_selected_timeout_boundaries ... ok
+test connection::resources::timeout::tests::t1103_typed_admission_timeout_bounds_and_seeded_invalid_values ... ok
+test connection::routes::tests::t856_local_route_revision_exhaustion_does_not_wrap ... ok
+test connection::trust::tests::t852_bounded_invalid_completion_cannot_retarget_live_attempt ... ok
+test connection::trust::tests::t852_composition_requires_fresh_proof_after_restart_and_revoke ... ok
+test connection::trust::tests::t852_failed_persistence_or_proof_cancels_matching_attempt_and_keeps_retirement_barrier ... ok
+test connection::trust::tests::t852_stale_completion_cannot_cancel_another_attempt_and_health_is_rechecked ... ok
+test connection::trust::tests::t853_approved_snapshot_requires_healthy_durable_store ... ok
+test connection::trust::tests::t868_capacity_has_no_eviction_and_invalid_load_is_preserved ... ok
+test connection::trust::tests::t868_codec_accepts_exact_maximum_and_rejects_oversized_record ... ok
+test connection::trust::tests::t868_codec_encode_rejects_noncanonical_snapshots_and_capacity_lowering ... ok
+test connection::trust::tests::t868_codec_golden_vectors_and_bounded_mutations ... ok
+test connection::trust::tests::t868_failed_remember_keeps_admission_closed_and_revoke_cancels_unsaved_peer ... ok
+test connection::trust::tests::t868_failed_writes_and_counter_exhaustion_poison_reconnect_admission ... ok
+test connection::trust::tests::t868_rejects_unproven_nonremembered_stale_and_changed_leases ... ok
+test connection::trust::tests::t868_remember_restart_sorted_peers_and_revoke_without_implicit_authority ... ok
+test connection::window::tests::t875_every_prefix_mutation_and_bounded_arbitrary_input_is_checked ... ok
+test connection::window::tests::t875_selection_is_symmetric_bounded_and_cannot_expand_proposal ... ok
+test connection::window::tests::t875_window_bounds_roles_and_round_trip ... ok
+test credentials::tests::t523_entropy_failure_never_becomes_an_empty_credential ... ok
+test diagnostics::native::tests::t533_command_fixture ... ok
+test diagnostics::native::tests::t533_native_discovery_and_failure_keep_process_contracts ... ok
+test direct_input::tests::t1503_direct_event_wire_rejects_internal_touch ... ok
+test direct_input::tests::t673_preferences_validate_monitor_identity_modes_and_device_masks ... ok
+test direct_input::tests::t689_denied_partial_creation_replacement_and_shutdown_release_ownership ... ok
+test direct_input::tests::t689_direct_mouse_taps_right_click_and_drag_have_owned_transitions ... ok
+test direct_input::tests::t689_invalid_events_cannot_reach_adapter_or_create_contacts ... ok
+test direct_input::tests::t689_touch_owns_slots_and_release_uses_last_position ... ok
+test display::tests::t321_invalid_and_boundary_numeric_corpus_never_wraps_or_admits_low_clock ... ok
+test display::tests::t321_low_clock_is_rejected_with_supported_refresh_alternative ... ok
+test display::tests::t321_minimum_refresh_and_rounded_clock_boundaries_agree ... ok
+test display::tests::t321_saved_low_clock_preserves_geometry_and_raises_refresh ... ok
+test display_activity::projection::tests::t1055_absent_source_and_unavailable_publications_have_explicit_policy ... ok
+test display_activity::projection::tests::t1055_coalesced_stop_publishes_new_fence_without_replaying_old_work ... ok
+test display_activity::projection::tests::t1055_exhaustion_is_terminal_and_never_wraps_or_reinitializes_original_owner ... ok
+test display_activity::projection::tests::t1055_exhaustive_five_step_projection_traces_match_independent_stop_model ... ok
+test display_activity::tests::t1055_bounded_counter_boundaries_and_invalid_values_never_construct_a_signal ... ok
+test display_activity::tests::t1055_shared_wire_vectors_require_exact_types_and_ranges ... ok
+test display_control::tests::t1272_display_contract_rejects_malformed_and_stale_lease_shapes ... ok
+test display_control::tests::t1272_display_contract_round_trips_without_backend_types ... ok
+test display_control::tests::t1272_display_snapshots_reject_ambiguous_targets_and_unbounded_inputs ... ok
+test edid::tests::t1717_current_geometry_boundaries_preserve_independent_fields ... ok
+test edid::tests::t1717_identity_and_physical_boundaries_never_wrap ... ok
+test edid::tests::t1717_names_are_bounded_terminated_and_checksummed ... ok
+test encoder_workers::tests::t612_budget_order_manual_override_and_bounds ... ok
+test encoder_workers::tests::t612_effective_count_is_evidence_not_requested_capacity ... ok
+test encoder_workers::tests::t665_worker_fields_require_the_exact_x264_marker ... ok
+test encoding::tests::t1193_bounded_invalid_alias_variants_never_resolve ... ok
+test encoding::tests::t1193_obsolete_encoder_alias_cannot_admit_a_profile ... ok
+test encoding::tests::t1193_obsolete_encoder_configuration_follows_current_unknown_value_policy ... ok
+test encoding::tests::t373_registry_preserves_current_profiles_and_adapter_capabilities ... ok
+test encoding::tests::t400_low_latency_vaapi_is_distinct_from_stock_encoder_name ... ok
+test encoding::tests::t433_av1_profiles_use_framed_stock_cli_and_reject_inproc ... ok
+test encoding::tests::t612_manual_workers_use_shared_policy_and_preserve_default ... ok
+test encoding::tests::t613_x264_defaults_to_one_worker_in_both_adapters ... ok
+test encoding::tests::t787_shared_vaapi_preserves_explicit_low_latency_policy ... ok
+test encoding::tests::t839_numeric_boundaries_match_low_level_profile_contract ... ok
+test encoding::tests::t839_profile_rejects_bitrate_overflow_before_arithmetic ... ok
+test encoding::windows::tests::t685_bounded_invalid_requests_and_probe_commands ... ok
+test encoding::windows::tests::t685_catalog_profiles_keep_hardware_out_of_live_admission ... ok
+test encoding::windows::tests::t685_options_preserve_defaults_and_distinguish_capacity_from_quality ... ok
+test gpu::tests::t727_config_roundtrip_merge_and_restart_preserve_legacy_device ... ok
+test gpu::tests::t727_policy_preserves_automatic_and_bounds_invalid_or_stale_choices ... ok
+test host_activity::source_lifetime::tests::t1343_retry_certificates_remain_bounded_without_forgetting_live_native_debt ... ok
+test host_activity::tests::feed::t1014_bounded_capability_preference_and_observation_properties_preserve_contracts ... ok
+test host_activity::tests::feed::t1014_rejected_and_terminal_sources_cannot_change_or_restore_demand ... ok
+test host_activity::tests::feed::t1014_snapshot_rejects_foreign_future_and_inconsistent_contracts ... ok
+test host_activity::tests::feed::t1014_watch_coalescing_cannot_revive_a_worker_while_original_retirement_is_held ... ok
+test host_activity::tests::t1008_bounded_capability_property_rejects_unsupported_native_fields ... ok
+test host_activity::tests::t1008_bounded_observations_preserve_transitions_and_fail_closed_on_overflow ... ok
+test host_activity::tests::t1008_observation_boundaries_reject_without_reviving_epochs ... ok
+test host_activity::tests::t1008_source_settings_contract_validates_independently_of_native_adapters ... ok
+test host_activity::tests::t1013_display_observation_contract_rejects_invalid_and_oversized_frames ... ok
+test host_activity::tests::t1014_coalesced_pause_resume_still_retires_only_the_original_affected_worker ... ok
+test host_activity::tests::t1018_independent_lifetime_contract_requires_every_original_certificate_and_last_clone ... ok
+test host_activity::tests::t913_capability_and_setting_boundaries_preserve_explicit_unsupported_fallback ... ok
+test host_activity::tests::t913_concurrent_settings_edits_merge_by_leaf_without_overwriting_media ... ok
+test host_activity::tests::t913_gate_counter_exhaustion_cannot_revive_an_old_request ... ok
+test host_activity::tests::t913_gate_retains_cancelled_original_until_actual_completion_and_rechecks_authority ... ok
+test host_activity::tests::t913_invalid_stale_foreign_and_exhausted_event_corpus_is_atomic ... ok
+test host_activity::tests::t913_lock_display_off_and_viewer_loss_pause_only_display ... ok
+test host_activity::tests::t913_settings_round_trip_and_invalid_types_do_not_reconfigure_unrelated_media ... ok
+test host_activity::tests::t913_stuck_native_retirement_cannot_block_independent_resource_gates ... ok
+test host_activity::tests::t913_suspend_unavailability_and_unknown_supported_power_interrupt_every_resource ... ok
+test host_activity::work_observation::tests::t1043_bounded_invalid_epoch_revision_and_stop_fences_fail_closed ... ok
+test host_activity::work_observation::tests::t1043_capability_and_source_state_matrix_preserves_explicit_target_fallback ... ok
+test host_activity::work_observation::tests::t1043_coalesced_pause_resume_invalidates_only_the_affected_original_work ... ok
+test host_activity::work_observation::tests::t1043_explicit_unsupported_compositions_and_target_capabilities_preserve_fallback ... ok
+test host_activity::work_observation::tests::t1043_foreign_future_inconsistent_or_closed_publications_cannot_retain_old_work ... ok
+test host_activity::work_observation::tests::t1043_local_viewer_demand_is_independent_of_backend_support ... ok
+test host_activity::work_observation::tests::t1043_pending_failed_stopped_and_supported_source_loss_deny_work ... ok
+test idle::control::tests::t695_epoch_local_trial_motion_keys_staleness_and_owned_drop ... ok
+test idle::control::tests::t695_invalid_epochs_missing_and_malformed_evidence_fail_closed ... ok
+test idle::control::tests::t695_pending_bound_and_ack_ordinal_boundaries ... ok
+test idle::control::tests::t695_retirement_and_adapter_failure_clear_sparse_request ... ok
+test idle::renewal::tests::t1673_all_interval_boundaries_and_clock_exhaustion_remain_bounded ... ok
+test idle::renewal::tests::t1673_renewal_deadline_changes_and_failed_publication ... ok
+test idle::tests::t492_active_epoch_rejects_regression_and_sequence_wrap_is_valid ... ok
+test idle::tests::t492_busy_or_unmeasured_stream_remains_at_compatible_cadence ... ok
+test idle::tests::t492_current_profile_needs_measured_baseline_and_sparse_trial ... ok
+test idle::tests::t492_missing_frames_keys_and_invalid_samples_cannot_certify_idle ... ok
+test idle::tests::t492_slow_ack_encoder_queue_growth_and_clock_steps_restore_compatibility ... ok
+test idle::tests::t492_timestamp_conversion_is_bounded_and_preserves_wall_time_gaps ... ok
+test idle::tests::t667_ack_limit_is_independent_of_relative_cost_margin ... ok
+test idle::tests::t667_baseline_ack_limit_is_inclusive_and_never_admits_slow_frames ... ok
+test idle::tests::t667_pending_cadence_grace_expires_at_one_second ... ok
+test idle::tests::t667_percentile_uses_the_ordered_window_and_exact_cost_margin ... ok
+test idle::tests::t667_tick_preserves_baseline_and_exact_sparse_deadline ... ok
+test idle::tests::t667_trial_waits_for_the_complete_sample_window ... ok
+test idle::unchanged::tests::t1109_bad_ack_cost_timestamp_sequence_and_key_progress_reject ... ok
+test idle::unchanged::tests::t1109_bounded_exhaustive_authority_cutoff_is_absorbing ... ok
+test idle::unchanged::tests::t1109_delayed_ack_processing_and_exact_lease_boundary_remain_valid ... ok
+test idle::unchanged::tests::t1109_emit_oracle_covers_first_damage_cursor_refresh_and_unchanged_boundaries ... ok
+test idle::unchanged::tests::t1109_lease_expiry_clock_reversal_and_future_ack_restore_compatibility ... ok
+test idle::unchanged::tests::t1109_motion_resets_incomplete_trial_but_preserves_completed_qualification ... ok
+test idle::unchanged::tests::t1109_original_authority_or_viewer_loss_is_terminal_in_every_phase ... ok
+test idle::unchanged::tests::t1109_refresh_trial_gap_boundaries_do_not_admit_outside_the_window ... ok
+test idle::unchanged::tests::t1109_requires_both_measured_windows_before_refresh_trial_then_sixteen_matches ... ok
+test idle::unchanged::tests::t1109_unqualified_recipe_or_decoder_never_admits_suppression ... ok
+test idle_wait::tests::t1529_backoff_bounds_growth_and_reset_for_every_admitted_millisecond_pair ... ok
+test idle_wait::tests::t1529_short_commands_keep_one_millisecond_observation_before_backoff ... ok
+test input_mapping::tests::t672_invalid_coordinates_geometry_identity_and_ranges_are_rejected ... ok
+test input_mapping::tests::t672_mapping_bounds_rotation_and_mixed_dpi_property ... ok
+test input_mapping::tests::t672_selection_requires_exact_identity_and_current_topology ... ok
+test lifecycle::tests::t524_transition_bounds_errors_and_restart_order ... ok
+test linux::appimage::tests::t308_stable_launcher_requires_absolute_executable_and_literal_unit_binding ... ok
+test linux::autostart::tests::t231_hidden_and_incomplete_entries_do_not_report_enabled ... ok
+test linux::autostart::tests::t231_shell_and_gui_entries_agree_and_launch_literal_paths ... ok
+test linux::capture_control::tests::t1023_cancellation_keeps_original_command_until_exact_echo ... ok
+test linux::capture_control::tests::t1023_closed_peer_cannot_acknowledge_pending_transition ... ok
+test linux::capture_control::tests::t1023_exec_inherits_only_reserved_endpoint ... ok
+test linux::capture_control::tests::t1023_malformed_foreign_truncated_and_descriptor_echo_poison ... ok
+test linux::capture_control::tests::t1023_peer_close_and_sequence_exhaustion_are_terminal ... ok
+test linux::capture_control::tests::t1023_socket_lease_and_backpressure_preserve_pending_ownership ... ok
+test linux::capture_control::tests::t1023_successful_transition_returns_original_proof ... ok
+test linux::capture_control::tests::t1686_caller_cancellation_cannot_renew_original_deadline ... ok
+test linux::capture_control::tests::t1686_invalid_ack_budgets_are_rejected_before_socket_admission ... ok
+test linux::capture_control::tests::t1686_ready_late_ack_cannot_certify_the_transition ... ok
+test linux::capture_control::tests::t1686_unanswered_original_request_has_a_finite_deadline ... ok
+test linux::daemon::status::tests::t409_changed_pid_file_precedes_still_valid_cached_daemon ... ok
+test linux::daemon::status::tests::t409_stale_pid_and_identity_changes_force_discovery ... ok
+test linux::daemon::status::tests::t409_status_revalidates_one_pid_without_repeated_inventory ... ok
+test linux::display_control::tests::t1274_native_display_frames_are_bounded_and_validated ... ok
+test linux::display_control::tests::t1274_native_display_round_trip_and_owner_checks ... ok
+test linux::gpu::tests::t1574_cache_bounds_devices_metadata_and_display_strings ... ok
+test linux::gpu::tests::t1574_changed_identity_and_empty_inventory_refresh_cached_labels ... ok
+test linux::gpu::tests::t1574_device_alias_retarget_cannot_reuse_old_metadata ... ok
+test linux::gpu::tests::t1574_measure_thirty_unchanged_discovery_samples ... ok
+test linux::gpu::tests::t1574_permissions_probe_does_not_open_render_nodes ... ok
+test linux::gpu::tests::t1574_permissions_reject_invalid_and_missing_paths ... ok
+test linux::gpu::tests::t1574_unchanged_devices_reuse_labels_but_refresh_permissions ... ok
+test linux::gpu::tests::t727_discovery_checks_stable_identity_permissions_and_native_bounds ... ok
+test linux::gpu::tests::t727_effective_reports_require_owned_process_and_open_device_evidence ... ok
+test linux::gpu::tests::t727_pci_names_are_optional_bounded_and_do_not_cross_vendor_sections ... ok
+test linux::packet::tests::t871_bounded_invalid_sizes_and_descriptor_counts_never_reach_syscall ... ok
+test linux::packet::tests::t871_empty_payload_owns_and_closes_rights_before_rejection ... ok
+test linux::packet::tests::t871_excess_and_truncated_rights_close_every_delivered_descriptor ... ok
+test linux::packet::tests::t871_full_packet_and_maximum_rights_are_bounded ... ok
+test linux::packet::tests::t871_packet_parameter_bounds_and_native_errors_are_rejected ... ok
+test linux::packet::tests::t871_packets_preserve_boundaries_and_owned_cloexec_rights ... ok
+test linux::packet::tests::t871_payload_truncation_and_unknown_control_release_received_rights ... ok
+test linux::pipe::report::tests::t415_status_rejects_stale_processes_replaced_fifos_and_malformed_reports ... ok
+test linux::pipe::tests::t415_inspection_never_consumes_frames_or_opens_a_reader ... ok
+test linux::pipe::tests::t415_requests_are_atomic_private_validated_and_do_not_follow_links ... ok
+test linux::pipe::tests::t415_status_does_not_wake_a_reader_waiting_for_the_capture_writer ... ok
+test linux::pipe::tests::t463_failed_publication_keeps_preference_for_startup_retry ... ok
+test linux::pipe::tests::t463_save_waits_for_startup_publication_before_publishing_new_value ... ok
+test linux::pipe::tests::t463_startup_reads_latest_preference_instead_of_old_snapshot ... ok
+test linux::processes::coverage_tests::t1696_stop_pins_all_candidates_before_any_signal ... ok
+test linux::processes::coverage_tests::t497_pinned_signals_reject_invalid_inputs_and_accept_retired_children ... ok
+test linux::processes::tests::t245_process_matching_preserves_ownership_and_native_arguments ... ok
+test linux::processes::tests::t409_inventory_filters_before_full_reads_and_rechecks_uid ... ok
+test linux::runtime::session_tests::t923_failed_publication_preserves_original_state_and_allows_retry ... ok
+test linux::runtime::session_tests::t923_malformed_snapshot_cannot_remove_another_publishers_file ... ok
+test linux::runtime::session_tests::t923_publisher_rejects_invalid_batches_without_changing_file_or_state ... ok
+test linux::runtime::session_tests::t923_reader_and_publisher_reject_invalid_slots_and_ports ... ok
+test linux::runtime::session_tests::t923_reader_caps_actual_reads_and_handles_io_failure ... ok
+test linux::runtime::session_tests::t923_reader_rejects_duplicate_and_excessive_records ... ok
+test linux::runtime::session_tests::t923_reader_rejects_fifth_record_before_decoding_its_fields ... ok
+test linux::runtime::session_tests::t923_reader_rejects_oversized_valid_json_at_exact_byte_boundary ... ok
+test linux::runtime::session_tests::t923_reader_rejects_truncation_corruption_and_stale_owners ... ok
+test linux::runtime::session_tests::t923_unique_sparse_and_full_batches_round_trip_in_slot_order ... ok
+test linux::runtime::tests::runtime_dir_is_private ... ok
+test linux::runtime::tests::t099_session_snapshot_is_private_current_and_removed_on_exit ... ok
+test linux::runtime::tests::t1582_every_capture_fifo_has_an_index ... ok
+test linux::runtime::tests::t242_fake_tablet_runtime_fixture_matches_the_host ... ok
+test linux::runtime::tests::t252_base_permissions_and_symlink_policy_are_explicit ... ok
+test linux::runtime::tests::t252_directory_owner_must_match_the_calling_user ... ok
+test linux::runtime::tests::t252_fallback_selection_preserves_native_home_and_order ... ok
+test linux::runtime::tests::t252_foreign_owner_cannot_receive_runtime_files ... ok
+test linux::runtime::tests::t252_foreign_owner_child ... ok
+test linux::runtime::tests::t252_runtime_child ... ok
+test linux::runtime::tests::t252_runtime_paths_reject_unsafe_state ... ok
+test linux::runtime::tests::t436_runtime_fixture_survives_shared_umask ... ok
+test linux::runtime::tests::t444_random_tokens_are_fresh_fixed_width_and_reject_mutations ... ok
+test linux::runtime::tests::token_comparison_is_exact ... ok
+test media_start::outcome_tests::t1460_first_settlement_is_final_and_rejection_is_explicit ... ok
+test media_start::rejection_tests::t1460_last_request_owner_settles_unconsumed_start ... ok
+test media_start::tests::t1455_acknowledgement_is_sticky_and_request_specific ... ok
+test model::cache_tests::t1490_cache_capacity_is_persisted_bounded_and_does_not_restart_media ... ok
+test model::cache_tests::t1490_cache_capacity_rejects_wrong_types_and_preserves_unedited_changes ... ok
+test model::diagnostic_tests::t1359_bitrate_diagnostics_describe_policy_in_both_directions ... ok
+test model::media_tests::t1553_all_saved_media_fingerprints_require_exact_valid_identity ... ok
+test model::media_tests::t1553_all_saved_media_serials_reject_invalid_boundaries ... ok
+test model::media_tests::t1553_invalid_media_save_preserves_the_previous_configuration ... ok
+test model::media_tests::t1650_saved_audio_direction_must_match_its_resource ... ok
+test model::merge::tests::t703_changed_value_types_are_atomic_and_absent_removal_is_safe ... ok
+test model::merge::tests::t703_nested_fields_and_atomic_arrays_preserve_unedited_latest_values ... ok
+test model::nested_schema_tests::t1680_known_flat_camera_fields_sensor_and_activity_round_trip ... ok
+test model::nested_schema_tests::t1680_nested_and_direct_settings_reject_unknown_keys ... ok
+test model::schema_tests::t1679_current_known_settings_and_defaults_remain_valid ... ok
+test model::schema_tests::t1679_obsolete_and_unknown_root_fields_are_rejected ... ok
+test model::tests::t017_merge_preserves_external_changes_and_applies_only_user_edits ... ok
+test model::tests::t061_dimensions_fit_edid_active_pixel_fields ... ok
+test model::tests::t063_unknown_encoder_is_not_persisted_as_valid_configuration ... ok
+test model::tests::t093_all_slot_ports_are_unique_nonzero_and_representable ... ok
+test model::tests::t1194_unknown_obsolete_values_cannot_change_current_tuning_controls ... ok
+test model::tests::t1195_bounded_recalibration_admission_matches_wider_integer_oracle ... ok
+test model::tests::t1195_invalid_recalibration_values_cannot_admit_a_configuration ... ok
+test model::tests::t1533_raw_slot_sanitization_matches_transport_capacity ... ok
+test model::tests::t1533_raw_slot_validation_rejects_out_of_range_capacity ... ok
+test model::tests::t1534_positions_accept_current_names_and_reject_obsolete_aliases ... ok
+test model::tests::t415_pipe_capacity_round_trips_and_invalid_values_fall_back ... ok
+test model::tests::t434_auto_is_default_but_explicit_choices_survive ... ok
+test model::tests::t474_conversion_capacity_defaults_round_trips_and_rejects_invalid_values ... ok
+test model::tests::t474_conversion_edit_merges_and_requires_explicit_restart ... ok
+test model::tests::t480_t1194_obsolete_cache_preference_is_not_in_current_schema ... ok
+test model::tests::t492_adaptive_idle_preference_round_trips_without_changing_motion_rate ... ok
+test model::tests::t543_camera_preferences_round_trip_without_starting_or_restarting_display ... ok
+test model::tests::t612_worker_capacity_roundtrip_and_sanitize ... ok
+test negotiation::tests::t1199_bounded_protocol_and_scope_matrix_requires_current_scoped_schema ... ok
+test negotiation::tests::t1199_obsolete_unscoped_reports_cannot_authorize_current_selection ... ok
+test negotiation::tests::t1560_unavailable_inventory_is_not_an_empty_capability_report ... ok
+test negotiation::tests::t478_avc_level_one_b_orders_between_one_and_one_one ... ok
+test negotiation::tests::t478_old_peer_and_duplicate_identity_are_not_rich_support ... ok
+test negotiation::tests::t478_scope_format_version_and_bounds_are_validated ... ok
+test negotiation::tests::t478_shared_report_round_trips_and_intersects_exact_profiles ... ok
+test negotiation::tests::t478_unknown_unsupported_depth_level_and_profile_never_authorize ... ok
+test negotiation::tests::t480_software_fingerprint_is_bounded_and_unknown_is_optional ... ok
+test negotiation::tests::t484_decoder_receipt_matches_shared_android_vector_and_changes_with_hints ... ok
+test negotiation::tests::t668_codec_families_and_hardware_subset_are_validated ... ok
+test negotiation::tests::t668_codec_profile_depth_and_level_contracts_are_independent ... ok
+test negotiation::tests::t668_hardware_choices_precede_software_without_losing_identity ... ok
+test negotiation::tests::t668_invalid_reports_and_streams_cannot_offer_decoder_choices ... ok
+test negotiation::tests::t668_legacy_reports_reject_either_rich_extension ... ok
+test negotiation::tests::t668_report_dimensions_and_rate_are_independently_bounded ... ok
+test platform::tests::t493_capabilities_never_imply_an_unimplemented_backend ... ok
+test raw_frame::tests::t418_descriptor_layout_roundtrips_with_bounded_arithmetic ... ok
+test raw_frame::tests::t418_malformed_descriptors_and_bounded_mutation_fuzz_never_escape_layout ... ok
+test raw_frame::tests::t418_raw_transport_settings_are_explicit_and_round_trip ... ok
+test raw_frame::tests::t669_slot_offsets_partition_the_allocation_without_overlap ... ok
+test release::tests::t374_shared_release_response_contract ... ok
+test retirement::fence_tests::t1272_consumed_owner_fence_preserves_original_admission ... ok
+test retirement::idle_tests::t1529_idle_retirement_backs_off_without_releasing_original_admission ... ok
+test retirement::observations::tests::t1124_bound_observation_survives_ticket_and_poisoned_mutex ... ok
+test retirement::observations::tests::t1124_two_slot_exhaustive_transition_model ... ok
+test retirement::observations::tests::t1124_zero_capacity_and_original_identity_boundaries ... ok
+test retirement::reporting_tests::t1812_subscriber_failure_cannot_unwind_the_quarantined_owner ... ok
+test retirement::tests::t814_capacity_boundaries_reject_invalid_values ... ok
+test retirement::tests::t814_panicking_adapter_keeps_its_slot_without_stalling_siblings ... ok
+test retirement::tests::t814_retirement_retains_capacity_and_siblings_progress ... ok
+test retirement::tests::t841_completed_messages_preserve_retirement_ownership ... ok
+test retirement_limits::observation_tests::t1101_observation_budget_preserves_valid_precision_and_rejects_boundaries ... ok
+test retirement_limits::shutdown_tests::t1513_shutdown_budgets_cover_boundaries_and_reject_invalid_configuration ... ok
+test retirement_limits::tests::t814_rejects_invalid_and_out_of_bounds_resource_limits ... ok
+test retirement_work::native_lifetime_tests::t1260_cleanup_tls_keeps_capacity_while_siblings_retire ... ok
+test retirement_work::native_lifetime_tests::t1260_panic_payload_drop_cannot_abort_retirement_owner ... 
+running 1 test
+test retirement_work::native_lifetime_tests::t1260_panic_payload_drop_cannot_abort_retirement_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 521 filtered out; finished in 0.01s
+
+ok
+test retirement_work::native_lifetime_tests::t1260_panicked_native_worker_still_retires ... ok
+test retirement_work::native_lifetime_tests::t1260_spawn_rejection_preserves_work_and_backoff ... ok
+test retirement_work::native_lifetime_tests::t1260_thread_tls_join_is_nonblocking_and_repeatable ... ok
+test retirement_work::native_lifetime_tests::t1260_unsubmitted_owner_drop_has_owned_process_boundary ... 
+running 1 test
+test retirement_work::native_lifetime_tests::t1260_unsubmitted_owner_drop_has_owned_process_boundary ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 521 filtered out; finished in 0.00s
+
+ok
+test retirement_work::native_lifetime_tests::t1260_work_and_reporting_panics_remain_separately_owned ... ok
+test retirement_work::tests::t814_cleanup_panic_cannot_release_unknown_resources_or_block_siblings ... ok
+test scheduling::linux::tests::t582_async_scope_start_is_verified_with_a_bounded_wait ... ok
+test scheduling::linux::tests::t582_group_input_and_effective_weight_are_validated ... ok
+test scheduling::linux::tests::t582_native_scope_keeps_all_threads_and_new_children_together ... ok
+test scheduling::linux::tests::t582_only_the_same_user_and_exact_adb_server_are_eligible ... ok
+test scheduling::linux::tests::t582_requests_cover_owned_groups_without_boosting_an_editor ... ok
+test scheduling::tests::t582_high_default_and_normal_override_round_trip_and_merge ... ok
+test storage::diff::tests::t559_diffs_semantic_paths_and_added_removed_values ... ok
+test storage::diff::tests::t559_malformed_and_bounded_nested_input_never_fabricates_changes ... ok
+test storage::load_tests::t1532_only_missing_or_valid_config_is_quiet ... ok
+test storage::load_tests::t1532_unreadable_config_reports_path_and_fallback_without_overwrite ... ok
+test storage::merge_tests::t1194_real_locked_edit_rejects_obsolete_schema_without_rewriting_saved_data ... ok
+test storage::merge_tests::t1450_brightness_save_preserves_independent_camera_edits ... ok
+test storage::merge_tests::t703_optional_serial_removal_and_addition_preserve_other_edits ... ok
+test storage::merge_tests::t703_same_camera_field_keeps_last_edited_save_wins ... ok
+test storage::merge_tests::t703_two_camera_snapshots_preserve_independent_edits_in_both_orders ... ok
+test storage::observe::t1552_observed_text_capacity_boundaries ... ok
+test storage::observe::tests::t1552_fifo_snapshot_does_not_wait_for_a_writer ... ok
+test storage::observe::tests::t1552_observation_matches_saved_current_config ... ok
+test storage::observe::tests::t1552_snapshot_rejects_unavailable_malformed_and_oversized_files ... ok
+test storage::tests::t104_concurrent_config_transactions ... ok
+test storage::tests::t137_partial_updates_preserve_invalid_existing_config ... ok
+test storage::tests::t140_xdg_config_isolation ... ok
+test storage::tests::t264_positions_round_trip_and_obsolete_aliases_use_invalid_value_policy ... ok
+test storage::tests::t288_invalid_pen_mode_save_preserves_previous_file ... ok
+test storage::tests::t321_explicit_edit_rejects_low_clock_without_overwriting_preferences ... ok
+test storage::tests::t321_missing_or_malformed_saved_configuration_has_supported_default_timing ... ok
+test storage::tests::t332_invalid_joint_mode_save_preserves_last_valid_configuration ... ok
+test storage::write_tests::t1531_native_directory_sync_reports_invalid_directory ... ok
+test storage::write_tests::t1531_rejected_publication_does_not_sync_directory ... ok
+test storage::write_tests::t1531_success_requires_directory_sync_after_complete_publication ... ok
+test storage::write_tests::t1531_sync_failure_is_reported_without_undoing_visible_publication ... ok
+test storage::write_tests::t566_failed_persistence_never_reports_a_successful_change ... ok
+test storage::write_tests::t566_success_reports_only_committed_changes_and_noop_stays_quiet ... ok
+test tablets::tests::t922_adb_wire_shape_is_preserved_and_native_identity_is_distinct ... ok
+test tablets::tests::t922_identity_schema_rejects_ambiguous_missing_and_invalid_inputs ... ok
+test tablets::tests::t922_slot_and_port_boundaries_reject_on_read_and_write ... ok
+test version::tests::t123_shared_release_version_contract ... ok
+test video::liveness::tests::t1038_liveness_interval_bounds_and_invalid_values ... ok
+test video::tests::t670_codec_labels_preserve_the_public_names ... ok
+test video::tests::t670_vp9_encoder_aliases_keep_their_bitstream_identity ... ok
+test workspace::tests::t1272_catalog_uses_identity_and_merges_only_current_evidence ... ok
+test workspace::tests::t1272_device_validation_rejects_boundaries_and_control_characters ... ok
+test workspace::tests::t1272_labels_and_merge_order_do_not_change_identity_or_evidence ... ok
+test workspace::tests::t1272_no_owner_is_not_global_proof_that_a_resource_is_off ... ok
+test workspace::tests::t1272_projection_exhausts_scope_capability_and_owner_states ... ok
+test workspace::tests::t1375_generic_labels_never_displace_available_descriptive_names ... ok
+
+test result: ok. 522 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.70s
+

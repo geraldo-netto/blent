@@ -1,0 +1,24 @@
+[
+  {
+    "file": "common/src/retirement.rs",
+    "name": "poll",
+    "line": 162,
+    "language": "rust",
+    "covered": 17,
+    "total": 17,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/retirement.rs",
+    "name": "quarantine",
+    "line": 182,
+    "language": "rust",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

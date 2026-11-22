@@ -148,3 +148,17 @@ real-time guarantees. Worst-case observation adds up to 100 ms for retirement
 and 10 ms for command/output control. A separate reporting-panic gap found while
 reviewing this owner is retained as T1812.
 [Evidence](artifacts/2026-11-22-followup-batch/t1529/).
+
+## T1812 — contain retirement reporting failures
+
+A permanent subscriber-fault regression failed before the fix: the reporting
+panic escaped `Record::poll`. The record now contains reporting failures and
+retains both original panic payloads under its existing admission. Neither
+arbitrary payload destructors nor the failed observer run again. Capacity stays
+quarantined; an independent sibling still retires. No new native owner or queue
+is introduced: at most one adapter/report failure pair belongs to each admitted
+record, retained until process exit because its obligations remain unknown.
+
+All 522 common library tests pass. Both maintained production functions exceed
+80% line coverage; all 30 measured functions have complexity <=7. Common Clippy
+passes. [Evidence](artifacts/2026-11-22-followup-batch/t1812/).
