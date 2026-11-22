@@ -57,7 +57,10 @@ def reuse(binary, root, env):
     replacement, log = start(binary, root, env, 'replacement')
     try:
         await_routes(replacement, root, log, 'replacement routes')
-        replacement.send_signal(signal.SIGTERM)
+        # T1512/T1696 integration: Stop selects/pins this real daemon inside
+        # the private PID namespace; no installed process is visible.
+        stopped = subprocess.run([binary, 'stop'], env=env, capture_output=True, text=True)
+        assert stopped.returncode == 0, (stopped.stdout, stopped.stderr)
         assert replacement.wait(timeout=15) == 0, log.read_text()
     finally:
         reap(replacement)

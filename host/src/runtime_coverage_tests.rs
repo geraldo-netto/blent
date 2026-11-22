@@ -197,7 +197,8 @@ async fn t497_stop_timeout_leaves_a_nonresponsive_owned_daemon_reported() {
     assert_eq!(ready, "ready\n");
     // T1699/T1513: 60s session + 60s reap + 1s margin + 5s command budget.
     let started = tokio::time::Instant::now();
-    let error = stop_pids(&[child.id().unwrap()]).await.unwrap_err();
+    let original = config::linux::processes::Process::read(child.id().unwrap()).unwrap();
+    let error = stop_processes(&[original]).await.unwrap_err();
     assert!(error
         .to_string()
         .contains("did not finish shutting down within 126s"));

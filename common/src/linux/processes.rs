@@ -153,7 +153,7 @@ impl ProcessHandle {
             if error.raw_os_error() == Some(libc::ESRCH) {
                 return Ok(None);
             }
-            return Err(error).context("pin capture process with pidfd_open");
+            return Err(error).context("pin process with pidfd_open");
         }
         let handle = Self(unsafe { OwnedFd::from_raw_fd(fd as i32) });
         Ok((Process::read(process.pid).as_ref() == Some(process)).then_some(handle))
@@ -212,6 +212,33 @@ async fn await_exit(handles: &[ProcessHandle], budget: Duration) -> io::Result<b
     }
 }
 
+fn pin_all(processes: &[Process]) -> Result<Vec<ProcessHandle>> {
+    Ok(processes
+        .iter()
+        .map(ProcessHandle::pin)
+        .collect::<Result<Vec<_>>>()?
+        .into_iter()
+        .flatten()
+        .collect())
+}
+
+fn signal_all(handles: &[ProcessHandle], signal: i32) -> io::Result<()> {
+    for handle in handles {
+        handle.signal(signal)?;
+    }
+    Ok(())
+}
+
+/// Request graceful shutdown of the selected original identities. Pin every
+/// candidate before signalling any. False means the observation budget expired;
+/// it never authorizes escalation or claims the target's native cleanup settled.
+/// These handles own observation only; target processes retain their resources.
+pub async fn request_stop(processes: &[Process], budget: Duration) -> Result<bool> {
+    let handles = pin_all(processes)?;
+    signal_all(&handles, libc::SIGTERM)?;
+    Ok(await_exit(&handles, budget).await?)
+}
+
 /// Retire all selected processes within one shared grace and kill budget.
 /// Handles remain tied to the original processes even when their PIDs are reused.
 pub async fn retire(
@@ -219,20 +246,10 @@ pub async fn retire(
     grace: Duration,
     kill_budget: Duration,
 ) -> Result<usize> {
-    let handles = processes
-        .iter()
-        .map(ProcessHandle::pin)
-        .collect::<Result<Vec<_>>>()?
-        .into_iter()
-        .flatten()
-        .collect::<Vec<_>>();
-    for handle in &handles {
-        handle.signal(libc::SIGTERM)?;
-    }
+    let handles = pin_all(processes)?;
+    signal_all(&handles, libc::SIGTERM)?;
     if !await_exit(&handles, grace).await? {
-        for handle in &handles {
-            handle.signal(libc::SIGKILL)?;
-        }
+        signal_all(&handles, libc::SIGKILL)?;
         anyhow::ensure!(
             await_exit(&handles, kill_budget).await?,
             "capture processes did not retire within deadline"
@@ -374,6 +391,29 @@ mod coverage_tests {
         let mut byte = [0];
         let _ = std::io::Read::read_exact(&mut std::io::stdin(), &mut byte);
         true
+    }
+
+    #[tokio::test]
+    async fn t1696_stop_pins_all_candidates_before_any_signal() {
+        let mut child = ready_child();
+        let original = Process::read(child.0.id()).unwrap();
+        let mut foreign = original.clone();
+        foreign.uid = foreign.uid.wrapping_add(1);
+        let budget = Duration::from_secs(5);
+        assert!(request_stop(&[original.clone(), foreign], budget)
+            .await
+            .is_err());
+        assert!(child.0.try_wait().unwrap().is_none());
+        let mut stale = original.clone();
+        stale.start_ticks = stale.start_ticks.wrapping_sub(1);
+        assert!(request_stop(&[stale], budget).await.unwrap());
+        assert!(child.0.try_wait().unwrap().is_none());
+        assert!(request_stop(std::slice::from_ref(&original), budget)
+            .await
+            .unwrap());
+        assert!(!child.0.wait().unwrap().success());
+        assert!(request_stop(&[original], budget).await.unwrap());
+        assert!(request_stop(&[], Duration::ZERO).await.unwrap());
     }
 
     #[test]

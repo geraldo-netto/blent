@@ -16,8 +16,14 @@ fn matches(process: &Process, uid: u32) -> bool {
     Cli::try_parse_from(args).is_ok_and(|cli| matches!(cli.command, None | Some(Commands::Start)))
 }
 
+/// Capture and validate one identity; destructive callers must pin this same
+/// snapshot before signalling instead of reopening a reusable PID afterward.
+pub fn read(pid: u32, uid: u32) -> Option<Process> {
+    Process::read(pid).filter(|process| matches(process, uid))
+}
+
 pub fn is_daemon_process(pid: u32, uid: u32) -> bool {
-    Process::read(pid).is_some_and(|process| matches(&process, uid))
+    read(pid, uid).is_some()
 }
 
 /// Prefer a validated PID-file entry, then recover other same-user daemons.

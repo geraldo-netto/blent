@@ -825,7 +825,11 @@ inventory. Helpers and encoders are associated by same-user ownership, executabl
 identity and the configured slot's exact FIFO argument; unrelated capture
 processes and concurrent diagnostic commands do not count as orphans. Its
 remediation uses validated Blent stop/start operations rather than broad
-process-name signals.
+process-name signals. Linux Stop captures each validated daemon identity and pins
+all candidates with PID file descriptors before signalling any of them. It sends
+SIGTERM and observes those original handles until the client budget expires;
+it never escalates to SIGKILL. A reused PID cannot become the signal target.
+Observation timeout leaves the daemon and its native cleanup ownership intact.
 
 GUI status owns a cancellable poll worker. It revalidates a cached daemon
 identity each cycle and falls back to an owner/name-prefiltered inventory;

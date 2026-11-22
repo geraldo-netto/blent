@@ -1365,7 +1365,7 @@ printf '%s\n' "$2" >> "$0.log"
         for stale in [false, true] {
             let mut daemon = t237_child(&executable, &[]).await;
             let pid = daemon.id().unwrap();
-            assert!(!is_daemon_process(
+            assert!(!config::linux::daemon::is_daemon_process(
                 pid,
                 unsafe { libc::getuid() }.wrapping_add(1)
             ));
@@ -1383,6 +1383,26 @@ printf '%s\n' "$2" >> "$0.log"
             assert!(!pid_path.exists());
         }
         unrelated.kill().await.unwrap();
+    }
+
+    #[tokio::test]
+    async fn t1696_stale_generation_cannot_signal_a_reused_pid() {
+        let root = tempfile::tempdir().unwrap();
+        let executable = t237_process_fixture(root.path());
+        let mut child = t237_child(&executable, &["start"]).await;
+        let mut original = config::linux::processes::Process::read(child.id().unwrap()).unwrap();
+        // Model a PID reused for this live candidate after the selected generation.
+        original.start_ticks = original.start_ticks.wrapping_sub(1);
+        stop_processes(&[original]).await.unwrap();
+        let preserved = child.try_wait().unwrap().is_none();
+        if preserved {
+            child.kill().await.unwrap();
+        }
+        child.wait().await.unwrap();
+        assert!(
+            preserved,
+            "T1696 stale snapshot signalled a replacement process"
+        );
     }
 
     #[tokio::test]
@@ -1465,7 +1485,8 @@ printf '%s\n' "$2" >> "$0.log"
             .await
             .unwrap();
         assert_eq!(ready, "ready\n");
-        stop_pids(&[child.id().unwrap()]).await.unwrap();
+        let original = config::linux::processes::Process::read(child.id().unwrap()).unwrap();
+        stop_processes(&[original]).await.unwrap();
         let finished = child.try_wait().unwrap().is_some();
         if !finished {
             child.wait().await.unwrap();
@@ -2126,10 +2147,6 @@ fn other_daemons() -> Vec<u32> {
     blent_config::linux::daemon::discover(None)
 }
 
-fn is_daemon_process(pid: u32, uid: u32) -> bool {
-    blent_config::linux::daemon::is_daemon_process(pid, uid)
-}
-
 fn remove_pid_file_if_ours(pid_path: &std::path::Path, pid: u32) {
     let ours = std::fs::read_to_string(pid_path)
         .ok()
@@ -2558,27 +2575,13 @@ fn select_tablet(devices: &[String], current: Option<&str>) -> Option<String> {
 const APP_VIDEO_PORT: u16 = 8890;
 const APP_INPUT_PORT: u16 = 8891;
 
-async fn stop_pids(pids: &[u32]) -> Result<()> {
-    for &pid in pids {
-        if config::daemon_is_running(pid) {
-            let status = unsafe { libc::kill(pid as i32, libc::SIGTERM) };
-            if status != 0 && std::io::Error::last_os_error().raw_os_error() != Some(libc::ESRCH) {
-                return Err(std::io::Error::last_os_error().into());
-            }
-        }
-    }
-    tokio::time::timeout(config::commands::DAEMON_STOP_TIMEOUT, async {
-        while pids.iter().any(|&pid| config::daemon_is_running(pid)) {
-            tokio::time::sleep(std::time::Duration::from_millis(20)).await;
-        }
-    })
-    .await
-    .with_context(|| {
-        format!(
-            "daemon did not finish shutting down within {}s",
-            config::commands::DAEMON_STOP_TIMEOUT.as_secs()
-        )
-    })?;
+async fn stop_processes(processes: &[config::linux::processes::Process]) -> Result<()> {
+    anyhow::ensure!(
+        config::linux::processes::request_stop(processes, config::commands::DAEMON_STOP_TIMEOUT)
+            .await?,
+        "daemon did not finish shutting down within {}s",
+        config::commands::DAEMON_STOP_TIMEOUT.as_secs()
+    );
     Ok(())
 }
 
@@ -2605,16 +2608,20 @@ async fn stop_daemon() -> Result<()> {
 
 async fn stop_daemon_at(pid_path: &std::path::Path, mut pids: Vec<u32>) -> Result<()> {
     let uid = unsafe { libc::getuid() };
-    pids.retain(|&pid| pid != std::process::id() && is_daemon_process(pid, uid));
     let tracked = std::fs::read_to_string(pid_path)
         .ok()
         .and_then(|s| s.trim().parse::<u32>().ok());
-    if let Some(pid) = tracked.filter(|&p| p != std::process::id() && is_daemon_process(p, uid)) {
+    if let Some(pid) = tracked {
         if !pids.contains(&pid) {
             pids.push(pid);
         }
     }
-    stop_pids(&pids).await?;
+    let processes = pids
+        .into_iter()
+        .filter(|&pid| pid != std::process::id())
+        .filter_map(|pid| config::linux::daemon::read(pid, uid))
+        .collect::<Vec<_>>();
+    stop_processes(&processes).await?;
     if let Some(pid) = tracked {
         remove_pid_file_if_ours(pid_path, pid);
     }
