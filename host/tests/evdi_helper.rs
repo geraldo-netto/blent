@@ -111,6 +111,42 @@ fn t775_timeout_guidance_uses_guarded_setup() {
 }
 
 #[test]
+fn t1610_helper_numeric_options_reject_out_of_range_without_clamping() {
+    Harness::build("T1610").run("T1610-numeric");
+}
+
+#[test]
+fn t1610_helper_descriptor_options_reserve_standard_streams() {
+    Harness::build("T1610").run("T1610-descriptors");
+}
+
+#[test]
+fn t1610_helper_usage_matches_shared_product_limits() {
+    let harness = Harness::build("T1610");
+    let output = Command::new(harness.0.path().join("helper-test"))
+        .arg("T1610-usage")
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+    let text = String::from_utf8(output.stderr).unwrap();
+    for option in ["--card", "--preferred-card", "--idle-control-file"] {
+        assert!(
+            text.contains(option),
+            "T1610 usage omitted {option}: {text}"
+        );
+    }
+    assert!(text.contains(&format!(
+        "[--fps <{}-{}>]",
+        blent_config::MIN_FPS,
+        blent_config::MAX_FPS
+    )));
+    assert!(text.contains(&format!(
+        "[--conversion-threads <0-{}>]",
+        blent_config::MAX_CONVERSION_THREADS
+    )));
+}
+
+#[test]
 fn t762_helper_rejects_malformed_arguments_before_device_access() {
     Harness::build("T762").run("T762");
 }

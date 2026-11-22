@@ -476,20 +476,25 @@ static void test_stalled_fifo(int cancel) {
     assert(finished && WIFEXITED(status) && WEXITSTATUS(status) == 0 && "T113: stalled FIFO ignores deadline/cancellation");
 }
 
-static void test_helper_options(void) {
+static void test_helper_options(void)
+{
+    g_capture.fps = 60;
+    g_capture.scale = 2;
     char *args[] = {"helper", "--unknown", "--edid", "sample.edid", "--capture-fifo", "/tmp/sample.fifo",
         "--fps", "999", "--scale", "9", "--card", "4", "--edid"};
     helper_options_t options = parse_helper_options((int)(sizeof(args) / sizeof(args[0])), args);
     assert(strcmp(options.edid_path, "sample.edid") == 0);
     assert(strcmp(options.fifo_path, "/tmp/sample.fifo") == 0);
     assert(g_capture.fps == 60);
-    assert(g_capture.scale == 4);
+    assert(options.invalid);
+    assert(g_capture.scale == 2);
     assert(g_pin_card == 4);
     char *low[] = {"helper", "--scale", "0", "--fps", "0", "--card", "-1"};
     options = parse_helper_options((int)(sizeof(low) / sizeof(low[0])), low);
     assert(options.edid_path == NULL);
     assert(options.fifo_path == NULL);
-    assert(g_capture.scale == 1);
+    assert(options.invalid);
+    assert(g_capture.scale == 2);
     assert(g_capture.fps == 60);
     assert(g_pin_card == -1);
     char *preferred[] = {"helper", "--preferred-card", "7"};
@@ -726,14 +731,21 @@ static void test_t383_affinity(void) {
     }
 }
 
-static void t474_capacity_case(const char *request, int effective, int failure) {
+static void t474_capacity_case(const char *request, int effective, int failure)
+{
     pid_t child = fork();
     assert(child >= 0);
-    if (child == 0) {
+    if (child == 0)
+    {
         permitted_cpus = 1;
         fail_worker = failure;
         char *args[] = {"helper", "--conversion-threads", (char *)request};
-        parse_helper_options(3, args);
+        helper_options_t options = parse_helper_options(3, args);
+        if (options.invalid)
+        {
+            assert(effective == 0 && g_conversion_threads == 0);
+            _exit(0);
+        }
         conv_pool_init();
         assert(g_conversion.count == effective && "T474: explicit capacity ignored or incorrect failure accounting");
         test_conversion(8, 8, 1);
@@ -745,16 +757,17 @@ static void t474_capacity_case(const char *request, int effective, int failure) 
     assert(WIFEXITED(status) && WEXITSTATUS(status) == 0);
 }
 
-static void test_t474_capacity(void) {
+static void test_t474_capacity(void)
+{
     t474_capacity_case("0", 1, 0);
     t474_capacity_case("1", 1, 0);
     t474_capacity_case("8", 8, 0);
     t474_capacity_case("128", 128, 0);
     t474_capacity_case("128", 3, 3);
-    t474_capacity_case("129", 1, 0);
-    t474_capacity_case("-1", 1, 0);
-    t474_capacity_case("8junk", 1, 0);
-    t474_capacity_case("4294967304", 1, 0);
+    t474_capacity_case("129", 0, 0);
+    t474_capacity_case("-1", 0, 0);
+    t474_capacity_case("8junk", 0, 0);
+    t474_capacity_case("4294967304", 0, 0);
 }
 
 static void test_t047(void) {
@@ -1555,6 +1568,7 @@ static void test_t415_rounding(void) {
 #include "shutdown_registration.c"
 #include "failed_mode.c"
 #include "helper_arguments.c"
+#include "helper_numeric_options.c"
 #include "capture_pause.c"
 #include "display_progress.c"
 #include "capture_diagnostics.c"
@@ -1645,6 +1659,9 @@ int main(int argc, char **argv)
         {"T767", test_t767_boundaries},
         {"T760", test_t760_failed_mode},
         {"T762", test_t762_arguments},
+        {"T1610-numeric", test_t1610_numeric_options},
+        {"T1610-descriptors", test_t1610_descriptor_options},
+        {"T1610-usage", test_t1610_usage},
         {"T751", test_t751},
         {"T752", test_t752},
         {"T780", test_t780_full_rect_capacity},

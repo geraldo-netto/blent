@@ -96,6 +96,12 @@ the source list, C11 mode and `-Wall -Wextra -Werror`. Its default optimization
 is generic `-O3`; the recipe accepts `CC`, `CFLAGS`, `CPPFLAGS` and `LDFLAGS`.
 `OUTPUT` selects the helper path and `EVDI_LIBRARY_DIR` selects an optional
 linker-library directory, both relative to `host/evdi` unless absolute.
+Direct helper invocation uses FPS 10–90, scale 1–4, conversion workers 0–128
+(0 selects automatic capacity), and card indices -1 through INT_MAX (-1 selects
+automatic acquisition). Inherited capture/control descriptors must be at least 3.
+Malformed or out-of-range options exit with status 2 before native admission;
+valid numeric descriptors still require a suitable live socket. Values are never
+silently clamped. Running without an EDID argument prints the complete usage.
 The source helper normally finds the system libevdi installed above; bundling
 is a separate release step. Add `~/.local/bin` to PATH if needed.
 

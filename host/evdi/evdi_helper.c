@@ -245,37 +245,63 @@ static int numeric_option_known(const char *name) {
         !strcmp(name, "--preferred-card") || !strcmp(name, "--fps");
 }
 
-static int set_card_index(int *target, int number) {
-    if (number < -1) return -1;
+/* Native CLI boundary for the shared product FPS contract. The permanent
+ * T1610 cross-language test checks these against blent_config's public limits. */
+enum { HELPER_MIN_FPS = 10, HELPER_MAX_FPS = 90, HELPER_MAX_SCALE = 4 };
+
+static int set_number_in_range(int *target, int number, int low, int high)
+{
+    if (number < low || number > high)
+        return -1;
     *target = number;
     return 1;
 }
 
-static int bounded_scale(int number) {
-    if (number < 1) return 1;
-    return number > 4 ? 4 : number;
-}
-
-static int bounded_fps(int number) {
-    return number < 1 || number > 240 ? 60 : number;
-}
-
-static int set_numeric_option(const char *name, const char *value) {
-    if (!numeric_option_known(name)) return 0;
+static int set_numeric_option(const char *name, const char *value)
+{
+    if (!numeric_option_known(name))
+        return 0;
     int number;
-    if (!numeric_argument(value, &number)) return -1;
-    if (!strcmp(name, "--card")) return set_card_index(&g_pin_card, number);
-    if (!strcmp(name, "--preferred-card")) return set_card_index(&g_preferred_card, number);
-    if (!strcmp(name, "--scale")) g_capture.scale = bounded_scale(number);
-    else g_capture.fps = bounded_fps(number);
+    if (!numeric_argument(value, &number))
+        return -1;
+    if (!strcmp(name, "--card"))
+        return set_number_in_range(&g_pin_card, number, -1, INT_MAX);
+    if (!strcmp(name, "--preferred-card"))
+        return set_number_in_range(&g_preferred_card, number, -1, INT_MAX);
+    if (!strcmp(name, "--scale"))
+        return set_number_in_range(&g_capture.scale, number, 1, HELPER_MAX_SCALE);
+    return set_number_in_range(&g_capture.fps, number, HELPER_MIN_FPS, HELPER_MAX_FPS);
+}
+
+static int conversion_capacity(const char *value)
+{
+    int count;
+    if (!numeric_argument(value, &count) || count < 0 || count > MAX_CONV_THREADS)
+        return -1;
+    return count;
+}
+
+static int set_conversion_capacity(const char *value)
+{
+    int count = conversion_capacity(value);
+    if (count < 0)
+        return -1;
+    g_conversion_threads = count;
     return 1;
 }
 
-static int conversion_capacity(const char *value) {
-    char *end;
-    errno = 0;
-    long count = strtol(value, &end, 10);
-    return !errno && end != value && *end == '\0' && count >= 0 && count <= MAX_CONV_THREADS ? (int)count : 0;
+static int inherited_descriptor(const char *value, int *fd)
+{
+    return numeric_argument(value, fd) && *fd >= 3;
+}
+
+static int set_descriptor_option(const char **target, const char *value)
+{
+    int fd;
+    if (!inherited_descriptor(value, &fd))
+        return -1;
+    *target = value;
+    return 1;
 }
 
 static int set_helper_option(helper_options_t *options, const char *name, const char *value)
@@ -285,15 +311,15 @@ static int set_helper_option(helper_options_t *options, const char *name, const 
     else if (strcmp(name, "--capture-fifo") == 0)
         options->fifo_path = value;
     else if (strcmp(name, "--capture-socket-fd") == 0)
-        options->socket_fd = value;
+        return set_descriptor_option(&options->socket_fd, value);
     else if (strcmp(name, "--capture-activity-fd") == 0)
-        options->activity_fd = value;
+        return set_descriptor_option(&options->activity_fd, value);
     else if (strcmp(name, "--pipe-size-file") == 0)
         g_fifo.capacity_path = value;
     else if (strcmp(name, "--idle-control-file") == 0)
         g_writer.idle_control = value;
     else if (strcmp(name, "--conversion-threads") == 0)
-        g_conversion_threads = conversion_capacity(value);
+        return set_conversion_capacity(value);
     else
         return set_numeric_option(name, value);
     return 1;
@@ -465,13 +491,15 @@ static int run_capture(evdi_handle handle, pthread_t writer) {
     return status;
 }
 
-static int configure_raw_socket(const char *value) {
-    if (!value) return 1;
-    char *end;
-    errno = 0;
-    long fd = strtol(value, &end, 10);
-    if (errno || end == value || *end || fd < 0 || fd > INT_MAX) return 0;
-    if (!raw_ring_init(&g_raw_ring, (int)fd)) return 0;
+static int configure_raw_socket(const char *value)
+{
+    if (!value)
+        return 1;
+    int fd;
+    if (!inherited_descriptor(value, &fd))
+        return 0;
+    if (!raw_ring_init(&g_raw_ring, fd))
+        return 0;
     g_capture.raw_ring = &g_raw_ring;
     return 1;
 }
@@ -481,7 +509,7 @@ static int configure_capture_control(const char *value)
     if (!value)
         return 1;
     int fd;
-    if (!numeric_argument(value, &fd))
+    if (!inherited_descriptor(value, &fd))
         return 0;
     if (!capture_control_init(&g_control, fd))
         return 0;
@@ -517,6 +545,18 @@ static int configure_capture_format(const char *value) {
     return 0;
 }
 
+static void print_helper_usage(const char *program)
+{
+    fprintf(stderr,
+            "Usage: %s --edid <edid.bin> [--capture-fifo <path>] "
+            "[--capture-socket-fd <3..%d>] [--capture-activity-fd <3..%d>] "
+            "[--fps <%d-%d>] [--scale <1-%d>] [--card <-1..%d>] "
+            "[--preferred-card <-1..%d>] [--pipe-size-file <path>] "
+            "[--idle-control-file <path>] [--conversion-threads <0-%d>]\n",
+            program, INT_MAX, INT_MAX, HELPER_MIN_FPS, HELPER_MAX_FPS,
+            HELPER_MAX_SCALE, INT_MAX, INT_MAX, MAX_CONV_THREADS);
+}
+
 int main(int argc, char *argv[])
 {
     if (!configure_capture_format(getenv("BLENT_CAPTURE_FORMAT")))
@@ -541,11 +581,7 @@ int main(int argc, char *argv[])
 
     if (!edid_path)
     {
-        fprintf(stderr,
-                "Usage: %s --edid <edid.bin> [--capture-fifo <path>] [--capture-socket-fd "
-                "<inherited-fd>] [--capture-activity-fd <inherited-fd>] [--fps <n>] [--scale "
-                "<1-4>] [--pipe-size-file <path>] [--conversion-threads <0-128>]\n",
-                argv[0]);
+        print_helper_usage(argv[0]);
         return 1;
     }
 

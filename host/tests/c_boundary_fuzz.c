@@ -18,7 +18,7 @@ static void fuzz_text_fields(const unsigned char *data)
     char text[160] = {0};
     memcpy(text, data, 128);
     int capacity = conversion_capacity(text);
-    assert(capacity >= 0 && capacity <= MAX_CONV_THREADS);
+    assert(capacity >= -1 && capacity <= MAX_CONV_THREADS);
     int amount = capacity_value(text, (int)data[0] - 128);
     assert(amount == 1 || amount == 2 || amount == 4 || amount == 8);
     /* Invalid fd cannot authorize a sparse-idle lease, regardless of fields. */

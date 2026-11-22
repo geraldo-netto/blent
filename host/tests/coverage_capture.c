@@ -98,17 +98,20 @@ static void test_t497_main(void) {
     rmdir(root);
 }
 
-static void t497_mutate_capacities(void) {
+static void t497_mutate_capacities(void)
+{
     unsigned seed = 497;
-    for (int i = 0; i < 2048; i++) {
+    for (int i = 0; i < 2048; i++)
+    {
         char text[65];
-        for (unsigned j = 0; j < sizeof(text) - 1; j++) {
+        for (unsigned j = 0; j < sizeof(text) - 1; j++)
+        {
             seed = seed * 1664525u + 1013904223u;
             text[j] = (char)(33 + seed % 94);
         }
         text[64] = 0;
         int value = conversion_capacity(text);
-        assert(value >= 0 && value <= MAX_CONV_THREADS);
+        assert(value >= -1 && value <= MAX_CONV_THREADS);
     }
 }
 
@@ -147,7 +150,8 @@ static void t497_pacing_and_poll_errors(void) {
     t497_poll_error = 0;
 }
 
-static void test_t497_bounds(void) {
+static void test_t497_bounds(void)
+{
     g_running = 1;
     g_fifo.fd = -1;
     retire_partial_fifo(&g_fifo);
@@ -155,10 +159,11 @@ static void test_t497_bounds(void) {
     /* Numeric capacities never wrap into an accepted worker count. */
     const char *invalid[] = {"", "-1", "129", "1junk", "128\n", "9999999999999999999999999999999999"};
     for (unsigned i = 0; i < sizeof(invalid) / sizeof(invalid[0]); i++)
-        assert(conversion_capacity(invalid[i]) == 0);
-    for (int n = -1024; n < 1024; n++) {
+        assert(conversion_capacity(invalid[i]) == -1);
+    for (int n = -1024; n < 1024; n++)
+    {
         char text[32]; snprintf(text, sizeof(text), "%d", n);
-        int expected = n >= 0 && n <= MAX_CONV_THREADS ? n : 0;
+        int expected = n >= 0 && n <= MAX_CONV_THREADS ? n : -1;
         assert(conversion_capacity(text) == expected);
     }
     t497_mutate_capacities();

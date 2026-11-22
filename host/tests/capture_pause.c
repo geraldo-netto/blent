@@ -233,7 +233,7 @@ static void test_t1021_boundaries(void)
     for (size_t i = 0; i < sizeof(invalid) / sizeof(invalid[0]); i++)
         assert(!configure_capture_control(invalid[i]));
     char *argv[] = {"helper", "--edid", "/unused", "--capture-activity-fd", "-1"};
-    assert(evdi_helper_main(5, argv) == 1);
+    assert(evdi_helper_main(5, argv) == 2);
     assert(!mock_open_calls && !mock_add_calls);
     capture_control_t control;
     int peer = t1021_pair(&control);

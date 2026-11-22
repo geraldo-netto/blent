@@ -760,3 +760,11 @@ Local Make, portable-release and Arch builds now invoke `host/evdi/Makefile`, wh
 The strict-flag regression fails before and passes after the change. All two shared-recipe, two Arch, eight Make, two distribution and nine package tests pass; the standalone production-optimization compile regression also passes. Existing module-link, source-integrity, literal-path, APK-rejection and missing-input assertions were retargeted to the shared recipe without weakening them. The native helper compiles and links with GCC 13.3.0 and retains `libevdi.so.1` plus `$ORIGIN` RUNPATH. The newly exposed optimized warning was fixed separately as T1700 (`0a38ad32`).
 
 The maintained Arch build function has 100% native Bash line coverage (6/6); all 40 measured shell/Python functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1611.json). Portable/Arch caller checks use private fixtures; no full native package installation or physical capture acceptance is claimed. Installed binaries and sessions are unchanged.
+
+## T1610 — reject invalid helper options consistently (2026-11-22)
+
+The helper rejects FPS outside 10–90, scale outside 1–4, conversion workers outside 0–128 and inherited descriptors below 3. Card indices retain -1 for automatic selection. Malformed options return status 2 before native admission; numerically valid descriptors still need a suitable live socket. Defaults remain 60 FPS, scale 1 and automatic workers. Usage lists every accepted option and its bounds, with a permanent check against the shared Rust product limits.
+
+All three new regressions fail before and pass after the fix. All 81 native helper tests pass, including 1,325 numeric option cases, 16 malformed/reserved descriptor cases, two unusable-descriptor cases, and the retained bounded text/number fuzz and worker-failure tests. The native helper also builds with GCC 13.3.0 at C11/O3/Wall/Wextra/Werror. All 11 maintained production functions meet the 80% line-coverage requirement; all measured functions meet complexity ≤9. [Evidence](artifacts/2026-11-21-open-items/t1610.json).
+
+Parsing retains only process-lifetime argument borrows and scalar settings. Invalid options admit no native work; existing socket and worker ownership is unchanged. No installed sessions or physical device acceptance were involved.
