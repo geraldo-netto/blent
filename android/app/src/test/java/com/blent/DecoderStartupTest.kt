@@ -72,6 +72,33 @@ class DecoderStartupTest {
         } finally { receiver.stop(); surface.release() }
     }
 
+    @Test fun t1749StartupCapturesCallbackOwnerAndClosesFailedInstallation() {
+        for (failInstall in listOf(false, true)) callbackStartup(failInstall)
+    }
+
+    private fun callbackStartup(failInstall: Boolean) {
+        StartupCodecShadow.stage = ""
+        val surface = Surface(SurfaceTexture(1))
+        val receiver = VideoReceiver { error("T1749 no transport") }
+        org.robolectric.util.ReflectionHelpers.setField(receiver, "isRunning", true)
+        val calls = mutableListOf<String>()
+        receiver.decoder.callbackFactory = { _, _, _ -> object : DecoderInputConsumer {
+            override fun install() { calls.add("install"); check(!failInstall) { "T1749 install failure" } }
+            override fun offer(input: DecoderInput) = error("T1749 no input")
+            override fun close() { calls.add("close") }
+        } }
+        receiver.decoder.createCodec = { parameters ->
+            receiver.decoder.callbackFactory = { _, _, _ -> error("T1749 replaced factory") }
+            MediaCodec.createDecoderByType(parameters.mimeType)
+        }
+        try {
+            assertEquals(!failInstall, receiver.setupCodec(surface))
+            receiver.decoder.releaseCodec()
+            awaitDecoderRetirement(receiver.decoder)
+            assertEquals(listOf("install", "close"), calls)
+        } finally { receiver.stop(); surface.release() }
+    }
+
     @Test fun t497_factoryFailureRetiresStartupAndAcknowledgementsIgnoreRetiredCodec() {
         StartupCodecShadow.stage = ""
         StartupCodecShadow.renderedListener = null

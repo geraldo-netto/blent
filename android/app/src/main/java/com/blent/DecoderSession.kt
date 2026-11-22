@@ -35,7 +35,6 @@ internal class DecoderSession(
     var createCodec: (DecoderFormat) -> MediaCodec = DecoderConfiguration::create
     var formatCodec: DecoderFormatFactory = { _, parameters, hints -> DecoderConfiguration.format(parameters, hints) }
     var outputClock: () -> Long = System::nanoTime
-    var inputClock: () -> Long = System::nanoTime
     private val renderedCount = AtomicLong(0)
     private val discardedCount = AtomicLong(0)
     val discardedOutputs: Long get() = discardedCount.get()
@@ -43,16 +42,17 @@ internal class DecoderSession(
     private var timingEpoch = timing.currentEpoch()
     private var lifetime: CodecLifetime? = null
     private var retiring: CodecLifetime? = null
-    private var callbackDecoder: CallbackDecoder? = null
+    private var callbackDecoder: DecoderInputConsumer? = null
+    var callbackFactory: DecoderCallbackFactory? = null
     var profile = DecoderProfile()
     private val diagnosticState = MutableStateFlow(DecoderDiagnostics())
     val diagnostics = diagnosticState.asStateFlow()
 
     private class Startup(val epoch: FrameTiming.Epoch, val profile: DecoderProfile,
-                          val format: DecoderFormatFactory, val hints: Boolean, val valid: () -> Boolean) {
+                          val format: DecoderFormatFactory, val callbacksFactory: DecoderCallbackFactory?, val hints: Boolean, val valid: () -> Boolean) {
         var owner: CodecLifetime? = null
         var thread: HandlerThread? = null
-        var callbacks: CallbackDecoder? = null
+        var callbacks: DecoderInputConsumer? = null
         var decoderReceipt: String? = null
         var diagnostics: ActiveDecoderDiagnostics? = null
     }
@@ -85,7 +85,7 @@ internal class DecoderSession(
         if (!CodecLifetime.beginStartup()) return null
         retiring = null
         outputWatchdog.restarted(outputClock())
-        Startup(timing.beginEpoch(), profile, formatCodec, outputWatchdog.lowLatencyHints, valid).also { startup = it }
+        Startup(timing.beginEpoch(), profile, formatCodec, callbackFactory, outputWatchdog.lowLatencyHints, valid).also { startup = it }
     }
 
     private fun startupCurrent(attempt: Startup): Boolean = synchronized(monitor) {
@@ -99,9 +99,9 @@ internal class DecoderSession(
         if (!startupCurrent(attempt)) return
         val thread = callbackThreadFactory().also { attempt.thread = it; it.start() }
         val handler = Handler(thread.looper)
-        val callbacks = callbacks(attempt.owner!!, handler, attempt.epoch, attempt.profile)
+        val callbacks = callbacks(attempt.owner!!, handler, attempt.epoch, attempt.callbacksFactory)
         attempt.callbacks = callbacks
-        if (callbacks != null) codec.setCallback(callbacks, handler)
+        callbacks?.install()
         codec.configure(format, surface, null, 0)
         if (!startupCurrent(attempt)) return
         codec.setVideoScalingMode(MediaCodec.VIDEO_SCALING_MODE_SCALE_TO_FIT)
@@ -165,13 +165,15 @@ internal class DecoderSession(
         events.rendered(receipt)
     }
 
-    private fun callbacks(owner: CodecLifetime, handler: Handler, epoch: FrameTiming.Epoch, selected: DecoderProfile): CallbackDecoder? {
-        if (!selected.callbacks) return null
+    private fun callbacks(owner: DecoderCodecAccess, handler: Handler, epoch: FrameTiming.Epoch,
+                          factory: DecoderCallbackFactory?): DecoderInputConsumer? {
+        if (factory == null) return null
         val capturedStatistics = statistics()
-        return CallbackDecoder(owner, handler,
-            queued = { synchronized(monitor) { if (mediaCodec === owner.codec) checkOutputProgress() } },
-            output = { recordOutput(owner.codec, epoch, capturedStatistics, it) },
-            failed = { retireFailedOutput(owner.codec, "Decoder callback failed", it) }, clock = inputClock)
+        return factory(owner, handler, object : DecoderInputEvents {
+            override fun queued() { synchronized(monitor) { if (mediaCodec === owner.codec) checkOutputProgress() } }
+            override fun output(sequence: Int) { recordOutput(owner.codec, epoch, capturedStatistics, sequence) }
+            override fun failed(error: Exception) { retireFailedOutput(owner.codec, "Decoder callback failed", error) }
+        })
     }
 
     private fun recordOutput(codec: MediaCodec, epoch: FrameTiming.Epoch, statistics: ReceiverStatistics, sequence: Int) {

@@ -13,15 +13,7 @@ internal fun queueCodecInput(codec: MediaCodec, index: Int, info: DecoderInputIn
     codec.queueInputBuffer(index, 0, info.size, info.sequence, flags)
 }
 
-/** One complete access unit. Borrowed on the synchronous path; queued consumers
- * must first detach storage because VideoPacketReader reuses its byte array. */
-internal data class DecoderInput(
-    val data: ByteArray, val offset: Int, override val size: Int,
-    override val configuration: Boolean, override val sequence: Long,
-) : DecoderInputInfo {
-    fun detached() = copy(data = data.copyOfRange(offset, offset + size), offset = 0)
-
-    fun write(codec: MediaCodec, index: Int) {
-        queueCodecInput(codec, index, this) { it.put(data, offset, size) }
-    }
+/** Native adapter for a borrowed synchronous packet. */
+internal fun DecoderInput.write(codec: MediaCodec, index: Int) {
+    queueCodecInput(codec, index, this) { it.put(data, offset, size) }
 }

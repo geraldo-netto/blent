@@ -41,6 +41,18 @@ class DecoderBenchmarkTests(unittest.TestCase):
                 expected = project.ROOT / 'scripts/benchmarks/android-decoder/experiments' / name
                 self.assertEqual((output / 'app/src/main/java' / name).read_bytes(), expected.read_bytes())
 
+    def test_t1749_callback_implementation_is_replay_owned(self):
+        spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
+        project = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(project)
+        with tempfile.TemporaryDirectory() as directory:
+            output = project.prepare(SimpleNamespace(directory=Path(directory) / 'replay', revision=None,
+                package='com.blent.decoderbench.candidate'))
+            for name in ['CallbackDecoder.kt', 'DecoderMailbox.kt']:
+                self.assertFalse((project.SOURCE / name).exists())
+                expected = project.ROOT / 'scripts/benchmarks/android-decoder/experiments' / name
+                self.assertEqual((output / 'app/src/main/java' / name).read_bytes(), expected.read_bytes())
+
     def test_t1746_generated_replay_includes_exact_decoder_eligibility_contract(self):
         spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
         project = importlib.util.module_from_spec(spec)

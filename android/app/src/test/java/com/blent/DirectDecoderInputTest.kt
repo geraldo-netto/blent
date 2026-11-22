@@ -66,7 +66,7 @@ internal class DirectInputFixture(callbacks: Boolean = false) : AutoCloseable {
         DirectInputCodecShadow.queued.clear()
         DirectInputCodecShadow.released.set(0)
         DirectInputCodecShadow.beforeInput = {}
-        decoder.profile = DecoderProfile(callbacks = callbacks)
+        decoder.callbackFactory = if (callbacks) replayCallbacks() else null
         assertTrue(decoder.setupCodec(surface, DecoderFormat(VideoReceiver.MIME_TYPE, 1280, 800, 60)))
     }
     override fun close() { closeTransport(); decoder.releaseCodec(); awaitDecoderRetirement(decoder); surface.release() }

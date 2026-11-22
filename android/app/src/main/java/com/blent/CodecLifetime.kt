@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 /** Retirement closes admission immediately. Native destruction waits for every
  * operation that borrowed the codec; a stuck driver keeps its own storage alive. */
-internal class CodecLifetime(val codec: MediaCodec) {
+internal class CodecLifetime(override val codec: MediaCodec) : DecoderCodecAccess {
     companion object {
         // Activity recreation replaces DecoderSession, so an unfinished native
         // retirement must close admission across receiver instances as well.
@@ -34,13 +34,13 @@ internal class CodecLifetime(val codec: MediaCodec) {
     }
     private val gate = Object()
     private var users = 0
-    @Volatile var retired = false; private set
+    @Volatile override var retired = false; private set
     @Volatile private var cleanup: Thread? = null
     @Volatile private var released = false
     // Completion means confirmed native release; thread bookkeeping may still unwind.
     val finished: Boolean get() = released
 
-    fun <T> use(block: () -> T): T? {
+    override fun <T> use(block: () -> T): T? {
         synchronized(gate) {
             if (retired) return null
             users++

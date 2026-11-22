@@ -18,7 +18,7 @@ internal class DecoderMailbox(private val clock: () -> Long = System::nanoTime) 
         if (!reserve(deadline)) return false
         var transferred = false
         try {
-            val owned = Pending(input.detached(), deadline)
+            val owned = Pending(input.copy(data = input.data.copyOfRange(input.offset, input.offset + input.size), offset = 0), deadline)
             synchronized(gate) {
                 if (closed) return false
                 pending.addLast(owned)

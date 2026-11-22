@@ -1,6 +1,7 @@
 package com.blent.benchmark
 import com.blent.*
 internal fun applyProfile(decoder: DecoderSession, name: String) {
+    decoder.callbackFactory = if (name.startsWith("callback-")) replayCallbacks() else null
     decoder.profile = replayDriverProfile(name)
     decoder.formatCodec = replayFormatFactory(name)
 }
@@ -8,9 +9,9 @@ internal fun replayDriverProfile(name: String): DecoderProfile = when (name) {
     "legacy", "socket-heap", "socket-direct" -> DecoderProfile()
     "render-latest" -> DecoderProfile(renderLatest = true)
     "sync-normal" -> DecoderProfile(renderPriority = Thread.NORM_PRIORITY)
-    "callback-legacy" -> DecoderProfile(callbacks = true)
+    "callback-legacy" -> DecoderProfile()
     "callback-supported", "callback-supported1", "callback-unhinted" ->
-        DecoderProfile(callbacks = true, renderPriority = Thread.NORM_PRIORITY)
+        DecoderProfile(renderPriority = Thread.NORM_PRIORITY)
     else -> error("Unknown decoder profile")
 }
 internal fun replayFormatFactory(name: String): DecoderFormatFactory = when (name) {

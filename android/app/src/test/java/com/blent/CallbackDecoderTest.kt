@@ -95,8 +95,7 @@ class CallbackDecoderTest {
             CallbackCodecShadow.callbacks.clear(); CallbackCodecShadow.inputs.clear()
             CallbackCodecShadow.outputs.clear(); CallbackCodecShadow.rendered.clear()
             CallbackCodecShadow.handlers.clear()
-            decoder.inputClock = { android.os.SystemClock.uptimeMillis() * 1_000_000 }
-            decoder.profile = DecoderProfile(callbacks = true)
+            decoder.callbackFactory = replayCallbacks { android.os.SystemClock.uptimeMillis() * 1_000_000 }
             start()
         }
         fun start() {

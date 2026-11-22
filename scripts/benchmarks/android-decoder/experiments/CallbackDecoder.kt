@@ -10,20 +10,22 @@ import java.util.concurrent.atomic.AtomicBoolean
 /** All callback-mode input/output operations run on this handler. Neither the
  * network producer nor codec retirement waits on it while holding codec state. */
 internal class CallbackDecoder(
-    private val owner: CodecLifetime,
+    private val owner: DecoderCodecAccess,
     private val handler: Handler,
     private val queued: () -> Unit,
     private val output: (Int) -> Unit,
     private val failed: (Exception) -> Unit,
     private val clock: () -> Long = System::nanoTime,
-) : MediaCodec.Callback() {
+) : MediaCodec.Callback(), DecoderInputConsumer {
     private val mailbox = DecoderMailbox(clock)
     private val indices = ArrayDeque<Int>() // Confined to handler.
     private val wakePosted = AtomicBoolean(false)
     private val timeout = Runnable { pump() }
     private val wake = Runnable { wakePosted.set(false); pump() }
 
-    fun offer(input: DecoderInput): Boolean {
+    override fun install() { owner.codec.setCallback(this, handler) }
+
+    override fun offer(input: DecoderInput): Boolean {
         if (!mailbox.offer(input)) return false
         if (wakePosted.compareAndSet(false, true) && !handler.post(wake)) {
             close()
@@ -32,7 +34,7 @@ internal class CallbackDecoder(
         return true
     }
 
-    fun close() {
+    override fun close() {
         mailbox.close()
         handler.removeCallbacks(wake)
         handler.removeCallbacks(timeout)
@@ -97,4 +99,9 @@ internal class CallbackDecoder(
         close()
         failed(error)
     }
+}
+
+/** Replay owns the implementation; DecoderSession retains native lifetime. */
+internal fun replayCallbacks(clock: () -> Long = System::nanoTime): DecoderCallbackFactory = { owner, handler, events ->
+    CallbackDecoder(owner, handler, events::queued, events::output, events::failed, clock)
 }
